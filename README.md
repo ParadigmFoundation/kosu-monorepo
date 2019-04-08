@@ -1,0 +1,3 @@
+# Kosu monorepo
+
+Hello, world!

@@ -1,0 +1,10 @@
+.DS_Store
+.dockerignore
+.env
+.notes
+
+node_modules
+dist
+lib
+
+*.log

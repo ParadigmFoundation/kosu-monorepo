@@ -1,0 +1,8 @@
+{
+  "name": "kosu-monorepo",
+  "private": true,
+  "description": "Monorepo for the Kosu protocol. Includes network client, contracts, and supporting libraries/tooling.",
+  "repository": "https://github.com/ParadigmFoundation/kosu-monorepo",
+  "author": "Henry Harder",
+  "license": "CC0-1.0"
+}
