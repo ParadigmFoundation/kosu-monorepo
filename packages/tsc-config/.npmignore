@@ -2,4 +2,4 @@
 .*
 *
 # Whitelist tsconfig
-!tslint.json
+!tsconfig.json
