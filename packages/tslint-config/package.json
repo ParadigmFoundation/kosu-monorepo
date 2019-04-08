@@ -1,7 +1,7 @@
 {
-  "name": "@paradigm/tslint-config",
+  "name": "@kosu/tslint-config",
   "private": false,
-  "version": "0.0.1-rc-1",
+  "version": "0.0.1",
   "description": "TypeScript linter base configuration for TS projects at Paradigm Labs.",
   "main": "tslint.json",
   "repository": "https://github.com/ParadigmFoundation/kosu-monorepo/blob/master/packages/tslint-config/README.md",
