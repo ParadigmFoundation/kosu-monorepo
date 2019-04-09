@@ -1,5 +1,5 @@
 export class Animal {
-    private static allowed = ["cat", "dog", "cow", "bird"]
+    private static allowed = ["cats", "dog", "cow", "bird"]
     private type: string;
     private name: string;
     private age: number;
