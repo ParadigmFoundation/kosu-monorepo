@@ -1,0 +1,16 @@
+{
+  "name": "ts-test",
+  "version": "0.0.1",
+  "description": "testing ci",
+  "main": "lib/index.js",
+  "license": "MIT",
+  "scripts": {
+    "build": "tsc --outDir ./lib --target es6 --m commonjs ./*/*.ts ./**/*.ts",
+    "test": "jest",
+    "pretest": "yarn build"
+  },
+  "devDependencies": {
+    "jest": "^24.7.1",
+    "typescript": "^3.4.2"
+  }
+}

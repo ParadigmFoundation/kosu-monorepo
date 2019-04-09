@@ -1,0 +1,22 @@
+matrix:
+  include:
+  # test ts-test
+    - language: node_js
+      node_js:
+        - "8"
+        - "10"
+        - "11"
+      before_script:
+        - cd packages/ts-test
+      script:
+        - yarn test
+
+  # test go-test
+    - language: go
+      go:
+      - "1.11"
+      - "1.12"
+      before_script:
+        - cd packages/go-test
+      script:
+        - go test -v ./...
