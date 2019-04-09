@@ -8,6 +8,7 @@ matrix:
         - "11"
       before_script:
         - cd packages/ts-test
+        - yarn global add typescript
       script:
         - yarn test
 
