@@ -1,4 +1,4 @@
-const { Animal } = require("../lib")
+const { Animal } = require("../lib/Animal")
 
 describe("Testing creation of animals", () => {
     test("should create a dog", () => {
