@@ -3,11 +3,12 @@ GOTEST_TAGS  ?= integration
 GOTEST = go test ./... ${GOTEST_FLAGS}
 
 GOLINT = golangci-lint run --enable-all \
+		--deadline=10m \
 		--disable=gochecknoglobals \
 		--disable=gocritic \
 		--disable=gochecknoinits \
 		--disable=scopelint \
-		--exclude-use-default=false
+		--exclude-use-default=false 
 
 vendors:
 	go mod vendor
