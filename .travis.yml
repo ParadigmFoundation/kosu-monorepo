@@ -13,7 +13,7 @@ matrix:
         - yarn build
         - yarn test
 
-    - stage: go tests
+    - stage: go-kosu tests
       language: go
       go:
         - "1.12"
@@ -37,11 +37,6 @@ matrix:
         # Install golintci
         - curl -sfL https://install.goreleaser.com/github.com/golangci/golangci-lint.sh | sh -s -- -b $(go env GOPATH)/bin v${GOLINTCI_RELEASE}
       before_script:
-        - cd packages/go
+        - cd packages/go/go-kosu
       script:
-        # test script for go-test package
-        - go test -v ./go-test/...
-
-        # test script for go-kosu
-        - make -f ./go-kosu/Makefile ci
-
+        - make ci
