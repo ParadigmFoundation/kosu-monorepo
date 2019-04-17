@@ -17,7 +17,5 @@
         "sourceMap": true
     },
     "include": [],
-    "references": [
-        { "path": "./packages/typescript/tslint-config"}
-    ]
+    "references": []
 }
