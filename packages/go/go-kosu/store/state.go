@@ -4,9 +4,9 @@ import (
 	"encoding/hex"
 	"errors"
 	"fmt"
+	"go-kosu/abci/types"
 	"log"
 	"math/big"
-	"go-kosu/abci/types"
 	"sync"
 	"sync/atomic"
 )

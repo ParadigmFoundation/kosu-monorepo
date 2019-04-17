@@ -3,8 +3,8 @@ package tests
 
 import (
 	"context"
-	"math/big"
 	"go-kosu/witness"
+	"math/big"
 	"testing"
 	"time"
 

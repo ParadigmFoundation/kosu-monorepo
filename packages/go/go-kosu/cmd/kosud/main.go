@@ -1,10 +1,10 @@
 package main
 
 import (
-	"log"
-	"os"
 	"go-kosu/abci"
 	"go-kosu/store"
+	"log"
+	"os"
 
 	"github.com/tendermint/tendermint/libs/db"
 )
