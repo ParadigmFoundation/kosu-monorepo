@@ -51,9 +51,6 @@ jspm_packages/
 # dotenv environment variables file
 .env
 
-# built library using in commonjs module syntax
-lib/
-
 # UMD bundles that export the global variable
 _bundles
 
@@ -72,3 +69,6 @@ notes
 .eggs
 .mypy_cache
 .tox
+
+# Solidity/Truffle stuff
+mnemonic.json
