@@ -1,24 +1,27 @@
 matrix:
   include:
-  # test ts-test
-    - language: node_js
+    - stage: install
+      script:
+        - yarn --production=false
+        - yarn build
+
+    - stage: node tests
+      language: node_js
       node_js:
         - "8"
         - "10"
         - "11"
       before_script:
-        - cd packages/ts-test
-        - yarn install --production=false
         - yarn global add typescript
       script:
         - yarn test
 
-  # test go-test
-    - language: go
+    - stage: go tests
+      language: go
       go:
-      - "1.11"
-      - "1.12"
+        - "1.11"
+        - "1.12"
       before_script:
-        - cd packages/go-test
+        - cd packages/go/go-test
       script:
         - go test -v ./...

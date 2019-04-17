@@ -72,3 +72,6 @@ notes
 .eggs
 .mypy_cache
 .tox
+
+# Solidity/Truffle stuff
+mnemonic.json

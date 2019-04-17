@@ -18,6 +18,6 @@
     },
     "include": [],
     "references": [
-        { "path": "./packages/tslint-config" }
+        { "path": "./packages/typescript/tslint-config"}
     ]
 }

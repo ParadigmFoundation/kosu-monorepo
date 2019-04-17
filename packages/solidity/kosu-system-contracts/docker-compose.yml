@@ -1,0 +1,7 @@
+version: '3'
+services:
+  ganache:
+    build:
+      context: ./ganache-docker
+    ports:
+      - 8545:8545

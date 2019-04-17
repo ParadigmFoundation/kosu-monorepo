@@ -1,0 +1,14 @@
+{
+  "name": "@kosu/subcontract-sdk",
+  "version": "0.1.0",
+  "description": "Kosu SubContract building utilities",
+  "scripts": {
+    "build": "truffle compile"
+  },
+  "dependencies": {
+    "openzeppelin-solidity": "2.1.2"
+  },
+  "devDependencies": {
+    "truffle": "5.0.12"
+  }
+}

@@ -1,8 +1,22 @@
 {
-  "name": "kosu-monorepo",
+  "name": "@kosu/monorepo",
   "private": true,
   "description": "Monorepo for the Kosu protocol. Includes network client, contracts, and supporting libraries/tooling.",
   "repository": "https://github.com/ParadigmFoundation/kosu-monorepo",
   "author": "Henry Harder",
-  "license": "CC0-1.0"
+  "license": "CC0-1.0",
+  "scripts": {
+    "clean": "lerna clean -y",
+    "build": "wsrun --exclude-missing build",
+    "test": "wsrun --exclude-missing test",
+    "postinstall": "lerna link"
+  },
+  "workspaces": [
+    "packages/typescript/*",
+    "packages/solidity/*"
+  ],
+  "dependencies": {
+    "lerna": "^3.13.3",
+    "wsrun": "^3.6.4"
+  }
 }

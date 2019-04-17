@@ -1,0 +1,9 @@
+{
+  "packages": [
+    "packages/typescript/*",
+    "packages/solidity/*"
+  ],
+  "version": "independent",
+  "npmClient": "yarn",
+  "useWorkspaces": true
+}
