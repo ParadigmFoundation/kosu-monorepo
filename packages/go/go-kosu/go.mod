@@ -1,4 +1,4 @@
-module go-kuso
+module go-kosu
 
 go 1.12
 

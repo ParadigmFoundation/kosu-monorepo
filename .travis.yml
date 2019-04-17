@@ -18,7 +18,23 @@ matrix:
       go:
         - "1.11"
         - "1.12"
+      cache:
+        directories:
+          - $GOCACHE
+          - $GOPATH/pkg/mod
+      env:
+        global:
+          - GOCACHE=$HOME/.go-build
+          - GO111MODULE=on
+          - TENDERMINT_RELEASE=0.31.1
+          - GOLINTCI_RELEASE=1.16.0
+          - ETHEREUM_TEST_ADDRESS=wss://ropsten.infura.io/ws
       before_script:
-        - cd packages/go/go-test
+        - cd packages/go
       script:
-        - go test -v ./...
+        # test script for go-test package
+        - go test -v ./go-test/...
+
+        # test script for go-kosu
+        - make -f ./go-kosu/Makefile
+
