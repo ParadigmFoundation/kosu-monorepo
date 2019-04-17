@@ -28,6 +28,14 @@ matrix:
           - TENDERMINT_RELEASE=0.31.1
           - GOLINTCI_RELEASE=1.16.0
           - ETHEREUM_TEST_ADDRESS=wss://ropsten.infura.io/ws
+      install:
+        # Install Tendermint
+        - wget https://github.com/tendermint/tendermint/releases/download/v${TENDERMINT_RELEASE}/tendermint_${TENDERMINT_RELEASE}_linux_amd64.zip
+        - unzip tendermint_${TENDERMINT_RELEASE}_linux_amd64.zip
+        - install tendermint /home/travis/bin
+
+        # Install golintci
+        - curl -sfL https://install.goreleaser.com/github.com/golangci/golangci-lint.sh | sh -s -- -b $(go env GOPATH)/bin v${GOLINTCI_RELEASE}
       before_script:
         - cd packages/go
       script:
