@@ -1,0 +1,47 @@
+version: '3'
+
+services:
+  node0:
+    container_name: node0
+    build: .
+    environment:
+      - PARADIGM_HOME=/go-kuso/testnet/node0
+    networks:
+      localnet:
+        ipv4_address: 192.167.10.2
+
+  node1:
+    container_name: node1
+    build: .
+    environment:
+      - PARADIGM_HOME=/go-kuso/testnet/node1
+    networks:
+      localnet:
+        ipv4_address: 192.167.10.3
+
+  node2:
+    container_name: node2
+    build: .
+    environment:
+      - PARADIGM_HOME=/go-kuso/testnet/node2
+    networks:
+      localnet:
+        ipv4_address: 192.167.10.4
+
+  node3:
+    container_name: node3
+    build: .
+    environment:
+      - PARADIGM_HOME=/go-kuso/testnet/node3
+    networks:
+      localnet:
+        ipv4_address: 192.167.10.5
+
+networks:
+  localnet:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+      -
+        subnet: 192.167.10.0/16
