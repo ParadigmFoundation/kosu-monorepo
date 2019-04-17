@@ -11,8 +11,8 @@ import (
 	"github.com/stretchr/testify/require"
 	"github.com/tendermint/tendermint/libs/db"
 
-	"go-kuso/abci"
-	"go-kuso/store"
+	"go-kosu/abci"
+	"go-kosu/store"
 )
 
 // GivenABCIServer a ABCI Server inside a Convey block

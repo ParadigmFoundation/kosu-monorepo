@@ -5,7 +5,7 @@ services:
     container_name: node0
     build: .
     environment:
-      - PARADIGM_HOME=/go-kuso/testnet/node0
+      - PARADIGM_HOME=/go-kosu/testnet/node0
     networks:
       localnet:
         ipv4_address: 192.167.10.2
@@ -14,7 +14,7 @@ services:
     container_name: node1
     build: .
     environment:
-      - PARADIGM_HOME=/go-kuso/testnet/node1
+      - PARADIGM_HOME=/go-kosu/testnet/node1
     networks:
       localnet:
         ipv4_address: 192.167.10.3
@@ -23,7 +23,7 @@ services:
     container_name: node2
     build: .
     environment:
-      - PARADIGM_HOME=/go-kuso/testnet/node2
+      - PARADIGM_HOME=/go-kosu/testnet/node2
     networks:
       localnet:
         ipv4_address: 192.167.10.4
@@ -32,7 +32,7 @@ services:
     container_name: node3
     build: .
     environment:
-      - PARADIGM_HOME=/go-kuso/testnet/node3
+      - PARADIGM_HOME=/go-kosu/testnet/node3
     networks:
       localnet:
         ipv4_address: 192.167.10.5

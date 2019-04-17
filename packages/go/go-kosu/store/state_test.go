@@ -1,7 +1,7 @@
 package store
 
 import (
-	"go-kuso/abci/types"
+	"go-kosu/abci/types"
 	"testing"
 
 	"github.com/stretchr/testify/assert"

@@ -1,9 +1,9 @@
 package tests
 
 import (
-	"go-kuso/abci"
-	"go-kuso/abci/types"
-	"go-kuso/store"
+	"go-kosu/abci"
+	"go-kosu/abci/types"
+	"go-kosu/store"
 
 	"github.com/stretchr/testify/suite"
 )

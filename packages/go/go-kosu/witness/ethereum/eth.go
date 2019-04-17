@@ -11,7 +11,7 @@ import (
 	"github.com/ethereum/go-ethereum/core/types"
 	"github.com/ethereum/go-ethereum/ethclient"
 
-	"go-kuso/witness"
+	"go-kosu/witness"
 )
 
 const (

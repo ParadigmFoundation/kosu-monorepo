@@ -9,8 +9,8 @@ import (
 	"github.com/tendermint/tendermint/libs/common"
 	"github.com/tendermint/tendermint/libs/db"
 
-	"go-kuso/abci/types"
-	"go-kuso/store"
+	"go-kosu/abci/types"
+	"go-kosu/store"
 )
 
 func TestDeliverRebalanceTx(t *testing.T) {

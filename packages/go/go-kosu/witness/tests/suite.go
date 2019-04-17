@@ -4,7 +4,7 @@ package tests
 import (
 	"context"
 	"math/big"
-	"go-kuso/witness"
+	"go-kosu/witness"
 	"testing"
 	"time"
 

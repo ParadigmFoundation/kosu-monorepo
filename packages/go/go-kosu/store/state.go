@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"log"
 	"math/big"
-	"go-kuso/abci/types"
+	"go-kosu/abci/types"
 	"sync"
 	"sync/atomic"
 )

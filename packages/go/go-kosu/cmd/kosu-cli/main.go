@@ -7,9 +7,9 @@ import (
 
 	"github.com/spf13/cobra"
 
-	"go-kuso/abci"
-	"go-kuso/abci/cli"
-	"go-kuso/abci/types"
+	"go-kosu/abci"
+	"go-kosu/abci/cli"
+	"go-kosu/abci/types"
 )
 
 func main() {

@@ -6,7 +6,7 @@ import (
 
 	"github.com/stretchr/testify/suite"
 
-	"go-kuso/witness/tests"
+	"go-kosu/witness/tests"
 )
 
 func TestEthereum(t *testing.T) {

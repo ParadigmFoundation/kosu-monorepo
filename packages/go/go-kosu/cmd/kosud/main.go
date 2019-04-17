@@ -3,8 +3,8 @@ package main
 import (
 	"log"
 	"os"
-	"go-kuso/abci"
-	"go-kuso/store"
+	"go-kosu/abci"
+	"go-kosu/store"
 
 	"github.com/tendermint/tendermint/libs/db"
 )

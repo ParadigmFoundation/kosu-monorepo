@@ -1,7 +1,7 @@
 package abci
 
 import (
-	"go-kuso/abci/types"
+	"go-kosu/abci/types"
 
 	abci "github.com/tendermint/tendermint/abci/types"
 )

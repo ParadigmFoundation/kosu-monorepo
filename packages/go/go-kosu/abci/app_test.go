@@ -1,8 +1,8 @@
 package abci
 
 import (
-	"go-kuso/abci/types"
-	"go-kuso/store"
+	"go-kosu/abci/types"
+	"go-kosu/store"
 	"testing"
 
 	"github.com/stretchr/testify/assert"

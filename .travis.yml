@@ -16,7 +16,6 @@ matrix:
     - stage: go tests
       language: go
       go:
-        - "1.11"
         - "1.12"
       cache:
         directories:
@@ -36,5 +35,5 @@ matrix:
         - go test -v ./go-test/...
 
         # test script for go-kosu
-        - make -f ./go-kosu/Makefile
+        - make -f ./go-kosu/Makefile ci
 
