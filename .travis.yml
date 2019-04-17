@@ -8,7 +8,6 @@ matrix:
     - stage: node tests
       language: node_js
       node_js:
-        - "8"
         - "10"
         - "11"
       before_script:
