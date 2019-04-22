@@ -1,0 +1,1042 @@
+{
+  "contractName": "IPosterRegistry",
+  "abi": [
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "tokensContributed",
+      "outputs": [
+        {
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "token",
+      "outputs": [
+        {
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "treasury",
+      "outputs": [
+        {
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [
+        {
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "name": "tokensRegisteredFor",
+      "outputs": [
+        {
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "",
+          "type": "address"
+        },
+        {
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "name": "registerTokens",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "",
+          "type": "address"
+        },
+        {
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "name": "releaseTokens",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    }
+  ],
+  "metadata": "",
+  "bytecode": "0x",
+  "deployedBytecode": "0x",
+  "sourceMap": "",
+  "deployedSourceMap": "",
+  "source": "pragma solidity ^0.5.0;\n\n/** @title IPosterRegistry\n    @author Freydal\n    @dev Defines methods for PosterRegistry to implement and to be accessed though the proxy.\n*/\ninterface IPosterRegistry {\n    /** @dev Interface method */\n    function tokensContributed() external view returns (uint);\n    /** @dev Interface method */\n    function token() external view returns (address);\n    /** @dev Interface method */\n    function treasury() external view returns (address);\n    /** @dev Interface method */\n    function tokensRegisteredFor(address) external view returns (uint);\n    /** @dev Interface method */\n    function registerTokens(address, uint) external;\n    /** @dev Interface method */\n    function releaseTokens(address, uint) external;\n}\n",
+  "sourcePath": "/Users/freydal/IdeaProjects/kosu-monorepo/packages/solidity/kosu-system-contracts/contracts/poster/IPosterRegistry.sol",
+  "ast": {
+    "absolutePath": "/Users/freydal/IdeaProjects/kosu-monorepo/packages/solidity/kosu-system-contracts/contracts/poster/IPosterRegistry.sol",
+    "exportedSymbols": {
+      "IPosterRegistry": [
+        818
+      ]
+    },
+    "id": 819,
+    "nodeType": "SourceUnit",
+    "nodes": [
+      {
+        "id": 781,
+        "literals": [
+          "solidity",
+          "^",
+          "0.5",
+          ".0"
+        ],
+        "nodeType": "PragmaDirective",
+        "src": "0:23:8"
+      },
+      {
+        "baseContracts": [],
+        "contractDependencies": [],
+        "contractKind": "interface",
+        "documentation": "@title IPosterRegistry\n@author Freydal\n@dev Defines methods for PosterRegistry to implement and to be accessed though the proxy.",
+        "fullyImplemented": false,
+        "id": 818,
+        "linearizedBaseContracts": [
+          818
+        ],
+        "name": "IPosterRegistry",
+        "nodeType": "ContractDefinition",
+        "nodes": [
+          {
+            "body": null,
+            "documentation": "@dev Interface method ",
+            "id": 786,
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "tokensContributed",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 782,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "260:2:8"
+            },
+            "returnParameters": {
+              "id": 785,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 784,
+                  "name": "",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 786,
+                  "src": "286:4:8",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 783,
+                    "name": "uint",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "286:4:8",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "285:6:8"
+            },
+            "scope": 818,
+            "src": "234:58:8",
+            "stateMutability": "view",
+            "superFunction": null,
+            "visibility": "external"
+          },
+          {
+            "body": null,
+            "documentation": "@dev Interface method ",
+            "id": 791,
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "token",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 787,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "344:2:8"
+            },
+            "returnParameters": {
+              "id": 790,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 789,
+                  "name": "",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 791,
+                  "src": "370:7:8",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 788,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "370:7:8",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "369:9:8"
+            },
+            "scope": 818,
+            "src": "330:49:8",
+            "stateMutability": "view",
+            "superFunction": null,
+            "visibility": "external"
+          },
+          {
+            "body": null,
+            "documentation": "@dev Interface method ",
+            "id": 796,
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "treasury",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 792,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "434:2:8"
+            },
+            "returnParameters": {
+              "id": 795,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 794,
+                  "name": "",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 796,
+                  "src": "460:7:8",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 793,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "460:7:8",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "459:9:8"
+            },
+            "scope": 818,
+            "src": "417:52:8",
+            "stateMutability": "view",
+            "superFunction": null,
+            "visibility": "external"
+          },
+          {
+            "body": null,
+            "documentation": "@dev Interface method ",
+            "id": 803,
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "tokensRegisteredFor",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 799,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 798,
+                  "name": "",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 803,
+                  "src": "536:7:8",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 797,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "536:7:8",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "535:9:8"
+            },
+            "returnParameters": {
+              "id": 802,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 801,
+                  "name": "",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 803,
+                  "src": "568:4:8",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 800,
+                    "name": "uint",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "568:4:8",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "567:6:8"
+            },
+            "scope": 818,
+            "src": "507:67:8",
+            "stateMutability": "view",
+            "superFunction": null,
+            "visibility": "external"
+          },
+          {
+            "body": null,
+            "documentation": "@dev Interface method ",
+            "id": 810,
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "registerTokens",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 808,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 805,
+                  "name": "",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 810,
+                  "src": "636:7:8",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 804,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "636:7:8",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 807,
+                  "name": "",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 810,
+                  "src": "645:4:8",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 806,
+                    "name": "uint",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "645:4:8",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "635:15:8"
+            },
+            "returnParameters": {
+              "id": 809,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "659:0:8"
+            },
+            "scope": 818,
+            "src": "612:48:8",
+            "stateMutability": "nonpayable",
+            "superFunction": null,
+            "visibility": "external"
+          },
+          {
+            "body": null,
+            "documentation": "@dev Interface method ",
+            "id": 817,
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "releaseTokens",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 815,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 812,
+                  "name": "",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 817,
+                  "src": "721:7:8",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 811,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "721:7:8",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 814,
+                  "name": "",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 817,
+                  "src": "730:4:8",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 813,
+                    "name": "uint",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "730:4:8",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "720:15:8"
+            },
+            "returnParameters": {
+              "id": 816,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "744:0:8"
+            },
+            "scope": 818,
+            "src": "698:47:8",
+            "stateMutability": "nonpayable",
+            "superFunction": null,
+            "visibility": "external"
+          }
+        ],
+        "scope": 819,
+        "src": "169:578:8"
+      }
+    ],
+    "src": "0:748:8"
+  },
+  "legacyAST": {
+    "absolutePath": "/Users/freydal/IdeaProjects/kosu-monorepo/packages/solidity/kosu-system-contracts/contracts/poster/IPosterRegistry.sol",
+    "exportedSymbols": {
+      "IPosterRegistry": [
+        818
+      ]
+    },
+    "id": 819,
+    "nodeType": "SourceUnit",
+    "nodes": [
+      {
+        "id": 781,
+        "literals": [
+          "solidity",
+          "^",
+          "0.5",
+          ".0"
+        ],
+        "nodeType": "PragmaDirective",
+        "src": "0:23:8"
+      },
+      {
+        "baseContracts": [],
+        "contractDependencies": [],
+        "contractKind": "interface",
+        "documentation": "@title IPosterRegistry\n@author Freydal\n@dev Defines methods for PosterRegistry to implement and to be accessed though the proxy.",
+        "fullyImplemented": false,
+        "id": 818,
+        "linearizedBaseContracts": [
+          818
+        ],
+        "name": "IPosterRegistry",
+        "nodeType": "ContractDefinition",
+        "nodes": [
+          {
+            "body": null,
+            "documentation": "@dev Interface method ",
+            "id": 786,
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "tokensContributed",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 782,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "260:2:8"
+            },
+            "returnParameters": {
+              "id": 785,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 784,
+                  "name": "",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 786,
+                  "src": "286:4:8",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 783,
+                    "name": "uint",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "286:4:8",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "285:6:8"
+            },
+            "scope": 818,
+            "src": "234:58:8",
+            "stateMutability": "view",
+            "superFunction": null,
+            "visibility": "external"
+          },
+          {
+            "body": null,
+            "documentation": "@dev Interface method ",
+            "id": 791,
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "token",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 787,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "344:2:8"
+            },
+            "returnParameters": {
+              "id": 790,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 789,
+                  "name": "",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 791,
+                  "src": "370:7:8",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 788,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "370:7:8",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "369:9:8"
+            },
+            "scope": 818,
+            "src": "330:49:8",
+            "stateMutability": "view",
+            "superFunction": null,
+            "visibility": "external"
+          },
+          {
+            "body": null,
+            "documentation": "@dev Interface method ",
+            "id": 796,
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "treasury",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 792,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "434:2:8"
+            },
+            "returnParameters": {
+              "id": 795,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 794,
+                  "name": "",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 796,
+                  "src": "460:7:8",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 793,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "460:7:8",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "459:9:8"
+            },
+            "scope": 818,
+            "src": "417:52:8",
+            "stateMutability": "view",
+            "superFunction": null,
+            "visibility": "external"
+          },
+          {
+            "body": null,
+            "documentation": "@dev Interface method ",
+            "id": 803,
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "tokensRegisteredFor",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 799,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 798,
+                  "name": "",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 803,
+                  "src": "536:7:8",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 797,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "536:7:8",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "535:9:8"
+            },
+            "returnParameters": {
+              "id": 802,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 801,
+                  "name": "",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 803,
+                  "src": "568:4:8",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 800,
+                    "name": "uint",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "568:4:8",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "567:6:8"
+            },
+            "scope": 818,
+            "src": "507:67:8",
+            "stateMutability": "view",
+            "superFunction": null,
+            "visibility": "external"
+          },
+          {
+            "body": null,
+            "documentation": "@dev Interface method ",
+            "id": 810,
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "registerTokens",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 808,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 805,
+                  "name": "",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 810,
+                  "src": "636:7:8",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 804,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "636:7:8",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 807,
+                  "name": "",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 810,
+                  "src": "645:4:8",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 806,
+                    "name": "uint",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "645:4:8",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "635:15:8"
+            },
+            "returnParameters": {
+              "id": 809,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "659:0:8"
+            },
+            "scope": 818,
+            "src": "612:48:8",
+            "stateMutability": "nonpayable",
+            "superFunction": null,
+            "visibility": "external"
+          },
+          {
+            "body": null,
+            "documentation": "@dev Interface method ",
+            "id": 817,
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "releaseTokens",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 815,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 812,
+                  "name": "",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 817,
+                  "src": "721:7:8",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 811,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "721:7:8",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 814,
+                  "name": "",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 817,
+                  "src": "730:4:8",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 813,
+                    "name": "uint",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "730:4:8",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "720:15:8"
+            },
+            "returnParameters": {
+              "id": 816,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "744:0:8"
+            },
+            "scope": 818,
+            "src": "698:47:8",
+            "stateMutability": "nonpayable",
+            "superFunction": null,
+            "visibility": "external"
+          }
+        ],
+        "scope": 819,
+        "src": "169:578:8"
+      }
+    ],
+    "src": "0:748:8"
+  },
+  "compiler": {
+    "name": "solc",
+    "version": "0.5.0+commit.1d4f565a.Emscripten.clang"
+  },
+  "networks": {},
+  "schemaVersion": "3.0.6",
+  "updatedAt": "2019-04-22T21:07:42.488Z",
+  "devdoc": {
+    "author": "Freydal",
+    "details": "Defines methods for PosterRegistry to implement and to be accessed though the proxy.",
+    "methods": {
+      "registerTokens(address,uint256)": {
+        "details": "Interface method "
+      },
+      "releaseTokens(address,uint256)": {
+        "details": "Interface method "
+      },
+      "token()": {
+        "details": "Interface method "
+      },
+      "tokensContributed()": {
+        "details": "Interface method "
+      },
+      "tokensRegisteredFor(address)": {
+        "details": "Interface method "
+      },
+      "treasury()": {
+        "details": "Interface method "
+      }
+    },
+    "title": "IPosterRegistry"
+  },
+  "userdoc": {
+    "methods": {}
+  }
+}
