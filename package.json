@@ -8,6 +8,7 @@
   "scripts": {
     "clean": "lerna clean -y",
     "build": "wsrun --exclude-missing build",
+    "clean:install": "yarn clean && yarn",
     "test": "wsrun --exclude-missing test",
     "postinstall": "lerna link"
   },
