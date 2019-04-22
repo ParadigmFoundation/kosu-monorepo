@@ -7,8 +7,8 @@
   "license": "CC0-1.0",
   "scripts": {
     "clean": "lerna clean -y",
-    "build": "wsrun --exclude-missing build",
     "clean:install": "yarn clean && yarn",
+    "build": "wsrun --exclude-missing --stages build",
     "test": "wsrun --exclude-missing test",
     "postinstall": "lerna link"
   },
