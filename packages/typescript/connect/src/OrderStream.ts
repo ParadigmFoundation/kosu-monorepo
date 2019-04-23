@@ -10,13 +10,14 @@ class OrderStream {
     this.endpoint = endpoint;
   }
 
-  async add(order: Order) {
+  async add(order: Order): Promise<string> {
     if(order.recoverPoster().toLowerCase() === order.poster.toLowerCase()) {
       let url = `https://${this.endpoint}/post`;
 
       let response = await fetch(url, {
         method: 'POST',
         body: JSON.stringify(order),
+        timeout: 300,
         headers: {
           'Content-Type': 'application/json'
         }
