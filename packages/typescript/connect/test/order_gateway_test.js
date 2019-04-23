@@ -15,8 +15,8 @@ describe('OrderGateway', () => {
     let makerArguments = await orderGateway.makerArguments(subContract);
     let takerArguments = await orderGateway.takerArguments(subContract);
 
-    tka.approve(subContract, MAX_UINT,  maker);
-    tkb.approve(subContract, MAX_UINT, taker );
+    await tka.approve(subContract, MAX_UINT,  maker);
+    await tkb.approve(subContract, MAX_UINT, taker );
 
     let makerValues = {
       signer: maker,
