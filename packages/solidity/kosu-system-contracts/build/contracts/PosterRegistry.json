@@ -6102,10 +6102,16 @@
       "links": {},
       "address": "0x145c23eD29888Fe07c74C9fa83e0d8F14261352F",
       "transactionHash": "0x9e6de8a3e6baf81c6cafd8d0f10dd90023168b1496b460354c8adb287a64dcd4"
+    },
+    "6174": {
+      "events": {},
+      "links": {},
+      "address": "0x5504a44bEd339ea18fE4898161Ae1d63e6F9c758",
+      "transactionHash": "0x581a45c801b3f049e36255113586ba3483772b105e3b1ef5ef8abf55af07aa10"
     }
   },
   "schemaVersion": "3.0.6",
-  "updatedAt": "2019-04-22T21:54:19.433Z",
+  "updatedAt": "2019-04-23T14:35:53.436Z",
   "devdoc": {
     "author": "Freydal",
     "methods": {

@@ -13020,10 +13020,16 @@
       "links": {},
       "address": "0x73fa96B475A861B4cb5dde4c93eC59d929Afc9D3",
       "transactionHash": "0x1c09f9826589c4f155b8c341bdbe4934ec64065b8bf275acab6ddda956d11f76"
+    },
+    "6174": {
+      "events": {},
+      "links": {},
+      "address": "0x104e20fc94A38016715553DCED247f57c92802DE",
+      "transactionHash": "0x24c251cc5d81203866b59d9026ab107a4d31ce2cb2460e90f44a38abe595a0d4"
     }
   },
   "schemaVersion": "3.0.6",
-  "updatedAt": "2019-04-22T21:57:11.374Z",
+  "updatedAt": "2019-04-23T14:35:54.353Z",
   "devdoc": {
     "author": "Freydal",
     "methods": {

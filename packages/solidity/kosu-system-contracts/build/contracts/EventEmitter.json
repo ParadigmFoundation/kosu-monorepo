@@ -936,10 +936,16 @@
       "links": {},
       "address": "0x27c1520eB234c9Be2E97BFc63b50549b6a20a07A",
       "transactionHash": "0x9333739a802a9503b44777e1641c0e687f0e6ed700ff6ed45de51999c6c79f90"
+    },
+    "6174": {
+      "events": {},
+      "links": {},
+      "address": "0x7E6534b8205713246e91A14b462D2DBcAC3eDe17",
+      "transactionHash": "0x41084078ff32d60e857ad128bfafaac0f997d382ab3fc19246a6e82ae11ec702"
     }
   },
   "schemaVersion": "3.0.6",
-  "updatedAt": "2019-04-22T21:57:11.357Z",
+  "updatedAt": "2019-04-23T14:35:54.324Z",
   "devdoc": {
     "author": "Freydal",
     "methods": {

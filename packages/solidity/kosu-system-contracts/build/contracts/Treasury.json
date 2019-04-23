@@ -14087,10 +14087,16 @@
       "links": {},
       "address": "0x49420D1149Def041E49Af2103Fbe646d985ba19D",
       "transactionHash": "0x73bca7be438c3c55283527e4c9ac8a2671f7c12cfa11455e475498343ce7fc88"
+    },
+    "6174": {
+      "events": {},
+      "links": {},
+      "address": "0x7946A5B338c6cBe5ea98B84FA6e77c90d32b7111",
+      "transactionHash": "0xaac333e3ed11edab50ae974d8905a0bd690d23ac801b42c8b2ea5fc1b6d218e7"
     }
   },
   "schemaVersion": "3.0.6",
-  "updatedAt": "2019-04-22T21:57:11.387Z",
+  "updatedAt": "2019-04-23T14:35:54.362Z",
   "devdoc": {
     "author": "Freydal",
     "methods": {

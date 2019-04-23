@@ -2085,10 +2085,63 @@
       "links": {},
       "address": "0xAfDE87Be6759585ec3b8DBb1332180EB70386692",
       "transactionHash": "0xcd4bdc72b90e5cb7a2b038fb7e91a4d853597b1eb6268258eba3dfe21afbdaa1"
+    },
+    "6174": {
+      "events": {
+        "0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": true,
+              "name": "from",
+              "type": "address"
+            },
+            {
+              "indexed": true,
+              "name": "to",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "name": "value",
+              "type": "uint256"
+            }
+          ],
+          "name": "Transfer",
+          "type": "event",
+          "signature": "0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef"
+        },
+        "0x8c5be1e5ebec7d5bd14f71427d1e84f3dd0314c0f7b2291e5b200ac8c7c3b925": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": true,
+              "name": "owner",
+              "type": "address"
+            },
+            {
+              "indexed": true,
+              "name": "spender",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "name": "value",
+              "type": "uint256"
+            }
+          ],
+          "name": "Approval",
+          "type": "event",
+          "signature": "0x8c5be1e5ebec7d5bd14f71427d1e84f3dd0314c0f7b2291e5b200ac8c7c3b925"
+        }
+      },
+      "links": {},
+      "address": "0x0265E7d1B094787Cb13174E18a1CEfc41279A6c9",
+      "transactionHash": "0xed6985aea32641d89d2a073a7b862c031ba06eedcc993d6d64a9a9ebaac4e7eb"
     }
   },
   "schemaVersion": "3.0.6",
-  "updatedAt": "2019-04-22T21:51:14.533Z",
+  "updatedAt": "2019-04-23T14:35:52.139Z",
   "devdoc": {
     "author": "Freydal",
     "methods": {

@@ -2751,10 +2751,16 @@
       "links": {},
       "address": "0x7C9ec8ff7cE3C63829FAc78af3C0fDfF36784C51",
       "transactionHash": "0xefe12136ccdd272f713a25bb25b752769123777adfee29318c01234451badc6b"
+    },
+    "6174": {
+      "events": {},
+      "links": {},
+      "address": "0xe5DEd1997dAB5548467Ab390EaEa97764962a8bf",
+      "transactionHash": "0xc6134e72e23f3ad85629a0943ff0149bb7736e5feb051d96f5cd6ef69f649d2a"
     }
   },
   "schemaVersion": "3.0.6",
-  "updatedAt": "2019-04-22T21:54:19.430Z",
+  "updatedAt": "2019-04-23T14:35:53.433Z",
   "devdoc": {
     "author": "Freydal",
     "methods": {

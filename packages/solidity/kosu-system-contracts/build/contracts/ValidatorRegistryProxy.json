@@ -7190,10 +7190,16 @@
       "links": {},
       "address": "0xA4E9348e39a62F7dd9Bd3852bCDC5552D57FE4E5",
       "transactionHash": "0xc402f98a6a406033ea87b74ee5af016c2cd66ac7e503aaab2fb171fae345bfc9"
+    },
+    "6174": {
+      "events": {},
+      "links": {},
+      "address": "0x73C0988a0ea1A028c7eF620bdAFeD034Eb9EFA17",
+      "transactionHash": "0x4a8e992dbfc971267bf65ddbc12ec866c7b5e8201a847534de90e92ffe45a809"
     }
   },
   "schemaVersion": "3.0.6",
-  "updatedAt": "2019-04-22T21:57:11.365Z",
+  "updatedAt": "2019-04-23T14:35:54.340Z",
   "devdoc": {
     "author": "Freydal",
     "methods": {

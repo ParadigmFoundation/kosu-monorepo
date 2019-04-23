@@ -1907,10 +1907,16 @@
       "links": {},
       "address": "0x3a62391C655b5755401745C1b522Fb01190edaA4",
       "transactionHash": "0x6a6e6c845cef11ca4b11a4c851f30c5b8fb40b4e790c363a1bef9237f8cb28be"
+    },
+    "6174": {
+      "events": {},
+      "links": {},
+      "address": "0x46572f9082dd2429c2c138FA9483a67d4F29D423",
+      "transactionHash": "0x1deb6e50b578f9b9a399bdd5d3f41db08364fe45aaf0a1178f1cdf8dc8658586"
     }
   },
   "schemaVersion": "3.0.6",
-  "updatedAt": "2019-04-22T21:57:11.360Z",
+  "updatedAt": "2019-04-23T14:35:54.326Z",
   "devdoc": {
     "author": "Freydal",
     "methods": {

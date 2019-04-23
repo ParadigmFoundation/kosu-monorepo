@@ -45141,10 +45141,16 @@
       "links": {},
       "address": "0x1bF65C428e7B0297952D5afFb21BA783EC553977",
       "transactionHash": "0x1b0800baf683e4e8890bb51f34c59b6c994654c44e2f89647322a12825747cba"
+    },
+    "6174": {
+      "events": {},
+      "links": {},
+      "address": "0xb6C14ae850Ffc04931AA395458Fe0c24594fDfaF",
+      "transactionHash": "0x7675aaf07f467cbeb98fbb1c9c1bfbe6e4dd4cf6426390227f33156821802f14"
     }
   },
   "schemaVersion": "3.0.6",
-  "updatedAt": "2019-04-22T21:57:11.413Z",
+  "updatedAt": "2019-04-23T14:35:54.384Z",
   "devdoc": {
     "author": "Freydal",
     "methods": {
