@@ -23,22 +23,22 @@ function wrap(contract) {
       return methods.allowance(owner, spender).call();
     },
     approve: async function approve(spender, value, from = null) {
-      if (from === null) from = await getCoinbase();
-      var tx = methods.approve(spender, value);
+      if (from === null) from = await web3.eth.getCoinbase();
+      const tx = methods.approve(spender, value);
       return tx.send({ from: from });
     },
     transferFrom: async function transferFrom(fromAddress, to, value, from = null) {
-      if (from === null) from = await getCoinbase();
-      var tx = methods.transferFrom(fromAddress, to, value);
+      if (from === null) from = await web3.eth.getCoinbase();
+      const tx = methods.transferFrom(fromAddress, to, value);
       return tx.send({ from: from });
     },
     transfer: async function transfer(to, value, from = null) {
-      if (from === null) from = await getCoinbase();
-      var tx = methods.transfer(to, value);
+      if (from === null) from = await web3.eth.getCoinbase();
+      const tx = methods.transfer(to, value);
       return tx.send({ from: from });
     }
   }
-};
+}
 
 module.exports = async () => {
   const TokenContract = new web3.eth.Contract(TokenContractInfo.abi);
