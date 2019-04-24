@@ -3,7 +3,10 @@
 yarn testRpc &
 RPC_PID=$!
 
-SLEEP 5
+while ! nc -z localhost 8545; do
+  sleep 0.1
+done
+
 
 mocha -r ts-node/register
 SUCCESS=$?
