@@ -6,7 +6,7 @@
   "scripts": {
     "testX": "mocha -r ts-node/register",
     "build": "tsc",
-    "testRpc": "npm explore @kosu/system-contracts -- docker-compose up"
+    "testRpc": "npm explore @kosu/system-contracts -- yarn testRpc"
   },
   "author": "",
   "license": "ISC",
