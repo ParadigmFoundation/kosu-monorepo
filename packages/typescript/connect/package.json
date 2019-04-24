@@ -4,7 +4,7 @@
   "description": "JavaScript module for connecting with Kosu.",
   "main": "src/index.ts",
   "scripts": {
-    "testX": "mocha -r ts-node/register",
+    "test": "bin/test.sh",
     "build": "tsc",
     "testRpc": "npm explore @kosu/system-contracts -- yarn testRpc"
   },
