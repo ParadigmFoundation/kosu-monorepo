@@ -85,8 +85,6 @@ describe('Order', () => {
         tokensToBuy: 100
       };
 
-      (await order.estimateGasCost(taker, takerValues)).should.be.lt(155000);
-
       await order.take(taker, takerValues);
 
 
