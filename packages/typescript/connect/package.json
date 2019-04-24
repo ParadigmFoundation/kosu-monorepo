@@ -29,7 +29,6 @@
     "chai": "^4.2.0",
     "chai-as-promised": "^7.1.1",
     "mocha": "^6.1.4",
-    "simple-erc20": "^1.0.6",
     "simple-mock": "^0.8.0",
     "ts-node": "^8.1.0",
     "tslint": "^5.16.0",
