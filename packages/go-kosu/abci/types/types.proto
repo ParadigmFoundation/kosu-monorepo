@@ -1,0 +1,62 @@
+syntax = "proto3";
+package types;
+
+message BigInt {
+  bytes value = 1;
+}
+
+message RoundInfo {
+  uint64 number = 1;
+  uint64 starts_at = 2;
+  uint64 ends_at = 3;
+  uint64 limit = 4;
+}
+
+message Poster {
+  BigInt balance = 1; // TODO: bignum
+  uint64 orderLimit = 2;
+  uint64 streamLimit = 3;
+}
+
+message RateLimit {
+  string address = 1;
+  uint64 limit = 2;
+}
+
+// Transactions
+message SignedTransaction {
+  Proof proof = 1;
+  Transaction tx = 2;
+}
+
+message Proof {
+  bytes public_key = 1;
+  bytes signature = 2;
+}
+
+message Transaction {
+  oneof data {
+    TransactionRebalance rebalance = 1;
+    TransactionWitness witness = 2;
+  }
+}
+
+message TransactionRebalance {
+  repeated RateLimit limits = 1;
+  RoundInfo round_info = 2;
+}
+
+message TransactionWitness {
+  enum Subject {
+    POSTER = 0;
+    VALIDATOR = 1;
+  }
+  Subject subject = 1;
+
+  BigInt amount = 2;
+  uint64 block = 3; // block number of event
+  string address = 4; // ethereum address of validator/poster
+  bytes public_key = 5  ; // tendermint ed25519 key of validator (base64 enc )
+  bytes id = 6; // hash of event data
+}
+
