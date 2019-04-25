@@ -2,7 +2,6 @@ import ValidatorRegistry from "./ValidatorRegistry";
 import PosterRegistry from "./PosterRegistry";
 import OrderStream from "./OrderStream";
 import OrderGateway from "./OrderGateway";
-import {version} from "../package.json";
 import Signature from "./Signature";
 import KosuToken from "./KosuToken";
 import {KosuOptions} from "./types";
@@ -10,7 +9,7 @@ import Treasury from "./Treasury";
 import Voting from "./Voting";
 import Order from "./Order";
 import utils from "./utils";
-import * as Web3 from "web3";
+import Web3 from "web3";
 
 class KosuConnect {
     private readonly web3: Web3;
@@ -56,7 +55,7 @@ class KosuConnect {
     }
 }
 
-KosuConnect.version = version;
+KosuConnect.version = process.env.npm_package_version || require("../package.json").version;
 
 export default KosuConnect;
 // module.exports = KosuConnect;

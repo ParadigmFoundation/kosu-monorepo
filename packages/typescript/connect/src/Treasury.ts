@@ -1,5 +1,5 @@
 import { contracts } from "@kosu/system-contracts";
-import * as TruffleContract from "truffle-contract";
+import TruffleContract from "truffle-contract";
 import { KosuOptions } from "./types";
 import KosuToken from './KosuToken';
 import * as Web3 from "web3";
