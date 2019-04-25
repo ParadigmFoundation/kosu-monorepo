@@ -17,8 +17,13 @@
     "postinstall": "lerna link"
   },
   "workspaces": [
-    "packages/typescript/*",
-    "packages/solidity/*"
+    "packages/kosu.js",
+    "packages/go-test",
+    "packages/kosu-sdk-contracts",
+    "packages/kosu-system-contracts",
+    "packages/ts-test",
+    "packages/tsc-config",
+    "packages/tslint-config"
   ],
   "dependencies": {
     "lerna": "^3.13.3",
