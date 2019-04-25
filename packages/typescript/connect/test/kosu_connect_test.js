@@ -1,4 +1,4 @@
-const KosuConnect = require('../dist').default;
+const KosuConnect = require('../src').default;
 
 describe('KosuConnect', () => {
   describe('constructor()', () => {
