@@ -1,4 +1,4 @@
-const OrderGateway = require('../src/OrderGateway').default;
+const OrderGateway = require('../dist/OrderGateway').default;
 const OrderGatewayContract = require('@kosu/system-contracts').contracts.OrderGateway;
 
 

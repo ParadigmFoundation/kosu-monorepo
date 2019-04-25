@@ -1,7 +1,7 @@
 const Web3 = require('web3');
 const chai = require('chai');
 const CAP = require('chai-as-promised');
-const Connect = require('../src').default;
+const Connect = require('../dist').default;
 
 const tokenHelper = require('./helpers/tokenHelper.js');
 const kosuContractHelper = require('./helpers/kosuContractHelper');

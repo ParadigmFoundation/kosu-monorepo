@@ -5,6 +5,7 @@ import Signature from "./Signature";
 import {KosuOrder} from "./types";
 import * as Web3 from 'web3';
 import utils from "./utils";
+import BN from "bn.js"
 
 class Order {
   private readonly subContract: string;
@@ -49,7 +50,7 @@ class Order {
     return await Order.orderGateway.isValid(this.subContract, makerValuesBytes);
   }
 
-  async amountRemaining() {
+  async amountRemaining(): Promise<BN> {
     await this._checkArguments();
     const makerValuesBytes = this._serialize(this.makerArguments, this.makerValues);
     return await Order.orderGateway.amountRemaining(this.subContract, makerValuesBytes);

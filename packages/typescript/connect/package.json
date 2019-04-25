@@ -2,7 +2,7 @@
   "name": "@kosu/connect",
   "version": "0.1.0",
   "description": "JavaScript module for connecting with Kosu.",
-  "main": "src/index.ts",
+  "main": "dist/index.js",
   "scripts": {
     "test": "bin/test.sh",
     "build": "tsc",

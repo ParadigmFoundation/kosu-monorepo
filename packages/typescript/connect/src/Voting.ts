@@ -1,7 +1,7 @@
 import * as Web3 from "web3";
 import Treasury from "./Treasury";
 import { KosuOptions } from "./types";
-import * as TruffleContract from "truffle-contract";
+import TruffleContract from "truffle-contract";
 import { contracts } from "@kosu/system-contracts";
 
 import BN = require("bn.js");
