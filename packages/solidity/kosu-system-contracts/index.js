@@ -1,5 +1,5 @@
 const Utils = require('web3-utils');
-const Decoder = require('web3-eth-abi').AbiCoder();
+const Decoder = require('web3-eth-abi');
 
 const bytes32ToAddressString = (val) => {
   return `0x${val.substr(26)}`;

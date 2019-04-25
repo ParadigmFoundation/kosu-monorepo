@@ -24,6 +24,6 @@
 
     "include": [],
     "references": [
-        { "path": "./packagess/tslint-config" },
+        { "path": "../tslint-config/tslint.json" },
     ]
 }

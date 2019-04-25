@@ -1,23 +1,15 @@
 {
     "compilerOptions": {
         "module": "commonjs",
-        "target": "es5",
-        "lib": ["es2017", "dom"],
-        "experimentalDecorators": true,
+        "target": "es2015",
         "downlevelIteration": true,
         "noImplicitReturns": true,
         "pretty": true,
         "skipLibCheck": true,
-        "typeRoots": ["node_modules/@paradigm/typescript-typings/types", "node_modules/@types"],
-        "strict": true,
-
-        "composite": true,
-        "declaration": true,
-        "declarationMap": true,
-        "sourceMap": true
+        "esModuleInterop": true,
+        "typeRoots": ["node_modules/@types"],
     },
-    "include": [],
     "references": [
-        { "path": "./packages/typescript/tslint-config"}
+        { "path": "./packages/typescript/tsc-config/tsconfig.json"}
     ]
 }
