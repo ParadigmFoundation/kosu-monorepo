@@ -17,8 +17,8 @@ jobs:
     - stage: build_and_test
       name: Go
       go:
-        - "1.11"
         - "1.12"
+        - "tip"
       env:
         global:
           GO111MODULE=on
@@ -26,6 +26,7 @@ jobs:
       cache:
         directories:
           - $GOCACHE
+
       before_script:
         - cd packages/go/go-test
       script:
