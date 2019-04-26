@@ -5,6 +5,7 @@ steps:
   - name: node-tests
     image: node:lts
     commands:
+    - apk add --update --no-cache netcat-openbsd
     - yarn global add typescript
     - yarn
     - yarn build
