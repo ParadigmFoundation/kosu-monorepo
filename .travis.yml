@@ -22,13 +22,16 @@ jobs:
       env:
         global:
           GO111MODULE=on
-          GOCACHE=$HOME/.go-build
       cache:
         directories:
           - $GOCACHE
 
       before_script:
         - cd packages/go/go-test
+        - go version
+        - go env
+        - go mod download
+        - go mod verify
       script:
         - go test -v ./...
 
