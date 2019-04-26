@@ -1,7 +1,7 @@
 FROM node
 
 RUN npm i -g npm npx ganache-cli
-RUN mkdir ./ganache-db
+COPY ganache-db ./ganache-db
 
 ENV DOCKER true
 EXPOSE 8545
