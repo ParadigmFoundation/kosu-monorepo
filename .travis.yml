@@ -19,6 +19,13 @@ jobs:
       go:
         - "1.11"
         - "1.12"
+      env:
+        global:
+          GO111MODULE=on
+          GOCACHE=$HOME/.go-build
+      cache:
+        directories:
+          - $GOCACHE
       before_script:
         - cd packages/go/go-test
       script:
