@@ -3,11 +3,8 @@ name: default
 
 steps:
   - name: node-tests
-    image: node:lts
+    image: gcr.io/kosu-io/node
     commands:
-    - apt-get update
-    - apt-get install -y netcat
-    - yarn global add typescript
     - yarn
     - yarn build
     - yarn test
