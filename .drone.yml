@@ -1,0 +1,10 @@
+kind: pipeline
+name: default
+
+steps:
+  - name: node-tests
+    image: node:lts
+    commands:
+    - yarn global add typescript
+    - yarn build
+    - yarn test
