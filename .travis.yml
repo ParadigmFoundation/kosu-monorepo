@@ -3,6 +3,7 @@ language: generic
 jobs:
   include:
     - stage: build_and_test
+      language: node_js
       name: NodeJS
       node_js:
         - "8"
@@ -15,6 +16,7 @@ jobs:
         - yarn test
 
     - stage: build_and_test
+      language: go
       name: Go
       go: 1.12
       env:
