@@ -16,9 +16,7 @@ jobs:
 
     - stage: build_and_test
       name: Go
-      go:
-        - "1.12"
-        - "tip"
+      go: 1.12
       env:
         global:
           GO111MODULE=on
