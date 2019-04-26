@@ -1,8 +1,9 @@
-matrix:
-  include:
+language: generic
 
-    - stage: node tests
-      language: node_js
+jobs:
+  include:
+    - stage: build_and_test
+      name: NodeJS
       node_js:
         - "8"
         - "10"
@@ -13,8 +14,8 @@ matrix:
         - yarn build
         - yarn test
 
-    - stage: go tests
-      language: go
+    - stage: build_and_test
+      name: Go
       go:
         - "1.11"
         - "1.12"
@@ -22,3 +23,8 @@ matrix:
         - cd packages/go/go-test
       script:
         - go test -v ./...
+
+stages:
+  - build_and_test
+  - name: release
+    if: tag IS present
