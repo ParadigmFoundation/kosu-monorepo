@@ -26,11 +26,11 @@ jobs:
 
       before_script:
         - cd packages/go/go-test
+      script:
         - go version
         - go env
         - go mod download
         - go mod verify
-      script:
         - go test -v ./...
 
 stages:
