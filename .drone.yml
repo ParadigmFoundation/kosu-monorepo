@@ -6,5 +6,6 @@ steps:
     image: node:lts
     commands:
     - yarn global add typescript
+    - yarn
     - yarn build
     - yarn test
