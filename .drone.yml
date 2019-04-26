@@ -5,8 +5,8 @@ steps:
   - name: node-tests
     image: node:lts
     commands:
-    - sudo apt-get update
-    - sudo apt-get install -y netcat
+    - apt-get update
+    - apt-get install -y netcat
     - yarn global add typescript
     - yarn
     - yarn build
