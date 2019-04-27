@@ -1,10 +1,19 @@
 {
   "name": "@kosu/system-contracts",
   "version": "0.1.0",
-  "description": "",
+  "description": "Kosu protocol core contracts in Solidity.",
+  "license": "CC0-1.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ParadigmFoundation/kosu-monorepo.git"
+  },
+  "bugs": {
+    "url": "https://github.com/ParadigmFoundation/kosu-monorepo/issues"
+  },
   "scripts": {
     "test": "truffle test",
     "build": "truffle compile",
+    "contracts:clean": "rm -rf build/contracts",
     "dockerDeploy": "bin/resetDocker.sh",
     "ropstenDeploy": "truffle migrate --network ropsten --reset",
     "deployAll": "npm run ropstenDeploy && npm run dockerDeploy",
@@ -14,8 +23,8 @@
     "@kosu/subcontract-sdk": "0.1.0",
     "openzeppelin-solidity": "2.1.2",
     "safe-node-require": "^1.0.0",
-    "web3-eth-abi": "^1.0.0-beta.46",
-    "web3-utils": "^1.0.0-beta.46"
+    "web3-eth-abi": "1.0.0-beta.37",
+    "web3-utils": "1.0.0-beta.37"
   },
   "devDependencies": {
     "chai": "^4.2.0",
