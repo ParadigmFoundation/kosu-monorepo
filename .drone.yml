@@ -8,6 +8,8 @@ steps:
     - yarn
     - yarn build
     - yarn test
+    when:
+      event: pull_request
 
 ---
 kind: pipeline
@@ -20,6 +22,8 @@ steps:
     - cd packages/go-kosu
     - go get
     - make ci
+    when:
+      event: pull_request
 
 # UNTESTED
 # ---
