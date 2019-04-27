@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
-
-yarn testRpc
-RPC_PID=$?
+RPC_PID=$(yarn testRpc | grep '^[0-9]*$')
 
 while ! nc -z localhost 8545; do
   sleep 0.1
@@ -12,8 +10,6 @@ sleep 2
 
 mocha -r ts-node/register
 SUCCESS=$?
-echo ${SUCESS}
 
 kill ${RPC_PID}
-
 exit ${SUCCESS}

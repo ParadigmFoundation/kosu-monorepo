@@ -13,7 +13,7 @@
     "clean": "lerna clean -y",
     "clean:install": "yarn clean && yarn",
     "build": "wsrun --exclude-missing --stages build",
-    "test": "wsrun --exclude-missing --stages test",
+    "test": "wsrun --exclude-missing test",
     "postinstall": "lerna link"
   },
   "workspaces": [
