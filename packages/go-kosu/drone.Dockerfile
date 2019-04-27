@@ -19,7 +19,7 @@ ENV ETHEREUM_TEST_ADDRESS=wss://ropsten.infura.io/ws
 # install tendermint
 RUN wget https://github.com/tendermint/tendermint/releases/download/v${TENDERMINT_RELEASE}/tendermint_${TENDERMINT_RELEASE}_linux_amd64.zip -O /tmp/tm.zip
 RUN unzip /tmp/tm.zip
-RUN install tendermint /home/travis/bin
+RUN install tendermint /usr/local/bin
 RUN rm tendermint
 
 # install golintci
