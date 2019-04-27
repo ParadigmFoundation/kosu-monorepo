@@ -1,12 +1,12 @@
-ParadigmCore
+go-kosu
 =
 
 Running
 --
 Run the server
 ```
-export PARADIGM_HOME=./my_node
-tendermint init --home=$PARADIGM_HOME
+export KOSU_HOME=./my_node
+tendermint init --home=$KOSU_HOME
 go run ./cmd/kosud/main.go
 ```
 

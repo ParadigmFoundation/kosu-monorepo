@@ -11,8 +11,8 @@ import (
 	"github.com/stretchr/testify/require"
 	"github.com/tendermint/tendermint/libs/db"
 
-	"paradigmcore/abci"
-	"paradigmcore/store"
+	"go-kosu/abci"
+	"go-kosu/store"
 )
 
 // GivenABCIServer a ABCI Server inside a Convey block
@@ -26,7 +26,7 @@ func GivenABCIServer(t *testing.T, state *store.State, fn func(t *testing.T)) {
 
 func startServer(t *testing.T, db db.DB, state *store.State) func() {
 	// Create a temp dir and initialize tendermint there
-	dir, err := ioutil.TempDir("/tmp", "/paradigmcore-go-tests_")
+	dir, err := ioutil.TempDir("/tmp", "/go-kosu-go-tests_")
 	require.NoError(t, err)
 
 	/* #nosec G204 */

@@ -4,8 +4,8 @@ import (
 	"encoding/hex"
 	"errors"
 	"fmt"
+	"go-kosu/abci/types"
 	"math/big"
-	"paradigmcore/abci/types"
 	"sync"
 	"sync/atomic"
 )

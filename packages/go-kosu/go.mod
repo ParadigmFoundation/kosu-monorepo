@@ -1,4 +1,4 @@
-module paradigmcore
+module go-kosu
 
 go 1.12
 

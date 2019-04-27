@@ -13,8 +13,10 @@ import (
 )
 
 const (
-	// ParadigmEventEmitterAddress is the address of the EventEmitter contract
-	ParadigmEventEmitterAddress = "0xf2098FB608098A562d24CCde594A304d739cc4B7"
+	// KosuEventEmitterAddress is the address of the EventEmitter contract
+	// NOTE: the 'ParadigmEvent' has not yet been renamed to 'KosuEvent' in 
+	// 	the EventEmitter contract yet.
+	KosuEventEmitterAddress = "0xf2098FB608098A562d24CCde594A304d739cc4B7"
 )
 
 var _ Provider = &EthereumProvider{}
@@ -33,7 +35,7 @@ func NewEthereumProvider(addr string) (*EthereumProvider, error) {
 	}
 
 	events, err := NewEventEmitter(
-		common.HexToAddress(ParadigmEventEmitterAddress),
+		common.HexToAddress(KosuEventEmitterAddress),
 		client,
 	)
 	if err != nil {

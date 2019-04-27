@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"log"
 	"math/big"
-	"paradigmcore/abci"
-	"paradigmcore/abci/types"
+	"go-kosu/abci"
+	"go-kosu/abci/types"
 )
 
 // Provider describes a block provider.

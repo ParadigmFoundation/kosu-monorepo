@@ -3,8 +3,8 @@ package cli
 import (
 	"fmt"
 	"os"
-	"paradigmcore/abci"
-	"paradigmcore/abci/types"
+	"go-kosu/abci"
+	"go-kosu/abci/types"
 	"strconv"
 
 	"github.com/spf13/cobra"

@@ -1,8 +1,8 @@
 package abci
 
 import (
-	"paradigmcore/abci/types"
-	"paradigmcore/store"
+	"go-kosu/abci/types"
+	"go-kosu/store"
 	"testing"
 
 	"github.com/stretchr/testify/assert"

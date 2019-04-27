@@ -4,7 +4,7 @@ services:
   node0:
     container_name: node0
     build: .
-    command: ["/paradigmcore/kosud", "--home", "/paradigmcore/testnet/node0"]
+    command: ["/go-kosu/kosud", "--home", "/go-kosu/testnet/node0"]
     networks:
       localnet:
         ipv4_address: 192.167.10.2
@@ -12,7 +12,7 @@ services:
   node1:
     container_name: node1
     build: .
-    command: ["/paradigmcore/kosud", "--home", "/paradigmcore/testnet/node1"]
+    command: ["/go-kosu/kosud", "--home", "/go-kosu/testnet/node1"]
     networks:
       localnet:
         ipv4_address: 192.167.10.3
@@ -20,7 +20,7 @@ services:
   node2:
     container_name: node2
     build: .
-    command: ["/paradigmcore/kosud", "--home", "/paradigmcore/testnet/node2"]
+    command: ["/go-kosu/kosud", "--home", "/go-kosu/testnet/node2"]
     networks:
       localnet:
         ipv4_address: 192.167.10.4
@@ -28,7 +28,7 @@ services:
   node3:
     container_name: node3
     build: .
-    command: ["/paradigmcore/kosud", "--home", "/paradigmcore/testnet/node3"]
+    command: ["/go-kosu/kosud", "--home", "/go-kosu/testnet/node3"]
     networks:
       localnet:
         ipv4_address: 192.167.10.5

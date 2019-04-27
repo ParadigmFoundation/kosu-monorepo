@@ -2,7 +2,7 @@ package abci
 
 import (
 	"fmt"
-	"paradigmcore/abci/types"
+	"go-kosu/abci/types"
 
 	abci "github.com/tendermint/tendermint/abci/types"
 	"github.com/tendermint/tendermint/libs/common"

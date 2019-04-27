@@ -12,12 +12,12 @@ import (
 )
 
 const (
-	commitInfoKey      = "/paradigm/commitinfo"
-	roundInfoKey       = "/paradigm/state/round_info"
-	lastEventKey       = "/paradigm/state/last_event"
-	consensusParamsKey = "/paradigm/state/consensus_params"
-	eventsKey          = "/paradigm/state/events"
-	postersKey         = "/paradigm/state/posters"
+	commitInfoKey      = "/kosu/commitinfo"
+	roundInfoKey       = "/kosu/state/round_info"
+	lastEventKey       = "/kosu/state/last_event"
+	consensusParamsKey = "/kosu/state/consensus_params"
+	eventsKey          = "/kosu/state/events"
+	postersKey         = "/kosu/state/posters"
 )
 
 // CommitInfo is the tree commit info.

@@ -1,8 +1,8 @@
 package tests
 
 import (
-	"paradigmcore/abci/types"
-	"paradigmcore/store"
+	"go-kosu/abci/types"
+	"go-kosu/store"
 	"testing"
 
 	. "github.com/smartystreets/goconvey/convey"

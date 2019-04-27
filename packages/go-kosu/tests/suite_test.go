@@ -1,9 +1,9 @@
 package tests
 
 import (
-	"paradigmcore/abci"
-	"paradigmcore/abci/types"
-	"paradigmcore/store"
+	"go-kosu/abci"
+	"go-kosu/abci/types"
+	"go-kosu/store"
 
 	"github.com/stretchr/testify/suite"
 )

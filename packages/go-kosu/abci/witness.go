@@ -2,7 +2,7 @@ package abci
 
 import (
 	"errors"
-	"paradigmcore/abci/types"
+	"go-kosu/abci/types"
 
 	abci "github.com/tendermint/tendermint/abci/types"
 )

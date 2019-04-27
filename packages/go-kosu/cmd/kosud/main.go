@@ -6,10 +6,10 @@ import (
 	"log"
 	"os"
 	"os/user"
-	"paradigmcore/abci"
-	"paradigmcore/abci/types"
-	"paradigmcore/store"
-	"paradigmcore/witness"
+	"go-kosu/abci"
+	"go-kosu/abci/types"
+	"go-kosu/store"
+	"go-kosu/witness"
 	"path/filepath"
 	"strings"
 
@@ -31,7 +31,7 @@ type Config struct {
 }
 
 func newDB(dir string, debug bool) (db.DB, error) {
-	gdb, err := db.NewGoLevelDB("paradigm", dir)
+	gdb, err := db.NewGoLevelDB("kosu", dir)
 	if err != nil {
 		return nil, err
 	}

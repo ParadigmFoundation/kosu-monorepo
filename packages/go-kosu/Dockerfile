@@ -1,6 +1,6 @@
 FROM golang:1.12
 
-WORKDIR /paradigmcore
+WORKDIR /go-kosu
 COPY . .
 RUN go build ./cmd/kosud 
 

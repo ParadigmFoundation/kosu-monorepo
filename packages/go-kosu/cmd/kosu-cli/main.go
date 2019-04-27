@@ -7,9 +7,9 @@ import (
 
 	"github.com/spf13/cobra"
 
-	"paradigmcore/abci"
-	"paradigmcore/abci/cli"
-	"paradigmcore/abci/types"
+	"go-kosu/abci"
+	"go-kosu/abci/cli"
+	"go-kosu/abci/types"
 )
 
 func main() {

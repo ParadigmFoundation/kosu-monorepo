@@ -5,7 +5,7 @@ import (
 	rpctypes "github.com/tendermint/tendermint/rpc/core/types"
 	tmtypes "github.com/tendermint/tendermint/types"
 
-	"paradigmcore/abci/types"
+	"go-kosu/abci/types"
 )
 
 // Client wraps a tendermint/rpc/client.

@@ -5,8 +5,8 @@ import (
 	"errors"
 	"fmt"
 	"log"
-	"paradigmcore/abci/types"
-	"paradigmcore/store"
+	"go-kosu/abci/types"
+	"go-kosu/store"
 
 	abci "github.com/tendermint/tendermint/abci/types"
 	"github.com/tendermint/tendermint/libs/db"
@@ -33,7 +33,7 @@ func NewApp(state *store.State, db db.DB) *App {
 // Info loads the state from the db.
 func (app *App) Info(req abci.RequestInfo) abci.ResponseInfo {
 	res := abci.ResponseInfo{
-		Data:             "paradigm",
+		Data:             "go-kosu",
 		Version:          req.GetVersion(),
 		LastBlockHeight:  app.tree.CommitInfo.Version,
 		LastBlockAppHash: app.tree.CommitInfo.Hash,
