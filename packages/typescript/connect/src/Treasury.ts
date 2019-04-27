@@ -2,7 +2,7 @@ import { contracts } from "@kosu/system-contracts";
 import TruffleContract from "truffle-contract";
 import { KosuOptions } from "./types";
 import KosuToken from './KosuToken';
-import * as Web3 from "web3";
+import Web3 from "web3";
 
 import BN = require("bn.js");
 const TreasuryContractData = contracts.Treasury;

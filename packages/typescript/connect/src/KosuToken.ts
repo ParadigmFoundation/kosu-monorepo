@@ -1,4 +1,4 @@
-import * as Web3 from "web3";
+import Web3 from "web3";
 import BN = require("bn.js");
 
 const KosuTokenContractData = require('@kosu/system-contracts').contracts.KosuToken;

@@ -1,6 +1,6 @@
 import { soliditySHA3 } from "ethereumjs-abi";
 import { bufferToHex, toBuffer, hashPersonalMessage, fromRpcSig, ecrecover, pubToAddress } from 'ethereumjs-util';
-import * as Web3 from "web3";
+import Web3 from "web3";
 import utils from './utils';
 
 class Signature {
@@ -48,7 +48,7 @@ class Signature {
     } catch (e) {
         raw = await web3.eth.sign(messageHex, signer);
     }
-
+    
     return raw;
   }
 

@@ -1,4 +1,4 @@
-import * as Web3 from "web3";
+import Web3 from "web3";
 import {KosuOptions} from "./types";
 import {Contract} from "web3-eth-contract";
 import BN = require("bn.js");

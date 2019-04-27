@@ -3,7 +3,7 @@ import { bufferToHex } from "ethereumjs-util";
 import OrderGateway from "./OrderGateway";
 import Signature from "./Signature";
 import {KosuOrder} from "./types";
-import * as Web3 from 'web3';
+import Web3 from 'web3';
 import utils from "./utils";
 import BN from "bn.js"
 

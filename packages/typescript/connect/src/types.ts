@@ -1,4 +1,4 @@
-import * as Web3 from "web3";
+import Web3 from "web3";
 import { provider } from "web3-providers";
 
 export interface KosuOptions {

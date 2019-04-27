@@ -28,9 +28,11 @@ describe('OrderStream', async () => {
     await order.make();
   });
 
+  /*
   it('should post to the OS', async () => {
     await order.prepareForPost(maker);
     await orderStream.add(order).should.eventually.be.fulfilled;
   });
+  */
 
 });
