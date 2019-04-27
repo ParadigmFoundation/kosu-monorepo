@@ -1,0 +1,38 @@
+project_name: kosu
+
+builds:
+  - binary: kosud
+    main: ./cmd/kosud/main.go
+    goos:
+      - linux
+      - darwin
+    goarch:
+      - amd64
+
+  - binary: kosu-cli
+    main: ./cmd/kosu-cli/main.go
+    goos:
+      - linux
+      - darwin
+    goarch:
+      - amd64
+
+archives:
+  - id: kosud
+    replacements:
+      amd64: x86_64
+    format: binary
+
+  - id: kosu-cli
+    replacements:
+      amd64: x86_64
+    format: binary
+
+checksum:
+  name_template: 'checksums.txt'
+changelog:
+  sort: asc
+  filters:
+    exclude:
+    - '^docs:'
+    - '^test:'
