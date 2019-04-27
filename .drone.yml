@@ -1,23 +1,32 @@
 kind: pipeline
-name: default
+name: node-tests
 
 steps:
-  - name: node-tests
+  - name: npm-projects
     image: gcr.io/kosu-io/node
     commands:
     - yarn
     - yarn build
     - yarn test
 
-  - name: go-kosu-tests
+---
+kind: pipeline
+name: golang-tests
+
+steps:
+  - name: go-kosu
     image: gcr.io/kosu-io/go-kosu-ci
     commands:
     - make ci
-    
-#  release:
-#    image: golang:1.12
-#    secrets: [github_token]
-#    commands:
+
+# ---
+# kind: pipeline
+# name: go-kosu-release
+#  
+# release:
+#     image: golang:1.12
+#     secrets: [github_token]
+#     commands:
 #      curl -sL https://git.io/goreleaser | bash
-#    when:
-#      event: tag
+#     when:
+#       event: tag
