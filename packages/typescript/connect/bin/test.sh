@@ -12,6 +12,7 @@ sleep 2
 
 mocha -r ts-node/register
 SUCCESS=$?
+echo ${SUCESS}
 
 kill ${RPC_PID}
 
