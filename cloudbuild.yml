@@ -1,0 +1,20 @@
+steps:
+- name: 'gcr.io/cloud-builders/docker'
+  args: [
+    'build',
+    '-t',
+    'gcr.io/kosu-io/go-kosu-ci:$BRANCH_NAME-$SHORT_SHA',
+    '-f',
+    './packages/go-kosu/drone.Dockerfile',
+    './pacakges/go-kosu'
+  ]
+- name: 'gcr.io/cloud-builders/docker'
+  args: [
+    'tag',
+    'gcr.io/kosu-io/go-kosu-ci:$BRANCH_NAME-$SHORT_SHA',
+    'gcr.io/kosu-io/go-kosu-ci:latest'
+  ]
+images: [
+  'gcr.io/kosu-io/go-kosu-ci:$BRANCH_NAME-$SHORT_SHA',
+  'gcr.io/kosu-io/go-kosu-ci:latest',
+]
