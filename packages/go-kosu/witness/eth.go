@@ -14,7 +14,7 @@ import (
 
 const (
 	// KosuEventEmitterAddress is the address of the EventEmitter contract
-	// NOTE: the 'ParadigmEvent' has not yet been renamed to 'KosuEvent' in 
+	// NOTE: the 'ParadigmEvent' has not yet been renamed to 'KosuEvent' in
 	// 	the EventEmitter contract yet.
 	KosuEventEmitterAddress = "0xf2098FB608098A562d24CCde594A304d739cc4B7"
 )

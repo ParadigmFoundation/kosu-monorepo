@@ -3,10 +3,10 @@ package witness
 import (
 	"context"
 	"fmt"
-	"log"
-	"math/big"
 	"go-kosu/abci"
 	"go-kosu/abci/types"
+	"log"
+	"math/big"
 )
 
 // Provider describes a block provider.

@@ -4,9 +4,9 @@ import (
 	"encoding/hex"
 	"errors"
 	"fmt"
-	"log"
 	"go-kosu/abci/types"
 	"go-kosu/store"
+	"log"
 
 	abci "github.com/tendermint/tendermint/abci/types"
 	"github.com/tendermint/tendermint/libs/db"
