@@ -18,6 +18,7 @@ steps:
     image: gcr.io/kosu-io/go-kosu-ci
     commands:
     - cd packages/go-kosu
+    - go get
     - make ci
 
 # UNTESTED
