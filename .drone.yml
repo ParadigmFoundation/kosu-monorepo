@@ -19,6 +19,7 @@ steps:
     commands:
     - make ci
 
+# UNTESTED
 # ---
 # kind: pipeline
 # name: go-kosu-release
