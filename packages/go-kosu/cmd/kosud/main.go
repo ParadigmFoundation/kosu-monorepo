@@ -3,13 +3,13 @@ package main
 import (
 	"context"
 	"fmt"
-	"log"
-	"os"
-	"os/user"
 	"go-kosu/abci"
 	"go-kosu/abci/types"
 	"go-kosu/store"
 	"go-kosu/witness"
+	"log"
+	"os"
+	"os/user"
 	"path/filepath"
 	"strings"
 

@@ -2,9 +2,9 @@ package cli
 
 import (
 	"fmt"
-	"os"
 	"go-kosu/abci"
 	"go-kosu/abci/types"
+	"os"
 	"strconv"
 
 	"github.com/spf13/cobra"
