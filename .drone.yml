@@ -17,7 +17,7 @@ steps:
   - name: go-kosu
     image: gcr.io/kosu-io/go-kosu-ci
     commands:
-    - make ci
+    - make -f packages/go-kosu/Makefile ci
 
 # UNTESTED
 # ---
