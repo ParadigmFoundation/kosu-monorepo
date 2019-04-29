@@ -3,7 +3,7 @@ name: node-tests
 
 steps:
   - name: npm-projects
-    image: gcr.io/kosu-io/node
+    image: gcr.io/kosu-io/node-ci
     commands:
     - yarn
     - yarn build
