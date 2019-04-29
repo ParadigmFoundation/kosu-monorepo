@@ -3,6 +3,9 @@ import Order from "./Order.js";
 const WebSocket: any = require('isomorphic-ws');
 const fetch: any = require('node-fetch');
 
+/**
+ * @todo rewrite and document after go implementation is ready
+ */
 class OrderStream {
   private readonly endpoint: string;
 
