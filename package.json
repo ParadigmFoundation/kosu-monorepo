@@ -17,7 +17,7 @@
     "postinstall": "lerna link"
   },
   "workspaces": [
-    "packages/connect",
+    "packages/kosu.js",
     "packages/kosu-sdk-contracts",
     "packages/kosu-system-contracts",
     "pacakges/tsc-config",
