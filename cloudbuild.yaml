@@ -3,7 +3,7 @@ steps:
   args: [
     'build',
     '-t',
-    'gcr.io/kosu-io/go-kosu-ci:$BRANCH_NAME-$SHORT_SHA',
+    'gcr.io/kosu-io/go-kosu-ci:$SHORT_SHA',
     '-f',
     './packages/go-kosu/drone.Dockerfile',
     './packages/go-kosu'
@@ -11,14 +11,14 @@ steps:
 - name: 'gcr.io/cloud-builders/docker'
   args: [
     'tag',
-    'gcr.io/kosu-io/go-kosu-ci:$BRANCH_NAME-$SHORT_SHA',
+    'gcr.io/kosu-io/go-kosu-ci:$SHORT_SHA',
     'gcr.io/kosu-io/go-kosu-ci:latest'
   ]
 - name: 'gcr.io/cloud-builders/docker'
   args: [
     'build',
     '-t',
-    'gcr.io/kosu-io/node-ci:$BRANCH_NAME-$SHORT_SHA',
+    'gcr.io/kosu-io/node-ci:$SHORT_SHA',
     '-f',
     './packages/dev-images/node.Dockerfile',
     './packages/dev-images'
@@ -26,13 +26,13 @@ steps:
 - name: 'gcr.io/cloud-builders/docker'
   args: [
     'tag',
-    'gcr.io/kosu-io/node-ci:$BRANCH_NAME-$SHORT_SHA',
+    'gcr.io/kosu-io/node-ci:$SHORT_SHA',
     'gcr.io/kosu-io/node-ci:latest'
   ]
 images: [
-  'gcr.io/kosu-io/go-kosu-ci:$BRANCH_NAME-$SHORT_SHA',
+  'gcr.io/kosu-io/go-kosu-ci:$SHORT_SHA',
   'gcr.io/kosu-io/go-kosu-ci:latest',
 
-  'gcr.io/kosu-io/node-ci:$BRANCH_NAME-$SHORT_SHA',
+  'gcr.io/kosu-io/node-ci:$SHORT_SHA',
   'gcr.io/kosu-io/node-ci:latest',
 ]
