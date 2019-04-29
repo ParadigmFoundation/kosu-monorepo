@@ -11,7 +11,7 @@ import Order from "./Order";
 import utils from "./utils";
 import Web3 from "web3";
 
-class KosuConnect {
+class Kosu {
     private readonly web3: Web3;
     private readonly orderGateway: OrderGateway;
     private readonly kosuToken: KosuToken;
@@ -51,11 +51,10 @@ class KosuConnect {
         //Utilities
         this.utils = utils;
         this.Signature = Signature;
-        this.version = KosuConnect.version;
+        this.version = Kosu.version;
     }
 }
 
-KosuConnect.version = process.env.npm_package_version || require("../package.json").version;
+Kosu.version = process.env.npm_package_version || require("../package.json").version;
 
-export default KosuConnect;
-// module.exports = KosuConnect;
+export default Kosu;

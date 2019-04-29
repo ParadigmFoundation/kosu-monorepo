@@ -2,9 +2,9 @@ describe('Order', () => {
   let maker, taker, order, orderGateway, bank, Signature;
 
   before(async () => {
-    Signature = kosuConnect.Signature;
-    Order = kosuConnect.Order;
-    orderGateway = kosuConnect.orderGateway;
+    Signature = kosu.Signature;
+    Order = kosu.Order;
+    orderGateway = kosu.orderGateway;
 
     maker = accounts[7].toLowerCase();
     taker = accounts[8].toLowerCase();
@@ -23,7 +23,7 @@ describe('Order', () => {
       buyerTokenCount: 1000,
     };
 
-    order = new kosuConnect.Order({ subContract, maker: maker, makerArguments, takerArguments, makerValues });
+    order = new kosu.Order({ subContract, maker: maker, makerArguments, takerArguments, makerValues });
     await order.make();
   });
 
@@ -52,7 +52,7 @@ describe('Order', () => {
     });
 
     it('should throw for bad subContract address', async () => {
-      (() => new kosuConnect.Order({ subContract: '0x0', makerValues: { a: 'a' }})).should.throw();
+      (() => new kosu.Order({ subContract: '0x0', makerValues: { a: 'a' }})).should.throw();
     });
   });
 

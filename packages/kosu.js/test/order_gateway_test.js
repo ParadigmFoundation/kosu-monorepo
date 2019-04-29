@@ -6,9 +6,9 @@ describe('OrderGateway', () => {
   let orderGateway;
 
   before(async () => {
-    Signature = kosuConnect.Signature;
-    Order = kosuConnect.Order;
-    orderGateway = kosuConnect.orderGateway;
+    Signature = kosu.Signature;
+    Order = kosu.Order;
+    orderGateway = kosu.orderGateway;
 
     maker = accounts[7].toLowerCase();
     taker = accounts[8].toLowerCase();
@@ -27,7 +27,7 @@ describe('OrderGateway', () => {
       buyerTokenCount: 1000,
     };
 
-    order = new kosuConnect.Order({ subContract, maker: maker, makerArguments, takerArguments, makerValues });
+    order = new kosu.Order({ subContract, maker: maker, makerArguments, takerArguments, makerValues });
     await order.make();
   });
 

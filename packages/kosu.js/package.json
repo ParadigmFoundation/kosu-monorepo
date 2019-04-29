@@ -1,5 +1,5 @@
 {
-  "name": "@kosu/connect",
+  "name": "@kosu/kosu.js",
   "version": "0.1.0",
   "description": "JavaScript module for connecting with Kosu.",
   "main": "dist/index.js",
