@@ -1,6 +1,5 @@
 import ValidatorRegistry from "./ValidatorRegistry";
 import PosterRegistry from "./PosterRegistry";
-import OrderStream from "./OrderStream";
 import OrderGateway from "./OrderGateway";
 import Signature from "./Signature";
 import KosuToken from "./KosuToken";
@@ -20,7 +19,6 @@ class Kosu {
     private posterRegistry: PosterRegistry;
     private validatorRegistry: ValidatorRegistry;
     public Order: any;
-    private orderStream: OrderStream;
     private utils: { toBytes32; NULL_ADDRESS };
     private Signature: Signature;
     static version: string;
@@ -43,10 +41,6 @@ class Kosu {
         Order.web3 = this.web3;
         Order.orderGateway = this.orderGateway;
         this.Order = Order;
-
-        //Configuring OrderStream
-        let endpoint = options.orderStreamURL || 'bs2.paradigm.market';
-        this.orderStream = new OrderStream(endpoint);
 
         //Utilities
         this.utils = utils;
