@@ -2,6 +2,8 @@ import Web3 from "web3";
 import { provider } from "web3-providers";
 
 export interface KosuOptions {
+    posterRegistryProxyAddress?: string;
+    kosuTokenAddress?: string;
     orderStreamURL?: string;
     orderGatewayAddress?: string;
     networkId?: number | string;
