@@ -6,7 +6,7 @@ steps:
     'gcr.io/kosu-io/go-kosu-ci:$BRANCH_NAME-$SHORT_SHA',
     '-f',
     './packages/go-kosu/drone.Dockerfile',
-    './pacakges/go-kosu'
+    './packages/go-kosu'
   ]
 - name: 'gcr.io/cloud-builders/docker'
   args: [
