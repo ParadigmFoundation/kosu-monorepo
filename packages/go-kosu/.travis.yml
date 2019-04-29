@@ -1,0 +1,36 @@
+language: go
+
+go: 1.12
+
+cache:
+  directories:
+    - $GOCACHE
+    - $GOPATH/pkg/mod
+env:
+  global:
+    - GOCACHE=$HOME/.go-build
+    - GO111MODULE=on
+    - TENDERMINT_RELEASE=0.31.1
+    - GOLINTCI_RELEASE=1.16.0
+    - ETHEREUM_TEST_ADDRESS=wss://ropsten.infura.io/ws
+
+install:
+  # Install Tendermint
+  - wget https://github.com/tendermint/tendermint/releases/download/v${TENDERMINT_RELEASE}/tendermint_${TENDERMINT_RELEASE}_linux_amd64.zip -O /tmp/tm.zip
+  - unzip /tmp/tm.zip
+  - install tendermint /home/travis/bin
+  - rm tendermint
+
+  # Install golintci
+  - curl -sfL https://install.goreleaser.com/github.com/golangci/golangci-lint.sh | sh -s -- -b $(go env GOPATH)/bin v${GOLINTCI_RELEASE}
+
+script:
+  - make ci
+
+deploy:
+  - provider: script
+    skip_cleanup: true
+    script: curl -sL https://git.io/goreleaser | bash
+    on:
+      tags: true
+      condition: $TRAVIS_OS_NAME = linux

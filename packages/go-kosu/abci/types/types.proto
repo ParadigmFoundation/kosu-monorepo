@@ -1,0 +1,90 @@
+/**
+ * Kosu API documentation.
+ *
+ */
+
+syntax = "proto3";
+
+package types;
+
+/**
+ * BigInt
+ */
+message BigInt {
+  bytes value = 1;
+}
+
+/**
+ * RoundInfo
+ */
+message RoundInfo {
+  uint64 number = 1;
+  uint64 starts_at = 2;
+  uint64 ends_at = 3;
+  uint64 limit = 4;
+}
+
+message Poster {
+  BigInt balance = 1;
+  uint64 orderLimit = 2;
+  uint64 streamLimit = 3;
+}
+
+message RateLimit {
+  string address = 1;
+  uint64 limit = 2;
+}
+
+/**
+ * SignedTransaction.
+ *
+ * This is the only Transaction accepted by the node. It's composed by a Transaction and it's Proof.
+ */
+message SignedTransaction {
+  Proof proof = 1;
+  Transaction tx = 2;
+}
+
+/**
+ * Proof is used to sign a Transaction and produce a SignedTransaction.
+ */
+message Proof {
+  bytes public_key = 1;
+  bytes signature = 2;
+}
+
+/**
+ * Transaction
+ */
+message Transaction {
+  oneof data {
+    TransactionRebalance rebalance = 1;
+    TransactionWitness witness = 2;
+  }
+}
+
+/**
+ * TransactionRebalance
+ */
+message TransactionRebalance {
+  repeated RateLimit limits = 1;
+  RoundInfo round_info = 2;
+}
+
+/**
+ * TransactionWitness performs state modification of Stake Event transactions (modify staker's balance).
+ * This transaction should be originated from the validator nodes.
+ */
+message TransactionWitness {
+  enum Subject {
+    POSTER = 0;
+    VALIDATOR = 1;
+  }
+  Subject subject = 1;
+
+  BigInt amount = 2;
+  uint64 block = 3; // Block number of event
+  string address = 4; // Ethereum address of validator/poster
+  bytes public_key = 5  ; // Tendermint ed25519 key of validator (base64 enc )
+  bytes id = 6; // Hash of event data
+}
