@@ -21,7 +21,8 @@
     "packages/kosu-sdk-contracts",
     "packages/kosu-system-contracts",
     "pacakges/tsc-config",
-    "packages/tslint-config"
+    "packages/tslint-config",
+    "packages/dev-images"
   ],
   "dependencies": {
     "lerna": "^3.13.3",
