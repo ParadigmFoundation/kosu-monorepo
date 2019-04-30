@@ -3,6 +3,8 @@ package abci
 import (
 	"go-kosu/abci/types"
 	"go-kosu/store"
+	"io/ioutil"
+	"os"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -11,12 +13,20 @@ import (
 	"github.com/tendermint/tendermint/libs/db"
 )
 
+func newTestApp(t *testing.T, db db.DB) (func(), *App) {
+	dir, err := ioutil.TempDir("", ".kosu_tests_")
+	require.NoError(t, err)
+
+	InitTendermint(dir)
+
+	fn := func() { os.RemoveAll(dir) }
+	return fn, NewApp(store.NewState(), db, dir)
+}
+
 func TestCheckTxSignature(t *testing.T) {
 	db := db.NewMemDB()
-	app := NewApp(
-		store.NewState(),
-		db,
-	)
+	done, app := newTestApp(t, db)
+	defer done()
 
 	_, priv, err := types.NewKeyPair()
 	require.NoError(t, err)
@@ -37,12 +47,15 @@ func TestCheckTxSignature(t *testing.T) {
 
 func TestCommitAndInfo(t *testing.T) {
 	db := db.NewMemDB()
-	app := NewApp(store.NewState(), db)
+	done, app := newTestApp(t, db)
+	defer done()
+
 	app.Commit()
 
-	// App crashed, let's restart
+	// Let's create a new App using the same DB to simulate a restart
+	done, newApp := newTestApp(t, db)
+	defer done()
 
-	newApp := NewApp(store.NewState(), db)
 	res := newApp.Info(abci.RequestInfo{})
 	assert.Equal(t, int64(1), res.LastBlockHeight)
 	assert.Equal(t, app.tree.CommitInfo.Hash, res.LastBlockAppHash)

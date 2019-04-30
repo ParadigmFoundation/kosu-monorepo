@@ -28,6 +28,7 @@ type Config struct {
 	Debug bool
 	Web3  string
 	Key   []byte
+	Init  bool
 }
 
 func newDB(dir string, debug bool) (db.DB, error) {
@@ -57,13 +58,17 @@ func startWitness(ctx context.Context, ethAddr string, nodeAddr string, key []by
 }
 
 func run(cfg *Config) error {
+	if cfg.Init {
+		abci.InitTendermint(cfg.Home)
+	}
+
 	db, err := newDB(cfg.Home, cfg.Debug)
 	if err != nil {
 		return err
 	}
 
-	app := abci.NewApp(store.NewState(), db)
-	srv, err := abci.StartInProcessServer(app, cfg.Home)
+	app := abci.NewApp(store.NewState(), db, cfg.Home)
+	srv, err := abci.StartInProcessServer(app)
 	if err != nil {
 		return err
 	}
@@ -100,6 +105,7 @@ func main() {
 	rootCmd.Flags().BoolVar(&cfg.Debug, "debug", false, "enable debuging")
 	rootCmd.Flags().StringVar(&cfg.Web3, "web3", "wss://ropsten.infura.ws", "web3 provider URL")
 	rootCmd.Flags().BytesHexVar(&cfg.Key, "key", key, "private key used to sign Witness requests")
+	rootCmd.Flags().BoolVar(&cfg.Init, "init", false, "initializes directory like 'tendermint init' does")
 
 	cobra.OnInitialize(func() {
 		cfg.Home = expandPath(cfg.Home)

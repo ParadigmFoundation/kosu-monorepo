@@ -18,6 +18,8 @@ name: golang-tests
 steps:
   - name: go-kosu
     image: gcr.io/kosu-io/go-kosu-ci
+    environment:
+      ETHEREUM_TEST_ADDRESS: wss://ropsten.infura.io/ws
     commands:
     - cd packages/go-kosu
     - make ci
