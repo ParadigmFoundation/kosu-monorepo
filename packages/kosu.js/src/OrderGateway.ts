@@ -1,7 +1,8 @@
 import Web3 from "web3";
-import {KosuOptions} from "./types";
+import {KosuOptions, Order} from "./types";
 import {Contract} from "web3-eth-contract";
 import BN = require("bn.js");
+import OrderSerializer from "./OrderSerializer";
 
 const OrderGatewayContractData = require('@kosu/system-contracts').contracts.OrderGateway;
 
@@ -50,15 +51,18 @@ class OrderGateway {
   /**
    * Participate in the terms of an order
    *
-   * @param subContract Address of deployed contract implementation
-   * @param id Id value generated on orders submission through the Kosu order stream
-   * @param makerData serialized maker data
-   * @param takerData serialized taker data
+   * @param order A Kosu order
+   * @param takerValues Taker values to fulfill the order
    * @param taker address of the taker
    * @todo refactor makerData types after possible pending changes
    */
-  async participate(subContract: string, id: string, makerData: any[], takerData: any[], taker: string): Promise<void> {
-    const transaction = this._participateTransaction(subContract, id, makerData, takerData);
+  async participate(order: Order, takerValues: any[], taker: string): Promise<void> {
+    const makerArguments = await this.makerArguments(order.subContract);
+    const takerArguments = await this.takerArguments(order.subContract);
+    const makerValuesBytes = OrderSerializer.serializeMaker(makerArguments, order);
+    const takerValuesBytes = OrderSerializer.serializeTaker(takerArguments, takerValues);
+
+    const transaction = this._participateTransaction(order.subContract, order.id, makerValuesBytes, takerValuesBytes);
     // let gas = await transaction.estimateGas({ from: taker });
     let gas = 4000000; //TODO: Gas cost is causing issues across many usages of this function.  This needs to be further investigated. Hard coding ot mitigate teh issue for now.
     return await transaction.send({ from: taker, gas });
@@ -67,8 +71,13 @@ class OrderGateway {
   /**
    * @todo depricate
    */
-  async participateEstimateGas(subContract: string, id: string, makerData: any[], takerData: any[], taker: any): Promise<any> {
-    const transaction = this._participateTransaction(subContract, id, makerData, takerData);
+  async participateEstimateGas(order: Order, takerValues: any[], taker: string): Promise<any> {
+    const makerArguments = await this.makerArguments(order.subContract);
+    const takerArguments = await this.takerArguments(order.subContract);
+    const makerValuesBytes = OrderSerializer.serializeMaker(makerArguments, order);
+    const takerValuesBytes = OrderSerializer.serializeTaker(takerArguments, takerValues);
+
+    const transaction = this._participateTransaction(order.subContract, order.id, makerValuesBytes, takerValuesBytes);
     return await transaction.estimateGas({ from: taker })
   }
 
@@ -77,8 +86,8 @@ class OrderGateway {
    *
    * @param subContract Address of deployed contract implementation
    */
-  async makerArguments(subContract: string): Promise<string> {
-    return await this.contract.methods.makerArguments(subContract).call();
+  async makerArguments(subContract: string): Promise<any[]> {
+    return JSON.parse(await this.contract.methods.makerArguments(subContract).call());
   }
 
   /**
@@ -86,30 +95,34 @@ class OrderGateway {
    *
    * @param subContract Address of deployed contract implementation
    */
-  async takerArguments(subContract: string): Promise<string> {
-    return await this.contract.methods.takerArguments(subContract).call();
+  async takerArguments(subContract: string): Promise<any[]> {
+    return JSON.parse(await this.contract.methods.takerArguments(subContract).call());
   }
 
   /**
    * Checks validity of order data
    *
-   * @param subContract Address of deployed contract implementation
-   * @param makerData serialized maker data
+   * @param order Kosu order to validate
    * @todo refactor makerData types after possible pending changes
    */
-  async isValid(subContract: string, makerData: any[]): Promise<boolean> {
-    return await this.contract.methods.isValid(subContract, makerData).call();
+  async isValid(order: Order): Promise<boolean> {
+    const makerArguments = await this.makerArguments(order.subContract);
+    const makerValuesBytes = OrderSerializer.serializeMaker(makerArguments, order);
+
+    return await this.contract.methods.isValid(order.subContract, makerValuesBytes).call();
   }
 
   /**
    * Checks amount of partial exchange tokens remaining
    *
-   * @param subContract Address of deployed contract implementation
-   * @param makerData serialized maker data
+   * @param order Kosu order to validate
    * @todo refactor makerData types after possible pending changes
    */
-  async amountRemaining(subContract: string, makerData: any[]): Promise<BN> {
-    return await this.contract.methods.amountRemaining(subContract, makerData).call();
+  async amountRemaining(order: Order): Promise<BN> {
+    const makerArguments = await this.makerArguments(order.subContract);
+    const makerValuesBytes = OrderSerializer.serializeMaker(makerArguments, order);
+
+    return await this.contract.methods.amountRemaining(order.subContract, makerValuesBytes).call();
   }
 
   /**
@@ -131,7 +144,7 @@ class OrderGateway {
    * @param takerData serialized taker data
    * @todo refactor makerData types after possible pending changes
    */
-  private _participateTransaction(subContract: string, id: string = '', makerData: any[], takerData: any[]) {
+  private _participateTransaction(subContract: string, id: string = '', makerData: string[], takerData: string[]) {
     return this.contract.methods.participate(subContract, id, makerData, takerData);
   }
 }

@@ -2,6 +2,8 @@ import { soliditySHA3 } from "ethereumjs-abi";
 import { bufferToHex, toBuffer, hashPersonalMessage, fromRpcSig, ecrecover, pubToAddress } from 'ethereumjs-util';
 import Web3 from "web3";
 import utils from './utils';
+import OrderSerializer from "./OrderSerializer";
+import {Order} from "./types";
 
 class Signature {
 

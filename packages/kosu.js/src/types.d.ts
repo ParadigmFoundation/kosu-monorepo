@@ -1,6 +1,3 @@
-import Web3 from "web3";
-import { provider } from "web3-providers";
-
 export interface KosuOptions {
     posterRegistryProxyAddress?: string;
     kosuTokenAddress?: string;
@@ -14,13 +11,24 @@ export interface KosuOptions {
     web3?: Web3
 }
 
+export interface Order {
+    subContract: string;
+    maker: string;
+    makerValues: any;
+    makerSignature: any;
+    id: any;
+    poster: string;
+}
+
+export interface PostableOrder extends Order {
+    posterSignature: { v: any, s: any, r: any }
+}
+
 export interface KosuOrder {
     id: any;
     posterSignature: any;
     makerSignature: any;
     makerValues: any[];
-    takerArguments: any[];
-    makerArguments: any[];
     maker: string;
     subContract: string;
 }
