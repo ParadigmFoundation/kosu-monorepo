@@ -9,7 +9,7 @@ steps:
     commands:
       - yarn
       - yarn build
-      - yarn test
+      - yarn test:ci
     when:
       event: pull_request
 

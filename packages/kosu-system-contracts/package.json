@@ -12,6 +12,7 @@
   },
   "scripts": {
     "test": "truffle test",
+    "test:ci": "yarn test",
     "build": "truffle compile",
     "contracts:clean": "rm -rf build/contracts",
     "deploy":"yarn deploy:ropsten",

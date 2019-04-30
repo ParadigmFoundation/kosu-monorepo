@@ -4,8 +4,8 @@
   "description": "JavaScript module for connecting with Kosu.",
   "main": "dist/index.js",
   "scripts": {
-    "test": "mocha -r ts-node/register",
-    "test:local_rpc": "bin/test.sh",
+    "test": "bin/test.sh",
+    "test:ci": "mocha -r ts-node/register",
     "test:ganache": "docker run --rm -p 8545:8545 ${npm_package_config_ganache_image_uri}",
     "test:ganache_detached": "docker run --rm -d -p 8545:8545 ${npm_package_config_ganache_image_uri}",
     "build": "tsc"
