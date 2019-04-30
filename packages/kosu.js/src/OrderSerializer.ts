@@ -37,7 +37,7 @@ class OrderSerializer {
      * @todo refactor for subContract changes or modularize to be less messy
      */
     static recoverMaker(order: Order, _arguments: any[]): string {
-        return Signature.recoverAddress(this._hexFor('poster', order, _arguments), order.makerSignature);
+        return Signature.recoverAddress(this._hexFor('maker', order, _arguments), order.makerSignature);
     }
 
     /**
