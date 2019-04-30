@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-RPC_PID=$(yarn testRpc | grep '^[0-9]*$')
+CONTAINER_HASH=$(docker run -d --rm -p 8545:8545 gcr.io/kosu-io/kosu-ganache:0.0.1)
 
 while ! nc -z localhost 8545; do
   sleep 0.1
@@ -11,5 +11,5 @@ sleep 2
 mocha -r ts-node/register
 SUCCESS=$?
 
-kill ${RPC_PID}
+docker kill $CONTAINER_HASH
 exit ${SUCCESS}
