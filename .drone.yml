@@ -12,6 +12,12 @@ steps:
       - yarn test:ci
     when:
       event: pull_request
+      changeset:
+        includes: [
+          packages/kosu-sdk-contracts/**
+          packages/kosu-system-contracts/**
+          packages/kosu.js/**
+        ]
 
 services:
 - name: kosu-ganache
@@ -33,6 +39,11 @@ steps:
     - make ci
     when:
       event: pull_request
+      changeset:
+        includes: [
+          packages/go-kosu/**
+          packages/kosu-system-contracts/**
+        ]
 
 # UNTESTED
 # ---
