@@ -6,8 +6,6 @@ describe('OrderGateway', () => {
   let orderGateway;
 
   before(async () => {
-    Signature = kosu.Signature;
-    Order = kosu.Order;
     orderGateway = kosu.orderGateway;
 
     maker = accounts[7].toLowerCase();
@@ -27,8 +25,8 @@ describe('OrderGateway', () => {
       buyerTokenCount: 1000,
     };
 
-    order = new kosu.Order({ subContract, maker: maker, makerArguments, takerArguments, makerValues });
-    await order.make();
+    order = { subContract, maker: maker, makerArguments, takerArguments, makerValues };
+    await kosu.orderHelper.makeOrder(order);
   });
 
   describe('participate()', () => {
@@ -55,14 +53,14 @@ describe('OrderGateway', () => {
   describe('makerArguments()', () => {
     it('should get the makerArguments of a SubContract', async () => {
       const makerArguments = await orderGateway.makerArguments(subContract);
-      assert.doesNotThrow(() => { JSON.parse(makerArguments) });
+      assert.doesNotThrow(() => { JSON.stringify(makerArguments) });
     });
   });
 
   describe('takerArguments()', () => {
     it('should get the takerArguments of a SubContract', async () => {
       const takerArguments = await orderGateway.takerArguments(subContract);
-      assert.doesNotThrow(() => { JSON.parse(takerArguments) });
+      assert.doesNotThrow(() => { JSON.stringify(takerArguments) });
     });
   });
 
