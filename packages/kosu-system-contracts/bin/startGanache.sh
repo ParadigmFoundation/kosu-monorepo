@@ -1,15 +1,10 @@
 #!/usr/bin/env bash
 
-# start ganache and fork to background
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+
+# start ganache
 ganache-cli \
     --networkId 6174 \
-    -d --db ./bin/ganache-db \
+    -d --db ${DIR}/ganache-db \
     -m "plate tag lend tissue capable ketchup evidence deliver aspect salt used always" \
-    > ./bin/.log &
-
-# store PID so it may be killed by someone else
-export GANACHE_TEST_PID=$!
-
-# also echo the PID
-echo ${GANACHE_TEST_PID}
-exit 0
+    > ./bin/.log
