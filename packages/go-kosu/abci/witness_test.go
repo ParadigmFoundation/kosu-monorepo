@@ -2,7 +2,6 @@ package abci
 
 import (
 	"go-kosu/abci/types"
-	"go-kosu/store"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -12,8 +11,8 @@ import (
 
 func TestDeliverWitnessTx(t *testing.T) {
 	db := db.NewMemDB()
-	state := store.NewState()
-	app := NewApp(state, db)
+	done, app := newTestApp(t, db)
+	defer done()
 
 	_, priv, err := types.NewKeyPair()
 	require.NoError(t, err)
