@@ -11,6 +11,12 @@ steps:
     when:
       event: pull_request
 
+services:
+- name: kosu-ganache
+  image: gcr.io/kosu-io/kosu-ganache:0.0.1
+  ports:
+  - 8545
+
 ---
 kind: pipeline
 name: golang-tests
@@ -24,12 +30,6 @@ steps:
     - make ci
     when:
       event: pull_request
-
-services:
-- name: kosu-ganache
-  image: gcr.io/kosu-io/kosu-ganache:0.0.1
-  ports:
-  - 8545
 
 # UNTESTED
 # ---
