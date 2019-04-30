@@ -19,7 +19,7 @@ func newTestApp(t *testing.T, db db.DB) (func(), *App) {
 
 	InitTendermint(dir)
 
-	fn := func() { os.RemoveAll(dir) }
+	fn := func() { _ = os.RemoveAll(dir) }
 	return fn, NewApp(store.NewState(), db, dir)
 }
 

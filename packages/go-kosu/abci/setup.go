@@ -11,8 +11,9 @@ import (
 	tmtime "github.com/tendermint/tendermint/types/time"
 )
 
-var chainIdPrefix = "kosu-chain-%v"
+var chainIDPrefix = "kosu-chain-%v"
 
+// InitTendermint creates an initial tendermint file structure
 func InitTendermint(homedir string) {
 	if homedir == "" {
 		homedir = DefaultHomeDir
@@ -21,9 +22,6 @@ func InitTendermint(homedir string) {
 	if err := createConfig(homedir); err != nil {
 		panic(err)
 	}
-	//if !cmn.FileExists(filepath.Join(homedir, "config", "config.toml")) {
-	//	createConfig(homedir)
-	//}
 }
 
 // Code from tendermint init...
@@ -68,7 +66,7 @@ func createConfig(homedir string) error {
 		logger.Info("Found genesis file", "path", genFile)
 	} else {
 		genDoc := types.GenesisDoc{
-			ChainID:         fmt.Sprintf(chainIdPrefix, cmn.RandStr(6)),
+			ChainID:         fmt.Sprintf(chainIDPrefix, cmn.RandStr(6)),
 			GenesisTime:     tmtime.Now(),
 			ConsensusParams: types.DefaultConsensusParams(),
 		}

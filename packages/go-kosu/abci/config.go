@@ -11,12 +11,14 @@ import (
 )
 
 const (
+	// KOSUHOME is the default base directory
 	KOSUHOME = ".kosu"
-	Home     = "home"
 )
 
+// DefaultHomeDir is the default full path used to store config and data
 var DefaultHomeDir = os.ExpandEnv(fmt.Sprintf("$HOME/%s", KOSUHOME))
 
+// LoadConfig loads or creates an initial config
 func LoadConfig(homedir string) (*config.Config, error) {
 	if homedir == "" {
 		homedir = DefaultHomeDir

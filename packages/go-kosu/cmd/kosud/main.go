@@ -26,9 +26,9 @@ const (
 type Config struct {
 	Home  string
 	Debug bool
+	Init  bool
 	Web3  string
 	Key   []byte
-	Init  bool
 }
 
 func newDB(dir string, debug bool) (db.DB, error) {
