@@ -4,6 +4,8 @@ name: node-tests
 steps:
   - name: npm-projects
     image: gcr.io/kosu-io/node-ci
+    environment:
+      DRONE_CI: true
     commands:
     - yarn
     - yarn build
