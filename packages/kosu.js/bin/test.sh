@@ -10,7 +10,7 @@ while ! nc -z localhost 8545; do
 done
 
 # give ganache rpc server an additional second to start before testing
-sleep 1 && yarn test
+sleep 1 && mocha -r ts-node/register
 SUCCESS=$?
 
 # cleanup ganache image and return exit code fom tests
