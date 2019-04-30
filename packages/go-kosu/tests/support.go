@@ -3,7 +3,6 @@ package tests
 import (
 	"io/ioutil"
 	"os"
-	"os/exec"
 	"testing"
 
 	"github.com/smartystreets/goconvey/convey"
@@ -29,14 +28,12 @@ func startServer(t *testing.T, db db.DB, state *store.State) func() {
 	dir, err := ioutil.TempDir("/tmp", "/go-kosu-go-tests_")
 	require.NoError(t, err)
 
-	/* #nosec G204 */
-	cmd := exec.Command("tendermint", "init", "--home="+dir)
-	require.NoError(t, cmd.Run())
+	abci.InitTendermint(dir)
 
 	// Initialize the server
-	app := abci.NewApp(state, db)
+	app := abci.NewApp(state, db, dir)
 
-	srv, err := abci.StartInProcessServer(app, dir)
+	srv, err := abci.StartInProcessServer(app)
 	require.NoError(t, err)
 
 	// nolint

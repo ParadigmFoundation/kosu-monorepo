@@ -15,9 +15,8 @@ type Server struct {
 }
 
 // StartInProcessServer starts an InProcess ABCI app and server
-// TODO: inject the config instead of root
-func StartInProcessServer(app *App, root string) (*Server, error) {
-	tm, err := app.CreateNode(root)
+func StartInProcessServer(app *App) (*Server, error) {
+	tm, err := app.CreateNode()
 	if err != nil {
 		return nil, err
 	}

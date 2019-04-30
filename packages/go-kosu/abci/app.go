@@ -9,6 +9,7 @@ import (
 	"log"
 
 	abci "github.com/tendermint/tendermint/abci/types"
+	cfg "github.com/tendermint/tendermint/config"
 	"github.com/tendermint/tendermint/libs/db"
 )
 
@@ -19,15 +20,21 @@ var (
 // App implements a tendermint ABCI.
 type App struct {
 	abci.BaseApplication
+	Config *cfg.Config
 
 	state *store.State
 	tree  *store.StateTree
 }
 
 // NewApp returns a new ABCI App
-func NewApp(state *store.State, db db.DB) *App {
+func NewApp(state *store.State, db db.DB, homedir string) *App {
+	config, err := LoadConfig(homedir)
+	if err != nil {
+		panic(err)
+	}
+
 	tree := store.NewStateTree(db, new(store.GobCodec))
-	return &App{state: state, tree: tree}
+	return &App{state: state, tree: tree, Config: config}
 }
 
 // Info loads the state from the db.
