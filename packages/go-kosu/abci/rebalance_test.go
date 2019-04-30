@@ -10,13 +10,12 @@ import (
 	"github.com/tendermint/tendermint/libs/db"
 
 	"go-kosu/abci/types"
-	"go-kosu/store"
 )
 
 func TestDeliverRebalanceTx(t *testing.T) {
 	db := db.NewMemDB()
-	state := store.NewState()
-	app := NewApp(state, db)
+	done, app := newTestApp(t, db)
+	defer done()
 
 	_, priv, err := types.NewKeyPair()
 	require.NoError(t, err)
