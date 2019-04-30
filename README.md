@@ -1,4 +1,4 @@
-# ![img](https://storage.googleapis.com/kosu-system-contracts-ganache-db/kosu-logo.png)
+# `kosu-monorepo`
 
 This monorepo contains the packages that make up the reference impelementation of the Kosu protocol, alongside supporting packages.
 
@@ -28,3 +28,9 @@ _This README is under construction._
 |[`@kosu/dev-images`](./packages/dev-images)|![version](https://img.shields.io/badge/npm-v0.0.1-green.svg)|Development and CI docker images and supporting scripts for Kosu packages. |
 |[`@kosu/tslint-config`](./packages/tslint-config)|![version](https://img.shields.io/badge/npm-v0.0.2-green.svg)|TypeScript linter base configuration for Kosu TypeScript projects. |
 |[`@kosu/tsc-config`](./packages/tsc-config)|![version](https://img.shields.io/badge/npm-v0.0.1-green.svg)|TypeScript compiler base configuration for Kosu TypeScript projects. |
+
+# License
+
+Kosu is being developed as open source, public domain software (CC0). No rights reserved.
+
+
