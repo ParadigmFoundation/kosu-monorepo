@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
-rm ./bin/ganache-db/* || true
+rm -rf ./bin/ganache-db || true
+mkdir ./bin/ganache-db
 
 SLEEP 8
 
