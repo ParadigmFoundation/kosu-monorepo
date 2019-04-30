@@ -10,7 +10,7 @@ const fetch: any = require('node-fetch');
 class OrderStream {
   private readonly endpoint: string;
 
-  constructor(endpoint) {
+  constructor(endpoint: string) {
     this.endpoint = endpoint;
   }
 
@@ -33,7 +33,7 @@ class OrderStream {
     }
   }
 
-  listen(callback) {
+  listen(callback: any): void {
     let url = `wss://${this.endpoint}/stream`;
     let ws = new WebSocket(url);
     ws.onmessage = function incoming(data) {

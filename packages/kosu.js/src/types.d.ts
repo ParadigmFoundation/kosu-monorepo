@@ -23,12 +23,3 @@ export interface Order {
 export interface PostableOrder extends Order {
     posterSignature: { v: any, s: any, r: any }
 }
-
-export interface KosuOrder {
-    id: any;
-    posterSignature: any;
-    makerSignature: any;
-    makerValues: any[];
-    maker: string;
-    subContract: string;
-}

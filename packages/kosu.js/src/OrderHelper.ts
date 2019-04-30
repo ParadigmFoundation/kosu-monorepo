@@ -25,7 +25,8 @@ class OrderHelper {
     }
 
     /**
-     *
+     * Generate a poster signature for OrderStream submission
+     * @todo refactor/move implementation.
      */
     async prepareForPost(order: Order, poster: string): Promise<PostableOrder> {
         return {
