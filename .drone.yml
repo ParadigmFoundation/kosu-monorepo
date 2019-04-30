@@ -5,7 +5,7 @@ steps:
   - name: npm-projects
     image: gcr.io/kosu-io/node-ci
     environment:
-      DRONE_CI: true
+      WEB3_URI: http://kosu-ganache:8545
     commands:
       - yarn
       - yarn build
