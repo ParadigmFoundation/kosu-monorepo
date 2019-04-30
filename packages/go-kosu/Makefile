@@ -7,7 +7,8 @@ GOLINT = golangci-lint run --enable-all \
 		--disable=gocritic \
 		--disable=gochecknoinits \
 		--disable=scopelint \
-		--exclude-use-default=false
+		--exclude-use-default=false \
+		--deadline=10m
 
 vendors:
 	go mod vendor
