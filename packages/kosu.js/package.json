@@ -4,9 +4,11 @@
   "description": "JavaScript module for connecting with Kosu.",
   "main": "dist/index.js",
   "scripts": {
-    "test": "bin/test.sh",
-    "build": "tsc",
-    "testRpc": "npm explore @kosu/system-contracts -- yarn testRpc"
+    "test": "mocha -r ts-node/register",
+    "test:local_rpc": "bin/test.sh",
+    "test:ganache": "docker run --rm -p 8545:8545 ${npm_package_config_ganache_image_uri}",
+    "test:ganache_detached": "docker run --rm -d -p 8545:8545 ${npm_package_config_ganache_image_uri}",
+    "build": "tsc"
   },
   "license": "CC0-1.0",
   "repository": {
@@ -15,6 +17,9 @@
   },
   "bugs": {
     "url": "https://github.com/ParadigmFoundation/kosu-monorepo/issues"
+  },
+  "config": {
+    "ganache_image_uri":"gcr.io/kosu-io/kosu-ganache:0.0.1"
   },
   "dependencies": {
     "@kosu/system-contracts": "^0.1.0",

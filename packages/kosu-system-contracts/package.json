@@ -14,10 +14,13 @@
     "test": "truffle test",
     "build": "truffle compile",
     "contracts:clean": "rm -rf build/contracts",
-    "dockerDeploy": "bin/resetDocker.sh",
-    "ropstenDeploy": "truffle migrate --network ropsten --reset",
-    "deployAll": "npm run ropstenDeploy && npm run dockerDeploy",
-    "testRpc": "bin/startGanache.sh"
+    "deploy":"yarn deploy:ropsten",
+    "deploy:ropsten": "truffle migrate --network ropsten --reset",
+    "ganache_rpc": "docker run --rm -p 8545:8545 ${npm_package_config_kosu_ganache_image}",
+    "ganache_rpc:detached": "docker run --rm -d -p 8545:8545 ${npm_package_config_kosu_ganache_image}"
+  },
+  "config": {
+    "kosu_ganache_image": "gcr.io/kosu-io/kosu-ganache"
   },
   "dependencies": {
     "@kosu/subcontract-sdk": "0.1.0",
