@@ -1,7 +1,6 @@
 {
   "packages": [
-    "packages/typescript/*",
-    "packages/solidity/*"
+    "packages/*"
   ],
   "version": "independent",
   "npmClient": "yarn",

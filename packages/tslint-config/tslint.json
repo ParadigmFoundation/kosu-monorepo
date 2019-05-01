@@ -1,5 +1,5 @@
 {
-    "extends": ["tslint:latest", "tslint-eslint-rules"],
+    "extends": ["tslint:latest"],
     "rules": {
         "adjacent-overload-signatures": true,
         "arrow-parens": [true, "ban-single-arg-parens"],
@@ -64,7 +64,6 @@
         "no-unbound-method": true,
         "no-unnecessary-class": true,
         "no-unnecessary-type-assertion": true,
-        "no-unused-variable": true,
         "no-unsafe-finally": true,
         "number-literal-format": true,
         "object-literal-key-quotes": false,
@@ -82,7 +81,7 @@
         "prefer-readonly": true,
         "prefer-template": true,
         "promise-function-async": true,
-        "quotemark": [true, "single", "avoid-escape", "jsx-double"],
+        "quotemark": [true, "double", "avoid-escape", "jsx-double"],
         "restrict-plus-operands": true,
         "semicolon": [true, "always"],
         "space-before-function-paren": [

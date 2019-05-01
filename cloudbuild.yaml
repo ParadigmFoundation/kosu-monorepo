@@ -1,0 +1,45 @@
+steps:
+
+# build and tag go-kosu ci image 
+- name: "gcr.io/cloud-builders/docker"
+  args: [
+    "build",
+    "-t",
+    "gcr.io/kosu-io/go-kosu-ci:$SHORT_SHA",
+    "-f",
+    "./packages/dev-images/ci/go-kosu.Dockerfile",
+    "./packages/dev-images"
+  ]
+- name: "gcr.io/cloud-builders/docker"
+  args: [
+    "tag",
+    "gcr.io/kosu-io/go-kosu-ci:$SHORT_SHA",
+    "gcr.io/kosu-io/go-kosu-ci:latest"
+  ]
+
+# build and tag nodejs ci image 
+- name: "gcr.io/cloud-builders/docker"
+  args: [
+    "build",
+    "-t",
+    "gcr.io/kosu-io/node-ci:$SHORT_SHA",
+    "-f",
+    "./packages/dev-images/ci/node.Dockerfile",
+    "./packages/dev-images"
+  ]
+- name: "gcr.io/cloud-builders/docker"
+  args: [
+    "tag",
+    "gcr.io/kosu-io/node-ci:$SHORT_SHA",
+    "gcr.io/kosu-io/node-ci:latest"
+  ]
+
+images: [
+  # go-kosu ci image
+  "gcr.io/kosu-io/go-kosu-ci:$SHORT_SHA",
+  "gcr.io/kosu-io/go-kosu-ci:latest",
+
+  # general nodejs ci image
+  "gcr.io/kosu-io/node-ci:$SHORT_SHA",
+  "gcr.io/kosu-io/node-ci:latest",
+]
