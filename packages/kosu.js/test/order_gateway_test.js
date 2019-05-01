@@ -1,6 +1,5 @@
-const OrderGateway = require('../src/OrderGateway').default;
+const { OrderGateway } = require('../src/OrderGateway');
 const OrderGatewayContract = require('@kosu/system-contracts').contracts.OrderGateway;
-
 
 describe('OrderGateway', () => {
   let orderGateway;
