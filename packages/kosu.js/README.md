@@ -1,3 +1,3 @@
 # `@kosu/kosu.js`
 
-_Coming soon..._
+_Coming soon!_
