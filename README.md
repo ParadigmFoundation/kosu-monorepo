@@ -1,4 +1,4 @@
-# `kosu-monorepo`
+# ![kosu-monorepo](https://files.slack.com/files-pri/T7RN6D56W-FJB8GF7EG/kosu_logo.png)
 
 This monorepo contains the packages that make up the reference implementation of the Kosu protocol, alongside supporting packages.
 
