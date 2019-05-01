@@ -11,8 +11,6 @@ steps:
       - yarn
       - yarn build
       - yarn test:ci
-    when:
-      event: pull_request
 
 services:
 - name: kosu-ganache
@@ -20,6 +18,17 @@ services:
   pull: always
   ports:
   - 8545
+
+trigger:
+  event:
+  - pull_request
+  changeset:
+    includes: [
+      packages/connect/**/*.*,
+      packages/dev-images/**/*.*,
+      packages/kosu-sdk-contracts/**/*.*,
+      packages/kosu-system-contracts/**/*.*
+    ]
 
 ---
 kind: pipeline
@@ -34,8 +43,15 @@ steps:
     commands:
     - cd packages/go-kosu
     - make ci
-    when:
-      event: pull_request
+
+trigger:
+  event:
+    - pull_request
+  changeset:
+    includes: [
+      packages/go-kosu/**/*.*,
+      packages/kosu-system-contracts/**/*.*
+    ]
 
 # UNTESTED
 # ---
