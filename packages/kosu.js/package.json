@@ -42,11 +42,13 @@
     "@types/chai": "^4.1.7",
     "@types/ethereumjs-abi": "^0.6.3",
     "@types/ethereumjs-util": "^5.2.0",
+    "@types/expect": "^1.20.4",
     "@types/mocha": "^5.2.6",
     "chai": "^4.2.0",
     "chai-as-promised": "^7.1.1",
     "mocha": "^6.1.4",
     "simple-mock": "^0.8.0",
+    "ts-mocha": "^6.0.0",
     "ts-node": "^8.1.0",
     "tslint": "^5.16.0",
     "typescript": "^3.4.5"
