@@ -1,0 +1,52 @@
+package types
+
+import (
+	"crypto"
+	"math/rand"
+	"time"
+
+	"golang.org/x/crypto/ed25519"
+)
+
+var randReader = rand.New(
+	rand.NewSource(
+		time.Now().Unix(),
+	),
+)
+
+// NewKeyPair returns a new public/private key pair.
+func NewKeyPair() ([]byte, []byte, error) {
+	return ed25519.GenerateKey(randReader)
+}
+
+// SignedTransaction returns the Signed version of the transaction.
+func (tx *Transaction) SignedTransaction(priv []byte) (*SignedTransaction, error) {
+	buf, err := EncodeTx(tx)
+	if err != nil {
+		return nil, err
+	}
+
+	sig, err := ed25519.PrivateKey(priv).Sign(randReader, buf, crypto.Hash(0))
+	if err != nil {
+		return nil, err
+	}
+
+	pub := ed25519.PrivateKey(priv).Public().(ed25519.PublicKey)
+	return &SignedTransaction{
+		Tx: tx,
+		Proof: &Proof{
+			PublicKey: pub,
+			Signature: sig,
+		},
+	}, nil
+}
+
+// Verify verifies that the proof is valid
+func (tx *SignedTransaction) Verify() (bool, error) {
+	buf, err := EncodeTx(tx.Tx)
+	if err != nil {
+		return false, err
+	}
+
+	return ed25519.Verify(tx.Proof.PublicKey, buf, tx.Proof.Signature), nil
+}

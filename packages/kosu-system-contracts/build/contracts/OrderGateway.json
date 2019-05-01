@@ -1,0 +1,2944 @@
+{
+  "contractName": "OrderGateway",
+  "abi": [
+    {
+      "inputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "constructor",
+      "signature": "constructor"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "name": "subContract",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "name": "id",
+          "type": "string"
+        }
+      ],
+      "name": "Participation",
+      "type": "event",
+      "signature": "0xf15a3385be02cfe1791afaad3d508c690aa213a79121494cc38bcf2468daece4"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "subContract",
+          "type": "address"
+        },
+        {
+          "name": "id",
+          "type": "string"
+        },
+        {
+          "name": "makerData",
+          "type": "bytes32[]"
+        },
+        {
+          "name": "takerData",
+          "type": "bytes32[]"
+        }
+      ],
+      "name": "participate",
+      "outputs": [
+        {
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function",
+      "signature": "0x7cd49414"
+    },
+    {
+      "constant": true,
+      "inputs": [
+        {
+          "name": "subContract",
+          "type": "address"
+        },
+        {
+          "name": "makerData",
+          "type": "bytes32[]"
+        }
+      ],
+      "name": "isValid",
+      "outputs": [
+        {
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function",
+      "signature": "0x0fc92096"
+    },
+    {
+      "constant": true,
+      "inputs": [
+        {
+          "name": "subContract",
+          "type": "address"
+        },
+        {
+          "name": "makerData",
+          "type": "bytes32[]"
+        }
+      ],
+      "name": "amountRemaining",
+      "outputs": [
+        {
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function",
+      "signature": "0x1e7fa008"
+    },
+    {
+      "constant": true,
+      "inputs": [
+        {
+          "name": "subContract",
+          "type": "address"
+        }
+      ],
+      "name": "makerArguments",
+      "outputs": [
+        {
+          "name": "",
+          "type": "string"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function",
+      "signature": "0x48042e0b"
+    },
+    {
+      "constant": true,
+      "inputs": [
+        {
+          "name": "subContract",
+          "type": "address"
+        }
+      ],
+      "name": "takerArguments",
+      "outputs": [
+        {
+          "name": "",
+          "type": "string"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function",
+      "signature": "0x0a516805"
+    }
+  ],
+  "metadata": "{\"compiler\":{\"version\":\"0.5.0+commit.1d4f565a\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"constant\":true,\"inputs\":[{\"name\":\"subContract\",\"type\":\"address\"}],\"name\":\"takerArguments\",\"outputs\":[{\"name\":\"\",\"type\":\"string\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[{\"name\":\"subContract\",\"type\":\"address\"},{\"name\":\"makerData\",\"type\":\"bytes32[]\"}],\"name\":\"isValid\",\"outputs\":[{\"name\":\"\",\"type\":\"bool\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[{\"name\":\"subContract\",\"type\":\"address\"},{\"name\":\"makerData\",\"type\":\"bytes32[]\"}],\"name\":\"amountRemaining\",\"outputs\":[{\"name\":\"\",\"type\":\"uint256\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[{\"name\":\"subContract\",\"type\":\"address\"}],\"name\":\"makerArguments\",\"outputs\":[{\"name\":\"\",\"type\":\"string\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"subContract\",\"type\":\"address\"},{\"name\":\"id\",\"type\":\"string\"},{\"name\":\"makerData\",\"type\":\"bytes32[]\"},{\"name\":\"takerData\",\"type\":\"bytes32[]\"}],\"name\":\"participate\",\"outputs\":[{\"name\":\"\",\"type\":\"bool\"}],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"constructor\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"name\":\"subContract\",\"type\":\"address\"},{\"indexed\":false,\"name\":\"id\",\"type\":\"string\"}],\"name\":\"Participation\",\"type\":\"event\"}],\"devdoc\":{\"author\":\"Freydal\",\"methods\":{\"amountRemaining(address,bytes32[])\":{\"details\":\"Calls amountRemaining on provided subContract.\",\"params\":{\"makerData\":\"Encoded maker values for Order encoded based on the makerArguments.\",\"subContract\":\"Address of contract implementing the SubContract interface.\"},\"return\":\"Quantity of available asset for Order encoded in makerData.\"},\"constructor\":{\"details\":\"Creates a new OrderGateway\"},\"isValid(address,bytes32[])\":{\"details\":\"Calls isValid on provided subContract.\",\"params\":{\"makerData\":\"Encoded maker values for Order encoded based on the makerArguments.\",\"subContract\":\"Address of contract implementing the SubContract interface.\"},\"return\":\"Boolean representing the validity of makerData\"},\"makerArguments(address)\":{\"details\":\"Calls makerArguments on provided subContract.\",\"params\":{\"subContract\":\"Address of contract implementing the SubContract interface.\"},\"return\":\"String encoded JSON representation of subContract maker arguments\"},\"participate(address,string,bytes32[],bytes32[])\":{\"details\":\"Calls participate on the provided subContract.\",\"params\":{\"id\":\"Id of order assigned when passing though the OrderStream\",\"makerData\":\"Encoded maker values for Order encoded based on the makerArguments.\",\"subContract\":\"Address of contract implementing the SubContract interface.\",\"takerData\":\"Encoded taker values for Order encoded based on the takerArguments.\"},\"return\":\"Boolean representing success of transaction.\"},\"takerArguments(address)\":{\"details\":\"Calls takerArguments on provided subContract.\",\"params\":{\"subContract\":\"Address of contract implementing the SubContract interface.\"},\"return\":\"String encoded JSON representation of subContract taker arguments\"}},\"title\":\"OrderGateway\"},\"userdoc\":{\"methods\":{\"amountRemaining(address,bytes32[])\":{\"notice\":\"Calls amountRemaining on provided subContract.\"},\"constructor\":\"Creates a new OrderGateway\",\"isValid(address,bytes32[])\":{\"notice\":\"Calls isValid on provided subContract.\"},\"makerArguments(address)\":{\"notice\":\"Calls makerArguments on provided subContract.\"},\"participate(address,string,bytes32[],bytes32[])\":{\"notice\":\"Calls participate on the provided subContract.\"},\"takerArguments(address)\":{\"notice\":\"Calls takerArguments on provided subContract.\"}}}},\"settings\":{\"compilationTarget\":{\"/Users/hen/GitHub/kosu-monorepo/packages/solidity/kosu-system-contracts/contracts/external/OrderGateway.sol\":\"OrderGateway\"},\"evmVersion\":\"byzantium\",\"libraries\":{},\"optimizer\":{\"enabled\":true,\"runs\":200},\"remappings\":[]},\"sources\":{\"/Users/hen/GitHub/kosu-monorepo/packages/solidity/kosu-system-contracts/contracts/external/OrderGateway.sol\":{\"keccak256\":\"0x406b46fb6ef53ca705924d0dcabf354b98d94690423d729a1ef75c68d03d6449\",\"urls\":[\"bzzr://13703901e49fb9a26167389a937493646caaf76c02274a4004db20185f24d26b\"]},\"@kosu/subcontract-sdk/contracts/SubContract.sol\":{\"keccak256\":\"0xb8bc4e80187a78d1a05dc95bf6976c4550e6c016ad02a1652cf0988ef5d2ea41\",\"urls\":[\"bzzr://f157685e4f864c763776d85cabcbe11da20027d06414717c2d1ce13a40b38730\"]}},\"version\":1}",
+  "bytecode": "0x608060405234801561001057600080fd5b506108b4806100206000396000f3fe6080604052600436106100535763ffffffff60e060020a6000350416630a51680581146100585780630fc92096146101005780631e7fa008146101d457806348042e0b146102a65780637cd49414146102d9575b600080fd5b34801561006457600080fd5b5061008b6004803603602081101561007b57600080fd5b5035600160a060020a03166104a4565b6040805160208082528351818301528351919283929083019185019080838360005b838110156100c55781810151838201526020016100ad565b50505050905090810190601f1680156100f25780820380516001836020036101000a031916815260200191505b509250505060405180910390f35b34801561010c57600080fd5b506101c06004803603604081101561012357600080fd5b600160a060020a03823516919081019060408101602082013564010000000081111561014e57600080fd5b82018360208201111561016057600080fd5b8035906020019184602083028401116401000000008311171561018257600080fd5b919080806020026020016040519081016040528093929190818152602001838360200280828437600092019190915250929550610570945050505050565b604080519115158252519081900360200190f35b3480156101e057600080fd5b50610294600480360360408110156101f757600080fd5b600160a060020a03823516919081019060408101602082013564010000000081111561022257600080fd5b82018360208201111561023457600080fd5b8035906020019184602083028401116401000000008311171561025657600080fd5b91908080602002602001604051908101604052809392919081815260200183836020028082843760009201919091525092955061062a945050505050565b60408051918252519081900360200190f35b3480156102b257600080fd5b5061008b600480360360208110156102c957600080fd5b5035600160a060020a031661068d565b3480156102e557600080fd5b506101c0600480360360808110156102fc57600080fd5b600160a060020a03823516919081019060408101602082013564010000000081111561032757600080fd5b82018360208201111561033957600080fd5b8035906020019184600183028401116401000000008311171561035b57600080fd5b91908080601f01602080910402602001604051908101604052809392919081815260200183838082843760009201919091525092959493602081019350359150506401000000008111156103ae57600080fd5b8201836020820111156103c057600080fd5b803590602001918460208302840111640100000000831117156103e257600080fd5b919080806020026020016040519081016040528093929190818152602001838360200280828437600092019190915250929594936020810193503591505064010000000081111561043257600080fd5b82018360208201111561044457600080fd5b8035906020019184602083028401116401000000008311171561046657600080fd5b9190808060200260200160405190810160405280939291908181526020018383602002808284376000920191909152509295506106cb945050505050565b606081600160a060020a031663df3ee9b76040518163ffffffff1660e060020a02815260040160006040518083038186803b1580156104e257600080fd5b505afa1580156104f6573d6000803e3d6000fd5b505050506040513d6000823e601f3d908101601f19168201604052602081101561051f57600080fd5b81019080805164010000000081111561053757600080fd5b8201602081018481111561054a57600080fd5b815164010000000081118282018710171561056457600080fd5b50909695505050505050565b600082600160a060020a031663f56f516f836040518263ffffffff1660e060020a0281526004018080602001828103825283818151815260200191508051906020019060200280838360005b838110156105d45781810151838201526020016105bc565b505050509050019250505060206040518083038186803b1580156105f757600080fd5b505afa15801561060b573d6000803e3d6000fd5b505050506040513d602081101561062157600080fd5b50519392505050565b600082600160a060020a03166339d396b5836040518263ffffffff1660e060020a028152600401808060200182810382528381815181526020019150805190602001906020028083836000838110156105d45781810151838201526020016105bc565b606081600160a060020a031663e79d2ed86040518163ffffffff1660e060020a02815260040160006040518083038186803b1580156104e257600080fd5b600084600160a060020a03167ff15a3385be02cfe1791afaad3d508c690aa213a79121494cc38bcf2468daece4856040518080602001828103825283818151815260200191508051906020019080838360005b8381101561073657818101518382015260200161071e565b50505050905090810190601f1680156107635780820380516001836020036101000a031916815260200191505b509250505060405180910390a2604080517fea9960d800000000000000000000000000000000000000000000000000000000815260048101918252845160448201528451600160a060020a0388169263ea9960d892879287929182916024820191606401906020808801910280838360005b838110156107ed5781810151838201526020016107d5565b50505050905001838103825284818151815260200191508051906020019060200280838360005b8381101561082c578181015183820152602001610814565b50505050905001945050505050602060405180830381600087803b15801561085357600080fd5b505af1158015610867573d6000803e3d6000fd5b505050506040513d602081101561087d57600080fd5b50519594505050505056fea165627a7a723058203101f8a1fd001f8a2722eb643a265741d911140b475fe5a1164e3e630de7c8cc0029",
+  "deployedBytecode": "0x6080604052600436106100535763ffffffff60e060020a6000350416630a51680581146100585780630fc92096146101005780631e7fa008146101d457806348042e0b146102a65780637cd49414146102d9575b600080fd5b34801561006457600080fd5b5061008b6004803603602081101561007b57600080fd5b5035600160a060020a03166104a4565b6040805160208082528351818301528351919283929083019185019080838360005b838110156100c55781810151838201526020016100ad565b50505050905090810190601f1680156100f25780820380516001836020036101000a031916815260200191505b509250505060405180910390f35b34801561010c57600080fd5b506101c06004803603604081101561012357600080fd5b600160a060020a03823516919081019060408101602082013564010000000081111561014e57600080fd5b82018360208201111561016057600080fd5b8035906020019184602083028401116401000000008311171561018257600080fd5b919080806020026020016040519081016040528093929190818152602001838360200280828437600092019190915250929550610570945050505050565b604080519115158252519081900360200190f35b3480156101e057600080fd5b50610294600480360360408110156101f757600080fd5b600160a060020a03823516919081019060408101602082013564010000000081111561022257600080fd5b82018360208201111561023457600080fd5b8035906020019184602083028401116401000000008311171561025657600080fd5b91908080602002602001604051908101604052809392919081815260200183836020028082843760009201919091525092955061062a945050505050565b60408051918252519081900360200190f35b3480156102b257600080fd5b5061008b600480360360208110156102c957600080fd5b5035600160a060020a031661068d565b3480156102e557600080fd5b506101c0600480360360808110156102fc57600080fd5b600160a060020a03823516919081019060408101602082013564010000000081111561032757600080fd5b82018360208201111561033957600080fd5b8035906020019184600183028401116401000000008311171561035b57600080fd5b91908080601f01602080910402602001604051908101604052809392919081815260200183838082843760009201919091525092959493602081019350359150506401000000008111156103ae57600080fd5b8201836020820111156103c057600080fd5b803590602001918460208302840111640100000000831117156103e257600080fd5b919080806020026020016040519081016040528093929190818152602001838360200280828437600092019190915250929594936020810193503591505064010000000081111561043257600080fd5b82018360208201111561044457600080fd5b8035906020019184602083028401116401000000008311171561046657600080fd5b9190808060200260200160405190810160405280939291908181526020018383602002808284376000920191909152509295506106cb945050505050565b606081600160a060020a031663df3ee9b76040518163ffffffff1660e060020a02815260040160006040518083038186803b1580156104e257600080fd5b505afa1580156104f6573d6000803e3d6000fd5b505050506040513d6000823e601f3d908101601f19168201604052602081101561051f57600080fd5b81019080805164010000000081111561053757600080fd5b8201602081018481111561054a57600080fd5b815164010000000081118282018710171561056457600080fd5b50909695505050505050565b600082600160a060020a031663f56f516f836040518263ffffffff1660e060020a0281526004018080602001828103825283818151815260200191508051906020019060200280838360005b838110156105d45781810151838201526020016105bc565b505050509050019250505060206040518083038186803b1580156105f757600080fd5b505afa15801561060b573d6000803e3d6000fd5b505050506040513d602081101561062157600080fd5b50519392505050565b600082600160a060020a03166339d396b5836040518263ffffffff1660e060020a028152600401808060200182810382528381815181526020019150805190602001906020028083836000838110156105d45781810151838201526020016105bc565b606081600160a060020a031663e79d2ed86040518163ffffffff1660e060020a02815260040160006040518083038186803b1580156104e257600080fd5b600084600160a060020a03167ff15a3385be02cfe1791afaad3d508c690aa213a79121494cc38bcf2468daece4856040518080602001828103825283818151815260200191508051906020019080838360005b8381101561073657818101518382015260200161071e565b50505050905090810190601f1680156107635780820380516001836020036101000a031916815260200191505b509250505060405180910390a2604080517fea9960d800000000000000000000000000000000000000000000000000000000815260048101918252845160448201528451600160a060020a0388169263ea9960d892879287929182916024820191606401906020808801910280838360005b838110156107ed5781810151838201526020016107d5565b50505050905001838103825284818151815260200191508051906020019060200280838360005b8381101561082c578181015183820152602001610814565b50505050905001945050505050602060405180830381600087803b15801561085357600080fd5b505af1158015610867573d6000803e3d6000fd5b505050506040513d602081101561087d57600080fd5b50519594505050505056fea165627a7a723058203101f8a1fd001f8a2722eb643a265741d911140b475fe5a1164e3e630de7c8cc0029",
+  "sourceMap": "131:3014:3:-;;;316:28;8:9:-1;5:2;;;30:1;27;20:12;5:2;316:28:3;131:3014;;;;;;",
+  "deployedSourceMap": "131:3014:3:-;;;;;;;;;-1:-1:-1;;;131:3014:3;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;2997:146;;8:9:-1;5:2;;;30:1;27;20:12;5:2;2997:146:3;;;;;;13:2:-1;8:3;5:11;2:2;;;29:1;26;19:12;2:2;-1:-1;2997:146:3;-1:-1:-1;;;;;2997:146:3;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;8:100:-1;33:3;30:1;27:10;8:100;;;90:11;;;84:18;71:11;;;64:39;52:2;45:10;8:100;;;12:14;2997:146:3;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;1517:160;;8:9:-1;5:2;;;30:1;27;20:12;5:2;1517:160:3;;;;;;13:2:-1;8:3;5:11;2:2;;;29:1;26;19:12;2:2;-1:-1;;;;;1517:160:3;;;;;;;;;;;;;;;21:11:-1;5:28;;2:2;;;46:1;43;36:12;2:2;1517:160:3;;35:9:-1;28:4;12:14;8:25;5:40;2:2;;;58:1;55;48:12;2:2;1517:160:3;;;;;;101:9:-1;95:2;81:12;77:21;67:8;63:36;60:51;39:11;25:12;22:29;11:108;8:2;;;132:1;129;122:12;8:2;1517:160:3;;;;;;;;;;;;;;;;;;;;;;;;;;;;;30:3:-1;22:6;14;1:33;99:1;81:16;;74:27;;;;-1:-1;1517:160:3;;-1:-1:-1;1517:160:3;;-1:-1:-1;;;;;1517:160:3;;;;;;;;;;;;;;;;;;;2069:176;;8:9:-1;5:2;;;30:1;27;20:12;5:2;2069:176:3;;;;;;13:2:-1;8:3;5:11;2:2;;;29:1;26;19:12;2:2;-1:-1;;;;;2069:176:3;;;;;;;;;;;;;;;21:11:-1;5:28;;2:2;;;46:1;43;36:12;2:2;2069:176:3;;35:9:-1;28:4;12:14;8:25;5:40;2:2;;;58:1;55;48:12;2:2;2069:176:3;;;;;;101:9:-1;95:2;81:12;77:21;67:8;63:36;60:51;39:11;25:12;22:29;11:108;8:2;;;132:1;129;122:12;8:2;2069:176:3;;;;;;;;;;;;;;;;;;;;;;;;;;;;;30:3:-1;22:6;14;1:33;99:1;81:16;;74:27;;;;-1:-1;2069:176:3;;-1:-1:-1;2069:176:3;;-1:-1:-1;;;;;2069:176:3;;;;;;;;;;;;;;;;;2548:146;;8:9:-1;5:2;;;30:1;27;20:12;5:2;2548:146:3;;;;;;13:2:-1;8:3;5:11;2:2;;;29:1;26;19:12;2:2;-1:-1;2548:146:3;-1:-1:-1;;;;;2548:146:3;;;889:265;;8:9:-1;5:2;;;30:1;27;20:12;5:2;889:265:3;;;;;;13:3:-1;8;5:12;2:2;;;30:1;27;20:12;2:2;-1:-1;;;;;889:265:3;;;;;;;;;;;;;;;21:11:-1;5:28;;2:2;;;46:1;43;36:12;2:2;889:265:3;;35:9:-1;28:4;12:14;8:25;5:40;2:2;;;58:1;55;48:12;2:2;889:265:3;;;;;;100:9:-1;95:1;81:12;77:20;67:8;63:35;60:50;39:11;25:12;22:29;11:107;8:2;;;131:1;128;121:12;8:2;889:265:3;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;30:3:-1;22:6;14;1:33;99:1;81:16;;74:27;;;;-1:-1;889:265:3;;;;;;;;-1:-1:-1;889:265:3;;-1:-1:-1;;21:11;5:28;;2:2;;;46:1;43;36:12;2:2;889:265:3;;35:9:-1;28:4;12:14;8:25;5:40;2:2;;;58:1;55;48:12;2:2;889:265:3;;;;;;101:9:-1;95:2;81:12;77:21;67:8;63:36;60:51;39:11;25:12;22:29;11:108;8:2;;;132:1;129;122:12;8:2;889:265:3;;;;;;;;;;;;;;;;;;;;;;;;;;;;;30:3:-1;22:6;14;1:33;99:1;81:16;;74:27;;;;-1:-1;889:265:3;;;;;;;;-1:-1:-1;889:265:3;;-1:-1:-1;;21:11;5:28;;2:2;;;46:1;43;36:12;2:2;889:265:3;;35:9:-1;28:4;12:14;8:25;5:40;2:2;;;58:1;55;48:12;2:2;889:265:3;;;;;;101:9:-1;95:2;81:12;77:21;67:8;63:36;60:51;39:11;25:12;22:29;11:108;8:2;;;132:1;129;122:12;8:2;889:265:3;;;;;;;;;;;;;;;;;;;;;;;;;;;;;30:3:-1;22:6;14;1:33;99:1;81:16;;74:27;;;;-1:-1;889:265:3;;-1:-1:-1;889:265:3;;-1:-1:-1;;;;;889:265:3;2997:146;3063:13;3107:11;-1:-1:-1;;;;;3095:39:3;;:41;;;;;-1:-1:-1;;;3095:41:3;;;;;;;;;;;;;;;;8:9:-1;5:2;;;30:1;27;20:12;5:2;3095:41:3;;;;8:9:-1;5:2;;;45:16;42:1;39;24:38;77:16;74:1;67:27;5:2;3095:41:3;;;;;;39:16:-1;36:1;17:17;2:54;101:4;3095:41:3;80:15:-1;;;-1:-1;;76:31;65:43;;120:4;113:20;13:2;5:11;;2:2;;;29:1;26;19:12;2:2;3095:41:3;;;;;;19:11:-1;14:3;11:20;8:2;;;44:1;41;34:12;8:2;62:21;;123:4;114:14;;138:31;;;135:2;;;182:1;179;172:12;135:2;213:10;;261:11;244:29;;285:43;;;282:58;-1:-1;233:115;230:2;;;361:1;358;351:12;230:2;-1:-1;3095:41:3;;2997:146;-1:-1:-1;;;;;;2997:146:3:o;1517:160::-;1604:4;1639:11;-1:-1:-1;;;;;1627:32:3;;1660:9;1627:43;;;;;-1:-1:-1;;;1627:43:3;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;23:1:-1;8:100;33:3;30:1;27:10;8:100;;;90:11;;;84:18;71:11;;;64:39;52:2;45:10;8:100;;;12:14;1627:43:3;;;;;;;;;;;;;;;;;;;;;8:9:-1;5:2;;;30:1;27;20:12;5:2;1627:43:3;;;;8:9:-1;5:2;;;45:16;42:1;39;24:38;77:16;74:1;67:27;5:2;1627:43:3;;;;;;;13:2:-1;8:3;5:11;2:2;;;29:1;26;19:12;2:2;-1:-1;1627:43:3;;1517:160;-1:-1:-1;;;1517:160:3:o;2069:176::-;2164:4;2199:11;-1:-1:-1;;;;;2187:40:3;;2228:9;2187:51;;;;;-1:-1:-1;;;2187:51:3;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;23:1:-1;33:3;30:1;27:10;8:100;;;90:11;;;84:18;71:11;;;64:39;52:2;45:10;8:100;;2548:146:3;2614:13;2658:11;-1:-1:-1;;;;;2646:39:3;;:41;;;;;-1:-1:-1;;;2646:41:3;;;;;;;;;;;;;;;;8:9:-1;5:2;;;30:1;27;20:12;889:265:3;1021:4;1056:11;-1:-1:-1;;;;;1042:30:3;;1069:2;1042:30;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;23:1:-1;8:100;33:3;30:1;27:10;8:100;;;90:11;;;84:18;71:11;;;64:39;52:2;45:10;8:100;;;12:14;1042:30:3;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;1089:58;;;;;;;;;;;;;;;;;;;;-1:-1:-1;;;;;1089:36:3;;;;;1126:9;;1137;;1089:58;;;;;;;;;;;;;;;;;;;;8:100:-1;33:3;30:1;27:10;8:100;;;90:11;;;84:18;71:11;;;64:39;52:2;45:10;8:100;;;12:14;1089:58:3;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;23:1:-1;8:100;33:3;30:1;27:10;8:100;;;90:11;;;84:18;71:11;;;64:39;52:2;45:10;8:100;;;12:14;1089:58:3;;;;;;;;;;;;;;;;;;;;;;;;8:9:-1;5:2;;;30:1;27;20:12;5:2;1089:58:3;;;;8:9:-1;5:2;;;45:16;42:1;39;24:38;77:16;74:1;67:27;5:2;1089:58:3;;;;;;;13:2:-1;8:3;5:11;2:2;;;29:1;26;19:12;2:2;-1:-1;1089:58:3;;889:265;-1:-1:-1;;;;;889:265:3:o",
+  "source": "pragma solidity ^0.5.0;\n\nimport \"@kosu/subcontract-sdk/contracts/SubContract.sol\";\n\n/** @title OrderGateway\n    @author Freydal\n*/\ncontract OrderGateway {\n\n    event Participation(address indexed subContract, string id);\n\n    /** @dev Creates a new OrderGateway\n        @notice Creates a new OrderGateway\n    */\n    constructor() public {\n    }\n\n    /** @dev Calls participate on the provided subContract.\n        @notice Calls participate on the provided subContract.\n        @param subContract Address of contract implementing the SubContract interface.\n        @param id Id of order assigned when passing though the OrderStream\n        @param makerData Encoded maker values for Order encoded based on the makerArguments.\n        @param takerData Encoded taker values for Order encoded based on the takerArguments.\n        @return Boolean representing success of transaction.\n    */\n    function participate(address subContract, string memory id, bytes32[] memory makerData, bytes32[] memory takerData) public returns (bool) {\n        emit Participation(subContract, id);\n        return SubContract(subContract).participate(makerData, takerData);\n    }\n\n    /** @dev Calls isValid on provided subContract.\n        @notice Calls isValid on provided subContract.\n        @param subContract Address of contract implementing the SubContract interface.\n        @param makerData Encoded maker values for Order encoded based on the makerArguments.\n        @return Boolean representing the validity of makerData\n    */\n    function isValid(address subContract, bytes32[] memory makerData) public view returns (bool) {\n        return SubContract(subContract).isValid(makerData);\n    }\n\n    /** @dev Calls amountRemaining on provided subContract.\n        @notice Calls amountRemaining on provided subContract.\n        @param subContract Address of contract implementing the SubContract interface.\n        @param makerData Encoded maker values for Order encoded based on the makerArguments.\n        @return Quantity of available asset for Order encoded in makerData.\n    */\n    function amountRemaining(address subContract, bytes32[] memory makerData) public view returns (uint) {\n        return SubContract(subContract).amountRemaining(makerData);\n    }\n\n    /** @dev Calls makerArguments on provided subContract.\n        @notice Calls makerArguments on provided subContract.\n        @param subContract Address of contract implementing the SubContract interface.\n        @return String encoded JSON representation of subContract maker arguments\n    */\n    function makerArguments(address subContract) public view returns (string memory) {\n        return SubContract(subContract).makerArguments();\n    }\n\n    /** @dev Calls takerArguments on provided subContract.\n        @notice Calls takerArguments on provided subContract.\n        @param subContract Address of contract implementing the SubContract interface.\n        @return String encoded JSON representation of subContract taker arguments\n    */\n    function takerArguments(address subContract) public view returns (string memory) {\n        return SubContract(subContract).takerArguments();\n    }\n}\n",
+  "sourcePath": "/Users/hen/GitHub/kosu-monorepo/packages/solidity/kosu-system-contracts/contracts/external/OrderGateway.sol",
+  "ast": {
+    "absolutePath": "/Users/hen/GitHub/kosu-monorepo/packages/solidity/kosu-system-contracts/contracts/external/OrderGateway.sol",
+    "exportedSymbols": {
+      "OrderGateway": [
+        247
+      ]
+    },
+    "id": 248,
+    "nodeType": "SourceUnit",
+    "nodes": [
+      {
+        "id": 142,
+        "literals": [
+          "solidity",
+          "^",
+          "0.5",
+          ".0"
+        ],
+        "nodeType": "PragmaDirective",
+        "src": "0:23:3"
+      },
+      {
+        "absolutePath": "@kosu/subcontract-sdk/contracts/SubContract.sol",
+        "file": "@kosu/subcontract-sdk/contracts/SubContract.sol",
+        "id": 143,
+        "nodeType": "ImportDirective",
+        "scope": 248,
+        "sourceUnit": 3994,
+        "src": "25:57:3",
+        "symbolAliases": [],
+        "unitAlias": ""
+      },
+      {
+        "baseContracts": [],
+        "contractDependencies": [],
+        "contractKind": "contract",
+        "documentation": "@title OrderGateway\n@author Freydal",
+        "fullyImplemented": true,
+        "id": 247,
+        "linearizedBaseContracts": [
+          247
+        ],
+        "name": "OrderGateway",
+        "nodeType": "ContractDefinition",
+        "nodes": [
+          {
+            "anonymous": false,
+            "documentation": null,
+            "id": 149,
+            "name": "Participation",
+            "nodeType": "EventDefinition",
+            "parameters": {
+              "id": 148,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 145,
+                  "indexed": true,
+                  "name": "subContract",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 149,
+                  "src": "180:27:3",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 144,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "180:7:3",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 147,
+                  "indexed": false,
+                  "name": "id",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 149,
+                  "src": "209:9:3",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_string_memory_ptr",
+                    "typeString": "string"
+                  },
+                  "typeName": {
+                    "id": 146,
+                    "name": "string",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "209:6:3",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_string_storage_ptr",
+                      "typeString": "string"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "179:40:3"
+            },
+            "src": "160:60:3"
+          },
+          {
+            "body": {
+              "id": 152,
+              "nodeType": "Block",
+              "src": "337:7:3",
+              "statements": []
+            },
+            "documentation": "@dev Creates a new OrderGateway\n@notice Creates a new OrderGateway",
+            "id": 153,
+            "implemented": true,
+            "kind": "constructor",
+            "modifiers": [],
+            "name": "",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 150,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "327:2:3"
+            },
+            "returnParameters": {
+              "id": 151,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "337:0:3"
+            },
+            "scope": 247,
+            "src": "316:28:3",
+            "stateMutability": "nonpayable",
+            "superFunction": null,
+            "visibility": "public"
+          },
+          {
+            "body": {
+              "id": 181,
+              "nodeType": "Block",
+              "src": "1027:127:3",
+              "statements": [
+                {
+                  "eventCall": {
+                    "argumentTypes": null,
+                    "arguments": [
+                      {
+                        "argumentTypes": null,
+                        "id": 169,
+                        "name": "subContract",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 155,
+                        "src": "1056:11:3",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_address",
+                          "typeString": "address"
+                        }
+                      },
+                      {
+                        "argumentTypes": null,
+                        "id": 170,
+                        "name": "id",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 157,
+                        "src": "1069:2:3",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_string_memory_ptr",
+                          "typeString": "string memory"
+                        }
+                      }
+                    ],
+                    "expression": {
+                      "argumentTypes": [
+                        {
+                          "typeIdentifier": "t_address",
+                          "typeString": "address"
+                        },
+                        {
+                          "typeIdentifier": "t_string_memory_ptr",
+                          "typeString": "string memory"
+                        }
+                      ],
+                      "id": 168,
+                      "name": "Participation",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 149,
+                      "src": "1042:13:3",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_function_event_nonpayable$_t_address_$_t_string_memory_ptr_$returns$__$",
+                        "typeString": "function (address,string memory)"
+                      }
+                    },
+                    "id": 171,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "kind": "functionCall",
+                    "lValueRequested": false,
+                    "names": [],
+                    "nodeType": "FunctionCall",
+                    "src": "1042:30:3",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_tuple$__$",
+                      "typeString": "tuple()"
+                    }
+                  },
+                  "id": 172,
+                  "nodeType": "EmitStatement",
+                  "src": "1037:35:3"
+                },
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "arguments": [
+                      {
+                        "argumentTypes": null,
+                        "id": 177,
+                        "name": "makerData",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 160,
+                        "src": "1126:9:3",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_array$_t_bytes32_$dyn_memory_ptr",
+                          "typeString": "bytes32[] memory"
+                        }
+                      },
+                      {
+                        "argumentTypes": null,
+                        "id": 178,
+                        "name": "takerData",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 163,
+                        "src": "1137:9:3",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_array$_t_bytes32_$dyn_memory_ptr",
+                          "typeString": "bytes32[] memory"
+                        }
+                      }
+                    ],
+                    "expression": {
+                      "argumentTypes": [
+                        {
+                          "typeIdentifier": "t_array$_t_bytes32_$dyn_memory_ptr",
+                          "typeString": "bytes32[] memory"
+                        },
+                        {
+                          "typeIdentifier": "t_array$_t_bytes32_$dyn_memory_ptr",
+                          "typeString": "bytes32[] memory"
+                        }
+                      ],
+                      "expression": {
+                        "argumentTypes": null,
+                        "arguments": [
+                          {
+                            "argumentTypes": null,
+                            "id": 174,
+                            "name": "subContract",
+                            "nodeType": "Identifier",
+                            "overloadedDeclarations": [],
+                            "referencedDeclaration": 155,
+                            "src": "1101:11:3",
+                            "typeDescriptions": {
+                              "typeIdentifier": "t_address",
+                              "typeString": "address"
+                            }
+                          }
+                        ],
+                        "expression": {
+                          "argumentTypes": [
+                            {
+                              "typeIdentifier": "t_address",
+                              "typeString": "address"
+                            }
+                          ],
+                          "id": 173,
+                          "name": "SubContract",
+                          "nodeType": "Identifier",
+                          "overloadedDeclarations": [],
+                          "referencedDeclaration": 3993,
+                          "src": "1089:11:3",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_type$_t_contract$_SubContract_$3993_$",
+                            "typeString": "type(contract SubContract)"
+                          }
+                        },
+                        "id": 175,
+                        "isConstant": false,
+                        "isLValue": false,
+                        "isPure": false,
+                        "kind": "typeConversion",
+                        "lValueRequested": false,
+                        "names": [],
+                        "nodeType": "FunctionCall",
+                        "src": "1089:24:3",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_contract$_SubContract_$3993",
+                          "typeString": "contract SubContract"
+                        }
+                      },
+                      "id": 176,
+                      "isConstant": false,
+                      "isLValue": false,
+                      "isPure": false,
+                      "lValueRequested": false,
+                      "memberName": "participate",
+                      "nodeType": "MemberAccess",
+                      "referencedDeclaration": 3992,
+                      "src": "1089:36:3",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_function_external_nonpayable$_t_array$_t_bytes32_$dyn_memory_ptr_$_t_array$_t_bytes32_$dyn_memory_ptr_$returns$_t_bool_$",
+                        "typeString": "function (bytes32[] memory,bytes32[] memory) external returns (bool)"
+                      }
+                    },
+                    "id": 179,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "kind": "functionCall",
+                    "lValueRequested": false,
+                    "names": [],
+                    "nodeType": "FunctionCall",
+                    "src": "1089:58:3",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bool",
+                      "typeString": "bool"
+                    }
+                  },
+                  "functionReturnParameters": 167,
+                  "id": 180,
+                  "nodeType": "Return",
+                  "src": "1082:65:3"
+                }
+              ]
+            },
+            "documentation": "@dev Calls participate on the provided subContract.\n@notice Calls participate on the provided subContract.\n@param subContract Address of contract implementing the SubContract interface.\n@param id Id of order assigned when passing though the OrderStream\n@param makerData Encoded maker values for Order encoded based on the makerArguments.\n@param takerData Encoded taker values for Order encoded based on the takerArguments.\n@return Boolean representing success of transaction.",
+            "id": 182,
+            "implemented": true,
+            "kind": "function",
+            "modifiers": [],
+            "name": "participate",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 164,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 155,
+                  "name": "subContract",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 182,
+                  "src": "910:19:3",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 154,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "910:7:3",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 157,
+                  "name": "id",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 182,
+                  "src": "931:16:3",
+                  "stateVariable": false,
+                  "storageLocation": "memory",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_string_memory_ptr",
+                    "typeString": "string"
+                  },
+                  "typeName": {
+                    "id": 156,
+                    "name": "string",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "931:6:3",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_string_storage_ptr",
+                      "typeString": "string"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 160,
+                  "name": "makerData",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 182,
+                  "src": "949:26:3",
+                  "stateVariable": false,
+                  "storageLocation": "memory",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_array$_t_bytes32_$dyn_memory_ptr",
+                    "typeString": "bytes32[]"
+                  },
+                  "typeName": {
+                    "baseType": {
+                      "id": 158,
+                      "name": "bytes32",
+                      "nodeType": "ElementaryTypeName",
+                      "src": "949:7:3",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_bytes32",
+                        "typeString": "bytes32"
+                      }
+                    },
+                    "id": 159,
+                    "length": null,
+                    "nodeType": "ArrayTypeName",
+                    "src": "949:9:3",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_array$_t_bytes32_$dyn_storage_ptr",
+                      "typeString": "bytes32[]"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 163,
+                  "name": "takerData",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 182,
+                  "src": "977:26:3",
+                  "stateVariable": false,
+                  "storageLocation": "memory",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_array$_t_bytes32_$dyn_memory_ptr",
+                    "typeString": "bytes32[]"
+                  },
+                  "typeName": {
+                    "baseType": {
+                      "id": 161,
+                      "name": "bytes32",
+                      "nodeType": "ElementaryTypeName",
+                      "src": "977:7:3",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_bytes32",
+                        "typeString": "bytes32"
+                      }
+                    },
+                    "id": 162,
+                    "length": null,
+                    "nodeType": "ArrayTypeName",
+                    "src": "977:9:3",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_array$_t_bytes32_$dyn_storage_ptr",
+                      "typeString": "bytes32[]"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "909:95:3"
+            },
+            "returnParameters": {
+              "id": 167,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 166,
+                  "name": "",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 182,
+                  "src": "1021:4:3",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bool",
+                    "typeString": "bool"
+                  },
+                  "typeName": {
+                    "id": 165,
+                    "name": "bool",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1021:4:3",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bool",
+                      "typeString": "bool"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "1020:6:3"
+            },
+            "scope": 247,
+            "src": "889:265:3",
+            "stateMutability": "nonpayable",
+            "superFunction": null,
+            "visibility": "public"
+          },
+          {
+            "body": {
+              "id": 199,
+              "nodeType": "Block",
+              "src": "1610:67:3",
+              "statements": [
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "arguments": [
+                      {
+                        "argumentTypes": null,
+                        "id": 196,
+                        "name": "makerData",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 187,
+                        "src": "1660:9:3",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_array$_t_bytes32_$dyn_memory_ptr",
+                          "typeString": "bytes32[] memory"
+                        }
+                      }
+                    ],
+                    "expression": {
+                      "argumentTypes": [
+                        {
+                          "typeIdentifier": "t_array$_t_bytes32_$dyn_memory_ptr",
+                          "typeString": "bytes32[] memory"
+                        }
+                      ],
+                      "expression": {
+                        "argumentTypes": null,
+                        "arguments": [
+                          {
+                            "argumentTypes": null,
+                            "id": 193,
+                            "name": "subContract",
+                            "nodeType": "Identifier",
+                            "overloadedDeclarations": [],
+                            "referencedDeclaration": 184,
+                            "src": "1639:11:3",
+                            "typeDescriptions": {
+                              "typeIdentifier": "t_address",
+                              "typeString": "address"
+                            }
+                          }
+                        ],
+                        "expression": {
+                          "argumentTypes": [
+                            {
+                              "typeIdentifier": "t_address",
+                              "typeString": "address"
+                            }
+                          ],
+                          "id": 192,
+                          "name": "SubContract",
+                          "nodeType": "Identifier",
+                          "overloadedDeclarations": [],
+                          "referencedDeclaration": 3993,
+                          "src": "1627:11:3",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_type$_t_contract$_SubContract_$3993_$",
+                            "typeString": "type(contract SubContract)"
+                          }
+                        },
+                        "id": 194,
+                        "isConstant": false,
+                        "isLValue": false,
+                        "isPure": false,
+                        "kind": "typeConversion",
+                        "lValueRequested": false,
+                        "names": [],
+                        "nodeType": "FunctionCall",
+                        "src": "1627:24:3",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_contract$_SubContract_$3993",
+                          "typeString": "contract SubContract"
+                        }
+                      },
+                      "id": 195,
+                      "isConstant": false,
+                      "isLValue": false,
+                      "isPure": false,
+                      "lValueRequested": false,
+                      "memberName": "isValid",
+                      "nodeType": "MemberAccess",
+                      "referencedDeclaration": 3973,
+                      "src": "1627:32:3",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_function_external_view$_t_array$_t_bytes32_$dyn_memory_ptr_$returns$_t_bool_$",
+                        "typeString": "function (bytes32[] memory) view external returns (bool)"
+                      }
+                    },
+                    "id": 197,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "kind": "functionCall",
+                    "lValueRequested": false,
+                    "names": [],
+                    "nodeType": "FunctionCall",
+                    "src": "1627:43:3",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bool",
+                      "typeString": "bool"
+                    }
+                  },
+                  "functionReturnParameters": 191,
+                  "id": 198,
+                  "nodeType": "Return",
+                  "src": "1620:50:3"
+                }
+              ]
+            },
+            "documentation": "@dev Calls isValid on provided subContract.\n@notice Calls isValid on provided subContract.\n@param subContract Address of contract implementing the SubContract interface.\n@param makerData Encoded maker values for Order encoded based on the makerArguments.\n@return Boolean representing the validity of makerData",
+            "id": 200,
+            "implemented": true,
+            "kind": "function",
+            "modifiers": [],
+            "name": "isValid",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 188,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 184,
+                  "name": "subContract",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 200,
+                  "src": "1534:19:3",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 183,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1534:7:3",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 187,
+                  "name": "makerData",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 200,
+                  "src": "1555:26:3",
+                  "stateVariable": false,
+                  "storageLocation": "memory",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_array$_t_bytes32_$dyn_memory_ptr",
+                    "typeString": "bytes32[]"
+                  },
+                  "typeName": {
+                    "baseType": {
+                      "id": 185,
+                      "name": "bytes32",
+                      "nodeType": "ElementaryTypeName",
+                      "src": "1555:7:3",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_bytes32",
+                        "typeString": "bytes32"
+                      }
+                    },
+                    "id": 186,
+                    "length": null,
+                    "nodeType": "ArrayTypeName",
+                    "src": "1555:9:3",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_array$_t_bytes32_$dyn_storage_ptr",
+                      "typeString": "bytes32[]"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "1533:49:3"
+            },
+            "returnParameters": {
+              "id": 191,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 190,
+                  "name": "",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 200,
+                  "src": "1604:4:3",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bool",
+                    "typeString": "bool"
+                  },
+                  "typeName": {
+                    "id": 189,
+                    "name": "bool",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1604:4:3",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bool",
+                      "typeString": "bool"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "1603:6:3"
+            },
+            "scope": 247,
+            "src": "1517:160:3",
+            "stateMutability": "view",
+            "superFunction": null,
+            "visibility": "public"
+          },
+          {
+            "body": {
+              "id": 217,
+              "nodeType": "Block",
+              "src": "2170:75:3",
+              "statements": [
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "arguments": [
+                      {
+                        "argumentTypes": null,
+                        "id": 214,
+                        "name": "makerData",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 205,
+                        "src": "2228:9:3",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_array$_t_bytes32_$dyn_memory_ptr",
+                          "typeString": "bytes32[] memory"
+                        }
+                      }
+                    ],
+                    "expression": {
+                      "argumentTypes": [
+                        {
+                          "typeIdentifier": "t_array$_t_bytes32_$dyn_memory_ptr",
+                          "typeString": "bytes32[] memory"
+                        }
+                      ],
+                      "expression": {
+                        "argumentTypes": null,
+                        "arguments": [
+                          {
+                            "argumentTypes": null,
+                            "id": 211,
+                            "name": "subContract",
+                            "nodeType": "Identifier",
+                            "overloadedDeclarations": [],
+                            "referencedDeclaration": 202,
+                            "src": "2199:11:3",
+                            "typeDescriptions": {
+                              "typeIdentifier": "t_address",
+                              "typeString": "address"
+                            }
+                          }
+                        ],
+                        "expression": {
+                          "argumentTypes": [
+                            {
+                              "typeIdentifier": "t_address",
+                              "typeString": "address"
+                            }
+                          ],
+                          "id": 210,
+                          "name": "SubContract",
+                          "nodeType": "Identifier",
+                          "overloadedDeclarations": [],
+                          "referencedDeclaration": 3993,
+                          "src": "2187:11:3",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_type$_t_contract$_SubContract_$3993_$",
+                            "typeString": "type(contract SubContract)"
+                          }
+                        },
+                        "id": 212,
+                        "isConstant": false,
+                        "isLValue": false,
+                        "isPure": false,
+                        "kind": "typeConversion",
+                        "lValueRequested": false,
+                        "names": [],
+                        "nodeType": "FunctionCall",
+                        "src": "2187:24:3",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_contract$_SubContract_$3993",
+                          "typeString": "contract SubContract"
+                        }
+                      },
+                      "id": 213,
+                      "isConstant": false,
+                      "isLValue": false,
+                      "isPure": false,
+                      "lValueRequested": false,
+                      "memberName": "amountRemaining",
+                      "nodeType": "MemberAccess",
+                      "referencedDeclaration": 3981,
+                      "src": "2187:40:3",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_function_external_view$_t_array$_t_bytes32_$dyn_memory_ptr_$returns$_t_uint256_$",
+                        "typeString": "function (bytes32[] memory) view external returns (uint256)"
+                      }
+                    },
+                    "id": 215,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "kind": "functionCall",
+                    "lValueRequested": false,
+                    "names": [],
+                    "nodeType": "FunctionCall",
+                    "src": "2187:51:3",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "functionReturnParameters": 209,
+                  "id": 216,
+                  "nodeType": "Return",
+                  "src": "2180:58:3"
+                }
+              ]
+            },
+            "documentation": "@dev Calls amountRemaining on provided subContract.\n@notice Calls amountRemaining on provided subContract.\n@param subContract Address of contract implementing the SubContract interface.\n@param makerData Encoded maker values for Order encoded based on the makerArguments.\n@return Quantity of available asset for Order encoded in makerData.",
+            "id": 218,
+            "implemented": true,
+            "kind": "function",
+            "modifiers": [],
+            "name": "amountRemaining",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 206,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 202,
+                  "name": "subContract",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 218,
+                  "src": "2094:19:3",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 201,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "2094:7:3",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 205,
+                  "name": "makerData",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 218,
+                  "src": "2115:26:3",
+                  "stateVariable": false,
+                  "storageLocation": "memory",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_array$_t_bytes32_$dyn_memory_ptr",
+                    "typeString": "bytes32[]"
+                  },
+                  "typeName": {
+                    "baseType": {
+                      "id": 203,
+                      "name": "bytes32",
+                      "nodeType": "ElementaryTypeName",
+                      "src": "2115:7:3",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_bytes32",
+                        "typeString": "bytes32"
+                      }
+                    },
+                    "id": 204,
+                    "length": null,
+                    "nodeType": "ArrayTypeName",
+                    "src": "2115:9:3",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_array$_t_bytes32_$dyn_storage_ptr",
+                      "typeString": "bytes32[]"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "2093:49:3"
+            },
+            "returnParameters": {
+              "id": 209,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 208,
+                  "name": "",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 218,
+                  "src": "2164:4:3",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 207,
+                    "name": "uint",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "2164:4:3",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "2163:6:3"
+            },
+            "scope": 247,
+            "src": "2069:176:3",
+            "stateMutability": "view",
+            "superFunction": null,
+            "visibility": "public"
+          },
+          {
+            "body": {
+              "id": 231,
+              "nodeType": "Block",
+              "src": "2629:65:3",
+              "statements": [
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "arguments": [],
+                    "expression": {
+                      "argumentTypes": [],
+                      "expression": {
+                        "argumentTypes": null,
+                        "arguments": [
+                          {
+                            "argumentTypes": null,
+                            "id": 226,
+                            "name": "subContract",
+                            "nodeType": "Identifier",
+                            "overloadedDeclarations": [],
+                            "referencedDeclaration": 220,
+                            "src": "2658:11:3",
+                            "typeDescriptions": {
+                              "typeIdentifier": "t_address",
+                              "typeString": "address"
+                            }
+                          }
+                        ],
+                        "expression": {
+                          "argumentTypes": [
+                            {
+                              "typeIdentifier": "t_address",
+                              "typeString": "address"
+                            }
+                          ],
+                          "id": 225,
+                          "name": "SubContract",
+                          "nodeType": "Identifier",
+                          "overloadedDeclarations": [],
+                          "referencedDeclaration": 3993,
+                          "src": "2646:11:3",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_type$_t_contract$_SubContract_$3993_$",
+                            "typeString": "type(contract SubContract)"
+                          }
+                        },
+                        "id": 227,
+                        "isConstant": false,
+                        "isLValue": false,
+                        "isPure": false,
+                        "kind": "typeConversion",
+                        "lValueRequested": false,
+                        "names": [],
+                        "nodeType": "FunctionCall",
+                        "src": "2646:24:3",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_contract$_SubContract_$3993",
+                          "typeString": "contract SubContract"
+                        }
+                      },
+                      "id": 228,
+                      "isConstant": false,
+                      "isLValue": false,
+                      "isPure": false,
+                      "lValueRequested": false,
+                      "memberName": "makerArguments",
+                      "nodeType": "MemberAccess",
+                      "referencedDeclaration": 3960,
+                      "src": "2646:39:3",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_function_external_view$__$returns$_t_string_memory_ptr_$",
+                        "typeString": "function () view external returns (string memory)"
+                      }
+                    },
+                    "id": 229,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "kind": "functionCall",
+                    "lValueRequested": false,
+                    "names": [],
+                    "nodeType": "FunctionCall",
+                    "src": "2646:41:3",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_string_memory_ptr",
+                      "typeString": "string memory"
+                    }
+                  },
+                  "functionReturnParameters": 224,
+                  "id": 230,
+                  "nodeType": "Return",
+                  "src": "2639:48:3"
+                }
+              ]
+            },
+            "documentation": "@dev Calls makerArguments on provided subContract.\n@notice Calls makerArguments on provided subContract.\n@param subContract Address of contract implementing the SubContract interface.\n@return String encoded JSON representation of subContract maker arguments",
+            "id": 232,
+            "implemented": true,
+            "kind": "function",
+            "modifiers": [],
+            "name": "makerArguments",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 221,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 220,
+                  "name": "subContract",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 232,
+                  "src": "2572:19:3",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 219,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "2572:7:3",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "2571:21:3"
+            },
+            "returnParameters": {
+              "id": 224,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 223,
+                  "name": "",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 232,
+                  "src": "2614:13:3",
+                  "stateVariable": false,
+                  "storageLocation": "memory",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_string_memory_ptr",
+                    "typeString": "string"
+                  },
+                  "typeName": {
+                    "id": 222,
+                    "name": "string",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "2614:6:3",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_string_storage_ptr",
+                      "typeString": "string"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "2613:15:3"
+            },
+            "scope": 247,
+            "src": "2548:146:3",
+            "stateMutability": "view",
+            "superFunction": null,
+            "visibility": "public"
+          },
+          {
+            "body": {
+              "id": 245,
+              "nodeType": "Block",
+              "src": "3078:65:3",
+              "statements": [
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "arguments": [],
+                    "expression": {
+                      "argumentTypes": [],
+                      "expression": {
+                        "argumentTypes": null,
+                        "arguments": [
+                          {
+                            "argumentTypes": null,
+                            "id": 240,
+                            "name": "subContract",
+                            "nodeType": "Identifier",
+                            "overloadedDeclarations": [],
+                            "referencedDeclaration": 234,
+                            "src": "3107:11:3",
+                            "typeDescriptions": {
+                              "typeIdentifier": "t_address",
+                              "typeString": "address"
+                            }
+                          }
+                        ],
+                        "expression": {
+                          "argumentTypes": [
+                            {
+                              "typeIdentifier": "t_address",
+                              "typeString": "address"
+                            }
+                          ],
+                          "id": 239,
+                          "name": "SubContract",
+                          "nodeType": "Identifier",
+                          "overloadedDeclarations": [],
+                          "referencedDeclaration": 3993,
+                          "src": "3095:11:3",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_type$_t_contract$_SubContract_$3993_$",
+                            "typeString": "type(contract SubContract)"
+                          }
+                        },
+                        "id": 241,
+                        "isConstant": false,
+                        "isLValue": false,
+                        "isPure": false,
+                        "kind": "typeConversion",
+                        "lValueRequested": false,
+                        "names": [],
+                        "nodeType": "FunctionCall",
+                        "src": "3095:24:3",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_contract$_SubContract_$3993",
+                          "typeString": "contract SubContract"
+                        }
+                      },
+                      "id": 242,
+                      "isConstant": false,
+                      "isLValue": false,
+                      "isPure": false,
+                      "lValueRequested": false,
+                      "memberName": "takerArguments",
+                      "nodeType": "MemberAccess",
+                      "referencedDeclaration": 3965,
+                      "src": "3095:39:3",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_function_external_view$__$returns$_t_string_memory_ptr_$",
+                        "typeString": "function () view external returns (string memory)"
+                      }
+                    },
+                    "id": 243,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "kind": "functionCall",
+                    "lValueRequested": false,
+                    "names": [],
+                    "nodeType": "FunctionCall",
+                    "src": "3095:41:3",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_string_memory_ptr",
+                      "typeString": "string memory"
+                    }
+                  },
+                  "functionReturnParameters": 238,
+                  "id": 244,
+                  "nodeType": "Return",
+                  "src": "3088:48:3"
+                }
+              ]
+            },
+            "documentation": "@dev Calls takerArguments on provided subContract.\n@notice Calls takerArguments on provided subContract.\n@param subContract Address of contract implementing the SubContract interface.\n@return String encoded JSON representation of subContract taker arguments",
+            "id": 246,
+            "implemented": true,
+            "kind": "function",
+            "modifiers": [],
+            "name": "takerArguments",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 235,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 234,
+                  "name": "subContract",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 246,
+                  "src": "3021:19:3",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 233,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "3021:7:3",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "3020:21:3"
+            },
+            "returnParameters": {
+              "id": 238,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 237,
+                  "name": "",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 246,
+                  "src": "3063:13:3",
+                  "stateVariable": false,
+                  "storageLocation": "memory",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_string_memory_ptr",
+                    "typeString": "string"
+                  },
+                  "typeName": {
+                    "id": 236,
+                    "name": "string",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "3063:6:3",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_string_storage_ptr",
+                      "typeString": "string"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "3062:15:3"
+            },
+            "scope": 247,
+            "src": "2997:146:3",
+            "stateMutability": "view",
+            "superFunction": null,
+            "visibility": "public"
+          }
+        ],
+        "scope": 248,
+        "src": "131:3014:3"
+      }
+    ],
+    "src": "0:3146:3"
+  },
+  "legacyAST": {
+    "absolutePath": "/Users/hen/GitHub/kosu-monorepo/packages/solidity/kosu-system-contracts/contracts/external/OrderGateway.sol",
+    "exportedSymbols": {
+      "OrderGateway": [
+        247
+      ]
+    },
+    "id": 248,
+    "nodeType": "SourceUnit",
+    "nodes": [
+      {
+        "id": 142,
+        "literals": [
+          "solidity",
+          "^",
+          "0.5",
+          ".0"
+        ],
+        "nodeType": "PragmaDirective",
+        "src": "0:23:3"
+      },
+      {
+        "absolutePath": "@kosu/subcontract-sdk/contracts/SubContract.sol",
+        "file": "@kosu/subcontract-sdk/contracts/SubContract.sol",
+        "id": 143,
+        "nodeType": "ImportDirective",
+        "scope": 248,
+        "sourceUnit": 3994,
+        "src": "25:57:3",
+        "symbolAliases": [],
+        "unitAlias": ""
+      },
+      {
+        "baseContracts": [],
+        "contractDependencies": [],
+        "contractKind": "contract",
+        "documentation": "@title OrderGateway\n@author Freydal",
+        "fullyImplemented": true,
+        "id": 247,
+        "linearizedBaseContracts": [
+          247
+        ],
+        "name": "OrderGateway",
+        "nodeType": "ContractDefinition",
+        "nodes": [
+          {
+            "anonymous": false,
+            "documentation": null,
+            "id": 149,
+            "name": "Participation",
+            "nodeType": "EventDefinition",
+            "parameters": {
+              "id": 148,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 145,
+                  "indexed": true,
+                  "name": "subContract",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 149,
+                  "src": "180:27:3",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 144,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "180:7:3",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 147,
+                  "indexed": false,
+                  "name": "id",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 149,
+                  "src": "209:9:3",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_string_memory_ptr",
+                    "typeString": "string"
+                  },
+                  "typeName": {
+                    "id": 146,
+                    "name": "string",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "209:6:3",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_string_storage_ptr",
+                      "typeString": "string"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "179:40:3"
+            },
+            "src": "160:60:3"
+          },
+          {
+            "body": {
+              "id": 152,
+              "nodeType": "Block",
+              "src": "337:7:3",
+              "statements": []
+            },
+            "documentation": "@dev Creates a new OrderGateway\n@notice Creates a new OrderGateway",
+            "id": 153,
+            "implemented": true,
+            "kind": "constructor",
+            "modifiers": [],
+            "name": "",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 150,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "327:2:3"
+            },
+            "returnParameters": {
+              "id": 151,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "337:0:3"
+            },
+            "scope": 247,
+            "src": "316:28:3",
+            "stateMutability": "nonpayable",
+            "superFunction": null,
+            "visibility": "public"
+          },
+          {
+            "body": {
+              "id": 181,
+              "nodeType": "Block",
+              "src": "1027:127:3",
+              "statements": [
+                {
+                  "eventCall": {
+                    "argumentTypes": null,
+                    "arguments": [
+                      {
+                        "argumentTypes": null,
+                        "id": 169,
+                        "name": "subContract",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 155,
+                        "src": "1056:11:3",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_address",
+                          "typeString": "address"
+                        }
+                      },
+                      {
+                        "argumentTypes": null,
+                        "id": 170,
+                        "name": "id",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 157,
+                        "src": "1069:2:3",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_string_memory_ptr",
+                          "typeString": "string memory"
+                        }
+                      }
+                    ],
+                    "expression": {
+                      "argumentTypes": [
+                        {
+                          "typeIdentifier": "t_address",
+                          "typeString": "address"
+                        },
+                        {
+                          "typeIdentifier": "t_string_memory_ptr",
+                          "typeString": "string memory"
+                        }
+                      ],
+                      "id": 168,
+                      "name": "Participation",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 149,
+                      "src": "1042:13:3",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_function_event_nonpayable$_t_address_$_t_string_memory_ptr_$returns$__$",
+                        "typeString": "function (address,string memory)"
+                      }
+                    },
+                    "id": 171,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "kind": "functionCall",
+                    "lValueRequested": false,
+                    "names": [],
+                    "nodeType": "FunctionCall",
+                    "src": "1042:30:3",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_tuple$__$",
+                      "typeString": "tuple()"
+                    }
+                  },
+                  "id": 172,
+                  "nodeType": "EmitStatement",
+                  "src": "1037:35:3"
+                },
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "arguments": [
+                      {
+                        "argumentTypes": null,
+                        "id": 177,
+                        "name": "makerData",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 160,
+                        "src": "1126:9:3",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_array$_t_bytes32_$dyn_memory_ptr",
+                          "typeString": "bytes32[] memory"
+                        }
+                      },
+                      {
+                        "argumentTypes": null,
+                        "id": 178,
+                        "name": "takerData",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 163,
+                        "src": "1137:9:3",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_array$_t_bytes32_$dyn_memory_ptr",
+                          "typeString": "bytes32[] memory"
+                        }
+                      }
+                    ],
+                    "expression": {
+                      "argumentTypes": [
+                        {
+                          "typeIdentifier": "t_array$_t_bytes32_$dyn_memory_ptr",
+                          "typeString": "bytes32[] memory"
+                        },
+                        {
+                          "typeIdentifier": "t_array$_t_bytes32_$dyn_memory_ptr",
+                          "typeString": "bytes32[] memory"
+                        }
+                      ],
+                      "expression": {
+                        "argumentTypes": null,
+                        "arguments": [
+                          {
+                            "argumentTypes": null,
+                            "id": 174,
+                            "name": "subContract",
+                            "nodeType": "Identifier",
+                            "overloadedDeclarations": [],
+                            "referencedDeclaration": 155,
+                            "src": "1101:11:3",
+                            "typeDescriptions": {
+                              "typeIdentifier": "t_address",
+                              "typeString": "address"
+                            }
+                          }
+                        ],
+                        "expression": {
+                          "argumentTypes": [
+                            {
+                              "typeIdentifier": "t_address",
+                              "typeString": "address"
+                            }
+                          ],
+                          "id": 173,
+                          "name": "SubContract",
+                          "nodeType": "Identifier",
+                          "overloadedDeclarations": [],
+                          "referencedDeclaration": 3993,
+                          "src": "1089:11:3",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_type$_t_contract$_SubContract_$3993_$",
+                            "typeString": "type(contract SubContract)"
+                          }
+                        },
+                        "id": 175,
+                        "isConstant": false,
+                        "isLValue": false,
+                        "isPure": false,
+                        "kind": "typeConversion",
+                        "lValueRequested": false,
+                        "names": [],
+                        "nodeType": "FunctionCall",
+                        "src": "1089:24:3",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_contract$_SubContract_$3993",
+                          "typeString": "contract SubContract"
+                        }
+                      },
+                      "id": 176,
+                      "isConstant": false,
+                      "isLValue": false,
+                      "isPure": false,
+                      "lValueRequested": false,
+                      "memberName": "participate",
+                      "nodeType": "MemberAccess",
+                      "referencedDeclaration": 3992,
+                      "src": "1089:36:3",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_function_external_nonpayable$_t_array$_t_bytes32_$dyn_memory_ptr_$_t_array$_t_bytes32_$dyn_memory_ptr_$returns$_t_bool_$",
+                        "typeString": "function (bytes32[] memory,bytes32[] memory) external returns (bool)"
+                      }
+                    },
+                    "id": 179,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "kind": "functionCall",
+                    "lValueRequested": false,
+                    "names": [],
+                    "nodeType": "FunctionCall",
+                    "src": "1089:58:3",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bool",
+                      "typeString": "bool"
+                    }
+                  },
+                  "functionReturnParameters": 167,
+                  "id": 180,
+                  "nodeType": "Return",
+                  "src": "1082:65:3"
+                }
+              ]
+            },
+            "documentation": "@dev Calls participate on the provided subContract.\n@notice Calls participate on the provided subContract.\n@param subContract Address of contract implementing the SubContract interface.\n@param id Id of order assigned when passing though the OrderStream\n@param makerData Encoded maker values for Order encoded based on the makerArguments.\n@param takerData Encoded taker values for Order encoded based on the takerArguments.\n@return Boolean representing success of transaction.",
+            "id": 182,
+            "implemented": true,
+            "kind": "function",
+            "modifiers": [],
+            "name": "participate",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 164,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 155,
+                  "name": "subContract",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 182,
+                  "src": "910:19:3",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 154,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "910:7:3",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 157,
+                  "name": "id",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 182,
+                  "src": "931:16:3",
+                  "stateVariable": false,
+                  "storageLocation": "memory",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_string_memory_ptr",
+                    "typeString": "string"
+                  },
+                  "typeName": {
+                    "id": 156,
+                    "name": "string",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "931:6:3",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_string_storage_ptr",
+                      "typeString": "string"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 160,
+                  "name": "makerData",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 182,
+                  "src": "949:26:3",
+                  "stateVariable": false,
+                  "storageLocation": "memory",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_array$_t_bytes32_$dyn_memory_ptr",
+                    "typeString": "bytes32[]"
+                  },
+                  "typeName": {
+                    "baseType": {
+                      "id": 158,
+                      "name": "bytes32",
+                      "nodeType": "ElementaryTypeName",
+                      "src": "949:7:3",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_bytes32",
+                        "typeString": "bytes32"
+                      }
+                    },
+                    "id": 159,
+                    "length": null,
+                    "nodeType": "ArrayTypeName",
+                    "src": "949:9:3",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_array$_t_bytes32_$dyn_storage_ptr",
+                      "typeString": "bytes32[]"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 163,
+                  "name": "takerData",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 182,
+                  "src": "977:26:3",
+                  "stateVariable": false,
+                  "storageLocation": "memory",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_array$_t_bytes32_$dyn_memory_ptr",
+                    "typeString": "bytes32[]"
+                  },
+                  "typeName": {
+                    "baseType": {
+                      "id": 161,
+                      "name": "bytes32",
+                      "nodeType": "ElementaryTypeName",
+                      "src": "977:7:3",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_bytes32",
+                        "typeString": "bytes32"
+                      }
+                    },
+                    "id": 162,
+                    "length": null,
+                    "nodeType": "ArrayTypeName",
+                    "src": "977:9:3",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_array$_t_bytes32_$dyn_storage_ptr",
+                      "typeString": "bytes32[]"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "909:95:3"
+            },
+            "returnParameters": {
+              "id": 167,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 166,
+                  "name": "",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 182,
+                  "src": "1021:4:3",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bool",
+                    "typeString": "bool"
+                  },
+                  "typeName": {
+                    "id": 165,
+                    "name": "bool",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1021:4:3",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bool",
+                      "typeString": "bool"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "1020:6:3"
+            },
+            "scope": 247,
+            "src": "889:265:3",
+            "stateMutability": "nonpayable",
+            "superFunction": null,
+            "visibility": "public"
+          },
+          {
+            "body": {
+              "id": 199,
+              "nodeType": "Block",
+              "src": "1610:67:3",
+              "statements": [
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "arguments": [
+                      {
+                        "argumentTypes": null,
+                        "id": 196,
+                        "name": "makerData",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 187,
+                        "src": "1660:9:3",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_array$_t_bytes32_$dyn_memory_ptr",
+                          "typeString": "bytes32[] memory"
+                        }
+                      }
+                    ],
+                    "expression": {
+                      "argumentTypes": [
+                        {
+                          "typeIdentifier": "t_array$_t_bytes32_$dyn_memory_ptr",
+                          "typeString": "bytes32[] memory"
+                        }
+                      ],
+                      "expression": {
+                        "argumentTypes": null,
+                        "arguments": [
+                          {
+                            "argumentTypes": null,
+                            "id": 193,
+                            "name": "subContract",
+                            "nodeType": "Identifier",
+                            "overloadedDeclarations": [],
+                            "referencedDeclaration": 184,
+                            "src": "1639:11:3",
+                            "typeDescriptions": {
+                              "typeIdentifier": "t_address",
+                              "typeString": "address"
+                            }
+                          }
+                        ],
+                        "expression": {
+                          "argumentTypes": [
+                            {
+                              "typeIdentifier": "t_address",
+                              "typeString": "address"
+                            }
+                          ],
+                          "id": 192,
+                          "name": "SubContract",
+                          "nodeType": "Identifier",
+                          "overloadedDeclarations": [],
+                          "referencedDeclaration": 3993,
+                          "src": "1627:11:3",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_type$_t_contract$_SubContract_$3993_$",
+                            "typeString": "type(contract SubContract)"
+                          }
+                        },
+                        "id": 194,
+                        "isConstant": false,
+                        "isLValue": false,
+                        "isPure": false,
+                        "kind": "typeConversion",
+                        "lValueRequested": false,
+                        "names": [],
+                        "nodeType": "FunctionCall",
+                        "src": "1627:24:3",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_contract$_SubContract_$3993",
+                          "typeString": "contract SubContract"
+                        }
+                      },
+                      "id": 195,
+                      "isConstant": false,
+                      "isLValue": false,
+                      "isPure": false,
+                      "lValueRequested": false,
+                      "memberName": "isValid",
+                      "nodeType": "MemberAccess",
+                      "referencedDeclaration": 3973,
+                      "src": "1627:32:3",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_function_external_view$_t_array$_t_bytes32_$dyn_memory_ptr_$returns$_t_bool_$",
+                        "typeString": "function (bytes32[] memory) view external returns (bool)"
+                      }
+                    },
+                    "id": 197,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "kind": "functionCall",
+                    "lValueRequested": false,
+                    "names": [],
+                    "nodeType": "FunctionCall",
+                    "src": "1627:43:3",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bool",
+                      "typeString": "bool"
+                    }
+                  },
+                  "functionReturnParameters": 191,
+                  "id": 198,
+                  "nodeType": "Return",
+                  "src": "1620:50:3"
+                }
+              ]
+            },
+            "documentation": "@dev Calls isValid on provided subContract.\n@notice Calls isValid on provided subContract.\n@param subContract Address of contract implementing the SubContract interface.\n@param makerData Encoded maker values for Order encoded based on the makerArguments.\n@return Boolean representing the validity of makerData",
+            "id": 200,
+            "implemented": true,
+            "kind": "function",
+            "modifiers": [],
+            "name": "isValid",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 188,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 184,
+                  "name": "subContract",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 200,
+                  "src": "1534:19:3",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 183,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1534:7:3",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 187,
+                  "name": "makerData",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 200,
+                  "src": "1555:26:3",
+                  "stateVariable": false,
+                  "storageLocation": "memory",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_array$_t_bytes32_$dyn_memory_ptr",
+                    "typeString": "bytes32[]"
+                  },
+                  "typeName": {
+                    "baseType": {
+                      "id": 185,
+                      "name": "bytes32",
+                      "nodeType": "ElementaryTypeName",
+                      "src": "1555:7:3",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_bytes32",
+                        "typeString": "bytes32"
+                      }
+                    },
+                    "id": 186,
+                    "length": null,
+                    "nodeType": "ArrayTypeName",
+                    "src": "1555:9:3",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_array$_t_bytes32_$dyn_storage_ptr",
+                      "typeString": "bytes32[]"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "1533:49:3"
+            },
+            "returnParameters": {
+              "id": 191,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 190,
+                  "name": "",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 200,
+                  "src": "1604:4:3",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bool",
+                    "typeString": "bool"
+                  },
+                  "typeName": {
+                    "id": 189,
+                    "name": "bool",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1604:4:3",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bool",
+                      "typeString": "bool"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "1603:6:3"
+            },
+            "scope": 247,
+            "src": "1517:160:3",
+            "stateMutability": "view",
+            "superFunction": null,
+            "visibility": "public"
+          },
+          {
+            "body": {
+              "id": 217,
+              "nodeType": "Block",
+              "src": "2170:75:3",
+              "statements": [
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "arguments": [
+                      {
+                        "argumentTypes": null,
+                        "id": 214,
+                        "name": "makerData",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 205,
+                        "src": "2228:9:3",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_array$_t_bytes32_$dyn_memory_ptr",
+                          "typeString": "bytes32[] memory"
+                        }
+                      }
+                    ],
+                    "expression": {
+                      "argumentTypes": [
+                        {
+                          "typeIdentifier": "t_array$_t_bytes32_$dyn_memory_ptr",
+                          "typeString": "bytes32[] memory"
+                        }
+                      ],
+                      "expression": {
+                        "argumentTypes": null,
+                        "arguments": [
+                          {
+                            "argumentTypes": null,
+                            "id": 211,
+                            "name": "subContract",
+                            "nodeType": "Identifier",
+                            "overloadedDeclarations": [],
+                            "referencedDeclaration": 202,
+                            "src": "2199:11:3",
+                            "typeDescriptions": {
+                              "typeIdentifier": "t_address",
+                              "typeString": "address"
+                            }
+                          }
+                        ],
+                        "expression": {
+                          "argumentTypes": [
+                            {
+                              "typeIdentifier": "t_address",
+                              "typeString": "address"
+                            }
+                          ],
+                          "id": 210,
+                          "name": "SubContract",
+                          "nodeType": "Identifier",
+                          "overloadedDeclarations": [],
+                          "referencedDeclaration": 3993,
+                          "src": "2187:11:3",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_type$_t_contract$_SubContract_$3993_$",
+                            "typeString": "type(contract SubContract)"
+                          }
+                        },
+                        "id": 212,
+                        "isConstant": false,
+                        "isLValue": false,
+                        "isPure": false,
+                        "kind": "typeConversion",
+                        "lValueRequested": false,
+                        "names": [],
+                        "nodeType": "FunctionCall",
+                        "src": "2187:24:3",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_contract$_SubContract_$3993",
+                          "typeString": "contract SubContract"
+                        }
+                      },
+                      "id": 213,
+                      "isConstant": false,
+                      "isLValue": false,
+                      "isPure": false,
+                      "lValueRequested": false,
+                      "memberName": "amountRemaining",
+                      "nodeType": "MemberAccess",
+                      "referencedDeclaration": 3981,
+                      "src": "2187:40:3",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_function_external_view$_t_array$_t_bytes32_$dyn_memory_ptr_$returns$_t_uint256_$",
+                        "typeString": "function (bytes32[] memory) view external returns (uint256)"
+                      }
+                    },
+                    "id": 215,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "kind": "functionCall",
+                    "lValueRequested": false,
+                    "names": [],
+                    "nodeType": "FunctionCall",
+                    "src": "2187:51:3",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "functionReturnParameters": 209,
+                  "id": 216,
+                  "nodeType": "Return",
+                  "src": "2180:58:3"
+                }
+              ]
+            },
+            "documentation": "@dev Calls amountRemaining on provided subContract.\n@notice Calls amountRemaining on provided subContract.\n@param subContract Address of contract implementing the SubContract interface.\n@param makerData Encoded maker values for Order encoded based on the makerArguments.\n@return Quantity of available asset for Order encoded in makerData.",
+            "id": 218,
+            "implemented": true,
+            "kind": "function",
+            "modifiers": [],
+            "name": "amountRemaining",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 206,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 202,
+                  "name": "subContract",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 218,
+                  "src": "2094:19:3",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 201,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "2094:7:3",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 205,
+                  "name": "makerData",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 218,
+                  "src": "2115:26:3",
+                  "stateVariable": false,
+                  "storageLocation": "memory",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_array$_t_bytes32_$dyn_memory_ptr",
+                    "typeString": "bytes32[]"
+                  },
+                  "typeName": {
+                    "baseType": {
+                      "id": 203,
+                      "name": "bytes32",
+                      "nodeType": "ElementaryTypeName",
+                      "src": "2115:7:3",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_bytes32",
+                        "typeString": "bytes32"
+                      }
+                    },
+                    "id": 204,
+                    "length": null,
+                    "nodeType": "ArrayTypeName",
+                    "src": "2115:9:3",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_array$_t_bytes32_$dyn_storage_ptr",
+                      "typeString": "bytes32[]"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "2093:49:3"
+            },
+            "returnParameters": {
+              "id": 209,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 208,
+                  "name": "",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 218,
+                  "src": "2164:4:3",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 207,
+                    "name": "uint",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "2164:4:3",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "2163:6:3"
+            },
+            "scope": 247,
+            "src": "2069:176:3",
+            "stateMutability": "view",
+            "superFunction": null,
+            "visibility": "public"
+          },
+          {
+            "body": {
+              "id": 231,
+              "nodeType": "Block",
+              "src": "2629:65:3",
+              "statements": [
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "arguments": [],
+                    "expression": {
+                      "argumentTypes": [],
+                      "expression": {
+                        "argumentTypes": null,
+                        "arguments": [
+                          {
+                            "argumentTypes": null,
+                            "id": 226,
+                            "name": "subContract",
+                            "nodeType": "Identifier",
+                            "overloadedDeclarations": [],
+                            "referencedDeclaration": 220,
+                            "src": "2658:11:3",
+                            "typeDescriptions": {
+                              "typeIdentifier": "t_address",
+                              "typeString": "address"
+                            }
+                          }
+                        ],
+                        "expression": {
+                          "argumentTypes": [
+                            {
+                              "typeIdentifier": "t_address",
+                              "typeString": "address"
+                            }
+                          ],
+                          "id": 225,
+                          "name": "SubContract",
+                          "nodeType": "Identifier",
+                          "overloadedDeclarations": [],
+                          "referencedDeclaration": 3993,
+                          "src": "2646:11:3",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_type$_t_contract$_SubContract_$3993_$",
+                            "typeString": "type(contract SubContract)"
+                          }
+                        },
+                        "id": 227,
+                        "isConstant": false,
+                        "isLValue": false,
+                        "isPure": false,
+                        "kind": "typeConversion",
+                        "lValueRequested": false,
+                        "names": [],
+                        "nodeType": "FunctionCall",
+                        "src": "2646:24:3",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_contract$_SubContract_$3993",
+                          "typeString": "contract SubContract"
+                        }
+                      },
+                      "id": 228,
+                      "isConstant": false,
+                      "isLValue": false,
+                      "isPure": false,
+                      "lValueRequested": false,
+                      "memberName": "makerArguments",
+                      "nodeType": "MemberAccess",
+                      "referencedDeclaration": 3960,
+                      "src": "2646:39:3",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_function_external_view$__$returns$_t_string_memory_ptr_$",
+                        "typeString": "function () view external returns (string memory)"
+                      }
+                    },
+                    "id": 229,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "kind": "functionCall",
+                    "lValueRequested": false,
+                    "names": [],
+                    "nodeType": "FunctionCall",
+                    "src": "2646:41:3",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_string_memory_ptr",
+                      "typeString": "string memory"
+                    }
+                  },
+                  "functionReturnParameters": 224,
+                  "id": 230,
+                  "nodeType": "Return",
+                  "src": "2639:48:3"
+                }
+              ]
+            },
+            "documentation": "@dev Calls makerArguments on provided subContract.\n@notice Calls makerArguments on provided subContract.\n@param subContract Address of contract implementing the SubContract interface.\n@return String encoded JSON representation of subContract maker arguments",
+            "id": 232,
+            "implemented": true,
+            "kind": "function",
+            "modifiers": [],
+            "name": "makerArguments",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 221,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 220,
+                  "name": "subContract",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 232,
+                  "src": "2572:19:3",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 219,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "2572:7:3",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "2571:21:3"
+            },
+            "returnParameters": {
+              "id": 224,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 223,
+                  "name": "",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 232,
+                  "src": "2614:13:3",
+                  "stateVariable": false,
+                  "storageLocation": "memory",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_string_memory_ptr",
+                    "typeString": "string"
+                  },
+                  "typeName": {
+                    "id": 222,
+                    "name": "string",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "2614:6:3",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_string_storage_ptr",
+                      "typeString": "string"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "2613:15:3"
+            },
+            "scope": 247,
+            "src": "2548:146:3",
+            "stateMutability": "view",
+            "superFunction": null,
+            "visibility": "public"
+          },
+          {
+            "body": {
+              "id": 245,
+              "nodeType": "Block",
+              "src": "3078:65:3",
+              "statements": [
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "arguments": [],
+                    "expression": {
+                      "argumentTypes": [],
+                      "expression": {
+                        "argumentTypes": null,
+                        "arguments": [
+                          {
+                            "argumentTypes": null,
+                            "id": 240,
+                            "name": "subContract",
+                            "nodeType": "Identifier",
+                            "overloadedDeclarations": [],
+                            "referencedDeclaration": 234,
+                            "src": "3107:11:3",
+                            "typeDescriptions": {
+                              "typeIdentifier": "t_address",
+                              "typeString": "address"
+                            }
+                          }
+                        ],
+                        "expression": {
+                          "argumentTypes": [
+                            {
+                              "typeIdentifier": "t_address",
+                              "typeString": "address"
+                            }
+                          ],
+                          "id": 239,
+                          "name": "SubContract",
+                          "nodeType": "Identifier",
+                          "overloadedDeclarations": [],
+                          "referencedDeclaration": 3993,
+                          "src": "3095:11:3",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_type$_t_contract$_SubContract_$3993_$",
+                            "typeString": "type(contract SubContract)"
+                          }
+                        },
+                        "id": 241,
+                        "isConstant": false,
+                        "isLValue": false,
+                        "isPure": false,
+                        "kind": "typeConversion",
+                        "lValueRequested": false,
+                        "names": [],
+                        "nodeType": "FunctionCall",
+                        "src": "3095:24:3",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_contract$_SubContract_$3993",
+                          "typeString": "contract SubContract"
+                        }
+                      },
+                      "id": 242,
+                      "isConstant": false,
+                      "isLValue": false,
+                      "isPure": false,
+                      "lValueRequested": false,
+                      "memberName": "takerArguments",
+                      "nodeType": "MemberAccess",
+                      "referencedDeclaration": 3965,
+                      "src": "3095:39:3",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_function_external_view$__$returns$_t_string_memory_ptr_$",
+                        "typeString": "function () view external returns (string memory)"
+                      }
+                    },
+                    "id": 243,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "kind": "functionCall",
+                    "lValueRequested": false,
+                    "names": [],
+                    "nodeType": "FunctionCall",
+                    "src": "3095:41:3",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_string_memory_ptr",
+                      "typeString": "string memory"
+                    }
+                  },
+                  "functionReturnParameters": 238,
+                  "id": 244,
+                  "nodeType": "Return",
+                  "src": "3088:48:3"
+                }
+              ]
+            },
+            "documentation": "@dev Calls takerArguments on provided subContract.\n@notice Calls takerArguments on provided subContract.\n@param subContract Address of contract implementing the SubContract interface.\n@return String encoded JSON representation of subContract taker arguments",
+            "id": 246,
+            "implemented": true,
+            "kind": "function",
+            "modifiers": [],
+            "name": "takerArguments",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 235,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 234,
+                  "name": "subContract",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 246,
+                  "src": "3021:19:3",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 233,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "3021:7:3",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "3020:21:3"
+            },
+            "returnParameters": {
+              "id": 238,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 237,
+                  "name": "",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 246,
+                  "src": "3063:13:3",
+                  "stateVariable": false,
+                  "storageLocation": "memory",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_string_memory_ptr",
+                    "typeString": "string"
+                  },
+                  "typeName": {
+                    "id": 236,
+                    "name": "string",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "3063:6:3",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_string_storage_ptr",
+                      "typeString": "string"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "3062:15:3"
+            },
+            "scope": 247,
+            "src": "2997:146:3",
+            "stateMutability": "view",
+            "superFunction": null,
+            "visibility": "public"
+          }
+        ],
+        "scope": 248,
+        "src": "131:3014:3"
+      }
+    ],
+    "src": "0:3146:3"
+  },
+  "compiler": {
+    "name": "solc",
+    "version": "0.5.0+commit.1d4f565a.Emscripten.clang"
+  },
+  "networks": {
+    "3": {
+      "events": {},
+      "links": {},
+      "address": "0xa417FC7f2C5Ef743b8Bc4c4bCD9E6FcE652C6237",
+      "transactionHash": "0x54d838cb8b1dddd264a9bdb5cd89001fbed9fe837fdeb588a81471830ff27c15"
+    },
+    "6174": {
+      "events": {},
+      "links": {},
+      "address": "0x2F3afeFF0914F33769cDFBf3fCF870C33b26C311",
+      "transactionHash": "0x9f15d9ae14dd98a06478480338a511bf2ade666b88573bae5cc0c77979fde8f6"
+    }
+  },
+  "schemaVersion": "3.0.6",
+  "updatedAt": "2019-04-27T00:44:58.387Z",
+  "devdoc": {
+    "author": "Freydal",
+    "methods": {
+      "amountRemaining(address,bytes32[])": {
+        "details": "Calls amountRemaining on provided subContract.",
+        "params": {
+          "makerData": "Encoded maker values for Order encoded based on the makerArguments.",
+          "subContract": "Address of contract implementing the SubContract interface."
+        },
+        "return": "Quantity of available asset for Order encoded in makerData."
+      },
+      "constructor": {
+        "details": "Creates a new OrderGateway"
+      },
+      "isValid(address,bytes32[])": {
+        "details": "Calls isValid on provided subContract.",
+        "params": {
+          "makerData": "Encoded maker values for Order encoded based on the makerArguments.",
+          "subContract": "Address of contract implementing the SubContract interface."
+        },
+        "return": "Boolean representing the validity of makerData"
+      },
+      "makerArguments(address)": {
+        "details": "Calls makerArguments on provided subContract.",
+        "params": {
+          "subContract": "Address of contract implementing the SubContract interface."
+        },
+        "return": "String encoded JSON representation of subContract maker arguments"
+      },
+      "participate(address,string,bytes32[],bytes32[])": {
+        "details": "Calls participate on the provided subContract.",
+        "params": {
+          "id": "Id of order assigned when passing though the OrderStream",
+          "makerData": "Encoded maker values for Order encoded based on the makerArguments.",
+          "subContract": "Address of contract implementing the SubContract interface.",
+          "takerData": "Encoded taker values for Order encoded based on the takerArguments."
+        },
+        "return": "Boolean representing success of transaction."
+      },
+      "takerArguments(address)": {
+        "details": "Calls takerArguments on provided subContract.",
+        "params": {
+          "subContract": "Address of contract implementing the SubContract interface."
+        },
+        "return": "String encoded JSON representation of subContract taker arguments"
+      }
+    },
+    "title": "OrderGateway"
+  },
+  "userdoc": {
+    "methods": {
+      "amountRemaining(address,bytes32[])": {
+        "notice": "Calls amountRemaining on provided subContract."
+      },
+      "constructor": "Creates a new OrderGateway",
+      "isValid(address,bytes32[])": {
+        "notice": "Calls isValid on provided subContract."
+      },
+      "makerArguments(address)": {
+        "notice": "Calls makerArguments on provided subContract."
+      },
+      "participate(address,string,bytes32[],bytes32[])": {
+        "notice": "Calls participate on the provided subContract."
+      },
+      "takerArguments(address)": {
+        "notice": "Calls takerArguments on provided subContract."
+      }
+    }
+  }
+}
