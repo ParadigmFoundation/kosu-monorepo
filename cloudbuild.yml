@@ -1,3 +1,6 @@
+# GCP Cloud Build Definition
+# - builds and uploads dev-images to GCR
+
 steps:
 
 # build and tag go-kosu ci image 
