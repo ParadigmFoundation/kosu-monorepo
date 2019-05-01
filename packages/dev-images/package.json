@@ -2,7 +2,6 @@
   "name": "@kosu/dev-images",
   "version": "0.0.2",
   "description": "Development and CI docker images and supporting scripts for Kosu.",
-  "main": "lib/index.js",
   "repository": "https://github.com/ParadigmFoundation/kosu-monorepo.git",
   "license": "CC0-1.0",
   "private": false,
