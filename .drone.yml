@@ -3,7 +3,8 @@ name: node-tests
 
 steps:
   - name: npm-projects
-    image: gcr.io/kosu-io/node-ci
+    image: gcr.io/kosu-io/node-ci:latest
+    pull: always
     environment:
       WEB3_URI: http://kosu-ganache:8545
     commands:
@@ -25,7 +26,8 @@ name: golang-tests
 
 steps:
   - name: go-kosu
-    image: gcr.io/kosu-io/go-kosu-ci
+    image: gcr.io/kosu-io/go-kosu-ci:latest
+    pull: always
     environment:
       ETHEREUM_TEST_ADDRESS: wss://ropsten.infura.io/ws
     commands:
