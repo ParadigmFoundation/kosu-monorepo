@@ -34,7 +34,7 @@ _This README is under construction._
 
 | Package |Version|Description |
 |-|-|-|
-|[`@kosu/dev-images`](./packages/dev-images)|![version](https://img.shields.io/badge/npm-v0.0.1-green.svg)|Development and CI docker images and supporting scripts for Kosu packages. |
+|[`@kosu/dev-images`](./packages/dev-images)|![version](https://img.shields.io/badge/npm-v0.0.1-green.svg)|Development docker images and supporting scripts for Kosu packages. |
 |[`@kosu/tslint-config`](./packages/tslint-config)|![version](https://img.shields.io/badge/npm-v0.0.2-green.svg)|TypeScript linter base configuration for Kosu TypeScript projects. |
 |[`@kosu/tsc-config`](./packages/tsc-config)|![version](https://img.shields.io/badge/npm-v0.0.1-green.svg)|TypeScript compiler base configuration for Kosu TypeScript projects. |
 
