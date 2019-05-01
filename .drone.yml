@@ -19,16 +19,16 @@ services:
   ports:
   - 8545
 
-# trigger:
-#  event:
-#   - pull_request
-#  changeset:
-#    includes: [
-#      packages/connect/**/*.*,
-#      packages/dev-images/**/*.*,
-#      packages/kosu-sdk-contracts/**/*.*,
-#      packages/kosu-system-contracts/**/*.*
-#    ]
+trigger:
+  event:
+   - pull_request
+  changeset:
+    includes: [
+      packages/kosu.js/**/*.*,
+      packages/dev-images/**/*.*,
+      packages/kosu-sdk-contracts/**/*.*,
+      packages/kosu-system-contracts/**/*.*
+    ]
 
 ---
 kind: pipeline
@@ -44,14 +44,14 @@ steps:
     - cd packages/go-kosu
     - make ci
 
-# trigger:
-#  event:
-#    - pull_request
-#  changeset:
-#    includes: [
-#      packages/go-kosu/**/*.*,
-#      packages/kosu-system-contracts/**/*.*
-#    ]
+trigger:
+  event:
+    - pull_request
+  changeset:
+    includes: [
+      packages/go-kosu/**/*.*,
+      packages/kosu-system-contracts/**/*.*
+    ]
 
 # UNTESTED
 # ---
