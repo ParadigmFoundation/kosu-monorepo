@@ -1,12 +1,6 @@
 package witness
 
-import (
-	"os"
-	"testing"
-
-	"github.com/stretchr/testify/suite"
-)
-
+/*
 func TestEthereum(t *testing.T) {
 	addr := os.Getenv("ETHEREUM_TEST_ADDRESS")
 	eth, err := NewEthereumProvider(addr)
@@ -16,3 +10,4 @@ func TestEthereum(t *testing.T) {
 
 	suite.Run(t, NewWitnessTestSuite(eth))
 }
+*/

@@ -45,19 +45,7 @@ func NewEthereumProvider(addr string) (*EthereumProvider, error) {
 	return &EthereumProvider{client, events}, nil
 }
 
-// GetBlockNumber returns the latest block number.
-func (w *EthereumProvider) GetBlockNumber(ctx context.Context) (*big.Int, error) {
-	blk, err := w.client.BlockByNumber(ctx, nil)
-	if err != nil {
-		return nil, err
-	}
-	return blk.Number(), nil
-}
-
-// HandleEvents handles an emitted event from the EventEmitter contract.
-// HandleEvents first Filters the existing events in the blockchain, then
-// subscribes to get the emitted events as they happen
-func (w *EthereumProvider) HandleEvents(ctx context.Context, fn func(e *Event)) error {
+func (w *EthereumProvider) handleEvents(ctx context.Context, fn func(e *Event)) error {
 	var lastBlock uint64
 	handle := func(e *EventEmitterParadigmEvent) {
 		lastBlock = e.Raw.BlockNumber
@@ -128,8 +116,7 @@ func handlePosterRegistryUpdate(evt *EventEmitterParadigmEvent) (*Event, error) 
 	}, nil
 }
 
-// HandleBlocks handles an incoming Block header.
-func (w *EthereumProvider) HandleBlocks(ctx context.Context, fn func(hdr *Block)) error {
+func (w *EthereumProvider) handleBlocks(ctx context.Context, fn func(hdr *Block)) error {
 	ch := make(chan *types.Header)
 	sub, err := w.client.SubscribeNewHead(ctx, ch)
 	if err != nil {
@@ -151,4 +138,20 @@ func (w *EthereumProvider) HandleBlocks(ctx context.Context, fn func(hdr *Block)
 			return ctx.Err()
 		}
 	}
+}
+
+// WatchEvents watches emitted events from the EventEmitter contract.
+// WatchEvents first Filters the existing events in the blockchain, then
+// subscribes to get the emitted events as they happen
+func (w *EthereumProvider) WatchEvents(ctx context.Context, ch chan *Event) error {
+	return w.handleEvents(ctx, func(e *Event) {
+		ch <- e
+	})
+}
+
+// WatchBlocks watches for an incoming Block headers.
+func (w *EthereumProvider) WatchBlocks(ctx context.Context, ch chan *Block) error {
+	return w.handleBlocks(ctx, func(b *Block) {
+		ch <- b
+	})
 }

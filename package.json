@@ -14,14 +14,16 @@
     "clean:install": "yarn clean && yarn",
     "build": "wsrun --exclude-missing --stages build",
     "test": "wsrun --exclude-missing test",
+    "test:ci": "wsrun --exclude-missing test:ci",
     "postinstall": "lerna link"
   },
   "workspaces": [
-    "packages/connect",
+    "packages/kosu.js",
     "packages/kosu-sdk-contracts",
     "packages/kosu-system-contracts",
     "pacakges/tsc-config",
-    "packages/tslint-config"
+    "packages/tslint-config",
+    "packages/dev-images"
   ],
   "dependencies": {
     "lerna": "^3.13.3",
