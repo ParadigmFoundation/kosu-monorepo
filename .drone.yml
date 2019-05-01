@@ -20,8 +20,8 @@ services:
   - 8545
 
 trigger:
-  event:
-  - pull_request
+#  event:
+#   - pull_request
   changeset:
     includes: [
       packages/connect/**/*.*,
@@ -45,8 +45,8 @@ steps:
     - make ci
 
 trigger:
-  event:
-    - pull_request
+#  event:
+#    - pull_request
   changeset:
     includes: [
       packages/go-kosu/**/*.*,
