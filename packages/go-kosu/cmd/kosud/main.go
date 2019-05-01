@@ -51,8 +51,17 @@ func startWitness(ctx context.Context, ethAddr string, nodeAddr string, key []by
 		return err
 	}
 
+	fn := func(e *witness.Event) {
+		res, err := client.BroadcastTxSync(e.WitnessTx())
+		if err != nil {
+			log.Printf("BroadcastTxSync: %+v", err)
+		} else {
+			log.Printf("witness event: %+v (%s)", e, res.Log)
+		}
+	}
+
 	// nolint
-	go witness.ForwardEvents(ctx, w, client, key)
+	go witness.ForwardEvents(ctx, w, 10, fn)
 	return nil
 }
 

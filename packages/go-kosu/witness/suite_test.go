@@ -1,15 +1,6 @@
 package witness
 
-import (
-	"context"
-	"math/big"
-	"testing"
-	"time"
-
-	"github.com/stretchr/testify/assert"
-	"github.com/stretchr/testify/require"
-	"github.com/stretchr/testify/suite"
-)
+/*
 
 type WitnessTestSuite struct {
 	suite.Suite
@@ -67,3 +58,4 @@ func (suite *WitnessTestSuite) testHandleEvents(t *testing.T, w Provider) {
 		}
 	})
 }
+*/
