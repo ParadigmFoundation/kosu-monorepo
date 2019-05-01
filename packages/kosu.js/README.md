@@ -1,4 +1,4 @@
-# KosuConnect
+# `kosu.js`
 
 KosuConnect provides a convenient way to interface with the Kosu OrderStream and the Kosu OrderGateway.
 
