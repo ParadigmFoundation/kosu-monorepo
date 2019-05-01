@@ -1,6 +1,6 @@
 # Kosu Protocol Contracts
 
-This repository contains the contract system that implements the Kosu protocol, in conjunction with [TODO](https://github.com/paradigmfoundation/TODO/). 
+This repository contains the contract system that implements the Kosu protocol, in conjunction with `go-kosu`. 
 
 These contracts support the inner workings of the OrderStream network, including validator governance, poster access control, and general economic coordination. 
 
