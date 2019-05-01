@@ -8,7 +8,8 @@
     "test:ci": "mocha -r ts-node/register",
     "test:ganache": "docker run --rm -p 8545:8545 ${npm_package_config_ganache_image_uri}",
     "test:ganache_detached": "docker run --rm -d -p 8545:8545 ${npm_package_config_ganache_image_uri}",
-    "build": "tsc"
+    "build": "tsc",
+    "lint": "tslint -p ."
   },
   "license": "CC0-1.0",
   "repository": {
@@ -19,10 +20,12 @@
     "url": "https://github.com/ParadigmFoundation/kosu-monorepo/issues"
   },
   "config": {
-    "ganache_image_uri":"gcr.io/kosu-io/kosu-ganache:0.0.1"
+    "ganache_image_uri": "gcr.io/kosu-io/kosu-ganache:0.0.1"
   },
   "dependencies": {
     "@kosu/system-contracts": "^0.1.0",
+    "@kosu/tslint-config": "^0.0.3",
+    "@types/web3": "^1.0.18",
     "bn.js": "^4.11.8",
     "ethereumjs-abi": "^0.6.6",
     "ethereumjs-util": "^5.2.0",
@@ -30,9 +33,12 @@
     "node-fetch": "^2.2.0",
     "truffle-contract": "^4.0.11",
     "web3": "1.0.0-beta.37",
+    "web3-eth-contract": "^1.0.0-beta.53",
+    "web3-utils": "^1.0.0-beta.53",
     "ws": "^6.1.4"
   },
   "devDependencies": {
+    "@kosu/tslint-config": "^0.0.3",
     "@types/chai": "^4.1.7",
     "@types/ethereumjs-abi": "^0.6.3",
     "@types/ethereumjs-util": "^5.2.0",
