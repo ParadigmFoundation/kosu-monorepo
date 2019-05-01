@@ -1,15 +1,12 @@
-import {Order, PostableOrder} from "./types";
-import OrderGateway from "./OrderGateway";
-import Signature from "./Signature";
 import Web3 from "web3";
-import OrderSerializer from "./OrderSerializer";
-import {bufferToHex} from "ethereumjs-util";
-import {soliditySHA3 as solSHA3} from "ethereumjs-abi";
 
+import { OrderGateway } from "./OrderGateway";
+import { OrderSerializer } from "./OrderSerializer";
+import { Signature } from "./Signature";
 
-class OrderHelper {
-    private orderGateway: OrderGateway;
-    private web3: Web3;
+export class OrderHelper {
+    private readonly orderGateway: OrderGateway;
+    private readonly web3: Web3;
 
     constructor(web3: Web3, orderGateway: OrderGateway) {
         this.web3 = web3;
@@ -21,7 +18,7 @@ class OrderHelper {
      * @todo refactoring subContract may effect this
      * @todo consider renaming
      */
-    async makeOrder(order: Order): Promise<Order> {
+    public async makeOrder(order: Order): Promise<Order> {
         order.makerSignature = await Signature.generate(this.web3, await this.makerHex(order), order.maker);
         order.makerValues.signatureV = order.makerSignature.v;
         order.makerValues.signatureR = order.makerSignature.r;
@@ -35,18 +32,18 @@ class OrderHelper {
      * @todo refactoring subContract may effect this
      * @todo consider renaming
      */
-    async takeOrder(order: Order, takerValues: any[], taker: string): Promise<void> {
-        return this.orderGateway.participate(order, takerValues, taker)
+    public async takeOrder(order: Order, takerValues: any[], taker: string): Promise<void> {
+        return this.orderGateway.participate(order, takerValues, taker);
     }
 
     /**
      * Generate a poster signature for OrderStream submission
      * @todo refactor/move implementation.
      */
-    async prepareForPost(order: Order, poster: string = order.maker): Promise<PostableOrder> {
+    public async prepareForPost(order: Order, poster: string = order.maker): Promise<PostableOrder> {
         return {
             ...order,
-            posterSignature: await Signature.generate(this.web3, OrderSerializer.posterHex(order, await this.orderGateway.makerArguments(order.subContract)), poster)
+            posterSignature: await Signature.generate(this.web3, OrderSerializer.posterHex(order, await this.orderGateway.makerArguments(order.subContract)), poster),
         };
     }
 
@@ -54,7 +51,7 @@ class OrderHelper {
      * Generate the maker hex
      * @todo refactor for subContract changes or modularize to be less messy
      */
-    async makerHex(order: Order): Promise<string> {
+    public async makerHex(order: Order): Promise<string> {
         const _arguments = await this.orderGateway.makerArguments(order.subContract);
         return OrderSerializer.makerHex(order, _arguments);
     }
@@ -63,7 +60,7 @@ class OrderHelper {
      * Recover the maker
      * @todo refactor for subContract changes or modularize to be less messy
      */
-    async recoverMaker(order: Order): Promise<string> {
+    public async recoverMaker(order: Order): Promise<string> {
         const _arguments = await this.orderGateway.makerArguments(order.subContract);
         return OrderSerializer.recoverMaker(order, _arguments);
     }
@@ -72,12 +69,8 @@ class OrderHelper {
      * Recover the poster
      * @todo refactor for subContract changes or modularize to be less messy
      */
-    async recoverPoster(order: PostableOrder): Promise<string> {
+    public async recoverPoster(order: PostableOrder): Promise<string> {
         const _arguments = await this.orderGateway.makerArguments(order.subContract);
         return OrderSerializer.recoverPoster(order, _arguments);
     }
-
-
 }
-
-export default OrderHelper;
