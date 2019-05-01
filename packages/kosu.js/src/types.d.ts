@@ -35,7 +35,7 @@ interface SignatureVRS {
     s: Buffer | Uint8Array;
 }
 
-type KosuUtils = {
+interface KosuUtils {
     toBytes32(value: string): number | string | BN;
     NULL_ADDRESS: string;
 }
