@@ -24,6 +24,7 @@ trigger:
    - pull_request
   changeset:
     includes: [
+      .drone.yml,
       packages/kosu.js/**/*.*,
       packages/dev-images/**/*.*,
       packages/kosu-sdk-contracts/**/*.*,
@@ -49,6 +50,7 @@ trigger:
     - pull_request
   changeset:
     includes: [
+      .drone.yml,
       packages/go-kosu/**/*.*,
       packages/kosu-system-contracts/**/*.*
     ]
