@@ -1,10 +1,10 @@
 import { contracts } from "@kosu/system-contracts";
+import BN = require("bn.js");
 import TruffleContract from "truffle-contract";
-import { KosuOptions } from "./types";
-import KosuToken from './KosuToken';
 import Web3 from "web3";
 
-import BN = require("bn.js");
+import { KosuToken } from "./KosuToken";
+
 const TreasuryContractData = contracts.Treasury;
 
 /**
@@ -12,19 +12,20 @@ const TreasuryContractData = contracts.Treasury;
  *
  * @todo Refactor contract integration after migration away from truffle
  */
-class Treasury {
-    private web3: Web3;
-    kosuToken: KosuToken;
-    readonly initializing: Promise<void>;
+export class Treasury {
+    public readonly kosuToken: KosuToken;
+
+    private readonly web3: Web3;
+    private readonly initializing: Promise<void>;
+    private readonly address: string;
     private contract: any;
-    private address: string;
     private coinbase: string;
 
     /**
      * Creates a new Treasury instance
      *
-     * @param options {KosuOptions} initialization options
-     * @param kosuToken {KosuToken} KosuToken instance
+     * @param options initialization options
+     * @param kosuToken KosuToken instance
      */
     constructor(options: KosuOptions, kosuToken: KosuToken) {
         this.web3 = options.web3;
@@ -35,16 +36,18 @@ class Treasury {
     /**
      * Asyncronously initializes the instance after construction
      *
-     * @param options {KosuOptions} instantiation options
+     * @param options instantiation options
      * @returns A promise to await complete instantiation for further calls
      */
-    async init(options: KosuOptions): Promise<void> {
+    private async init(options: KosuOptions): Promise<void> {
         const TreasuryContract = TruffleContract(TreasuryContractData);
         TreasuryContract.setProvider(this.web3.currentProvider);
         if (options.treasuryAddress) {
             this.contract = TreasuryContract.at(this.address);
         } else {
-            this.contract = await TreasuryContract.deployed().catch(() => { throw new Error('Invalid network for Treasury') });
+            this.contract = await TreasuryContract.deployed().catch(() => {
+                throw new Error("Invalid network for Treasury");
+            });
         }
 
         this.coinbase = await this.web3.eth.getCoinbase().catch(() => undefined);
@@ -55,25 +58,24 @@ class Treasury {
      *
      * @param value uint value of tokens to deposit
      */
-    async deposit(value: BN | string): Promise<void> {
+    public async deposit(value: BN | string): Promise<void> {
         await this.initializing;
-        if (typeof value == "string") {
-            value = new BN(value);
-        }
+        const parsed = typeof value === "string" ? new BN(value) : value;
         const coinbase = await this.web3.eth.getCoinbase();
-        const hasBalance = await this.kosuToken.balanceOf(coinbase).then((bal) => bal.gte(value as BN));
-        const hasApproval = await this.kosuToken.allowance(coinbase, this.contract.address).then((all) => all.gte(value as BN));
+        const hasBalance = await this.kosuToken.balanceOf(coinbase).then(bal => bal.gte(parsed));
+        const hasApproval = await this.kosuToken.allowance(coinbase, this.contract.address).then(all => all.gte(parsed));
 
-        if(!hasBalance) {
+        if (!hasBalance) {
             throw new Error(`${coinbase} has insufficient balance to deposit`);
         }
 
-        if(!hasApproval) {
+        if (!hasApproval) {
+            // tslint:disable-next-line: no-console
             console.log(`${coinbase} has insufficient approval; Setting approval`);
-            await this.kosuToken.approve(this.contract.address, value);
+            await this.kosuToken.approve(this.contract.address, parsed);
         }
 
-        return await this.contract.deposit(value.toString(), { from: this.coinbase });
+        return this.contract.deposit(parsed.toString(), { from: this.coinbase });
     }
 
     /**
@@ -81,12 +83,10 @@ class Treasury {
      *
      * @param value uint value of tokens to withdraw
      */
-    async withdraw(value: BN | string): Promise<void> {
+    public async withdraw(value: BN | string): Promise<void> {
         await this.initializing;
-        if (typeof value == "string") {
-            value = new BN(value);
-        }
-        return await this.contract.withdraw(value.toString(), { from: this.coinbase });
+        const parsed = typeof value === "string" ? new BN(value) : value;
+        return this.contract.withdraw(parsed.toString(), { from: this.coinbase });
     }
 
     /**
@@ -94,9 +94,9 @@ class Treasury {
      *
      * @param address Ethereum address
      */
-    async systemBalance(address: string): Promise<BN> {
+    public async systemBalance(address: string): Promise<BN> {
         await this.initializing;
-        return await this.contract.systemBalance.call(address);
+        return this.contract.systemBalance.call(address);
     }
 
     /**
@@ -104,10 +104,8 @@ class Treasury {
      *
      * @param address Ethereum address
      */
-    async currentBalance(address: string): Promise<BN> {
+    public async currentBalance(address: string): Promise<BN> {
         await this.initializing;
-        return await this.contract.currentBalance.call(address);
+        return this.contract.currentBalance.call(address);
     }
 }
-
-export default Treasury;

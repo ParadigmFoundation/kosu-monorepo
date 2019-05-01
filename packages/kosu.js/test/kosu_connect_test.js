@@ -1,4 +1,4 @@
-const Kosu = require('../src').default;
+const { Kosu } = require('../src');
 
 describe('Kosu', () => {
   describe('constructor()', () => {

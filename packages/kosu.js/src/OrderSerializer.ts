@@ -1,19 +1,22 @@
-import {bufferToHex} from "ethereumjs-util";
-import {soliditySHA3 as solSHA3} from "ethereumjs-abi";
-import utils from "./utils";
-import Signature from "./Signature";
-import {Order, PostableOrder} from "./types";
+import { soliditySHA3 as solSHA3 } from "ethereumjs-abi";
+import { bufferToHex } from "ethereumjs-util";
+
+import { Signature } from "./Signature";
+import { toBytes32 } from "./utils";
 
 /**
+ * todo: does this need to be a class? (all static methods)
  *
+ * could add to utils (or create order-utils pacakge)
  */
-class OrderSerializer {
+// tslint:disable-next-line: no-unnecessary-class
+export class OrderSerializer {
 
     /**
      * Serializes the maker values
      * @todo refactor for subContract changes or modularize to be less messy
      */
-    static serializeMaker(_arguments: any[], order: Order): any[] {
+    public static serializeMaker(_arguments: any[], order: Order): any[] {
         return this._serialize(_arguments, order.makerValues);
     }
 
@@ -21,7 +24,7 @@ class OrderSerializer {
      * Serializes teh taker values
      * @todo refactor for subContract changes or modularize to be less messy
      */
-    static serializeTaker(_arguments: any[], takerValues: any[]): string[] {
+    public static serializeTaker(_arguments: any[], takerValues: any[]): string[] {
         return this._serialize(_arguments, takerValues);
     }
 
@@ -30,13 +33,13 @@ class OrderSerializer {
      * @todo refactor for subContract changes or modularize to be less messy
      */
     private static _serialize(args: any[], values: any[]): any[] {
-        return args.map(arg => utils.toBytes32( values[arg.name] ));
+        return args.map(arg => toBytes32( values[arg.name] ));
     }
     /**
      * Recovers the maker from the signed information
      * @todo refactor for subContract changes or modularize to be less messy
      */
-    static recoverMaker(order: Order, _arguments: any[]): string {
+    public static recoverMaker(order: Order, _arguments: any[]): string {
         return Signature.recoverAddress(this.makerHex(order, _arguments), order.makerSignature);
     }
 
@@ -44,7 +47,7 @@ class OrderSerializer {
      * Generate the maker hex
      * @todo refactor for subContract changes or modularize to be less messy
      */
-    static makerHex(order: Order, _arguments: any[]): string {
+    public static makerHex(order: Order, _arguments: any[]): string {
         return OrderSerializer._hexFor("maker", order, _arguments);
     }
 
@@ -52,7 +55,7 @@ class OrderSerializer {
      * Recovers the poster from the poster signature
      * @todo refactor for subContract changes or modularize to be less messy
      */
-    static recoverPoster(order: PostableOrder, _arguments: any[]): string {
+    public static recoverPoster(order: PostableOrder, _arguments: any[]): string {
         return Signature.recoverAddress(this.posterHex(order, _arguments), order.posterSignature);
     }
 
@@ -60,7 +63,7 @@ class OrderSerializer {
      * Generate teh taker hex
      * @todo refactor for subContract changes or modularize to be less messy
      */
-    static posterHex(order: Order, _arguments: any[]): string {
+    public static posterHex(order: Order, _arguments: any[]): string {
         return this._hexFor("poster", order, _arguments);
     }
 
@@ -68,11 +71,18 @@ class OrderSerializer {
      * Create hex from data types
      * @todo refactor for subContract changes or modularize to be less messy
      */
-    private static _hexFor(signer, order: Order | PostableOrder, _arguments: any[]): string {
-        let dataTypes = [], values = [];
-        _arguments.forEach((argument) => {
-            if (signer == 'maker' && argument.name.includes('signature')) return;
-            if (order.makerValues[argument.name] != undefined) {
+    private static _hexFor(
+        signer: string,
+        order: Order | PostableOrder,
+        _arguments: OrderArgument[],
+    ): string {
+        const dataTypes = [];
+        const values = [];
+        _arguments.forEach(argument => {
+            if (signer === "maker" && argument.name.includes("signature")) {
+                return;
+            }
+            if (order.makerValues[argument.name] !== undefined) {
                 dataTypes.push(argument.dataType);
                 values.push(order.makerValues[argument.name].toString());
             }
@@ -80,5 +90,3 @@ class OrderSerializer {
         return bufferToHex(solSHA3(dataTypes, values));
     }
 }
-
-export default OrderSerializer;

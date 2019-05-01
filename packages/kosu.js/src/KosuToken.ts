@@ -1,17 +1,17 @@
-import Web3 from "web3";
 import BN = require("bn.js");
-import {KosuOptions} from "./types";
+import TruffleContract = require("truffle-contract");
+import Web3 from "web3";
 
-const KosuTokenContractData = require('@kosu/system-contracts').contracts.KosuToken;
-const TruffleContract = require('truffle-contract');
+// tslint:disable-next-line: no-var-requires
+const KosuTokenContractData = require("@kosu/system-contracts").contracts.KosuToken;
 
 /**
  * Integration with KosuToken contract on an Ethereum blockchain.
  *
  * @todo Refactor contract integration after migration away from truffle
  */
-class KosuToken {
-    private web3: Web3;
+export class KosuToken {
+    private readonly web3: Web3;
     private readonly initializing: Promise<void>;
     private contract: any;
     private coinbase: string;
@@ -19,7 +19,7 @@ class KosuToken {
     /**
      * Creates a new KosuToken instance
      *
-     * @param options {KosuOptions} initialization options
+     * @param options initialization options
      */
     constructor(options: KosuOptions) {
         this.web3 = options.web3;
@@ -27,19 +27,20 @@ class KosuToken {
     }
 
     /**
-     * Asyncronously initializes the instance after construction
+     * Asynchronously initializes the instance after construction
      *
-     * @param options {KosuOptions} instantiation options
+     * @param options instantiation options
      * @returns A promise to await complete instantiation for further calls
      */
-    async init(options: KosuOptions): Promise<void> {
+    public async init(options: KosuOptions): Promise<void> {
         const KosuTokenContract = TruffleContract(KosuTokenContractData);
         KosuTokenContract.setProvider(this.web3.currentProvider);
-        if (options.kosuTokenAddress) {
-            this.contract = KosuTokenContract.at(options.kosuTokenAddress);
-        } else {
-            this.contract = await KosuTokenContract.deployed().catch(() => { throw new Error('Invalid network for KosuToken') });
-        }
+
+        this.contract = options.kosuTokenAddress ?
+            KosuTokenContract.at(options.kosuTokenAddress) :
+            await KosuTokenContract.deployed().catch(() => {
+                throw new Error("Invalid network for KosuToken");
+            });
 
         this.coinbase = await this.web3.eth.getCoinbase().catch(() => undefined);
     }
@@ -47,9 +48,9 @@ class KosuToken {
     /**
      * Reads the total supply
      */
-    async totalSupply(): Promise<BN> {
+    public async totalSupply(): Promise<BN> {
         await this.initializing;
-        return await this.contract.totalSupply.call();
+        return this.contract.totalSupply.call();
     }
 
     /**
@@ -57,9 +58,9 @@ class KosuToken {
      *
      * @param owner Address of token holder
      */
-    async balanceOf(owner: string): Promise<BN> {
+    public async balanceOf(owner: string): Promise<BN> {
         await this.initializing;
-        return await this.contract.balanceOf.call(owner);
+        return this.contract.balanceOf.call(owner);
     }
 
     /**
@@ -68,9 +69,9 @@ class KosuToken {
      * @param to Address of token receiver
      * @param value uint value of tokens to transfer
      */
-    async transfer(to: string, value: number | string | BN): Promise<void> {
+    public async transfer(to: string, value: number | string | BN): Promise<void> {
         await this.initializing;
-        return await this.contract.transfer(to, value.toString(), { from: this.coinbase });
+        return this.contract.transfer(to, value.toString(), { from: this.coinbase });
     }
 
     /**
@@ -80,9 +81,9 @@ class KosuToken {
      * @param to Address of token destination
      * @param value uint value of tokens to transfer
      */
-    async transferFrom(from: string, to: string, value: number | string | BN): Promise<void> {
+    public async transferFrom(from: string, to: string, value: number | string | BN): Promise<void> {
         await this.initializing;
-        return await this.contract.transferFrom(from, to, value.toString(), { from: this.coinbase });
+        return this.contract.transferFrom(from, to, value.toString(), { from: this.coinbase });
     }
 
     /**
@@ -91,9 +92,9 @@ class KosuToken {
      * @param spender Address allowed to spend coinbase's tokens
      * @param value uint value of tokens to transfer
      */
-    async approve(spender: string, value: number | string | BN): Promise<void> {
+    public async approve(spender: string, value: number | string | BN): Promise<void> {
         await this.initializing;
-        return await this.contract.approve(spender, value.toString(), { from: this.coinbase });
+        return this.contract.approve(spender, value.toString(), { from: this.coinbase });
     }
 
     /**
@@ -102,10 +103,8 @@ class KosuToken {
      * @param owner Address of source tokens
      * @param spender Address of spender of tokens
      */
-    async allowance(owner: string, spender: string): Promise<BN> {
+    public async allowance(owner: string, spender: string): Promise<BN> {
         await this.initializing;
-        return await this.contract.allowance.call(owner, spender);
+        return this.contract.allowance.call(owner, spender);
     }
 }
-
-export default KosuToken;

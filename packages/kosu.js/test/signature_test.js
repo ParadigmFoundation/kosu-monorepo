@@ -1,4 +1,4 @@
-const Signature = require('../src/Signature').default;
+const { Signature } = require('../src/Signature');
 
 describe('Signature', () => {
   describe('generate()', () => {
