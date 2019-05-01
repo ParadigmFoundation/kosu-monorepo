@@ -32,7 +32,7 @@ The `kosu-ganache` image's full label is listed below. It can optionally be tagg
 ## Scripts
 ### Migrate and update public ganache-db archive
 ```bash
-$ yarn build:ganache-db
+$ yarn build:ganache_db
 ```
 
 Migrates the Kosu contract system (`@kosu/system-contracts`) to a ganache instance and uploads the database files to a GCP bucket. 
