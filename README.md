@@ -12,7 +12,7 @@ _This README is under construction._
 
 ### Client packages
 
-| Package &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; |Version| Description |
+| Package |Version| Description |
 |:-|:-|:-|
 |[`kosu-core`](./packages/go-kosu)|![version](https://img.shields.io/badge/version-0.0.0-green.svg)|The reference implementation of the Kosu network in Go, built on Tendermint Core. |
 
