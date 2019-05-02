@@ -8,8 +8,5 @@
         "skipLibCheck": true,
         "esModuleInterop": true,
         "typeRoots": ["node_modules/@types"],
-    },
-    "references": [
-        { "path": "./packages/typescript/tsc-config/tsconfig.json"}
-    ]
+    }
 }
