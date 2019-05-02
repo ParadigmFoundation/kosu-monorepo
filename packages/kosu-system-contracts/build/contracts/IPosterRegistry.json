@@ -105,9 +105,9 @@
   "sourceMap": "",
   "deployedSourceMap": "",
   "source": "pragma solidity ^0.5.0;\n\n/** @title IPosterRegistry\n    @author Freydal\n    @dev Defines methods for PosterRegistry to implement and to be accessed though the proxy.\n*/\ninterface IPosterRegistry {\n    /** @dev Interface method */\n    function tokensContributed() external view returns (uint);\n    /** @dev Interface method */\n    function token() external view returns (address);\n    /** @dev Interface method */\n    function treasury() external view returns (address);\n    /** @dev Interface method */\n    function tokensRegisteredFor(address) external view returns (uint);\n    /** @dev Interface method */\n    function registerTokens(address, uint) external;\n    /** @dev Interface method */\n    function releaseTokens(address, uint) external;\n}\n",
-  "sourcePath": "/Users/hen/GitHub/kosu-monorepo/packages/solidity/kosu-system-contracts/contracts/poster/IPosterRegistry.sol",
+  "sourcePath": "/Users/hen/GitHub/kosu-monorepo/packages/kosu-system-contracts/contracts/poster/IPosterRegistry.sol",
   "ast": {
-    "absolutePath": "/Users/hen/GitHub/kosu-monorepo/packages/solidity/kosu-system-contracts/contracts/poster/IPosterRegistry.sol",
+    "absolutePath": "/Users/hen/GitHub/kosu-monorepo/packages/kosu-system-contracts/contracts/poster/IPosterRegistry.sol",
     "exportedSymbols": {
       "IPosterRegistry": [
         818
@@ -556,7 +556,7 @@
     "src": "0:748:8"
   },
   "legacyAST": {
-    "absolutePath": "/Users/hen/GitHub/kosu-monorepo/packages/solidity/kosu-system-contracts/contracts/poster/IPosterRegistry.sol",
+    "absolutePath": "/Users/hen/GitHub/kosu-monorepo/packages/kosu-system-contracts/contracts/poster/IPosterRegistry.sol",
     "exportedSymbols": {
       "IPosterRegistry": [
         818
@@ -1010,7 +1010,7 @@
   },
   "networks": {},
   "schemaVersion": "3.0.6",
-  "updatedAt": "2019-04-27T00:18:00.241Z",
+  "updatedAt": "2019-05-02T04:11:19.179Z",
   "devdoc": {
     "author": "Freydal",
     "details": "Defines methods for PosterRegistry to implement and to be accessed though the proxy.",

@@ -13,15 +13,15 @@
       "type": "constructor"
     }
   ],
-  "metadata": "{\"compiler\":{\"version\":\"0.5.0+commit.1d4f565a\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[{\"name\":\"authorizedAddressesAddress\",\"type\":\"address\"}],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"constructor\"}],\"devdoc\":{\"author\":\"Freydal\",\"methods\":{\"constructor\":{\"details\":\"Initializes contract with deployed AuthorizedAddresses contract.\",\"params\":{\"authorizedAddressesAddress\":\"Deployed AuthorizedAddresses address.\"}}},\"title\":\"Authorizable\"},\"userdoc\":{\"methods\":{\"constructor\":\"Initializes contract with deployed AuthorizedAddresses contract.\"}}},\"settings\":{\"compilationTarget\":{\"/Users/hen/GitHub/kosu-monorepo/packages/solidity/kosu-system-contracts/contracts/base/Authorizable.sol\":\"Authorizable\"},\"evmVersion\":\"byzantium\",\"libraries\":{},\"optimizer\":{\"enabled\":true,\"runs\":200},\"remappings\":[]},\"sources\":{\"/Users/hen/GitHub/kosu-monorepo/packages/solidity/kosu-system-contracts/contracts/access_control/AuthorizedAddresses.sol\":{\"keccak256\":\"0xcd3b4c471d52a5495bd750a2860931d0e506e0abeb2bcb2a8be9d2de5acc41d5\",\"urls\":[\"bzzr://926e6d6de2b3db5a963a06b0d0b5c11cd1c2a7b2b271f44fe85bd59f47d8eb62\"]},\"/Users/hen/GitHub/kosu-monorepo/packages/solidity/kosu-system-contracts/contracts/base/Authorizable.sol\":{\"keccak256\":\"0xba27cbc28e8d274ca837422e24a9ff34080fd1cd8dcaf320323b2176b64e78c0\",\"urls\":[\"bzzr://331129a22f864ba040a709fb5570e0033190da0faebb4dc122b0f2deda60a5f6\"]},\"openzeppelin-solidity/contracts/ownership/Ownable.sol\":{\"keccak256\":\"0x980de387a1a020a498f53d00f89fecebb12c949a17e8f160093c0303ede2b786\",\"urls\":[\"bzzr://08894efa2a557982070beda6a81a032407e70532d24bdafe80d39660c74904d9\"]}},\"version\":1}",
-  "bytecode": "0x6080604052348015600f57600080fd5b50604051602080609283398101806040526020811015602d57600080fd5b505160008054600160a060020a03909216600160a060020a0319909216919091179055603580605d6000396000f3fe6080604052600080fdfea165627a7a72305820d50181ab146ffa44e161e558d53eac42d4c67edeffbbb0401e98f47179b3a3970029",
-  "deployedBytecode": "0x6080604052600080fdfea165627a7a72305820d50181ab146ffa44e161e558d53eac42d4c67edeffbbb0401e98f47179b3a3970029",
+  "metadata": "{\"compiler\":{\"version\":\"0.5.0+commit.1d4f565a\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[{\"name\":\"authorizedAddressesAddress\",\"type\":\"address\"}],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"constructor\"}],\"devdoc\":{\"author\":\"Freydal\",\"methods\":{\"constructor\":{\"details\":\"Initializes contract with deployed AuthorizedAddresses contract.\",\"params\":{\"authorizedAddressesAddress\":\"Deployed AuthorizedAddresses address.\"}}},\"title\":\"Authorizable\"},\"userdoc\":{\"methods\":{\"constructor\":\"Initializes contract with deployed AuthorizedAddresses contract.\"}}},\"settings\":{\"compilationTarget\":{\"/Users/hen/GitHub/kosu-monorepo/packages/kosu-system-contracts/contracts/base/Authorizable.sol\":\"Authorizable\"},\"evmVersion\":\"byzantium\",\"libraries\":{},\"optimizer\":{\"enabled\":true,\"runs\":200},\"remappings\":[]},\"sources\":{\"/Users/hen/GitHub/kosu-monorepo/packages/kosu-system-contracts/contracts/access_control/AuthorizedAddresses.sol\":{\"keccak256\":\"0xcd3b4c471d52a5495bd750a2860931d0e506e0abeb2bcb2a8be9d2de5acc41d5\",\"urls\":[\"bzzr://926e6d6de2b3db5a963a06b0d0b5c11cd1c2a7b2b271f44fe85bd59f47d8eb62\"]},\"/Users/hen/GitHub/kosu-monorepo/packages/kosu-system-contracts/contracts/base/Authorizable.sol\":{\"keccak256\":\"0xba27cbc28e8d274ca837422e24a9ff34080fd1cd8dcaf320323b2176b64e78c0\",\"urls\":[\"bzzr://331129a22f864ba040a709fb5570e0033190da0faebb4dc122b0f2deda60a5f6\"]},\"openzeppelin-solidity/contracts/ownership/Ownable.sol\":{\"keccak256\":\"0x980de387a1a020a498f53d00f89fecebb12c949a17e8f160093c0303ede2b786\",\"urls\":[\"bzzr://08894efa2a557982070beda6a81a032407e70532d24bdafe80d39660c74904d9\"]}},\"version\":1}",
+  "bytecode": "0x6080604052348015600f57600080fd5b50604051602080609283398101806040526020811015602d57600080fd5b505160008054600160a060020a03909216600160a060020a0319909216919091179055603580605d6000396000f3fe6080604052600080fdfea165627a7a7230582051c0df8f4ff16db8aa9a4e799ef4600ffcfeda451a750188618ff03641851d790029",
+  "deployedBytecode": "0x6080604052600080fdfea165627a7a7230582051c0df8f4ff16db8aa9a4e799ef4600ffcfeda451a750188618ff03641851d790029",
   "sourceMap": "125:715:1:-;;;492:139;8:9:-1;5:2;;;30:1;27;20:12;5:2;492:139:1;;;;;;;;;;;;;13:2:-1;8:3;5:11;2:2;;;29:1;26;19:12;2:2;-1:-1;492:139:1;557:17;:67;;-1:-1:-1;;;;;557:67:1;;;-1:-1:-1;;;;;;557:67:1;;;;;;;;;125:715;;;;;;",
   "deployedSourceMap": "125:715:1:-;;;;;",
   "source": "pragma solidity ^0.5.0;\n\nimport \"../access_control/AuthorizedAddresses.sol\";\n\n/** @title Authorizable\n    @author Freydal\n*/\ncontract Authorizable {\n\n    //Contract storing system level permissions\n    AuthorizedAddresses authorizedAddress;\n\n    /** @dev Initializes contract with deployed AuthorizedAddresses contract.\n        @notice Initializes contract with deployed AuthorizedAddresses contract.\n        @param authorizedAddressesAddress Deployed AuthorizedAddresses address.\n    */\n    constructor(address authorizedAddressesAddress) public {\n        authorizedAddress = AuthorizedAddresses(authorizedAddressesAddress);\n    }\n\n    /** @dev Ensures msg.sender is from an address enabled for system level access.\n    */\n    modifier isAuthorized() {\n        require(authorizedAddress.isAddressAuthorized(msg.sender));\n        _;\n    }\n}\n",
-  "sourcePath": "/Users/hen/GitHub/kosu-monorepo/packages/solidity/kosu-system-contracts/contracts/base/Authorizable.sol",
+  "sourcePath": "/Users/hen/GitHub/kosu-monorepo/packages/kosu-system-contracts/contracts/base/Authorizable.sol",
   "ast": {
-    "absolutePath": "/Users/hen/GitHub/kosu-monorepo/packages/solidity/kosu-system-contracts/contracts/base/Authorizable.sol",
+    "absolutePath": "/Users/hen/GitHub/kosu-monorepo/packages/kosu-system-contracts/contracts/base/Authorizable.sol",
     "exportedSymbols": {
       "Authorizable": [
         102
@@ -42,7 +42,7 @@
         "src": "0:23:1"
       },
       {
-        "absolutePath": "/Users/hen/GitHub/kosu-monorepo/packages/solidity/kosu-system-contracts/contracts/access_control/AuthorizedAddresses.sol",
+        "absolutePath": "/Users/hen/GitHub/kosu-monorepo/packages/kosu-system-contracts/contracts/access_control/AuthorizedAddresses.sol",
         "file": "../access_control/AuthorizedAddresses.sol",
         "id": 75,
         "nodeType": "ImportDirective",
@@ -395,7 +395,7 @@
     "src": "0:841:1"
   },
   "legacyAST": {
-    "absolutePath": "/Users/hen/GitHub/kosu-monorepo/packages/solidity/kosu-system-contracts/contracts/base/Authorizable.sol",
+    "absolutePath": "/Users/hen/GitHub/kosu-monorepo/packages/kosu-system-contracts/contracts/base/Authorizable.sol",
     "exportedSymbols": {
       "Authorizable": [
         102
@@ -416,7 +416,7 @@
         "src": "0:23:1"
       },
       {
-        "absolutePath": "/Users/hen/GitHub/kosu-monorepo/packages/solidity/kosu-system-contracts/contracts/access_control/AuthorizedAddresses.sol",
+        "absolutePath": "/Users/hen/GitHub/kosu-monorepo/packages/kosu-system-contracts/contracts/access_control/AuthorizedAddresses.sol",
         "file": "../access_control/AuthorizedAddresses.sol",
         "id": 75,
         "nodeType": "ImportDirective",
@@ -774,7 +774,7 @@
   },
   "networks": {},
   "schemaVersion": "3.0.6",
-  "updatedAt": "2019-04-27T00:18:00.241Z",
+  "updatedAt": "2019-05-02T04:11:19.178Z",
   "devdoc": {
     "author": "Freydal",
     "methods": {

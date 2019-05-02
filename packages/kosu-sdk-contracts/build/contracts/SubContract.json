@@ -97,9 +97,9 @@
   "sourceMap": "",
   "deployedSourceMap": "",
   "source": "pragma solidity ^0.5.0;\n\n/** @title SubContract\n    @author Freydal\n*/\ninterface SubContract {\n\n    /** @dev Defines interface for reporting maker argument json.\n        @notice Defines interface for reporting maker argument json.\n        @return JSON string representing maker arguments.\n    */\n    function makerArguments() external view returns (string memory);\n\n    /** @dev Defines interface for reporting taker argument json.\n        @notice Defines interface for reporting taker argument json.\n        @return JSON string representing taker arguments.\n    */\n    function takerArguments() external view returns (string memory);\n\n    /** @dev Defines interface for Kosu Order validation.\n        @notice Defines interface for Kosu Order validation.\n        @param makerData Kosu Order serialized based on makerArguments.\n        @return boolean representing validity of order\n    */\n    function isValid(bytes32[] calldata makerData) external view returns (bool);\n\n    /** @dev Defines interface for determining remaining amount available in Kosu order\n        @notice Defines interface for determining remaining amount available in Kosu order\n        @param makerData Kosu Order serialized based on makerArguments.\n\n    */\n    function amountRemaining(bytes32[] calldata makerData) external view returns (uint);\n\n    /** @dev Defines interface to settlement of Kosu order\n        @notice Defines interface to settlement of Kosu order\n        @param makerData Kosu Order serialized based on makerArguments.\n        @param takerData Arguments from taker of Kosu order serialized based on takerArguments.\n        @return Number of asset successfully taken\n    */\n    function participate(bytes32[] calldata makerData, bytes32[] calldata takerData) external returns (bool);\n}\n",
-  "sourcePath": "/Users/hen/GitHub/kosu-monorepo/packages/solidity/kosu-sdk-contracts/contracts/SubContract.sol",
+  "sourcePath": "/Users/hen/GitHub/kosu-monorepo/packages/kosu-sdk-contracts/contracts/SubContract.sol",
   "ast": {
-    "absolutePath": "/Users/hen/GitHub/kosu-monorepo/packages/solidity/kosu-sdk-contracts/contracts/SubContract.sol",
+    "absolutePath": "/Users/hen/GitHub/kosu-monorepo/packages/kosu-sdk-contracts/contracts/SubContract.sol",
     "exportedSymbols": {
       "SubContract": [
         225
@@ -557,7 +557,7 @@
     "src": "0:1779:2"
   },
   "legacyAST": {
-    "absolutePath": "/Users/hen/GitHub/kosu-monorepo/packages/solidity/kosu-sdk-contracts/contracts/SubContract.sol",
+    "absolutePath": "/Users/hen/GitHub/kosu-monorepo/packages/kosu-sdk-contracts/contracts/SubContract.sol",
     "exportedSymbols": {
       "SubContract": [
         225
@@ -1020,7 +1020,7 @@
   },
   "networks": {},
   "schemaVersion": "3.0.6",
-  "updatedAt": "2019-04-27T00:47:36.943Z",
+  "updatedAt": "2019-05-02T04:15:28.534Z",
   "devdoc": {
     "author": "Freydal",
     "methods": {
