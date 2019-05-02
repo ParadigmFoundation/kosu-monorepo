@@ -351,9 +351,9 @@
   "sourceMap": "",
   "deployedSourceMap": "",
   "source": "pragma solidity ^0.5.0;\n\n/** @title IValidatorRegistry\n    @author Freydal\n*/\ninterface IValidatorRegistry {\n\n    //The possible statuses of a Validator Listing\n    enum Status {\n        NULL,\n        PENDING,\n        ACCEPTED,\n        CHALLENGED,\n        EXITING\n    }\n\n    //Listing structure\n    struct Listing {\n        Status status;\n        uint stakedBalance;\n        uint applicationBlock;\n        uint confirmationBlock;\n        uint exitBlock;\n        int rewardRate;\n        uint lastRewardBlock;\n        bytes32 tendermintPublicKey;\n        address owner;\n        uint currentChallenge;\n    }\n\n    struct Challenge {\n        bytes32 listingKey;\n        address challenger;\n        uint voterTotal;\n        uint balance;\n        uint pollId;\n        uint challengeEnd;\n        bool finalized;\n        bool passed;\n    }\n\n    /** @dev Interface method */\n    function applicationPeriod() external view returns (uint);\n\n    /** @dev Interface method */\n    function commitPeriod() external view returns (uint);\n\n    /** @dev Interface method */\n    function challengePeriod() external view returns (uint);\n\n    /** @dev Interface method */\n    function exitPeriod() external view returns (uint);\n\n    /** @dev Interface method */\n    function rewardPeriod() external view returns (uint);\n\n    /** @dev Interface method */\n    function minimumBalance() external view returns (uint);\n\n    /** @dev Interface method */\n    function stakeholderCut() external view returns (uint);\n\n    /** @dev Interface method */\n    function treasury() external view returns (address);\n\n    /** @dev Interface method */\n    function voting() external view returns (address);\n\n    /** @dev Interface method */\n    function token() external view returns (address);\n\n    /** @dev Interface method */\n    function maxRewardRate() external view returns (uint);\n\n    /** @dev Interface method */\n    function validators() external view returns (bytes32[] memory);\n\n    /** @dev Interface method */\n    function getListing(bytes32) external view returns (Status, uint, bytes32, address);\n\n    /** @dev Interface method */\n    function registerListing(address, bytes32, uint, int) external;\n\n    /** @dev Interface method */\n    function challengeListing(address, bytes32) external;\n\n    /** @dev Interface method */\n    function claimWinnings(address, uint) external;\n\n    /** @dev Interface method */\n    function claimRewards(bytes32) external;\n\n    /** @dev Interface method */\n    function resolveChallenge(bytes32) external;\n\n    /** @dev Interface method */\n    function confirmListing(address, bytes32) external;\n\n    /** @dev Interface method */\n    function initExit(address, bytes32) external;\n\n    /** @dev Interface method */\n    function finalizeExit(address, bytes32) external;\n}\n",
-  "sourcePath": "/Users/hen/GitHub/kosu-monorepo/packages/solidity/kosu-system-contracts/contracts/validator/IValidatorRegistry.sol",
+  "sourcePath": "/Users/hen/GitHub/kosu-monorepo/packages/kosu-system-contracts/contracts/validator/IValidatorRegistry.sol",
   "ast": {
-    "absolutePath": "/Users/hen/GitHub/kosu-monorepo/packages/solidity/kosu-system-contracts/contracts/validator/IValidatorRegistry.sol",
+    "absolutePath": "/Users/hen/GitHub/kosu-monorepo/packages/kosu-system-contracts/contracts/validator/IValidatorRegistry.sol",
     "exportedSymbols": {
       "IValidatorRegistry": [
         1748
@@ -2396,7 +2396,7 @@
     "src": "0:2777:11"
   },
   "legacyAST": {
-    "absolutePath": "/Users/hen/GitHub/kosu-monorepo/packages/solidity/kosu-system-contracts/contracts/validator/IValidatorRegistry.sol",
+    "absolutePath": "/Users/hen/GitHub/kosu-monorepo/packages/kosu-system-contracts/contracts/validator/IValidatorRegistry.sol",
     "exportedSymbols": {
       "IValidatorRegistry": [
         1748
@@ -4444,7 +4444,7 @@
   },
   "networks": {},
   "schemaVersion": "3.0.6",
-  "updatedAt": "2019-04-27T00:18:00.258Z",
+  "updatedAt": "2019-05-02T04:11:19.196Z",
   "devdoc": {
     "author": "Freydal",
     "methods": {
