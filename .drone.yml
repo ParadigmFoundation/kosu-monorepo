@@ -9,10 +9,9 @@ steps:
       WEB3_URI: http://kosu-ganache:8545
     commands:
       - yarn
+      - yarn lint
       - yarn build
       - yarn test:ci
-    when:
-      event: pull_request
 
 services:
 - name: kosu-ganache
@@ -20,6 +19,18 @@ services:
   pull: always
   ports:
   - 8545
+
+trigger:
+  event:
+   - pull_request
+  changeset:
+    includes: [
+      .drone.yml,
+      packages/kosu.js/**/*.*,
+      packages/dev-images/**/*.*,
+      packages/kosu-sdk-contracts/**/*.*,
+      packages/kosu-system-contracts/**/*.*
+    ]
 
 ---
 kind: pipeline
@@ -34,8 +45,16 @@ steps:
     commands:
     - cd packages/go-kosu
     - make ci
-    when:
-      event: pull_request
+
+trigger:
+  event:
+    - pull_request
+  changeset:
+    includes: [
+      .drone.yml,
+      packages/go-kosu/**/*.*,
+      packages/kosu-system-contracts/**/*.*
+    ]
 
 # UNTESTED
 # ---

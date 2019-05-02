@@ -42,7 +42,7 @@ func TestDeliverRebalanceTx(t *testing.T) {
 
 	t.Run("AssertCode", func(t *testing.T) {
 		assert.Equal(t, abci.CodeTypeOK, res.Code,
-			"Unxpected DeliveryTx Code, err=%v", res.Info)
+			"Unexpected DeliveryTx Code, err=%v", res.Info)
 	})
 
 	t.Run("Assert Tags", func(t *testing.T) {
