@@ -300,3 +300,26 @@ func (s *State) UpdateConfirmationThreshold(n uint32) {
 	}
 	atomic.StoreUint32(&s.ConsensusParams.ConfirmationThreshold, n)
 }
+
+// Posters returns the current posters
+func (s *State) Posters() map[string]*Poster {
+	return s.posters
+}
+
+// GenLimits generate a rate-limit mapping based on staked balances
+// and the total order limit per staking period, from in-state 'posters' object.
+func (s *State) GenLimits() RateLimits {
+	total := big.NewInt(0)
+	for _, p := range s.posters {
+		total.Add(total, p.Balance)
+	}
+
+	rl := make(RateLimits)
+	for addr, p := range s.posters {
+		// TODO(hharder) Make sure the maths are right as we're not doing bitnum operations
+		lim := float64(p.Balance.Uint64()) / float64(total.Uint64())
+		rl[addr] = uint64(lim * float64(s.RoundInfo.Limit))
+	}
+
+	return rl
+}

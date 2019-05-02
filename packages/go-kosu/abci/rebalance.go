@@ -3,6 +3,7 @@ package abci
 import (
 	"fmt"
 	"go-kosu/abci/types"
+	"log"
 
 	abci "github.com/tendermint/tendermint/abci/types"
 	"github.com/tendermint/tendermint/libs/common"
@@ -27,13 +28,12 @@ func (app *App) deliverRebalance(tx *types.TransactionRebalance) abci.ResponseDe
 	info.FromProto(tx.RoundInfo)
 	info.Number++
 
-	// Update RateLimits
-	/* TODO: genLimits
-	 * tx.SortRateLimits()
-	 * rl := store.RateLimits{}
-	 * rl.FromProto(tx.GetLimits()...)
-	 */
-	// End state update
+	if info.Number != 1 {
+		limits := app.state.GenLimits()
+		for addr, l := range limits {
+			log.Printf("addr(%s) %d", addr, l)
+		}
+	}
 
 	tags := []common.KVPair{
 		{Key: []byte("tx.type"), Value: []byte("rebalance")},

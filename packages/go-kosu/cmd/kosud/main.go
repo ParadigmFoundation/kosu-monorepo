@@ -46,8 +46,8 @@ func newDB(dir string, debug bool) (db.DB, error) {
 
 func startWitness(ctx context.Context, ethAddr string, nodeAddr string, key []byte) error {
 	client := abci.NewHTTPClient(nodeAddr, key)
-
 	w, err := witness.NewEthereumProvider(ethAddr)
+
 	if err != nil {
 		return err
 	}
@@ -63,6 +63,7 @@ func startWitness(ctx context.Context, ethAddr string, nodeAddr string, key []by
 
 	// nolint
 	go witness.ForwardEvents(ctx, w, 10, fn)
+
 	return nil
 }
 
