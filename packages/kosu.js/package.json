@@ -20,7 +20,7 @@
     "url": "https://github.com/ParadigmFoundation/kosu-monorepo/issues"
   },
   "config": {
-    "ganache_image_uri": "gcr.io/kosu-io/kosu-ganache:0.0.1"
+    "ganache_image_uri": "gcr.io/kosu-io/kosu-ganache:latest"
   },
   "dependencies": {
     "@kosu/system-contracts": "^0.1.0",
