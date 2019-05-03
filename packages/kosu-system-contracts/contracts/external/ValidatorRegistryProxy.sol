@@ -103,8 +103,8 @@ contract ValidatorRegistryProxy is Authorizable {
         @notice Reads the current registries token contract address.
         @return Address of ERC20 token used.
     */
-    function token() external view returns (address) {
-        return registry.token();
+    function kosuToken() external view returns (address) {
+        return registry.kosuToken();
     }
 
     /** @dev Calculate the maximum KosuToken a validator can generate for the current registry
