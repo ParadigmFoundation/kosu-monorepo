@@ -3,20 +3,14 @@ package witness
 import (
 	"context"
 	"fmt"
-	"go-kosu/abci"
 	"go-kosu/abci/types"
-	"log"
 	"math/big"
 )
 
 // Provider describes a block provider.
 type Provider interface {
-	// GetBlockNumber returns the latest block number in the chain.
-	GetBlockNumber(ctx context.Context) (*big.Int, error)
-	// Handle handles a new block.
-	HandleBlocks(context.Context, func(*Block)) error
-	// HandleEvent
-	HandleEvents(context.Context, func(*Event)) error
+	WatchBlocks(context.Context, chan *Block) error
+	WatchEvents(context.Context, chan *Event) error
 }
 
 // Block is holds the basic block information.
@@ -45,19 +39,4 @@ func (e *Event) WitnessTx() *types.TransactionWitness {
 		Address: e.Address,
 	}
 	return tx
-}
-
-// ForwardEvents reads events from the Witness provider and forwards them as BroadcastTransactions to the ABCI node
-// using a abci.Client
-func ForwardEvents(ctx context.Context, w Provider, c *abci.Client, key []byte) error {
-	handler := func(e *Event) {
-		res, err := c.BroadcastTxSync(e.WitnessTx())
-		if err != nil {
-			log.Printf("BroadcastTxSync: %+v", err)
-			return
-		}
-		log.Printf("witness event: %+v (%s)", e, res.Log)
-	}
-
-	return w.HandleEvents(ctx, handler)
 }
