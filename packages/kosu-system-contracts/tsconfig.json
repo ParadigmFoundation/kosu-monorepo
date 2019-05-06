@@ -8,7 +8,7 @@
     "typeRoots": ["node_modules/@types"],
     "types": ["mocha"]
   },
-  "include": ["./generated-wrappers/*, ./src/**/*"],
+  "include": ["./generated-wrappers/*", "./src/**/*"],
   "files": [
     "generated-artifacts/AuthorizedAddresses.json",
     "generated-artifacts/EventEmitter.json",
