@@ -16,6 +16,7 @@
     "build": "wsrun --exclude-missing --stages build",
     "test": "wsrun --exclude-missing test",
     "test:ci": "wsrun --exclude-missing test:ci",
+    "prettier": "prettier --write '**/*.{ts,tsx,json,md}' --config .prettierrc",
     "prettier:ci": "prettier --list-different '**/*.{ts,tsx,json,md}' --config .prettierrc",
     "postinstall": "lerna link"
   },
