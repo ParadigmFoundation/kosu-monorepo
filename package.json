@@ -16,6 +16,7 @@
     "build": "wsrun --exclude-missing --stages build",
     "test": "wsrun --exclude-missing test",
     "test:ci": "wsrun --exclude-missing test:ci",
+    "prettier:ci": "prettier --list-different '**/*.{ts,tsx,json,md}' --config .prettierrc",
     "postinstall": "lerna link"
   },
   "workspaces": [
@@ -30,5 +31,8 @@
     "lerna": "^3.13.3",
     "wsrun": "^3.6.4"
   },
-  "private": true
+  "private": true,
+  "devDependencies": {
+    "prettier": "^1.17.0"
+  }
 }
