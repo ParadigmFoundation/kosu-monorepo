@@ -8,7 +8,7 @@ interface KosuOptions {
     validatorRegistryProxyAddress?: string;
     votingAddress?: string;
     treasuryAddress?: string;
-    web3?: Web3
+    web3?: Web3;
 }
 
 interface Order {
@@ -21,7 +21,7 @@ interface Order {
 }
 
 interface PostableOrder extends Order {
-    posterSignature: { v: any, s: any, r: any }
+    posterSignature: { v: any; s: any; r: any };
 }
 
 interface OrderArgument {

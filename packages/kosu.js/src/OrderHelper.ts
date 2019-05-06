@@ -43,7 +43,11 @@ export class OrderHelper {
     public async prepareForPost(order: Order, poster: string = order.maker): Promise<PostableOrder> {
         return {
             ...order,
-            posterSignature: await Signature.generate(this.web3, OrderSerializer.posterHex(order, await this.orderGateway.makerArguments(order.subContract)), poster),
+            posterSignature: await Signature.generate(
+                this.web3,
+                OrderSerializer.posterHex(order, await this.orderGateway.makerArguments(order.subContract)),
+                poster,
+            ),
         };
     }
 
