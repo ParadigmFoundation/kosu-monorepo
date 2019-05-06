@@ -8,6 +8,7 @@ import {providerUtils} from "@0x/utils";
 import Web3 = require("web3");
 import {migrations} from "../src/migrations";
 import {Web3Wrapper} from "@0x/web3-wrapper";
+import {LogDecoder} from "@0x/contracts-test-utils";
 
 chai.use(chaiAsPromised);
 chai.should();
