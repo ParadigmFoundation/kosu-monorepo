@@ -1,0 +1,42 @@
+{
+  "artifactsDir": "./generated-artifacts",
+  "contractsDir": "./contracts",
+  "useDockerisedSolc": true,
+  "isOfflineMode": false,
+  "compilerSettings": {
+    "evmVersion": "constantinople",
+    "optimizer": {
+      "enabled": true,
+      "runs": 200,
+      "details": {
+        "yul": true,
+        "deduplicate": true,
+        "cse": true,
+        "constantOptimizer": true
+      }
+    },
+    "outputSelection": {
+      "*": {
+        "*": [
+          "abi",
+          "evm.bytecode.object",
+          "evm.bytecode.sourceMap",
+          "evm.deployedBytecode.object",
+          "evm.deployedBytecode.sourceMap"
+        ]
+      }
+    }
+  },
+  "contracts": [
+    "access_control/AuthorizedAddresses.sol",
+    "event/EventEmitter.sol",
+    "external/OrderGateway.sol",
+    "external/PosterRegistryProxy.sol",
+    "external/ValidatorRegistryProxy.sol",
+    "lib/KosuToken.sol",
+    "poster/PosterRegistry.sol",
+    "treasury/Treasury.sol",
+    "validator/ValidatorRegistry.sol",
+    "voting/Voting.sol"
+  ]
+}
