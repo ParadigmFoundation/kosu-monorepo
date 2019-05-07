@@ -2,6 +2,8 @@ import { BigNumber } from "@0x/utils";
 import { toBN, toWei } from "web3-utils";
 
 import {
+  decodeKosuEvents,
+  logDecoder,
   AuthorizedAddressesContract,
   KosuTokenContract,
   PosterRegistryContract,
@@ -167,26 +169,32 @@ describe("PosterRegistry", async () => {
       const value = toWei("50");
       const from = accounts[0];
 
+      await cleanupUser(from);
+
       await token.approve.sendTransactionAsync(treasury.address, value);
       const result = await posterRegistryProxy.registerTokens.sendTransactionAsync(value).then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash));
+      const decodedLogs = decodeKosuEvents(result.logs)[0];
 
-      // assertEmitterEvents(result, 3, (decoded) => (
-      //     decoded.eventType === 'PosterRegistryUpdate' &&
-      //     decoded.poster === from.toLowerCase() &&
-      //     decoded.stake === value
-      // ));
-      true.should.eq(false);
+      decodedLogs.eventType.should.eq('PosterRegistryUpdate');
+      decodedLogs.poster.should.eq(from.toLowerCase());
+      decodedLogs.stake.should.eq(value);
     });
 
     it("should emit event when tokens are released", async () => {
       const value = toWei("50");
       const from = accounts[0];
 
+      await cleanupUser(from);
+
       await token.approve.sendTransactionAsync(treasury.address, value);
       await posterRegistryProxy.registerTokens.sendTransactionAsync(value);
 
       const result = await posterRegistryProxy.releaseTokens.sendTransactionAsync(value).then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash));
-      true.should.eq(false)
+      const decodedLogs = decodeKosuEvents(result.logs)[0];
+
+      decodedLogs.eventType.should.eq('PosterRegistryUpdate');
+      decodedLogs.poster.should.eq(from.toLowerCase());
+      decodedLogs.stake.should.eq('0');
     });
   });
 });
