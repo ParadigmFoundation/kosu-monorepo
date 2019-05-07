@@ -1,3 +1,7 @@
+import {Web3Wrapper} from "@0x/web3-wrapper";
+import Web3ProviderEngine from "web3-provider-engine";
+import {BN, toWei} from "web3-utils";
+
 import {
     artifacts,
     AuthorizedAddressesContract,
@@ -9,11 +13,8 @@ import {
     TreasuryContract,
     ValidatorRegistryContract,
     ValidatorRegistryProxyContract,
-    VotingContract
-} from './index';
-import {BN, toWei} from 'web3-utils';
-import {Web3Wrapper} from '@0x/web3-wrapper';
-import Web3ProviderEngine = require("web3-provider-engine");
+    VotingContract,
+} from "./index";
 
 export async function migrations(provider: Web3ProviderEngine, txDefaults: {}): Promise<MigratedContracts> {
     const web3Wrapper = new Web3Wrapper(provider);
@@ -33,45 +34,45 @@ export async function migrations(provider: Web3ProviderEngine, txDefaults: {}): 
         {
             hash: await authorizedAddresses.authorizeAddress.sendTransactionAsync(treasury.address), success: () => {
                 console.log(`Authorized address: ${treasury.address}`);
-            }
+            },
         },
         {
             hash: await authorizedAddresses.authorizeAddress.sendTransactionAsync(voting.address), success: () => {
                 console.log(`Authorized address: ${voting.address}`);
-            }
+            },
         },
         {
             hash: await authorizedAddresses.authorizeAddress.sendTransactionAsync(posterRegistryImpl.address),
             success: () => {
                 console.log(`Authorized address: ${posterRegistryImpl.address}`);
-            }
+            },
         },
         {
             hash: await authorizedAddresses.authorizeAddress.sendTransactionAsync(posterRegistryProxy.address),
             success: () => {
                 console.log(`Authorized address: ${posterRegistryProxy.address}`);
-            }
+            },
         },
         {
             hash: await authorizedAddresses.authorizeAddress.sendTransactionAsync(validatorRegistryProxy.address),
             success: () => {
                 console.log(`Authorized address: ${validatorRegistryProxy.address}`);
-            }
+            },
         },
         {
-            hash: await kosuToken.mint.sendTransactionAsync(new BN(toWei('1000000000'))), success: () => {
-                console.log(`Minted ${toWei('1000000000')} tokens`);
-            }
+            hash: await kosuToken.mint.sendTransactionAsync(new BN(toWei("1000000000"))), success: () => {
+                console.log(`Minted ${toWei("1000000000")} tokens`);
+            },
         },
         {
             hash: await authorizedAddresses.authorizeAddress.sendTransactionAsync(validatorRegistryImpl.address),
             success: () => {
                 console.log(`Authorized address: ${validatorRegistryImpl.address}`);
-            }
+            },
         },
     ];
 
-    await Promise.all(transactions.map((tx) => web3Wrapper.awaitTransactionSuccessAsync(tx.hash).then(() => {
+    await Promise.all(transactions.map(tx => web3Wrapper.awaitTransactionSuccessAsync(tx.hash).then(() => {
         tx.success();
     })));
 

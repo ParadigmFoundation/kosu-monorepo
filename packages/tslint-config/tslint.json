@@ -110,6 +110,7 @@
             "check-typecast",
             "check-preblock"
         ],
-        "radix": false
+        "radix": false,
+        "no-console": false
     }
 }

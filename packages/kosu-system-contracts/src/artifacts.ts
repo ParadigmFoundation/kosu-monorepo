@@ -25,5 +25,5 @@ export const artifacts = {
   PosterRegistry: PosterRegistry as ContractArtifact,
   Treasury: Treasury as ContractArtifact,
   ValidatorRegistry: ValidatorRegistry as ContractArtifact,
-  Voting: Voting as ContractArtifact
+  Voting: Voting as ContractArtifact,
 };
