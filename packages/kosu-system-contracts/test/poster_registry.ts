@@ -3,7 +3,6 @@ import { toBN, toWei } from "web3-utils";
 
 import {
   decodeKosuEvents,
-  logDecoder,
   AuthorizedAddressesContract,
   KosuTokenContract,
   PosterRegistryContract,
