@@ -1,4 +1,3 @@
-
 interface MigratedContracts {
     validatorRegistryProxy: ValidatorRegistryProxyContract;
     orderGateway: OrderGatewayContract;
@@ -10,4 +9,11 @@ interface MigratedContracts {
     voting: VotingContract;
     posterRegistryProxy: PosterRegistryProxyContract;
     posterRegistryImpl: PosterRegistryContract;
+}
+
+interface Listing {
+    status: number;
+    applicationBlock: number;
+    tendermintPublicKey: string;
+    owner: string;
 }
