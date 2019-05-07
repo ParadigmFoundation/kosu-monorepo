@@ -45,7 +45,7 @@ before(async () => {
     gasPrice: toWei("5", "gwei"),
   };
 
-  const contracts = await migrations(provider, txDefaults);
+  const contracts = await migrations(provider, txDefaults, { noLogs: true });
   const accounts = await web3.eth.getAccounts().then(a => a.map(v => v.toLowerCase()));
 
   const skipBlocks = async num => {
