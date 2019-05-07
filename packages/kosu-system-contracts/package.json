@@ -11,8 +11,8 @@
     "url": "https://github.com/ParadigmFoundation/kosu-monorepo/issues"
   },
   "scripts": {
-    "test": "ts-mocha -p tsconfig.json test/*",
-    "test:ci": "ts-mocha -p tsconfig.json test/*",
+    "test": "ts-mocha -p test/tsconfig.json test/*",
+    "test:ci": "ts-mocha -p test/tsconfig.json test/*",
     "build": "run-s contracts:clean compile:solidity generate_contract_wrappers compile:typescript",
     "compile:solidity": "sol-compiler",
     "compile:typescript": "tsc",
