@@ -45,14 +45,14 @@ func TestBigInt(t *testing.T) {
 
 /*
 func TestProtoBigIntFromInt(t *testing.T) {
-	// real number from ParadigmEvent 
-	// source: https://ropsten.etherscan.io/tx/0x4098d3f5acc97e33452185f1b94f69b4e9c92399ad7f0ae5d1bd8b382b430151#eventlog (63)
+	// real number from ParadigmEvent
+	// source tx: 0x4098d3f5acc97e33452185f1b94f69b4e9c92399ad7f0ae5d1bd8b382b430151
 	//
 	// Amount:
 	//   - bytes (hex):			0x070b30db1912aa5c0000
 	//   - byte arr:			{ 7, 11, 48, 219, 25, 18, 170, 92, 0, 0 }
 	//   - decimal (sci):		3.3263e+22
-	//   - decimal (exact):		33263000000000000000000  
+	//   - decimal (exact):		33263000000000000000000
 	numBytes := []byte{7, 11, 48, 219, 25, 18, 170, 92, 0, 0}
 
 	// create big.Int from bytes (as in witness/eth.go)
@@ -74,14 +74,14 @@ func TestProtoBigIntFromInt(t *testing.T) {
 */
 
 func TestProtoBigIntFromInt(t *testing.T) {
-	// real number from ParadigmEvent 
-	// source: https://ropsten.etherscan.io/tx/0x4098d3f5acc97e33452185f1b94f69b4e9c92399ad7f0ae5d1bd8b382b430151#eventlog (63)
+	// real number from ParadigmEvent
+	// source tx: 0x4098d3f5acc97e33452185f1b94f69b4e9c92399ad7f0ae5d1bd8b382b430151
 	//
 	// Amount:
 	//   - bytes (hex):			0x070b30db1912aa5c0000
 	//   - byte arr:			{ 7, 11, 48, 219, 25, 18, 170, 92, 0, 0 }
 	//   - decimal (sci):		3.3263e+22
-	//   - decimal (exact):		33263000000000000000000  
+	//   - decimal (exact):		33263000000000000000000
 	numBytes := []byte{7, 11, 48, 219, 25, 18, 170, 92, 0, 0}
 
 	// create big.Int from bytes (as in witness/eth.go)
