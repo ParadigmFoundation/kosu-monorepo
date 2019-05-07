@@ -1,14 +1,15 @@
-import {
-  PosterRegistryProxyContract,
-  PosterRegistryContract,
-  KosuTokenContract,
-  TreasuryContract,
-  AuthorizedAddressesContract
-} from "../src";
-import { toWei, toBN } from 'web3-utils';
 import { BigNumber } from "@0x/utils";
+import { toBN, toWei } from "web3-utils";
 
-describe('PosterRegistry', async () => {
+import {
+  AuthorizedAddressesContract,
+  KosuTokenContract,
+  PosterRegistryContract,
+  PosterRegistryProxyContract,
+  TreasuryContract,
+} from "../src";
+
+describe("PosterRegistry", async () => {
   let posterRegistryProxy: PosterRegistryProxyContract;
   let posterRegistry: PosterRegistryContract;
   let token: KosuTokenContract;
@@ -27,30 +28,30 @@ describe('PosterRegistry', async () => {
     auth = contracts.authorizedAddresses;
   });
 
-  describe('registerTokens', () => {
-    it('should require a balance greater or equal to the amount registered', async () => {
-      const value = toWei('50');
+  describe("registerTokens", () => {
+    it("should require a balance greater or equal to the amount registered", async () => {
+      const value = toWei("50");
       const from = accounts[1];
 
-      await token.balanceOf.callAsync(from).then(x => x.toString()).should.eventually.eq('0');
+      await token.balanceOf.callAsync(from).then(x => x.toString()).should.eventually.eq("0");
       await posterRegistryProxy.registerTokens.sendTransactionAsync(value, { from }).should.eventually.be.rejected;
     });
 
-    it('should require an approval greater or equal to the amount registered', async () => {
-      const value = toWei('50');
+    it("should require an approval greater or equal to the amount registered", async () => {
+      const value = toWei("50");
       const from = accounts[0];
 
       await token.balanceOf.callAsync(from).then(x => x.toString()).then(parseInt)
         .should.eventually.gt(parseInt(value));
-      await token.approve.sendTransactionAsync(treasury.address, toBN('0')).should.eventually.be.fulfilled;
+      await token.approve.sendTransactionAsync(treasury.address, toBN("0")).should.eventually.be.fulfilled;
       await token.allowance.callAsync(from, treasury.address).then(x => x.toString())
-          .should.eventually.eq('0');
+          .should.eventually.eq("0");
       await posterRegistryProxy.registerTokens.sendTransactionAsync(value).should.eventually.be.rejected;
     });
 
-    it('should increase tokensContributed and tokensRegisteredFor by the amount', async () => {
-      const value = toWei('50');
-      const double = toWei('100');
+    it("should increase tokensContributed and tokensRegisteredFor by the amount", async () => {
+      const value = toWei("50");
+      const double = toWei("100");
       const from = accounts[0];
 
       await token.approve.sendTransactionAsync(treasury.address, value);
@@ -67,21 +68,21 @@ describe('PosterRegistry', async () => {
     });
   });
 
-  describe('releaseTokens', () => {
-    it('should not allow you to reduce balance below 0', async () => {
-      const amount = toWei('1');
+  describe("releaseTokens", () => {
+    it("should not allow you to reduce balance below 0", async () => {
+      const amount = toWei("1");
       const from = accounts[0];
 
       await cleanupUser(from);
 
-      await posterRegistryProxy.tokensRegisteredFor.callAsync(from).then(x => x.toString()).should.eventually.eq('0');
+      await posterRegistryProxy.tokensRegisteredFor.callAsync(from).then(x => x.toString()).should.eventually.eq("0");
 
       await posterRegistryProxy.releaseTokens.sendTransactionAsync(amount).should.eventually.be.rejected;
     });
 
-    it('should reduce balance and total by the amount', async () => {
-      const value = toWei('50');
-      const double = toWei('100');
+    it("should reduce balance and total by the amount", async () => {
+      const value = toWei("50");
+      const double = toWei("100");
       const from = accounts[0];
 
       await token.approve.sendTransactionAsync(treasury.address, double);
@@ -96,8 +97,8 @@ describe('PosterRegistry', async () => {
       await posterRegistryProxy.tokensContributed.callAsync().then(x => x.toString()).should.eventually.eq(value);
     });
 
-    it('should return the tokens to the user\'s treasury currentBalance', async () => {
-      const value = toWei('50');
+    it("should return the tokens to the user's treasury currentBalance", async () => {
+      const value = toWei("50");
       const from = accounts[0];
 
       await token.approve.sendTransactionAsync(treasury.address, value);
@@ -113,15 +114,15 @@ describe('PosterRegistry', async () => {
     });
   });
 
-  describe('token', () => {
-    it('should have a token token configured', async () => {
+  describe("token", () => {
+    it("should have a token token configured", async () => {
       posterRegistryProxy.token.callAsync().should.eventually.eq(token.address);
     });
   });
 
-  describe('tokensRegisteredFor', () => {
-    it('should return the current registered tokens for user', async () => {
-      const value = toWei('50');
+  describe("tokensRegisteredFor", () => {
+    it("should return the current registered tokens for user", async () => {
+      const value = toWei("50");
       const from = accounts[0];
 
       await cleanupUser(from);
@@ -134,9 +135,9 @@ describe('PosterRegistry', async () => {
     });
   });
 
-  describe('tokensContributed', () => {
-    it('should report tokensContributed', async () => {
-      const value = toWei('50');
+  describe("tokensContributed", () => {
+    it("should report tokensContributed", async () => {
+      const value = toWei("50");
       const from = accounts[0];
 
       await cleanupUser(from);
@@ -147,8 +148,8 @@ describe('PosterRegistry', async () => {
       await posterRegistryProxy.tokensContributed.callAsync().then(x => x.toString()).should.eventually.eq(value);
     });
 
-    it('should match tokens possessed by contract', async () => {
-      const value = toWei('50');
+    it("should match tokens possessed by contract", async () => {
+      const value = toWei("50");
       const from = accounts[0];
 
       await cleanupUser(from);
@@ -161,9 +162,9 @@ describe('PosterRegistry', async () => {
     });
   });
 
-  describe('PosterRegistryUpdate', () => {
-    it('should emit event when tokens are registered', async () => {
-      const value = toWei('50');
+  describe("PosterRegistryUpdate", () => {
+    it("should emit event when tokens are registered", async () => {
+      const value = toWei("50");
       const from = accounts[0];
 
       await token.approve.sendTransactionAsync(treasury.address, value);
@@ -177,8 +178,8 @@ describe('PosterRegistry', async () => {
       true.should.eq(false);
     });
 
-    it('should emit event when tokens are released', async () => {
-      const value = toWei('50');
+    it("should emit event when tokens are released", async () => {
+      const value = toWei("50");
       const from = accounts[0];
 
       await token.approve.sendTransactionAsync(treasury.address, value);
