@@ -1,0 +1,795 @@
+{
+  "contractName": "Authorizable",
+  "abi": [
+    {
+      "inputs": [
+        {
+          "name": "authorizedAddressesAddress",
+          "type": "address"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "constructor"
+    }
+  ],
+  "metadata": "{\"compiler\":{\"version\":\"0.5.0+commit.1d4f565a\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[{\"name\":\"authorizedAddressesAddress\",\"type\":\"address\"}],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"constructor\"}],\"devdoc\":{\"author\":\"Freydal\",\"methods\":{\"constructor\":{\"details\":\"Initializes contract with deployed AuthorizedAddresses contract.\",\"params\":{\"authorizedAddressesAddress\":\"Deployed AuthorizedAddresses address.\"}}},\"title\":\"Authorizable\"},\"userdoc\":{\"methods\":{\"constructor\":\"Initializes contract with deployed AuthorizedAddresses contract.\"}}},\"settings\":{\"compilationTarget\":{\"/Users/hen/GitHub/kosu-monorepo/packages/kosu-system-contracts/contracts/base/Authorizable.sol\":\"Authorizable\"},\"evmVersion\":\"byzantium\",\"libraries\":{},\"optimizer\":{\"enabled\":true,\"runs\":200},\"remappings\":[]},\"sources\":{\"/Users/hen/GitHub/kosu-monorepo/packages/kosu-system-contracts/contracts/access_control/AuthorizedAddresses.sol\":{\"keccak256\":\"0xcd3b4c471d52a5495bd750a2860931d0e506e0abeb2bcb2a8be9d2de5acc41d5\",\"urls\":[\"bzzr://926e6d6de2b3db5a963a06b0d0b5c11cd1c2a7b2b271f44fe85bd59f47d8eb62\"]},\"/Users/hen/GitHub/kosu-monorepo/packages/kosu-system-contracts/contracts/base/Authorizable.sol\":{\"keccak256\":\"0xba27cbc28e8d274ca837422e24a9ff34080fd1cd8dcaf320323b2176b64e78c0\",\"urls\":[\"bzzr://331129a22f864ba040a709fb5570e0033190da0faebb4dc122b0f2deda60a5f6\"]},\"openzeppelin-solidity/contracts/ownership/Ownable.sol\":{\"keccak256\":\"0x980de387a1a020a498f53d00f89fecebb12c949a17e8f160093c0303ede2b786\",\"urls\":[\"bzzr://08894efa2a557982070beda6a81a032407e70532d24bdafe80d39660c74904d9\"]}},\"version\":1}",
+  "bytecode": "0x6080604052348015600f57600080fd5b50604051602080609283398101806040526020811015602d57600080fd5b505160008054600160a060020a03909216600160a060020a0319909216919091179055603580605d6000396000f3fe6080604052600080fdfea165627a7a7230582051c0df8f4ff16db8aa9a4e799ef4600ffcfeda451a750188618ff03641851d790029",
+  "deployedBytecode": "0x6080604052600080fdfea165627a7a7230582051c0df8f4ff16db8aa9a4e799ef4600ffcfeda451a750188618ff03641851d790029",
+  "sourceMap": "125:715:1:-;;;492:139;8:9:-1;5:2;;;30:1;27;20:12;5:2;492:139:1;;;;;;;;;;;;;13:2:-1;8:3;5:11;2:2;;;29:1;26;19:12;2:2;-1:-1;492:139:1;557:17;:67;;-1:-1:-1;;;;;557:67:1;;;-1:-1:-1;;;;;;557:67:1;;;;;;;;;125:715;;;;;;",
+  "deployedSourceMap": "125:715:1:-;;;;;",
+  "source": "pragma solidity ^0.5.0;\n\nimport \"../access_control/AuthorizedAddresses.sol\";\n\n/** @title Authorizable\n    @author Freydal\n*/\ncontract Authorizable {\n\n    //Contract storing system level permissions\n    AuthorizedAddresses authorizedAddress;\n\n    /** @dev Initializes contract with deployed AuthorizedAddresses contract.\n        @notice Initializes contract with deployed AuthorizedAddresses contract.\n        @param authorizedAddressesAddress Deployed AuthorizedAddresses address.\n    */\n    constructor(address authorizedAddressesAddress) public {\n        authorizedAddress = AuthorizedAddresses(authorizedAddressesAddress);\n    }\n\n    /** @dev Ensures msg.sender is from an address enabled for system level access.\n    */\n    modifier isAuthorized() {\n        require(authorizedAddress.isAddressAuthorized(msg.sender));\n        _;\n    }\n}\n",
+  "sourcePath": "/Users/hen/GitHub/kosu-monorepo/packages/kosu-system-contracts/contracts/base/Authorizable.sol",
+  "ast": {
+    "absolutePath": "/Users/hen/GitHub/kosu-monorepo/packages/kosu-system-contracts/contracts/base/Authorizable.sol",
+    "exportedSymbols": {
+      "Authorizable": [
+        102
+      ]
+    },
+    "id": 103,
+    "nodeType": "SourceUnit",
+    "nodes": [
+      {
+        "id": 74,
+        "literals": [
+          "solidity",
+          "^",
+          "0.5",
+          ".0"
+        ],
+        "nodeType": "PragmaDirective",
+        "src": "0:23:1"
+      },
+      {
+        "absolutePath": "/Users/hen/GitHub/kosu-monorepo/packages/kosu-system-contracts/contracts/access_control/AuthorizedAddresses.sol",
+        "file": "../access_control/AuthorizedAddresses.sol",
+        "id": 75,
+        "nodeType": "ImportDirective",
+        "scope": 103,
+        "sourceUnit": 73,
+        "src": "25:51:1",
+        "symbolAliases": [],
+        "unitAlias": ""
+      },
+      {
+        "baseContracts": [],
+        "contractDependencies": [],
+        "contractKind": "contract",
+        "documentation": "@title Authorizable\n@author Freydal",
+        "fullyImplemented": true,
+        "id": 102,
+        "linearizedBaseContracts": [
+          102
+        ],
+        "name": "Authorizable",
+        "nodeType": "ContractDefinition",
+        "nodes": [
+          {
+            "constant": false,
+            "id": 77,
+            "name": "authorizedAddress",
+            "nodeType": "VariableDeclaration",
+            "scope": 102,
+            "src": "202:37:1",
+            "stateVariable": true,
+            "storageLocation": "default",
+            "typeDescriptions": {
+              "typeIdentifier": "t_contract$_AuthorizedAddresses_$72",
+              "typeString": "contract AuthorizedAddresses"
+            },
+            "typeName": {
+              "contractScope": null,
+              "id": 76,
+              "name": "AuthorizedAddresses",
+              "nodeType": "UserDefinedTypeName",
+              "referencedDeclaration": 72,
+              "src": "202:19:1",
+              "typeDescriptions": {
+                "typeIdentifier": "t_contract$_AuthorizedAddresses_$72",
+                "typeString": "contract AuthorizedAddresses"
+              }
+            },
+            "value": null,
+            "visibility": "internal"
+          },
+          {
+            "body": {
+              "id": 88,
+              "nodeType": "Block",
+              "src": "547:84:1",
+              "statements": [
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "id": 86,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "lValueRequested": false,
+                    "leftHandSide": {
+                      "argumentTypes": null,
+                      "id": 82,
+                      "name": "authorizedAddress",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 77,
+                      "src": "557:17:1",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_contract$_AuthorizedAddresses_$72",
+                        "typeString": "contract AuthorizedAddresses"
+                      }
+                    },
+                    "nodeType": "Assignment",
+                    "operator": "=",
+                    "rightHandSide": {
+                      "argumentTypes": null,
+                      "arguments": [
+                        {
+                          "argumentTypes": null,
+                          "id": 84,
+                          "name": "authorizedAddressesAddress",
+                          "nodeType": "Identifier",
+                          "overloadedDeclarations": [],
+                          "referencedDeclaration": 79,
+                          "src": "597:26:1",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_address",
+                            "typeString": "address"
+                          }
+                        }
+                      ],
+                      "expression": {
+                        "argumentTypes": [
+                          {
+                            "typeIdentifier": "t_address",
+                            "typeString": "address"
+                          }
+                        ],
+                        "id": 83,
+                        "name": "AuthorizedAddresses",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 72,
+                        "src": "577:19:1",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_type$_t_contract$_AuthorizedAddresses_$72_$",
+                          "typeString": "type(contract AuthorizedAddresses)"
+                        }
+                      },
+                      "id": 85,
+                      "isConstant": false,
+                      "isLValue": false,
+                      "isPure": false,
+                      "kind": "typeConversion",
+                      "lValueRequested": false,
+                      "names": [],
+                      "nodeType": "FunctionCall",
+                      "src": "577:47:1",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_contract$_AuthorizedAddresses_$72",
+                        "typeString": "contract AuthorizedAddresses"
+                      }
+                    },
+                    "src": "557:67:1",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_contract$_AuthorizedAddresses_$72",
+                      "typeString": "contract AuthorizedAddresses"
+                    }
+                  },
+                  "id": 87,
+                  "nodeType": "ExpressionStatement",
+                  "src": "557:67:1"
+                }
+              ]
+            },
+            "documentation": "@dev Initializes contract with deployed AuthorizedAddresses contract.\n@notice Initializes contract with deployed AuthorizedAddresses contract.\n@param authorizedAddressesAddress Deployed AuthorizedAddresses address.",
+            "id": 89,
+            "implemented": true,
+            "kind": "constructor",
+            "modifiers": [],
+            "name": "",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 80,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 79,
+                  "name": "authorizedAddressesAddress",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 89,
+                  "src": "504:34:1",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 78,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "504:7:1",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "503:36:1"
+            },
+            "returnParameters": {
+              "id": 81,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "547:0:1"
+            },
+            "scope": 102,
+            "src": "492:139:1",
+            "stateMutability": "nonpayable",
+            "superFunction": null,
+            "visibility": "public"
+          },
+          {
+            "body": {
+              "id": 100,
+              "nodeType": "Block",
+              "src": "752:86:1",
+              "statements": [
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "arguments": [
+                      {
+                        "argumentTypes": null,
+                        "arguments": [
+                          {
+                            "argumentTypes": null,
+                            "expression": {
+                              "argumentTypes": null,
+                              "id": 94,
+                              "name": "msg",
+                              "nodeType": "Identifier",
+                              "overloadedDeclarations": [],
+                              "referencedDeclaration": 4746,
+                              "src": "808:3:1",
+                              "typeDescriptions": {
+                                "typeIdentifier": "t_magic_message",
+                                "typeString": "msg"
+                              }
+                            },
+                            "id": 95,
+                            "isConstant": false,
+                            "isLValue": false,
+                            "isPure": false,
+                            "lValueRequested": false,
+                            "memberName": "sender",
+                            "nodeType": "MemberAccess",
+                            "referencedDeclaration": null,
+                            "src": "808:10:1",
+                            "typeDescriptions": {
+                              "typeIdentifier": "t_address_payable",
+                              "typeString": "address payable"
+                            }
+                          }
+                        ],
+                        "expression": {
+                          "argumentTypes": [
+                            {
+                              "typeIdentifier": "t_address_payable",
+                              "typeString": "address payable"
+                            }
+                          ],
+                          "expression": {
+                            "argumentTypes": null,
+                            "id": 92,
+                            "name": "authorizedAddress",
+                            "nodeType": "Identifier",
+                            "overloadedDeclarations": [],
+                            "referencedDeclaration": 77,
+                            "src": "770:17:1",
+                            "typeDescriptions": {
+                              "typeIdentifier": "t_contract$_AuthorizedAddresses_$72",
+                              "typeString": "contract AuthorizedAddresses"
+                            }
+                          },
+                          "id": 93,
+                          "isConstant": false,
+                          "isLValue": false,
+                          "isPure": false,
+                          "lValueRequested": false,
+                          "memberName": "isAddressAuthorized",
+                          "nodeType": "MemberAccess",
+                          "referencedDeclaration": 71,
+                          "src": "770:37:1",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_function_external_view$_t_address_$returns$_t_bool_$",
+                            "typeString": "function (address) view external returns (bool)"
+                          }
+                        },
+                        "id": 96,
+                        "isConstant": false,
+                        "isLValue": false,
+                        "isPure": false,
+                        "kind": "functionCall",
+                        "lValueRequested": false,
+                        "names": [],
+                        "nodeType": "FunctionCall",
+                        "src": "770:49:1",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_bool",
+                          "typeString": "bool"
+                        }
+                      }
+                    ],
+                    "expression": {
+                      "argumentTypes": [
+                        {
+                          "typeIdentifier": "t_bool",
+                          "typeString": "bool"
+                        }
+                      ],
+                      "id": 91,
+                      "name": "require",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [
+                        4749,
+                        4750
+                      ],
+                      "referencedDeclaration": 4749,
+                      "src": "762:7:1",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_function_require_pure$_t_bool_$returns$__$",
+                        "typeString": "function (bool) pure"
+                      }
+                    },
+                    "id": 97,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "kind": "functionCall",
+                    "lValueRequested": false,
+                    "names": [],
+                    "nodeType": "FunctionCall",
+                    "src": "762:58:1",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_tuple$__$",
+                      "typeString": "tuple()"
+                    }
+                  },
+                  "id": 98,
+                  "nodeType": "ExpressionStatement",
+                  "src": "762:58:1"
+                },
+                {
+                  "id": 99,
+                  "nodeType": "PlaceholderStatement",
+                  "src": "830:1:1"
+                }
+              ]
+            },
+            "documentation": "@dev Ensures msg.sender is from an address enabled for system level access.",
+            "id": 101,
+            "name": "isAuthorized",
+            "nodeType": "ModifierDefinition",
+            "parameters": {
+              "id": 90,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "749:2:1"
+            },
+            "src": "728:110:1",
+            "visibility": "internal"
+          }
+        ],
+        "scope": 103,
+        "src": "125:715:1"
+      }
+    ],
+    "src": "0:841:1"
+  },
+  "legacyAST": {
+    "absolutePath": "/Users/hen/GitHub/kosu-monorepo/packages/kosu-system-contracts/contracts/base/Authorizable.sol",
+    "exportedSymbols": {
+      "Authorizable": [
+        102
+      ]
+    },
+    "id": 103,
+    "nodeType": "SourceUnit",
+    "nodes": [
+      {
+        "id": 74,
+        "literals": [
+          "solidity",
+          "^",
+          "0.5",
+          ".0"
+        ],
+        "nodeType": "PragmaDirective",
+        "src": "0:23:1"
+      },
+      {
+        "absolutePath": "/Users/hen/GitHub/kosu-monorepo/packages/kosu-system-contracts/contracts/access_control/AuthorizedAddresses.sol",
+        "file": "../access_control/AuthorizedAddresses.sol",
+        "id": 75,
+        "nodeType": "ImportDirective",
+        "scope": 103,
+        "sourceUnit": 73,
+        "src": "25:51:1",
+        "symbolAliases": [],
+        "unitAlias": ""
+      },
+      {
+        "baseContracts": [],
+        "contractDependencies": [],
+        "contractKind": "contract",
+        "documentation": "@title Authorizable\n@author Freydal",
+        "fullyImplemented": true,
+        "id": 102,
+        "linearizedBaseContracts": [
+          102
+        ],
+        "name": "Authorizable",
+        "nodeType": "ContractDefinition",
+        "nodes": [
+          {
+            "constant": false,
+            "id": 77,
+            "name": "authorizedAddress",
+            "nodeType": "VariableDeclaration",
+            "scope": 102,
+            "src": "202:37:1",
+            "stateVariable": true,
+            "storageLocation": "default",
+            "typeDescriptions": {
+              "typeIdentifier": "t_contract$_AuthorizedAddresses_$72",
+              "typeString": "contract AuthorizedAddresses"
+            },
+            "typeName": {
+              "contractScope": null,
+              "id": 76,
+              "name": "AuthorizedAddresses",
+              "nodeType": "UserDefinedTypeName",
+              "referencedDeclaration": 72,
+              "src": "202:19:1",
+              "typeDescriptions": {
+                "typeIdentifier": "t_contract$_AuthorizedAddresses_$72",
+                "typeString": "contract AuthorizedAddresses"
+              }
+            },
+            "value": null,
+            "visibility": "internal"
+          },
+          {
+            "body": {
+              "id": 88,
+              "nodeType": "Block",
+              "src": "547:84:1",
+              "statements": [
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "id": 86,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "lValueRequested": false,
+                    "leftHandSide": {
+                      "argumentTypes": null,
+                      "id": 82,
+                      "name": "authorizedAddress",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 77,
+                      "src": "557:17:1",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_contract$_AuthorizedAddresses_$72",
+                        "typeString": "contract AuthorizedAddresses"
+                      }
+                    },
+                    "nodeType": "Assignment",
+                    "operator": "=",
+                    "rightHandSide": {
+                      "argumentTypes": null,
+                      "arguments": [
+                        {
+                          "argumentTypes": null,
+                          "id": 84,
+                          "name": "authorizedAddressesAddress",
+                          "nodeType": "Identifier",
+                          "overloadedDeclarations": [],
+                          "referencedDeclaration": 79,
+                          "src": "597:26:1",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_address",
+                            "typeString": "address"
+                          }
+                        }
+                      ],
+                      "expression": {
+                        "argumentTypes": [
+                          {
+                            "typeIdentifier": "t_address",
+                            "typeString": "address"
+                          }
+                        ],
+                        "id": 83,
+                        "name": "AuthorizedAddresses",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 72,
+                        "src": "577:19:1",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_type$_t_contract$_AuthorizedAddresses_$72_$",
+                          "typeString": "type(contract AuthorizedAddresses)"
+                        }
+                      },
+                      "id": 85,
+                      "isConstant": false,
+                      "isLValue": false,
+                      "isPure": false,
+                      "kind": "typeConversion",
+                      "lValueRequested": false,
+                      "names": [],
+                      "nodeType": "FunctionCall",
+                      "src": "577:47:1",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_contract$_AuthorizedAddresses_$72",
+                        "typeString": "contract AuthorizedAddresses"
+                      }
+                    },
+                    "src": "557:67:1",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_contract$_AuthorizedAddresses_$72",
+                      "typeString": "contract AuthorizedAddresses"
+                    }
+                  },
+                  "id": 87,
+                  "nodeType": "ExpressionStatement",
+                  "src": "557:67:1"
+                }
+              ]
+            },
+            "documentation": "@dev Initializes contract with deployed AuthorizedAddresses contract.\n@notice Initializes contract with deployed AuthorizedAddresses contract.\n@param authorizedAddressesAddress Deployed AuthorizedAddresses address.",
+            "id": 89,
+            "implemented": true,
+            "kind": "constructor",
+            "modifiers": [],
+            "name": "",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 80,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 79,
+                  "name": "authorizedAddressesAddress",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 89,
+                  "src": "504:34:1",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 78,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "504:7:1",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "503:36:1"
+            },
+            "returnParameters": {
+              "id": 81,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "547:0:1"
+            },
+            "scope": 102,
+            "src": "492:139:1",
+            "stateMutability": "nonpayable",
+            "superFunction": null,
+            "visibility": "public"
+          },
+          {
+            "body": {
+              "id": 100,
+              "nodeType": "Block",
+              "src": "752:86:1",
+              "statements": [
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "arguments": [
+                      {
+                        "argumentTypes": null,
+                        "arguments": [
+                          {
+                            "argumentTypes": null,
+                            "expression": {
+                              "argumentTypes": null,
+                              "id": 94,
+                              "name": "msg",
+                              "nodeType": "Identifier",
+                              "overloadedDeclarations": [],
+                              "referencedDeclaration": 4746,
+                              "src": "808:3:1",
+                              "typeDescriptions": {
+                                "typeIdentifier": "t_magic_message",
+                                "typeString": "msg"
+                              }
+                            },
+                            "id": 95,
+                            "isConstant": false,
+                            "isLValue": false,
+                            "isPure": false,
+                            "lValueRequested": false,
+                            "memberName": "sender",
+                            "nodeType": "MemberAccess",
+                            "referencedDeclaration": null,
+                            "src": "808:10:1",
+                            "typeDescriptions": {
+                              "typeIdentifier": "t_address_payable",
+                              "typeString": "address payable"
+                            }
+                          }
+                        ],
+                        "expression": {
+                          "argumentTypes": [
+                            {
+                              "typeIdentifier": "t_address_payable",
+                              "typeString": "address payable"
+                            }
+                          ],
+                          "expression": {
+                            "argumentTypes": null,
+                            "id": 92,
+                            "name": "authorizedAddress",
+                            "nodeType": "Identifier",
+                            "overloadedDeclarations": [],
+                            "referencedDeclaration": 77,
+                            "src": "770:17:1",
+                            "typeDescriptions": {
+                              "typeIdentifier": "t_contract$_AuthorizedAddresses_$72",
+                              "typeString": "contract AuthorizedAddresses"
+                            }
+                          },
+                          "id": 93,
+                          "isConstant": false,
+                          "isLValue": false,
+                          "isPure": false,
+                          "lValueRequested": false,
+                          "memberName": "isAddressAuthorized",
+                          "nodeType": "MemberAccess",
+                          "referencedDeclaration": 71,
+                          "src": "770:37:1",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_function_external_view$_t_address_$returns$_t_bool_$",
+                            "typeString": "function (address) view external returns (bool)"
+                          }
+                        },
+                        "id": 96,
+                        "isConstant": false,
+                        "isLValue": false,
+                        "isPure": false,
+                        "kind": "functionCall",
+                        "lValueRequested": false,
+                        "names": [],
+                        "nodeType": "FunctionCall",
+                        "src": "770:49:1",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_bool",
+                          "typeString": "bool"
+                        }
+                      }
+                    ],
+                    "expression": {
+                      "argumentTypes": [
+                        {
+                          "typeIdentifier": "t_bool",
+                          "typeString": "bool"
+                        }
+                      ],
+                      "id": 91,
+                      "name": "require",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [
+                        4749,
+                        4750
+                      ],
+                      "referencedDeclaration": 4749,
+                      "src": "762:7:1",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_function_require_pure$_t_bool_$returns$__$",
+                        "typeString": "function (bool) pure"
+                      }
+                    },
+                    "id": 97,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "kind": "functionCall",
+                    "lValueRequested": false,
+                    "names": [],
+                    "nodeType": "FunctionCall",
+                    "src": "762:58:1",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_tuple$__$",
+                      "typeString": "tuple()"
+                    }
+                  },
+                  "id": 98,
+                  "nodeType": "ExpressionStatement",
+                  "src": "762:58:1"
+                },
+                {
+                  "id": 99,
+                  "nodeType": "PlaceholderStatement",
+                  "src": "830:1:1"
+                }
+              ]
+            },
+            "documentation": "@dev Ensures msg.sender is from an address enabled for system level access.",
+            "id": 101,
+            "name": "isAuthorized",
+            "nodeType": "ModifierDefinition",
+            "parameters": {
+              "id": 90,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "749:2:1"
+            },
+            "src": "728:110:1",
+            "visibility": "internal"
+          }
+        ],
+        "scope": 103,
+        "src": "125:715:1"
+      }
+    ],
+    "src": "0:841:1"
+  },
+  "compiler": {
+    "name": "solc",
+    "version": "0.5.0+commit.1d4f565a.Emscripten.clang"
+  },
+  "networks": {},
+  "schemaVersion": "3.0.6",
+  "updatedAt": "2019-05-02T04:11:19.178Z",
+  "devdoc": {
+    "author": "Freydal",
+    "methods": {
+      "constructor": {
+        "details": "Initializes contract with deployed AuthorizedAddresses contract.",
+        "params": {
+          "authorizedAddressesAddress": "Deployed AuthorizedAddresses address."
+        }
+      }
+    },
+    "title": "Authorizable"
+  },
+  "userdoc": {
+    "methods": {
+      "constructor": "Initializes contract with deployed AuthorizedAddresses contract."
+    }
+  }
+}
