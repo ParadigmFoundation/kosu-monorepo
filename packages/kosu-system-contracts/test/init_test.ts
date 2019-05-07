@@ -4,8 +4,8 @@ import {providerUtils} from "@0x/utils";
 import {Web3Wrapper} from "@0x/web3-wrapper";
 import chai from "chai";
 import chaiAsPromised from "chai-as-promised";
-import Web3 = require("web3");
-import Web3ProviderEngine = require("web3-provider-engine");
+import Web3 from "web3";
+import Web3ProviderEngine from "web3-provider-engine";
 import { toBN, toWei } from "web3-utils";
 
 import { eventDecoder } from "..";
