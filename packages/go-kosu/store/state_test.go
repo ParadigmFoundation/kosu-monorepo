@@ -37,7 +37,7 @@ func TestPushTransactionWitness(t *testing.T) {
 	tx := &types.TransactionWitness{
 		Block:   10,
 		Address: "0xff",
-		Amount:  types.NewBigInt(128),
+		Amount:  types.NewBigIntFromInt(128),
 	}
 	tx.Id = tx.Hash()
 
