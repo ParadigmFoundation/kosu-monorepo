@@ -76,9 +76,9 @@ func (tx *TransactionWitness) Hash() []byte {
 	return hash[:]
 }
 
-// NewBigInt returns a new BigInt set to n.
-func NewBigInt(n int64) *BigInt {
+// NewBigInt returns a new BigInt with value set to the provided byte slice.
+func NewBigInt(bytes []byte) *BigInt {
 	return &BigInt{
-		Value: big.NewInt(n).Bytes(),
+		Value: bytes,
 	}
 }
