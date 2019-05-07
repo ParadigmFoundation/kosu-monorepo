@@ -44,18 +44,23 @@ before(async () => {
   const contracts = await migrations(provider, txDefaults);
   const accounts = await web3.eth.getAccounts().then(a => a.map(v => v.toLowerCase()));
 
-  const skipBlocks = async number => {
-    for (let i = 0; i < number; i++) {
+  const skipBlocks = async num => {
+    for (let i = 0; i < num; i++) {
+      // tslint:disable-next-line: no-inferred-empty-object-type
       await new Promise((resolve, reject) => {
-
         web3.currentProvider.send({
           jsonrpc: "2.0",
           method: "evm_mine",
           params: [],
           id: 1,
-        }, (err, res) => {
-          if (err) { reject(err); }
-          else { resolve(); }
+
+        // @ts-ignore
+        }, (err, _) => {
+          if (err) {
+            reject(err);
+          } else {
+            resolve();
+          }
         });
       });
     }
