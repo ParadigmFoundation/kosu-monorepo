@@ -16,8 +16,14 @@ import {
     VotingContract,
 } from "./index";
 
-export async function migrations(provider: Web3ProviderEngine, txDefaults: {}): Promise<MigratedContracts> {
+export async function migrations(provider: Web3ProviderEngine, txDefaults: { }, options: { noLogs?: boolean }): Promise<MigratedContracts> {
     const web3Wrapper = new Web3Wrapper(provider);
+
+    const _console = console;
+    if (options.noLogs) {
+        // @ts-ignore
+        console = { log: () => null };
+    }
 
     const orderGateway = await OrderGatewayContract.deployFrom0xArtifactAsync(artifacts.OrderGateway, provider, txDefaults);
     const authorizedAddresses = await AuthorizedAddressesContract.deployFrom0xArtifactAsync(artifacts.AuthorizedAddresses, provider, txDefaults);
@@ -75,6 +81,8 @@ export async function migrations(provider: Web3ProviderEngine, txDefaults: {}): 
     await Promise.all(transactions.map(tx => web3Wrapper.awaitTransactionSuccessAsync(tx.hash).then(() => {
         tx.success();
     })));
+
+    console = _console;
 
     return {
         orderGateway,
