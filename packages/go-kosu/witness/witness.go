@@ -34,7 +34,7 @@ func (e *Event) String() string {
 func (e *Event) WitnessTx() *types.TransactionWitness {
 	tx := &types.TransactionWitness{
 		Subject: types.TransactionWitness_POSTER,
-		Amount:  types.NewBigInt(e.Amount.Int64()),
+		Amount:  types.NewBigInt(e.Amount.Bytes()),
 		Block:   e.Block.Number.Uint64(),
 		Address: e.Address,
 	}
