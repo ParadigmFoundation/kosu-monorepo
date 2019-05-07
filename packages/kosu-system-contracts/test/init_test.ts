@@ -54,5 +54,5 @@ before(async () => {
     }
   };
 
-  Object.assign(global, { skipBlocks, testValues, contracts, accounts, web3, web3Wrapper });
+  Object.assign(global, { skipBlocks, txDefaults, testValues, contracts, accounts, web3, web3Wrapper });
 });
