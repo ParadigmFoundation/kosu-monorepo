@@ -14,12 +14,14 @@ import {migrations} from "../src/migrations";
 chai.use(chaiAsPromised);
 chai.should();
 
-const values = {
+const testValues: TestValues = {
   maxUint: toBN(2).pow(toBN(256)).sub(toBN(1)),
-  sixEther: toWei("6"),
-  fiveEther: toWei("5"),
-  oneEther: toWei("1"),
-  halfEther: toWei("0.5"),
+  sixEther: toBN(toWei("6")),
+  fiveEther: toBN(toWei("5")),
+  oneEther: toBN(toWei("1")),
+  halfEther: toBN(toWei("0.5")),
+  oneHundredWei: toBN("100"),
+  fiftyWei: toBN("50"),
 };
 
 before(async () => {
@@ -66,5 +68,5 @@ before(async () => {
     }
   };
 
-  Object.assign(global, { skipBlocks, ...values, contracts, accounts, web3, web3Wrapper });
+  Object.assign(global, { skipBlocks, testValues, contracts, accounts, web3, web3Wrapper });
 });
