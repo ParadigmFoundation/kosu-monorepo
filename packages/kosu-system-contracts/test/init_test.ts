@@ -13,7 +13,6 @@ import {LogDecoder} from "@0x/contracts-test-utils";
 chai.use(chaiAsPromised);
 chai.should();
 
-
 const values = {
   maxUint: toBN(2).pow(toBN(256)).sub(toBN(1)),
   sixEther: toWei('6'),
@@ -32,7 +31,6 @@ before(async () => {
 
   const web3 = new Web3(provider);
   const web3Wrapper = new Web3Wrapper(provider);
-
 
   const normalizedFromAddress = await web3.eth.getCoinbase().then((x :string) => x.toLowerCase());
 
@@ -65,8 +63,3 @@ before(async () => {
 
   Object.assign(global, { skipBlocks, ...values, contracts, accounts, web3, web3Wrapper });
 });
-
-declare const accounts: string[];
-declare const contracts: MigratedContracts;
-declare const web3Wrapper: Web3Wrapper;
-declare const logDecoder: LogDecoder;
