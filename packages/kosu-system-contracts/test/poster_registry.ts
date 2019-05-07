@@ -2,8 +2,8 @@ import { BigNumber } from "@0x/utils";
 import { toBN, toWei } from "web3-utils";
 
 import {
-  decodeKosuEvents,
   AuthorizedAddressesContract,
+  decodeKosuEvents,
   KosuTokenContract,
   PosterRegistryContract,
   PosterRegistryProxyContract,
@@ -174,7 +174,7 @@ describe("PosterRegistry", async () => {
       const result = await posterRegistryProxy.registerTokens.sendTransactionAsync(value).then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash));
       const decodedLogs = decodeKosuEvents(result.logs)[0];
 
-      decodedLogs.eventType.should.eq('PosterRegistryUpdate');
+      decodedLogs.eventType.should.eq("PosterRegistryUpdate");
       decodedLogs.poster.should.eq(from.toLowerCase());
       decodedLogs.stake.should.eq(value);
     });
@@ -191,9 +191,9 @@ describe("PosterRegistry", async () => {
       const result = await posterRegistryProxy.releaseTokens.sendTransactionAsync(value).then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash));
       const decodedLogs = decodeKosuEvents(result.logs)[0];
 
-      decodedLogs.eventType.should.eq('PosterRegistryUpdate');
+      decodedLogs.eventType.should.eq("PosterRegistryUpdate");
       decodedLogs.poster.should.eq(from.toLowerCase());
-      decodedLogs.stake.should.eq('0');
+      decodedLogs.stake.should.eq("0");
     });
   });
 });
