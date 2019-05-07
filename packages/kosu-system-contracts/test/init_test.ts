@@ -2,11 +2,12 @@ import {LogDecoder} from "@0x/contracts-test-utils";
 import {GanacheSubprovider} from "@0x/subproviders";
 import {providerUtils} from "@0x/utils";
 import {Web3Wrapper} from "@0x/web3-wrapper";
+import {BigNumber} from "@0x/utils";
 import chai from "chai";
 import chaiAsPromised from "chai-as-promised";
 import Web3 from "web3";
 import Web3ProviderEngine from "web3-provider-engine";
-import { toBN, toWei } from "web3-utils";
+import { toWei } from "web3-utils";
 
 import { eventDecoder } from "..";
 import {migrations} from "../src/migrations";
@@ -15,13 +16,14 @@ chai.use(chaiAsPromised);
 chai.should();
 
 const testValues: TestValues = {
-  maxUint: toBN(2).pow(toBN(256)).sub(toBN(1)),
-  sixEther: toBN(toWei("6")),
-  fiveEther: toBN(toWei("5")),
-  oneEther: toBN(toWei("1")),
-  halfEther: toBN(toWei("0.5")),
-  oneHundredWei: toBN("100"),
-  fiftyWei: toBN("50"),
+  zero: new BigNumber("0"),
+  fiftyWei: new BigNumber("50"),
+  oneHundredWei: new BigNumber("100"),
+  halfEther: new BigNumber(toWei("0.5")),
+  oneEther: new BigNumber(toWei("1")),
+  fiveEther: new BigNumber(toWei("5")),
+  sixEther: new BigNumber(toWei("6")),
+  maxUint: new BigNumber(2).pow(new BigNumber(256)).minus(new BigNumber(1)),
 };
 
 before(async () => {
