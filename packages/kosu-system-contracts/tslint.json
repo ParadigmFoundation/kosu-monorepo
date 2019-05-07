@@ -1,0 +1,6 @@
+{
+  "extends": ["@kosu/tslint-config"],
+  "rules": {
+    "quotemark": [true, "double"]
+  }
+}
