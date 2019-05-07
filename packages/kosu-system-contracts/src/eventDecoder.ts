@@ -11,7 +11,7 @@ export const bytes32ToAddressString = (val: string): string => {
 };
 
 export const bytes32ToBase64 = (val: string): string => {
-    return new Buffer(val.substr(2), "hex").toString("base64");
+    return Buffer.from(val.substr(2), "hex").toString("base64");
 };
 
 export const eventDecoder = (eventReturnValues: any): any => {
