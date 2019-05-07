@@ -33,7 +33,7 @@ const args = yargs
         gas: 4500000,
         gasPrice: toWei("5", "gwei"),
     };
-    await migrations(provider, txDefaults);
+    await migrations(provider, txDefaults, {});
 })().catch(err => {
     console.log(err);
 });
