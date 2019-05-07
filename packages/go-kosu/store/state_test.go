@@ -105,7 +105,7 @@ func TestPushTransactionWitness(t *testing.T) {
 
 		t.Run("WithZeroBalance", func(t *testing.T) {
 			state.LastEvent = 0
-			tx.Amount = types.NewBigInt(0)
+			tx.Amount = types.NewBigIntFromInt(0)
 			require.NoError(t,
 				state.PushTransactionWitness(tx),
 			)

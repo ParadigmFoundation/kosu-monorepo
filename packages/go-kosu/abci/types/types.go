@@ -82,3 +82,10 @@ func NewBigInt(bytes []byte) *BigInt {
 		Value: bytes,
 	}
 }
+
+// NewBigIntFromInt returns a new BigInt with value set to n (subject to overflow).
+func NewBigIntFromInt(n int64) *BigInt {
+	return &BigInt{
+		Value: big.NewInt(n).Bytes(),
+	}
+}
