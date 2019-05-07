@@ -3,7 +3,7 @@ import { hexToNumberString, soliditySha3 } from "web3-utils";
 
 import * as EventEmitter from "../generated-artifacts/EventEmitter.json";
 
-const event: { name: string, type: string, imputs: [{ name: string, type: string }]} = EventEmitter.compilerOutput.abi.filter(entry => entry.type === 'event')[0];
+const event: { name: string; type: string; inputs: Array<{ name: string, type: string }>} = EventEmitter.compilerOutput.abi.filter(entry => entry.type === "event")[0] as { name: string; type: string; inputs: Array<{ name: string, type: string }>};
 const signature: string = soliditySha3(`${event.name}(${event.inputs.map(input => input.type).join(",")})`);
 
 export const bytes32ToAddressString = (val: string): string => {
