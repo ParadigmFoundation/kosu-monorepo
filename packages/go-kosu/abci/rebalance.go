@@ -10,8 +10,8 @@ import (
 )
 
 func (app *App) checkRebalanceTx(tx *types.TransactionRebalance) error {
-	// If the gap is more than 1
-	if (tx.RoundInfo.Number - app.state.RoundInfo.Number) > 1 {
+	// Next round should matches the next block number
+	if (tx.RoundInfo.Number - app.state.RoundInfo.Number) != 1 {
 		return errProposalRejected
 	}
 	return nil
@@ -26,9 +26,8 @@ func (app *App) deliverRebalance(tx *types.TransactionRebalance) abci.ResponseDe
 
 	// Begin state update
 	info.FromProto(tx.RoundInfo)
-	info.Number++
 
-	if info.Number != 1 {
+	if info.Number != 0 {
 		limits := app.state.GenLimits()
 		for addr, l := range limits {
 			log.Printf("addr(%s) %d", addr, l)

@@ -1,6 +1,9 @@
 package abci
 
 import (
+	"context"
+
+	"github.com/tendermint/tendermint/libs/pubsub/query"
 	"github.com/tendermint/tendermint/rpc/client"
 	rpctypes "github.com/tendermint/tendermint/rpc/core/types"
 	tmtypes "github.com/tendermint/tendermint/types"
@@ -11,19 +14,19 @@ import (
 // Client wraps a tendermint/rpc/client.
 // It adds convenience methods to make Broadcast and Query requests match our own types.
 type Client struct {
-	abci client.ABCIClient
+	abci client.Client
 	key  []byte
 }
 
 // NewClient returns a new Client type.
 // Key is the private key used to sign transactions.
-func NewClient(c client.ABCIClient, key []byte) *Client {
+func NewClient(c client.Client, key []byte) *Client {
 	return &Client{abci: c, key: key}
 }
 
 // NewHTTPClient calls NewClient using a HTTPClient as ABCClient
 func NewHTTPClient(addr string, key []byte) *Client {
-	c := client.NewHTTP(addr, addr+"/websocket")
+	c := client.NewHTTP(addr, "/websocket")
 	return NewClient(c, key)
 }
 
@@ -70,4 +73,24 @@ func (c *Client) buildTx(tx interface{}) (tmtypes.Tx, error) {
 
 	enc, err := types.EncodeTx(stx)
 	return tmtypes.Tx(enc), err
+}
+
+// Subscribe subscribes to to a given query using the WS API.
+func (c *Client) Subscribe(ctx context.Context, q string) (<-chan rpctypes.ResultEvent, error) {
+	// Make sure the query is valid
+	_, err := query.New(q)
+	if err != nil {
+		return nil, err
+	}
+
+	// Start WS if not yet
+	if httpC, ok := c.abci.(*client.HTTP); ok {
+		if !httpC.IsRunning() {
+			if err := httpC.Start(); err != nil {
+				return nil, err
+			}
+		}
+	}
+
+	return c.abci.Subscribe(ctx, "kosu", q)
 }

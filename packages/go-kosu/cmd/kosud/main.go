@@ -19,7 +19,7 @@ import (
 
 const (
 	ethAddr  = "wss://ropsten.infura.io/ws"
-	nodeAddr = "http://localhost:26657"
+	nodeAddr = "tcp://0.0.0.0:26657"
 )
 
 // Config holds the program execution arguments
@@ -52,19 +52,7 @@ func startWitness(ctx context.Context, ethAddr string, nodeAddr string, key []by
 		return err
 	}
 
-	fn := func(e *witness.Event) {
-		res, err := client.BroadcastTxSync(e.WitnessTx())
-		if err != nil {
-			log.Printf("BroadcastTxSync: %+v", err)
-		} else {
-			log.Printf("witness event: %+v (%s)", e, res.Log)
-		}
-	}
-
-	// nolint
-	go witness.ForwardEvents(ctx, w, 10, fn)
-
-	return nil
+	return witness.Start(ctx, client, w)
 }
 
 func run(cfg *Config) error {
