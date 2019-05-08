@@ -2,7 +2,7 @@ import Web3 from "web3";
 
 import { KosuToken } from "./KosuToken";
 import { OrderGateway } from "./OrderGateway";
-import { OrderHelper} from "./OrderHelper";
+import { OrderHelper } from "./OrderHelper";
 import { PosterRegistry } from "./PosterRegistry";
 import { Signature } from "./Signature";
 import { Treasury } from "./Treasury";
@@ -56,7 +56,6 @@ export {
     Treasury,
     ValidatorRegistry,
     Voting,
-
     toBytes32,
     NULL_ADDRESS,
 };

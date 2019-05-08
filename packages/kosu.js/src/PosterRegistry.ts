@@ -106,7 +106,7 @@ export class PosterRegistry {
      *
      * @param amount uint values of tokens to release
      */
-    public async releaseTokens(amount: string | BN ): Promise<void> {
+    public async releaseTokens(amount: string | BN): Promise<void> {
         await this.initializing;
         return this.contract.releaseTokens(amount.toString(), { from: this.coinbase });
     }

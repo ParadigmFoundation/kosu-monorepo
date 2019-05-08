@@ -2,10 +2,7 @@
     "compilerOptions": {
         "module": "commonjs",
         "target": "es5",
-        "lib": [
-            "es2017",
-            "dom"
-        ],
+        "lib": ["es2017", "dom"],
         "removeComments": true,
         "resolveJsonModule": true,
         "experimentalDecorators": true,
@@ -23,7 +20,5 @@
     },
 
     "include": [],
-    "references": [
-        { "path": "../tslint-config/tslint.json" },
-    ]
+    "references": [{ "path": "../tslint-config/tslint.json" }]
 }

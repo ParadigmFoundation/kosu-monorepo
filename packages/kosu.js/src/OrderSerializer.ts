@@ -11,7 +11,6 @@ import { toBytes32 } from "./utils";
  */
 // tslint:disable-next-line: no-unnecessary-class
 export class OrderSerializer {
-
     /**
      * Serializes the maker values
      * @todo refactor for subContract changes or modularize to be less messy
@@ -33,7 +32,7 @@ export class OrderSerializer {
      * @todo refactor for subContract changes or modularize to be less messy
      */
     private static _serialize(args: any[], values: any[]): any[] {
-        return args.map(arg => toBytes32( values[arg.name] ));
+        return args.map(arg => toBytes32(values[arg.name]));
     }
     /**
      * Recovers the maker from the signed information
@@ -71,11 +70,7 @@ export class OrderSerializer {
      * Create hex from data types
      * @todo refactor for subContract changes or modularize to be less messy
      */
-    private static _hexFor(
-        signer: string,
-        order: Order | PostableOrder,
-        _arguments: OrderArgument[],
-    ): string {
+    private static _hexFor(signer: string, order: Order | PostableOrder, _arguments: OrderArgument[]): string {
         const dataTypes = [];
         const values = [];
         _arguments.forEach(argument => {

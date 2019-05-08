@@ -41,9 +41,11 @@ export class Voting {
         const VotingContract = TruffleContract(VotingContractData);
         VotingContract.setProvider(this.web3.currentProvider);
 
-        this.contract = options.votingAddress ?
-            VotingContract.at(options.votingAddress) :
-            await VotingContract.deployed().catch(() => { throw new Error("Invalid network for Voting contract"); });
+        this.contract = options.votingAddress
+            ? VotingContract.at(options.votingAddress)
+            : await VotingContract.deployed().catch(() => {
+                  throw new Error("Invalid network for Voting contract");
+              });
 
         this.coinbase = await this.web3.eth.getCoinbase().catch(() => undefined);
     }

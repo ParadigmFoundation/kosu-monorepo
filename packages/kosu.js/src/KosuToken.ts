@@ -36,11 +36,11 @@ export class KosuToken {
         const KosuTokenContract = TruffleContract(KosuTokenContractData);
         KosuTokenContract.setProvider(this.web3.currentProvider);
 
-        this.contract = options.kosuTokenAddress ?
-            KosuTokenContract.at(options.kosuTokenAddress) :
-            await KosuTokenContract.deployed().catch(() => {
-                throw new Error("Invalid network for KosuToken");
-            });
+        this.contract = options.kosuTokenAddress
+            ? KosuTokenContract.at(options.kosuTokenAddress)
+            : await KosuTokenContract.deployed().catch(() => {
+                  throw new Error("Invalid network for KosuToken");
+              });
 
         this.coinbase = await this.web3.eth.getCoinbase().catch(() => undefined);
     }

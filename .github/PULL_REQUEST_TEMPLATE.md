@@ -21,10 +21,10 @@ _Provide directors for reviewers and others to test your changes. What should ha
 
 <!-- Check one of the boxes below, and add additional information as necessary. -->
 
-- [ ] Bug fix (non-breaking change which fixes an issue)
-- [ ] New feature (non-breaking change which adds functionality, compatible with previous versions)
-- [ ] Breaking change (feature or bug-fix that changes behavior and requires a major/minor version bump)
-- [ ] Other, additional (describe below)
+-   [ ] Bug fix (non-breaking change which fixes an issue)
+-   [ ] New feature (non-breaking change which adds functionality, compatible with previous versions)
+-   [ ] Breaking change (feature or bug-fix that changes behavior and requires a major/minor version bump)
+-   [ ] Other, additional (describe below)
 
 # Notes
 

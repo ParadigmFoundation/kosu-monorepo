@@ -63,7 +63,9 @@ export class Treasury {
         const parsed = typeof value === "string" ? new BN(value) : value;
         const coinbase = await this.web3.eth.getCoinbase();
         const hasBalance = await this.kosuToken.balanceOf(coinbase).then(bal => bal.gte(parsed));
-        const hasApproval = await this.kosuToken.allowance(coinbase, this.contract.address).then(all => all.gte(parsed));
+        const hasApproval = await this.kosuToken
+            .allowance(coinbase, this.contract.address)
+            .then(all => all.gte(parsed));
 
         if (!hasBalance) {
             throw new Error(`${coinbase} has insufficient balance to deposit`);

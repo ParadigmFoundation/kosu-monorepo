@@ -35,7 +35,7 @@
 <!-- If there are any, include action items here in check boxes. Example shown below. -->
 <!-- Modify as needed. -->
 
-- [ ] Verify this is incorrect behavior
-- [ ] Isolate and determine cause
-- [ ] Assign team member <!-- receive input from whoever necessary, etc. -->
-- [ ] Move discussion to PR when ready
+-   [ ] Verify this is incorrect behavior
+-   [ ] Isolate and determine cause
+-   [ ] Assign team member <!-- receive input from whoever necessary, etc. -->
+-   [ ] Move discussion to PR when ready

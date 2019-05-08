@@ -151,7 +151,11 @@ export class ValidatorRegistry {
      * @param _tokensToStake uint number of tokens to stake ( must be greater than minimum balance)
      * @param _rewardRate int value of tokens to earn, burn or neither per reward period
      */
-    public async registerListing(_pubKey: string, _tokensToStake: string | number, _rewardRate: string | number | BN): Promise<void> {
+    public async registerListing(
+        _pubKey: string,
+        _tokensToStake: string | number,
+        _rewardRate: string | number | BN,
+    ): Promise<void> {
         await this.initializing;
 
         const systemBalance = await this.treasury.systemBalance(this.coinbase);
@@ -246,7 +250,9 @@ export class ValidatorRegistry {
      */
     // tslint:disable-next-line: prefer-function-over-method
     public convertPubKey(_pubKey: string): string {
-        if (_pubKey.length === 66 && _pubKey.startsWith("0x")) { return _pubKey; }
+        if (_pubKey.length === 66 && _pubKey.startsWith("0x")) {
+            return _pubKey;
+        }
 
         return `0x${Buffer.from(_pubKey, "base64").toString("hex")}`;
     }
