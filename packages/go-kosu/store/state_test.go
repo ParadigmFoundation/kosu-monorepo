@@ -155,7 +155,7 @@ func requireNoErrors(t *testing.T, errs ...error) {
 
 func TestGenLimits(t *testing.T) {
 	s := NewState()
-	s.RoundInfo.Limit = 10
+	s.RoundInfo.Limit = 11
 
 	for _, tx := range []*types.TransactionWitness{
 		&types.TransactionWitness{Address: "a", Amount: types.NewBigInt(10), Block: 2},
@@ -167,7 +167,7 @@ func TestGenLimits(t *testing.T) {
 	}
 
 	rls := s.GenLimits()
-	assert.EqualValues(t, rls["a"], 1)
-	assert.EqualValues(t, rls["b"], 3)
-	assert.EqualValues(t, rls["c"], 5)
+	assert.EqualValues(t, 1, rls["a"])
+	assert.EqualValues(t, 3, rls["b"])
+	assert.EqualValues(t, 5, rls["c"])
 }
