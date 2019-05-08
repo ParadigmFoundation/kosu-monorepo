@@ -46,13 +46,14 @@ func newDB(dir string, debug bool) (db.DB, error) {
 
 func startWitness(ctx context.Context, ethAddr string, nodeAddr string, key []byte) error {
 	client := abci.NewHTTPClient(nodeAddr, key)
-	w, err := witness.NewEthereumProvider(ethAddr)
+	p, err := witness.NewEthereumProvider(ethAddr)
 
 	if err != nil {
 		return err
 	}
 
-	return witness.Start(ctx, client, w)
+	w := witness.New(client, p)
+	return w.Start(ctx)
 }
 
 func run(cfg *Config) error {

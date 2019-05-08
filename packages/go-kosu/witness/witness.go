@@ -5,8 +5,11 @@ import (
 	"fmt"
 	"go-kosu/abci"
 	"go-kosu/abci/types"
+	"go-kosu/store"
 	"log"
 	"math/big"
+	"strconv"
+	"sync/atomic"
 )
 
 // Provider describes a block provider.
@@ -43,33 +46,64 @@ func (e *Event) WitnessTx() *types.TransactionWitness {
 	return tx
 }
 
-// Start starts the witness process
-func Start(ctx context.Context, client *abci.Client, p Provider) error {
-	// Subscribe to rebalance and synchronize
-	sub, err := client.Subscribe(ctx, "tm.event = 'Tx' AND tx.type = 'rebalance'")
+// Witness implements a one-way (read only) peg to Ethereum,
+// and adds a "finality gadget" via a block maturity requirement for events
+type Witness struct {
+	client   *abci.Client
+	provider Provider
+
+	roundInfo store.RoundInfo
+}
+
+// New returns a new instance of the witness process
+func New(client *abci.Client, p Provider) *Witness {
+	return &Witness{client: client, provider: p}
+}
+
+// Start starts the rebalancer and the event forwarder
+func (w *Witness) Start(ctx context.Context) error {
+	if err := w.subscribe(ctx); err != nil {
+		return err
+	}
+
+	// nolint
+	go w.forward(ctx)
+
+	return nil
+}
+
+func (w *Witness) subscribe(ctx context.Context) error {
+	// Subscribe to rebalance events and synchronize
+	sub, err := w.client.Subscribe(ctx, "tm.event = 'Tx' AND tx.type = 'rebalance'")
 	if err != nil {
 		return err
 	}
 
-	// TODO: do synchronize
-	synchronize := func() {
+	go func() {
 		for e := range sub {
-			log.Printf("detected rebalance tx in block, now on round %s", e.Tags["round.number"])
+			n, _ := strconv.ParseUint(e.Tags["round.number"], 10, 64)
+			atomic.StoreUint64(&w.roundInfo.Number, n)
+			log.Printf("detected rebalance tx in block, now on round %d", n)
+			// TODO(gus): do synchronize
 		}
-	}
-	go synchronize()
-
-	// Forward events from the provider (probably Ethereum) as local TXs
-	forward := func(e *Event) {
-		res, err := client.BroadcastTxSync(e.WitnessTx())
-		if err != nil {
-			log.Printf("BroadcastTxSync: %+v", err)
-		} else {
-			log.Printf("witness event: %+v (%s)", e, res.Log)
-		}
-	}
-	// nolint
-	go ForwardEvents(ctx, p, 10, forward)
+	}()
 
 	return nil
+}
+
+func (w *Witness) forward(ctx context.Context) error {
+	// Forward events from the provider (probably Ethereum) to the local node as TXs
+	return ForwardEvents(ctx, w.provider, 10, func(e *Event) {
+		res, err := w.client.BroadcastTxSync(e.WitnessTx())
+		if err != nil {
+			log.Printf("BroadcastTxSync: %+v", err)
+			return
+		}
+		log.Printf("witness event: %+v (%s)", e, res.Log)
+	})
+}
+
+// RoundInfo returns the current in-memory RoundInfo
+func (w *Witness) RoundInfo() store.RoundInfo {
+	return w.roundInfo
 }
