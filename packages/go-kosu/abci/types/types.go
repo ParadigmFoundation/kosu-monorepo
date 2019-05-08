@@ -78,14 +78,11 @@ func (tx *TransactionWitness) Hash() []byte {
 
 // NewBigInt returns a new BigInt with value set to the provided byte slice.
 func NewBigInt(bytes []byte) *BigInt {
-	return &BigInt{
-		Value: bytes,
-	}
+	return &BigInt{Value: bytes}
 }
 
 // NewBigIntFromInt returns a new BigInt with value set to n (subject to overflow).
 func NewBigIntFromInt(n int64) *BigInt {
-	return &BigInt{
-		Value: big.NewInt(n).Bytes(),
-	}
+	b := big.NewInt(n).Bytes()
+	return NewBigInt(b)
 }
