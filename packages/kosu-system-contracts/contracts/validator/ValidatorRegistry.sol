@@ -21,7 +21,7 @@ contract ValidatorRegistry is IValidatorRegistry, Authorizable {
     uint private _stakeholderCut = 30; //Will be used as a percent so must be sub 100
     Treasury private _treasury;
     Voting private _voting;
-    KosuToken private _token;
+    KosuToken private _kosuToken;
     mapping(bytes32 => Listing) private _listings;
     mapping(uint => Challenge) private _challenges;
     uint private nextChallenge = 1;
@@ -39,7 +39,7 @@ contract ValidatorRegistry is IValidatorRegistry, Authorizable {
     constructor(address _treasuryAddress, address _votingAddress, address auth, address _events) Authorizable(auth) public {
         _treasury = Treasury(_treasuryAddress);
         _voting = Voting(_votingAddress);
-        _token = _treasury.digm();
+        _kosuToken = _treasury.kosuToken();
         e = EventEmitter(_events);
     }
 
@@ -127,8 +127,8 @@ contract ValidatorRegistry is IValidatorRegistry, Authorizable {
         @notice Expose the configured KosuToken
         @return Configured KosuToken contract address
     */
-    function token() public view returns (address) {
-        return address(_token);
+    function kosuToken() public view returns (address) {
+        return address(_kosuToken);
     }
 
     /** @dev Calculate the maximum KosuToken a validator can generate
@@ -258,7 +258,7 @@ contract ValidatorRegistry is IValidatorRegistry, Authorizable {
             //Approve and release tokens to treasury for successful challenger
             //Challenger receives his tokens back and cut of the listing balance.  Tokens available for distribution will be tracked in the challenge.balance
             uint challengerTotalWinnings = challenge.balance.add(holderCut);
-            _token.approve(address(_treasury), challengerTotalWinnings);
+            _kosuToken.approve(address(_treasury), challengerTotalWinnings);
 
             // Release challenge stake, award new tokens then remove the award from the remaining reward.
             _treasury.releaseTokens(challenge.challenger, challenge.balance);
@@ -278,7 +278,7 @@ contract ValidatorRegistry is IValidatorRegistry, Authorizable {
 
             //Approve and release tokens to treasury for the listing holder Remaning tokens
             challenge.balance = challenge.balance.sub(holderCut);
-            _token.approve(address(_treasury), holderCut);
+            _kosuToken.approve(address(_treasury), holderCut);
             _treasury.award(listing.owner, holderCut);
 
             //Handle status transitions
@@ -286,7 +286,7 @@ contract ValidatorRegistry is IValidatorRegistry, Authorizable {
                 //listing was exiting and got challenged.  The listing will be removed by surviving the challenge.
 
                 //Approve and release tokens to treasury
-                _token.approve(address(_treasury), listing.stakedBalance);
+                _kosuToken.approve(address(_treasury), listing.stakedBalance);
                 _treasury.releaseTokens(listing.owner, listing.stakedBalance);
 
                 //Clear listing data and remove from tracking array
@@ -329,7 +329,7 @@ contract ValidatorRegistry is IValidatorRegistry, Authorizable {
         //Approve and release tokens to treasury for the listing holder Remaning tokens
         uint voterCut = challenge.voterTotal.mul(winningTokens).div(totalWinningTokens);
         challenge.balance = challenge.balance.sub(voterCut);
-        _token.approve(address(_treasury), voterCut);
+        _kosuToken.approve(address(_treasury), voterCut);
         _treasury.award(msgSender, voterCut);
     }
 
@@ -392,7 +392,7 @@ contract ValidatorRegistry is IValidatorRegistry, Authorizable {
         //Exit immediately if the listing is still in pending status.
         if(listing.status == Status.PENDING) {
             //Approve and release tokens to treasury
-            _token.approve(address(_treasury), listing.stakedBalance);
+            _kosuToken.approve(address(_treasury), listing.stakedBalance);
             _treasury.releaseTokens(msgSender, listing.stakedBalance);
 
             //Clear listing data and remove from tracking array
@@ -428,7 +428,7 @@ contract ValidatorRegistry is IValidatorRegistry, Authorizable {
         require(listing.exitBlock <= block.number);
 
         //Approve and release tokens to treasury
-        _token.approve(address(_treasury), listing.stakedBalance);
+        _kosuToken.approve(address(_treasury), listing.stakedBalance);
         _treasury.releaseTokens(msgSender, listing.stakedBalance);
 
         //Clear listing data and remove from tracking array
@@ -444,7 +444,7 @@ contract ValidatorRegistry is IValidatorRegistry, Authorizable {
         if(hasRewardPending(l)) {
             uint rewardPeriods = block.number.sub(l.lastRewardBlock).div(_rewardPeriod);
             if(l.rewardRate > 0) {
-                _token.mintTo(l.owner, uint(l.rewardRate).mul(rewardPeriods));
+                _kosuToken.mintTo(l.owner, uint(l.rewardRate).mul(rewardPeriods));
             } else {
                 //Tokens to pay up
                 uint tokensToBurn = uint(l.rewardRate * -1).mul(rewardPeriods);
@@ -462,7 +462,7 @@ contract ValidatorRegistry is IValidatorRegistry, Authorizable {
                     }
 
                     //Approve and release tokens to treasury to be burned by user
-                    _token.approve(address(_treasury), tokensRemaining);
+                    _kosuToken.approve(address(_treasury), tokensRemaining);
                     _treasury.releaseTokens(l.owner, tokensRemaining);
 
                     //Burn all the remaining tokens in treasury and burn into the listing stake.
@@ -484,7 +484,7 @@ contract ValidatorRegistry is IValidatorRegistry, Authorizable {
         emitValidatorRegistryUpdate(l.tendermintPublicKey, l.owner, 0);
 
         //Approve and release tokens to treasury
-        _token.approve(address(_treasury), l.stakedBalance);
+        _kosuToken.approve(address(_treasury), l.stakedBalance);
         _treasury.releaseTokens(l.owner, l.stakedBalance);
 
         //Clear listing data and remove from tracking array

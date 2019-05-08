@@ -37,7 +37,7 @@ func TestPushTransactionWitness(t *testing.T) {
 	tx := &types.TransactionWitness{
 		Block:   10,
 		Address: "0xff",
-		Amount:  types.NewBigInt(128),
+		Amount:  types.NewBigIntFromInt(128),
 	}
 	tx.Id = tx.Hash()
 
@@ -105,7 +105,7 @@ func TestPushTransactionWitness(t *testing.T) {
 
 		t.Run("WithZeroBalance", func(t *testing.T) {
 			state.LastEvent = 0
-			tx.Amount = types.NewBigInt(0)
+			tx.Amount = types.NewBigIntFromInt(0)
 			require.NoError(t,
 				state.PushTransactionWitness(tx),
 			)

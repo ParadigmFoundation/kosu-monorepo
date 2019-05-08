@@ -178,7 +178,7 @@ func (s *State) PushTransactionWitness(tx *types.TransactionWitness) error {
 	}
 
 	if tx.Amount == nil {
-		tx.Amount = types.NewBigInt(0)
+		tx.Amount = types.NewBigIntFromInt(0)
 	}
 
 	event := s.addTxWitnessToEvents(tx)

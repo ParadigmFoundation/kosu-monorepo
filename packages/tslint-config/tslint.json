@@ -109,6 +109,8 @@
             "check-type",
             "check-typecast",
             "check-preblock"
-        ]
+        ],
+        "radix": false,
+        "no-console": false
     }
 }
