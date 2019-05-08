@@ -1,6 +1,6 @@
 {
   "name": "@kosu/dev-images",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Development and CI docker images and supporting scripts for Kosu.",
   "repository": "https://github.com/ParadigmFoundation/kosu-monorepo.git",
   "license": "CC0-1.0",
@@ -22,6 +22,6 @@
     "tar-fs": "^2.0.0"
   },
   "publishConfig": {
-    "access":"public"
+    "access": "public"
   }
 }

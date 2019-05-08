@@ -67,7 +67,7 @@ interface IValidatorRegistry {
     function voting() external view returns (address);
 
     /** @dev Interface method */
-    function token() external view returns (address);
+    function kosuToken() external view returns (address);
 
     /** @dev Interface method */
     function maxRewardRate() external view returns (uint);
