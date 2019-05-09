@@ -2,7 +2,9 @@ package abci
 
 import (
 	"context"
+	"errors"
 
+	"github.com/gogo/protobuf/proto"
 	"github.com/tendermint/tendermint/libs/pubsub/query"
 	"github.com/tendermint/tendermint/rpc/client"
 	rpctypes "github.com/tendermint/tendermint/rpc/core/types"
@@ -93,4 +95,24 @@ func (c *Client) Subscribe(ctx context.Context, q string) (<-chan rpctypes.Resul
 	}
 
 	return c.Client.Subscribe(ctx, "kosu", q)
+}
+
+// QueryRoundInfo performs a ABCIQuery and translate the response into concrete types.
+func (c *Client) QueryRoundInfo() (*types.RoundInfo, error) {
+	out, err := c.ABCIQuery("/roundinfo", nil)
+	if err != nil {
+		return nil, err
+	}
+	res := out.Response
+
+	if res.IsErr() {
+		return nil, errors.New(res.GetInfo())
+	}
+
+	var info types.RoundInfo
+	if err := proto.Unmarshal(res.Value, &info); err != nil {
+		return nil, err
+	}
+
+	return &info, nil
 }

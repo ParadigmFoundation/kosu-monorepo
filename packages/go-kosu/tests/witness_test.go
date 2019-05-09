@@ -80,7 +80,8 @@ func (s *Suite) TestWitnessRebalance() {
 		defer cancel()
 
 		w := startWitness(t)
-		w.Start(ctx)
+		err := w.Start(ctx)
+		require.NoError(t, err)
 
 		Convey("When a set of Rebalance Tx are commited", func() {
 			roundNumber := []uint64{1, 2, 3}
@@ -96,12 +97,24 @@ func (s *Suite) TestWitnessRebalance() {
 			Convey("It should update the local witness state", func() {
 				So(w.RoundInfo().Number, ShouldEqual, 3)
 			})
+
+			Convey("When started after Tx are commited", func() {
+				w := startWitness(t)
+				err := w.Start(ctx)
+				require.NoError(t, err)
+
+				Convey("RoundInfo should be up-to-date", func() {
+					number := roundNumber[len(roundNumber)-1]
+					So(w.RoundInfo().Number, ShouldEqual, number)
+				})
+			})
 		})
 	})
 }
 
 func startWitness(t *testing.T) *witness.Witness {
-	key, _ := hex.DecodeString("0F8C50DC955DA31B617D5F0702511528F824027A30ED1CF33496D455D840EF1C9D3E50B8B5B1745747FEAFE6C43A11703FEE3F2B9D14E6234F03B60A6BB6ACD9")
+	strKey := "0F8C50DC955DA31B617D5F0702511528F824027A30ED1CF33496D455D840EF1C9D3E50B8B5B1745747FEAFE6C43A11703FEE3F2B9D14E6234F03B60A6BB6ACD9" //nolint
+	key, _ := hex.DecodeString(strKey)
 	client := abci.NewHTTPClient("tcp://0.0.0.0:26657", key)
 	p, err := witness.NewEthereumProvider("wss://ropsten.infura.io/ws")
 	require.NoError(t, err)

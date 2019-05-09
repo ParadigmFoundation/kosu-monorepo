@@ -9,7 +9,7 @@ import (
 	"log"
 	"math/big"
 	"strconv"
-	"sync/atomic"
+	"sync"
 )
 
 // Provider describes a block provider.
@@ -52,7 +52,8 @@ type Witness struct {
 	client   *abci.Client
 	provider Provider
 
-	roundInfo store.RoundInfo
+	roundMutex sync.RWMutex
+	roundInfo  store.RoundInfo
 }
 
 // New returns a new instance of the witness process
@@ -62,6 +63,15 @@ func New(client *abci.Client, p Provider) *Witness {
 
 // Start starts the rebalancer and the event forwarder
 func (w *Witness) Start(ctx context.Context) error {
+	// Load the current RoundInfo and keep it local
+	info, err := w.client.QueryRoundInfo()
+	if err != nil {
+		return err
+	}
+	w.roundMutex.Lock()
+	w.roundInfo.FromProto(info)
+	w.roundMutex.Unlock()
+
 	if err := w.subscribe(ctx); err != nil {
 		return err
 	}
@@ -82,7 +92,10 @@ func (w *Witness) subscribe(ctx context.Context) error {
 	go func() {
 		for e := range sub {
 			n, _ := strconv.ParseUint(e.Tags["round.number"], 10, 64)
-			atomic.StoreUint64(&w.roundInfo.Number, n)
+			w.roundMutex.Lock()
+			w.roundInfo.Number = n
+			w.roundMutex.Unlock()
+
 			log.Printf("detected rebalance tx in block, now on round %d", n)
 			// TODO(gus): do synchronize
 		}
@@ -105,5 +118,8 @@ func (w *Witness) forward(ctx context.Context) error {
 
 // RoundInfo returns the current in-memory RoundInfo
 func (w *Witness) RoundInfo() store.RoundInfo {
+	w.roundMutex.RLock()
+	defer w.roundMutex.RUnlock()
+
 	return w.roundInfo
 }

@@ -332,7 +332,8 @@ func (s *State) GenLimits() RateLimits {
 	return rl
 }
 
-// Query queries for the tree state and transform the output into a proto.Message to be delivered to the client. Query also returns the key of the state.
+// Query queries for the tree state and transform the output into a proto.Message to be delivered to the client.
+// Query also returns the key of the state.
 func (s *State) Query(tree *StateTree, path string) (proto.Message, []byte, error) {
 	switch path {
 	case "/roundinfo":
@@ -341,12 +342,9 @@ func (s *State) Query(tree *StateTree, path string) (proto.Message, []byte, erro
 			return nil, nil, err
 		}
 
-		return &types.RoundInfo{
-			Number:   info.Number,
-			StartsAt: info.StartsAt,
-			EndsAt:   info.EndsAt,
-			Limit:    info.Limit,
-		}, []byte(roundInfoKey), nil
+		p := new(types.RoundInfo)
+		info.ToProto(p)
+		return p, []byte(roundInfoKey), nil
 
 	}
 
