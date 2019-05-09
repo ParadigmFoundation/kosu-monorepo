@@ -156,10 +156,9 @@ export class ValidatorRegistry {
         const contract = await this.getContract();
 
         const systemBalance = await this.treasury.systemBalance(this.coinbase);
-        const totalTokens = this.web3.utils.toBigNumber(_tokensToStake);
 
-        if (systemBalance.lt(totalTokens)) {
-            const tokensShort = totalTokens.sub(systemBalance);
+        if (systemBalance.lt(_tokensToStake)) {
+            const tokensShort = _tokensToStake.minus(systemBalance);
             await this.treasury.deposit(tokensShort);
         }
 
@@ -247,7 +246,9 @@ export class ValidatorRegistry {
      */
     // tslint:disable-next-line: prefer-function-over-method
     public convertPubKey(_pubKey: string): string {
-        if (_pubKey.length === 66 && _pubKey.startsWith("0x")) { return _pubKey; }
+        if (_pubKey.length === 66 && _pubKey.startsWith("0x")) {
+            return _pubKey;
+        }
 
         return `0x${Buffer.from(_pubKey, "base64").toString("hex")}`;
     }

@@ -22,7 +22,7 @@ interface Order {
 }
 
 interface PostableOrder extends Order {
-    posterSignature: { v: any, s: any, r: any }
+    posterSignature: { v: any; s: any; r: any };
 }
 
 interface OrderArgument {

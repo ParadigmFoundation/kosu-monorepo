@@ -9,6 +9,7 @@ steps:
       WEB3_URI: http://kosu-ganache:8545
     commands:
       - yarn
+      - yarn prettier:ci
       - yarn lint
       - yarn build
       - yarn test:ci
