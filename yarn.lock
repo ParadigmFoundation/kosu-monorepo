@@ -986,11 +986,6 @@
     lodash "^4.17.11"
     to-fast-properties "^2.0.0"
 
-"@kosu/tslint-config@^0.0.3":
-  version "0.0.3"
-  resolved "https://registry.yarnpkg.com/@kosu/tslint-config/-/tslint-config-0.0.3.tgz#9f5bf7ef034f48067954c19908c4275f5657707b"
-  integrity sha512-uwTr1YGiXmZo5DexmT4lvx7wZwp/w6X8hy7vK7oDJETsSYNnoBHTEkdbgBdN+XnupPHtY1SRF2lmNnzcRDRSFA==
-
 "@ledgerhq/devices@^4.55.0":
   version "4.55.0"
   resolved "https://registry.yarnpkg.com/@ledgerhq/devices/-/devices-4.55.0.tgz#c1fb7e33d38f2352f4991ea9fa4987e90238ee21"
@@ -1856,25 +1851,12 @@
   resolved "https://registry.yarnpkg.com/@types/solidity-parser-antlr/-/solidity-parser-antlr-0.2.3.tgz#bb2d9c6511bf483afe4fc3e2714da8a924e59e3f"
   integrity sha512-FoSyZT+1TTaofbEtGW1oC9wHND1YshvVeHerME/Jh6gIdHbBAWFW8A97YYqO/dpHcFjIwEPEepX0Efl2ckJgwA==
 
-"@types/underscore@*":
-  version "1.8.14"
-  resolved "https://registry.yarnpkg.com/@types/underscore/-/underscore-1.8.14.tgz#bf8f24950e6705e5150756a5947dac76e5dce2c0"
-  integrity sha512-xbzi6UaATVKupInG3D65/EPQ3qkJCvG2ZAzmlIYt6x93ACOEX2Y0fHW4/e8TF3G7q5KB2l7wTZgzfNjyYDMuZw==
-
 "@types/web3-provider-engine@^14.0.0":
   version "14.0.0"
   resolved "https://registry.yarnpkg.com/@types/web3-provider-engine/-/web3-provider-engine-14.0.0.tgz#43adc3b39dc9812b82aef8cd2d66577665ad59b0"
   integrity sha512-yHr8mX2SoX3JNyfqdLXdO1UobsGhfiwSgtekbVxKLQrzD7vtpPkKbkIVsPFOhvekvNbPsCmDyeDCLkpeI9gSmA==
   dependencies:
     "@types/ethereum-protocol" "*"
-
-"@types/web3@^1.0.18":
-  version "1.0.18"
-  resolved "https://registry.yarnpkg.com/@types/web3/-/web3-1.0.18.tgz#87a8651041d21fc37602ff02327df2c7ecf105d1"
-  integrity sha512-uXQL0LDszt2f476LEmYM6AvSv9F4vU4hWQvlUhwfLHNlIB6OyBXoYsCzWAIhhnc5U0HA7ZBcPybxRJ/yfA6THg==
-  dependencies:
-    "@types/bn.js" "*"
-    "@types/underscore" "*"
 
 "@types/yargs@^11.0.0":
   version "11.1.2"
@@ -4882,6 +4864,11 @@ ethereum-common@0.2.0:
   version "0.2.0"
   resolved "https://registry.yarnpkg.com/ethereum-common/-/ethereum-common-0.2.0.tgz#13bf966131cce1eeade62a1b434249bb4cb120ca"
   integrity sha512-XOnAR/3rntJgbCdGhqdaLIxDLWKLmsZOGhHdBKadEr6gEnJLH52k93Ou+TUdFaPN3hJc3isBZBal3U/XZ15abA==
+
+ethereum-protocol@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/ethereum-protocol/-/ethereum-protocol-1.0.1.tgz#b7d68142f4105e0ae7b5e178cf42f8d4dc4b93cf"
+  integrity sha512-3KLX1mHuEsBW0dKG+c6EOJS1NBNqdCICvZW9sInmZTt5aY0oxmHVggYRE0lJu1tcnMD1K+AKHdLi6U43Awm1Vg==
 
 ethereum-types@^2.1.2:
   version "2.1.2"
