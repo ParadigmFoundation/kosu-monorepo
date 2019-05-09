@@ -108,6 +108,6 @@ export class PosterRegistry {
      */
     public async releaseTokens(amount: BigNumber ): Promise<TransactionReceiptWithDecodedLogs> {
         const contract = await this.getContract();
-        return contract.releaseTokens.sendTransactionAsync(amount).then(txHash => this.web3Wrapper.awaitTransactionSuccessAsync(txHash));his.contract.releaseTokens(amount.toString(), { from: this.coinbase });
+        return contract.releaseTokens.sendTransactionAsync(amount).then(txHash => this.web3Wrapper.awaitTransactionSuccessAsync(txHash));
     }
 }
