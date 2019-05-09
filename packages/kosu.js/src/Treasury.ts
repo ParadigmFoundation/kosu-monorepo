@@ -1,10 +1,10 @@
 import { BigNumber } from "@0x/utils";
 import { Web3Wrapper } from "@0x/web3-wrapper";
 import { artifacts, DeployedAddresses, TreasuryContract } from "@kosu/system-contracts";
+import { TransactionReceiptWithDecodedLogs } from "ethereum-protocol";
 import Web3 from "web3";
 
 import { KosuToken } from "./KosuToken";
-import { TransactionReceiptWithDecodedLogs } from "ethereum-protocol";
 
 /**
  * Integration with Treasury contract on an Ethereum blockchain.
@@ -17,8 +17,7 @@ export class Treasury {
     private readonly web3: Web3;
     private address: string;
     private contract: TreasuryContract;
-    private coinbase: string;
-    private web3Wrapper: Web3Wrapper;
+    private readonly web3Wrapper: Web3Wrapper;
 
     /**
      * Creates a new Treasury instance

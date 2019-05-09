@@ -14,10 +14,10 @@ import { Treasury } from "./Treasury";
 export class Voting {
     private readonly web3: Web3;
     private readonly treasury: Treasury;
-    private web3Wrapper: Web3Wrapper;
+    private readonly web3Wrapper: Web3Wrapper;
     private address: string;
     private contract: any;
-    private coinbase: string;
+    private readonly coinbase: string;
 
     /**
      * Create a new Voting instance.

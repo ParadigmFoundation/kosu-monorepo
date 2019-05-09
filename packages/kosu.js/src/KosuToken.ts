@@ -12,7 +12,7 @@ import Web3 from "web3";
 export class KosuToken {
     private readonly web3: Web3;
     private contract: KosuTokenContract;
-    private web3Wrapper: Web3Wrapper;
+    private readonly web3Wrapper: Web3Wrapper;
     private address: string;
 
     /**

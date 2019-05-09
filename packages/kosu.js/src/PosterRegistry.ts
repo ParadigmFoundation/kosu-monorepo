@@ -15,7 +15,7 @@ export class PosterRegistry {
     private readonly web3: Web3;
     private readonly treasury: Treasury;
     private contract: PosterRegistryProxyContract;
-    private web3Wrapper: Web3Wrapper;
+    private readonly web3Wrapper: Web3Wrapper;
     private address: string;
 
     /**

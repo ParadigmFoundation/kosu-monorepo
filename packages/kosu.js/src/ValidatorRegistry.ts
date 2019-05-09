@@ -1,10 +1,10 @@
 import { BigNumber } from "@0x/utils";
 import { Web3Wrapper } from "@0x/web3-wrapper";
 import { artifacts, DeployedAddresses, listingDecoder, ValidatorRegistryProxyContract } from "@kosu/system-contracts";
+import { TransactionReceiptWithDecodedLogs } from "ethereum-protocol";
 import Web3 from "web3";
 
 import { Treasury } from "./Treasury";
-import { TransactionReceiptWithDecodedLogs } from "ethereum-protocol";
 
 /**
  * Integration with ValidatorRegistry contract on an Ethereum blockchain.
@@ -16,7 +16,7 @@ export class ValidatorRegistry {
     private readonly treasury: Treasury;
     private contract: ValidatorRegistryProxyContract;
     private coinbase: string;
-    private web3Wrapper: Web3Wrapper;
+    private readonly web3Wrapper: Web3Wrapper;
     private address: string;
 
     /**
