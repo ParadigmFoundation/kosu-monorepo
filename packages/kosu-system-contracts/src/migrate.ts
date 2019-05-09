@@ -1,11 +1,11 @@
 import { MnemonicWalletSubprovider, RPCSubprovider } from "@0x/subproviders";
 import {providerUtils} from "@0x/utils";
+import fs from "fs";
 import safeRequire from "safe-node-require";
 import Web3 from "web3";
 import Web3ProviderEngine from "web3-provider-engine";
 import { BN, toWei } from "web3-utils";
 import yargs from "yargs";
-import fs from 'fs';
 
 import * as deployedAddresses from "./deployedAddresses.json";
 import { migrations } from "./migrations";
@@ -22,7 +22,7 @@ const args = yargs
     const mnemonicSubprovider = mnemonic ? new MnemonicWalletSubprovider({ mnemonic }) : null;
     const rpcSubprovider = new RPCSubprovider(args["rpc-url"]);
     const provider = new Web3ProviderEngine();
-    mnemonicSubprovider ? provider.addProvider(mnemonicSubprovider) : null;
+    if (mnemonicSubprovider) { provider.addProvider(mnemonicSubprovider); }
     provider.addProvider(rpcSubprovider);
     providerUtils.startProviderEngine(provider);
 
@@ -48,7 +48,7 @@ const args = yargs
     // @ts-ignore
     delete deployedAddresses.default;
 
-    await new Promise((resolve, reject) => fs.writeFile("./src/deployedAddresses.json", JSON.stringify(deployedAddresses), resolve));
+    await new Promise<void>((resolve, reject) => fs.writeFile("./src/deployedAddresses.json", JSON.stringify(deployedAddresses), () => resolve()));
 })().catch(err => {
     console.log(err);
 });
