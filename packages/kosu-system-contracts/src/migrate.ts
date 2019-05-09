@@ -5,7 +5,9 @@ import Web3 from "web3";
 import Web3ProviderEngine from "web3-provider-engine";
 import { BN, toWei } from "web3-utils";
 import yargs from "yargs";
+import fs from 'fs';
 
+import * as deployedAddresses from "./deployedAddresses.json";
 import { migrations } from "./migrations";
 
 const mnemonic = safeRequire("./mnemonic.json");
@@ -33,7 +35,20 @@ const args = yargs
         gas: 4500000,
         gasPrice: toWei("5", "gwei"),
     };
-    await migrations(provider, txDefaults, {});
+
+    const networkId = await web3.eth.net.getId();
+    const migratedContracts = await migrations(provider, txDefaults, {});
+
+    const contracts = {};
+    for (const contractKey of Object.keys(migratedContracts)) {
+        const contract = migratedContracts[contractKey];
+        contracts[contract.contractName] = contract.address;
+    }
+    deployedAddresses[networkId] = contracts;
+    // @ts-ignore
+    delete deployedAddresses.default;
+
+    await new Promise((resolve, reject) => fs.writeFile("./src/deployedAddresses.json", JSON.stringify(deployedAddresses), resolve));
 })().catch(err => {
     console.log(err);
 });
