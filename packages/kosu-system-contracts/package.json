@@ -8,6 +8,7 @@
     "url": "https://github.com/ParadigmFoundation/kosu-monorepo.git"
   },
   "main": "dist/src/index.js",
+  "types": "src",
   "bugs": {
     "url": "https://github.com/ParadigmFoundation/kosu-monorepo/issues"
   },
