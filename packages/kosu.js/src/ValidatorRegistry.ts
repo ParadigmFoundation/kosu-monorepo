@@ -1,10 +1,10 @@
-import {BigNumber} from "@0x/utils";
-import {Web3Wrapper} from "@0x/web3-wrapper";
-import {artifacts, DeployedAddresses, listingDecoder, ValidatorRegistryProxyContract} from "@kosu/system-contracts";
+import { BigNumber } from "@0x/utils";
+import { Web3Wrapper } from "@0x/web3-wrapper";
+import { artifacts, DeployedAddresses, listingDecoder, ValidatorRegistryProxyContract } from "@kosu/system-contracts";
 import Web3 from "web3";
 
 import { Treasury } from "./Treasury";
-import {TransactionReceiptWithDecodedLogs} from "ethereum-protocol";
+import { TransactionReceiptWithDecodedLogs } from "ethereum-protocol";
 
 /**
  * Integration with ValidatorRegistry contract on an Ethereum blockchain.
@@ -49,7 +49,12 @@ export class ValidatorRegistry {
                 throw new Error("Invalid network for ValidatorRegistry");
             }
 
-            this.contract = new ValidatorRegistryProxyContract(artifacts.ValidatorRegistryProxy.compilerOutput.abi, this.address, this.web3Wrapper.getProvider(),  { from: this.coinbase });
+            this.contract = new ValidatorRegistryProxyContract(
+                artifacts.ValidatorRegistryProxy.compilerOutput.abi,
+                this.address,
+                this.web3Wrapper.getProvider(),
+                { from: this.coinbase },
+            );
         }
         return this.contract;
     }
@@ -152,7 +157,11 @@ export class ValidatorRegistry {
      * @param _tokensToStake uint number of tokens to stake ( must be greater than minimum balance)
      * @param _rewardRate int value of tokens to earn, burn or neither per reward period
      */
-    public async registerListing(_pubKey: string, _tokensToStake: BigNumber, _rewardRate: BigNumber): Promise<TransactionReceiptWithDecodedLogs> {
+    public async registerListing(
+        _pubKey: string,
+        _tokensToStake: BigNumber,
+        _rewardRate: BigNumber,
+    ): Promise<TransactionReceiptWithDecodedLogs> {
         const contract = await this.getContract();
 
         const systemBalance = await this.treasury.systemBalance(this.coinbase);
@@ -162,7 +171,9 @@ export class ValidatorRegistry {
             await this.treasury.deposit(tokensShort);
         }
 
-        return contract.registerListing.sendTransactionAsync(_pubKey, _tokensToStake, _rewardRate).then(txHash => this.web3Wrapper.awaitTransactionSuccessAsync(txHash));
+        return contract.registerListing
+            .sendTransactionAsync(_pubKey, _tokensToStake, _rewardRate)
+            .then(txHash => this.web3Wrapper.awaitTransactionSuccessAsync(txHash));
     }
 
     /**
@@ -172,7 +183,9 @@ export class ValidatorRegistry {
      */
     public async confirmListing(_pubKey: string): Promise<TransactionReceiptWithDecodedLogs> {
         const contract = await this.getContract();
-        return contract.confirmListing.sendTransactionAsync(_pubKey).then(txHash => this.web3Wrapper.awaitTransactionSuccessAsync(txHash));
+        return contract.confirmListing
+            .sendTransactionAsync(_pubKey)
+            .then(txHash => this.web3Wrapper.awaitTransactionSuccessAsync(txHash));
     }
 
     /**
@@ -183,7 +196,9 @@ export class ValidatorRegistry {
     public async challengeListing(_pubKey: string): Promise<TransactionReceiptWithDecodedLogs> {
         // TODO Check balance after looking up specific listing's tokens committed
         const contract = await this.getContract();
-        return contract.challengeListing.sendTransactionAsync(_pubKey).then(txHash => this.web3Wrapper.awaitTransactionSuccessAsync(txHash));
+        return contract.challengeListing
+            .sendTransactionAsync(_pubKey)
+            .then(txHash => this.web3Wrapper.awaitTransactionSuccessAsync(txHash));
     }
 
     /**
@@ -193,7 +208,9 @@ export class ValidatorRegistry {
      */
     public async resolveChallenge(_pubKey: string): Promise<TransactionReceiptWithDecodedLogs> {
         const contract = await this.getContract();
-        return contract.resolveChallenge.sendTransactionAsync(_pubKey).then(txHash => this.web3Wrapper.awaitTransactionSuccessAsync(txHash));
+        return contract.resolveChallenge
+            .sendTransactionAsync(_pubKey)
+            .then(txHash => this.web3Wrapper.awaitTransactionSuccessAsync(txHash));
     }
 
     /**
@@ -203,7 +220,9 @@ export class ValidatorRegistry {
      */
     public async claimRewards(_pubKey: string): Promise<TransactionReceiptWithDecodedLogs> {
         const contract = await this.getContract();
-        return contract.claimRewards.sendTransactionAsync(_pubKey).then(txHash => this.web3Wrapper.awaitTransactionSuccessAsync(txHash));
+        return contract.claimRewards
+            .sendTransactionAsync(_pubKey)
+            .then(txHash => this.web3Wrapper.awaitTransactionSuccessAsync(txHash));
     }
 
     /**
@@ -213,7 +232,9 @@ export class ValidatorRegistry {
      */
     public async initExit(_pubKey: string): Promise<TransactionReceiptWithDecodedLogs> {
         const contract = await this.getContract();
-        return contract.initExit.sendTransactionAsync(_pubKey).then(txHash => this.web3Wrapper.awaitTransactionSuccessAsync(txHash));
+        return contract.initExit
+            .sendTransactionAsync(_pubKey)
+            .then(txHash => this.web3Wrapper.awaitTransactionSuccessAsync(txHash));
     }
 
     /**
@@ -223,7 +244,9 @@ export class ValidatorRegistry {
      */
     public async finalizeExit(_pubKey: string): Promise<TransactionReceiptWithDecodedLogs> {
         const contract = await this.getContract();
-        return contract.finalizeExit.sendTransactionAsync(_pubKey).then(txHash => this.web3Wrapper.awaitTransactionSuccessAsync(txHash));
+        return contract.finalizeExit
+            .sendTransactionAsync(_pubKey)
+            .then(txHash => this.web3Wrapper.awaitTransactionSuccessAsync(txHash));
     }
 
     /**
@@ -233,7 +256,9 @@ export class ValidatorRegistry {
      */
     public async claimWinnings(challengeId: BigNumber): Promise<TransactionReceiptWithDecodedLogs> {
         const contract = await this.getContract();
-        return contract.claimWinnings.sendTransactionAsync(challengeId).then(txHash => this.web3Wrapper.awaitTransactionSuccessAsync(txHash));
+        return contract.claimWinnings
+            .sendTransactionAsync(challengeId)
+            .then(txHash => this.web3Wrapper.awaitTransactionSuccessAsync(txHash));
     }
 
     /**

@@ -1,7 +1,7 @@
 import { BigNumber } from "@0x/utils";
-import {Web3Wrapper} from "@0x/web3-wrapper";
+import { Web3Wrapper } from "@0x/web3-wrapper";
 import { artifacts, DeployedAddresses, KosuTokenContract } from "@kosu/system-contracts";
-import {TransactionReceiptWithDecodedLogs} from "ethereum-protocol";
+import { TransactionReceiptWithDecodedLogs } from "ethereum-protocol";
 import Web3 from "web3";
 
 /**
@@ -43,7 +43,12 @@ export class KosuToken {
                 throw new Error("Invalid network for KosuToken");
             }
 
-            this.contract = new KosuTokenContract(artifacts.KosuToken.compilerOutput.abi, this.address, this.web3Wrapper.getProvider(), { from: coinbase });
+            this.contract = new KosuTokenContract(
+                artifacts.KosuToken.compilerOutput.abi,
+                this.address,
+                this.web3Wrapper.getProvider(),
+                { from: coinbase },
+            );
         }
         return this.contract;
     }
@@ -74,7 +79,9 @@ export class KosuToken {
      */
     public async transfer(to: string, value: BigNumber): Promise<TransactionReceiptWithDecodedLogs> {
         const contract = await this.getContract();
-        return contract.transfer.sendTransactionAsync(to, value).then(txHash => this.web3Wrapper.awaitTransactionSuccessAsync(txHash));
+        return contract.transfer
+            .sendTransactionAsync(to, value)
+            .then(txHash => this.web3Wrapper.awaitTransactionSuccessAsync(txHash));
     }
 
     /**
@@ -86,7 +93,9 @@ export class KosuToken {
      */
     public async transferFrom(from: string, to: string, value: BigNumber): Promise<TransactionReceiptWithDecodedLogs> {
         const contract = await this.getContract();
-        return contract.transferFrom.sendTransactionAsync(from, to, value).then(txHash => this.web3Wrapper.awaitTransactionSuccessAsync(txHash));
+        return contract.transferFrom
+            .sendTransactionAsync(from, to, value)
+            .then(txHash => this.web3Wrapper.awaitTransactionSuccessAsync(txHash));
     }
 
     /**
@@ -97,7 +106,9 @@ export class KosuToken {
      */
     public async approve(spender: string, value: BigNumber): Promise<TransactionReceiptWithDecodedLogs> {
         const contract = await this.getContract();
-        return contract.approve.sendTransactionAsync(spender, value).then(txHash => this.web3Wrapper.awaitTransactionSuccessAsync(txHash));
+        return contract.approve
+            .sendTransactionAsync(spender, value)
+            .then(txHash => this.web3Wrapper.awaitTransactionSuccessAsync(txHash));
     }
 
     /**

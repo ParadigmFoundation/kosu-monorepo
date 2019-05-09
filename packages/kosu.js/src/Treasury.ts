@@ -1,10 +1,10 @@
-import {BigNumber} from "@0x/utils";
-import {Web3Wrapper} from "@0x/web3-wrapper";
-import {artifacts, DeployedAddresses, TreasuryContract} from "@kosu/system-contracts";
+import { BigNumber } from "@0x/utils";
+import { Web3Wrapper } from "@0x/web3-wrapper";
+import { artifacts, DeployedAddresses, TreasuryContract } from "@kosu/system-contracts";
 import Web3 from "web3";
 
 import { KosuToken } from "./KosuToken";
-import {TransactionReceiptWithDecodedLogs} from "ethereum-protocol";
+import { TransactionReceiptWithDecodedLogs } from "ethereum-protocol";
 
 /**
  * Integration with Treasury contract on an Ethereum blockchain.
@@ -50,7 +50,12 @@ export class Treasury {
                 throw new Error("Invalid network for Treasury");
             }
 
-            this.contract = new TreasuryContract(artifacts.Treasury.compilerOutput.abi, this.address, this.web3Wrapper.getProvider(),  { from: coinbase });
+            this.contract = new TreasuryContract(
+                artifacts.Treasury.compilerOutput.abi,
+                this.address,
+                this.web3Wrapper.getProvider(),
+                { from: coinbase },
+            );
         }
         return this.contract;
     }
@@ -75,7 +80,9 @@ export class Treasury {
             await this.kosuToken.approve(this.address, value);
         }
 
-        return contract.deposit.sendTransactionAsync(value).then(txHash => this.web3Wrapper.awaitTransactionSuccessAsync(txHash));
+        return contract.deposit
+            .sendTransactionAsync(value)
+            .then(txHash => this.web3Wrapper.awaitTransactionSuccessAsync(txHash));
     }
 
     /**
@@ -85,7 +92,9 @@ export class Treasury {
      */
     public async withdraw(value: BigNumber): Promise<TransactionReceiptWithDecodedLogs> {
         const contract = await this.getContract();
-        return contract.withdraw.sendTransactionAsync(value).then(txHash => this.web3Wrapper.awaitTransactionSuccessAsync(txHash));
+        return contract.withdraw
+            .sendTransactionAsync(value)
+            .then(txHash => this.web3Wrapper.awaitTransactionSuccessAsync(txHash));
     }
 
     /**

@@ -1,7 +1,7 @@
-import {BigNumber} from "@0x/utils";
-import {Web3Wrapper} from "@0x/web3-wrapper";
+import { BigNumber } from "@0x/utils";
+import { Web3Wrapper } from "@0x/web3-wrapper";
 import { artifacts, DeployedAddresses, VotingContract } from "@kosu/system-contracts";
-import {TransactionReceiptWithDecodedLogs} from "ethereum-protocol";
+import { TransactionReceiptWithDecodedLogs } from "ethereum-protocol";
 import Web3 from "web3";
 
 import { Treasury } from "./Treasury";
@@ -49,7 +49,12 @@ export class Voting {
                 throw new Error("Invalid network for Voting");
             }
 
-            this.contract = new VotingContract(artifacts.Voting.compilerOutput.abi, this.address, this.web3Wrapper.getProvider(),  { from: coinbase });
+            this.contract = new VotingContract(
+                artifacts.Voting.compilerOutput.abi,
+                this.address,
+                this.web3Wrapper.getProvider(),
+                { from: coinbase },
+            );
         }
         return this.contract;
     }
@@ -61,7 +66,11 @@ export class Voting {
      * @param _vote encoded vote option
      * @param _tokensToCommit uint number of tokens to be commited to vote
      */
-    public async commitVote(_pollId: BigNumber, _vote: string, _tokensToCommit: BigNumber): Promise<TransactionReceiptWithDecodedLogs> {
+    public async commitVote(
+        _pollId: BigNumber,
+        _vote: string,
+        _tokensToCommit: BigNumber,
+    ): Promise<TransactionReceiptWithDecodedLogs> {
         const contract = await this.getContract();
 
         const systemBalance = await this.treasury.systemBalance(this.coinbase);
@@ -72,7 +81,9 @@ export class Voting {
 
         // tslint:disable-next-line: no-console
         console.log(`Committing vote ${_vote} with ${_tokensToCommit} DIGM tokens`);
-        return contract.commitVote.sendTransactionAsync(_pollId, _vote, _tokensToCommit).then(txHash => this.web3Wrapper.awaitTransactionSuccessAsync(txHash));
+        return contract.commitVote
+            .sendTransactionAsync(_pollId, _vote, _tokensToCommit)
+            .then(txHash => this.web3Wrapper.awaitTransactionSuccessAsync(txHash));
     }
 
     /**
@@ -82,9 +93,15 @@ export class Voting {
      * @param _voteOption uint representation of vote position
      * @param _voteSalt uint salt used to encode vote option
      */
-    public async revealVote(_pollId: BigNumber, _voteOption: BigNumber, _voteSalt: BigNumber): Promise<TransactionReceiptWithDecodedLogs> {
+    public async revealVote(
+        _pollId: BigNumber,
+        _voteOption: BigNumber,
+        _voteSalt: BigNumber,
+    ): Promise<TransactionReceiptWithDecodedLogs> {
         const contract = await this.getContract();
-        return contract.revealVote.sendTransactionAsync(_pollId, _voteOption, _voteSalt).then(txHash => this.web3Wrapper.awaitTransactionSuccessAsync(txHash));
+        return contract.revealVote
+            .sendTransactionAsync(_pollId, _voteOption, _voteSalt)
+            .then(txHash => this.web3Wrapper.awaitTransactionSuccessAsync(txHash));
     }
 
     /**

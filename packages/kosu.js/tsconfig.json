@@ -7,8 +7,5 @@
         "moduleResolution": "node",
         "typeRoots": ["node_modules/@types"]
     },
-    "include": [
-        "./src/**/*",
-        "../kosu-system-contracts/src/types.d.ts"
-    ]
+    "include": ["./src/**/*", "../kosu-system-contracts/src/types.d.ts"]
 }

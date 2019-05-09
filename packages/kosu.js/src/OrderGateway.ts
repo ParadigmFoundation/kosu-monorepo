@@ -1,7 +1,7 @@
-import {BigNumber} from "@0x/utils";
-import {artifacts, DeployedAddresses} from "@kosu/system-contracts";
+import { BigNumber } from "@0x/utils";
+import { artifacts, DeployedAddresses } from "@kosu/system-contracts";
 import Web3 from "web3";
-import {Contract} from "web3-eth-contract";
+import { Contract } from "web3-eth-contract";
 
 import { OrderSerializer } from "./OrderSerializer";
 
@@ -11,152 +11,162 @@ import { OrderSerializer } from "./OrderSerializer";
  * @todo Refactor contract integration after migration away from truffle
  */
 export class OrderGateway {
-  private readonly web3: Web3;
-  private readonly initializing: Promise<void>;
-  private address: string;
-  private contract: Contract;
+    private readonly web3: Web3;
+    private readonly initializing: Promise<void>;
+    private address: string;
+    private contract: Contract;
 
-  // @ts-ignore
-  private Participation: any;
+    // @ts-ignore
+    private Participation: any;
 
-  /**
-   * Create a new OrderGateway instance.
-   *
-   * @param options instantiation options
-   */
-  constructor(options: KosuOptions) {
-    this.web3 = options.web3;
-    this.address = options.orderGatewayAddress;
-    this.initializing = this.init(options);
-  }
-
-  /**
-   * Asyncronously initializes the instance after construction
-   *
-   * @param options instantiation options
-   * @returns A promise to await complete instantiation for further calls
-   */
-  private async init(options: KosuOptions): Promise<void> {
-    const networkId = options.networkId || await options.web3.eth.net.getId();
-    const abi = artifacts.OrderGateway.compilerOutput.abi;
-
-    if (!this.address) {
-      this.address = DeployedAddresses[networkId].OrderGateway;
-    }
-    if (!this.address) {
-      throw new Error("Invalid network for OrderGateway");
+    /**
+     * Create a new OrderGateway instance.
+     *
+     * @param options instantiation options
+     */
+    constructor(options: KosuOptions) {
+        this.web3 = options.web3;
+        this.address = options.orderGatewayAddress;
+        this.initializing = this.init(options);
     }
 
-    this.contract = new this.web3.eth.Contract(abi, this.address);
-    this.Participation = this.contract.events.Participation;
-  }
+    /**
+     * Asyncronously initializes the instance after construction
+     *
+     * @param options instantiation options
+     * @returns A promise to await complete instantiation for further calls
+     */
+    private async init(options: KosuOptions): Promise<void> {
+        const networkId = options.networkId || (await options.web3.eth.net.getId());
+        const abi = artifacts.OrderGateway.compilerOutput.abi;
 
-  /**
-   * Participate in the terms of an order
-   *
-   * @param order A Kosu order
-   * @param takerValues Taker values to fulfill the order
-   * @param taker address of the taker
-   * @todo refactor makerData types after possible pending changes
-   */
-  public async participate(order: Order, takerValues: any[], taker: string): Promise<void> {
-    await this.initializing;
-    const makerArguments = await this.makerArguments(order.subContract);
-    const takerArguments = await this.takerArguments(order.subContract);
-    const makerValuesBytes = OrderSerializer.serializeMaker(makerArguments, order);
-    const takerValuesBytes = OrderSerializer.serializeTaker(takerArguments, takerValues);
+        if (!this.address) {
+            this.address = DeployedAddresses[networkId].OrderGateway;
+        }
+        if (!this.address) {
+            throw new Error("Invalid network for OrderGateway");
+        }
 
-    const transaction = this._participateTransaction(order.subContract, order.id, makerValuesBytes, takerValuesBytes);
-    // let gas = await transaction.estimateGas({ from: taker });
-    const gas = 4000000; // TODO: Gas cost is causing issues across many usages of this function.  This needs to be further investigated. Hard coding ot mitigate teh issue for now.
-    return transaction.send({ from: taker, gas });
-  }
+        this.contract = new this.web3.eth.Contract(abi, this.address);
+        this.Participation = this.contract.events.Participation;
+    }
 
-  /**
-   * @todo deprecate
-   */
-  public async participateEstimateGas(order: Order, takerValues: any[], taker: string): Promise<any> {
-    await this.initializing;
-    const makerArguments = await this.makerArguments(order.subContract);
-    const takerArguments = await this.takerArguments(order.subContract);
-    const makerValuesBytes = OrderSerializer.serializeMaker(makerArguments, order);
-    const takerValuesBytes = OrderSerializer.serializeTaker(takerArguments, takerValues);
+    /**
+     * Participate in the terms of an order
+     *
+     * @param order A Kosu order
+     * @param takerValues Taker values to fulfill the order
+     * @param taker address of the taker
+     * @todo refactor makerData types after possible pending changes
+     */
+    public async participate(order: Order, takerValues: any[], taker: string): Promise<void> {
+        await this.initializing;
+        const makerArguments = await this.makerArguments(order.subContract);
+        const takerArguments = await this.takerArguments(order.subContract);
+        const makerValuesBytes = OrderSerializer.serializeMaker(makerArguments, order);
+        const takerValuesBytes = OrderSerializer.serializeTaker(takerArguments, takerValues);
 
-    const transaction = this._participateTransaction(order.subContract, order.id, makerValuesBytes, takerValuesBytes);
-    return transaction.estimateGas({ from: taker });
-  }
+        const transaction = this._participateTransaction(
+            order.subContract,
+            order.id,
+            makerValuesBytes,
+            takerValuesBytes,
+        );
+        // let gas = await transaction.estimateGas({ from: taker });
+        const gas = 4000000; // TODO: Gas cost is causing issues across many usages of this function.  This needs to be further investigated. Hard coding ot mitigate teh issue for now.
+        return transaction.send({ from: taker, gas });
+    }
 
-  /**
-   * Read maker arguments
-   *
-   * @param subContract Address of deployed contract implementation
-   */
-  public async makerArguments(subContract: string): Promise<any[]> {
-    await this.initializing;
-    return JSON.parse(await this.contract.methods.makerArguments(subContract).call());
-  }
+    /**
+     * @todo deprecate
+     */
+    public async participateEstimateGas(order: Order, takerValues: any[], taker: string): Promise<any> {
+        await this.initializing;
+        const makerArguments = await this.makerArguments(order.subContract);
+        const takerArguments = await this.takerArguments(order.subContract);
+        const makerValuesBytes = OrderSerializer.serializeMaker(makerArguments, order);
+        const takerValuesBytes = OrderSerializer.serializeTaker(takerArguments, takerValues);
 
-  /**
-   * Read taker arguments
-   *
-   * @param subContract Address of deployed contract implementation
-   */
-  public async takerArguments(subContract: string): Promise<any[]> {
-    await this.initializing;
-    return JSON.parse(await this.contract.methods.takerArguments(subContract).call());
-  }
+        const transaction = this._participateTransaction(
+            order.subContract,
+            order.id,
+            makerValuesBytes,
+            takerValuesBytes,
+        );
+        return transaction.estimateGas({ from: taker });
+    }
 
-  /**
-   * Checks validity of order data
-   *
-   * @param order Kosu order to validate
-   * @todo refactor makerData types after possible pending changes
-   */
-  public async isValid(order: Order): Promise<boolean> {
-    await this.initializing;
-    const makerArguments = await this.makerArguments(order.subContract);
-    const makerValuesBytes = OrderSerializer.serializeMaker(makerArguments, order);
+    /**
+     * Read maker arguments
+     *
+     * @param subContract Address of deployed contract implementation
+     */
+    public async makerArguments(subContract: string): Promise<any[]> {
+        await this.initializing;
+        return JSON.parse(await this.contract.methods.makerArguments(subContract).call());
+    }
 
-    return this.contract.methods.isValid(order.subContract, makerValuesBytes).call();
-  }
+    /**
+     * Read taker arguments
+     *
+     * @param subContract Address of deployed contract implementation
+     */
+    public async takerArguments(subContract: string): Promise<any[]> {
+        await this.initializing;
+        return JSON.parse(await this.contract.methods.takerArguments(subContract).call());
+    }
 
-  /**
-   * Checks amount of partial exchange tokens remaining
-   *
-   * @param order Kosu order to validate
-   * @todo refactor makerData types after possible pending changes
-   */
-  public async amountRemaining(order: Order): Promise<BigNumber> {
-    await this.initializing;
-    const makerArguments = await this.makerArguments(order.subContract);
-    const makerValuesBytes = OrderSerializer.serializeMaker(makerArguments, order);
+    /**
+     * Checks validity of order data
+     *
+     * @param order Kosu order to validate
+     * @todo refactor makerData types after possible pending changes
+     */
+    public async isValid(order: Order): Promise<boolean> {
+        await this.initializing;
+        const makerArguments = await this.makerArguments(order.subContract);
+        const makerValuesBytes = OrderSerializer.serializeMaker(makerArguments, order);
 
-    return this.contract.methods.amountRemaining(order.subContract, makerValuesBytes).call();
-  }
+        return this.contract.methods.isValid(order.subContract, makerValuesBytes).call();
+    }
 
-  /**
-   * React to one event
-   *
-   * @param callback Reaction callback to function
-   * @param filter .
-   * @todo check types or refactor
-   */
-  public oneEvent(callback: any, filter: any = {}): void {
-    // @todo find correct type for this.Contract
-    (this.contract as any).once("Participation", filter, callback);
-  }
+    /**
+     * Checks amount of partial exchange tokens remaining
+     *
+     * @param order Kosu order to validate
+     * @todo refactor makerData types after possible pending changes
+     */
+    public async amountRemaining(order: Order): Promise<BigNumber> {
+        await this.initializing;
+        const makerArguments = await this.makerArguments(order.subContract);
+        const makerValuesBytes = OrderSerializer.serializeMaker(makerArguments, order);
 
-  /**
-   * todo: typedef on return value
-   *
-   * @param subContract Address of deployed contract implementation
-   * @param id Id value generated on orders submission through the Kosu order stream
-   * @param makerData serialized maker data
-   * @param takerData serialized taker data
-   * @todo refactor makerData types after possible pending changes
-   */
-// tslint:disable-next-line: typedef
-  private _participateTransaction(subContract: string, id: string = "", makerData: string[], takerData: string[]) {
-    return this.contract.methods.participate(subContract, id, makerData, takerData);
-  }
+        return this.contract.methods.amountRemaining(order.subContract, makerValuesBytes).call();
+    }
+
+    /**
+     * React to one event
+     *
+     * @param callback Reaction callback to function
+     * @param filter .
+     * @todo check types or refactor
+     */
+    public oneEvent(callback: any, filter: any = {}): void {
+        // @todo find correct type for this.Contract
+        (this.contract as any).once("Participation", filter, callback);
+    }
+
+    /**
+     * todo: typedef on return value
+     *
+     * @param subContract Address of deployed contract implementation
+     * @param id Id value generated on orders submission through the Kosu order stream
+     * @param makerData serialized maker data
+     * @param takerData serialized taker data
+     * @todo refactor makerData types after possible pending changes
+     */
+    // tslint:disable-next-line: typedef
+    private _participateTransaction(subContract: string, id: string = "", makerData: string[], takerData: string[]) {
+        return this.contract.methods.participate(subContract, id, makerData, takerData);
+    }
 }

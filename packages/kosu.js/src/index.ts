@@ -1,5 +1,5 @@
-import {Web3Wrapper} from "@0x/web3-wrapper";
-import {artifacts} from "@kosu/system-contracts";
+import { Web3Wrapper } from "@0x/web3-wrapper";
+import { artifacts } from "@kosu/system-contracts";
 import Web3 from "web3";
 
 import { KosuToken } from "./KosuToken";

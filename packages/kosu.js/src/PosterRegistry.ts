@@ -1,7 +1,7 @@
-import {BigNumber} from "@0x/utils";
-import {Web3Wrapper} from "@0x/web3-wrapper";
-import {artifacts, DeployedAddresses, PosterRegistryProxyContract} from "@kosu/system-contracts";
-import {TransactionReceiptWithDecodedLogs} from "ethereum-protocol";
+import { BigNumber } from "@0x/utils";
+import { Web3Wrapper } from "@0x/web3-wrapper";
+import { artifacts, DeployedAddresses, PosterRegistryProxyContract } from "@kosu/system-contracts";
+import { TransactionReceiptWithDecodedLogs } from "ethereum-protocol";
 import Web3 from "web3";
 
 import { Treasury } from "./Treasury";
@@ -48,7 +48,12 @@ export class PosterRegistry {
                 throw new Error("Invalid network for PosterRegistry");
             }
 
-            this.contract = new PosterRegistryProxyContract(artifacts.PosterRegistryProxy.compilerOutput.abi, this.address, this.web3Wrapper.getProvider(),  { from: coinbase });
+            this.contract = new PosterRegistryProxyContract(
+                artifacts.PosterRegistryProxy.compilerOutput.abi,
+                this.address,
+                this.web3Wrapper.getProvider(),
+                { from: coinbase },
+            );
         }
         return this.contract;
     }
@@ -98,7 +103,9 @@ export class PosterRegistry {
             }
         }
 
-        return contract.registerTokens.sendTransactionAsync(amount).then(txHash => this.web3Wrapper.awaitTransactionSuccessAsync(txHash));
+        return contract.registerTokens
+            .sendTransactionAsync(amount)
+            .then(txHash => this.web3Wrapper.awaitTransactionSuccessAsync(txHash));
     }
 
     /**
@@ -106,8 +113,10 @@ export class PosterRegistry {
      *
      * @param amount uint values of tokens to release
      */
-    public async releaseTokens(amount: BigNumber ): Promise<TransactionReceiptWithDecodedLogs> {
+    public async releaseTokens(amount: BigNumber): Promise<TransactionReceiptWithDecodedLogs> {
         const contract = await this.getContract();
-        return contract.releaseTokens.sendTransactionAsync(amount).then(txHash => this.web3Wrapper.awaitTransactionSuccessAsync(txHash));
+        return contract.releaseTokens
+            .sendTransactionAsync(amount)
+            .then(txHash => this.web3Wrapper.awaitTransactionSuccessAsync(txHash));
     }
 }
