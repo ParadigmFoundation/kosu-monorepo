@@ -3,15 +3,16 @@ package tests
 import (
 	"context"
 	"encoding/hex"
-	"go-kosu/abci"
-	"go-kosu/abci/types"
-	"go-kosu/store"
-	"go-kosu/witness"
 	"testing"
 	"time"
 
 	. "github.com/smartystreets/goconvey/convey"
 	"github.com/stretchr/testify/require"
+
+	"go-kosu/abci"
+	"go-kosu/abci/types"
+	"go-kosu/store"
+	"go-kosu/witness"
 )
 
 func (s *Suite) TestWitnessTx() {

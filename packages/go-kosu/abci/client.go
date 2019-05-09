@@ -14,14 +14,14 @@ import (
 // Client wraps a tendermint/rpc/client.
 // It adds convenience methods to make Broadcast and Query requests match our own types.
 type Client struct {
-	abci client.Client
-	key  []byte
+	client.Client
+	key []byte
 }
 
 // NewClient returns a new Client type.
 // Key is the private key used to sign transactions.
 func NewClient(c client.Client, key []byte) *Client {
-	return &Client{abci: c, key: key}
+	return &Client{Client: c, key: key}
 }
 
 // NewHTTPClient calls NewClient using a HTTPClient as ABCClient
@@ -37,7 +37,7 @@ func (c *Client) BroadcastTxAsync(tx interface{}) (*rpctypes.ResultBroadcastTx, 
 		return nil, err
 	}
 
-	return c.abci.BroadcastTxAsync(buf)
+	return c.Client.BroadcastTxAsync(buf)
 }
 
 // BroadcastTxSync will return with the result of running the transaction through CheckTx
@@ -47,7 +47,7 @@ func (c *Client) BroadcastTxSync(tx interface{}) (*rpctypes.ResultBroadcastTx, e
 		return nil, err
 	}
 
-	return c.abci.BroadcastTxSync(buf)
+	return c.Client.BroadcastTxSync(buf)
 }
 
 // BroadcastTxCommit will wait until the transaction is committed in a block or until some timeout is reached
@@ -57,7 +57,7 @@ func (c *Client) BroadcastTxCommit(tx interface{}) (*rpctypes.ResultBroadcastTxC
 		return nil, err
 	}
 
-	return c.abci.BroadcastTxCommit(buf)
+	return c.Client.BroadcastTxCommit(buf)
 }
 
 func (c *Client) buildTx(tx interface{}) (tmtypes.Tx, error) {
@@ -84,7 +84,7 @@ func (c *Client) Subscribe(ctx context.Context, q string) (<-chan rpctypes.Resul
 	}
 
 	// Start WS if not yet
-	if httpC, ok := c.abci.(*client.HTTP); ok {
+	if httpC, ok := c.Client.(*client.HTTP); ok {
 		if !httpC.IsRunning() {
 			if err := httpC.Start(); err != nil {
 				return nil, err
@@ -92,5 +92,5 @@ func (c *Client) Subscribe(ctx context.Context, q string) (<-chan rpctypes.Resul
 		}
 	}
 
-	return c.abci.Subscribe(ctx, "kosu", q)
+	return c.Client.Subscribe(ctx, "kosu", q)
 }
