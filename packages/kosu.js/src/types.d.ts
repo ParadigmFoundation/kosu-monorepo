@@ -1,4 +1,5 @@
 interface KosuOptions {
+    web3Wrapper?: Web3Wrapper;
     posterRegistryProxyAddress?: string;
     kosuTokenAddress?: string;
     orderStreamURL?: string;
@@ -8,7 +9,7 @@ interface KosuOptions {
     validatorRegistryProxyAddress?: string;
     votingAddress?: string;
     treasuryAddress?: string;
-    web3?: Web3
+    web3?: Web3;
 }
 
 interface Order {
