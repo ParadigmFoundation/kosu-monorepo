@@ -97,17 +97,6 @@ func (s *Suite) TestWitnessRebalance() {
 			Convey("It should update the local witness state", func() {
 				So(w.RoundInfo().Number, ShouldEqual, 3)
 			})
-
-			Convey("When started after Tx are commited", func() {
-				w := startWitness(t)
-				err := w.Start(ctx)
-				require.NoError(t, err)
-
-				Convey("RoundInfo should be up-to-date", func() {
-					number := roundNumber[len(roundNumber)-1]
-					So(w.RoundInfo().Number, ShouldEqual, number)
-				})
-			})
 		})
 	})
 }

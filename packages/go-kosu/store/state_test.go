@@ -158,9 +158,9 @@ func TestGenLimits(t *testing.T) {
 	s.RoundInfo.Limit = 11
 
 	for _, tx := range []*types.TransactionWitness{
-		{Address: "a", Amount: types.NewBigInt(10), Block: 2},
-		{Address: "b", Amount: types.NewBigInt(20), Block: 3},
-		{Address: "c", Amount: types.NewBigInt(30), Block: 4},
+		{Address: "a", Amount: types.NewBigIntFromInt(10), Block: 2},
+		{Address: "b", Amount: types.NewBigIntFromInt(20), Block: 3},
+		{Address: "c", Amount: types.NewBigIntFromInt(30), Block: 4},
 	} {
 		err := s.PushTransactionWitness(tx)
 		require.NoError(t, err)
