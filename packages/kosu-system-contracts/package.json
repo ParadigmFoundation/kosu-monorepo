@@ -17,6 +17,7 @@
     "build": "run-s contracts:clean compile:solidity generate_contract_wrappers compile:typescript",
     "compile:solidity": "sol-compiler",
     "compile:typescript": "tsc",
+    "lint": "tslint -p src",
     "truffle:clean": "shx rm -rf build/contracts",
     "contracts:clean": "shx rm -rf  generated-artifacts generated-wrappers",
     "deploy": "yarn deploy:ropsten",

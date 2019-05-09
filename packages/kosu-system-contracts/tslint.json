@@ -1,3 +1,8 @@
 {
-  "extends": ["@kosu/tslint-config"]
+  "extends": ["@kosu/tslint-config"],
+  "linterOptions": {
+    "exclude": [
+      "generated-wrappers/*"
+    ]
+  }
 }
