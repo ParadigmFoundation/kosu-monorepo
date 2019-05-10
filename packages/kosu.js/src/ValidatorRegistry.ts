@@ -1,13 +1,10 @@
-import BN = require("bn.js");
+import { BigNumber } from "@0x/utils";
+import { Web3Wrapper } from "@0x/web3-wrapper";
+import { artifacts, DeployedAddresses, listingDecoder, ValidatorRegistryProxyContract } from "@kosu/system-contracts";
+import { TransactionReceiptWithDecodedLogs } from "ethereum-protocol";
 import Web3 from "web3";
 
 import { Treasury } from "./Treasury";
-
-// tslint:disable-next-line: no-var-requires
-const ValidatorRegistryProxyContractData = require("@kosu/system-contracts").contracts.ValidatorRegistryProxy;
-
-// tslint:disable-next-line: no-var-requires
-const TruffleContract = require("truffle-contract");
 
 /**
  * Integration with ValidatorRegistry contract on an Ethereum blockchain.
@@ -17,9 +14,10 @@ const TruffleContract = require("truffle-contract");
 export class ValidatorRegistry {
     private readonly web3: Web3;
     private readonly treasury: Treasury;
-    private readonly initializing: Promise<void>;
-    private contract: any;
+    private contract: ValidatorRegistryProxyContract;
     private coinbase: string;
+    private readonly web3Wrapper: Web3Wrapper;
+    private address: string;
 
     /**
      * Create a new ValidatorRegistry instance.
@@ -29,108 +27,116 @@ export class ValidatorRegistry {
      */
     constructor(options: KosuOptions, treasury: Treasury) {
         this.web3 = options.web3;
+        this.web3Wrapper = options.web3Wrapper;
+        this.address = options.validatorRegistryProxyAddress;
         this.treasury = treasury;
-        this.initializing = this.init(options);
     }
 
     /**
-     * Asyncronously initializes the instance after construction
+     * Asynchronously initializes the contract instance or returns it from cache
      *
-     * @param options instantiation options
-     * @returns A promise to await complete instantiation for further calls
+     * @returns The contract
      */
-    private async init(options: KosuOptions): Promise<void> {
-        const ValidatorRegistryProxyContract = TruffleContract(ValidatorRegistryProxyContractData);
-        ValidatorRegistryProxyContract.setProvider(this.web3.currentProvider);
-        if (options.validatorRegistryProxyAddress) {
-            this.contract = ValidatorRegistryProxyContract.at(options.validatorRegistryProxyAddress);
-        } else {
-            this.contract = await ValidatorRegistryProxyContract.deployed().catch(() => {
-                throw new Error("Invalid network for ValidatorRegistry");
-            });
-        }
+    private async getContract(): Promise<ValidatorRegistryProxyContract> {
+        if (!this.contract) {
+            const networkId = await this.web3Wrapper.getNetworkIdAsync();
+            this.coinbase = await this.web3.eth.getCoinbase().catch(() => undefined);
 
-        this.coinbase = await this.web3.eth.getCoinbase().catch(() => undefined);
+            if (!this.address) {
+                this.address = DeployedAddresses[networkId].ValidatorRegistryProxy;
+            }
+            if (!this.address) {
+                throw new Error("Invalid network for ValidatorRegistry");
+            }
+
+            this.contract = new ValidatorRegistryProxyContract(
+                artifacts.ValidatorRegistryProxy.compilerOutput.abi,
+                this.address,
+                this.web3Wrapper.getProvider(),
+                { from: this.coinbase },
+            );
+        }
+        return this.contract;
     }
 
     /**
      * Reads the application period
      */
-    public async applicationPeriod(): Promise<BN> {
-        await this.initializing;
-        return this.contract.applicationPeriod.call();
+    public async applicationPeriod(): Promise<BigNumber> {
+        const contract = await this.getContract();
+        return contract.applicationPeriod.callAsync();
     }
 
     /**
      * Reads the commit period
      */
-    public async commitPeriod(): Promise<BN> {
-        await this.initializing;
-        return this.contract.commitPeriod.call();
+    public async commitPeriod(): Promise<BigNumber> {
+        const contract = await this.getContract();
+        return contract.commitPeriod.callAsync();
     }
 
     /**
      * Reads the challenge period
      */
-    public async challengePeriod(): Promise<BN> {
-        await this.initializing;
-        return this.contract.challengePeriod.call();
+    public async challengePeriod(): Promise<BigNumber> {
+        const contract = await this.getContract();
+        return contract.challengePeriod.callAsync();
     }
 
     /**
      * Reads the exit period
      */
-    public async exitPeriod(): Promise<BN> {
-        await this.initializing;
-        return this.contract.exitPeriod.call();
+    public async exitPeriod(): Promise<BigNumber> {
+        const contract = await this.getContract();
+        return contract.exitPeriod.callAsync();
     }
 
     /**
      * Reads the reward period
      */
-    public async rewardPeriod(): Promise<BN> {
-        await this.initializing;
-        return this.contract.rewardPeriod.call();
+    public async rewardPeriod(): Promise<BigNumber> {
+        const contract = await this.getContract();
+        return contract.rewardPeriod.callAsync();
     }
 
     /**
      * Reads the minimum balance
      */
-    public async minimumBalance(): Promise<BN> {
-        await this.initializing;
-        return this.contract.minimumBalance.call();
+    public async minimumBalance(): Promise<BigNumber> {
+        const contract = await this.getContract();
+        return contract.minimumBalance.callAsync();
     }
 
     /**
      * Reads the stakeholder cut
      */
-    public async stakeholderCut(): Promise<BN> {
-        await this.initializing;
-        return this.contract.stakeholderCut.call();
+    public async stakeholderCut(): Promise<BigNumber> {
+        const contract = await this.getContract();
+        return contract.stakeholderCut.callAsync();
     }
 
     /**
      * Reads the Voting contract address
      */
     public async voting(): Promise<string> {
-        await this.initializing;
-        return this.contract.voting.call();
+        const contract = await this.getContract();
+        return contract.voting.callAsync();
     }
 
     /**
-     * Reads the token address
+     * Reads the kosuToken address
      */
-    public async token(): Promise<string> {
-        await this.initializing;
-        return this.contract.token.call();
+    public async kosuToken(): Promise<string> {
+        const contract = await this.getContract();
+        return contract.kosuToken.callAsync();
     }
 
     /**
      * Reads the current validators
      */
-    public async validators(): Promise<[string]> {
-        await this.initializing;
-        return this.contract.validators.call();
+    public async validators(): Promise<string[]> {
+        const contract = await this.getContract();
+        return contract.validators.callAsync();
     }
 
     /**
@@ -138,10 +144,10 @@ export class ValidatorRegistry {
      *
      * @param _pubKey hex encoded tendermint public key
      */
-    public async getListing(_pubKey: string): Promise<any> {
-        await this.initializing;
+    public async getListing(_pubKey: string): Promise<Listing> {
+        const contract = await this.getContract();
         // TODO convert pub key if needed?
-        return this.contract.getListing.call(_pubKey);
+        return contract.getListing.callAsync(_pubKey).then(array => listingDecoder(array));
     }
 
     /**
@@ -153,20 +159,21 @@ export class ValidatorRegistry {
      */
     public async registerListing(
         _pubKey: string,
-        _tokensToStake: string | number,
-        _rewardRate: string | number | BN,
-    ): Promise<void> {
-        await this.initializing;
+        _tokensToStake: BigNumber,
+        _rewardRate: BigNumber,
+    ): Promise<TransactionReceiptWithDecodedLogs> {
+        const contract = await this.getContract();
 
         const systemBalance = await this.treasury.systemBalance(this.coinbase);
-        const totalTokens = this.web3.utils.toBN(_tokensToStake);
 
-        if (systemBalance.lt(totalTokens)) {
-            const tokensShort = totalTokens.sub(systemBalance);
+        if (systemBalance.lt(_tokensToStake)) {
+            const tokensShort = _tokensToStake.minus(systemBalance);
             await this.treasury.deposit(tokensShort);
         }
 
-        await this.contract.registerListing(_pubKey, _tokensToStake, _rewardRate, { from: this.coinbase });
+        return contract.registerListing
+            .sendTransactionAsync(_pubKey, _tokensToStake, _rewardRate)
+            .then(txHash => this.web3Wrapper.awaitTransactionSuccessAsync(txHash));
     }
 
     /**
@@ -174,9 +181,11 @@ export class ValidatorRegistry {
      *
      * @param _pubKey hex encoded tendermint public key
      */
-    public async confirmListing(_pubKey: string): Promise<void> {
-        await this.initializing;
-        await this.contract.confirmListing(_pubKey, { from: this.coinbase });
+    public async confirmListing(_pubKey: string): Promise<TransactionReceiptWithDecodedLogs> {
+        const contract = await this.getContract();
+        return contract.confirmListing
+            .sendTransactionAsync(_pubKey)
+            .then(txHash => this.web3Wrapper.awaitTransactionSuccessAsync(txHash));
     }
 
     /**
@@ -184,10 +193,12 @@ export class ValidatorRegistry {
      *
      * @param _pubKey hex encoded tendermint public key
      */
-    public async challengeListing(_pubKey: string): Promise<void> {
+    public async challengeListing(_pubKey: string): Promise<TransactionReceiptWithDecodedLogs> {
         // TODO Check balance after looking up specific listing's tokens committed
-        await this.initializing;
-        await this.contract.challengeListing(_pubKey, { from: this.coinbase });
+        const contract = await this.getContract();
+        return contract.challengeListing
+            .sendTransactionAsync(_pubKey)
+            .then(txHash => this.web3Wrapper.awaitTransactionSuccessAsync(txHash));
     }
 
     /**
@@ -195,9 +206,11 @@ export class ValidatorRegistry {
      *
      * @param _pubKey hex encoded tendermint public key
      */
-    public async resolveChallenge(_pubKey: string): Promise<void> {
-        await this.initializing;
-        await this.contract.resolveChallenge(_pubKey, { from: this.coinbase });
+    public async resolveChallenge(_pubKey: string): Promise<TransactionReceiptWithDecodedLogs> {
+        const contract = await this.getContract();
+        return contract.resolveChallenge
+            .sendTransactionAsync(_pubKey)
+            .then(txHash => this.web3Wrapper.awaitTransactionSuccessAsync(txHash));
     }
 
     /**
@@ -205,9 +218,11 @@ export class ValidatorRegistry {
      *
      * @param _pubKey hex encoded tendermint public key
      */
-    public async claimRewards(_pubKey: string): Promise<void> {
-        await this.initializing;
-        await this.contract.claimRewards(_pubKey, { from: this.coinbase });
+    public async claimRewards(_pubKey: string): Promise<TransactionReceiptWithDecodedLogs> {
+        const contract = await this.getContract();
+        return contract.claimRewards
+            .sendTransactionAsync(_pubKey)
+            .then(txHash => this.web3Wrapper.awaitTransactionSuccessAsync(txHash));
     }
 
     /**
@@ -215,9 +230,11 @@ export class ValidatorRegistry {
      *
      * @param _pubKey hex encoded tendermint public key
      */
-    public async initExit(_pubKey: string): Promise<void> {
-        await this.initializing;
-        await this.contract.initExit(_pubKey, { from: this.coinbase });
+    public async initExit(_pubKey: string): Promise<TransactionReceiptWithDecodedLogs> {
+        const contract = await this.getContract();
+        return contract.initExit
+            .sendTransactionAsync(_pubKey)
+            .then(txHash => this.web3Wrapper.awaitTransactionSuccessAsync(txHash));
     }
 
     /**
@@ -225,9 +242,11 @@ export class ValidatorRegistry {
      *
      * @param _pubKey hex encoded tendermint public key
      */
-    public async finalizeExit(_pubKey: string): Promise<void> {
-        await this.initializing;
-        await this.contract.finalizeExit(_pubKey, { from: this.coinbase });
+    public async finalizeExit(_pubKey: string): Promise<TransactionReceiptWithDecodedLogs> {
+        const contract = await this.getContract();
+        return contract.finalizeExit
+            .sendTransactionAsync(_pubKey)
+            .then(txHash => this.web3Wrapper.awaitTransactionSuccessAsync(txHash));
     }
 
     /**
@@ -235,9 +254,11 @@ export class ValidatorRegistry {
      *
      * @param challengeId id of challenge coinbase has contributed a winning vote to
      */
-    public async claimWinnings(challengeId: string | number): Promise<void> {
-        await this.initializing;
-        await this.contract.claimWinnings(challengeId, { from: this.coinbase });
+    public async claimWinnings(challengeId: BigNumber): Promise<TransactionReceiptWithDecodedLogs> {
+        const contract = await this.getContract();
+        return contract.claimWinnings
+            .sendTransactionAsync(challengeId)
+            .then(txHash => this.web3Wrapper.awaitTransactionSuccessAsync(txHash));
     }
 
     /**

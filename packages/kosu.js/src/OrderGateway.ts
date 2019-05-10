@@ -1,11 +1,9 @@
-import BN = require("bn.js");
+import { BigNumber } from "@0x/utils";
+import { artifacts, DeployedAddresses } from "@kosu/system-contracts";
 import Web3 from "web3";
-import Contract from "web3/eth/contract";
+import { Contract } from "web3-eth-contract";
 
 import { OrderSerializer } from "./OrderSerializer";
-
-// tslint:disable-next-line: no-var-requires
-const OrderGatewayContractData = require("@kosu/system-contracts").contracts.OrderGateway;
 
 /**
  * Integration with OrderGateway contract on an Ethereum blockchain.
@@ -28,6 +26,7 @@ export class OrderGateway {
      */
     constructor(options: KosuOptions) {
         this.web3 = options.web3;
+        this.address = options.orderGatewayAddress;
         this.initializing = this.init(options);
     }
 
@@ -39,15 +38,16 @@ export class OrderGateway {
      */
     private async init(options: KosuOptions): Promise<void> {
         const networkId = options.networkId || (await options.web3.eth.net.getId());
-        if (options.orderGatewayAddress) {
-            this.address = options.orderGatewayAddress;
-            this.contract = new this.web3.eth.Contract(OrderGatewayContractData.abi, this.address);
-        } else if (OrderGatewayContractData.networks[networkId]) {
-            this.address = OrderGatewayContractData.networks[networkId].address;
-            this.contract = new this.web3.eth.Contract(OrderGatewayContractData.abi, this.address);
-        } else {
+        const abi = artifacts.OrderGateway.compilerOutput.abi;
+
+        if (!this.address) {
+            this.address = DeployedAddresses[networkId].OrderGateway;
+        }
+        if (!this.address) {
             throw new Error("Invalid network for OrderGateway");
         }
+
+        this.contract = new this.web3.eth.Contract(abi, this.address);
         this.Participation = this.contract.events.Participation;
     }
 
@@ -136,7 +136,7 @@ export class OrderGateway {
      * @param order Kosu order to validate
      * @todo refactor makerData types after possible pending changes
      */
-    public async amountRemaining(order: Order): Promise<BN> {
+    public async amountRemaining(order: Order): Promise<BigNumber> {
         await this.initializing;
         const makerArguments = await this.makerArguments(order.subContract);
         const makerValuesBytes = OrderSerializer.serializeMaker(makerArguments, order);

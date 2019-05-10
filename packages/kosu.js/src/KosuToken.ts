@@ -1,9 +1,8 @@
-import BN = require("bn.js");
-import TruffleContract = require("truffle-contract");
+import { BigNumber } from "@0x/utils";
+import { Web3Wrapper } from "@0x/web3-wrapper";
+import { artifacts, DeployedAddresses, KosuTokenContract } from "@kosu/system-contracts";
+import { TransactionReceiptWithDecodedLogs } from "ethereum-protocol";
 import Web3 from "web3";
-
-// tslint:disable-next-line: no-var-requires
-const KosuTokenContractData = require("@kosu/system-contracts").contracts.KosuToken;
 
 /**
  * Integration with KosuToken contract on an Ethereum blockchain.
@@ -12,9 +11,9 @@ const KosuTokenContractData = require("@kosu/system-contracts").contracts.KosuTo
  */
 export class KosuToken {
     private readonly web3: Web3;
-    private readonly initializing: Promise<void>;
-    private contract: any;
-    private coinbase: string;
+    private contract: KosuTokenContract;
+    private readonly web3Wrapper: Web3Wrapper;
+    private address: string;
 
     /**
      * Creates a new KosuToken instance
@@ -23,34 +22,43 @@ export class KosuToken {
      */
     constructor(options: KosuOptions) {
         this.web3 = options.web3;
-        this.initializing = this.init(options);
+        this.web3Wrapper = options.web3Wrapper;
+        this.address = options.kosuTokenAddress;
     }
 
     /**
-     * Asynchronously initializes the instance after construction
+     * Asynchronously initializes the contract instance or returns it from cache
      *
-     * @param options instantiation options
-     * @returns A promise to await complete instantiation for further calls
+     * @returns The contract
      */
-    public async init(options: KosuOptions): Promise<void> {
-        const KosuTokenContract = TruffleContract(KosuTokenContractData);
-        KosuTokenContract.setProvider(this.web3.currentProvider);
+    private async getContract(): Promise<KosuTokenContract> {
+        if (!this.contract) {
+            const networkId = await this.web3Wrapper.getNetworkIdAsync();
+            const coinbase = await this.web3.eth.getCoinbase().catch(() => undefined);
 
-        this.contract = options.kosuTokenAddress
-            ? KosuTokenContract.at(options.kosuTokenAddress)
-            : await KosuTokenContract.deployed().catch(() => {
-                  throw new Error("Invalid network for KosuToken");
-              });
+            if (!this.address) {
+                this.address = DeployedAddresses[networkId].KosuToken;
+            }
+            if (!this.address) {
+                throw new Error("Invalid network for KosuToken");
+            }
 
-        this.coinbase = await this.web3.eth.getCoinbase().catch(() => undefined);
+            this.contract = new KosuTokenContract(
+                artifacts.KosuToken.compilerOutput.abi,
+                this.address,
+                this.web3Wrapper.getProvider(),
+                { from: coinbase },
+            );
+        }
+        return this.contract;
     }
 
     /**
      * Reads the total supply
      */
-    public async totalSupply(): Promise<BN> {
-        await this.initializing;
-        return this.contract.totalSupply.call();
+    public async totalSupply(): Promise<BigNumber> {
+        const contract = await this.getContract();
+        return contract.totalSupply.callAsync();
     }
 
     /**
@@ -58,9 +66,9 @@ export class KosuToken {
      *
      * @param owner Address of token holder
      */
-    public async balanceOf(owner: string): Promise<BN> {
-        await this.initializing;
-        return this.contract.balanceOf.call(owner);
+    public async balanceOf(owner: string): Promise<BigNumber> {
+        const contract = await this.getContract();
+        return contract.balanceOf.callAsync(owner);
     }
 
     /**
@@ -69,9 +77,11 @@ export class KosuToken {
      * @param to Address of token receiver
      * @param value uint value of tokens to transfer
      */
-    public async transfer(to: string, value: number | string | BN): Promise<void> {
-        await this.initializing;
-        return this.contract.transfer(to, value.toString(), { from: this.coinbase });
+    public async transfer(to: string, value: BigNumber): Promise<TransactionReceiptWithDecodedLogs> {
+        const contract = await this.getContract();
+        return contract.transfer
+            .sendTransactionAsync(to, value)
+            .then(txHash => this.web3Wrapper.awaitTransactionSuccessAsync(txHash));
     }
 
     /**
@@ -81,9 +91,11 @@ export class KosuToken {
      * @param to Address of token destination
      * @param value uint value of tokens to transfer
      */
-    public async transferFrom(from: string, to: string, value: number | string | BN): Promise<void> {
-        await this.initializing;
-        return this.contract.transferFrom(from, to, value.toString(), { from: this.coinbase });
+    public async transferFrom(from: string, to: string, value: BigNumber): Promise<TransactionReceiptWithDecodedLogs> {
+        const contract = await this.getContract();
+        return contract.transferFrom
+            .sendTransactionAsync(from, to, value)
+            .then(txHash => this.web3Wrapper.awaitTransactionSuccessAsync(txHash));
     }
 
     /**
@@ -92,9 +104,11 @@ export class KosuToken {
      * @param spender Address allowed to spend coinbase's tokens
      * @param value uint value of tokens to transfer
      */
-    public async approve(spender: string, value: number | string | BN): Promise<void> {
-        await this.initializing;
-        return this.contract.approve(spender, value.toString(), { from: this.coinbase });
+    public async approve(spender: string, value: BigNumber): Promise<TransactionReceiptWithDecodedLogs> {
+        const contract = await this.getContract();
+        return contract.approve
+            .sendTransactionAsync(spender, value)
+            .then(txHash => this.web3Wrapper.awaitTransactionSuccessAsync(txHash));
     }
 
     /**
@@ -103,8 +117,8 @@ export class KosuToken {
      * @param owner Address of source tokens
      * @param spender Address of spender of tokens
      */
-    public async allowance(owner: string, spender: string): Promise<BN> {
-        await this.initializing;
-        return this.contract.allowance.call(owner, spender);
+    public async allowance(owner: string, spender: string): Promise<BigNumber> {
+        const contract = await this.getContract();
+        return contract.allowance.callAsync(owner, spender);
     }
 }

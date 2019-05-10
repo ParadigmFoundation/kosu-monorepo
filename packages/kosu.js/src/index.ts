@@ -1,3 +1,5 @@
+import { Web3Wrapper } from "@0x/web3-wrapper";
+import { artifacts } from "@kosu/system-contracts";
 import Web3 from "web3";
 
 import { KosuToken } from "./KosuToken";
@@ -15,6 +17,7 @@ const version = process.env.npm_package_version || require("../package.json").ve
 
 export class Kosu {
     public readonly web3: Web3;
+    public readonly web3Wrapper: Web3Wrapper;
     public readonly orderGateway: OrderGateway;
     public readonly orderHelper: OrderHelper;
     public readonly kosuToken: KosuToken;
@@ -29,7 +32,13 @@ export class Kosu {
     constructor(options: KosuOptions = { provider: "https://ropsten.infura.io" }) {
         // Configuring web3
         this.web3 = new Web3(options.provider);
+        this.web3Wrapper = new Web3Wrapper(options.provider);
         options.web3 = this.web3;
+        options.web3Wrapper = this.web3Wrapper;
+
+        for (const contractName of Object.keys(artifacts)) {
+            this.web3Wrapper.abiDecoder.addABI(artifacts[contractName].compilerOutput.abi, contractName);
+        }
 
         // Initializing contract objects
         this.orderGateway = new OrderGateway(options);

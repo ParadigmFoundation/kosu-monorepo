@@ -1,5 +1,5 @@
 const { OrderGateway } = require('../src/OrderGateway');
-const OrderGatewayContract = require('@kosu/system-contracts').contracts.OrderGateway;
+const DeployedAddresses = require('@kosu/system-contracts').DeployedAddresses;
 
 describe('OrderGateway', () => {
   let orderGateway;
@@ -66,7 +66,6 @@ describe('OrderGateway', () => {
   describe('constructor()', () => {
     it("should not deploy a new contract if configuration doesn't point to a network with a deployed contract.", async () => {
       await orderGateway.initializing;
-      const deployedAddress = orderGateway.address;
 
       (async () => { const gw = new OrderGateway({ web3, networkId: 123 }); await gw.initializing })().should.eventually.be.rejected;
     });
@@ -79,7 +78,7 @@ describe('OrderGateway', () => {
       await testOrderGateway.initializing;
 
       deployedAddress.should.not.equal(testOrderGateway.address);
-      testOrderGateway.address.should.equal(OrderGatewayContract.networks[3].address);
+      testOrderGateway.address.should.equal(DeployedAddresses[3].OrderGateway);
     });
 
     it("should select an existing contract if the options provide address.", async () => {

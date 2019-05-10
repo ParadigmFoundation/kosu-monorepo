@@ -4,7 +4,7 @@
     "description": "JavaScript module for connecting with Kosu.",
     "main": "dist/index.js",
     "scripts": {
-        "test": "bin/test.sh",
+        "test": "ts-mocha -p tsconfig.json test/",
         "test:ci": "ts-mocha -p tsconfig.json test/",
         "test:ganache": "docker run --rm -p 8545:8545 ${npm_package_config_ganache_image_uri}",
         "test:ganache_detached": "docker run --rm -d -p 8545:8545 ${npm_package_config_ganache_image_uri}",
@@ -23,10 +23,10 @@
         "ganache_image_uri": "gcr.io/kosu-io/kosu-ganache:latest"
     },
     "dependencies": {
+        "@0x/utils": "^4.3.1",
+        "@0x/web3-wrapper": "^6.0.5",
         "@kosu/system-contracts": "^0.1.0",
-        "@kosu/tslint-config": "^0.0.3",
-        "@types/web3": "^1.0.18",
-        "bn.js": "^4.11.8",
+        "ethereum-protocol": "^1.0.1",
         "ethereumjs-abi": "^0.6.6",
         "ethereumjs-util": "^5.2.0",
         "isomorphic-ws": "^4.0.1",
@@ -34,12 +34,13 @@
         "truffle-contract": "^4.0.11",
         "web3": "1.0.0-beta.37",
         "web3-eth-contract": "^1.0.0-beta.53",
+        "web3-provider-engine": "^15.0.0",
         "web3-utils": "^1.0.0-beta.53",
         "ws": "^6.1.4"
     },
     "devDependencies": {
-        "@kosu/tslint-config": "^0.0.3",
         "@types/chai": "^4.1.7",
+        "@types/chai-as-promised": "^7.1.0",
         "@types/ethereumjs-abi": "^0.6.3",
         "@types/ethereumjs-util": "^5.2.0",
         "@types/expect": "^1.20.4",

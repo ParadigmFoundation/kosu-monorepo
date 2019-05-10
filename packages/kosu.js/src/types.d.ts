@@ -1,4 +1,5 @@
 interface KosuOptions {
+    web3Wrapper?: Web3Wrapper;
     posterRegistryProxyAddress?: string;
     kosuTokenAddress?: string;
     orderStreamURL?: string;

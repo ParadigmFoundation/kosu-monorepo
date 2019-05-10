@@ -1,4 +1,4 @@
-import BN = require("bn.js");
+import { BigNumber } from "@0x/utils";
 import { toHex, toTwosComplement } from "web3-utils";
 
 /**
@@ -6,7 +6,7 @@ import { toHex, toTwosComplement } from "web3-utils";
  *
  * @param value todo
  */
-export function toBytes32(value: string): number | string | BN {
+export function toBytes32(value: string): number | string | BigNumber {
     return toTwosComplement(toHex(value));
 }
 
