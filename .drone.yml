@@ -5,12 +5,21 @@ steps:
   - name: npm-projects
     image: gcr.io/kosu-io/node-ci:latest
     pull: always
+    environment:
+      WEB3_URI: http://kosu-ganache:8545
     commands:
       - yarn
       - yarn prettier:ci
       - yarn lint
       - yarn build
       - yarn test:ci
+
+services:
+- name: kosu-ganache
+  image: gcr.io/kosu-io/kosu-ganache:latest
+  pull: always
+  ports:
+  - 8545
 
 trigger:
   event:
