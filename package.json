@@ -16,8 +16,8 @@
         "build": "wsrun --exclude-missing --stages build",
         "test": "wsrun --exclude-missing test",
         "test:ci": "wsrun --exclude-missing test:ci",
-        "prettier": "prettier --write '**/*.{ts,tsx,json,md}' --config .prettierrc",
-        "prettier:ci": "prettier --list-different '**/*.{ts,tsx,json,md}' --config .prettierrc",
+        "prettier": "prettier --write '**/*.{ts,tsx,json,md,js}' --config .prettierrc",
+        "prettier:ci": "prettier --list-different '**/*.{ts,tsx,json,md,js}' --config .prettierrc",
         "postinstall": "lerna link"
     },
     "workspaces": [
@@ -26,7 +26,8 @@
         "packages/kosu-system-contracts",
         "pacakges/tsc-config",
         "packages/tslint-config",
-        "packages/dev-images"
+        "packages/dev-images",
+        "packages/web-helpers"
     ],
     "dependencies": {},
     "private": true,
