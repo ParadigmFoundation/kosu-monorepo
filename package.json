@@ -27,7 +27,7 @@
         "pacakges/tsc-config",
         "packages/tslint-config",
         "packages/dev-images",
-        "packages/health-check"
+        "packages/web-helpers"
     ],
     "dependencies": {},
     "private": true,
