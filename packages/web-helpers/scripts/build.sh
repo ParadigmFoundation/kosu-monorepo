@@ -1,7 +1,9 @@
 #!/usr/bin/env bash
 
 # clear build folder 
-rm ./dist/*
+if [ -d "$DIRECTORY" ]; then
+    rm -rf ./dist
+fi
 
 # build js files for browser
 webpack
