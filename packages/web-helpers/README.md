@@ -1,5 +1,6 @@
-# Tool: `network-utilities`
-Quick and simple web tools for checking OrderStream network status, and interacting with the current Ropsten contract system.
+# `@kosu/web-helpers`
+
+Quick and simple web tools for checking Kosu network status, and interacting with the current Kosu contract system (on Ropsten).
 
 In the future, may be expanded for other network stats and utilities.
 
@@ -37,5 +38,5 @@ View live changes at [`https://status.orderstream.network/`](https://status.orde
 
 ## Notes
 
-- Currently only supports one node (height and order-counter only)
-- Plans to add other stats as well
+-   Currently only supports one node (height and order-counter only)
+-   Plans to add other stats as well

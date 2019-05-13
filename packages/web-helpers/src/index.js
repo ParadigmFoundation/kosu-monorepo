@@ -454,9 +454,12 @@ function mainHandler(ws2) {
     };
 }
 
-window.orderStreamInfo = () => {
+// BELOW WILL BE UPDATED WHEN 'GO-KOSU' SUPPORTS NECESSARY RPC METHODS
+
+/*
+window.kosuInfo = () => {
     // config
-    const streamURL = "wss://f237bdbb-4aec-4131-8233-747662de44c2.zaidan.io/jsonrpc";
+    const streamURL = "";
     const subscribeOptions = JSON.stringify({
         jsonrpc: "2.0",
         id: uuid(),
@@ -474,3 +477,4 @@ window.orderStreamInfo = () => {
     // send subscribe message when connection opens
     ws1.onopen = () => ws1.send(subscribeOptions);
 }
+*/
