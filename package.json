@@ -26,7 +26,8 @@
         "packages/kosu-system-contracts",
         "pacakges/tsc-config",
         "packages/tslint-config",
-        "packages/dev-images"
+        "packages/dev-images",
+        "packages/health-check"
     ],
     "dependencies": {},
     "private": true,
