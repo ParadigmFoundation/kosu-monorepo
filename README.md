@@ -31,11 +31,12 @@ _This README is under construction._
 
 ### Utility packages
 
-| Package &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; | Version                                                       | Description                                                          |
-| :------------------------------------------------ | :------------------------------------------------------------ | :------------------------------------------------------------------- |
-| [`@kosu/dev-images`](./packages/dev-images)       | ![version](https://img.shields.io/badge/npm-v0.0.1-green.svg) | Development docker images and supporting scripts for Kosu packages.  |
-| [`@kosu/tslint-config`](./packages/tslint-config) | ![version](https://img.shields.io/badge/npm-v0.0.2-green.svg) | TypeScript linter base configuration for Kosu TypeScript projects.   |
-| [`@kosu/tsc-config`](./packages/tsc-config)       | ![version](https://img.shields.io/badge/npm-v0.0.1-green.svg) | TypeScript compiler base configuration for Kosu TypeScript projects. |
+| Package &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; | Version                                                       | Description                                                                                |
+| :------------------------------------------------ | :------------------------------------------------------------ | :----------------------------------------------------------------------------------------- |
+| [`@kosu/dev-images`](./packages/dev-images)       | ![version](https://img.shields.io/badge/npm-v0.0.1-green.svg) | Development docker images and supporting scripts for Kosu packages.                        |
+| [`@kosu/tslint-config`](./packages/tslint-config) | ![version](https://img.shields.io/badge/npm-v0.0.2-green.svg) | TypeScript linter base configuration for Kosu TypeScript projects.                         |
+| [`@kosu/tsc-config`](./packages/tsc-config)       | ![version](https://img.shields.io/badge/npm-v0.0.1-green.svg) | TypeScript compiler base configuration for Kosu TypeScript projects.                       |
+| [`@kosu/web-helpers`](./packages/web-helpers)     | ![version](https://img.shields.io/badge/npm-v0.1.1-green.svg) | Simple web (browser) interfaces for interacting with the Kosu network and contract system. |
 
 # License
 
