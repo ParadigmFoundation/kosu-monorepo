@@ -10,16 +10,16 @@ Opens a WebSocket connection to the ABCI server, where it subscribes to `NewBloc
 
 _More coming soon._
 
-## Test
+## Develop
 
 Run a local static server with build files:
 
 ```bash
 # directly
-$ ./scripts/test.sh
+$ ./scripts/dev.sh
 
 # with yarn
-yarn test
+yarn develop
 ```
 
 ## Deploy
