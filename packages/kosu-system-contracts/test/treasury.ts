@@ -61,31 +61,31 @@ describe("Treasury", async () => {
 
   describe("contractDeposit", () => {
     it("should pull tokens from the given accounts and track the balance.", async () => {
-      await treasury.contractDeposit.sendTransactionAsync(accounts[1], testValues.fiftyWei, { from: accounts[5] }).should.eventually.be.fulfilled;
+      await treasury.contractDeposit.sendTransactionAsync(accounts[1], testValues.fiftyWei, { from: accounts[5] }).then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash)).should.eventually.be.fulfilled;
 
       await treasury.currentBalance.callAsync(accounts[1]).then(x => x.toString()).should.eventually.eq(testValues.fiftyWei.toString());
     });
 
     it("should fail on insufficient token approval.", async () => {
-        await treasury.contractDeposit.sendTransactionAsync(accounts[1], toBN("51"), { from: accounts[5] }).should.eventually.be.rejected;
+        await treasury.contractDeposit.sendTransactionAsync(accounts[1], toBN("51"), { from: accounts[5] }).then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash)).should.eventually.be.rejected;
     });
 
     it("should fail on insufficient token balance.", async () => {
       await kosuToken.approve.sendTransactionAsync(treasury.address, toBN("100000"), { from: accounts[1] });
-      await treasury.contractDeposit.sendTransactionAsync(accounts[1], toBN("101"), { from: accounts[5] }).should.eventually.be.rejected;
+      await treasury.contractDeposit.sendTransactionAsync(accounts[1], toBN("101"), { from: accounts[5] }).then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash)).should.eventually.be.rejected;
     });
   });
 
   describe("contractWithdraw", () => {
     it("should reduce the balance by the provided value.", async () => {
       await treasury.contractDeposit.sendTransactionAsync(accounts[3], testValues.oneHundredWei, { from: accounts[5] });
-      await treasury.contractWithdraw.sendTransactionAsync(accounts[3], toBN("75"), { from: accounts[5] }).should.eventually.be.fulfilled;
+      await treasury.contractWithdraw.sendTransactionAsync(accounts[3], toBN("75"), { from: accounts[5] }).then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash)).should.eventually.be.fulfilled;
 
       await treasury.currentBalance.callAsync(accounts[3]).then(x => x.toString()).should.eventually.eq("25");
     });
 
     it("should fail on over withdraw.", async () => {
-      await treasury.contractWithdraw.sendTransactionAsync(accounts[3], toBN("101"), { from: accounts[5] }).should.eventually.be.rejected;
+      await treasury.contractWithdraw.sendTransactionAsync(accounts[3], toBN("101"), { from: accounts[5] }).then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash)).should.eventually.be.rejected;
     });
   });
 
@@ -116,13 +116,13 @@ describe("Treasury", async () => {
     });
 
     it("should fail on insufficient token approval.", async () => {
-      await treasury.updateBalance.sendTransactionAsync(accounts[1], toBN("51"), { from: accounts[5] }).should.eventually.be.rejected;
+      await treasury.updateBalance.sendTransactionAsync(accounts[1], toBN("51"), { from: accounts[5] }).then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash)).should.eventually.be.rejected;
     });
 
     it("should fail on insufficient token balance.", async () => {
       await kosuToken.approve.sendTransactionAsync(treasury.address, toBN("100000"), { from: accounts[1] });
 
-      await treasury.updateBalance.sendTransactionAsync(accounts[1], toBN("101"), { from: accounts[5] }).should.eventually.be.rejected;
+      await treasury.updateBalance.sendTransactionAsync(accounts[1], toBN("101"), { from: accounts[5] }).then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash)).should.eventually.be.rejected;
     });
   });
 
@@ -148,19 +148,19 @@ describe("Treasury", async () => {
     });
 
     it("should fail on over withdraw.", async () => {
-      await treasury.adjustBalance.sendTransactionAsync(accounts[3], toBN("-101"), { from: accounts[5] }).should.eventually.be.rejected;
+      await treasury.adjustBalance.sendTransactionAsync(accounts[3], toBN("-101"), { from: accounts[5] }).then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash)).should.eventually.be.rejected;
     });
 
     it("should fail on insufficient token approval.", async () => {
         await kosuToken.approve.sendTransactionAsync(treasury.address, toBN("0"), { from: accounts[3] });
 
-        await treasury.adjustBalance.sendTransactionAsync(accounts[3], toBN("1"), { from: accounts[5] }).should.eventually.be.rejected;
+        await treasury.adjustBalance.sendTransactionAsync(accounts[3], toBN("1"), { from: accounts[5] }).then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash)).should.eventually.be.rejected;
     });
 
     it("should fail on insufficient token balance.", async () => {
       await kosuToken.approve.sendTransactionAsync(treasury.address, toBN("100000"), { from: accounts[3] });
 
-      await treasury.adjustBalance.sendTransactionAsync(accounts[3], toBN("101"), { from: accounts[5] }).should.eventually.be.rejected;
+      await treasury.adjustBalance.sendTransactionAsync(accounts[3], toBN("101"), { from: accounts[5] }).then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash)).should.eventually.be.rejected;
     });
   });
 
@@ -185,13 +185,13 @@ describe("Treasury", async () => {
       it("should allow an added account to call protected methods", async () => {
         await auth.unauthorizeAddress.sendTransactionAsync(accounts[6]);
 
-        await treasury.contractDeposit.sendTransactionAsync(accounts[1], testValues.fiftyWei, { from: accounts[6] }).should.eventually.be.rejected;
+        await treasury.contractDeposit.sendTransactionAsync(accounts[1], testValues.fiftyWei, { from: accounts[6] }).then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash)).should.eventually.be.rejected;
 
         await auth.authorizeAddress.sendTransactionAsync(accounts[6]).then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash));
 
         await kosuToken.allowance.callAsync(accounts[1], treasury.address).then(x => x.toString()).should.eventually.eq(testValues.fiftyWei.toString());
         await kosuToken.balanceOf.callAsync(accounts[1]).then(x => x.toString()).should.eventually.eq(testValues.oneHundredWei.toString());
-        await treasury.contractDeposit.sendTransactionAsync(accounts[1], testValues.fiftyWei, { from: accounts[6] }).should.eventually.be.fulfilled;
+        await treasury.contractDeposit.sendTransactionAsync(accounts[1], testValues.fiftyWei, { from: accounts[6] }).then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash)).should.eventually.be.fulfilled;
       });
     });
   });

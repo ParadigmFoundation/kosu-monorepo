@@ -62,15 +62,11 @@ describe("OrderHelper", () => {
 
             await orderHelper.takeOrder(order, takerValues, taker);
 
-            const resultTKABalance = web3.utils
-                .toBN(await tka.balanceOf(taker))
-                .sub(web3.utils.toBN(initialTKABalance));
-            const resultTKBBalance = web3.utils
-                .toBN(await tkb.balanceOf(maker))
-                .sub(web3.utils.toBN(initialTKBBalance));
+            const resultTKABalance = BigNumber(await tka.balanceOf(taker)).minus(initialTKABalance);
+            const resultTKBBalance = BigNumber(await tkb.balanceOf(maker)).minus(initialTKBBalance);
 
-            assert.equal(resultTKABalance, "100", "TKA");
-            assert.equal(resultTKBBalance, "100", "TKB");
+            assert.equal(resultTKABalance.toString(), "100", "TKA");
+            assert.equal(resultTKBBalance.toString(), "100", "TKB");
         });
     });
 

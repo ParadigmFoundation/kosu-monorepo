@@ -5,7 +5,7 @@
     "main": "dist/index.js",
     "scripts": {
         "test": "ts-mocha -p tsconfig.json test/",
-        "test:ci": "ts-mocha -p tsconfig.json test/",
+        "test:ci": "ts-mocha -p tsconfig.json test/ -- geth",
         "test:ganache": "docker run --rm -p 8545:8545 ${npm_package_config_ganache_image_uri}",
         "test:ganache_detached": "docker run --rm -d -p 8545:8545 ${npm_package_config_ganache_image_uri}",
         "build": "tsc",
@@ -39,6 +39,7 @@
         "ws": "^6.1.4"
     },
     "devDependencies": {
+        "@0x/dev-utils": "^2.2.2",
         "@types/chai": "^4.1.7",
         "@types/chai-as-promised": "^7.1.0",
         "@types/ethereumjs-abi": "^0.6.3",
