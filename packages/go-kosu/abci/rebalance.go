@@ -1,12 +1,10 @@
 package abci
 
 import (
-	"fmt"
 	"go-kosu/abci/types"
 	"log"
 
 	abci "github.com/tendermint/tendermint/abci/types"
-	"github.com/tendermint/tendermint/libs/common"
 )
 
 func (app *App) checkRebalanceTx(tx *types.TransactionRebalance) error {
@@ -34,15 +32,8 @@ func (app *App) deliverRebalance(tx *types.TransactionRebalance) abci.ResponseDe
 		}
 	}
 
-	tags := []common.KVPair{
-		{Key: []byte("tx.type"), Value: []byte("rebalance")},
-		{Key: []byte("round.number"), Value: []byte(fmt.Sprintf("%d", info.Number))},
-		{Key: []byte("round.start"), Value: []byte(fmt.Sprintf("%d", info.StartsAt))},
-		{Key: []byte("round.end"), Value: []byte(fmt.Sprintf("%d", info.EndsAt))},
-	}
-
 	return abci.ResponseDeliverTx{
 		Code: 0,
-		Tags: tags,
+		Tags: NewTagsFromRoundInfo(info),
 	}
 }
