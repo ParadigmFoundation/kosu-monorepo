@@ -9,6 +9,7 @@ const RPCSubprovider = require("@0x/subproviders").RPCSubprovider;
 const migrations = require("@kosu/system-contracts/dist/src/migrations").migrations;
 const Lifecycle = require("@0x/dev-utils").BlockchainLifecycle;
 const { Kosu } = require("../src");
+const BigNumber = require("@0x/utils").BigNumber;
 
 const tokenHelper = require("./helpers/tokenHelper.js");
 const kosuContractHelper = require("./helpers/kosuContractHelper");
@@ -38,10 +39,10 @@ before(async () => {
 
     global.web3 = new Web3(provider);
     global.accounts = await web3.eth.personal.getAccounts();
-    global.MAX_UINT = web3.utils
-        .toBN("2")
-        .pow(web3.utils.toBN("256"))
-        .sub(web3.utils.toBN("1"))
+    global.BigNumber = BigNumber;
+    global.MAX_UINT = BigNumber("2")
+        .pow(BigNumber("256"))
+        .minus(BigNumber("1"))
         .toString();
 
     const migratedContracts = await migrations(
