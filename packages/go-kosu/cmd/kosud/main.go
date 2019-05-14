@@ -2,19 +2,17 @@ package main
 
 import (
 	"context"
-	"fmt"
-	"go-kosu/abci"
-	"go-kosu/abci/types"
-	"go-kosu/store"
-	"go-kosu/witness"
 	"log"
-	"os"
 	"os/user"
 	"path/filepath"
 	"strings"
 
 	"github.com/spf13/cobra"
 	"github.com/tendermint/tendermint/libs/db"
+
+	"go-kosu/abci"
+	"go-kosu/store"
+	"go-kosu/witness"
 )
 
 const (
@@ -28,7 +26,6 @@ type Config struct {
 	Debug bool
 	Init  bool
 	Web3  string
-	Key   []byte
 }
 
 func newDB(dir string, debug bool) (db.DB, error) {
@@ -56,11 +53,7 @@ func startWitness(ctx context.Context, ethAddr string, nodeAddr string, key []by
 	return w.Start(ctx)
 }
 
-func run(cfg *Config) error {
-	if cfg.Init {
-		abci.InitTendermint(cfg.Home)
-	}
-
+func run(cfg *Config, key []byte) error {
 	db, err := newDB(cfg.Home, cfg.Debug)
 	if err != nil {
 		return err
@@ -71,10 +64,12 @@ func run(cfg *Config) error {
 	if err != nil {
 		return err
 	}
+	// TODO, call defer srv.Stop() ?
 
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
-	if err := startWitness(ctx, ethAddr, nodeAddr, cfg.Key); err != nil {
+
+	if err := startWitness(ctx, ethAddr, nodeAddr, key); err != nil {
 		return err
 	}
 
@@ -83,19 +78,16 @@ func run(cfg *Config) error {
 }
 
 func main() {
-	cfg := Config{}
-
-	_, key, err := types.NewKeyPair()
-	if err != nil {
-		fmt.Printf("%s", err)
-		os.Exit(1)
-	}
+	var (
+		cfg Config
+		key []byte
+	)
 
 	rootCmd := &cobra.Command{
 		Use:   "kosud",
 		Short: "Starts the kosu node",
 		Run: func(cmd *cobra.Command, args []string) {
-			if err := run(&cfg); err != nil {
+			if err := run(&cfg, key); err != nil {
 				log.Fatal(err)
 			}
 		},
@@ -103,11 +95,21 @@ func main() {
 	rootCmd.Flags().StringVar(&cfg.Home, "home", "~/.kosu", "directory for config and data")
 	rootCmd.Flags().BoolVar(&cfg.Debug, "debug", false, "enable debuging")
 	rootCmd.Flags().StringVar(&cfg.Web3, "web3", "wss://ropsten.infura.ws", "web3 provider URL")
-	rootCmd.Flags().BytesHexVar(&cfg.Key, "key", key, "private key used to sign Witness requests")
 	rootCmd.Flags().BoolVar(&cfg.Init, "init", false, "initializes directory like 'tendermint init' does")
 
 	cobra.OnInitialize(func() {
 		cfg.Home = expandPath(cfg.Home)
+		if cfg.Init {
+			if err := abci.InitTendermint(cfg.Home); err != nil {
+				log.Fatal(err)
+			}
+		}
+
+		var err error
+		key, err = abci.LoadPrivateKey(cfg.Home)
+		if err != nil {
+			log.Fatal(err)
+		}
 	})
 
 	if err := rootCmd.Execute(); err != nil {
