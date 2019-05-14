@@ -1,16 +1,16 @@
 import {LogDecoder} from "@0x/contracts-test-utils";
-import {GanacheSubprovider} from "@0x/subproviders";
-import {providerUtils} from "@0x/utils";
+import {GanacheSubprovider, RPCSubprovider} from "@0x/subproviders";
+import {BigNumber, providerUtils} from "@0x/utils";
 import {Web3Wrapper} from "@0x/web3-wrapper";
-import {BigNumber} from "@0x/utils";
 import chai from "chai";
 import chaiAsPromised from "chai-as-promised";
 import Web3 from "web3";
 import Web3ProviderEngine from "web3-provider-engine";
 import { toWei } from "web3-utils";
 
-import { eventDecoder } from "..";
 import {migrations} from "../src/migrations";
+
+const useGeth = process.argv.includes("geth");
 
 chai.use(chaiAsPromised);
 chai.should();
@@ -27,10 +27,16 @@ const testValues: TestValues = {
 };
 
 before(async () => {
-  const ganacheSubprovider = new GanacheSubprovider({});
 
   const provider = new Web3ProviderEngine();
-  provider.addProvider(ganacheSubprovider);
+
+  if (useGeth) {
+    const rpcSubprovider = new RPCSubprovider(process.env.WEB3_URI);
+    provider.addProvider(rpcSubprovider);
+  } else {
+    const ganacheSubprovider = new GanacheSubprovider({});
+    provider.addProvider(ganacheSubprovider);
+  }
 
   providerUtils.startProviderEngine(provider);
 
