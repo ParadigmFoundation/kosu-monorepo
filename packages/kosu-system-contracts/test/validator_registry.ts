@@ -853,7 +853,7 @@ describe("ValidatorRegistry", async () => {
 
     it("should emit event when listing is confirmed", async () => {
 
-      const result = await validatorRegistryProxy.confirmListing.sendTransactionAsync(tendermintPublicKey).then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash)).then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash)).should.eventually.be.fulfilled;
+      const result = await validatorRegistryProxy.confirmListing.sendTransactionAsync(tendermintPublicKey).then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash)).should.eventually.be.fulfilled;
       const decodedLogs = decodeKosuEvents(result.logs)[0];
 
       decodedLogs.eventType.should.eq("ValidatorRegistryUpdate");
