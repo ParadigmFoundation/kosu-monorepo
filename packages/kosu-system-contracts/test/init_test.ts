@@ -1,4 +1,5 @@
 import {LogDecoder} from "@0x/contracts-test-utils";
+import { BlockchainLifecycle } from "@0x/dev-utils";
 import {GanacheSubprovider, RPCSubprovider} from "@0x/subproviders";
 import {BigNumber, providerUtils} from "@0x/utils";
 import {Web3Wrapper} from "@0x/web3-wrapper";
@@ -42,6 +43,8 @@ before(async () => {
 
   const web3 = new Web3(provider);
   const web3Wrapper = new Web3Wrapper(provider);
+
+  await new BlockchainLifecycle(web3Wrapper).startAsync();
 
   const normalizedFromAddress = await web3.eth.getCoinbase().then((x: string) => x.toLowerCase());
 

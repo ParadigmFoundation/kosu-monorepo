@@ -7,7 +7,7 @@ const providerUtils = require("@0x/utils").providerUtils;
 const GanacheSubprovider = require("@0x/subproviders").GanacheSubprovider;
 const RPCSubprovider = require("@0x/subproviders").RPCSubprovider;
 const migrations = require("@kosu/system-contracts/dist/src/migrations").migrations;
-const Lifecycle = require("@0x/dev-utils").BlockchainLifecycle;
+const BlockchainLifecycle = require("@0x/dev-utils").BlockchainLifecycle;
 const { Kosu } = require("../src");
 const BigNumber = require("@0x/utils").BigNumber;
 
@@ -35,7 +35,7 @@ before(async () => {
     providerUtils.startProviderEngine(provider);
 
     const web3Wrapper = new Web3Wrapper(provider);
-    await new Lifecycle(web3Wrapper).startAsync();
+    await new BlockchainLifecycle(web3Wrapper).startAsync();
 
     global.web3 = new Web3(provider);
     global.accounts = await web3.eth.personal.getAccounts();
