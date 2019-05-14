@@ -1,7 +1,10 @@
 package abci
 
 import (
+	"encoding/base64"
+	"encoding/json"
 	"fmt"
+	"io/ioutil"
 	"os"
 	"path/filepath"
 
@@ -37,7 +40,7 @@ func LoadConfig(homedir string) (*config.Config, error) {
 	// I don't think this ever returns an err.  It seems to create a default config if missing
 	err := viper.ReadInConfig()
 	if err != nil {
-		return nil, fmt.Errorf("missing homedir/config file. Did you run the init command?")
+		return nil, fmt.Errorf("missing homedir/config file. Did you run 'kosud --init'?")
 	}
 
 	cfg := config.DefaultConfig()
@@ -49,4 +52,29 @@ func LoadConfig(homedir string) (*config.Config, error) {
 	config.EnsureRoot(cfg.RootDir)
 
 	return cfg, nil
+}
+
+// LoadPrivateKey loads the validator's private key using homedir as the base path of Tendermint
+func LoadPrivateKey(homedir string) ([]byte, error) {
+	conf, err := LoadConfig(homedir)
+	if err != nil {
+		return nil, err
+	}
+
+	f, err := ioutil.ReadFile(conf.PrivValidatorKeyFile())
+	if err != nil {
+		return nil, err
+	}
+
+	// Couldn't find a better way to do this, perhaps TM provides utilities for this
+	var filepv struct {
+		PrivKey struct {
+			Value string `json:"value"`
+		} `json:"priv_key"`
+	}
+	if err := json.Unmarshal(f, &filepv); err != nil {
+		return nil, err
+	}
+
+	return base64.StdEncoding.DecodeString(filepv.PrivKey.Value)
 }

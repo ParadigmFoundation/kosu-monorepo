@@ -152,3 +152,22 @@ func requireNoErrors(t *testing.T, errs ...error) {
 		require.NoError(t, err)
 	}
 }
+
+func TestGenLimits(t *testing.T) {
+	s := NewState()
+	s.RoundInfo.Limit = 11
+
+	for _, tx := range []*types.TransactionWitness{
+		{Address: "a", Amount: types.NewBigIntFromInt(10), Block: 2},
+		{Address: "b", Amount: types.NewBigIntFromInt(20), Block: 3},
+		{Address: "c", Amount: types.NewBigIntFromInt(30), Block: 4},
+	} {
+		err := s.PushTransactionWitness(tx)
+		require.NoError(t, err)
+	}
+
+	rls := s.GenLimits()
+	assert.EqualValues(t, 1, rls["a"])
+	assert.EqualValues(t, 3, rls["b"])
+	assert.EqualValues(t, 5, rls["c"])
+}

@@ -3,8 +3,13 @@ package witness
 import (
 	"context"
 	"fmt"
+	"go-kosu/abci"
 	"go-kosu/abci/types"
+	"go-kosu/store"
+	"log"
 	"math/big"
+	"strconv"
+	"sync"
 )
 
 // Provider describes a block provider.
@@ -39,4 +44,82 @@ func (e *Event) WitnessTx() *types.TransactionWitness {
 		Address: e.Address,
 	}
 	return tx
+}
+
+// Witness implements a one-way (read only) peg to Ethereum,
+// and adds a "finality gadget" via a block maturity requirement for events
+type Witness struct {
+	client   *abci.Client
+	provider Provider
+
+	roundMutex sync.RWMutex
+	roundInfo  store.RoundInfo
+}
+
+// New returns a new instance of the witness process
+func New(client *abci.Client, p Provider) *Witness {
+	return &Witness{client: client, provider: p}
+}
+
+// Start starts the rebalancer and the event forwarder
+func (w *Witness) Start(ctx context.Context) error {
+	// Load the current RoundInfo and keep it local
+	info, err := w.client.QueryRoundInfo()
+	if err != nil {
+		return err
+	}
+	w.roundMutex.Lock()
+	w.roundInfo.FromProto(info)
+	w.roundMutex.Unlock()
+
+	if err := w.subscribe(ctx); err != nil {
+		return err
+	}
+
+	// nolint
+	go w.forward(ctx)
+
+	return nil
+}
+
+func (w *Witness) subscribe(ctx context.Context) error {
+	// Subscribe to rebalance events and synchronize
+	sub, err := w.client.Subscribe(ctx, "tm.event = 'Tx' AND tx.type = 'rebalance'")
+	if err != nil {
+		return err
+	}
+
+	go func() {
+		for e := range sub {
+			n, _ := strconv.ParseUint(e.Tags["round.number"], 10, 64)
+			w.roundMutex.Lock()
+			w.roundInfo.Number = n
+			w.roundMutex.Unlock()
+
+			log.Printf("detected rebalance tx in block, now on round %d", n)
+			// TODO(gus): do synchronize
+		}
+	}()
+
+	return nil
+}
+
+func (w *Witness) forward(ctx context.Context) error {
+	// Forward events from the provider (probably Ethereum) to the local node as TXs
+	return ForwardEvents(ctx, w.provider, 10, func(e *Event) {
+		res, err := w.client.BroadcastTxSync(e.WitnessTx())
+		if err != nil {
+			log.Printf("BroadcastTxSync: %+v", err)
+			return
+		}
+		log.Printf("witness event: %+v (%s)", e, res.Log)
+	})
+}
+
+// RoundInfo returns the current in-memory RoundInfo
+func (w *Witness) RoundInfo() store.RoundInfo {
+	w.roundMutex.RLock()
+	defer w.roundMutex.RUnlock()
+
+	return w.roundInfo
 }

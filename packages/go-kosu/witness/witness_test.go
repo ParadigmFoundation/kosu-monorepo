@@ -67,5 +67,4 @@ func TestEventForwarding(t *testing.T) {
 	cancel()
 	err := <-done
 	require.Equal(t, context.Canceled, err)
-
 }

@@ -48,7 +48,7 @@ func TestDeliverRebalanceTx(t *testing.T) {
 	t.Run("Assert Tags", func(t *testing.T) {
 		expectedTags := []common.KVPair{
 			{Key: []byte("tx.type"), Value: []byte("rebalance")},
-			{Key: []byte("round.number"), Value: []byte("2")},
+			{Key: []byte("round.number"), Value: []byte("1")},
 			{Key: []byte("round.start"), Value: []byte("2")},
 			{Key: []byte("round.end"), Value: []byte("3")},
 		}
