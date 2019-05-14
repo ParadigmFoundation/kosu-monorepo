@@ -1,22 +1,22 @@
 {
-  "name": "kosu-geth",
-  "version": "0.1.0",
-  "description": "Kosu geth docker image",
-  "scripts": {
-    "geth:clean": "geth removedb --datadir .",
-    "geth:init": "yarn geth:clean && geth init genesis.json --datadir .",
-    "geth:start": "geth --datadir . --networkid 6174 --rpc  --rpcaddr '0.0.0.0' --unlock=\"`cat accounts`\" --password=./passwords --etherbase \"0x54E60Bccc86A7Bad4BC68E36a8fde0F369aE849E\" --mine --rpccorsdomain '*' --rpcapi 'personal,db,eth,net,web3,txpool,miner,debug' console",
-    "build:geth": "scripts/build-and-push-geth-image.sh ${npm_package_config_image_host} kosu-geth ${npm_package_version}"
-  },
-  "config": {
-    "image_host": "gcr.io/kosu-io"
-  },
-  "license": "CC0-1.0",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/ParadigmFoundation/kosu-monorepo.git"
-  },
-  "bugs": {
-    "url": "https://github.com/ParadigmFoundation/kosu-monorepo/issues"
-  }
+    "name": "kosu-geth",
+    "version": "0.1.0",
+    "description": "Kosu geth docker image",
+    "scripts": {
+        "geth:clean": "geth removedb --datadir .",
+        "geth:init": "yarn geth:clean && geth init genesis.json --datadir .",
+        "geth:start": "geth --datadir . --networkid 6174 --rpc  --rpcaddr '0.0.0.0' --unlock=\"`cat accounts`\" --password=./passwords --etherbase \"0x54E60Bccc86A7Bad4BC68E36a8fde0F369aE849E\" --mine --rpccorsdomain '*' --rpcapi 'personal,db,eth,net,web3,txpool,miner,debug' console",
+        "build:geth": "scripts/build-and-push-geth-image.sh ${npm_package_config_image_host} kosu-geth ${npm_package_version}"
+    },
+    "config": {
+        "image_host": "gcr.io/kosu-io"
+    },
+    "license": "CC0-1.0",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/ParadigmFoundation/kosu-monorepo.git"
+    },
+    "bugs": {
+        "url": "https://github.com/ParadigmFoundation/kosu-monorepo/issues"
+    }
 }
