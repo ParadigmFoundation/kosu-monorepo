@@ -1,0 +1,29 @@
+{
+    "name": "@kosu/web-helpers",
+    "version": "0.1.0",
+    "private": true,
+    "description": "Simple web interfaces for interacting with the Kosu contract system and network.",
+    "dependencies": {
+        "@kosu/kosu.js": "0.1.0",
+        "uuid": "^3.3.2"
+    },
+    "devDependencies": {
+        "webpack": "^4.29.5",
+        "webpack-cli": "^3.2.3",
+        "webpack-dev-server": "^3.3.1"
+    },
+    "scripts": {
+        "build": "./scripts/build.sh",
+        "develop": "./scripts/dev.sh",
+        "deploy": "./scripts/deploy.sh"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/ParadigmFoundation/kosu-monorepo.git"
+    },
+    "bugs": {
+        "url": "https://github.com/ParadigmFoundation/kosu-monorepo/issues"
+    },
+    "license": "MIT",
+    "homepage": "https://github.com/ParadigmFoundation/kosu-monorepo"
+}

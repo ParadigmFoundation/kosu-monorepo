@@ -10,8 +10,8 @@ const migrations = require('@kosu/system-contracts/dist/src/migrations').migrati
 const Lifecycle = require('@0x/dev-utils').BlockchainLifecycle;
 const { Kosu } = require('../src');
 
-const tokenHelper = require('./helpers/tokenHelper.js');
-const kosuContractHelper = require('./helpers/kosuContractHelper');
+const tokenHelper = require("./helpers/tokenHelper.js");
+const kosuContractHelper = require("./helpers/kosuContractHelper");
 
 chai.use(CAP);
 
@@ -58,10 +58,10 @@ before(async () => {
   await tokenHelper();
 });
 
-it('should connect to web3', () => {
-  assert.equal(accounts.length, 10, "There should be 10 ETH accounts.")
+it("should connect to web3", () => {
+    assert.equal(accounts.length, 10, "There should be 10 ETH accounts.");
 });
 
-it('should have the version set', () => {
-  assert.equal(require('../package').version, kosu.version);
+it("should have the version set", () => {
+    assert.equal(require("../package").version, kosu.version);
 });
