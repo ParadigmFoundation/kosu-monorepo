@@ -4,13 +4,14 @@ import (
 	"encoding/hex"
 	"errors"
 	"fmt"
-	"go-kosu/abci/types"
-	"go-kosu/store"
 	"log"
 
 	abci "github.com/tendermint/tendermint/abci/types"
 	cfg "github.com/tendermint/tendermint/config"
 	"github.com/tendermint/tendermint/libs/db"
+
+	"go-kosu/abci/types"
+	"go-kosu/store"
 )
 
 var (

@@ -1,12 +1,18 @@
 package tests
 
 import (
-	"go-kosu/abci/types"
-	"go-kosu/store"
+	"context"
+	"encoding/hex"
 	"testing"
+	"time"
 
 	. "github.com/smartystreets/goconvey/convey"
 	"github.com/stretchr/testify/require"
+
+	"go-kosu/abci"
+	"go-kosu/abci/types"
+	"go-kosu/store"
+	"go-kosu/witness"
 )
 
 func (s *Suite) TestWitnessTx() {
@@ -62,4 +68,45 @@ func (s *Suite) TestWitnessTx() {
 			})
 		})
 	})
+}
+
+func (s *Suite) TestWitnessRebalance() {
+	GivenABCIServer(s.T(), s.state, func(t *testing.T) {
+		tx := &types.TransactionRebalance{
+			RoundInfo: &types.RoundInfo{},
+		}
+
+		ctx, cancel := context.WithCancel(context.Background())
+		defer cancel()
+
+		w := startWitness(t)
+		err := w.Start(ctx)
+		require.NoError(t, err)
+
+		Convey("When a set of Rebalance Tx are commited", func() {
+			roundNumber := []uint64{1, 2, 3}
+			for _, n := range roundNumber {
+				tx.RoundInfo.Number = n
+				res, err := s.client.BroadcastTxCommit(tx)
+				require.NoError(t, err)
+				require.Zero(t, res.DeliverTx.Code, res.DeliverTx.Log)
+			}
+			// give TM some time to pass the tx to the witness's subscriber
+			time.Sleep(100 * time.Millisecond)
+
+			Convey("It should update the local witness state", func() {
+				So(w.RoundInfo().Number, ShouldEqual, 3)
+			})
+		})
+	})
+}
+
+func startWitness(t *testing.T) *witness.Witness {
+	strKey := "0F8C50DC955DA31B617D5F0702511528F824027A30ED1CF33496D455D840EF1C9D3E50B8B5B1745747FEAFE6C43A11703FEE3F2B9D14E6234F03B60A6BB6ACD9" //nolint
+	key, _ := hex.DecodeString(strKey)
+	client := abci.NewHTTPClient("tcp://0.0.0.0:26657", key)
+	p, err := witness.NewEthereumProvider("wss://ropsten.infura.io/ws")
+	require.NoError(t, err)
+
+	return witness.New(client, p)
 }

@@ -4,10 +4,18 @@ import (
 	"encoding/hex"
 	"errors"
 	"fmt"
-	"go-kosu/abci/types"
 	"math/big"
 	"sync"
 	"sync/atomic"
+
+	"github.com/gogo/protobuf/proto"
+
+	"go-kosu/abci/types"
+)
+
+var (
+	// ErrQueryPathNotFound is returned by Query when a path is not found
+	ErrQueryPathNotFound = errors.New("Query: Path not found")
 )
 
 // RoundInfo is the persisted state of the RoundInfo
@@ -299,4 +307,46 @@ func (s *State) UpdateConfirmationThreshold(n uint32) {
 		n = 2 * (n / 3)
 	}
 	atomic.StoreUint32(&s.ConsensusParams.ConfirmationThreshold, n)
+}
+
+// Posters returns the current posters
+func (s *State) Posters() map[string]*Poster {
+	return s.posters
+}
+
+// GenLimits generate a rate-limit mapping based on staked balances
+// and the total order limit per staking period, from in-state 'posters' object.
+func (s *State) GenLimits() RateLimits {
+	total := big.NewInt(0)
+	for _, p := range s.posters {
+		total.Add(total, p.Balance)
+	}
+
+	rl := make(RateLimits)
+	for addr, p := range s.posters {
+		// TODO(hharder) Make sure the maths are right as we're not doing bitnum operations
+		lim := float64(p.Balance.Uint64()) / float64(total.Uint64())
+		rl[addr] = uint64(lim * float64(s.RoundInfo.Limit))
+	}
+
+	return rl
+}
+
+// Query queries for the tree state and transform the output into a proto.Message to be delivered to the client.
+// Query also returns the key of the state.
+func (s *State) Query(tree *StateTree, path string) (proto.Message, []byte, error) {
+	switch path {
+	case "/roundinfo":
+		var info RoundInfo
+		if err := tree.Get(roundInfoKey, &info); err != nil {
+			return nil, nil, err
+		}
+
+		p := new(types.RoundInfo)
+		info.ToProto(p)
+		return p, []byte(roundInfoKey), nil
+
+	}
+
+	return nil, nil, ErrQueryPathNotFound
 }
