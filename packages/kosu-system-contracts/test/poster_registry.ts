@@ -35,7 +35,7 @@ describe("PosterRegistry", async () => {
       const from = accounts[1];
 
       await token.balanceOf.callAsync(from).then(x => x.toString()).should.eventually.eq("0");
-      await posterRegistryProxy.registerTokens.sendTransactionAsync(value, { from }).should.eventually.be.rejected;
+      await posterRegistryProxy.registerTokens.sendTransactionAsync(value, { from }).then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash)).should.eventually.be.rejected;
     });
 
     it("should require an approval greater or equal to the amount registered", async () => {
@@ -44,10 +44,10 @@ describe("PosterRegistry", async () => {
 
       await token.balanceOf.callAsync(from).then(x => x.toString()).then(parseInt)
         .should.eventually.gt(parseInt(value));
-      await token.approve.sendTransactionAsync(treasury.address, toBN("0")).should.eventually.be.fulfilled;
+      await token.approve.sendTransactionAsync(treasury.address, toBN("0")).then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash)).should.eventually.be.fulfilled;
       await token.allowance.callAsync(from, treasury.address).then(x => x.toString())
           .should.eventually.eq("0");
-      await posterRegistryProxy.registerTokens.sendTransactionAsync(value).should.eventually.be.rejected;
+      await posterRegistryProxy.registerTokens.sendTransactionAsync(value).then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash)).should.eventually.be.rejected;
     });
 
     it("should increase tokensContributed and tokensRegisteredFor by the amount", async () => {
@@ -78,7 +78,7 @@ describe("PosterRegistry", async () => {
 
       await posterRegistryProxy.tokensRegisteredFor.callAsync(from).then(x => x.toString()).should.eventually.eq("0");
 
-      await posterRegistryProxy.releaseTokens.sendTransactionAsync(amount).should.eventually.be.rejected;
+      await posterRegistryProxy.releaseTokens.sendTransactionAsync(amount).then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash)).should.eventually.be.rejected;
     });
 
     it("should reduce balance and total by the amount", async () => {

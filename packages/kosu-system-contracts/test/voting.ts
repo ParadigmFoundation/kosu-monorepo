@@ -63,11 +63,11 @@ describe("Voting", () => {
         });
 
         it("should not allow the commit end to be before reveal end", async () => {
-            await voting.createPoll.sendTransactionAsync(new BigNumber("2"), new BigNumber("1")).should.eventually.be.rejected;
+            await voting.createPoll.sendTransactionAsync(new BigNumber("2"), new BigNumber("1")).then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash)).should.eventually.be.rejected;
         });
 
         it("should not allow the commit end to be equal to reveal end", async () => {
-            await voting.createPoll.sendTransactionAsync(new BigNumber("1"), new BigNumber("1")).should.eventually.be.rejected;
+            await voting.createPoll.sendTransactionAsync(new BigNumber("1"), new BigNumber("1")).then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash)).should.eventually.be.rejected;
         });
     });
 
@@ -75,22 +75,22 @@ describe("Voting", () => {
         beforeEach(shortPoll);
 
         it("should allow a user to commit a vote", async () => {
-            await voting.commitVote.sendTransactionAsync(new BigNumber("1"), secret1, testValues.fiveEther).should.eventually.be.fulfilled;
+            await voting.commitVote.sendTransactionAsync(new BigNumber("1"), secret1, testValues.fiveEther).then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash)).should.eventually.be.fulfilled;
         });
 
         it("should not let a vote to be commited after the commit phase", async () => {
             await kosuToken.approve.sendTransactionAsync(accounts[1], new BigNumber("4")); // Skip a block
-            await voting.commitVote.sendTransactionAsync(new BigNumber("1"), secret1, testValues.fiveEther).should.eventually.be.rejected;
+            await voting.commitVote.sendTransactionAsync(new BigNumber("1"), secret1, testValues.fiveEther).then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash)).should.eventually.be.rejected;
         });
 
         it("should require tokens to vote", async () => {
-            await voting.commitVote.sendTransactionAsync(new BigNumber("1"), secret1, testValues.fiveEther, { from: accounts[2] }).should.eventually.be.rejected;
+            await voting.commitVote.sendTransactionAsync(new BigNumber("1"), secret1, testValues.fiveEther, { from: accounts[2] }).then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash)).should.eventually.be.rejected;
         });
 
         it("should not let a voter commit twice", async () => {
             await twoOnePoll();
-            await voting.commitVote.sendTransactionAsync(new BigNumber("2"), secret1, testValues.fiveEther).should.eventually.be.fulfilled;
-            await voting.commitVote.sendTransactionAsync(new BigNumber("2"), secret1, testValues.fiveEther).should.eventually.be.rejected;
+            await voting.commitVote.sendTransactionAsync(new BigNumber("2"), secret1, testValues.fiveEther).then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash)).should.eventually.be.fulfilled;
+            await voting.commitVote.sendTransactionAsync(new BigNumber("2"), secret1, testValues.fiveEther).then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash)).should.eventually.be.rejected;
         });
     });
 
@@ -98,38 +98,38 @@ describe("Voting", () => {
         beforeEach(shortPoll);
 
         it("should allow a user to reveal a vote", async () => {
-            await voting.commitVote.sendTransactionAsync(new BigNumber("1"), secret1, testValues.fiveEther).should.eventually.be.fulfilled;
-            await voting.revealVote.sendTransactionAsync(new BigNumber("1"), new BigNumber("1"), salt).should.eventually.be.fulfilled;
+            await voting.commitVote.sendTransactionAsync(new BigNumber("1"), secret1, testValues.fiveEther).then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash)).should.eventually.be.fulfilled;
+            await voting.revealVote.sendTransactionAsync(new BigNumber("1"), new BigNumber("1"), salt).then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash)).should.eventually.be.fulfilled;
         });
 
         it("should not allow a user to reveal without commiting", async () => {
             await kosuToken.approve.sendTransactionAsync(accounts[1], new BigNumber("4"));
-            await voting.revealVote.sendTransactionAsync(new BigNumber("1"), new BigNumber("1"), salt).should.eventually.be.rejected;
+            await voting.revealVote.sendTransactionAsync(new BigNumber("1"), new BigNumber("1"), salt).then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash)).should.eventually.be.rejected;
         });
 
         it("should not allow a change in salt", async () => {
-            await voting.commitVote.sendTransactionAsync(new BigNumber("1"), secret1, testValues.fiveEther).should.eventually.be.fulfilled;
-            await voting.revealVote.sendTransactionAsync(new BigNumber("1"), new BigNumber("1"), new BigNumber("24")).should.eventually.be.rejected;
+            await voting.commitVote.sendTransactionAsync(new BigNumber("1"), secret1, testValues.fiveEther).then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash)).should.eventually.be.fulfilled;
+            await voting.revealVote.sendTransactionAsync(new BigNumber("1"), new BigNumber("1"), new BigNumber("24")).then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash)).should.eventually.be.rejected;
         });
 
         it("should not allow a change in vote", async () => {
-            await voting.commitVote.sendTransactionAsync(new BigNumber("1"), secret1, testValues.fiveEther).should.eventually.be.fulfilled;
-            await voting.revealVote.sendTransactionAsync(new BigNumber("1"), new BigNumber("2"), salt).should.eventually.be.rejected;
+            await voting.commitVote.sendTransactionAsync(new BigNumber("1"), secret1, testValues.fiveEther).then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash)).should.eventually.be.fulfilled;
+            await voting.revealVote.sendTransactionAsync(new BigNumber("1"), new BigNumber("2"), salt).then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash)).should.eventually.be.rejected;
         });
 
         it("should not allow a voter to reveal twice", async () => {
            await oneTwoPoll();
-           await voting.commitVote.sendTransactionAsync(new BigNumber("2"), secret1, testValues.fiveEther).should.eventually.be.fulfilled;
-           await voting.revealVote.sendTransactionAsync(new BigNumber("2"), new BigNumber("1"), salt).should.eventually.be.fulfilled;
-           await voting.revealVote.sendTransactionAsync(new BigNumber("2"), new BigNumber("1"), salt).should.eventually.be.rejected;
+           await voting.commitVote.sendTransactionAsync(new BigNumber("2"), secret1, testValues.fiveEther).then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash)).should.eventually.be.fulfilled;
+           await voting.revealVote.sendTransactionAsync(new BigNumber("2"), new BigNumber("1"), salt).then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash)).should.eventually.be.fulfilled;
+           await voting.revealVote.sendTransactionAsync(new BigNumber("2"), new BigNumber("1"), salt).then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash)).should.eventually.be.rejected;
         });
 
         it("should not allow a voter to reveal when the tokens are gone", async () => {
             await treasury.withdraw.sendTransactionAsync(testValues.fiveEther);
             await oneTwoPoll();
-            await voting.commitVote.sendTransactionAsync(new BigNumber("2"), secret1, testValues.fiveEther).should.eventually.be.fulfilled;
+            await voting.commitVote.sendTransactionAsync(new BigNumber("2"), secret1, testValues.fiveEther).then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash)).should.eventually.be.fulfilled;
             await treasury.withdraw.sendTransactionAsync(new BigNumber("1"));
-            await voting.revealVote.sendTransactionAsync(new BigNumber("2"), new BigNumber("1"), salt).should.eventually.be.rejected;
+            await voting.revealVote.sendTransactionAsync(new BigNumber("2"), new BigNumber("1"), salt).then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash)).should.eventually.be.rejected;
         });
 
         it("should make the correct changes to the results when revealed"); // TODO waiting on the data to be exposed
@@ -141,10 +141,10 @@ describe("Voting", () => {
             await prepareTokens(accounts[0], testValues.fiveEther);
             await prepareTokens(accounts[1], testValues.fiveEther);
             await variablePoll(2, 2);
-            await voting.commitVote.sendTransactionAsync(new BigNumber("1"), secret1, testValues.oneEther).should.eventually.be.fulfilled;
-            await voting.commitVote.sendTransactionAsync(new BigNumber("1"), secret2, testValues.fiveEther, { from: accounts[1] }).should.eventually.be.fulfilled;
-            await voting.revealVote.sendTransactionAsync(new BigNumber("1"), new BigNumber("1"), salt).should.eventually.be.fulfilled;
-            await voting.revealVote.sendTransactionAsync(new BigNumber("1"), new BigNumber("2"), salt, { from: accounts[1] }).should.eventually.be.fulfilled;
+            await voting.commitVote.sendTransactionAsync(new BigNumber("1"), secret1, testValues.oneEther).then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash)).should.eventually.be.fulfilled;
+            await voting.commitVote.sendTransactionAsync(new BigNumber("1"), secret2, testValues.fiveEther, { from: accounts[1] }).then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash)).should.eventually.be.fulfilled;
+            await voting.revealVote.sendTransactionAsync(new BigNumber("1"), new BigNumber("1"), salt).then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash)).should.eventually.be.fulfilled;
+            await voting.revealVote.sendTransactionAsync(new BigNumber("1"), new BigNumber("2"), salt, { from: accounts[1] }).then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash)).should.eventually.be.fulfilled;
 
             await voting.winningOption.callAsync(new BigNumber("1")).then(x => x.toString()).should.eventually.eq("2");
         });
@@ -154,10 +154,10 @@ describe("Voting", () => {
             await prepareTokens(accounts[0], testValues.fiveEther);
             await prepareTokens(accounts[1], testValues.fiveEther);
             await variablePoll(2, 2);
-            await voting.commitVote.sendTransactionAsync(new BigNumber("1"), secret1, testValues.fiveEther).should.eventually.be.fulfilled;
-            await voting.commitVote.sendTransactionAsync(new BigNumber("1"), secret2, testValues.fiveEther, { from: accounts[1] }).should.eventually.be.fulfilled;
-            await voting.revealVote.sendTransactionAsync(new BigNumber("1"), new BigNumber("2"), salt, { from: accounts[1] }).should.eventually.be.fulfilled;
-            await voting.revealVote.sendTransactionAsync(new BigNumber("1"), new BigNumber("1"), salt).should.eventually.be.fulfilled;
+            await voting.commitVote.sendTransactionAsync(new BigNumber("1"), secret1, testValues.fiveEther).then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash)).should.eventually.be.fulfilled;
+            await voting.commitVote.sendTransactionAsync(new BigNumber("1"), secret2, testValues.fiveEther, { from: accounts[1] }).then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash)).should.eventually.be.fulfilled;
+            await voting.revealVote.sendTransactionAsync(new BigNumber("1"), new BigNumber("2"), salt, { from: accounts[1] }).then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash)).should.eventually.be.fulfilled;
+            await voting.revealVote.sendTransactionAsync(new BigNumber("1"), new BigNumber("1"), salt).then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash)).should.eventually.be.fulfilled;
 
             await voting.winningOption.callAsync(new BigNumber("1")).then(x => x.toString()).should.eventually.eq("2");
         });
@@ -169,10 +169,10 @@ describe("Voting", () => {
             await prepareTokens(accounts[0], testValues.fiveEther);
             await prepareTokens(accounts[1], testValues.fiveEther);
             await variablePoll(2, 2);
-            await voting.commitVote.sendTransactionAsync(new BigNumber("1"), secret1, testValues.oneEther).should.eventually.be.fulfilled;
-            await voting.commitVote.sendTransactionAsync(new BigNumber("1"), secret1, testValues.fiveEther, { from: accounts[1] }).should.eventually.be.fulfilled;
-            await voting.revealVote.sendTransactionAsync(new BigNumber("1"), new BigNumber("1"), salt).should.eventually.be.fulfilled;
-            await voting.revealVote.sendTransactionAsync(new BigNumber("1"), new BigNumber("1"), salt, { from: accounts[1] }).should.eventually.be.fulfilled;
+            await voting.commitVote.sendTransactionAsync(new BigNumber("1"), secret1, testValues.oneEther).then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash)).should.eventually.be.fulfilled;
+            await voting.commitVote.sendTransactionAsync(new BigNumber("1"), secret1, testValues.fiveEther, { from: accounts[1] }).then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash)).should.eventually.be.fulfilled;
+            await voting.revealVote.sendTransactionAsync(new BigNumber("1"), new BigNumber("1"), salt).then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash)).should.eventually.be.fulfilled;
+            await voting.revealVote.sendTransactionAsync(new BigNumber("1"), new BigNumber("1"), salt, { from: accounts[1] }).then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash)).should.eventually.be.fulfilled;
 
             await voting.totalWinningTokens.callAsync(new BigNumber("1")).then(x => x.toString()).should.eventually.eq(testValues.sixEther.toString());
         });
@@ -184,23 +184,23 @@ describe("Voting", () => {
             await prepareTokens(accounts[0], testValues.fiveEther);
             await prepareTokens(accounts[1], testValues.fiveEther);
             await variablePoll(2, 2);
-            await voting.commitVote.sendTransactionAsync(new BigNumber("1"), secret1, testValues.oneEther).should.eventually.be.fulfilled;
-            await voting.commitVote.sendTransactionAsync(new BigNumber("1"), secret2, testValues.fiveEther, { from: accounts[1] }).should.eventually.be.fulfilled;
-            await voting.revealVote.sendTransactionAsync(new BigNumber("1"), new BigNumber("1"), salt).should.eventually.be.fulfilled;
-            await voting.revealVote.sendTransactionAsync(new BigNumber("1"), new BigNumber("2"), salt, { from: accounts[1] }).should.eventually.be.fulfilled;
+            await voting.commitVote.sendTransactionAsync(new BigNumber("1"), secret1, testValues.oneEther).then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash)).should.eventually.be.fulfilled;
+            await voting.commitVote.sendTransactionAsync(new BigNumber("1"), secret2, testValues.fiveEther, { from: accounts[1] }).then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash)).should.eventually.be.fulfilled;
+            await voting.revealVote.sendTransactionAsync(new BigNumber("1"), new BigNumber("1"), salt).then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash)).should.eventually.be.fulfilled;
+            await voting.revealVote.sendTransactionAsync(new BigNumber("1"), new BigNumber("2"), salt, { from: accounts[1] }).then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash)).should.eventually.be.fulfilled;
 
             await voting.userWinningTokens.callAsync(new BigNumber("1"), accounts[0]).then(x => x.toString()).should.eventually.eq("0");
         });
 
-        it("should report the correct number of tokens w", async () => {
+        it("should report the correct number of tokens", async () => {
             await kosuToken.transfer.sendTransactionAsync(accounts[1], testValues.fiveEther);
             await prepareTokens(accounts[0], testValues.fiveEther);
             await prepareTokens(accounts[1], testValues.fiveEther);
             await variablePoll(2, 2);
-            await voting.commitVote.sendTransactionAsync(new BigNumber("1"), secret1, testValues.oneEther).should.eventually.be.fulfilled;
-            await voting.commitVote.sendTransactionAsync(new BigNumber("1"), secret2, testValues.fiveEther, { from: accounts[1] }).should.eventually.be.fulfilled;
-            await voting.revealVote.sendTransactionAsync(new BigNumber("1"), new BigNumber("1"), salt).should.eventually.be.fulfilled;
-            await voting.revealVote.sendTransactionAsync(new BigNumber("1"), new BigNumber("2"), salt, { from: accounts[1] }).should.eventually.be.fulfilled;
+            await voting.commitVote.sendTransactionAsync(new BigNumber("1"), secret1, testValues.oneEther).then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash)).should.eventually.be.fulfilled;
+            await voting.commitVote.sendTransactionAsync(new BigNumber("1"), secret2, testValues.fiveEther, { from: accounts[1] }).then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash)).should.eventually.be.fulfilled;
+            await voting.revealVote.sendTransactionAsync(new BigNumber("1"), new BigNumber("1"), salt).then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash)).should.eventually.be.fulfilled;
+            await voting.revealVote.sendTransactionAsync(new BigNumber("1"), new BigNumber("2"), salt, { from: accounts[1] }).then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash)).should.eventually.be.fulfilled;
 
             await voting.userWinningTokens.callAsync(new BigNumber("1"), accounts[1]).then(x => x.toString()).should.eventually.eq(testValues.fiveEther.toString());
         });
