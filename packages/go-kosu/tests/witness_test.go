@@ -2,7 +2,6 @@ package tests
 
 import (
 	"context"
-	"encoding/hex"
 	"testing"
 	"time"
 
@@ -16,7 +15,7 @@ import (
 )
 
 func (s *Suite) TestWitnessTx() {
-	GivenABCIServer(s.T(), s.state, func(t *testing.T) {
+	GivenABCIServer(s.T(), s, func(t *testing.T) {
 		s.state.LastEvent = 10
 
 		tx := &types.TransactionWitness{
@@ -71,7 +70,7 @@ func (s *Suite) TestWitnessTx() {
 }
 
 func (s *Suite) TestWitnessRebalance() {
-	GivenABCIServer(s.T(), s.state, func(t *testing.T) {
+	GivenABCIServer(s.T(), s, func(t *testing.T) {
 		tx := &types.TransactionRebalance{
 			RoundInfo: &types.RoundInfo{},
 		}
@@ -79,7 +78,7 @@ func (s *Suite) TestWitnessRebalance() {
 		ctx, cancel := context.WithCancel(context.Background())
 		defer cancel()
 
-		w := startWitness(t)
+		w := startWitness(t, s.client)
 		err := w.Start(ctx)
 		require.NoError(t, err)
 
@@ -101,12 +100,9 @@ func (s *Suite) TestWitnessRebalance() {
 	})
 }
 
-func startWitness(t *testing.T) *witness.Witness {
-	strKey := "0F8C50DC955DA31B617D5F0702511528F824027A30ED1CF33496D455D840EF1C9D3E50B8B5B1745747FEAFE6C43A11703FEE3F2B9D14E6234F03B60A6BB6ACD9" //nolint
-	key, _ := hex.DecodeString(strKey)
-	client := abci.NewHTTPClient("tcp://0.0.0.0:26657", key)
+func startWitness(t *testing.T, c *abci.Client) *witness.Witness {
 	p, err := witness.NewEthereumProvider("wss://ropsten.infura.io/ws")
 	require.NoError(t, err)
 
-	return witness.New(client, p)
+	return witness.New(c, p)
 }

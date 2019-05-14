@@ -38,7 +38,8 @@ func (cli *CLI) RebalanceTx() *cobra.Command {
 
 			res, err := cli.client.BroadcastTxCommit(tx)
 			if err != nil {
-				return err
+				fmt.Printf("%v\n", err)
+				os.Exit(1)
 			}
 
 			if res.CheckTx.IsErr() {

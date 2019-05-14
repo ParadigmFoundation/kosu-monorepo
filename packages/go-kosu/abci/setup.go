@@ -14,14 +14,12 @@ import (
 var chainIDPrefix = "kosu-chain-%v"
 
 // InitTendermint creates an initial tendermint file structure
-func InitTendermint(homedir string) {
+func InitTendermint(homedir string) error {
 	if homedir == "" {
 		homedir = DefaultHomeDir
 	}
 
-	if err := createConfig(homedir); err != nil {
-		panic(err)
-	}
+	return createConfig(homedir)
 }
 
 // Code from tendermint init...

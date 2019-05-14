@@ -11,7 +11,7 @@ import (
 )
 
 func (s *Suite) TestRebalance() {
-	GivenABCIServer(s.T(), s.state, func(t *testing.T) {
+	GivenABCIServer(s.T(), s, func(t *testing.T) {
 		Convey("And an 'Initial rebalance period = 0' state", func() {
 			s.state.RoundInfo = store.RoundInfo{}
 

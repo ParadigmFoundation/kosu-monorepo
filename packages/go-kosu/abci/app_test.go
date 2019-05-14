@@ -17,7 +17,8 @@ func newTestApp(t *testing.T, db db.DB) (func(), *App) {
 	dir, err := ioutil.TempDir("", ".kosu_tests_")
 	require.NoError(t, err)
 
-	InitTendermint(dir)
+	err = InitTendermint(dir)
+	require.NoError(t, err)
 
 	fn := func() { _ = os.RemoveAll(dir) }
 	return fn, NewApp(store.NewState(), db, dir)
