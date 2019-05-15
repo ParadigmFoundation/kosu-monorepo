@@ -37,7 +37,7 @@ export const eventDecoder = (eventReturnValues: any): any => {
         case "ValidatorRegistered":
             Object.assign(decoded, {
                 tendermintPublicKey: bytes32ToBase64(data[0]),
-                applicationBlockNumber: hexToNumberString(data[1]), // TODO: better name
+                applicationBlockNumber: hexToNumberString(data[1]),
                 owner: bytes32ToAddressString(data[2]),
                 rewardRate: Decoder.decodeParameter("int", data[3]).toString(),
             });
