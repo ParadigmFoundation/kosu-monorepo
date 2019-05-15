@@ -16,6 +16,6 @@
 
 ## Action items
 
-- [ ] Tag issue (bug, enhancement, feature, etc.)
-- [ ] Initial discussion/assign team member
-- [ ] Move discussion to PR if necessary and when ready
+-   [ ] Tag issue (bug, enhancement, feature, etc.)
+-   [ ] Initial discussion/assign team member
+-   [ ] Move discussion to PR if necessary and when ready
