@@ -110,7 +110,7 @@ func NewState() *State {
 
 		posters:        make(map[string]*Poster),
 		deletedPosters: []string{},
-		events:		make(map[uint64]WitnessEvents),
+		events:         make(map[uint64]WitnessEvents),
 	}
 }
 
