@@ -107,11 +107,11 @@ contract ValidatorRegistry is IValidatorRegistry, Authorizable {
         return address(_voting);
     }
 
-    /** @dev Expose the list of active validators
-        @notice Expose the list of active validators
+    /** @dev Expose the list of active listing keys
+        @notice Expose the list of active listing keys
         @return An array of hex encoded tendermint keys
     */
-    function validators() public view returns (bytes32[] memory) {
+    function listingKeys() public view returns (bytes32[] memory) {
         return _listingKeys;
     }
 

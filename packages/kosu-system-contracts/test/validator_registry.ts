@@ -76,7 +76,7 @@ describe("ValidatorRegistry", async () => {
     });
   });
 
-  describe("validators", () => {
+  describe("listingKeys", () => {
     let publicKeys;
 
     before(() => {
@@ -92,8 +92,8 @@ describe("ValidatorRegistry", async () => {
       }
     });
 
-    it("should return a list of validator listing keys", async () => {
-      const validators = await validatorRegistryProxy.validators.callAsync();
+    it("should return a list of listing keys", async () => {
+      const validators = await validatorRegistryProxy.listingKeys.callAsync();
       // Keys are hex bytes32 padding these addresses to match the bytes32 output
       validators.should.have.members(publicKeys);
     });
@@ -106,7 +106,7 @@ describe("ValidatorRegistry", async () => {
 
       await validatorRegistryProxy.initExit.sendTransactionAsync(removeKey, { from: accounts[5] });
 
-      const validators = await validatorRegistryProxy.validators.callAsync();
+      const validators = await validatorRegistryProxy.listingKeys.callAsync();
       // Keys are hex bytes32 padding these addresses to match the bytes32 output
       validators.length.should.eq(publicKeys.length - 1);
       validators.should.have.members(remainingKeys);
