@@ -29,8 +29,7 @@
 
 ## Status
 
-<!-- Use this section to keep reviewers and maintainers up-to-date with the status and progress of your PR. Check any boxes that are already complete upon creation of the PR, and update whenever necessary. Don't hesitate to ask for help. -->
-
+<!-- Check any boxes that are already complete upon creation of the PR, and update whenever necessary. -->
 <!-- Make sure to check the "Ready for review" box when you are signing off on your changes for merge! -->
 
 -   [ ] Prefix PR title with `[WIP]` if necessary (changes not yet made).
