@@ -19,6 +19,7 @@ chai.should();
 
 const testValues: TestValues = {
     zero: new BigNumber("0"),
+    oneWei: new BigNumber("1"),
     fiftyWei: new BigNumber("50"),
     oneHundredWei: new BigNumber("100"),
     halfEther: new BigNumber(toWei("0.5")),

@@ -8,6 +8,7 @@ interface TestValues {
     oneHundredWei: BigNumber;
     fiftyWei: BigNumber;
     zero: BigNumber;
+    oneWei: BigNumber;
 }
 
 declare const testValues: TestValues;
