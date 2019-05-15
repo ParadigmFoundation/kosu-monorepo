@@ -6,8 +6,9 @@ import (
 
 // MockProvider mocks a Provider, it's useful for testing
 type MockProvider struct {
-	blocks chan *Block
-	events chan *Event
+	lastBlockNumber uint64
+	blocks          chan *Block
+	events          chan *Event
 }
 
 // NewMockProvider returns a new MockProvider, it receives events sent to channel ch
@@ -30,6 +31,10 @@ func (m *MockProvider) loop(ch <-chan interface{}) {
 
 		switch t := msg.(type) {
 		case Block:
+			n := t.Number.Uint64()
+			if n > m.lastBlockNumber {
+				m.lastBlockNumber = n
+			}
 			m.blocks <- &t
 		case Event:
 			m.events <- &t
@@ -40,6 +45,11 @@ func (m *MockProvider) loop(ch <-chan interface{}) {
 func (m *MockProvider) close() {
 	close(m.blocks)
 	close(m.events)
+}
+
+// nolint
+func (m *MockProvider) GetLastBlockNumber(_ context.Context) (uint64, error) {
+	return m.lastBlockNumber, nil
 }
 
 // nolint

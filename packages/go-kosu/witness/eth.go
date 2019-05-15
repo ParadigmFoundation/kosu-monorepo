@@ -140,6 +140,16 @@ func (w *EthereumProvider) handleBlocks(ctx context.Context, fn func(hdr *Block)
 	}
 }
 
+// GetLastBlockNumber returns the latest known block number from the chain
+func (w *EthereumProvider) GetLastBlockNumber(ctx context.Context) (uint64, error) {
+	block, err := w.client.BlockByNumber(ctx, nil)
+	if err != nil {
+		return 0, err
+	}
+
+	return block.NumberU64(), nil
+}
+
 // WatchEvents watches emitted events from the EventEmitter contract.
 // WatchEvents first Filters the existing events in the blockchain, then
 // subscribes to get the emitted events as they happen
