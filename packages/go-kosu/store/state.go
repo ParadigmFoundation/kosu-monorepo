@@ -88,8 +88,9 @@ type State struct {
 	eventsLock sync.RWMutex
 
 	// posters keep track for Account and balance for 'posters'.
-	posters     map[string]*Poster
-	postersLock sync.RWMutex
+	posters        map[string]*Poster
+	deletedPosters []string
+	postersLock    sync.RWMutex
 
 	// lastEvent stores the height of the Ethereum blockchain at which the last event was applied in-state.
 	LastEvent uint64
@@ -101,8 +102,10 @@ type State struct {
 // NewState returns a new empty State
 func NewState() *State {
 	return &State{
-		posters: make(map[string]*Poster),
-		events:  make(map[uint64]WitnessEvents),
+		posters:        make(map[string]*Poster),
+		deletedPosters: []string{},
+
+		events: make(map[uint64]WitnessEvents),
 	}
 }
 
@@ -156,7 +159,11 @@ func (s *State) PersistToTree(tree *StateTree) error {
 		}
 	}
 
-	// TODO: clear previous persisted events in the tree to avoid growing forever.
+	for _, addr := range s.deletedPosters {
+		tree.DeletePoster(addr)
+	}
+	s.deletedPosters = []string{}
+
 	s.eventsLock.RLock()
 	defer s.eventsLock.RUnlock()
 	for block, events := range s.events {
@@ -255,6 +262,7 @@ func (s *State) updatePosters(addr string, p *Poster) {
 
 	if p.Balance.Cmp(big.NewInt(0)) == 0 {
 		delete(s.posters, addr)
+		s.deletedPosters = append(s.deletedPosters, addr)
 	}
 }
 
