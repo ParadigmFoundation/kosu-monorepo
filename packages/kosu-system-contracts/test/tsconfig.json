@@ -1,19 +1,19 @@
 {
-  "extends": "../tsconfig.json",
-  "compilerOptions": {
-    "outDir": "dist",
-    "rootDir": ".",
-    "resolveJsonModule": true,
-    "moduleResolution": "node",
-    "typeRoots": ["node_modules/@types"],
-    "types": ["mocha"]
-  },
-  "files": [
-    "init_test.ts",
-    "poster_registry.ts",
-    "treasury.ts",
-    "validator_registry.ts",
-    "voting.ts",
-    "types/testTypes.d.ts"
-  ]
+    "extends": "../tsconfig.json",
+    "compilerOptions": {
+        "outDir": "dist",
+        "rootDir": ".",
+        "resolveJsonModule": true,
+        "moduleResolution": "node",
+        "typeRoots": ["node_modules/@types"],
+        "types": ["mocha"]
+    },
+    "files": [
+        "init_test.ts",
+        "poster_registry.ts",
+        "treasury.ts",
+        "validator_registry.ts",
+        "voting.ts",
+        "types/testTypes.d.ts"
+    ]
 }
