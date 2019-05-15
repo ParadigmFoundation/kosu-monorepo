@@ -28,6 +28,33 @@ export async function migrations(provider: Web3ProviderEngine, txDefaults: { }, 
         console = { log: () => null };
     }
 
+    const netId = await web3Wrapper.getNetworkIdAsync();
+    const validatorValues = {
+        3: {
+            _applicationPeriod: 84000,
+            _commitPeriod: 40000,
+            _challengePeriod: 60000,
+            _exitPeriod: 20000,
+            _rewardPeriod: 168000,
+        },
+        6174: {
+            _applicationPeriod: 20,
+            _commitPeriod: 20,
+            _challengePeriod: 40,
+            _exitPeriod: 20,
+            _rewardPeriod: 20,
+        },
+        default: {
+            _applicationPeriod: 20,
+            _commitPeriod: 20,
+            _challengePeriod: 40,
+            _exitPeriod: 20,
+            _rewardPeriod: 20,
+        },
+    };
+
+    const config = validatorValues[netId] || validatorValues.default;
+
     const orderGateway = await OrderGatewayContract.deployFrom0xArtifactAsync(artifacts.OrderGateway, provider, txDefaults);
     const authorizedAddresses = await AuthorizedAddressesContract.deployFrom0xArtifactAsync(artifacts.AuthorizedAddresses, provider, txDefaults);
     const eventEmitter = await EventEmitterContract.deployFrom0xArtifactAsync(artifacts.EventEmitter, provider, txDefaults, authorizedAddresses.address);
@@ -36,7 +63,7 @@ export async function migrations(provider: Web3ProviderEngine, txDefaults: { }, 
     const voting = await VotingContract.deployFrom0xArtifactAsync(artifacts.Voting, provider, txDefaults, treasury.address, eventEmitter.address);
     const posterRegistryImpl = await PosterRegistryContract.deployFrom0xArtifactAsync(artifacts.PosterRegistry, provider, txDefaults, treasury.address, eventEmitter.address, authorizedAddresses.address);
     const posterRegistryProxy = await PosterRegistryProxyContract.deployFrom0xArtifactAsync(artifacts.PosterRegistryProxy, provider, txDefaults, posterRegistryImpl.address, authorizedAddresses.address);
-    const validatorRegistryImpl = await ValidatorRegistryContract.deployFrom0xArtifactAsync(artifacts.ValidatorRegistry, provider, txDefaults, treasury.address, voting.address, authorizedAddresses.address, eventEmitter.address);
+    const validatorRegistryImpl = await ValidatorRegistryContract.deployFrom0xArtifactAsync(artifacts.ValidatorRegistry, provider, txDefaults, treasury.address, voting.address, authorizedAddresses.address, eventEmitter.address, config._applicationPeriod, config._commitPeriod, config._challengePeriod, config._exitPeriod, config._rewardPeriod);
     const validatorRegistryProxy = await ValidatorRegistryProxyContract.deployFrom0xArtifactAsync(artifacts.ValidatorRegistryProxy, provider, txDefaults, validatorRegistryImpl.address, authorizedAddresses.address);
 
     const transactions = [

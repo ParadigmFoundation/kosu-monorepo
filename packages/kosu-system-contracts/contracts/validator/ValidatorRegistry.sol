@@ -12,11 +12,11 @@ import "../voting/Voting.sol";
 contract ValidatorRegistry is IValidatorRegistry, Authorizable {
     using SafeMath for uint;
 
-    uint private _applicationPeriod = 8;
-    uint private _commitPeriod = 4;
-    uint private _challengePeriod = 8;
-    uint private _exitPeriod = 2;
-    uint private _rewardPeriod = 2;
+    uint private _applicationPeriod;
+    uint private _commitPeriod;
+    uint private _challengePeriod;
+    uint private _exitPeriod;
+    uint private _rewardPeriod;
     uint private _minimumBalance = 1 ether;
     uint private _stakeholderCut = 30; //Will be used as a percent so must be sub 100
     Treasury private _treasury;
@@ -36,11 +36,16 @@ contract ValidatorRegistry is IValidatorRegistry, Authorizable {
         @param auth AuthorizedAddresses deployed address
         @param _events Deployed EventEmitter address
     */
-    constructor(address _treasuryAddress, address _votingAddress, address auth, address _events) Authorizable(auth) public {
+    constructor(address _treasuryAddress, address _votingAddress, address auth, address _events, uint applicationPeriod, uint commitPeriod, uint challengePeriod, uint exitPeriod, uint rewardPeriod) Authorizable(auth) public {
         _treasury = Treasury(_treasuryAddress);
         _voting = Voting(_votingAddress);
         _kosuToken = _treasury.kosuToken();
         e = EventEmitter(_events);
+        _applicationPeriod = applicationPeriod;
+        _commitPeriod = commitPeriod;
+        _challengePeriod = challengePeriod;
+        _exitPeriod = exitPeriod;
+        _rewardPeriod = rewardPeriod;
     }
 
     /** @dev Expose the configured applicationPeriod
