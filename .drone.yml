@@ -1,3 +1,5 @@
+# Kosu-monorepo CI configuration file
+
 kind: pipeline
 name: node-tests
 
