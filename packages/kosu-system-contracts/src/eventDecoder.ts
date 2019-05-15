@@ -47,6 +47,7 @@ export const eventDecoder = (eventReturnValues: any): any => {
                 tendermintPublicKey: bytes32ToBase64(data[0]),
                 owner: bytes32ToAddressString(data[1]),
                 challenger: bytes32ToAddressString(data[2]),
+                challengeId: hexToNumberString(data[3]),
                 pollId: hexToNumberString(data[3]),
             });
             break;
