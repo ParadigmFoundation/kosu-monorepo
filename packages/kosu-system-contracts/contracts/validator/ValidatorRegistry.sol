@@ -278,6 +278,11 @@ contract ValidatorRegistry is IValidatorRegistry, Authorizable {
             challenge.passed = false;
             challenge.finalized = true;
 
+            if (_voting.totalWinningTokens(challenge.pollId) == 0) {
+                holderCut = challenge.balance;
+                challenge.voterTotal = 0;
+            }
+
             //Challenger lost and has lost the tokens.
             _treasury.confiscate(challenge.challenger, listing.stakedBalance);
 
