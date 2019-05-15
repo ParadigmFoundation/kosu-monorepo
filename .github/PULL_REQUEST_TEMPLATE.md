@@ -20,7 +20,7 @@
 -   [ ] Refactor/enhancement <!-- Non-breaking (patch bump). -->
 -   [ ] Bug fix/behavior correction <!-- Non-breaking (patch bump). -->
 -   [ ] New feature <!-- Non-breaking (minor bump), unless also specified as breaking. -->
--   [ ] Breaking change <!-- Feature or bug-fix that changes behavior and requires a major version bump. -->
+-   [ ] Breaking change <!-- Feature or bug fix that changes behavior and requires a major version bump. -->
 -   [ ] Other, additional <!-- Describe below/above. -->
 
 ## Notes
