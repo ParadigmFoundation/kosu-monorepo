@@ -17,7 +17,11 @@ func (s *Suite) TestRebalance() {
 
 			Convey("When .round.Number == state.Number + 1", func() {
 				tx := &types.TransactionRebalance{
-					RoundInfo: &types.RoundInfo{Number: 1},
+					RoundInfo: &types.RoundInfo{
+						Number:   1,
+						StartsAt: 100,
+						EndsAt:   110,
+					},
 				}
 
 				res, err := s.client.BroadcastTxCommit(tx)

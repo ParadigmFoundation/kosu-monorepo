@@ -102,10 +102,15 @@ type State struct {
 // NewState returns a new empty State
 func NewState() *State {
 	return &State{
+		// Set default ConsensusParams
+		// TODO: this should comes from genesis block
+		ConsensusParams: ConsensusParams{
+			PeriodLength: 10,
+		},
+
 		posters:        make(map[string]*Poster),
 		deletedPosters: []string{},
-
-		events: make(map[uint64]WitnessEvents),
+		events:		make(map[uint64]WitnessEvents),
 	}
 }
 

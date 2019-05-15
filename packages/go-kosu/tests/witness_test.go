@@ -86,6 +86,9 @@ func (s *Suite) TestWitnessRebalance() {
 			roundNumber := []uint64{1, 2, 3}
 			for _, n := range roundNumber {
 				tx.RoundInfo.Number = n
+				tx.RoundInfo.StartsAt = tx.RoundInfo.EndsAt
+				tx.RoundInfo.EndsAt += 10
+
 				res, err := s.client.BroadcastTxCommit(tx)
 				require.NoError(t, err)
 				require.Zero(t, res.DeliverTx.Code, res.DeliverTx.Log)
@@ -104,5 +107,5 @@ func startWitness(t *testing.T, c *abci.Client) *witness.Witness {
 	p, err := witness.NewEthereumProvider("wss://ropsten.infura.io/ws")
 	require.NoError(t, err)
 
-	return witness.New(c, p)
+	return witness.New(c, p, witness.DefaultOptions)
 }
