@@ -25,7 +25,7 @@
 
 ## Notes
 
-<!-- Include any additional comments, links, questions, or discussion items here that don't fit elsewhere. -->
+<!-- Include any additional comments, links, questions, or discussion items here. -->
 
 ## Status
 
