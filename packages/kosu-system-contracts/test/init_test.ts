@@ -9,6 +9,7 @@ import Web3 from "web3";
 import Web3ProviderEngine from "web3-provider-engine";
 import { toWei } from "web3-utils";
 
+import {artifacts} from "../src";
 import {migrations} from "../src/migrations";
 
 const useGeth = process.argv.includes("geth");
@@ -24,6 +25,7 @@ const testValues: TestValues = {
   oneEther: new BigNumber(toWei("1")),
   fiveEther: new BigNumber(toWei("5")),
   sixEther: new BigNumber(toWei("6")),
+  oneHundredEther: new BigNumber(toWei("100")),
   maxUint: new BigNumber(2).pow(new BigNumber(256)).minus(new BigNumber(1)),
 };
 
@@ -44,6 +46,10 @@ before(async () => {
   const web3 = new Web3(provider);
   const web3Wrapper = new Web3Wrapper(provider);
 
+  web3Wrapper.abiDecoder.addABI(artifacts.EventEmitter.compilerOutput.abi, artifacts.EventEmitter.contractName);
+  web3Wrapper.abiDecoder.addABI(artifacts.KosuToken.compilerOutput.abi, artifacts.KosuToken.contractName);
+
+  // @ts-ignore
   await new BlockchainLifecycle(web3Wrapper).startAsync();
 
   const normalizedFromAddress = await web3.eth.getCoinbase().then((x: string) => x.toLowerCase());
@@ -57,8 +63,9 @@ before(async () => {
   const contracts = await migrations(provider, txDefaults, { noLogs: true });
   const accounts = await web3.eth.getAccounts().then(a => a.map(v => v.toLowerCase()));
 
-  const skipBlocks = async num => {
-    for (let i = 0; i < num; i++) {
+  const skipBlocks = async (num): Promise<void> => {
+    const _num = typeof num === "number" ? num : num.toNumber();
+    for (let i = 0; i < _num; i++) {
       await web3Wrapper.sendTransactionAsync({ from: accounts[0], to: accounts[1], value: 0 });
     }
   };
