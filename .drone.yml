@@ -1,4 +1,4 @@
-# Kosu-monorepo CI configuration file
+# Kosu-monorepo CI configuration file (last updated 14 May 2019)
 
 kind: pipeline
 name: node-tests
