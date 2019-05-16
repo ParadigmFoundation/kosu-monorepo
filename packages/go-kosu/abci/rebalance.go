@@ -12,6 +12,12 @@ func (app *App) checkRebalanceTx(tx *types.TransactionRebalance) error {
 	if (tx.RoundInfo.Number - app.state.RoundInfo.Number) != 1 {
 		return errProposalRejected
 	}
+
+	period := tx.RoundInfo.EndsAt - tx.RoundInfo.StartsAt
+	if uint32(period) != app.state.ConsensusParams.PeriodLength {
+		return errProposalRejected
+	}
+
 	return nil
 }
 

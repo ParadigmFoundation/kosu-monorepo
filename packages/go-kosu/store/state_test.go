@@ -122,7 +122,7 @@ func TestPersistAndUpdate(t *testing.T) {
 
 	s1.LastEvent = 100
 	s1.RoundInfo = RoundInfo{Number: 1}
-	s1.ConsensusParams = ConsensusParams{FinalityThreshold: 99}
+	s1.ConsensusParams.FinalityThreshold = 99
 	s1.events = map[uint64]WitnessEvents{
 		10: {
 			"id1": &WitnessEvent{Address: "0xff"},

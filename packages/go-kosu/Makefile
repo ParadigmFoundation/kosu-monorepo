@@ -1,4 +1,4 @@
-GOTEST_FLAGS ?= -race
+GOTEST_FLAGS ?=
 GOTEST_TAGS  ?= integration
 GOTEST = go test ./... ${GOTEST_FLAGS}
 
@@ -16,11 +16,11 @@ vendors:
 testnet: vendors
 	docker-compose up
 
-test-unit:
-	$(GOTEST)
+test-fast:
+	$(GOTEST) -failfast
 
 test:
-	$(GOTEST) -tags=$(GOTEST_TAGS)
+	$(GOTEST) -race -tags=$(GOTEST_TAGS)
 
 lint:
 	$(GOLINT)

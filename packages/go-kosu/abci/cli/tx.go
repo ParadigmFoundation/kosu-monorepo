@@ -23,17 +23,22 @@ func New(c *abci.Client) *CLI {
 // RebalanceTx is the CLI command for sending a Rebalance transaction
 func (cli *CLI) RebalanceTx() *cobra.Command {
 	return &cobra.Command{
-		Use:   "rebalance [number]",
+		Use:   "rebalance <number> <period start> <period end>",
 		Short: "updates the round info number",
-		Args:  cobra.ExactArgs(1),
+		Args:  cobra.ExactArgs(3),
 		RunE: func(cmd *cobra.Command, args []string) error {
-			num, err := strconv.ParseUint(args[0], 10, 64)
-			if err != nil {
-				return err
+			info := types.RoundInfo{}
+			values := []*uint64{&info.Number, &info.StartsAt, &info.EndsAt}
+			for i := 0; i < len(values); i++ {
+				num, err := strconv.ParseUint(args[i], 10, 64)
+				if err != nil {
+					return err
+				}
+				*values[i] = num
 			}
 
 			tx := &types.TransactionRebalance{
-				RoundInfo: &types.RoundInfo{Number: num},
+				RoundInfo: &info,
 			}
 
 			res, err := cli.client.BroadcastTxCommit(tx)
@@ -52,7 +57,7 @@ func (cli *CLI) RebalanceTx() *cobra.Command {
 				os.Exit(1)
 			}
 
-			fmt.Printf("ok: new round info #%d\n", num)
+			fmt.Printf("ok: new round info #%v\n", tx.RoundInfo)
 			return nil
 		},
 	}

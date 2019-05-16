@@ -157,10 +157,19 @@ func (s *StateTree) parseEventsKey(b []byte) (uint64, string, error) {
 	return block, id, nil
 }
 
+func (s *StateTree) posterKey(addr string) string {
+	return fmt.Sprintf("%s/%s", postersKey, addr)
+}
+
 // SetPoster sets a poster into the tree
 func (s *StateTree) SetPoster(addr string, p *Poster) error {
-	key := fmt.Sprintf("%s/%s", postersKey, addr)
-	return s.Set(key, p)
+	return s.Set(s.posterKey(addr), p)
+}
+
+// DeletePoster removes a poster from the tree
+func (s *StateTree) DeletePoster(addr string) {
+	key := s.posterKey(addr)
+	s.tree.Remove([]byte(key))
 }
 
 // IteratePosters iterates over all the posters present in the tree

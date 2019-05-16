@@ -3,17 +3,19 @@ package witness
 import (
 	"context"
 	"fmt"
-	"go-kosu/abci"
-	"go-kosu/abci/types"
-	"go-kosu/store"
 	"log"
 	"math/big"
 	"strconv"
 	"sync"
+
+	"go-kosu/abci"
+	"go-kosu/abci/types"
+	"go-kosu/store"
 )
 
 // Provider describes a block provider.
 type Provider interface {
+	GetLastBlockNumber(context.Context) (uint64, error)
 	WatchBlocks(context.Context, chan *Block) error
 	WatchEvents(context.Context, chan *Event) error
 }
@@ -46,23 +48,47 @@ func (e *Event) WitnessTx() *types.TransactionWitness {
 	return tx
 }
 
+// Options are parameter to control Witness behavior
+type Options struct {
+	PeriodLimit       int
+	PeriodLength      int
+	FinalityThreshold int
+}
+
+// DefaultOptions are a sensible values
+var DefaultOptions = Options{
+	PeriodLimit:       10,
+	PeriodLength:      10,
+	FinalityThreshold: 10,
+}
+
 // Witness implements a one-way (read only) peg to Ethereum,
 // and adds a "finality gadget" via a block maturity requirement for events
 type Witness struct {
 	client   *abci.Client
 	provider Provider
+	opts     Options
 
 	roundMutex sync.RWMutex
 	roundInfo  store.RoundInfo
+
+	initHeight    uint64
+	currentHeight uint64
 }
 
 // New returns a new instance of the witness process
-func New(client *abci.Client, p Provider) *Witness {
-	return &Witness{client: client, provider: p}
+func New(client *abci.Client, p Provider, opts Options) *Witness {
+	return &Witness{client: client, provider: p, opts: opts}
 }
 
 // Start starts the rebalancer and the event forwarder
 func (w *Witness) Start(ctx context.Context) error {
+	num, err := w.provider.GetLastBlockNumber(ctx)
+	if err != nil {
+		return err
+	}
+	w.initHeight = num
+
 	// Load the current RoundInfo and keep it local
 	info, err := w.client.QueryRoundInfo()
 	if err != nil {
@@ -76,8 +102,8 @@ func (w *Witness) Start(ctx context.Context) error {
 		return err
 	}
 
-	// nolint
-	go w.forward(ctx)
+	go w.forward(ctx)      // nolint
+	go w.handleBlocks(ctx) // nolint
 
 	return nil
 }
@@ -97,7 +123,6 @@ func (w *Witness) subscribe(ctx context.Context) error {
 			w.roundMutex.Unlock()
 
 			log.Printf("detected rebalance tx in block, now on round %d", n)
-			// TODO(gus): do synchronize
 		}
 	}()
 
@@ -114,6 +139,46 @@ func (w *Witness) forward(ctx context.Context) error {
 		}
 		log.Printf("witness event: %+v (%s)", e, res.Log)
 	})
+}
+
+func (w *Witness) handleBlocks(ctx context.Context) error {
+	ch := make(chan *Block)
+	if err := w.provider.WatchBlocks(ctx, ch); err != nil {
+		return err
+	}
+
+	for block := range ch {
+		cur := block.Number.Uint64()
+		mat := cur - uint64(w.opts.FinalityThreshold)
+		w.currentHeight = cur
+
+		// If it's the first block || round has ended
+		if w.roundInfo.Number == 0 && (cur > w.initHeight) || mat >= w.roundInfo.EndsAt {
+			if err := w.rebalance(cur); err != nil {
+				log.Printf("rebalance: %+v", err)
+			}
+		}
+	}
+
+	return nil
+}
+
+func (w *Witness) rebalance(round uint64) error {
+	info := &types.RoundInfo{
+		Number:   round + 1,
+		Limit:    uint64(w.opts.PeriodLimit),
+		StartsAt: w.roundInfo.StartsAt - 1,
+		EndsAt:   w.roundInfo.StartsAt + uint64(w.opts.PeriodLength),
+	}
+
+	tx := &types.TransactionRebalance{RoundInfo: info}
+	res, err := w.client.BroadcastTxAsync(tx)
+	if err != nil {
+		return err
+	}
+
+	log.Printf("res = %+v\n", res)
+	return nil
 }
 
 // RoundInfo returns the current in-memory RoundInfo

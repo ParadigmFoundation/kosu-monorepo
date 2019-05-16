@@ -49,7 +49,7 @@ func startWitness(ctx context.Context, ethAddr string, nodeAddr string, key []by
 		return err
 	}
 
-	w := witness.New(client, p)
+	w := witness.New(client, p, witness.DefaultOptions)
 	return w.Start(ctx)
 }
 
