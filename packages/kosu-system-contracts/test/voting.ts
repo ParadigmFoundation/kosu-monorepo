@@ -4,15 +4,19 @@ import { soliditySha3 } from "web3-utils";
 import { decodeKosuEvents, KosuTokenContract, TreasuryContract, VotingContract } from "../src";
 import { migrations } from "../src/migrations";
 
-describe("Voting", function () {
-    this.timeout(10000)
+describe("Voting", function() {
+    this.timeout(10000);
     let voting: VotingContract;
     let kosuToken: KosuTokenContract;
     let treasury: TreasuryContract;
 
     const prepareTokens = async (from, funds) => {
-        await kosuToken.approve.sendTransactionAsync(treasury.address, funds, { from }).then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash)).should.eventually.be.fulfilled;
-        await treasury.deposit.sendTransactionAsync(new BigNumber(funds), { from }).then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash)).should.eventually.be.fulfilled;
+        await kosuToken.approve
+            .sendTransactionAsync(treasury.address, funds, { from })
+            .then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash)).should.eventually.be.fulfilled;
+        await treasury.deposit
+            .sendTransactionAsync(new BigNumber(funds), { from })
+            .then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash)).should.eventually.be.fulfilled;
     };
 
     const shortPoll = async () => {
