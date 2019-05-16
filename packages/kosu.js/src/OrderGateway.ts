@@ -1,4 +1,5 @@
 import { BigNumber } from "@0x/utils";
+import {Web3Wrapper} from "@0x/web3-wrapper";
 import { artifacts, DeployedAddresses, OrderGatewayContract } from "@kosu/system-contracts";
 import Web3 from "web3";
 
@@ -14,6 +15,7 @@ export class OrderGateway {
     private readonly initializing: Promise<void>;
     private address: string;
     private contract: OrderGatewayContract;
+    private web3Wrapper: Web3Wrapper;
 
     /**
      * Create a new OrderGateway instance.
@@ -22,6 +24,7 @@ export class OrderGateway {
      */
     constructor(options: KosuOptions) {
         this.web3 = options.web3;
+        this.web3Wrapper = options.web3Wrapper;
         this.address = options.orderGatewayAddress;
         this.initializing = this.init(options);
     }
@@ -68,7 +71,7 @@ export class OrderGateway {
             makerValuesBytes,
             takerValuesBytes,
             { from: taker },
-        );
+        ).then(async txHash => this.web3Wrapper.awaitTransactionSuccessAsync(txHash));
     }
 
     /**
