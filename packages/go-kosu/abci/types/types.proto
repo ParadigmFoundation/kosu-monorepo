@@ -24,6 +24,17 @@ message RoundInfo {
   uint64 limit = 4;
 }
 
+/**
+ * ConsensusParams
+ */
+message ConsensusParams {
+  uint32 FinalityThreshold = 1;
+  uint32 PeriodLimit = 2;
+  uint32 PeriodLength = 3;
+  uint32 MaxOrderBytes = 4;
+  uint32 ConfirmationThreshold = 5;
+}
+
 message Poster {
   BigInt balance = 1;
   uint64 orderLimit = 2;

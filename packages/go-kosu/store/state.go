@@ -8,8 +8,6 @@ import (
 	"sync"
 	"sync/atomic"
 
-	"github.com/gogo/protobuf/proto"
-
 	"go-kosu/abci/types"
 )
 
@@ -343,23 +341,4 @@ func (s *State) GenLimits() RateLimits {
 	}
 
 	return rl
-}
-
-// Query queries for the tree state and transform the output into a proto.Message to be delivered to the client.
-// Query also returns the key of the state.
-func (s *State) Query(tree *StateTree, path string) (proto.Message, []byte, error) {
-	switch path {
-	case "/roundinfo":
-		var info RoundInfo
-		if err := tree.Get(roundInfoKey, &info); err != nil {
-			return nil, nil, err
-		}
-
-		p := new(types.RoundInfo)
-		info.ToProto(p)
-		return p, []byte(roundInfoKey), nil
-
-	}
-
-	return nil, nil, ErrQueryPathNotFound
 }
