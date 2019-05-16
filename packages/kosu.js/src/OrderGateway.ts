@@ -13,9 +13,9 @@ import { OrderSerializer } from "./OrderSerializer";
 export class OrderGateway {
     private readonly web3: Web3;
     private readonly initializing: Promise<void>;
+    private readonly web3Wrapper: Web3Wrapper;
     private address: string;
     private contract: OrderGatewayContract;
-    private web3Wrapper: Web3Wrapper;
 
     /**
      * Create a new OrderGateway instance.
