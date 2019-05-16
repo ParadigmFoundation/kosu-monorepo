@@ -14,7 +14,7 @@
     },
     "scripts": {
         "test": "ts-mocha -p test/tsconfig.json test/*",
-        "test:ci": "ts-mocha -p test/tsconfig.json test/*",
+        "test:ci": "ts-mocha -p test/tsconfig.json test/* -- geth",
         "build": "run-s contracts:clean compile:solidity generate_contract_wrappers compile:typescript",
         "compile:solidity": "sol-compiler",
         "compile:typescript": "tsc",
