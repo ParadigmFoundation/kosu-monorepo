@@ -65,29 +65,33 @@ before(async () => {
 
     const testHelpers = {
         clearTreasury: async address => {
+            const transactions = [];
             const systemBalance = await contracts.treasury.systemBalance.callAsync(address);
             if (systemBalance.gt(0)) {
                 const currentBalance = await contracts.treasury.currentBalance.callAsync(address);
                 if (systemBalance.gt(currentBalance)) {
-                    await contracts.treasury.releaseTokens.sendTransactionAsync(
+                    transactions.push(contracts.treasury.releaseTokens.sendTransactionAsync(
                         address,
                         systemBalance.minus(currentBalance),
-                    );
+                    ).then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash)));
                 }
-                await contracts.treasury.withdraw.sendTransactionAsync(systemBalance, { from: address });
+                transactions.push(contracts.treasury.withdraw.sendTransactionAsync(systemBalance, { from: address }).then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash)));
+                await Promise.all(transactions);
             }
         },
         ensureTokenBalance: async (address: string, desiredValue: BigNumber): Promise<void> => {
+            const transactions = [];
             await contracts.kosuToken.balanceOf.callAsync(address).then(async balance => {
                 if (balance.gt(desiredValue)) {
-                    await contracts.kosuToken.transfer.sendTransactionAsync(accounts[0], balance.minus(desiredValue), {
+                    transactions.push(contracts.kosuToken.transfer.sendTransactionAsync(accounts[0], balance.minus(desiredValue), {
                         from: address,
-                    }).should.eventually.be.fulfilled;
+                    }).then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash)).should.eventually.be.fulfilled);
                 } else if (balance.lt(desiredValue)) {
-                    await contracts.kosuToken.transfer.sendTransactionAsync(address, desiredValue.minus(balance)).should
-                        .eventually.be.fulfilled;
+                    transactions.push(contracts.kosuToken.transfer.sendTransactionAsync(address, desiredValue.minus(balance)).then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash)).should
+                        .eventually.be.fulfilled);
                 }
             });
+            await Promise.all(transactions);
             await contracts.kosuToken.balanceOf
                 .callAsync(address)
                 .then(val => val.toString())
@@ -99,18 +103,19 @@ before(async () => {
         skipBlocks: async (num): Promise<void> => {
             const _num = typeof num === "number" ? num : num.toNumber();
             for (let i = 0; i < _num; i++) {
-                await web3Wrapper.sendTransactionAsync({ from: accounts[0], to: accounts[1], value: 0 });
+                await web3Wrapper.sendTransactionAsync({ from: accounts[0], to: accounts[1], value: 0 }).then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash));
             }
         },
         cleanAccounts: async () => {
+            const transactions = [];
             for (const account of accounts) {
                 await testHelpers.clearTreasury(account);
                 if (account !== accounts[0]) {
                     await testHelpers.ensureTokenBalance(account, testValues.zero);
                 }
-                contracts.kosuToken.approve.sendTransactionAsync(contracts.treasury.address, testValues.zero, {
+                transactions.push(contracts.kosuToken.approve.sendTransactionAsync(contracts.treasury.address, testValues.zero, {
                     from: account,
-                });
+                }).then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash)));
             }
         },
     };

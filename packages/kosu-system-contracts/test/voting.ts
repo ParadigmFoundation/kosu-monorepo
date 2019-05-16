@@ -4,14 +4,15 @@ import { soliditySha3 } from "web3-utils";
 import { decodeKosuEvents, KosuTokenContract, TreasuryContract, VotingContract } from "../src";
 import { migrations } from "../src/migrations";
 
-describe("Voting", () => {
+describe("Voting", function () {
+    this.timeout(10000)
     let voting: VotingContract;
     let kosuToken: KosuTokenContract;
     let treasury: TreasuryContract;
 
     const prepareTokens = async (from, funds) => {
-        await kosuToken.approve.sendTransactionAsync(treasury.address, funds, { from });
-        await treasury.deposit.sendTransactionAsync(new BigNumber(funds), { from });
+        await kosuToken.approve.sendTransactionAsync(treasury.address, funds, { from }).then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash)).should.eventually.be.fulfilled;
+        await treasury.deposit.sendTransactionAsync(new BigNumber(funds), { from }).then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash)).should.eventually.be.fulfilled;
     };
 
     const shortPoll = async () => {
@@ -20,7 +21,7 @@ describe("Voting", () => {
     };
 
     const variablePoll = async (start: number, end: number) => {
-        const base = await await web3Wrapper.getBlockNumberAsync().then(x => parseInt(x));
+        const base = await web3Wrapper.getBlockNumberAsync().then(x => parseInt(x));
         const creationBlock = base + 1;
         const commitEnd = creationBlock + start;
         const revealEnd = commitEnd + end;
@@ -53,41 +54,14 @@ describe("Voting", () => {
         voting = contracts.voting;
         kosuToken = contracts.kosuToken;
         treasury = contracts.treasury;
-        const posterRegistry = contracts.posterRegistryProxy;
 
-        await treasury.currentBalance.callAsync(accounts[0]).then(async val => {
-            if (val.gt(0)) {
-                return treasury.withdraw.sendTransactionAsync(val, { from: accounts[0] });
-            } else {
-                return null;
-            }
-        });
-
-        await treasury.currentBalance.callAsync(accounts[1]).then(async val => {
-            if (val.gt(0)) {
-                return treasury.withdraw.sendTransactionAsync(val, { from: accounts[1] });
-            } else {
-                return null;
-            }
-        });
+        await clearTreasury(accounts[0]);
+        await clearTreasury(accounts[1]);
     });
 
     afterEach(async () => {
-        await treasury.currentBalance.callAsync(accounts[0]).then(async val => {
-            if (val.gt(0)) {
-                return treasury.withdraw.sendTransactionAsync(val, { from: accounts[0] });
-            } else {
-                return null;
-            }
-        });
-
-        await treasury.currentBalance.callAsync(accounts[1]).then(async val => {
-            if (val.gt(0)) {
-                return treasury.withdraw.sendTransactionAsync(val, { from: accounts[1] });
-            } else {
-                return null;
-            }
-        });
+        await clearTreasury(accounts[0]);
+        await clearTreasury(accounts[1]);
     });
 
     describe("createPoll", () => {
@@ -245,6 +219,7 @@ describe("Voting", () => {
                 .sendTransactionAsync(pollId, vote2, salt, { from: accounts[1] })
                 .then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash)).should.eventually.be.fulfilled;
 
+            await skipBlocks(new BigNumber(1));
             await voting.winningOption
                 .callAsync(pollId)
                 .then(x => x.toString())
@@ -269,6 +244,7 @@ describe("Voting", () => {
                 .sendTransactionAsync(pollId, vote1, salt)
                 .then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash)).should.eventually.be.fulfilled;
 
+            await skipBlocks(new BigNumber(1));
             await voting.winningOption
                 .callAsync(pollId)
                 .then(x => x.toString())
@@ -295,6 +271,7 @@ describe("Voting", () => {
                 .sendTransactionAsync(pollId, vote1, salt, { from: accounts[1] })
                 .then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash)).should.eventually.be.fulfilled;
 
+            await skipBlocks(new BigNumber(1));
             await voting.totalWinningTokens
                 .callAsync(pollId)
                 .then(x => x.toString())
@@ -321,6 +298,7 @@ describe("Voting", () => {
                 .sendTransactionAsync(pollId, vote2, salt, { from: accounts[1] })
                 .then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash)).should.eventually.be.fulfilled;
 
+            await skipBlocks(new BigNumber(1));
             await voting.userWinningTokens
                 .callAsync(pollId, accounts[0])
                 .then(x => x.toString())
@@ -345,6 +323,7 @@ describe("Voting", () => {
                 .sendTransactionAsync(pollId, vote2, salt, { from: accounts[1] })
                 .then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash)).should.eventually.be.fulfilled;
 
+            await skipBlocks(new BigNumber(1));
             await voting.userWinningTokens
                 .callAsync(pollId, accounts[1])
                 .then(x => x.toString())

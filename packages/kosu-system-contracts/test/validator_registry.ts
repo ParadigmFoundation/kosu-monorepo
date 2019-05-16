@@ -13,7 +13,9 @@ import {
 } from "../src";
 import { listingDecoder } from "../src/listingDecoder";
 
-describe("ValidatorRegistry", async () => {
+describe("ValidatorRegistry", async function () {
+    this.timeout(10000);
+
     let validatorRegistryProxy: ValidatorRegistryProxyContract;
     let validatorRegistry: ValidatorRegistryContract;
     let kosuToken: KosuTokenContract;
@@ -79,7 +81,7 @@ describe("ValidatorRegistry", async () => {
 
     // Treasury autmomation
     const withdrawAll = async (from = accounts[0]) => {
-        await treasury.withdraw.sendTransactionAsync(await treasury.currentBalance.callAsync(from), { from });
+        await clearTreasury(from);
     };
 
     // Skips
@@ -130,7 +132,7 @@ describe("ValidatorRegistry", async () => {
 
     const prepareTokens = async (from, funds) => {
         await kosuToken.approve.sendTransactionAsync(treasury.address, new BigNumber(funds), { from });
-        await treasury.deposit.sendTransactionAsync(new BigNumber(funds), { from });
+        await treasury.deposit.sendTransactionAsync(new BigNumber(funds), { from }).then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash));
     };
 
     before(async () => {
@@ -147,9 +149,11 @@ describe("ValidatorRegistry", async () => {
         stakeholderCut = await validatorRegistryProxy.stakeholderCut.callAsync();
         challengePeriod = await validatorRegistryProxy.challengePeriod.callAsync();
         commitPeriod = await validatorRegistryProxy.commitPeriod.callAsync();
+        const transactions = [];
         for (const account of accounts) {
-            await kosuToken.transfer.sendTransactionAsync(account, testValues.oneHundredEther);
+            transactions.push(kosuToken.transfer.sendTransactionAsync(account, testValues.oneHundredEther));
         }
+        await Promise.all(transactions);
     });
 
     describe("token", () => {
@@ -159,6 +163,7 @@ describe("ValidatorRegistry", async () => {
     });
 
     describe("listingKeys", () => {
+
         let publicKeys;
 
         before(() => {
@@ -173,14 +178,14 @@ describe("ValidatorRegistry", async () => {
                     minimumBalance,
                     testValues.zero,
                     { from: account },
-                );
+                ).then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash));
             }
         });
 
         afterEach(async () => {
             for (const account of accounts) {
                 await validatorRegistryProxy.initExit.sendTransactionAsync(account, { from: account });
-                await treasury.withdraw.sendTransactionAsync(new BigNumber(minimumBalance), { from: account });
+                await treasury.withdraw.sendTransactionAsync(new BigNumber(minimumBalance), { from: account }).then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash));
             }
         });
 
@@ -196,7 +201,7 @@ describe("ValidatorRegistry", async () => {
             const remainingKeys = publicKeys.slice(0);
             remainingKeys.splice(5, 1);
 
-            await validatorRegistryProxy.initExit.sendTransactionAsync(removeKey, { from: accounts[5] });
+            await validatorRegistryProxy.initExit.sendTransactionAsync(removeKey, { from: accounts[5] }).then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash));
 
             const validators = await validatorRegistryProxy.listingKeys.callAsync();
             // Keys are hex bytes32 padding these addresses to match the bytes32 output
@@ -208,7 +213,7 @@ describe("ValidatorRegistry", async () => {
                 minimumBalance,
                 testValues.zero,
                 { from: accounts[5] },
-            );
+            ).then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash));
         });
     });
 
@@ -216,7 +221,7 @@ describe("ValidatorRegistry", async () => {
         it("should require a balance greater or equal to the minimumBalance", async () => {
             const from = accounts[1];
             const idleBalance = await kosuToken.balanceOf.callAsync(from);
-            kosuToken.transfer.sendTransactionAsync(accounts[0], idleBalance, { from });
+            await kosuToken.transfer.sendTransactionAsync(accounts[0], idleBalance, { from }).then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash));
 
             await kosuToken.balanceOf
                 .callAsync(from)
@@ -226,7 +231,7 @@ describe("ValidatorRegistry", async () => {
                 .sendTransactionAsync(tendermintPublicKey, minimumBalance, testValues.zero, { from })
                 .then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash)).should.eventually.be.rejected;
 
-            kosuToken.transfer.sendTransactionAsync(from, idleBalance, { from: accounts[0] });
+            kosuToken.transfer.sendTransactionAsync(from, idleBalance, { from: accounts[0] }).then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash));
         });
 
         it("should require an approval greater or equal to the minimumBalance", async () => {
@@ -235,7 +240,7 @@ describe("ValidatorRegistry", async () => {
                 .then(x => x.toString())
                 .then(parseInt)
                 .should.eventually.gt(minimumBalance.toNumber());
-            await kosuToken.approve.sendTransactionAsync(treasury.address, testValues.zero).should.eventually.be
+            await kosuToken.approve.sendTransactionAsync(treasury.address, testValues.zero).then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash)).should.eventually.be
                 .fulfilled;
             await kosuToken.allowance
                 .callAsync(accounts[0], validatorRegistryProxy.address)
@@ -248,12 +253,12 @@ describe("ValidatorRegistry", async () => {
 
         describe("approved", () => {
             beforeEach(async () => {
-                await kosuToken.approve.sendTransactionAsync(treasury.address, minimumBalance);
+                await kosuToken.approve.sendTransactionAsync(treasury.address, minimumBalance).then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash));
             });
 
             afterEach(async () => {
                 await validatorRegistryProxy.initExit.sendTransactionAsync(tendermintPublicKey);
-                await treasury.withdraw.sendTransactionAsync(minimumBalance);
+                await treasury.withdraw.sendTransactionAsync(minimumBalance).then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash));
             });
 
             it("should allow registration with the minimumBalance", async () => {
@@ -347,7 +352,7 @@ describe("ValidatorRegistry", async () => {
             it("should allow an unbounded ", async () => {
                 const allInToken = await kosuToken.balanceOf.callAsync(accounts[0]);
                 await kosuToken.approve.sendTransactionAsync(treasury.address, allInToken);
-                await treasury.deposit.sendTransactionAsync(allInToken);
+                await treasury.deposit.sendTransactionAsync(allInToken).then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash));
                 await treasury.currentBalance
                     .callAsync(accounts[0])
                     .then(x => x.toString())
@@ -471,7 +476,7 @@ describe("ValidatorRegistry", async () => {
 
             listing.status.toString().should.eq("0");
             listing.owner.should.eq("0x0000000000000000000000000000000000000000");
-            treasury.withdraw.sendTransactionAsync(minimumBalance);
+            treasury.withdraw.sendTransactionAsync(minimumBalance).then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash));
         });
 
         it("should not allow an exit with a pending challenge", async () => {
@@ -636,7 +641,7 @@ describe("ValidatorRegistry", async () => {
 
         it("should take tokens on challenge", async () => {
             await kosuToken.approve.sendTransactionAsync(treasury.address, minimumBalance, { from: accounts[1] });
-            await treasury.deposit.sendTransactionAsync(minimumBalance, { from: accounts[1] });
+            await treasury.deposit.sendTransactionAsync(minimumBalance, { from: accounts[1] }).then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash));
 
             await treasury.currentBalance
                 .callAsync(accounts[1])
@@ -656,7 +661,7 @@ describe("ValidatorRegistry", async () => {
 
         it("should allow an accepted listing to be challenged and should raise an event with a pollId", async () => {
             await kosuToken.transfer.sendTransactionAsync(accounts[1], minimumBalance);
-            await kosuToken.approve.sendTransactionAsync(treasury.address, minimumBalance, { from: accounts[1] });
+            await kosuToken.approve.sendTransactionAsync(treasury.address, minimumBalance, { from: accounts[1] }).then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash));
             const initialNextPoll = await voting.nextPollId.callAsync();
 
             await validatorRegistryProxy.confirmListing
@@ -688,7 +693,7 @@ describe("ValidatorRegistry", async () => {
 
         it("should allow a pending listing to be challenged", async () => {
             await kosuToken.transfer.sendTransactionAsync(accounts[1], minimumBalance);
-            await kosuToken.approve.sendTransactionAsync(treasury.address, minimumBalance, { from: accounts[1] });
+            await kosuToken.approve.sendTransactionAsync(treasury.address, minimumBalance, { from: accounts[1] }).then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash));
             const initialNextPoll = await voting.nextPollId.callAsync();
 
             const listing = await validatorRegistryProxy.getListing.callAsync(tendermintPublicKey).then(listingDecoder);
@@ -732,7 +737,7 @@ describe("ValidatorRegistry", async () => {
             await kosuToken.approve.sendTransactionAsync(treasury.address, testValues.fiveEther);
             await treasury.deposit.sendTransactionAsync(testValues.fiveEther, { from: accounts[1] });
 
-            await validatorRegistryProxy.initExit.sendTransactionAsync(tendermintPublicKey).should.be.fulfilled;
+            await validatorRegistryProxy.initExit.sendTransactionAsync(tendermintPublicKey).then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash)).should.be.fulfilled;
             const result1 = await validatorRegistryProxy.registerListing.sendTransactionAsync(
                 tendermintPublicKey,
                 testValues.fiveEther,
@@ -803,10 +808,10 @@ describe("ValidatorRegistry", async () => {
             });
             await voting.commitVote.sendTransactionAsync(new BigNumber(pollId), secret1, testValues.fiveEther, {
                 from: accounts[2],
-            });
+            }).then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash));
             await skipCommitPeriod(blockNumber);
             await voting.revealVote.sendTransactionAsync(new BigNumber(pollId), vote1, salt, { from: accounts[1] });
-            await voting.revealVote.sendTransactionAsync(new BigNumber(pollId), vote1, salt, { from: accounts[2] });
+            await voting.revealVote.sendTransactionAsync(new BigNumber(pollId), vote1, salt, { from: accounts[2] }).then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash));
 
             await skipChallengePeriod(blockNumber);
             await validatorRegistryProxy.resolveChallenge
@@ -817,7 +822,7 @@ describe("ValidatorRegistry", async () => {
                 .sendTransactionAsync(tendermintPublicKey)
                 .then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash)).should.eventually.be.rejected;
             await validatorRegistryProxy.claimWinnings.sendTransactionAsync(challengeId, { from: accounts[1] });
-            await validatorRegistryProxy.claimWinnings.sendTransactionAsync(challengeId, { from: accounts[2] });
+            await validatorRegistryProxy.claimWinnings.sendTransactionAsync(challengeId, { from: accounts[2] }).then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash));
 
             await withdrawAll(accounts[1]);
             await withdrawAll(accounts[2]);
@@ -835,7 +840,7 @@ describe("ValidatorRegistry", async () => {
             });
             await voting.commitVote.sendTransactionAsync(new BigNumber(pollId), secret1, testValues.fiveEther, {
                 from: accounts[2],
-            });
+            }).then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash));
             await skipCommitPeriod(blockNumber);
             await voting.revealVote.sendTransactionAsync(new BigNumber(pollId), vote1, salt, { from: accounts[1] });
             await voting.revealVote.sendTransactionAsync(new BigNumber(pollId), vote1, salt, { from: accounts[2] });
@@ -866,10 +871,10 @@ describe("ValidatorRegistry", async () => {
             });
             await voting.commitVote.sendTransactionAsync(new BigNumber(pollId), secret1, testValues.fiveEther, {
                 from: accounts[2],
-            });
+            }).then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash));
             await skipCommitPeriod(blockNumber);
             await voting.revealVote.sendTransactionAsync(new BigNumber(pollId), vote1, salt, { from: accounts[1] });
-            await voting.revealVote.sendTransactionAsync(new BigNumber(pollId), vote1, salt, { from: accounts[2] });
+            await voting.revealVote.sendTransactionAsync(new BigNumber(pollId), vote1, salt, { from: accounts[2] }).then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash));
 
             await skipChallengePeriod(blockNumber);
             const initialListingHolderSystemBalance = await treasury.systemBalance.callAsync(accounts[0]);
@@ -901,7 +906,7 @@ describe("ValidatorRegistry", async () => {
                 );
 
             await validatorRegistryProxy.claimWinnings.sendTransactionAsync(challengeId, { from: accounts[1] });
-            await validatorRegistryProxy.claimWinnings.sendTransactionAsync(challengeId, { from: accounts[2] });
+            await validatorRegistryProxy.claimWinnings.sendTransactionAsync(challengeId, { from: accounts[2] }).then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash));
 
             await withdrawAll(accounts[1]);
             await withdrawAll(accounts[2]);
@@ -919,10 +924,10 @@ describe("ValidatorRegistry", async () => {
             });
             await voting.commitVote.sendTransactionAsync(new BigNumber(pollId), secret0, testValues.fiveEther, {
                 from: accounts[2],
-            });
+            }).then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash));
             await skipCommitPeriod(blockNumber);
             await voting.revealVote.sendTransactionAsync(new BigNumber(pollId), vote0, salt, { from: accounts[1] });
-            await voting.revealVote.sendTransactionAsync(new BigNumber(pollId), vote0, salt, { from: accounts[2] });
+            await voting.revealVote.sendTransactionAsync(new BigNumber(pollId), vote0, salt, { from: accounts[2] }).then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash));
             await skipChallengePeriod(blockNumber);
 
             const initialChallengerSystemBalance = await treasury.systemBalance.callAsync(accounts[1]);
@@ -951,7 +956,7 @@ describe("ValidatorRegistry", async () => {
                 .should.eq(toStakeholderCut(minimumBalance));
 
             await validatorRegistryProxy.claimWinnings.sendTransactionAsync(challengeId, { from: accounts[1] });
-            await validatorRegistryProxy.claimWinnings.sendTransactionAsync(challengeId, { from: accounts[2] });
+            await validatorRegistryProxy.claimWinnings.sendTransactionAsync(challengeId, { from: accounts[2] }).then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash));
 
             await withdrawAll(accounts[1]);
             await withdrawAll(accounts[2]);
@@ -972,10 +977,10 @@ describe("ValidatorRegistry", async () => {
             });
             await voting.commitVote.sendTransactionAsync(new BigNumber(pollId), secret0, testValues.fiveEther, {
                 from: accounts[2],
-            });
+            }).then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash));
             await skipCommitPeriod(blockNumber);
             await voting.revealVote.sendTransactionAsync(new BigNumber(pollId), vote0, salt, { from: accounts[1] });
-            await voting.revealVote.sendTransactionAsync(new BigNumber(pollId), vote0, salt, { from: accounts[2] });
+            await voting.revealVote.sendTransactionAsync(new BigNumber(pollId), vote0, salt, { from: accounts[2] }).then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash));
             await skipChallengePeriod(blockNumber);
 
             const initialChallengerSystemBalance = await treasury.systemBalance.callAsync(accounts[1]);
@@ -1006,7 +1011,7 @@ describe("ValidatorRegistry", async () => {
                 );
 
             await validatorRegistryProxy.claimWinnings.sendTransactionAsync(challengeId, { from: accounts[1] });
-            await validatorRegistryProxy.claimWinnings.sendTransactionAsync(challengeId, { from: accounts[2] });
+            await validatorRegistryProxy.claimWinnings.sendTransactionAsync(challengeId, { from: accounts[2] }).then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash));
 
             await withdrawAll(accounts[0]);
             await withdrawAll(accounts[1]);
@@ -1025,10 +1030,10 @@ describe("ValidatorRegistry", async () => {
             });
             await voting.commitVote.sendTransactionAsync(new BigNumber(pollId), secret0, testValues.fiveEther, {
                 from: accounts[2],
-            });
+            }).then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash));
             await skipCommitPeriod(blockNumber);
             await voting.revealVote.sendTransactionAsync(new BigNumber(pollId), vote0, salt, { from: accounts[1] });
-            await voting.revealVote.sendTransactionAsync(new BigNumber(pollId), vote0, salt, { from: accounts[2] });
+            await voting.revealVote.sendTransactionAsync(new BigNumber(pollId), vote0, salt, { from: accounts[2] }).then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash));
             await skipChallengePeriod(blockNumber);
 
             const initialChallengerSystemBalance = await treasury.systemBalance.callAsync(accounts[1]);
@@ -1057,7 +1062,7 @@ describe("ValidatorRegistry", async () => {
                 .should.eq(toStakeholderCut(minimumBalance));
 
             await validatorRegistryProxy.claimWinnings.sendTransactionAsync(challengeId, { from: accounts[1] });
-            await validatorRegistryProxy.claimWinnings.sendTransactionAsync(challengeId, { from: accounts[2] });
+            await validatorRegistryProxy.claimWinnings.sendTransactionAsync(challengeId, { from: accounts[2] }).then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash));
 
             await withdrawAll(accounts[1]);
             await withdrawAll(accounts[2]);
@@ -1086,10 +1091,10 @@ describe("ValidatorRegistry", async () => {
             });
             await voting.commitVote.sendTransactionAsync(new BigNumber(pollId), secret0, testValues.fiveEther, {
                 from: accounts[2],
-            });
+            }).then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash));
             await skipCommitPeriod(blockNumber);
             await voting.revealVote.sendTransactionAsync(new BigNumber(pollId), vote0, salt, { from: accounts[1] });
-            await voting.revealVote.sendTransactionAsync(new BigNumber(pollId), vote0, salt, { from: accounts[2] });
+            await voting.revealVote.sendTransactionAsync(new BigNumber(pollId), vote0, salt, { from: accounts[2] }).then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash));
             await skipChallengePeriod(blockNumber);
 
             const initialVoterSystemBalance = await treasury.systemBalance.callAsync(accounts[5]);
@@ -1115,7 +1120,7 @@ describe("ValidatorRegistry", async () => {
                 .should.eq("0");
 
             await validatorRegistryProxy.claimWinnings.sendTransactionAsync(challengeId, { from: accounts[1] });
-            await validatorRegistryProxy.claimWinnings.sendTransactionAsync(challengeId, { from: accounts[2] });
+            await validatorRegistryProxy.claimWinnings.sendTransactionAsync(challengeId, { from: accounts[2] }).then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash));
 
             await withdrawAll(accounts[0]);
             await withdrawAll(accounts[1]);
@@ -1140,11 +1145,11 @@ describe("ValidatorRegistry", async () => {
             });
             await voting.commitVote.sendTransactionAsync(new BigNumber(pollId), secret1, testValues.fiveEther, {
                 from: accounts[5],
-            });
+            }).then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash));
             await skipCommitPeriod(blockNumber);
             await voting.revealVote.sendTransactionAsync(new BigNumber(pollId), vote0, salt, { from: accounts[1] });
             await voting.revealVote.sendTransactionAsync(new BigNumber(pollId), vote0, salt, { from: accounts[2] });
-            await voting.revealVote.sendTransactionAsync(new BigNumber(pollId), vote1, salt, { from: accounts[5] });
+            await voting.revealVote.sendTransactionAsync(new BigNumber(pollId), vote1, salt, { from: accounts[5] }).then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash));
             await skipChallengePeriod(blockNumber);
 
             const initialVoterSystemBalance = await treasury.systemBalance.callAsync(accounts[5]);
@@ -1170,7 +1175,7 @@ describe("ValidatorRegistry", async () => {
                 .should.eq("0");
 
             await validatorRegistryProxy.claimWinnings.sendTransactionAsync(challengeId, { from: accounts[1] });
-            await validatorRegistryProxy.claimWinnings.sendTransactionAsync(challengeId, { from: accounts[2] });
+            await validatorRegistryProxy.claimWinnings.sendTransactionAsync(challengeId, { from: accounts[2] }).then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash));
 
             await withdrawAll(accounts[0]);
             await withdrawAll(accounts[1]);
@@ -1195,11 +1200,11 @@ describe("ValidatorRegistry", async () => {
             });
             await voting.commitVote.sendTransactionAsync(new BigNumber(pollId), secret1, testValues.fiveEther, {
                 from: accounts[5],
-            });
+            }).then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash));
             await skipCommitPeriod(blockNumber);
             await voting.revealVote.sendTransactionAsync(new BigNumber(pollId), vote0, salt, { from: accounts[1] });
             await voting.revealVote.sendTransactionAsync(new BigNumber(pollId), vote0, salt, { from: accounts[2] });
-            await voting.revealVote.sendTransactionAsync(new BigNumber(pollId), vote1, salt, { from: accounts[5] });
+            await voting.revealVote.sendTransactionAsync(new BigNumber(pollId), vote1, salt, { from: accounts[5] }).then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash));
             await skipChallengePeriod(blockNumber);
 
             const initialVoterSystemBalance = await treasury.systemBalance.callAsync(accounts[5]);
@@ -1225,7 +1230,7 @@ describe("ValidatorRegistry", async () => {
                 .should.eq(minimumBalance.minus(toStakeholderCut(minimumBalance)).toString());
 
             await validatorRegistryProxy.claimWinnings.sendTransactionAsync(challengeId, { from: accounts[1] });
-            await validatorRegistryProxy.claimWinnings.sendTransactionAsync(challengeId, { from: accounts[2] });
+            await validatorRegistryProxy.claimWinnings.sendTransactionAsync(challengeId, { from: accounts[2] }).then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash));
 
             await withdrawAll(accounts[0]);
             await withdrawAll(accounts[5]);
@@ -1249,11 +1254,11 @@ describe("ValidatorRegistry", async () => {
             });
             await voting.commitVote.sendTransactionAsync(new BigNumber(pollId), secret1, testValues.fiveEther, {
                 from: accounts[5],
-            });
+            }).then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash));
             await skipCommitPeriod(blockNumber);
             await voting.revealVote.sendTransactionAsync(new BigNumber(pollId), vote0, salt, { from: accounts[1] });
             await voting.revealVote.sendTransactionAsync(new BigNumber(pollId), vote0, salt, { from: accounts[2] });
-            await voting.revealVote.sendTransactionAsync(new BigNumber(pollId), vote1, salt, { from: accounts[5] });
+            await voting.revealVote.sendTransactionAsync(new BigNumber(pollId), vote1, salt, { from: accounts[5] }).then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash));
             await skipChallengePeriod(blockNumber);
 
             const initialChallengerSystemBalance = await treasury.systemBalance.callAsync(accounts[1]);
@@ -1284,7 +1289,7 @@ describe("ValidatorRegistry", async () => {
                 );
 
             await validatorRegistryProxy.claimWinnings.sendTransactionAsync(challengeId, { from: accounts[1] });
-            await validatorRegistryProxy.claimWinnings.sendTransactionAsync(challengeId, { from: accounts[2] });
+            await validatorRegistryProxy.claimWinnings.sendTransactionAsync(challengeId, { from: accounts[2] }).then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash));
 
             await withdrawAll(accounts[0]);
             await withdrawAll(accounts[1]);
@@ -1309,11 +1314,11 @@ describe("ValidatorRegistry", async () => {
             });
             await voting.commitVote.sendTransactionAsync(new BigNumber(pollId), secret1, testValues.fiveEther, {
                 from: accounts[5],
-            });
+            }).then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash));
             await skipCommitPeriod(blockNumber);
             await voting.revealVote.sendTransactionAsync(new BigNumber(pollId), vote0, salt, { from: accounts[1] });
             await voting.revealVote.sendTransactionAsync(new BigNumber(pollId), vote0, salt, { from: accounts[2] });
-            await voting.revealVote.sendTransactionAsync(new BigNumber(pollId), vote1, salt, { from: accounts[5] });
+            await voting.revealVote.sendTransactionAsync(new BigNumber(pollId), vote1, salt, { from: accounts[5] }).then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash));
 
             await validatorRegistryProxy.claimWinnings
                 .sendTransactionAsync(challengeId, { from: accounts[5] })
@@ -1321,7 +1326,7 @@ describe("ValidatorRegistry", async () => {
 
             await skipChallengePeriod(blockNumber);
             await validatorRegistryProxy.claimWinnings.sendTransactionAsync(challengeId, { from: accounts[1] });
-            await validatorRegistryProxy.claimWinnings.sendTransactionAsync(challengeId, { from: accounts[2] });
+            await validatorRegistryProxy.claimWinnings.sendTransactionAsync(challengeId, { from: accounts[2] }).then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash));
 
             await withdrawAll(accounts[0]);
             await withdrawAll(accounts[1]);
@@ -1329,9 +1334,7 @@ describe("ValidatorRegistry", async () => {
         });
     });
 
-    describe("claimRewards", function() {
-        this.timeout(5000);
-
+    describe("claimRewards", () => {
         describe("generate", () => {
             const reward = new BigNumber("1000000");
             beforeEach(async () => {
@@ -1342,13 +1345,13 @@ describe("ValidatorRegistry", async () => {
                 await skipApplicationPeriod(blockNumber);
                 await validatorRegistryProxy.confirmListing.sendTransactionAsync(tendermintPublicKey, {
                     from: accounts[1],
-                });
+                }).then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash));
             });
 
             it("should reward the user after a reward block", async () => {
                 await skipRewardPeriods();
                 const startingBalance = await kosuToken.balanceOf.callAsync(accounts[1]);
-                await validatorRegistryProxy.claimRewards.sendTransactionAsync(tendermintPublicKey);
+                await validatorRegistryProxy.claimRewards.sendTransactionAsync(tendermintPublicKey).then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash));
                 const endingBalance = await kosuToken.balanceOf.callAsync(accounts[1]);
                 endingBalance
                     .minus(startingBalance)
@@ -1361,7 +1364,7 @@ describe("ValidatorRegistry", async () => {
             it("should reward users for all reward blocks passed", async () => {
                 await skipRewardPeriods(undefined, 10);
                 const startingBalance = await kosuToken.balanceOf.callAsync(accounts[1]);
-                await validatorRegistryProxy.claimRewards.sendTransactionAsync(tendermintPublicKey);
+                await validatorRegistryProxy.claimRewards.sendTransactionAsync(tendermintPublicKey).then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash));
                 const endingBalance = await kosuToken.balanceOf.callAsync(accounts[1]);
                 endingBalance
                     .minus(startingBalance)
@@ -1392,9 +1395,9 @@ describe("ValidatorRegistry", async () => {
                 });
                 await validatorRegistryProxy.confirmListing.sendTransactionAsync(tendermintPublicKey, {
                     from: accounts[1],
-                });
+                }).then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash));
                 await skipRewardPeriods();
-                await validatorRegistryProxy.claimRewards.sendTransactionAsync(tendermintPublicKey);
+                await validatorRegistryProxy.claimRewards.sendTransactionAsync(tendermintPublicKey).then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash));
 
                 const listing = await validatorRegistryProxy.getListing
                     .callAsync(tendermintPublicKey)
@@ -1418,7 +1421,7 @@ describe("ValidatorRegistry", async () => {
                 await treasury.deposit.sendTransactionAsync(new BigNumber("1000000"), { from: accounts[1] });
                 await validatorRegistryProxy.confirmListing.sendTransactionAsync(tendermintPublicKey, {
                     from: accounts[1],
-                });
+                }).then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash));
                 await treasury.currentBalance
                     .callAsync(accounts[1])
                     .then(x => x.toString())
@@ -1428,7 +1431,7 @@ describe("ValidatorRegistry", async () => {
                     .then(x => x.toString())
                     .should.eventually.eq(minimumBalance.toString());
                 await skipRewardPeriods();
-                await validatorRegistryProxy.claimRewards.sendTransactionAsync(tendermintPublicKey);
+                await validatorRegistryProxy.claimRewards.sendTransactionAsync(tendermintPublicKey).then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash));
                 const desiredEndValue = new BigNumber(minimumBalance).plus(reward);
                 await treasury.currentBalance
                     .callAsync(accounts[1])
@@ -1449,7 +1452,7 @@ describe("ValidatorRegistry", async () => {
                 await skipApplicationPeriod(blockNumber);
                 await validatorRegistryProxy.confirmListing.sendTransactionAsync(tendermintPublicKey, {
                     from: accounts[1],
-                });
+                }).then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash));
                 await treasury.currentBalance
                     .callAsync(accounts[1])
                     .then(x => x.toString())
@@ -1459,7 +1462,7 @@ describe("ValidatorRegistry", async () => {
                     .then(x => x.toString())
                     .should.eventually.eq(minimumBalance.toString());
                 await skipRewardPeriods();
-                await validatorRegistryProxy.claimRewards.sendTransactionAsync(tendermintPublicKey);
+                await validatorRegistryProxy.claimRewards.sendTransactionAsync(tendermintPublicKey).then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash));
                 await treasury.currentBalance
                     .callAsync(accounts[1])
                     .then(x => x.toString())
@@ -1479,7 +1482,7 @@ describe("ValidatorRegistry", async () => {
                     await skipApplicationPeriod(blockNumber);
                     await validatorRegistryProxy.confirmListing.sendTransactionAsync(tendermintPublicKey, {
                         from: accounts[1],
-                    });
+                    }).then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash));
                 });
 
                 afterEach(async () => {
@@ -1489,7 +1492,7 @@ describe("ValidatorRegistry", async () => {
                 it("should burn the users tokens after a reward block", async () => {
                     await skipRewardPeriods();
                     const startingBalance = await treasury.currentBalance.callAsync(accounts[1]);
-                    await validatorRegistryProxy.claimRewards.sendTransactionAsync(tendermintPublicKey);
+                    await validatorRegistryProxy.claimRewards.sendTransactionAsync(tendermintPublicKey).then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash));
                     const endingBalance = await treasury.currentBalance.callAsync(accounts[1]);
                     startingBalance
                         .minus(endingBalance)
@@ -1500,7 +1503,7 @@ describe("ValidatorRegistry", async () => {
                 it("should burn users tokens for all reward blocks passed", async () => {
                     await skipRewardPeriods(undefined, 10);
                     const startingBalance = await treasury.currentBalance.callAsync(accounts[1]);
-                    await validatorRegistryProxy.claimRewards.sendTransactionAsync(tendermintPublicKey);
+                    await validatorRegistryProxy.claimRewards.sendTransactionAsync(tendermintPublicKey).then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash));
                     const endingBalance = await treasury.currentBalance.callAsync(accounts[1]);
                     startingBalance
                         .minus(endingBalance)

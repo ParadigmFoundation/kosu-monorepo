@@ -15,7 +15,7 @@ describe("Treasury", async () => {
 
     after(async () => {
         // Reverting setup
-        await auth.unauthorizeAddress.sendTransactionAsync(accounts[5]);
+        await auth.unauthorizeAddress.sendTransactionAsync(accounts[5]).then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash));
         await cleanAccounts();
     });
 
@@ -36,7 +36,7 @@ describe("Treasury", async () => {
         // Account 3 has 100 kosu
         await clearTreasury(accounts[3]);
         await ensureTokenBalance(accounts[3], testValues.oneHundredWei);
-        await kosuToken.approve.sendTransactionAsync(treasury.address, testValues.oneHundredWei, { from: accounts[3] });
+        await kosuToken.approve.sendTransactionAsync(treasury.address, testValues.oneHundredWei, { from: accounts[3] }).then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash));
     });
 
     describe("deposit", () => {
@@ -112,21 +112,21 @@ describe("Treasury", async () => {
             });
             await treasury.contractDeposit.sendTransactionAsync(accounts[3], testValues.oneHundredWei, {
                 from: accounts[5],
-            });
+            }).then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash));
 
             await treasury.currentBalance
                 .callAsync(accounts[3])
                 .then(x => x.toString())
                 .should.eventually.eq(testValues.oneHundredWei.toString());
 
-            await treasury.updateBalance.sendTransactionAsync(accounts[3], new BigNumber("73"), { from: accounts[5] });
+            await treasury.updateBalance.sendTransactionAsync(accounts[3], new BigNumber("73"), { from: accounts[5] }).then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash));
 
             await treasury.currentBalance
                 .callAsync(accounts[3])
                 .then(x => x.toString())
                 .should.eventually.eq("73");
 
-            await treasury.updateBalance.sendTransactionAsync(accounts[3], new BigNumber("80"), { from: accounts[5] });
+            await treasury.updateBalance.sendTransactionAsync(accounts[3], new BigNumber("80"), { from: accounts[5] }).then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash));
 
             await treasury.currentBalance
                 .callAsync(accounts[3])
@@ -163,28 +163,28 @@ describe("Treasury", async () => {
             });
             await treasury.contractDeposit.sendTransactionAsync(accounts[3], testValues.oneHundredWei, {
                 from: accounts[5],
-            });
+            }).then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash));
             await treasury.currentBalance
                 .callAsync(accounts[3])
                 .then(x => x.toString())
                 .should.eventually.eq(testValues.oneHundredWei.toString());
 
             // should handle negative change
-            await treasury.adjustBalance.sendTransactionAsync(accounts[3], new BigNumber("-27"), { from: accounts[5] });
+            await treasury.adjustBalance.sendTransactionAsync(accounts[3], new BigNumber("-27"), { from: accounts[5] }).then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash));
             await treasury.currentBalance
                 .callAsync(accounts[3])
                 .then(x => x.toString())
                 .should.eventually.eq("73");
 
             // should handle 0
-            await treasury.adjustBalance.sendTransactionAsync(accounts[3], new BigNumber("0"), { from: accounts[5] });
+            await treasury.adjustBalance.sendTransactionAsync(accounts[3], new BigNumber("0"), { from: accounts[5] }).then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash));
             await treasury.currentBalance
                 .callAsync(accounts[3])
                 .then(x => x.toString())
                 .should.eventually.eq("73");
 
             // should handle positive change
-            await treasury.adjustBalance.sendTransactionAsync(accounts[3], new BigNumber("7"), { from: accounts[5] });
+            await treasury.adjustBalance.sendTransactionAsync(accounts[3], new BigNumber("7"), { from: accounts[5] }).then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash));
             await treasury.currentBalance
                 .callAsync(accounts[3])
                 .then(x => x.toString())
@@ -239,7 +239,7 @@ describe("Treasury", async () => {
                 .should.eventually.eq("0");
             await treasury.contractDeposit.sendTransactionAsync(accounts[3], testValues.oneHundredWei, {
                 from: accounts[5],
-            });
+            }).then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash));
             await treasury.currentBalance
                 .callAsync(accounts[3])
                 .then(x => x.toString())
