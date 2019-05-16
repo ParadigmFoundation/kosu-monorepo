@@ -12,7 +12,6 @@ import {
     VotingContract,
 } from "../src";
 import { listingDecoder } from "../src/listingDecoder";
-import { migrations } from "../src/migrations";
 
 describe("ValidatorRegistry", async () => {
     let validatorRegistryProxy: ValidatorRegistryProxyContract;
@@ -135,13 +134,12 @@ describe("ValidatorRegistry", async () => {
     };
 
     before(async () => {
-        const testContracts = await migrations(web3Wrapper.getProvider(), txDefaults, { noLogs: true });
-        validatorRegistryProxy = testContracts.validatorRegistryProxy;
-        validatorRegistry = testContracts.validatorRegistryImpl;
-        kosuToken = testContracts.kosuToken;
-        treasury = testContracts.treasury;
-        auth = testContracts.authorizedAddresses;
-        voting = testContracts.voting;
+        validatorRegistryProxy = contracts.validatorRegistryProxy;
+        validatorRegistry = contracts.validatorRegistryImpl;
+        kosuToken = contracts.kosuToken;
+        treasury = contracts.treasury;
+        auth = contracts.authorizedAddresses;
+        voting = contracts.voting;
         applicationPeriod = await validatorRegistryProxy.applicationPeriod.callAsync();
         exitPeriod = await validatorRegistryProxy.exitPeriod.callAsync();
         rewardPeriod = await validatorRegistryProxy.rewardPeriod.callAsync();
@@ -217,7 +215,8 @@ describe("ValidatorRegistry", async () => {
     describe("registerListing", () => {
         it("should require a balance greater or equal to the minimumBalance", async () => {
             const from = accounts[1];
-            kosuToken.transfer.sendTransactionAsync(accounts[0], testValues.oneHundredEther, { from });
+            const idleBalance = await kosuToken.balanceOf.callAsync(from);
+            kosuToken.transfer.sendTransactionAsync(accounts[0], idleBalance, { from });
 
             await kosuToken.balanceOf
                 .callAsync(from)
@@ -227,7 +226,7 @@ describe("ValidatorRegistry", async () => {
                 .sendTransactionAsync(tendermintPublicKey, minimumBalance, testValues.zero, { from })
                 .then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash)).should.eventually.be.rejected;
 
-            kosuToken.transfer.sendTransactionAsync(from, testValues.oneHundredEther, { from: accounts[0] });
+            kosuToken.transfer.sendTransactionAsync(from, idleBalance, { from: accounts[0] });
         });
 
         it("should require an approval greater or equal to the minimumBalance", async () => {
@@ -1543,6 +1542,8 @@ describe("ValidatorRegistry", async () => {
             decodedLogs.tendermintPublicKey.should.eq(base64Key);
             decodedLogs.owner.should.eq(accounts[0].toLowerCase());
             decodedLogs.stake.should.eq("0");
+
+            await finishExit(tendermintPublicKey);
         });
     });
 });

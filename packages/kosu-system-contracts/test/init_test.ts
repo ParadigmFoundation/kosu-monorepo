@@ -17,19 +17,6 @@ const useGeth = process.argv.includes("geth");
 chai.use(chaiAsPromised);
 chai.should();
 
-const testValues: TestValues = {
-    zero: new BigNumber("0"),
-    oneWei: new BigNumber("1"),
-    fiftyWei: new BigNumber("50"),
-    oneHundredWei: new BigNumber("100"),
-    halfEther: new BigNumber(toWei("0.5")),
-    oneEther: new BigNumber(toWei("1")),
-    fiveEther: new BigNumber(toWei("5")),
-    sixEther: new BigNumber(toWei("6")),
-    oneHundredEther: new BigNumber(toWei("100")),
-    maxUint: new BigNumber(2).pow(new BigNumber(256)).minus(new BigNumber(1)),
-};
-
 before(async () => {
     const provider = new Web3ProviderEngine();
 
@@ -63,12 +50,70 @@ before(async () => {
     const contracts = await migrations(provider, txDefaults, { noLogs: true });
     const accounts = await web3.eth.getAccounts().then(a => a.map(v => v.toLowerCase()));
 
-    const skipBlocks = async (num): Promise<void> => {
-        const _num = typeof num === "number" ? num : num.toNumber();
-        for (let i = 0; i < _num; i++) {
-            await web3Wrapper.sendTransactionAsync({ from: accounts[0], to: accounts[1], value: 0 });
-        }
+    const testValues: TestValues = {
+        zero: new BigNumber("0"),
+        oneWei: new BigNumber("1"),
+        fiftyWei: new BigNumber("50"),
+        oneHundredWei: new BigNumber("100"),
+        halfEther: new BigNumber(toWei("0.5")),
+        oneEther: new BigNumber(toWei("1")),
+        fiveEther: new BigNumber(toWei("5")),
+        sixEther: new BigNumber(toWei("6")),
+        oneHundredEther: new BigNumber(toWei("100")),
+        maxUint: new BigNumber(2).pow(new BigNumber(256)).minus(new BigNumber(1)),
     };
 
-    Object.assign(global, { skipBlocks, txDefaults, testValues, contracts, accounts, web3, web3Wrapper });
+    const testHelpers = {
+        clearTreasury: async address => {
+            const systemBalance = await contracts.treasury.systemBalance.callAsync(address);
+            if (systemBalance.gt(0)) {
+                const currentBalance = await contracts.treasury.currentBalance.callAsync(address);
+                if (systemBalance.gt(currentBalance)) {
+                    await contracts.treasury.releaseTokens.sendTransactionAsync(
+                        address,
+                        systemBalance.minus(currentBalance),
+                    );
+                }
+                await contracts.treasury.withdraw.sendTransactionAsync(systemBalance, { from: address });
+            }
+        },
+        ensureTokenBalance: async (address: string, desiredValue: BigNumber): Promise<void> => {
+            await contracts.kosuToken.balanceOf.callAsync(address).then(async balance => {
+                if (balance.gt(desiredValue)) {
+                    await contracts.kosuToken.transfer.sendTransactionAsync(accounts[0], balance.minus(desiredValue), {
+                        from: address,
+                    }).should.eventually.be.fulfilled;
+                } else if (balance.lt(desiredValue)) {
+                    await contracts.kosuToken.transfer.sendTransactionAsync(address, desiredValue.minus(balance)).should
+                        .eventually.be.fulfilled;
+                }
+            });
+            await contracts.kosuToken.balanceOf
+                .callAsync(address)
+                .then(val => val.toString())
+                .should.eventually.eq(
+                    desiredValue.toString(),
+                    `Ensure ${address} has balanceOf ${desiredValue.toString()} failed`,
+                );
+        },
+        skipBlocks: async (num): Promise<void> => {
+            const _num = typeof num === "number" ? num : num.toNumber();
+            for (let i = 0; i < _num; i++) {
+                await web3Wrapper.sendTransactionAsync({ from: accounts[0], to: accounts[1], value: 0 });
+            }
+        },
+        cleanAccounts: async () => {
+            for (const account of accounts) {
+                await testHelpers.clearTreasury(account);
+                if (account !== accounts[0]) {
+                    await testHelpers.ensureTokenBalance(account, testValues.zero);
+                }
+                contracts.kosuToken.approve.sendTransactionAsync(contracts.treasury.address, testValues.zero, {
+                    from: account,
+                });
+            }
+        },
+    };
+
+    Object.assign(global, { ...testHelpers, txDefaults, testValues, contracts, accounts, web3, web3Wrapper });
 });

@@ -10,7 +10,7 @@ describe("Voting", () => {
     let treasury: TreasuryContract;
 
     const prepareTokens = async (from, funds) => {
-        await kosuToken.approve.sendTransactionAsync(treasury.address, testValues.maxUint, { from });
+        await kosuToken.approve.sendTransactionAsync(treasury.address, funds, { from });
         await treasury.deposit.sendTransactionAsync(new BigNumber(funds), { from });
     };
 
@@ -24,9 +24,10 @@ describe("Voting", () => {
         const creationBlock = base + 1;
         const commitEnd = creationBlock + start;
         const revealEnd = commitEnd + end;
-        const result = await voting.createPoll.sendTransactionAsync(commitEnd, revealEnd)
+        const result = await voting.createPoll
+            .sendTransactionAsync(commitEnd, revealEnd)
             .then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash));
-        const {pollId} = decodeKosuEvents(result.logs)[0];
+        const { pollId } = decodeKosuEvents(result.logs)[0];
         return pollId;
     };
 
@@ -49,22 +50,42 @@ describe("Voting", () => {
     const secret2 = soliditySha3({ t: "uint", v: new BigNumber("2") }, { t: "uint", v: salt });
 
     before(async () => {
-        const testContracts = await migrations(web3Wrapper.getProvider(), txDefaults, { noLogs: true });
-        voting = testContracts.voting;
-        kosuToken = testContracts.kosuToken;
-        treasury = testContracts.treasury;
-    });
+        voting = contracts.voting;
+        kosuToken = contracts.kosuToken;
+        treasury = contracts.treasury;
+        const posterRegistry = contracts.posterRegistryProxy;
 
-    afterEach(async () => {
         await treasury.currentBalance.callAsync(accounts[0]).then(async val => {
             if (val.gt(0)) {
-                treasury.withdraw.sendTransactionAsync(val, { from: accounts[0]});
+                return treasury.withdraw.sendTransactionAsync(val, { from: accounts[0] });
+            } else {
+                return null;
             }
         });
 
         await treasury.currentBalance.callAsync(accounts[1]).then(async val => {
             if (val.gt(0)) {
-                treasury.withdraw.sendTransactionAsync(val, { from: accounts[1] });
+                return treasury.withdraw.sendTransactionAsync(val, { from: accounts[1] });
+            } else {
+                return null;
+            }
+        });
+    });
+
+    afterEach(async () => {
+        await treasury.currentBalance.callAsync(accounts[0]).then(async val => {
+            if (val.gt(0)) {
+                return treasury.withdraw.sendTransactionAsync(val, { from: accounts[0] });
+            } else {
+                return null;
+            }
+        });
+
+        await treasury.currentBalance.callAsync(accounts[1]).then(async val => {
+            if (val.gt(0)) {
+                return treasury.withdraw.sendTransactionAsync(val, { from: accounts[1] });
+            } else {
+                return null;
             }
         });
     });
@@ -84,7 +105,7 @@ describe("Voting", () => {
             await voting.nextPollId
                 .callAsync()
                 .then(x => x.toString())
-                .should.eventually.eq("2");
+                .should.eventually.eq(nextPoll.plus(1).toString());
         });
 
         it("should not allow the commit end to be before reveal end", async () => {
@@ -191,12 +212,14 @@ describe("Voting", () => {
         });
 
         it("should not allow a voter to reveal when the tokens are gone", async () => {
-            await treasury.withdraw.sendTransactionAsync(testValues.fiveEther);
+            await treasury.withdraw.sendTransactionAsync(await treasury.currentBalance.callAsync(accounts[0]));
             const testPoll = await oneTwoPoll();
             await voting.commitVote
                 .sendTransactionAsync(testPoll, secret1, testValues.fiveEther)
                 .then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash)).should.eventually.be.fulfilled;
+
             await treasury.withdraw.sendTransactionAsync(testValues.oneWei);
+
             await voting.revealVote
                 .sendTransactionAsync(testPoll, vote1, salt)
                 .then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash)).should.eventually.be.rejected;

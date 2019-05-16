@@ -15,5 +15,8 @@ declare const testValues: TestValues;
 declare const accounts: string[];
 declare const contracts: MigratedContracts;
 declare const web3Wrapper: Web3Wrapper;
+declare function clearTreasury(address: string): Promise<void>;
+declare function ensureTokenBalance(address: string, desiredValue: BigNumber): Promise<void>;
+declare function cleanAccounts(): Promise<void>;
 declare function skipBlocks(val: BigNumber): Promise<void>;
 declare const txDefaults: any;

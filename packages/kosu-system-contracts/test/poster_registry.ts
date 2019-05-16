@@ -31,6 +31,15 @@ describe("PosterRegistry", async () => {
         auth = contracts.authorizedAddresses;
     });
 
+    after(async () => {
+        for (const account of accounts) {
+            await posterRegistryProxy.releaseTokens.sendTransactionAsync(
+                await posterRegistryProxy.tokensRegisteredFor.callAsync(account),
+                { from: account },
+            );
+        }
+    });
+
     describe("registerTokens", () => {
         it("should require a balance greater or equal to the amount registered", async () => {
             const value = toWei("50");
