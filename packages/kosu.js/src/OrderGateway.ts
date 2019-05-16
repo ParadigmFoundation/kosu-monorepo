@@ -1,5 +1,5 @@
 import { BigNumber } from "@0x/utils";
-import {Web3Wrapper} from "@0x/web3-wrapper";
+import { Web3Wrapper } from "@0x/web3-wrapper";
 import { artifacts, DeployedAddresses, OrderGatewayContract } from "@kosu/system-contracts";
 import Web3 from "web3";
 
@@ -65,13 +65,9 @@ export class OrderGateway {
         const takerArguments = await this.takerArguments(order.subContract);
         const makerValuesBytes = OrderSerializer.serializeMaker(makerArguments, order);
         const takerValuesBytes = OrderSerializer.serializeTaker(takerArguments, takerValues);
-        await this.contract.participate.sendTransactionAsync(
-            order.subContract,
-            order.id || 1,
-            makerValuesBytes,
-            takerValuesBytes,
-            { from: taker },
-        ).then(async txHash => this.web3Wrapper.awaitTransactionSuccessAsync(txHash));
+        await this.contract.participate
+            .sendTransactionAsync(order.subContract, order.id || 1, makerValuesBytes, takerValuesBytes, { from: taker })
+            .then(async txHash => this.web3Wrapper.awaitTransactionSuccessAsync(txHash));
     }
 
     /**
