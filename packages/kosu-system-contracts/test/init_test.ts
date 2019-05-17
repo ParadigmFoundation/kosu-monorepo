@@ -1,5 +1,7 @@
 import { LogDecoder } from "@0x/contracts-test-utils";
 import { BlockchainLifecycle } from "@0x/dev-utils";
+import {CoverageSubprovider} from "@0x/sol-coverage";
+import { SolCompilerArtifactAdapter } from "@0x/sol-trace";
 import { GanacheSubprovider, RPCSubprovider } from "@0x/subproviders";
 import { BigNumber, providerUtils } from "@0x/utils";
 import { Web3Wrapper } from "@0x/web3-wrapper";
@@ -17,6 +19,8 @@ const useGeth = process.argv.includes("geth");
 chai.use(chaiAsPromised);
 chai.should();
 
+let coverageSubprovider;
+
 before(async () => {
     const provider = new Web3ProviderEngine();
 
@@ -24,6 +28,9 @@ before(async () => {
         const rpcSubprovider = new RPCSubprovider(process.env.WEB3_URI);
         provider.addProvider(rpcSubprovider);
     } else {
+        const artifactAdapter = new SolCompilerArtifactAdapter();
+        coverageSubprovider = new CoverageSubprovider(artifactAdapter, "0xc521f483f607eb5ea4d6b2dfdbd540134753a865");
+        provider.addProvider(coverageSubprovider);
         const ganacheSubprovider = new GanacheSubprovider({ mnemonic: process.env.npm_package_config_test_mnemonic });
         provider.addProvider(ganacheSubprovider);
     }
@@ -142,3 +149,9 @@ before(async () => {
 
     Object.assign(global, { ...testHelpers, txDefaults, testValues, contracts, accounts, web3, web3Wrapper });
 });
+
+after(async () => {
+    if (coverageSubprovider) {
+        await coverageSubprovider.writeCoverageAsync();
+    }
+})

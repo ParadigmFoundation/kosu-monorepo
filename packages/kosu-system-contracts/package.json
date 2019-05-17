@@ -62,6 +62,7 @@
         "@types/mocha": "^5.2.6",
         "chai": "^4.2.0",
         "chai-as-promised": "^7.1.1",
+        "istanbul": "^0.4.5",
         "truffle-hdwallet-provider": "^1.0.6",
         "typescript": "^3.4.5",
         "yargs": "^13.2.2"
