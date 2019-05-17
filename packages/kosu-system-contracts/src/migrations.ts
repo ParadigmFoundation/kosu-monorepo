@@ -49,11 +49,11 @@ export async function migrations(
             _rewardPeriod: 20,
         },
         default: {
-            _applicationPeriod: 20,
-            _commitPeriod: 20,
-            _challengePeriod: 40,
-            _exitPeriod: 20,
-            _rewardPeriod: 20,
+            _applicationPeriod: 8,
+            _commitPeriod: 4,
+            _challengePeriod: 8,
+            _exitPeriod: 2,
+            _rewardPeriod: 2,
         },
     };
 
