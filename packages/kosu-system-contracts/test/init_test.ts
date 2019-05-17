@@ -24,7 +24,7 @@ before(async () => {
         const rpcSubprovider = new RPCSubprovider(process.env.WEB3_URI);
         provider.addProvider(rpcSubprovider);
     } else {
-        const ganacheSubprovider = new GanacheSubprovider({});
+        const ganacheSubprovider = new GanacheSubprovider({ mnemonic: process.env.npm_package_config_test_mnemonic });
         provider.addProvider(ganacheSubprovider);
     }
 
