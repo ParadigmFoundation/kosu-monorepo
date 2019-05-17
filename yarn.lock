@@ -226,6 +226,33 @@
     web3-eth-abi "^1.0.0-beta.24"
     yargs "^10.0.3"
 
+"@0x/sol-compiler@^3.1.7":
+  version "3.1.7"
+  resolved "https://registry.yarnpkg.com/@0x/sol-compiler/-/sol-compiler-3.1.7.tgz#b31886e6f2e01bba57de7a976f89be73923421c1"
+  integrity sha512-DLOYSXDpPjLwE80Kz+La3A+waWiO2XNO+O+N0vJUe1i9Rl+JEK4vXcXZNv9XLvmFf668LpHe56vhObeKRL+N8A==
+  dependencies:
+    "@0x/assert" "^2.0.10"
+    "@0x/json-schemas" "^3.0.10"
+    "@0x/sol-resolver" "^2.0.7"
+    "@0x/types" "^2.2.2"
+    "@0x/typescript-typings" "^4.2.2"
+    "@0x/utils" "^4.3.3"
+    "@0x/web3-wrapper" "^6.0.6"
+    "@types/yargs" "^11.0.0"
+    chalk "^2.3.0"
+    chokidar "^2.0.4"
+    ethereum-types "^2.1.2"
+    ethereumjs-util "^5.1.1"
+    lodash "^4.17.11"
+    mkdirp "^0.5.1"
+    pluralize "^7.0.0"
+    require-from-string "^2.0.1"
+    semver "5.5.0"
+    solc "^0.5.5"
+    source-map-support "^0.5.0"
+    web3-eth-abi "^1.0.0-beta.24"
+    yargs "^10.0.3"
+
 "@0x/sol-coverage@^3.0.3":
   version "3.0.3"
   resolved "https://registry.yarnpkg.com/@0x/sol-coverage/-/sol-coverage-3.0.3.tgz#b72f11665de10fd590ab9131c4e4b1af9a923ff1"
@@ -233,6 +260,20 @@
   dependencies:
     "@0x/sol-tracing-utils" "^6.0.10"
     "@0x/subproviders" "^4.0.5"
+    "@0x/typescript-typings" "^4.2.2"
+    "@types/minimatch" "^3.0.3"
+    ethereum-types "^2.1.2"
+    lodash "^4.17.11"
+    minimatch "^3.0.4"
+    web3-provider-engine "14.0.6"
+
+"@0x/sol-coverage@^3.0.4":
+  version "3.0.4"
+  resolved "https://registry.yarnpkg.com/@0x/sol-coverage/-/sol-coverage-3.0.4.tgz#b47dcc1b085b886bdfd3452430384a236e9c4e23"
+  integrity sha512-xAZFizW/b3Rsclw0VK4GaoZ16Xth3/kHV/+EL56xRYRHQeO8rmjVrW85pisejHjzYVBYhKecwTh2yhPFjFa66A==
+  dependencies:
+    "@0x/sol-tracing-utils" "^6.0.11"
+    "@0x/subproviders" "^4.0.6"
     "@0x/typescript-typings" "^4.2.2"
     "@types/minimatch" "^3.0.3"
     ethereum-types "^2.1.2"
@@ -249,6 +290,20 @@
     "@0x/subproviders" "^4.0.5"
     "@0x/typescript-typings" "^4.2.2"
     "@0x/utils" "^4.3.1"
+    ethereum-types "^2.1.2"
+    ethereumjs-util "^5.1.1"
+    lodash "^4.17.11"
+    web3-provider-engine "14.0.6"
+
+"@0x/sol-profiler@^3.1.6":
+  version "3.1.6"
+  resolved "https://registry.yarnpkg.com/@0x/sol-profiler/-/sol-profiler-3.1.6.tgz#e07116b788c0c8593dcff6f3f289d01b8fbb60a4"
+  integrity sha512-cCpWWFY0dDeJyVw0IvT9dFkmCX0zHJp47YIx2W+LxVrOK7SlgzhnbV1cJq7Iq5fXhIP5KyMH+3jwL8z5BlGYHA==
+  dependencies:
+    "@0x/sol-tracing-utils" "^6.0.11"
+    "@0x/subproviders" "^4.0.6"
+    "@0x/typescript-typings" "^4.2.2"
+    "@0x/utils" "^4.3.3"
     ethereum-types "^2.1.2"
     ethereumjs-util "^5.1.1"
     lodash "^4.17.11"
@@ -278,6 +333,21 @@
     loglevel "^1.6.1"
     web3-provider-engine "14.0.6"
 
+"@0x/sol-trace@^2.0.12":
+  version "2.0.12"
+  resolved "https://registry.yarnpkg.com/@0x/sol-trace/-/sol-trace-2.0.12.tgz#10f1f787a133005c9fc63f5d93dc72dd18a26e20"
+  integrity sha512-OHkmADsKQ3UR981Cp6M8u4lkCAsZzu+9gaPuGCohYRSqftIOCj1koTz6lEd8TxFy1aUh3zQENwh0Pi7weqyE+Q==
+  dependencies:
+    "@0x/sol-tracing-utils" "^6.0.11"
+    "@0x/subproviders" "^4.0.6"
+    "@0x/typescript-typings" "^4.2.2"
+    chalk "^2.3.0"
+    ethereum-types "^2.1.2"
+    ethereumjs-util "^5.1.1"
+    lodash "^4.17.11"
+    loglevel "^1.6.1"
+    web3-provider-engine "14.0.6"
+
 "@0x/sol-tracing-utils@^6.0.10":
   version "6.0.10"
   resolved "https://registry.yarnpkg.com/@0x/sol-tracing-utils/-/sol-tracing-utils-6.0.10.tgz#08b808a122fd3dacf5ca473404ef694f6f0f55b6"
@@ -290,6 +360,33 @@
     "@0x/typescript-typings" "^4.2.2"
     "@0x/utils" "^4.3.1"
     "@0x/web3-wrapper" "^6.0.5"
+    "@types/solidity-parser-antlr" "^0.2.3"
+    chalk "^2.3.0"
+    ethereum-types "^2.1.2"
+    ethereumjs-util "^5.1.1"
+    ethers "~4.0.4"
+    glob "^7.1.2"
+    istanbul "^0.4.5"
+    lodash "^4.17.11"
+    loglevel "^1.6.1"
+    mkdirp "^0.5.1"
+    rimraf "^2.6.2"
+    semaphore-async-await "^1.5.1"
+    solc "^0.5.5"
+    solidity-parser-antlr "^0.4.2"
+
+"@0x/sol-tracing-utils@^6.0.11":
+  version "6.0.11"
+  resolved "https://registry.yarnpkg.com/@0x/sol-tracing-utils/-/sol-tracing-utils-6.0.11.tgz#9eebe2fe225d245d90519ee584c411eea3e43554"
+  integrity sha512-KVtOQAJFdSy55tDg+0cXahMqU83VbjfBECxUt5NTBmppyQSmHdFbA7YYwLNHciYwGAs3/kIF91uWkS7rNPyywA==
+  dependencies:
+    "@0x/dev-utils" "^2.2.2"
+    "@0x/sol-compiler" "^3.1.7"
+    "@0x/sol-resolver" "^2.0.7"
+    "@0x/subproviders" "^4.0.6"
+    "@0x/typescript-typings" "^4.2.2"
+    "@0x/utils" "^4.3.3"
+    "@0x/web3-wrapper" "^6.0.6"
     "@types/solidity-parser-antlr" "^0.2.3"
     chalk "^2.3.0"
     ethereum-types "^2.1.2"
