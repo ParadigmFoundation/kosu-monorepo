@@ -42,11 +42,11 @@ export async function migrations(
             _rewardPeriod: 168000,
         },
         6174: {
-            _applicationPeriod: 20,
-            _commitPeriod: 20,
-            _challengePeriod: 40,
-            _exitPeriod: 20,
-            _rewardPeriod: 20,
+            _applicationPeriod: 10,
+            _commitPeriod: 10,
+            _challengePeriod: 20,
+            _exitPeriod: 5,
+            _rewardPeriod: 5,
         },
         default: {
             _applicationPeriod: 8,
