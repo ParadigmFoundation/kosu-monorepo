@@ -15,6 +15,7 @@ import { artifacts } from "../src";
 import { migrations } from "../src/migrations";
 
 const useGeth = process.argv.includes("geth");
+const runCoverage = process.argv.includes("runCoverage");
 
 chai.use(chaiAsPromised);
 chai.should();
@@ -28,9 +29,13 @@ before(async () => {
         const rpcSubprovider = new RPCSubprovider(process.env.WEB3_URI);
         provider.addProvider(rpcSubprovider);
     } else {
-        const artifactAdapter = new SolCompilerArtifactAdapter();
-        coverageSubprovider = new CoverageSubprovider(artifactAdapter, "0xc521f483f607eb5ea4d6b2dfdbd540134753a865");
-        provider.addProvider(coverageSubprovider);
+        if (runCoverage) {
+            console.log('running coverage')
+            const artifactAdapter = new SolCompilerArtifactAdapter();
+            coverageSubprovider = new CoverageSubprovider(artifactAdapter, "0xc521f483f607eb5ea4d6b2dfdbd540134753a865");
+            provider.addProvider(coverageSubprovider);
+        }
+
         const ganacheSubprovider = new GanacheSubprovider({ mnemonic: process.env.npm_package_config_test_mnemonic });
         provider.addProvider(ganacheSubprovider);
     }

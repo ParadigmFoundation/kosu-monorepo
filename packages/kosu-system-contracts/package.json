@@ -15,7 +15,7 @@
     "scripts": {
         "test": "ts-mocha -p test/tsconfig.json test/*",
         "test:ci": "ts-mocha -p test/tsconfig.json test/* -- geth",
-        "coverage": "yarn test --timeout 10000 && istanbul report html && open coverage/index.html",
+        "coverage": "yarn test -- --timeout 10000 -- runCoverage && istanbul report html && open coverage/index.html",
         "build": "run-s contracts:clean compile:solidity generate_contract_wrappers compile:typescript",
         "compile:solidity": "sol-compiler",
         "compile:typescript": "tsc",
