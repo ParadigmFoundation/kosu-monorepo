@@ -1,6 +1,6 @@
 import { LogDecoder } from "@0x/contracts-test-utils";
 import { BlockchainLifecycle } from "@0x/dev-utils";
-import {CoverageSubprovider} from "@0x/sol-coverage";
+import { CoverageSubprovider } from "@0x/sol-coverage";
 import { SolCompilerArtifactAdapter } from "@0x/sol-trace";
 import { GanacheSubprovider, RPCSubprovider } from "@0x/subproviders";
 import { BigNumber, providerUtils } from "@0x/utils";
@@ -30,9 +30,12 @@ before(async () => {
         provider.addProvider(rpcSubprovider);
     } else {
         if (runCoverage) {
-            console.log('running coverage')
+            console.log("running coverage");
             const artifactAdapter = new SolCompilerArtifactAdapter();
-            coverageSubprovider = new CoverageSubprovider(artifactAdapter, "0xc521f483f607eb5ea4d6b2dfdbd540134753a865");
+            coverageSubprovider = new CoverageSubprovider(
+                artifactAdapter,
+                "0xc521f483f607eb5ea4d6b2dfdbd540134753a865",
+            );
             provider.addProvider(coverageSubprovider);
         }
 
