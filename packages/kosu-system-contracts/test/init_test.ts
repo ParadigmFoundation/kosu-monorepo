@@ -154,4 +154,4 @@ after(async () => {
     if (coverageSubprovider) {
         await coverageSubprovider.writeCoverageAsync();
     }
-})
+});
