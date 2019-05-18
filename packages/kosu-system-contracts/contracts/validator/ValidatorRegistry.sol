@@ -12,11 +12,11 @@ import "../voting/Voting.sol";
 contract ValidatorRegistry is IValidatorRegistry, Authorizable {
     using SafeMath for uint;
 
-    uint private _applicationPeriod = 8;
-    uint private _commitPeriod = 4;
-    uint private _challengePeriod = 8;
-    uint private _exitPeriod = 2;
-    uint private _rewardPeriod = 2;
+    uint private _applicationPeriod;
+    uint private _commitPeriod;
+    uint private _challengePeriod;
+    uint private _exitPeriod;
+    uint private _rewardPeriod;
     uint private _minimumBalance = 1 ether;
     uint private _stakeholderCut = 30; //Will be used as a percent so must be sub 100
     Treasury private _treasury;
@@ -36,11 +36,16 @@ contract ValidatorRegistry is IValidatorRegistry, Authorizable {
         @param auth AuthorizedAddresses deployed address
         @param _events Deployed EventEmitter address
     */
-    constructor(address _treasuryAddress, address _votingAddress, address auth, address _events) Authorizable(auth) public {
+    constructor(address _treasuryAddress, address _votingAddress, address auth, address _events, uint applicationPeriod, uint commitPeriod, uint challengePeriod, uint exitPeriod, uint rewardPeriod) Authorizable(auth) public {
         _treasury = Treasury(_treasuryAddress);
         _voting = Voting(_votingAddress);
         _kosuToken = _treasury.kosuToken();
         e = EventEmitter(_events);
+        _applicationPeriod = applicationPeriod;
+        _commitPeriod = commitPeriod;
+        _challengePeriod = challengePeriod;
+        _exitPeriod = exitPeriod;
+        _rewardPeriod = rewardPeriod;
     }
 
     /** @dev Expose the configured applicationPeriod
@@ -107,11 +112,11 @@ contract ValidatorRegistry is IValidatorRegistry, Authorizable {
         return address(_voting);
     }
 
-    /** @dev Expose the list of active validators
-        @notice Expose the list of active validators
+    /** @dev Expose the list of active listing keys
+        @notice Expose the list of active listing keys
         @return An array of hex encoded tendermint keys
     */
-    function validators() public view returns (bytes32[] memory) {
+    function listingKeys() public view returns (bytes32[] memory) {
         return _listingKeys;
     }
 
@@ -272,6 +277,11 @@ contract ValidatorRegistry is IValidatorRegistry, Authorizable {
         } else {
             challenge.passed = false;
             challenge.finalized = true;
+
+            if (_voting.totalWinningTokens(challenge.pollId) == 0) {
+                holderCut = challenge.balance;
+                challenge.voterTotal = 0;
+            }
 
             //Challenger lost and has lost the tokens.
             _treasury.confiscate(challenge.challenger, listing.stakedBalance);

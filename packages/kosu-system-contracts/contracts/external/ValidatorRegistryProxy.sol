@@ -119,8 +119,8 @@ contract ValidatorRegistryProxy is Authorizable {
         @notice Reads the current registries current validator keys.
         @return An array of bytes32 hex encoded tendermint public keys.
     */
-    function validators() external view returns (bytes32[] memory) {
-        return registry.validators();
+    function listingKeys() external view returns (bytes32[] memory) {
+        return registry.listingKeys();
     }
 
     /** @dev Reads the current registries listing entry for provided key.

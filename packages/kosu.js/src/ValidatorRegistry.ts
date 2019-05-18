@@ -132,11 +132,11 @@ export class ValidatorRegistry {
     }
 
     /**
-     * Reads the current validators
+     * Reads the current listing keys
      */
-    public async validators(): Promise<string[]> {
+    public async listingKeys(): Promise<string[]> {
         const contract = await this.getContract();
-        return contract.validators.callAsync();
+        return contract.listingKeys.callAsync();
     }
 
     /**

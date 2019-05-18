@@ -1,4 +1,5 @@
 import { BigNumber } from "@0x/utils";
+import { Web3Wrapper } from "@0x/web3-wrapper";
 import { artifacts, DeployedAddresses, OrderGatewayContract } from "@kosu/system-contracts";
 import Web3 from "web3";
 
@@ -12,6 +13,7 @@ import { OrderSerializer } from "./OrderSerializer";
 export class OrderGateway {
     private readonly web3: Web3;
     private readonly initializing: Promise<void>;
+    private readonly web3Wrapper: Web3Wrapper;
     private address: string;
     private contract: OrderGatewayContract;
 
@@ -22,6 +24,7 @@ export class OrderGateway {
      */
     constructor(options: KosuOptions) {
         this.web3 = options.web3;
+        this.web3Wrapper = options.web3Wrapper;
         this.address = options.orderGatewayAddress;
         this.initializing = this.init(options);
     }
@@ -62,13 +65,9 @@ export class OrderGateway {
         const takerArguments = await this.takerArguments(order.subContract);
         const makerValuesBytes = OrderSerializer.serializeMaker(makerArguments, order);
         const takerValuesBytes = OrderSerializer.serializeTaker(takerArguments, takerValues);
-        await this.contract.participate.sendTransactionAsync(
-            order.subContract,
-            order.id || 1,
-            makerValuesBytes,
-            takerValuesBytes,
-            { from: taker },
-        );
+        await this.contract.participate
+            .sendTransactionAsync(order.subContract, order.id || 1, makerValuesBytes, takerValuesBytes, { from: taker })
+            .then(async txHash => this.web3Wrapper.awaitTransactionSuccessAsync(txHash));
     }
 
     /**

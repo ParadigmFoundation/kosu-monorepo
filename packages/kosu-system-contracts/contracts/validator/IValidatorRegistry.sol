@@ -73,7 +73,7 @@ interface IValidatorRegistry {
     function maxRewardRate() external view returns (uint);
 
     /** @dev Interface method */
-    function validators() external view returns (bytes32[] memory);
+    function listingKeys() external view returns (bytes32[] memory);
 
     /** @dev Interface method */
     function getListing(bytes32) external view returns (Status, uint, bytes32, address);

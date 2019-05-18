@@ -1,3 +1,6 @@
-/packages/kosu-system-contracts/
-/packages/kosu-sdk-contracts/
 /packages/go-kosu/vendor/
+packages/kosu.js/dist/
+packages/kosu-system-contracts/dist/
+packages/kosu-system-contracts/test/dist/
+packages/kosu-system-contracts/generated-artifacts/
+packages/kosu-system-contracts/generated-wrappers/

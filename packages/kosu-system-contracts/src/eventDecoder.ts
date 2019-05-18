@@ -3,7 +3,15 @@ import { hexToNumberString, soliditySha3 } from "web3-utils";
 
 import * as EventEmitter from "../generated-artifacts/EventEmitter.json";
 
-const event: { name: string; type: string; inputs: Array<{ name: string; type: string }>} = EventEmitter.compilerOutput.abi.filter(entry => entry.type === "event")[0] as { name: string; type: string; inputs: Array<{ name: string; type: string }>};
+const event: {
+    name: string;
+    type: string;
+    inputs: Array<{ name: string; type: string }>;
+} = EventEmitter.compilerOutput.abi.filter(entry => entry.type === "event")[0] as {
+    name: string;
+    type: string;
+    inputs: Array<{ name: string; type: string }>;
+};
 const signature: string = soliditySha3(`${event.name}(${event.inputs.map(input => input.type).join(",")})`);
 
 export const bytes32ToAddressString = (val: string): string => {
@@ -37,7 +45,7 @@ export const eventDecoder = (eventReturnValues: any): any => {
         case "ValidatorRegistered":
             Object.assign(decoded, {
                 tendermintPublicKey: bytes32ToBase64(data[0]),
-                applicationBlockNumber: hexToNumberString(data[1]), // TODO: better name
+                applicationBlockNumber: hexToNumberString(data[1]),
                 owner: bytes32ToAddressString(data[2]),
                 rewardRate: Decoder.decodeParameter("int", data[3]).toString(),
             });
@@ -47,6 +55,7 @@ export const eventDecoder = (eventReturnValues: any): any => {
                 tendermintPublicKey: bytes32ToBase64(data[0]),
                 owner: bytes32ToAddressString(data[1]),
                 challenger: bytes32ToAddressString(data[2]),
+                challengeId: hexToNumberString(data[3]),
                 pollId: hexToNumberString(data[3]),
             });
             break;
@@ -64,5 +73,7 @@ export const eventDecoder = (eventReturnValues: any): any => {
 };
 
 export const decodeKosuEvents = (logs: any): any => {
-    return logs.filter(log => log.topics[0] === signature).map(log => eventDecoder(Decoder.decodeLog(event.inputs, log.data, log.topics)));
+    return logs
+        .filter(log => log.topics[0] === signature)
+        .map(log => eventDecoder(Decoder.decodeLog(event.inputs, log.data, log.topics)));
 };

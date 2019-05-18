@@ -1,5 +1,5 @@
 import { MnemonicWalletSubprovider, RPCSubprovider } from "@0x/subproviders";
-import {providerUtils} from "@0x/utils";
+import { providerUtils } from "@0x/utils";
 import fs from "fs";
 import safeRequire from "safe-node-require";
 import Web3 from "web3";
@@ -12,17 +12,18 @@ import { migrations } from "./migrations";
 
 const mnemonic = safeRequire("./mnemonic.json");
 
-const args = yargs
-    .option("rpc-url", {
-        type: "string",
-        default: "http://localhost:8545",
-    }).argv;
+const args = yargs.option("rpc-url", {
+    type: "string",
+    default: "http://localhost:8545",
+}).argv;
 
 (async () => {
     const mnemonicSubprovider = mnemonic ? new MnemonicWalletSubprovider({ mnemonic }) : null;
     const rpcSubprovider = new RPCSubprovider(args["rpc-url"]);
     const provider = new Web3ProviderEngine();
-    if (mnemonicSubprovider) { provider.addProvider(mnemonicSubprovider); }
+    if (mnemonicSubprovider) {
+        provider.addProvider(mnemonicSubprovider);
+    }
     provider.addProvider(rpcSubprovider);
     providerUtils.startProviderEngine(provider);
 
@@ -48,7 +49,9 @@ const args = yargs
     // @ts-ignore
     delete deployedAddresses.default;
 
-    await new Promise<void>((resolve, reject) => fs.writeFile("./src/deployedAddresses.json", JSON.stringify(deployedAddresses), () => resolve()));
+    await new Promise<void>((resolve, reject) =>
+        fs.writeFile("./src/deployedAddresses.json", JSON.stringify(deployedAddresses), () => resolve()),
+    );
 })().catch(err => {
     console.log(err);
 });

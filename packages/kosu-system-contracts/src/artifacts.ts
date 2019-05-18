@@ -16,14 +16,14 @@ import * as ValidatorRegistry from "../generated-artifacts/ValidatorRegistry.jso
 import * as ValidatorRegistryProxy from "../generated-artifacts/ValidatorRegistryProxy.json";
 import * as Voting from "../generated-artifacts/Voting.json";
 export const artifacts = {
-  AuthorizedAddresses: AuthorizedAddresses as ContractArtifact,
-  EventEmitter: EventEmitter as ContractArtifact,
-  OrderGateway: OrderGateway as ContractArtifact,
-  PosterRegistryProxy: PosterRegistryProxy as ContractArtifact,
-  ValidatorRegistryProxy: ValidatorRegistryProxy as ContractArtifact,
-  KosuToken: KosuToken as ContractArtifact,
-  PosterRegistry: PosterRegistry as ContractArtifact,
-  Treasury: Treasury as ContractArtifact,
-  ValidatorRegistry: ValidatorRegistry as ContractArtifact,
-  Voting: Voting as ContractArtifact,
+    AuthorizedAddresses: AuthorizedAddresses as ContractArtifact,
+    EventEmitter: EventEmitter as ContractArtifact,
+    OrderGateway: OrderGateway as ContractArtifact,
+    PosterRegistryProxy: PosterRegistryProxy as ContractArtifact,
+    ValidatorRegistryProxy: ValidatorRegistryProxy as ContractArtifact,
+    KosuToken: KosuToken as ContractArtifact,
+    PosterRegistry: PosterRegistry as ContractArtifact,
+    Treasury: Treasury as ContractArtifact,
+    ValidatorRegistry: ValidatorRegistry as ContractArtifact,
+    Voting: Voting as ContractArtifact,
 };

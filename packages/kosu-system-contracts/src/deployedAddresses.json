@@ -1,1 +1,26 @@
-{"3":{"OrderGateway":"0x436318fdb7e84d2f50b2acdebf63356ad5e1a8f1","AuthorizedAddresses":"0x90101e97885e0658664536223239131f4a69313e","EventEmitter":"0x8704de366a96e09a6b4442fcd42af136b85960fb","KosuToken":"0x7d74cf1696d9c6977ffa1d702b7d1499dd7fa4ea","Treasury":"0x3cf0aea1926c1cc6dd76ea3c5f3e28bb77c866bd","Voting":"0xe64d0b471a1abd2a76aa162e128ec8ae0239a8c4","PosterRegistry":"0x0712ceb027326826584ffe89ab49b724a8867dbd","PosterRegistryProxy":"0xd10aa62bc53950bd480db39f99b4f3fdf0f299a5","ValidatorRegistry":"0x800c6adc6b223b0b397637b94a743273d2f0618d","ValidatorRegistryProxy":"0x76605c0006bf66f0987ec7a0798909d0c30f60ab"},"6174":{"OrderGateway":"0xb7b9f786f8372d13522c2f34da705e2ffdaa2896","AuthorizedAddresses":"0xd18f733f67178b532a7991e3516d35048c870e51","EventEmitter":"0x933c2170698154c00f6c0953834cb36805eb9c32","KosuToken":"0xee5def840aa3b624d61fd42ef0cef282b83fa733","Treasury":"0xfc831136b5ca6f6aa47a019c0ec93a9b62dd14e8","Voting":"0x2bd1d17893ebe1200832535341306af34ba6b077","PosterRegistry":"0x3ff3ebd528a8da1e7576bba463baffd77dcf9b2d","PosterRegistryProxy":"0x17373026a42ab869b46abf04021b81cc92541b06","ValidatorRegistry":"0x0e8ab7eb2caa4a73122b076a035acab567138061","ValidatorRegistryProxy":"0xbc5a52d2f315ef2797d9236b532232ac03b78223"}}
+{
+    "3": {
+        "OrderGateway": "0x436318fdb7e84d2f50b2acdebf63356ad5e1a8f1",
+        "AuthorizedAddresses": "0x90101e97885e0658664536223239131f4a69313e",
+        "EventEmitter": "0x8704de366a96e09a6b4442fcd42af136b85960fb",
+        "KosuToken": "0x7d74cf1696d9c6977ffa1d702b7d1499dd7fa4ea",
+        "Treasury": "0x3cf0aea1926c1cc6dd76ea3c5f3e28bb77c866bd",
+        "Voting": "0xe64d0b471a1abd2a76aa162e128ec8ae0239a8c4",
+        "PosterRegistry": "0x0712ceb027326826584ffe89ab49b724a8867dbd",
+        "PosterRegistryProxy": "0xd10aa62bc53950bd480db39f99b4f3fdf0f299a5",
+        "ValidatorRegistry": "0x800c6adc6b223b0b397637b94a743273d2f0618d",
+        "ValidatorRegistryProxy": "0x76605c0006bf66f0987ec7a0798909d0c30f60ab"
+    },
+    "6174": {
+        "OrderGateway": "0xb7b9f786f8372d13522c2f34da705e2ffdaa2896",
+        "AuthorizedAddresses": "0xd18f733f67178b532a7991e3516d35048c870e51",
+        "EventEmitter": "0x933c2170698154c00f6c0953834cb36805eb9c32",
+        "KosuToken": "0xee5def840aa3b624d61fd42ef0cef282b83fa733",
+        "Treasury": "0xfc831136b5ca6f6aa47a019c0ec93a9b62dd14e8",
+        "Voting": "0x2bd1d17893ebe1200832535341306af34ba6b077",
+        "PosterRegistry": "0x3ff3ebd528a8da1e7576bba463baffd77dcf9b2d",
+        "PosterRegistryProxy": "0x17373026a42ab869b46abf04021b81cc92541b06",
+        "ValidatorRegistry": "0x0e8ab7eb2caa4a73122b076a035acab567138061",
+        "ValidatorRegistryProxy": "0xbc5a52d2f315ef2797d9236b532232ac03b78223"
+    }
+}
