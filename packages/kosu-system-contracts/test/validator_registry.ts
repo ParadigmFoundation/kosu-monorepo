@@ -48,7 +48,12 @@ describe("ValidatorRegistry", async function() {
         const { stake, reward, details } = options;
         await kosuToken.approve.sendTransactionAsync(treasury.address, stake || minimumBalance);
         const result = await validatorRegistryProxy.registerListing
-            .sendTransactionAsync(tendermintPublicKey, stake || minimumBalance, reward || new BigNumber("0"), details || paradigmMarket)
+            .sendTransactionAsync(
+                tendermintPublicKey,
+                stake || minimumBalance,
+                reward || new BigNumber("0"),
+                details || paradigmMarket,
+            )
             .then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash));
         await skipApplicationPeriod(result.blockNumber);
     };
@@ -212,7 +217,9 @@ describe("ValidatorRegistry", async function() {
             validators.should.have.members(remainingKeys);
 
             await validatorRegistryProxy.registerListing
-                .sendTransactionAsync(accounts[5], minimumBalance, testValues.zero, paradigmMarket, { from: accounts[5] })
+                .sendTransactionAsync(accounts[5], minimumBalance, testValues.zero, paradigmMarket, {
+                    from: accounts[5],
+                })
                 .then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash));
         });
     });
@@ -344,7 +351,12 @@ describe("ValidatorRegistry", async function() {
             it("should fail with less tokens than minimum", async () => {
                 const minimum = await validatorRegistryProxy.minimumBalance.callAsync();
                 await validatorRegistryProxy.registerListing
-                    .sendTransactionAsync(tendermintPublicKey, minimum.minus(new BigNumber("1")), testValues.zero, paradigmMarket)
+                    .sendTransactionAsync(
+                        tendermintPublicKey,
+                        minimum.minus(new BigNumber("1")),
+                        testValues.zero,
+                        paradigmMarket,
+                    )
                     .then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash)).should.eventually.be.rejected;
                 await validatorRegistryProxy.registerListing
                     .sendTransactionAsync(tendermintPublicKey, minimum, testValues.zero, paradigmMarket)
@@ -354,7 +366,12 @@ describe("ValidatorRegistry", async function() {
             it("should fail when you try to generate too many tokens", async () => {
                 const max = await validatorRegistryProxy.maxRewardRate.callAsync();
                 await validatorRegistryProxy.registerListing
-                    .sendTransactionAsync(tendermintPublicKey, minimumBalance, max.plus(new BigNumber("1")), paradigmMarket)
+                    .sendTransactionAsync(
+                        tendermintPublicKey,
+                        minimumBalance,
+                        max.plus(new BigNumber("1")),
+                        paradigmMarket,
+                    )
                     .then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash)).should.eventually.be.rejected;
                 await validatorRegistryProxy.registerListing
                     .sendTransactionAsync(tendermintPublicKey, minimumBalance, testValues.zero, paradigmMarket)
@@ -797,7 +814,9 @@ describe("ValidatorRegistry", async function() {
 
             await validatorRegistryProxy.initExit.sendTransactionAsync(tendermintPublicKey);
             const result = await validatorRegistryProxy.registerListing
-                .sendTransactionAsync(tendermintPublicKey, minimumBalance, new BigNumber("-1"), paradigmMarket, { from: accounts[1] })
+                .sendTransactionAsync(tendermintPublicKey, minimumBalance, new BigNumber("-1"), paradigmMarket, {
+                    from: accounts[1],
+                })
                 .then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash)).should.eventually.be.fulfilled;
             await kosuToken.approve.sendTransactionAsync(treasury.address, new BigNumber("1"), { from: accounts[1] });
             await treasury.deposit.sendTransactionAsync(new BigNumber("1"), { from: accounts[1] });
@@ -1428,7 +1447,9 @@ describe("ValidatorRegistry", async function() {
             beforeEach(async () => {
                 await kosuToken.approve.sendTransactionAsync(treasury.address, minimumBalance, { from: accounts[1] });
                 const { blockNumber } = await validatorRegistryProxy.registerListing
-                    .sendTransactionAsync(tendermintPublicKey, minimumBalance, reward, paradigmMarket, { from: accounts[1] })
+                    .sendTransactionAsync(tendermintPublicKey, minimumBalance, reward, paradigmMarket, {
+                        from: accounts[1],
+                    })
                     .then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash));
                 await skipApplicationPeriod(blockNumber);
                 await validatorRegistryProxy.confirmListing
@@ -1476,7 +1497,9 @@ describe("ValidatorRegistry", async function() {
                 await kosuToken.approve.sendTransactionAsync(treasury.address, minimumBalance, { from: accounts[1] });
                 await treasury.deposit.sendTransactionAsync(minimumBalance, { from: accounts[1] });
                 const { blockNumber } = await validatorRegistryProxy.registerListing
-                    .sendTransactionAsync(tendermintPublicKey, minimumBalance, reward, paradigmMarket, { from: accounts[1] })
+                    .sendTransactionAsync(tendermintPublicKey, minimumBalance, reward, paradigmMarket, {
+                        from: accounts[1],
+                    })
                     .then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash));
                 await skipApplicationPeriod(blockNumber);
                 await kosuToken.approve.sendTransactionAsync(
@@ -1509,7 +1532,9 @@ describe("ValidatorRegistry", async function() {
                 await kosuToken.approve.sendTransactionAsync(treasury.address, minimumBalance, { from: accounts[1] });
                 await treasury.deposit.sendTransactionAsync(minimumBalance, { from: accounts[1] });
                 const { blockNumber } = await validatorRegistryProxy.registerListing
-                    .sendTransactionAsync(tendermintPublicKey, minimumBalance, reward, paradigmMarket, { from: accounts[1] })
+                    .sendTransactionAsync(tendermintPublicKey, minimumBalance, reward, paradigmMarket, {
+                        from: accounts[1],
+                    })
                     .then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash));
                 await skipApplicationPeriod(blockNumber);
                 await kosuToken.transfer.sendTransactionAsync(accounts[1], new BigNumber("1000000"));
@@ -1549,7 +1574,9 @@ describe("ValidatorRegistry", async function() {
                 });
                 await treasury.deposit.sendTransactionAsync(testValues.sixEther, { from: accounts[1] });
                 const { blockNumber } = await validatorRegistryProxy.registerListing
-                    .sendTransactionAsync(tendermintPublicKey, minimumBalance, burnFive, paradigmMarket, { from: accounts[1] })
+                    .sendTransactionAsync(tendermintPublicKey, minimumBalance, burnFive, paradigmMarket, {
+                        from: accounts[1],
+                    })
                     .then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash));
                 await skipApplicationPeriod(blockNumber);
                 await validatorRegistryProxy.confirmListing
@@ -1583,7 +1610,9 @@ describe("ValidatorRegistry", async function() {
                     });
                     await treasury.deposit.sendTransactionAsync(testValues.fiveEther, { from: accounts[1] });
                     const { blockNumber } = await validatorRegistryProxy.registerListing
-                        .sendTransactionAsync(tendermintPublicKey, minimumBalance, reward, paradigmMarket, { from: accounts[1] })
+                        .sendTransactionAsync(tendermintPublicKey, minimumBalance, reward, paradigmMarket, {
+                            from: accounts[1],
+                        })
                         .then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash));
                     await skipApplicationPeriod(blockNumber);
                     await validatorRegistryProxy.confirmListing
