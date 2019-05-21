@@ -11,10 +11,6 @@ import (
 	"github.com/tendermint/tendermint/proxy"
 )
 
-var (
-	logger = log.NewTMLogger(log.NewSyncWriter(os.Stdout)).With("module", "main")
-)
-
 // CreateNode creates an embedded tendermint node for standalone mode
 func (app *App) CreateNode() (*node.Node, error) {
 	// Assumes priv validator has been generated.  See setup()
@@ -23,7 +19,17 @@ func (app *App) CreateNode() (*node.Node, error) {
 		return nil, err
 	}
 
-	logger, err := tmflags.ParseLogLevel(app.Config.LogLevel, log.NewTMLogger(os.Stdout), app.Config.LogFormat)
+	var w log.Logger
+	switch app.Config.LogFormat {
+	case "json":
+		w = log.NewTMJSONLogger(os.Stdout)
+	case "", "plain":
+		w = log.NewTMLogger(os.Stdout)
+	case "none":
+		w = log.NewNopLogger()
+	}
+
+	logger, err := tmflags.ParseLogLevel(app.Config.LogLevel, w, "error")
 	if err != nil {
 		return nil, err
 	}
