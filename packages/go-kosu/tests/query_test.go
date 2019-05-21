@@ -14,7 +14,8 @@ func (s *Suite) TestQuery() {
 			require.NoError(t, err)
 			Convey("It should Err", func() {
 				So(res.Response.IsErr(), ShouldBeTrue)
-				So(res.Response.Info, ShouldContainSubstring, "not found")
+				So(res.Response.Code, ShouldEqual, 404)
+				So(res.Response.Log, ShouldContainSubstring, "not found")
 			})
 		})
 

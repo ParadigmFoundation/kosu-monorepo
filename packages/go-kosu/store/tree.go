@@ -11,13 +11,14 @@ import (
 	"github.com/tendermint/tendermint/libs/db"
 )
 
+// nolint
 const (
-	commitInfoKey      = "/kosu/commitinfo"
-	roundInfoKey       = "/kosu/state/round_info"
-	lastEventKey       = "/kosu/state/last_event"
-	consensusParamsKey = "/kosu/state/consensus_params"
-	eventsKey          = "/kosu/state/events"
-	postersKey         = "/kosu/state/posters"
+	CommitInfoKey      = "/kosu/commitinfo"
+	RoundInfoKey       = "/kosu/state/round_info"
+	LastEventKey       = "/kosu/state/last_event"
+	ConsensusParamsKey = "/kosu/state/consensus_params"
+	EventsKey          = "/kosu/state/events"
+	PostersKey         = "/kosu/state/posters"
 )
 
 // CommitInfo is the tree commit info.
@@ -53,7 +54,7 @@ func NewStateTree(db db.DB, codec Codec) *StateTree {
 
 // loadCommitData reads the CommitInfo directly from the db.DB,
 func (s *StateTree) loadCommitData() error {
-	buf := s.db.Get([]byte(commitInfoKey))
+	buf := s.db.Get([]byte(CommitInfoKey))
 	if buf == nil {
 		return nil
 	}
@@ -86,7 +87,7 @@ func (s *StateTree) Commit() error {
 		return err
 	}
 
-	s.db.Set([]byte(commitInfoKey), buf)
+	s.db.Set([]byte(CommitInfoKey), buf)
 	return nil
 }
 
@@ -112,13 +113,13 @@ func (s *StateTree) Get(key string, e interface{}) error {
 
 // SetEvent sets an event into the tree.
 func (s *StateTree) SetEvent(block uint64, id string, w *WitnessEvent) error {
-	key := fmt.Sprintf("%s/%d/%s", eventsKey, block, id)
+	key := fmt.Sprintf("%s/%d/%s", EventsKey, block, id)
 	return s.Set(key, w)
 }
 
 // IterateEvents iterates over all the events present in the tree.
 func (s *StateTree) IterateEvents(fn func(block uint64, id string, w *WitnessEvent)) {
-	start := []byte(eventsKey)
+	start := []byte(EventsKey)
 	end := append(start, 0xff)
 	s.tree.IterateRange(start, end, true, func(key, val []byte) bool {
 		block, id, err := s.parseEventsKey(key)
@@ -137,10 +138,10 @@ func (s *StateTree) IterateEvents(fn func(block uint64, id string, w *WitnessEve
 	})
 }
 
-// parseEvents takes a key with the form "<eventsKey>/<id>/<address>" and returns <id> and <address>.
+// parseEvents takes a key with the form "<EventsKey>/<id>/<address>" and returns <id> and <address>.
 func (s *StateTree) parseEventsKey(b []byte) (uint64, string, error) {
 	// keep only the `id/address` part of the original key
-	key := strings.TrimPrefix(string(b), eventsKey+"/")
+	key := strings.TrimPrefix(string(b), EventsKey+"/")
 
 	// split should be [id, address]
 	split := strings.Split(key, "/")
@@ -158,7 +159,17 @@ func (s *StateTree) parseEventsKey(b []byte) (uint64, string, error) {
 }
 
 func (s *StateTree) posterKey(addr string) string {
-	return fmt.Sprintf("%s/%s", postersKey, addr)
+	return fmt.Sprintf("%s/%s", PostersKey, addr)
+}
+
+// GetPoster retrieves a poster from the tree
+func (s *StateTree) GetPoster(addr string) (*Poster, error) {
+	var p Poster
+	if err := s.Get(s.posterKey(addr), &p); err != nil {
+		return nil, err
+	}
+
+	return &p, nil
 }
 
 // SetPoster sets a poster into the tree
@@ -174,11 +185,11 @@ func (s *StateTree) DeletePoster(addr string) {
 
 // IteratePosters iterates over all the posters present in the tree
 func (s *StateTree) IteratePosters(fn func(addr string, p *Poster)) {
-	start := []byte(postersKey)
+	start := []byte(PostersKey)
 	end := append(start, 0xff)
 	s.tree.IterateRange(start, end, true, func(key, val []byte) bool {
 		// Extract the address from the key
-		addr := strings.TrimPrefix(string(key), postersKey+"/")
+		addr := strings.TrimPrefix(string(key), PostersKey+"/")
 
 		var p Poster
 		if err := s.codec.Decode(val, &p); err != nil {

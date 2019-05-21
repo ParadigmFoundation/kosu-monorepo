@@ -11,11 +11,6 @@ import (
 	"go-kosu/abci/types"
 )
 
-var (
-	// ErrQueryPathNotFound is returned by Query when a path is not found
-	ErrQueryPathNotFound = errors.New("Query: Path not found")
-)
-
 // RoundInfo is the persisted state of the RoundInfo
 type RoundInfo struct {
 	Number    uint64
@@ -119,9 +114,9 @@ type element struct {
 
 func (s *State) elements() []element {
 	return []element{
-		{roundInfoKey, &s.RoundInfo},
-		{lastEventKey, &s.LastEvent},
-		{consensusParamsKey, &s.ConsensusParams},
+		{RoundInfoKey, &s.RoundInfo},
+		{LastEventKey, &s.LastEvent},
+		{ConsensusParamsKey, &s.ConsensusParams},
 	}
 }
 

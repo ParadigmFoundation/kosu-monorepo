@@ -13,7 +13,19 @@ go run ./cmd/kosud/main.go
 Executa a transaction
 
 ```
-go run ./cmd/kosu-cli/main.go rebalance 1
+go run ./cmd/kosu-cli/main.go tx rebalance 1 1 11
+```
+
+Execute queries
+```
+$ go run ./cmd/kosu-cli/main.go query round
+ok: < number:3 starts_at:21 ends_at:31 >
+
+$ go run ./cmd/kosu-cli/main.go query consensus
+ok: < PeriodLength:10 >
+
+go run ./cmd/kosu-cli/main.go query poster 0x08FA21AF985591E775523eF161F023764175A932
+ok: < balance:<value:"\r\340\266\263\247d\000\000" > >
 ```
 
 ## Running the testnet
