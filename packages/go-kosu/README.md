@@ -17,6 +17,7 @@ go run ./cmd/kosu-cli/main.go tx rebalance 1 1 11
 ```
 
 Execute queries
+
 ```
 $ go run ./cmd/kosu-cli/main.go query round
 ok: < number:3 starts_at:21 ends_at:31 >
