@@ -70,7 +70,7 @@ contract Voting {
         data[0] = bytes32(uint(p.creator));
         data[1] = bytes32(p.id);
         //TODO: emit commit end and reveal end
-        emitter.emitEvent('PollCreated', data);
+        emitter.emitEvent('PollCreated', data, "");
 
         //Return the poll id
         return p.id;

@@ -26,6 +26,7 @@ interface IValidatorRegistry {
         bytes32 tendermintPublicKey;
         address owner;
         uint currentChallenge;
+        string details;
     }
 
     struct Challenge {
@@ -37,6 +38,7 @@ interface IValidatorRegistry {
         uint challengeEnd;
         bool finalized;
         bool passed;
+        string details;
     }
 
     /** @dev Interface method */
@@ -79,10 +81,10 @@ interface IValidatorRegistry {
     function getListing(bytes32) external view returns (Status, uint, bytes32, address);
 
     /** @dev Interface method */
-    function registerListing(address, bytes32, uint, int) external;
+    function registerListing(address, bytes32, uint, int, string calldata) external;
 
     /** @dev Interface method */
-    function challengeListing(address, bytes32) external;
+    function challengeListing(address, bytes32, string calldata) external;
 
     /** @dev Interface method */
     function claimWinnings(address, uint) external;

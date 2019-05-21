@@ -23,6 +23,7 @@ services:
     ports:
       - 8545
 
+# Pull request trigger is not correctly causing build to start on fresh pull request.
 trigger:
   event:
    - pull_request

@@ -201,7 +201,7 @@ const activateForms = async () => {
         const tokens = toWei(document.getElementById("validator-register-tokens").value);
         const reward = toWei(document.getElementById("validator-register-reward").value);
 
-        validatorRegistry.registerListing(pubKey, tokens, reward).then(async () => {
+        validatorRegistry.registerListing(pubKey, tokens, reward, "https://paradigm.market").then(async () => {
             resetValues();
             const validatorListingInfo = await validatorRegistry.getListing(pubKey);
 
@@ -231,7 +231,7 @@ const activateForms = async () => {
     document.getElementById("validator-challenge-button").onclick = async () => {
         const pubKey = document.getElementById("validator-public-key-hex").innerText;
 
-        validatorRegistry.challengeListing(pubKey).then(async () => {
+        validatorRegistry.challengeListing(pubKey, "https://paradigm.market").then(async () => {
             resetValues();
             const validatorListingInfo = await validatorRegistry.getListing(pubKey);
 

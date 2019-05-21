@@ -160,8 +160,9 @@ contract ValidatorRegistry is IValidatorRegistry, Authorizable {
         @param tendermintPublicKey Hex encoded tendermint public key
         @param tokensToStake The number of tokes at stake if the order is challenged
         @param rewardRate The rate tokens are minted or destroyed over the active listings reward periods
+        @param details A string value to represent support for claim (commonly an external link)
     */
-    function registerListing(address msgSender, bytes32 tendermintPublicKey, uint tokensToStake, int rewardRate) external isAuthorized {
+    function registerListing(address msgSender, bytes32 tendermintPublicKey, uint tokensToStake, int rewardRate, string calldata details) external isAuthorized {
         //tokensToStake must be greater than or equal to _minimumBalance
         require(tokensToStake >= _minimumBalance);
 
@@ -184,20 +185,22 @@ contract ValidatorRegistry is IValidatorRegistry, Authorizable {
         listing.tendermintPublicKey = tendermintPublicKey;
         listing.owner = msgSender;
         listing.rewardRate = rewardRate;
+        listing.details = details;
 
         //Add new listing public key to key list
         _listingKeys.push(tendermintPublicKey);
 
         //Emit event
-        emitValidatorRegistered(listing.applicationBlock, listing.tendermintPublicKey, listing.owner, rewardRate);
+        emitValidatorRegistered(listing.applicationBlock, listing.tendermintPublicKey, listing.owner, rewardRate, listing.details);
     }
 
     /** @dev Challenge a registered listing
         @notice Challenge a registered listing
         @param msgSender msg.sender from the proxy call
         @param tendermintPublicKey Hex encoded tendermint public key
+        @param details A string value to represent support for claim (commonly an external link)
     */
-    function challengeListing(address msgSender, bytes32 tendermintPublicKey) public isAuthorized {
+    function challengeListing(address msgSender, bytes32 tendermintPublicKey, string memory details) public isAuthorized {
         //Load listing
         Listing storage listing = _listings[tendermintPublicKey];
 
@@ -227,9 +230,10 @@ contract ValidatorRegistry is IValidatorRegistry, Authorizable {
         challenge.listingKey = listing.tendermintPublicKey;
         challenge.challengeEnd = block.number + _challengePeriod;
         challenge.pollId = _voting.createPoll(block.number + _commitPeriod, block.number + _challengePeriod);
+        challenge.details = details;
 
         //Emit challenged event
-        emitValidatorChallenged(listing.tendermintPublicKey, listing.owner, challenge.challenger, listing.currentChallenge, challenge.pollId);
+        emitValidatorChallenged(listing.tendermintPublicKey, listing.owner, challenge.challenger, listing.currentChallenge, challenge.pollId, challenge.details);
     }
 
     /** @dev Resolve a challenge
@@ -536,32 +540,32 @@ contract ValidatorRegistry is IValidatorRegistry, Authorizable {
         data[0] = tendermintPublicKey;
         data[1] = bytes32(uint(owner));
         data[2] = bytes32(stake);
-        e.emitEvent("ValidatorRegistryUpdate", data);
+        e.emitEvent("ValidatorRegistryUpdate", data, "");
     }
 
-    function emitValidatorRegistered(uint applicationBlock, bytes32 tendermintPublicKey, address owner, int rewardRate) internal {
+    function emitValidatorRegistered(uint applicationBlock, bytes32 tendermintPublicKey, address owner, int rewardRate, string storage details) internal {
         bytes32[] memory data = new bytes32[](4);
         data[0] = tendermintPublicKey;
         data[1] = bytes32(applicationBlock);
         data[2] = bytes32(uint(owner));
         data[3] = bytes32(rewardRate);
-        e.emitEvent("ValidatorRegistered", data);
+        e.emitEvent("ValidatorRegistered", data, details);
     }
 
     function emitValidatorTouchedAndRemoved(Listing storage l) internal {
         bytes32[] memory data = new bytes32[](4);
         data[0] = l.tendermintPublicKey;
         data[2] = bytes32(uint(l.owner));
-        e.emitEvent("ValidatorTouchedAndRemoved", data);
+        e.emitEvent("ValidatorTouchedAndRemoved", data, "");
     }
 
-    function emitValidatorChallenged(bytes32 tendermintPublicKey, address owner, address challenger, uint challengeId, uint pollId) internal {
+    function emitValidatorChallenged(bytes32 tendermintPublicKey, address owner, address challenger, uint challengeId, uint pollId, string storage details) internal {
         bytes32[] memory data = new bytes32[](5);
         data[0] = tendermintPublicKey;
         data[1] = bytes32(uint(owner));
         data[2] = bytes32(uint(challenger));
         data[3] = bytes32(challengeId);
         data[4] = bytes32(pollId);
-        e.emitEvent("ValidatorChallenged", data);
+        e.emitEvent("ValidatorChallenged", data, details);
     }
 }

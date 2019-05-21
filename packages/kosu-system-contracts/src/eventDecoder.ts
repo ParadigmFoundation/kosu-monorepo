@@ -25,6 +25,7 @@ export const bytes32ToBase64 = (val: string): string => {
 export const eventDecoder = (eventReturnValues: any): any => {
     const eventType = eventReturnValues.eventType;
     const data = eventReturnValues.data;
+    const stringData = eventReturnValues.stringData;
     const decoded = {
         eventType,
     };
@@ -48,6 +49,7 @@ export const eventDecoder = (eventReturnValues: any): any => {
                 applicationBlockNumber: hexToNumberString(data[1]),
                 owner: bytes32ToAddressString(data[2]),
                 rewardRate: Decoder.decodeParameter("int", data[3]).toString(),
+                details: stringData,
             });
             break;
         case "ValidatorChallenged":
@@ -57,6 +59,7 @@ export const eventDecoder = (eventReturnValues: any): any => {
                 challenger: bytes32ToAddressString(data[2]),
                 challengeId: hexToNumberString(data[3]),
                 pollId: hexToNumberString(data[3]),
+                details: stringData,
             });
             break;
         case "PollCreated":

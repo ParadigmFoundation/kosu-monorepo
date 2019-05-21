@@ -94,7 +94,7 @@ contract PosterRegistry is Authorizable {
         bytes32[] memory data = new bytes32[](2);
         data[0] = bytes32(uint(a));
         data[1] = bytes32(tokensFor(a));
-        e.emitEvent("PosterRegistryUpdate", data);
+        e.emitEvent("PosterRegistryUpdate", data, "");
     }
 
     function tokensFor(address a) internal view returns (uint) {
