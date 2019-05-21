@@ -139,17 +139,19 @@ contract ValidatorRegistryProxy is Authorizable {
         @param _pubKey hex encoded tendermint public used as listing mapping key
         @param _tokensToStake The number of tokes at stake if the order is challenged
         @param _rewardRate The rate tokens are minted or destroyed over the active listings reward periods
+        @param _details A string value to represent support for claim (commonly an external link)
     */
-    function registerListing(bytes32 _pubKey, uint _tokensToStake, int _rewardRate) external {
-        registry.registerListing(msg.sender, _pubKey, _tokensToStake, _rewardRate);
+    function registerListing(bytes32 _pubKey, uint _tokensToStake, int _rewardRate, string calldata _details) external {
+        registry.registerListing(msg.sender, _pubKey, _tokensToStake, _rewardRate, _details);
     }
 
     /** @dev Executes challenge on the current registry.
         @notice Executes challenge on the current registry.
         @param _pubKey hex encoded tendermint public used as listing mapping key
+        @param _details A string value to represent support for claim (commonly an external link)
     */
-    function challengeListing(bytes32 _pubKey) external {
-        registry.challengeListing(msg.sender, _pubKey);
+    function challengeListing(bytes32 _pubKey, string calldata _details) external {
+        registry.challengeListing(msg.sender, _pubKey, _details);
     }
 
     /** @dev Executes resolveChallenge on the current registry.
