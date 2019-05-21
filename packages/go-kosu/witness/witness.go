@@ -143,9 +143,10 @@ func (w *Witness) forward(ctx context.Context) error {
 
 func (w *Witness) handleBlocks(ctx context.Context) error {
 	ch := make(chan *Block)
-	if err := w.provider.WatchBlocks(ctx, ch); err != nil {
-		return err
-	}
+	errCh := make(chan error)
+	go func() {
+		errCh <- w.provider.WatchBlocks(ctx, ch)
+	}()
 
 	for block := range ch {
 		cur := block.Number.Uint64()
@@ -160,7 +161,7 @@ func (w *Witness) handleBlocks(ctx context.Context) error {
 		}
 	}
 
-	return nil
+	return <-errCh
 }
 
 func (w *Witness) rebalance(round uint64) error {
