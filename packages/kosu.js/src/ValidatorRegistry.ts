@@ -156,11 +156,13 @@ export class ValidatorRegistry {
      * @param _pubKey hex encoded tendermint public key
      * @param _tokensToStake uint number of tokens to stake ( must be greater than minimum balance)
      * @param _rewardRate int value of tokens to earn, burn or neither per reward period
+     * @param _details String value (often a url) to support listing claim
      */
     public async registerListing(
         _pubKey: string,
         _tokensToStake: BigNumber,
         _rewardRate: BigNumber,
+        _details: string,
     ): Promise<TransactionReceiptWithDecodedLogs> {
         const contract = await this.getContract();
 
@@ -172,7 +174,7 @@ export class ValidatorRegistry {
         }
 
         return contract.registerListing
-            .sendTransactionAsync(_pubKey, _tokensToStake, _rewardRate)
+            .sendTransactionAsync(_pubKey, _tokensToStake, _rewardRate, _details)
             .then(txHash => this.web3Wrapper.awaitTransactionSuccessAsync(txHash));
     }
 
@@ -192,12 +194,13 @@ export class ValidatorRegistry {
      * Starts a challenge of a listing
      *
      * @param _pubKey hex encoded tendermint public key
+     * @param _details String value (often a url) to support listing claim
      */
-    public async challengeListing(_pubKey: string): Promise<TransactionReceiptWithDecodedLogs> {
+    public async challengeListing(_pubKey: string, _details: string): Promise<TransactionReceiptWithDecodedLogs> {
         // TODO Check balance after looking up specific listing's tokens committed
         const contract = await this.getContract();
         return contract.challengeListing
-            .sendTransactionAsync(_pubKey)
+            .sendTransactionAsync(_pubKey, _details)
             .then(txHash => this.web3Wrapper.awaitTransactionSuccessAsync(txHash));
     }
 
