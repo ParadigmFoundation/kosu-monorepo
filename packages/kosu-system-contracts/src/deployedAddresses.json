@@ -1,15 +1,15 @@
 {
     "3": {
-        "OrderGateway": "0x436318fdb7e84d2f50b2acdebf63356ad5e1a8f1",
-        "AuthorizedAddresses": "0x90101e97885e0658664536223239131f4a69313e",
-        "EventEmitter": "0x8704de366a96e09a6b4442fcd42af136b85960fb",
-        "KosuToken": "0x7d74cf1696d9c6977ffa1d702b7d1499dd7fa4ea",
-        "Treasury": "0x3cf0aea1926c1cc6dd76ea3c5f3e28bb77c866bd",
-        "Voting": "0xe64d0b471a1abd2a76aa162e128ec8ae0239a8c4",
-        "PosterRegistry": "0x0712ceb027326826584ffe89ab49b724a8867dbd",
-        "PosterRegistryProxy": "0xd10aa62bc53950bd480db39f99b4f3fdf0f299a5",
-        "ValidatorRegistry": "0x800c6adc6b223b0b397637b94a743273d2f0618d",
-        "ValidatorRegistryProxy": "0x76605c0006bf66f0987ec7a0798909d0c30f60ab"
+        "OrderGateway": "0xc0841560d2f53ed7457b576510e1e8f085b9e660",
+        "AuthorizedAddresses": "0x97d208712817dca0cc22b3c44d5fe52ec26c095f",
+        "EventEmitter": "0x8b0dbe272b6ac133842fd83963e823a5048fe708",
+        "KosuToken": "0xc22c936046ff89c57c763883659980c7228725db",
+        "Treasury": "0x6ef39c086f4acffaf2ce17f15de476253a644f30",
+        "Voting": "0x1c4d2e84ffe1280f0d6a525203e89eb91bdb75bf",
+        "PosterRegistry": "0x5baefeb0ada0e2bbf5b80e30fcf52f7a0b98c669",
+        "PosterRegistryProxy": "0xc97f6a9520ff883629f204edfcb1e45c4f919e37",
+        "ValidatorRegistry": "0x05b4cc588af1495da865d09566ea08805f8a6d50",
+        "ValidatorRegistryProxy": "0x478c24c40795f5fdcb8e1588ec9ed1f84332332b"
     },
     "6174": {
         "OrderGateway": "0xb7b9f786f8372d13522c2f34da705e2ffdaa2896",
