@@ -296,8 +296,7 @@ describe("ValidatorRegistry", async function() {
                 await validatorRegistryProxy.registerListing
                     .sendTransactionAsync(tendermintPublicKey, minimumBalance, testValues.zero, paradigmMarket)
                     .then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash)).should.eventually.be.fulfilled;
-                const listing = await validatorRegistryProxy.getListing
-                    .callAsync(tendermintPublicKey);
+                const listing = await validatorRegistryProxy.getListing.callAsync(tendermintPublicKey);
 
                 listing.status.toString().should.eq("1"); // Pending is 1
             });
@@ -483,8 +482,7 @@ describe("ValidatorRegistry", async function() {
                 await validatorRegistryProxy.confirmListing
                     .sendTransactionAsync(tendermintPublicKey)
                     .then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash)).should.eventually.be.fulfilled;
-                const listing = await validatorRegistryProxy.getListing
-                    .callAsync(tendermintPublicKey);
+                const listing = await validatorRegistryProxy.getListing.callAsync(tendermintPublicKey);
 
                 listing.status.toString().should.eq("2"); // Accepted is 2
                 listing.tendermintPublicKey.should.eq(tendermintPublicKey, "tendermint");
@@ -1518,8 +1516,7 @@ describe("ValidatorRegistry", async function() {
                     .sendTransactionAsync(tendermintPublicKey)
                     .then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash));
 
-                const listing = await validatorRegistryProxy.getListing
-                    .callAsync(tendermintPublicKey);
+                const listing = await validatorRegistryProxy.getListing.callAsync(tendermintPublicKey);
                 listing.status.toString().should.eq("0");
 
                 withdrawAll(accounts[1]);
