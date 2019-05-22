@@ -2,6 +2,7 @@ import { Web3Wrapper } from "@0x/web3-wrapper";
 import { artifacts } from "@kosu/system-contracts";
 import Web3 from "web3";
 
+import {EventEmitter} from "./EventEmitter";
 import { KosuToken } from "./KosuToken";
 import { OrderGateway } from "./OrderGateway";
 import { OrderHelper } from "./OrderHelper";
@@ -25,6 +26,7 @@ export class Kosu {
     public readonly voting: Voting;
     public readonly posterRegistry: PosterRegistry;
     public readonly validatorRegistry: ValidatorRegistry;
+    public readonly eventEmitter: EventEmitter;
     public readonly utils: KosuUtils;
     public readonly Signature: Signature;
     public readonly version: string;
@@ -48,6 +50,7 @@ export class Kosu {
         this.posterRegistry = new PosterRegistry(options, this.treasury);
         this.validatorRegistry = new ValidatorRegistry(options, this.treasury);
         this.orderHelper = new OrderHelper(this.web3, this.orderGateway);
+        this.eventEmitter = new EventEmitter(options);
 
         // Utilities
         this.utils = { toBytes32, NULL_ADDRESS };

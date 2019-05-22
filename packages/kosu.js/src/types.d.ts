@@ -1,15 +1,16 @@
 interface KosuOptions {
-    web3Wrapper?: Web3Wrapper;
-    posterRegistryProxyAddress?: string;
-    kosuTokenAddress?: string;
-    orderStreamURL?: string;
-    orderGatewayAddress?: string;
-    networkId?: number | string;
     provider?: provider;
-    validatorRegistryProxyAddress?: string;
+    networkId?: number | string;
+    web3?: Web3;
+    web3Wrapper?: Web3Wrapper;
+    orderStreamURL?: string;
     votingAddress?: string;
     treasuryAddress?: string;
-    web3?: Web3;
+    kosuTokenAddress?: string;
+    eventEmitterAddress?: string;
+    orderGatewayAddress?: string;
+    posterRegistryProxyAddress?: string;
+    validatorRegistryProxyAddress?: string;
 }
 
 interface Order {
