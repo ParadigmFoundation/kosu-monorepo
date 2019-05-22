@@ -30,6 +30,7 @@ func (b *BigInt) BigInt() *big.Int {
 	return big.NewInt(0).SetBytes(b.Value)
 }
 
+// MarshalText overloads the default Marshaling in order to pretty the Value as a formatted String
 func (b *BigInt) MarshalText() ([]byte, error) {
 	n := big.NewInt(0).SetBytes(b.Value)
 	str := fmt.Sprintf("value: %s", n.String())
