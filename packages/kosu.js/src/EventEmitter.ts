@@ -1,6 +1,6 @@
-import {Web3Wrapper} from "@0x/web3-wrapper";
-import {DeployedAddresses, eventDecoder} from "@kosu/system-contracts";
-import {DecodedLogArgs, FilterObject, LogWithDecodedArgs} from "ethereum-protocol";
+import { Web3Wrapper } from "@0x/web3-wrapper";
+import { DeployedAddresses, eventDecoder } from "@kosu/system-contracts";
+import { DecodedLogArgs, FilterObject, LogWithDecodedArgs } from "ethereum-protocol";
 
 export class EventEmitter {
     private readonly web3Wrapper: Web3Wrapper;
@@ -23,7 +23,9 @@ export class EventEmitter {
         Object.assign(config, { address: await this.getAddress() });
         return this.web3Wrapper.getLogsAsync(config).then(logs => {
             return logs.map(log => {
-                const decoded: LogWithDecodedArgs<DecodedLogArgs> = this.web3Wrapper.abiDecoder.tryToDecodeLogOrNoop(log) as LogWithDecodedArgs<DecodedLogArgs>;
+                const decoded: LogWithDecodedArgs<DecodedLogArgs> = this.web3Wrapper.abiDecoder.tryToDecodeLogOrNoop(
+                    log,
+                ) as LogWithDecodedArgs<DecodedLogArgs>;
                 return eventDecoder(decoded.args);
             });
         });

@@ -2,7 +2,7 @@ import { Web3Wrapper } from "@0x/web3-wrapper";
 import { artifacts } from "@kosu/system-contracts";
 import Web3 from "web3";
 
-import {EventEmitter} from "./EventEmitter";
+import { EventEmitter } from "./EventEmitter";
 import { KosuToken } from "./KosuToken";
 import { OrderGateway } from "./OrderGateway";
 import { OrderHelper } from "./OrderHelper";

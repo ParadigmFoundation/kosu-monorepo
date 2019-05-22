@@ -1,5 +1,5 @@
 const Kosu = require("@kosu/kosu.js").Kosu;
-const eventDecoder = require('@kosu/system-contracts').eventDecoder;
+const eventDecoder = require("@kosu/system-contracts").eventDecoder;
 const Web3 = require("web3");
 const uuid = require("uuid/v4");
 
@@ -21,7 +21,7 @@ const toWei = val => {
 
 const resetValues = async () => {
     const coinbase = await kosuJS.web3.eth.getCoinbase();
-    const {kosuToken, treasury, posterRegistry, validatorRegistry} = kosuJS;
+    const { kosuToken, treasury, posterRegistry, validatorRegistry } = kosuJS;
 
     const kosuTokenBalanceHtml = document.getElementById("kosu-token-balance");
     if (typeof kosuTokenBalanceHtml !== "undefined") {
@@ -108,7 +108,7 @@ const resetValues = async () => {
 };
 
 const activateForms = async () => {
-    const {kosuToken, treasury, posterRegistry, voting, validatorRegistry} = kosuJS;
+    const { kosuToken, treasury, posterRegistry, voting, validatorRegistry } = kosuJS;
 
     document.getElementById("approve-button").onclick = async () => {
         const value = document.getElementById("approve-value").value;
@@ -359,12 +359,16 @@ const activateForms = async () => {
 };
 
 const initApp = async provider => {
-    global.kosuJS = new Kosu({provider});
-    await kosuJS.eventEmitter.getPastDecodedLogs({
-        fromBlock: 0,
-    }).then((decodedLogs) => {
-        decodedLogs.forEach(log => {console.log(log)});
-    });
+    global.kosuJS = new Kosu({ provider });
+    await kosuJS.eventEmitter
+        .getPastDecodedLogs({
+            fromBlock: 0,
+        })
+        .then(decodedLogs => {
+            decodedLogs.forEach(log => {
+                console.log(log);
+            });
+        });
     await kosuJS.treasury.getContract();
     resetValues();
     activateForms();
@@ -372,10 +376,10 @@ const initApp = async provider => {
 
 window.contractHelpers = async () => {
     //Rebind console.log to use on page log panel
-    (function () {
+    (function() {
         var old = console.log;
         var logger = document.getElementById("log");
-        console.log = function () {
+        console.log = function() {
             if (typeof logger !== "undefined") {
                 for (var i = 0; i < arguments.length; i++) {
                     if (typeof arguments[i] == "object") {
@@ -426,7 +430,7 @@ function getOrderNumber(socket) {
                 jsonrpc: "2.0",
                 id: requestId,
                 method: "state.query",
-                params: {path: "orderCounter"},
+                params: { path: "orderCounter" },
             }),
         );
         socket.onmessage = msg => {
@@ -446,7 +450,7 @@ function getOrderNumber(socket) {
 function mainHandler(ws2) {
     return msg => {
         // update block height with each new block
-        const {height} = JSON.parse(msg.data).result;
+        const { height } = JSON.parse(msg.data).result;
         if (typeof height !== "number") return;
         document.getElementById("block-number").innerHTML = height;
 
