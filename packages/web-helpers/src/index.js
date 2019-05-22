@@ -362,14 +362,12 @@ const initApp = async provider => {
     global.kosuJS = new Kosu({ provider });
     await kosuJS.eventEmitter
         .getPastDecodedLogs({
-            fromBlock: ((await kosuJS.web3Wrapper.getBlockNumberAsync()) - 3000)
-            // fromBlock: 0,
+            fromBlock: 0,
         })
         .then(decodedLogs => {
-            // decodedLogs.forEach(log => {
-            //     console.log(log);
-            // });
-            console.log(decodedLogs.length)
+            decodedLogs.forEach(log => {
+                console.log(log);
+            });
         });
     await kosuJS.treasury.getContract();
     resetValues();

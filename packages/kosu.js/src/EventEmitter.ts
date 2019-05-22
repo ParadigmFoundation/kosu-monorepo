@@ -39,7 +39,8 @@ export class EventEmitter {
 
     public async getPastDecodedLogs(config: FilterObject): Promise<any[]> {
         Object.assign(config, { address: await this.getAddress() });
-        return this.web3Wrapper.getLogsAsync(config)
+        return this.web3Wrapper
+            .getLogsAsync(config)
             .catch(async err => {
                 if (err.message.includes("more than 1000 results")) {
                     return this.getPastLogsFromKosuEndpoint(config);
@@ -49,9 +50,9 @@ export class EventEmitter {
             })
             .then((logs: any[]) => {
                 return logs.map(log => {
-                    const decoded: LogWithDecodedArgs<DecodedLogArgs> = this.web3Wrapper.abiDecoder.tryToDecodeLogOrNoop(
-                        log,
-                    ) as LogWithDecodedArgs<DecodedLogArgs>;
+                    const decoded: LogWithDecodedArgs<
+                        DecodedLogArgs
+                    > = this.web3Wrapper.abiDecoder.tryToDecodeLogOrNoop(log) as LogWithDecodedArgs<DecodedLogArgs>;
                     return eventDecoder(decoded.args);
                 });
             });
