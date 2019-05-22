@@ -5,7 +5,9 @@
 
 syntax = "proto3";
 
-package types;
+package kosu;
+
+option go_package = "types";
 
 /**
  * BigInt
