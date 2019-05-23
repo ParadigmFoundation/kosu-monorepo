@@ -2,10 +2,10 @@ package witness
 
 import (
 	"context"
+	"encoding/hex"
 	"fmt"
 	"log"
 	"math/big"
-	"strconv"
 	"sync"
 
 	"go-kosu/abci"
@@ -24,6 +24,10 @@ type Provider interface {
 type Block struct {
 	Hash   []byte
 	Number *big.Int
+}
+
+func (b *Block) String() string {
+	return fmt.Sprintf("<number: %s, hash: %s>", b.Number.String(), hex.EncodeToString(b.Hash))
 }
 
 // Event contains the information of a EventEmitter contract
@@ -117,13 +121,20 @@ func (w *Witness) subscribe(ctx context.Context) error {
 
 	go func() {
 		for e := range sub {
-			n, _ := strconv.ParseUint(e.Tags["round.number"], 10, 64)
+			info, err := abci.NewRoundInfoFromTags(e.Tags)
+			if err != nil {
+				log.Printf("subscribe: invalid tags: %+v", err)
+				continue
+			}
+
 			// TODO: validate that n == this.round + 1
 			w.roundMutex.Lock()
-			w.roundInfo.Number = n
+			w.roundInfo.Number = info.Number
+			w.roundInfo.StartsAt = info.StartsAt
+			w.roundInfo.EndsAt = info.EndsAt
 			w.roundMutex.Unlock()
 
-			log.Printf("detected rebalance tx in block, now on round %d", n)
+			log.Printf("detected rebalance tx in block, now on round %v", info)
 		}
 	}()
 
@@ -154,12 +165,13 @@ func (w *Witness) handleBlocks(ctx context.Context) error {
 			return nil
 		}
 
+		num := w.roundInfo.Number
 		cur := block.Number.Uint64()
 		mat := cur - uint64(w.opts.FinalityThreshold)
 		w.currentHeight = cur
 
 		// If it's the first block || round has ended
-		if num := w.roundInfo.Number; num == 0 && (cur > w.initHeight) || mat >= w.roundInfo.EndsAt {
+		if (num == 0 && (cur > w.initHeight)) || mat >= w.roundInfo.EndsAt {
 			if err := w.rebalance(num, cur); err != nil {
 				log.Printf("rebalance: %+v", err)
 			}
