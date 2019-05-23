@@ -6,6 +6,8 @@ Helper methods for building the Paradigm "Create" portal.
 **Kind**: global class  
 
 * [Create](#Create)
+    * [new Create()](#new_Create_new)
+    * [.init()](#Create+init)
     * [.createAndSignOrder(options)](#Create+createAndSignOrder)
     * [.signAndPost(signedZeroExOrder)](#Create+signAndPost)
     * [.convertToWei(etherAmount)](#Create+convertToWei) ⇒ <code>string</code>
@@ -23,6 +25,34 @@ Helper methods for building the Paradigm "Create" portal.
     * [.getUserCustomAllowance(tokenAddress, userAddress)](#Create+getUserCustomAllowance)
     * [.setProxyAllowanceCustom(tokenAddress, userAddress)](#Create+setProxyAllowanceCustom)
 
+<a name="new_Create_new"></a>
+
+### new Create()
+Construct a new `Create` instance. Accepts no arguments, and returns an
+un-initialized instance.
+
+Most instance methods require `init()` to be called prior to use.
+
+<a name="Create+init"></a>
+
+### create.init()
+Must be called prior to using most library functionality. Calling `init`
+will trigger a Metamask pop-up prompting the user to approve access to
+the web page. 
+
+As such, `init()` should be the function call associated with the UX
+"Connect to Metamask" button.
+
+Catching promise rejections from `init()` is required, and indicates 
+some bad user configuration. Certain rejections can be used to update
+front-end state.
+
+Rejection cases:
+- "wrong network": the user is not on the Ethereum main-network
+- "user denied site access": the user clicked "deny" on Metamask pop-up
+- "non-ethereum browser detected": user does not have a web3 browser
+
+**Kind**: instance method of [<code>Create</code>](#Create)  
 <a name="Create+createAndSignOrder"></a>
 
 ### create.createAndSignOrder(options)
