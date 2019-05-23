@@ -26,6 +26,13 @@ const ZRX_SUBCONTRACT_MAKER_ARGS = require("./zrx_subcontract_maker_args.json");
  * Helper methods for building the Paradigm "Create" portal.
  */
 class Create {
+
+    /**
+     * Construct a new `Create` instance. Accepts no arguments, and returns an
+     * un-initialized instance.
+     * 
+     * Most instance methods require `init()` to be called prior to use.
+     */
     constructor () {
         // set to true after `init()` completes
         this.initialized = false;
@@ -51,6 +58,23 @@ class Create {
         this.zeroExContracts = null;
     }
 
+    /**
+     * Must be called prior to using most library functionality. Calling `init`
+     * will trigger a Metamask pop-up prompting the user to approve access to
+     * the web page. 
+     * 
+     * As such, `init()` should be the function call associated with the UX
+     * "Connect to Metamask" button.
+     * 
+     * Catching promise rejections from `init()` is required, and indicates 
+     * some bad user configuration. Certain rejections can be used to update
+     * front-end state.
+     * 
+     * Rejection cases:
+     * - "wrong network": the user is not on the Ethereum main-network
+     * - "user denied site access": the user clicked "deny" on Metamask pop-up
+     * - "non-ethereum browser detected": user does not have a web3 browser
+     */
     async init() {
         // connect metamask and use 
         await this._connectMetamask();
@@ -200,8 +224,7 @@ class Create {
         const signature = await signatureUtils.ecSignHashAsync(
             this.subProvider,
             orderHash,
-            makerAddress,
-            "DEFAULT"
+            makerAddress
         );
 
         const signedZeroExOrder = {
@@ -429,7 +452,7 @@ class Create {
                 await window.ethereum.enable();
                 this.web3 = new Web3(window.ethereum);
             } catch (error) {
-                throw new Error(error);
+                throw new Error("user denied site access");
             }
         } else if (typeof window.web3 !== "undefined") {
             this.web3 = new Web3(web3.currentProvider);
