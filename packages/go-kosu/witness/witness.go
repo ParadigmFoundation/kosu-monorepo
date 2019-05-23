@@ -118,6 +118,7 @@ func (w *Witness) subscribe(ctx context.Context) error {
 	go func() {
 		for e := range sub {
 			n, _ := strconv.ParseUint(e.Tags["round.number"], 10, 64)
+			// TODO: validate that n == this.round + 1
 			w.roundMutex.Lock()
 			w.roundInfo.Number = n
 			w.roundMutex.Unlock()
@@ -149,13 +150,17 @@ func (w *Witness) handleBlocks(ctx context.Context) error {
 	}()
 
 	for block := range ch {
+		if block == nil {
+			return nil
+		}
+
 		cur := block.Number.Uint64()
 		mat := cur - uint64(w.opts.FinalityThreshold)
 		w.currentHeight = cur
 
 		// If it's the first block || round has ended
-		if w.roundInfo.Number == 0 && (cur > w.initHeight) || mat >= w.roundInfo.EndsAt {
-			if err := w.rebalance(cur); err != nil {
+		if num := w.roundInfo.Number; num == 0 && (cur > w.initHeight) || mat >= w.roundInfo.EndsAt {
+			if err := w.rebalance(num, cur); err != nil {
 				log.Printf("rebalance: %+v", err)
 			}
 		}
@@ -164,16 +169,16 @@ func (w *Witness) handleBlocks(ctx context.Context) error {
 	return <-errCh
 }
 
-func (w *Witness) rebalance(round uint64) error {
+func (w *Witness) rebalance(round, start uint64) error {
 	info := &types.RoundInfo{
 		Number:   round + 1,
 		Limit:    uint64(w.opts.PeriodLimit),
-		StartsAt: w.roundInfo.StartsAt - 1,
-		EndsAt:   w.roundInfo.StartsAt + uint64(w.opts.PeriodLength),
+		StartsAt: start,
+		EndsAt:   start + uint64(w.opts.PeriodLength),
 	}
 
 	tx := &types.TransactionRebalance{RoundInfo: info}
-	res, err := w.client.BroadcastTxAsync(tx)
+	res, err := w.client.BroadcastTxSync(tx)
 	if err != nil {
 		return err
 	}
