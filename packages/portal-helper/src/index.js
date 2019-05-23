@@ -11,31 +11,47 @@ let {
     ERC20TokenWrapper
 } = require("0x.js");
 
-// let { MetamaskSubprovider } = require("@0x/subproviders");
-
+let { MetamaskSubprovider } = require("@0x/subproviders");
 let { Web3Wrapper } = require("@0x/web3-wrapper");
 
 // stores common token addresses
 const addresses = require("./addresses.json");
 
+/**
+ * Helper methods for building the Paradigm "Create" portal.
+ */
 class Create {
     constructor () {
+        // set to true after `init()` completes
         this.initialized = false;
+
+        // addresses for common tokens
+        this.NULL_ADDRESS = addresses.NULL;
+        this.WETH_ADDRESS = addresses.WETH;
+        this.ZRX_ADDRESS = addresses.ZRX;
+        this.DAI_ADDRESS = addresses.DAI;
+
+        // will load to 0x exchange address
+        this.EXCHANGE_ADDRESS = null;
+
+        // will be loaded in `init()`
         this.kosu = null;
         this.web3 = null;
         this.web3Wrapper = null;
         this.coinbase = null;
+        this.subProvider = null;
+        this.zeroExContracts = null;
     }
 
     async init() {
         // connect metamask and use 
-        await this.connectMetamask();
+        await this._connectMetamask();
 
         // check networkId
-        let netId = await this.web3.eth.net.getId();
+        let networkId = await this.web3.eth.net.getId();
 
         // throw if not mainnet
-        if (netId !== 1) {
+        if (networkId !== 1) {
             throw new Error("wrong network");
         }
 
@@ -44,93 +60,262 @@ class Create {
 
         // 0x web3 and erc20 wrapper
         let web3Wrapper = new Web3Wrapper(this.web3.currentProvider);
-        let erc20proxy = new ERC20ProxyWrapper(web3Wrapper, 1);
-        this.erc20TokenWrapper = new ERC20TokenWrapper(web3Wrapper, 1, erc20proxy);
+        let erc20proxy = new ERC20ProxyWrapper(web3Wrapper, networkId);
+        this.erc20TokenWrapper = new ERC20TokenWrapper(
+            web3Wrapper,
+            networkId,
+            erc20proxy
+        );
+
+        // helpers for creating and signing 0x orders
+        this.subProvider = new MetamaskSubprovider(this.web3.currentProvider);
+        this.zeroExContracts = new ContractWrappers(this.subProvider, { networkId });
+        this.EXCHANGE_ADDRESS = this.zeroExContracts.exchange.address;
 
         this.initialized = true;
     }
 
-    async connectMetamask() {
-        if (typeof window.ethereum !== "undefined") {
-            try {
-                await window.ethereum.enable();
-                this.web3 = new Web3(window.ethereum);
-            } catch (error) {
-                throw new Error(error);
-            }
-        } else if (typeof window.web3 !== "undefined") {
-            this.web3 = new Web3(web3.currentProvider);
-            global.web3 = this.web3;
-        } else {
-            throw new Error("non-ethereum browser detected");
+    // ORDER HELPERS
+
+    /**
+     * Generate and sign a 0x order. Will prompt user for a MetaMask signataure.
+     * 
+     * @param {string} makerAssetAddress 
+     * @param {string | number} makerAssetAmount 
+     * @param {string} takerAssetAddress the address of the taker token
+     * @param {string | number} takerAssetAmount taker amount (in wei)
+     * @param {string | number} orderDuration duration in seconds for order to be valid
+     * @param {string} makerAddress users address, defaults to coinbase
+     */
+    async createAndSignOrder(
+        makerAssetAddress,
+        makerAssetAmount,
+        takerAssetAddress,
+        takerAssetAmount,
+        orderDuration,
+        makerAddress = this.coinbase,
+    ) {
+        const getExpiration = (secondsFromNow) => {
+            const nowSec = Math.floor(Date.now()/1000);
+            const duration = parseInt(secondsFromNow.toString());
+            const expirationTimeSeconds = nowSec + duration;
+            return new BigNumber(expirationTimeSeconds);
         }
+        const parseCommonToken = (identifier) => {
+            switch (identifier) {
+                case "WETH": {
+                    return this.WETH_ADDRESS;
+                }
+                case "DAI": {
+                    return this.DAI_ADDRESS;
+                }
+                case "ZRX": {
+                    return this.ZRX_ADDRESS;
+                }
+                default: {
+                    throw new Error("unsupported common token");
+                }
+            }
+        }
+        const loadAddress = (maybeAddress) => {
+            if (maybeAddress.slice(0, 2) == "0x" && maybeAddress.length === 42) {
+                return maybeAddress;
+            } else {
+                return parseCommonToken(maybeAddress);
+            }
+        }
+
+        // use address or load common token (ZRX/WETH/DAI) if short id supplied
+        const makerAsset = loadAddress(makerAssetAddress);
+        const takerAsset = loadAddress(takerAssetAddress);
+
+        // construct raw order object
+        const zeroExOrder = {
+            // user fields
+            makerAddress:           makerAddress,                  
+            makerAssetAmount:       new BigNumber(makerAssetAmount), 
+            takerAssetAmount:       new BigNumber(takerAssetAmount),
+            expirationTimeSeconds:  getExpiration(orderDuration),
+            makerAssetData:      assetDataUtils.encodeERC20AssetData(makerAsset),
+            takerAssetData:      assetDataUtils.encodeERC20AssetData(takerAsset),
+            
+            // boilerplate fields
+            makerFee:            new BigNumber(0),            
+            takerFee:            new BigNumber(0),            
+            salt:                generatePseudoRandomSalt(),  
+            exchangeAddress:     this.EXCHANGE_ADDRESS,
+            takerAddress:        this.NULL_ADDRESS,
+            feeRecipientAddress: this.NULL_ADDRESS,     
+            senderAddress:       this.NULL_ADDRESS,
+        };
+
+        // hash and sign order
+        const orderHash = orderHashUtils.getOrderHashHex(zeroExOrder);
+        const signature = await signatureUtils.ecSignHashAsync(
+            this.subProvider,
+            orderHash,
+            makerAddress,
+            "DEFAULT"
+        );
+
+        // construct signed order object
+        const signedZeroExOrder = { ...zeroExOrder, signature };
+        return signedZeroExOrder;
+    }
+
+    /**
+     * Converts a number (assumed to be number of tokens) as a string to 
+     * units of wei, which must be used for generating 0x orders.
+     * 
+     * @param {string} etherAmount a number of tokens in full units (ether)
+     * @returns {string} the same amount in wei
+     */
+    convertToWei(etherAmount) {
+        return this.web3.utils.toWei(etherAmount);
+    }
+
+    /**
+     * Converts a number (assumed to be number of tokens in wei) as a string to 
+     * units of ether, which is more common to display to users.
+     * 
+     * @param {string} weiAmount a number of tokens in smallest units (wei)
+     * @returns {string} the same amount in ether
+     */
+    convertToWei(weiAmount) {
+        return this.web3.utils.fromWei(weiAmount);
     }
 
     // WETH (wrapped ether)
 
+    /**
+     * Returns a BigNumber representing the users WETH balance (in wei).
+     * 
+     * @param {string} userAddress override user's detected coinbase address
+     */
     async getUserWethBalance(userAddress = this.coinbase) {
-        return await this._getERC20Balance(userAddress, addresses.WETH);
+        return await this._getERC20Balance(userAddress, this.WETH_ADDRESS);
     }
 
+    /**
+     * Returns a BigNumber representing the users WETH allowance for the 0x
+     * contract system.
+     * 
+     * @param {string} userAddress override user's detected coinbase address
+     */
     async getUserWethAllowance(userAddress = this.coinbase) {
-        return await this.erc20TokenWrapper.getProxyAllowanceAsync(
-            addresses.WETH,
-            userAddress
-        )
+        return await this._getERC20ProxyAllowance(userAddress, this.WETH_ADDRESS);
     }
 
+    /**
+     * Sets an unlimited allowance for the 0x contract system for WETH.
+     * 
+     * @param {string} userAddress override user's detected coinbase address
+     */
     async setProxyAllowanceWeth(userAddress = this.coinbase) {
         return await this._setUnlimitedERC20ProxyAllowance(
             userAddress,
-            addresses.WETH
+            this.WETH_ADDRESS
         );
     }
 
     // ZRX 
 
+    /**
+     * Returns a BigNumber representing the users ZRX balance (in wei).
+     * 
+     * @param {string} userAddress override user's detected coinbase address
+     */
     async getUserZrxBalance(userAddress = this.coinbase) {
-        return await this._getERC20Balance(userAddress, addresses.ZRX);
+        return await this._getERC20Balance(userAddress, this.ZRX_ADDRESS);
     }
 
+    /**
+     * Returns a BigNumber representing the users ZRX allowance for the 0x
+     * contract system.
+     * 
+     * @param {string} userAddress override user's detected coinbase address
+     */
     async getUserZrxAllowance(userAddress = this.coinbase) {
-        return await this._getERC20ProxyAllowance(userAddress, addresses.ZRX);
+        return await this._getERC20ProxyAllowance(userAddress, this.ZRX_ADDRESS);
     }
 
+    /**
+     * Sets an unlimited allowance for the 0x contract system for ZRX.
+     * 
+     * @param {string} userAddress override user's detected coinbase address
+     */
     async setProxyAllowanceZrx(userAddress = this.coinbase) {
         return await this._setUnlimitedERC20ProxyAllowance(
             userAddress,
-            addresses.ZRX
+            this.ZRX_ADDRESS
         );
     }
 
     // DAI
 
+    /**
+     * Returns a BigNumber representing the users DAI balance (in wei).
+     * 
+     * @param {string} userAddress override user's detected coinbase address
+     */
     async getUserDaiBalance(userAddress = this.coinbase) {
-        return await this._getERC20Balance(userAddress, addresses.DAI);
+        return await this._getERC20Balance(userAddress, this.DAI_ADDRESS);
     }
 
+    /**
+     * Returns a BigNumber representing the users DAI allowance for the 0x
+     * contract system.
+     * 
+     * @param {string} userAddress override user's detected coinbase address
+     */
     async getUserDaiAllowance(userAddress = this.coinbase) {
-        return await this._getERC20ProxyAllowance(userAddress, addresses.DAI);
+        return await this._getERC20ProxyAllowance(userAddress, this.DAI_ADDRESS);
     }
 
+    /**
+     * Sets an unlimited allowance for the 0x contract system for DAI.
+     * 
+     * @param {string} userAddress override user's detected coinbase address
+     */
     async setProxyAllowanceDai(userAddress = this.coinbase) {
         return await this._setUnlimitedERC20ProxyAllowance(
             userAddress,
-            addresses.DAI
+            this.DAI_ADDRESS
         );
     }
 
     // CUSTOM
 
-    async getUserCustomBalance(userAddress = this.coinbase, tokenAddress) {
+    /**
+     * Returns a BigNumber representing the users balance of a custom token, 
+     * provided by token address.
+     * 
+     * @param {string} tokenAddress 0x-prefixed address of the custom token
+     * @param {string} userAddress override user's detected coinbase address
+     */
+    async getUserCustomBalance(tokenAddress, userAddress = this.coinbase) {
         return await this._getERC20Balance(userAddress, tokenAddress);
     }
 
-    async getUserCustomAllowance(userAddress = this.coinbase, tokenAddress) {
+    /**
+     * Returns a BigNumber representing the users allowance for the 0x
+     * contract system of a custom token, provided by tokenAddress.
+     * 
+     * @param {string} tokenAddress 0x-prefixed address of the custom token
+     * @param {string} userAddress override user's detected coinbase address
+     */
+    async getUserCustomAllowance(tokenAddress, userAddress = this.coinbase) {
         return await this._getERC20ProxyAllowance(userAddress, tokenAddress);
     }
 
-    async setProxyAllowanceCustom(userAddress = this.coinbase, tokenAddress) {
+    /**
+     * Sets an unlimited allowance for the 0x contract system for the provided
+     * custom token address (tokenAddress).
+     * 
+     * @param {string} tokenAddress 0x-prefixed address of the custom token
+     * @param {string} userAddress override user's detected coinbase address
+     */
+    async setProxyAllowanceCustom(tokenAddress, userAddress = this.coinbase) {
         return await this._setUnlimitedERC20ProxyAllowance(
             userAddress,
             tokenAddress
@@ -158,6 +343,22 @@ class Create {
             token,
             user
         );
+    }
+
+    async _connectMetamask() {
+        if (typeof window.ethereum !== "undefined") {
+            try {
+                await window.ethereum.enable();
+                this.web3 = new Web3(window.ethereum);
+            } catch (error) {
+                throw new Error(error);
+            }
+        } else if (typeof window.web3 !== "undefined") {
+            this.web3 = new Web3(web3.currentProvider);
+            global.web3 = this.web3;
+        } else {
+            throw new Error("non-ethereum browser detected");
+        }
     }
 }
 
