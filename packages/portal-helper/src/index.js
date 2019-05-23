@@ -97,13 +97,6 @@ class Create {
      *   - makerAddress: *can* be provided to override `coinbase`, but shouldn't</br>
      */
     async createAndSignOrder(options) {
-     /* makerAssetAddress,
-        makerAssetAmount,
-        takerAssetAddress,
-        takerAssetAmount,
-        orderDuration,
-        makerAddress = this.coinbase, 
-    ) {*/
         const makerAddress = options.makerAddress || this.coinbase;
 
         const {
@@ -113,6 +106,19 @@ class Create {
             takerAssetAmount,
             orderDuration
         } = options;
+
+        // so you don't see ugly errors due to missing parameters
+        if (typeof options !== "object") {
+            throw new Error("provide options object, not string or number");
+        } else if (
+            !("makerAssetAddress" in options ||
+            "takerAssetAddress" in options ||
+            "makerAssetAmount" in options ||
+            "takerAssetAmount" in options ||
+            "orderDuration" in options)
+        ) {
+            throw new Error("missing required order parameters");
+        }
 
         // turn order duration into expiry unix timestamp
         const getExpiration = (secondsFromNow) => {
@@ -150,9 +156,10 @@ class Create {
         const loadAddress = (maybeAddress) => {
             if (maybeAddress.slice(0, 2) == "0x" && maybeAddress.length === 42) {
                 return maybeAddress;
-            } else if (["WETH", "DAI", "ZRX"].indexOf(maybeAddress) === -1) {
+            } else if (["WETH", "DAI", "ZRX"].indexOf(maybeAddress) !== -1) {
                 return parseCommonToken(maybeAddress);
             } else {
+                console.log(maybeAddress);
                 throw new Error("not and address or a common token.");
             }
         }
