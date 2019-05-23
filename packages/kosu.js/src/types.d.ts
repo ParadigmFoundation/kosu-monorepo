@@ -41,3 +41,12 @@ interface KosuUtils {
     toBytes32(value: string): number | string | BN;
     NULL_ADDRESS: string;
 }
+
+interface DecodedKosuLogArgs {
+}
+
+interface LogWithDecodedKosuArgs<A, B> extends LogWithDecodedArgs {
+    event: string;
+    args: A;
+    decodedArgs: B;
+}

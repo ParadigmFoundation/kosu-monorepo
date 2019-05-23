@@ -50,10 +50,11 @@ export class EventEmitter {
             })
             .then((logs: any[]) => {
                 return logs.map(log => {
-                    const decoded: LogWithDecodedArgs<
-                        DecodedLogArgs
-                    > = this.web3Wrapper.abiDecoder.tryToDecodeLogOrNoop(log) as LogWithDecodedArgs<DecodedLogArgs>;
-                    return eventDecoder(decoded.args);
+                    const decoded: LogWithDecodedKosuArgs<
+                        DecodedLogArgs, DecodedKosuLogArgs
+                    > = this.web3Wrapper.abiDecoder.tryToDecodeLogOrNoop(log) as unknown as LogWithDecodedKosuArgs<DecodedLogArgs, DecodedKosuLogArgs>;
+                    decoded.decodedArgs = eventDecoder(decoded.args);
+                    return decoded;
                 });
             });
     }
