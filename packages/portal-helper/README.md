@@ -12,6 +12,7 @@ Helper methods for building the Paradigm "Create" portal.
     * [.signAndPost(signedZeroExOrder)](#Create+signAndPost)
     * [.convertToWei(etherAmount)](#Create+convertToWei) ⇒ <code>string</code>
     * [.convertToWei(weiAmount)](#Create+convertToWei) ⇒ <code>string</code>
+    * [.isValidAddress(address)](#Create+isValidAddress)
     * [.getUserWethBalance(userAddress)](#Create+getUserWethBalance)
     * [.getUserWethAllowance(userAddress)](#Create+getUserWethAllowance)
     * [.setProxyAllowanceWeth(userAddress)](#Create+setProxyAllowanceWeth)
@@ -102,6 +103,18 @@ units of ether, which is more common to display to users.
 | Param | Type | Description |
 | --- | --- | --- |
 | weiAmount | <code>string</code> | a number of tokens in smallest units (wei) |
+
+<a name="Create+isValidAddress"></a>
+
+### create.isValidAddress(address)
+Returns `true` if the inputted string is a valid Ethereum address, otherwise
+returns `false`.
+
+**Kind**: instance method of [<code>Create</code>](#Create)  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| address | <code>string</code> | a string to be validated as an Ethereum address. |
 
 <a name="Create+getUserWethBalance"></a>
 
