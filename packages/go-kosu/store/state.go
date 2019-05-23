@@ -8,14 +8,7 @@ import (
 	"sync"
 	"sync/atomic"
 
-	"github.com/gogo/protobuf/proto"
-
 	"go-kosu/abci/types"
-)
-
-var (
-	// ErrQueryPathNotFound is returned by Query when a path is not found
-	ErrQueryPathNotFound = errors.New("Query: Path not found")
 )
 
 // RoundInfo is the persisted state of the RoundInfo
@@ -121,9 +114,9 @@ type element struct {
 
 func (s *State) elements() []element {
 	return []element{
-		{roundInfoKey, &s.RoundInfo},
-		{lastEventKey, &s.LastEvent},
-		{consensusParamsKey, &s.ConsensusParams},
+		{RoundInfoKey, &s.RoundInfo},
+		{LastEventKey, &s.LastEvent},
+		{ConsensusParamsKey, &s.ConsensusParams},
 	}
 }
 
@@ -343,23 +336,4 @@ func (s *State) GenLimits() RateLimits {
 	}
 
 	return rl
-}
-
-// Query queries for the tree state and transform the output into a proto.Message to be delivered to the client.
-// Query also returns the key of the state.
-func (s *State) Query(tree *StateTree, path string) (proto.Message, []byte, error) {
-	switch path {
-	case "/roundinfo":
-		var info RoundInfo
-		if err := tree.Get(roundInfoKey, &info); err != nil {
-			return nil, nil, err
-		}
-
-		p := new(types.RoundInfo)
-		info.ToProto(p)
-		return p, []byte(roundInfoKey), nil
-
-	}
-
-	return nil, nil, ErrQueryPathNotFound
 }

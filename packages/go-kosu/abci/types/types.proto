@@ -5,7 +5,9 @@
 
 syntax = "proto3";
 
-package types;
+package kosu;
+
+option go_package = "types";
 
 /**
  * BigInt
@@ -22,6 +24,17 @@ message RoundInfo {
   uint64 starts_at = 2;
   uint64 ends_at = 3;
   uint64 limit = 4;
+}
+
+/**
+ * ConsensusParams
+ */
+message ConsensusParams {
+  uint32 FinalityThreshold = 1;
+  uint32 PeriodLimit = 2;
+  uint32 PeriodLength = 3;
+  uint32 MaxOrderBytes = 4;
+  uint32 ConfirmationThreshold = 5;
 }
 
 message Poster {

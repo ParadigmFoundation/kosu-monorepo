@@ -67,7 +67,12 @@ func (w *EthereumProvider) handleEvents(ctx context.Context, fn func(e *Event)) 
 	}
 
 	for f.Next() {
-		handle(f.Event)
+		select {
+		case <-ctx.Done():
+			return ctx.Err()
+		default:
+			handle(f.Event)
+		}
 	}
 
 	events := make(chan *EventEmitterParadigmEvent, 128)

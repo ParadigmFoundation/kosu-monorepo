@@ -97,22 +97,46 @@ func (c *Client) Subscribe(ctx context.Context, q string) (<-chan rpctypes.Resul
 	return c.Client.Subscribe(ctx, "kosu", q)
 }
 
-// QueryRoundInfo performs a ABCIQuery and translate the response into concrete types.
+// QueryRoundInfo performs a ABCIQuery to "/roundinfo"
 func (c *Client) QueryRoundInfo() (*types.RoundInfo, error) {
-	out, err := c.ABCIQuery("/roundinfo", nil)
-	if err != nil {
+	var pb types.RoundInfo
+	if err := c.query("/roundinfo", &pb); err != nil {
 		return nil, err
+	}
+
+	return &pb, nil
+}
+
+// QueryConsensusParams performs a ABCI Query to "/consensusparams"
+func (c *Client) QueryConsensusParams() (*types.ConsensusParams, error) {
+	var pb types.ConsensusParams
+	if err := c.query("/consensusparams", &pb); err != nil {
+		return nil, err
+	}
+
+	return &pb, nil
+}
+
+// QueryPoster performs a ABCI Query to "/posters/<addr>"
+func (c *Client) QueryPoster(addr string) (*types.Poster, error) {
+	var pb types.Poster
+	if err := c.query("/posters/"+addr, &pb); err != nil {
+		return nil, err
+	}
+
+	return &pb, nil
+}
+
+func (c *Client) query(path string, pb proto.Message) error {
+	out, err := c.ABCIQuery(path, nil)
+	if err != nil {
+		return err
 	}
 	res := out.Response
 
 	if res.IsErr() {
-		return nil, errors.New(res.GetInfo())
+		return errors.New(res.GetInfo())
 	}
 
-	var info types.RoundInfo
-	if err := proto.Unmarshal(res.Value, &info); err != nil {
-		return nil, err
-	}
-
-	return &info, nil
+	return proto.Unmarshal(res.Value, pb)
 }
