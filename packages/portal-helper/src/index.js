@@ -286,6 +286,16 @@ class Create {
         return this.web3.utils.fromWei(weiAmount);
     }
 
+    /**
+     * Returns `true` if the inputted string is a valid Ethereum address, otherwise
+     * returns `false`.
+     * 
+     * @param {string} address a string to be validated as an Ethereum address.
+     */
+    isValidAddress(address) {
+        return /^0x[a-fA-F0-9]{40}$/.test(address);
+    }
+
     // WETH (wrapped ether)
 
     /**
