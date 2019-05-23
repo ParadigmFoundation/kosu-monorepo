@@ -8,7 +8,6 @@ import (
 	. "github.com/smartystreets/goconvey/convey"
 	"github.com/stretchr/testify/require"
 
-	"go-kosu/abci"
 	"go-kosu/abci/types"
 	"go-kosu/store"
 	"go-kosu/witness"
@@ -72,40 +71,40 @@ func (s *Suite) TestWitnessTx() {
 func (s *Suite) TestWitnessRebalance() {
 	GivenABCIServer(s.T(), s, func(t *testing.T) {
 		tx := &types.TransactionRebalance{
-			RoundInfo: &types.RoundInfo{},
+			RoundInfo: &types.RoundInfo{
+				StartsAt: 10,
+				EndsAt:   20,
+			},
 		}
 
 		ctx, cancel := context.WithCancel(context.Background())
 		defer cancel()
 
-		w := startWitness(t, s.client)
-		err := w.Start(ctx)
-		require.NoError(t, err)
+		// Create the witness
+		ch := make(chan interface{})
+		w := witness.New(s.client, witness.NewMockProvider(ch), witness.DefaultOptions)
+		require.NoError(t, w.Start(ctx))
 
 		Convey("When a set of Rebalance Tx are commited", func() {
 			roundNumber := []uint64{1, 2, 3}
 			for _, n := range roundNumber {
 				tx.RoundInfo.Number = n
-				tx.RoundInfo.StartsAt = tx.RoundInfo.EndsAt
-				tx.RoundInfo.EndsAt += 10
 
 				res, err := s.client.BroadcastTxCommit(tx)
 				require.NoError(t, err)
 				require.Zero(t, res.DeliverTx.Code, res.DeliverTx.Log)
+				require.True(t, res.CheckTx.IsOK(), res.CheckTx.Log)
+				require.True(t, res.DeliverTx.IsOK(), res.DeliverTx.Log)
+
+				tx.RoundInfo.StartsAt = tx.RoundInfo.EndsAt
+				tx.RoundInfo.EndsAt += 10
 			}
-			// give TM some time to pass the tx to the witness's subscriber
 			time.Sleep(100 * time.Millisecond)
+			// give TM some time to pass the tx to the witness's subscriber
 
 			Convey("It should update the local witness state", func() {
 				So(w.RoundInfo().Number, ShouldEqual, 3)
 			})
 		})
 	})
-}
-
-func startWitness(t *testing.T, c *abci.Client) *witness.Witness {
-	p, err := witness.NewEthereumProvider("wss://ropsten.infura.io/ws")
-	require.NoError(t, err)
-
-	return witness.New(c, p, witness.DefaultOptions)
 }
