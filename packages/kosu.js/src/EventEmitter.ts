@@ -65,7 +65,6 @@ export class EventEmitter {
             this.kosuWeb3Wrapper = new Web3Wrapper(kosuWeb3.currentProvider);
         }
 
-        // console.log(`Call start: ${start}, end: ${end}, breadth: ${breadth}`);
         return this.kosuWeb3Wrapper.getLogsAsync(config);
     }
 }
