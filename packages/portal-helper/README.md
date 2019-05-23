@@ -13,6 +13,7 @@ Helper methods for building the Paradigm "Create" portal.
     * [.convertToWei(etherAmount)](#Create+convertToWei) ⇒ <code>string</code>
     * [.convertToWei(weiAmount)](#Create+convertToWei) ⇒ <code>string</code>
     * [.isValidAddress(address)](#Create+isValidAddress)
+    * [.userHasBond(userAddress)](#Create+userHasBond)
     * [.getUserWethBalance(userAddress)](#Create+getUserWethBalance)
     * [.getUserWethAllowance(userAddress)](#Create+getUserWethAllowance)
     * [.setProxyAllowanceWeth(userAddress)](#Create+setProxyAllowanceWeth)
@@ -115,6 +116,22 @@ returns `false`.
 | Param | Type | Description |
 | --- | --- | --- |
 | address | <code>string</code> | a string to be validated as an Ethereum address. |
+
+<a name="Create+userHasBond"></a>
+
+### create.userHasBond(userAddress)
+Check if the user (by their `coinbase` address) is allowed to post to the
+Kosu network. Returns `true` if they are, and `false` if they are not.
+
+**Kind**: instance method of [<code>Create</code>](#Create)  
+**Todo**
+
+- [ ] implement.
+
+
+| Param | Type | Description |
+| --- | --- | --- |
+| userAddress | <code>string</code> | can be provided to override coinbase, but shouldn't |
 
 <a name="Create+getUserWethBalance"></a>
 

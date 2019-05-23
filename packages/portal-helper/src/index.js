@@ -296,6 +296,17 @@ class Create {
         return /^0x[a-fA-F0-9]{40}$/.test(address);
     }
 
+    /**
+     * Check if the user (by their `coinbase` address) is allowed to post to the
+     * Kosu network. Returns `true` if they are, and `false` if they are not.
+     *
+     * @todo implement.
+     * @param {string} userAddress can be provided to override coinbase, but shouldn't
+     */
+    userHasBond(userAddress = this.coinbase) {
+        return true;
+    }
+
     // WETH (wrapped ether)
 
     /**
