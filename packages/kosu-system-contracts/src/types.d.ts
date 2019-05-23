@@ -24,3 +24,13 @@ interface Listing {
     currentChallenge: BigNumber;
     details: string;
 }
+
+interface PrettyListing extends Listing {
+    stakedBalance: string;
+    applicationBlock: string;
+    confirmationBlock: string;
+    exitBlock: string;
+    rewardRate: string;
+    lastRewardBlock: string;
+    currentChallenge: string;
+}
