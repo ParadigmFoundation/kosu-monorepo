@@ -50,7 +50,7 @@ section {
     height: 100%;
     position: fixed;
     top: 0;
-    overflow-x: hidden;
+    overflow: auto;
     padding-top: 20px;
 }
 
@@ -64,4 +64,13 @@ section {
 .right {
     right: 0;
     width: 30%;
+}
+
+.row {
+    text-align: left;
+}
+
+.block {
+    padding-left: 10px;
+    display: inline;
 }

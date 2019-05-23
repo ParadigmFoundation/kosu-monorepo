@@ -11,146 +11,152 @@
     </script>
 </head>
 <body>
-    <table class="split left">
-            <tr><td class="title"><b>KOSU Token</b></td></tr>
-        <tr>
-                <td>
+    <div class="split left">
+            <div class="row"><div class="block title"><b>KOSU Token</b></div></div>
+        <div class="row">
+                <div class="block">
                     Total KOSU Supply:
-                </td>
-                <td id="kosu-token-supply"></td>
-            </tr>
-        <tr>
-            <td>
+                </div>
+                <div class="block" id="kosu-token-supply"></div>
+            </div>
+        <div class="row">
+            <div class="block">
                 User KOSU Balance:
-            </td>
-            <td id="kosu-token-balance"></td>
-        </tr>
-        <tr>
-            <td>
+            </div>
+            <div class="block" id="kosu-token-balance"></div>
+        </div>
+        <div class="row">
+            <div class="block">
                 Current Treasury Allowance:
-            </td>
-            <td id="kosu-token-treasury-allowance"></td>
-        </tr>
-        <tr>
-            <td>Approve Treasury</td>
-            <td>
+            </div>
+            <div class="block" id="kosu-token-treasury-allowance"></div>
+        </div>
+        <div class="row">
+            <div class="block">Approve Treasury</div>
+            <div class="block">
                 <label for="approve-value">Value: </label><input id="approve-value" type="number">
-            </td>
-            <td><button id="approve-button">Submit</button></td>
-        </tr>
-        <tr>
-            <td>Transfer</td>
-            <td>
+            </div>
+            <div class="block"><button id="approve-button">Submit</button></div>
+        </div>
+        <div class="row">
+            <div class="block">Transfer</div>
+            <div class="block">
                 <label for="transfer-recipient">To: </label><input id="transfer-recipient" type="text">
                 <label for="transfer-value">Value: </label><input id="transfer-value" type="number">
-            </td>
-            <td><button id="transfer-button">Submit</button></td>
-        </tr>
-        <tr><td class="title"><b>Treasury</b></td></tr>
-        <tr>
-            <td>
+            </div>
+            <div class="block"><button id="transfer-button">Submit</button></div>
+        </div>
+        <div class="row"><div class="title block"><b>Treasury</b></div></div>
+        <div class="row">
+            <div class="block">
                 User Total Unlocked Balance:
-            </td>
-            <td id="treasury-current-balance"></td>
-        </tr>
-        <tr>
-            <td>
+            </div>
+            <div class="block" id="treasury-current-balance"></div>
+        </div>
+        <div class="row">
+            <div class="block">
                 User Total System Balance:
-            </td>
-            <td id="treasury-system-balance"></td>
-        </tr>
-        <tr>
-            <td>Deposit</td>
-            <td><label for="deposit-value">Value: </label><input id="deposit-value" type="number"></td>
-            <td><button id="deposit-button">Submit</button></td>
-        </tr>
-        <tr>
-            <td>Withdraw</td>
-            <td><label for="withdraw-value">Value: </label><input id="withdraw-value" type="number"></td>
-            <td><button id="withdraw-button">Submit</button></td>
-        </tr>
-        <tr><td class="title"><b>Voting</b></td></tr>
-        <tr><td><label for="voting-poll-id">Poll Id:</label></td><td><input id="voting-poll-id" type="number" min="0" step="1"></td></tr>
-        <tr>
-            <td>
+            </div>
+            <div class="block" id="treasury-system-balance"></div>
+        </div>
+        <div class="row">
+            <div class="block">Deposit</div>
+            <div class="block"><label for="deposit-value">Value: </label><input id="deposit-value" type="number"></div>
+            <div class="block"><button id="deposit-button">Submit</button></div>
+        </div>
+        <div class="row">
+            <div class="block">Withdraw</div>
+            <div class="block"><label for="withdraw-value">Value: </label><input id="withdraw-value" type="number"></div>
+            <div class="block"><button id="withdraw-button">Submit</button></div>
+        </div>
+        <div class="row"><div class="title block"><b>Voting</b></div></div>
+        <div class="row"><div class="block"><label for="voting-poll-id">Poll Id:</label></div><div class="block"><input id="voting-poll-id" type="number" min="0" step="1"></div></div>
+        <div class="row">
+            <div class="block">
                 Winning Option:
-            </td>
-            <td id="voting-winning-option"></td>
-        </tr>
-        <tr>
-            <td>
+            </div>
+            <div class="block" id="voting-winning-option"></div>
+        </div>
+        <div class="row">
+            <div class="block">
                 Total Winning Tokens:
-            </td>
-            <td id="voting-total-winning-tokens"></td>
-        </tr>
-        <tr>
-            <td>
+            </div>
+            <div class="block" id="voting-total-winning-tokens"></div>
+        </div>
+        <div class="row">
+            <div class="block">
                 User Winning Tokens:
-            </td>
-            <td id="voting-user-winning-tokens"></td>
-        </tr>
-        <tr>
-            <td><label for="voting-commit-option">Vote Value: </label><input id="voting-commit-option" type="number" min="0" step="1"></td>
-            <td><label for="voting-commit-salt">Vote Salt Value: </label><input id="voting-commit-salt" type="number" min="0" step="1"></td>
-            <td><label for="voting-commit-tokens">Tokens to commit: </label><input id="voting-commit-tokens" type="number" min="0"></td>
-            <td><button id="voting-commit-button">Commit Vote</button></td>
-        </tr>
-        <tr>
-            <td><label for="voting-reveal-option">Vote Value: </label><input id="voting-reveal-option" type="number" min="0" step="1"></td>
-            <td><label for="voting-reveal-salt">Vote Salt Value: </label><input id="voting-reveal-salt" type="number" min="0" step="1"></td>
-            <td><button id="voting-reveal-button">Reveal Vote</button></td>
-        </tr>
-        <tr><td class="title"><b>Poster Registry</b></td></tr>
-        <tr>
-            <td>
+            </div>
+            <div class="block" id="voting-user-winning-tokens"></div>
+        </div>
+        <div class="row">
+            <div class="block"><label for="voting-commit-option">Vote Value: </label><input id="voting-commit-option" type="number" min="0" step="1"></div>
+            <div class="block"><label for="voting-commit-salt">Vote Salt Value: </label><input id="voting-commit-salt" type="number" min="0" step="1"></div>
+            <div class="block"><label for="voting-commit-tokens">Tokens to commit: </label><input id="voting-commit-tokens" type="number" min="0"></div>
+            <div class="block"><button id="voting-commit-button">Commit Vote</button></div>
+        </div>
+        <div class="row">
+            <div class="block"><label for="voting-reveal-option">Vote Value: </label><input id="voting-reveal-option" type="number" min="0" step="1"></div>
+            <div class="block"><label for="voting-reveal-salt">Vote Salt Value: </label><input id="voting-reveal-salt" type="number" min="0" step="1"></div>
+            <div class="block"><button id="voting-reveal-button">Reveal Vote</button></div>
+        </div>
+        <div class="row"><div class="title block"><b>Poster Registry</b></div></div>
+        <div class="row">
+            <div class="block">
                 Total Tokens Registered:
-            </td>
-            <td id="poster-registry-tokens-contributed"></td>
-        </tr>
-        <tr>
-            <td>
+            </div>
+            <div class="block" id="poster-registry-tokens-contributed"></div>
+        </div>
+        <div class="row">
+            <div class="block">
                 User Registered Tokens:
-            </td>
-            <td id="poster-registry-registered-tokens"></td>
-        </tr>
-        <tr>
-            <td>Register</td>
-            <td><label for="register-value">Value: </label><input id="register-value" type="number"></td>
-            <td><button id="register-button">Submit</button></td>
-        </tr>
-        <tr>
-            <td>Release</td>
-            <td><label for="release-value">Value: </label><input id="release-value" type="number"></td>
-            <td><button id="release-button">Submit</button></td>
-        </tr>
-        <tr><td class="title"><b>Validator Registry</b></td></tr>
-        <tr>
-            <td><label for="application-period-value">Application Period: </label></td><td><p id="application-period-value"></p></td>
-            <td><label for="commit-period-value">Commit Period: </label></td><td><p id="commit-period-value"></p></td>
-        </tr>
-        <tr>
-            <td><label for="challenge-period-value">Challenge Period: </label></td><td><p id="challenge-period-value"></p></td>
-            <td><label for="exit-period-value">Exit Period: </label></td><td><p id="exit-period-value"></p></td>
-        </tr>
-        <tr>
-            <td><label for="reward-period-value">Reward Period: </label></td><td><p id="reward-period-value"></p></td>
-            <td><label for="minimum-balance-value">Minimum Balance: </label></td><td><p id="minimum-balance-value"></p></td>
-        </tr>
-        <tr>
-            <td><label for="stake-holder-cut">Stakeholder Cut: </label></td><td><p id="stake-holder-cut"></p></td>
-        </tr>
-        <tr><td><label for="validator-public-key">Public Key:</label></td><td><input id="validator-public-key"></td></tr>
-        <tr id="validator-public-key-hex-row" style="display: none"><td>Hex Public Key: </td><td id="validator-public-key-hex"></td></tr>
-        <tr><td>Tokens to stake: </td><td><input id="validator-register-tokens" type="number" min="0" ></td><td>Reward rate: <input id="validator-register-reward" type="number" ></td><td><button id="validator-register-button">Register Listing</button></td></tr>
-        <tr><td><button id="validator-confirm-button">Confirm Listing</button></td></tr>
-        <tr><td><button id="validator-challenge-button">Challenge Listing</button></td></tr>
-        <tr><td><button id="validator-resolve-challenge-button">Resolve Listing Challenge</button></td></tr>
-        <tr><td><button id="validator-claim-rewards-button">Claim Listing Rewards</button></td></tr>
-        <tr><td><button id="validator-init-exit-button">Init Listing Exit</button></td></tr>
-        <tr><td><button id="validator-finalize-exit-button">Finalize Listing Exit</button></td></tr>
-        <tr><td>Challenge Id: <input id="validator-claim-challenge-id" type="number" min="0" step="1"></td><td><button id="validator-claim-button">Claim Winnings</button></td></tr>
-    </table>
-    <div style="display: block">Listing: <div id="validator-listing-info"></div></div>
+            </div>
+            <div class="block" id="poster-registry-registered-tokens"></div>
+        </div>
+        <div class="row">
+            <div class="block">Register</div>
+            <div class="block"><label for="register-value">Value: </label><input id="register-value" type="number"></div>
+            <div class="block"><button id="register-button">Submit</button></div>
+        </div>
+        <div class="row">
+            <div class="block">Release</div>
+            <div class="block"><label for="release-value">Value: </label><input id="release-value" type="number"></div>
+            <div class="block"><button id="release-button">Submit</button></div>
+        </div>
+        <div class="row"><div class="title block"><b>Validator Registry</b></div></div>
+        <div class="row">
+            <div class="block"><label for="application-period-value">Application Period: </label></div><div class="block" id="application-period-value"></div>
+        </div>
+        <div class="row">
+            <div class="block"><label for="commit-period-value">Commit Period: </label></div><div class="block" id="commit-period-value"></div>
+        </div>
+        <div class="row">
+            <div class="block"><label for="challenge-period-value">Challenge Period: </label></div><div class="block" id="challenge-period-value"></div>
+        </div>
+        <div class="row">
+            <div class="block"><label for="exit-period-value">Exit Period: </label></div><div class="block" id="exit-period-value"></div>
+        </div>
+        <div class="row">
+            <div class="block"><label for="reward-period-value">Reward Period: </label></div><div class="block" id="reward-period-value"></div>
+        </div>
+        <div class="row">
+            <div class="block"><label for="minimum-balance-value">Minimum Balance: </label></div><div class="block" id="minimum-balance-value"></div>
+        </div>
+        <div class="row">
+            <div class="block"><label for="stake-holder-cut">Stakeholder Cut: </label></div><div class="block" id="stake-holder-cut"></div>
+        </div>
+        <div class="row"><div class="block"><label for="validator-public-key">Public Key:</label></div><div class="block"><input id="validator-public-key"></div></div>
+        <div class="row" id="validator-public-key-hex-row" style="display: none"><div class="block">Hex Public Key: </div><div class="block" id="validator-public-key-hex"></div></div>
+        <div class="row"><div class="block">Tokens to stake: </div><div class="block"><input id="validator-register-tokens" type="number" min="0" ></div><div class="block">Reward rate: <input id="validator-register-reward" type="number" ></div><div class="block"><button id="validator-register-button">Register Listing</button></div></div>
+        <div class="row"><div class="block"><button id="validator-confirm-button">Confirm Listing</button></div></div>
+        <div class="row"><div class="block"><button id="validator-challenge-button">Challenge Listing</button></div></div>
+        <div class="row"><div class="block"><button id="validator-resolve-challenge-button">Resolve Listing Challenge</button></div></div>
+        <div class="row"><div class="block"><button id="validator-claim-rewards-button">Claim Listing Rewards</button></div></div>
+        <div class="row"><div class="block"><button id="validator-init-exit-button">Init Listing Exit</button></div></div>
+        <div class="row"><div class="block"><button id="validator-finalize-exit-button">Finalize Listing Exit</button></div></div>
+        <div class="row"><div class="block">Challenge Id: <input id="validator-claim-challenge-id" type="number" min="0" step="1"></div><div class="block"><button id="validator-claim-button">Claim Winnings</button></div></div>
+        <div class="row">Listing: <div id="validator-listing-info"></div></div>
+    </div>
     <div class="split right">
         <h1 class="title">Log: </h1>
         <pre id="log"></pre>
