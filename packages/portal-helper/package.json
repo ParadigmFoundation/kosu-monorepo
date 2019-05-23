@@ -9,7 +9,7 @@
   "scripts": {
     "compile:assets": "webpack",
     "develop": "./scripts/develop.sh",
-    "docs": "jsdoc2md src/index.js > API_REFERENCE.md"
+    "docs": "jsdoc2md src/index.js > README.md"
   },
   "dependencies": {
     "0x.js": "^6.0.9",
