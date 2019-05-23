@@ -13,9 +13,14 @@ let {
 
 let { MetamaskSubprovider } = require("@0x/subproviders");
 let { Web3Wrapper } = require("@0x/web3-wrapper");
+const zeroExFormatter = require("paradigm-0x-contracts");
+let { Signature, OrderSerializer } = require("@kosu/kosu.js");
 
 // stores common token addresses
 const addresses = require("./addresses.json");
+
+// hard-coded 0x subcontract makerArguments
+const ZRX_SUBCONTRACT_MAKER_ARGS = require("./zrx_subcontract_maker_args.json");
 
 /**
  * Helper methods for building the Paradigm "Create" portal.
@@ -30,6 +35,9 @@ class Create {
         this.WETH_ADDRESS = addresses.WETH;
         this.ZRX_ADDRESS = addresses.ZRX;
         this.DAI_ADDRESS = addresses.DAI;
+
+        // used in creation of Kosu order
+        this.ZRX_SUBCONTRACT_ADDRESS = addresses.ZRX_SUBCONTRACT;
 
         // will load to 0x exchange address
         this.EXCHANGE_ADDRESS = null;
@@ -78,29 +86,43 @@ class Create {
     // ORDER HELPERS
 
     /**
-     * Generate and sign a 0x order. Will prompt user for a MetaMask signataure.
+     * Generate and sign a 0x order. Will prompt user for a MetaMask signature.
      * 
-     * @param {string} makerAssetAddress 
-     * @param {string | number} makerAssetAmount 
-     * @param {string} takerAssetAddress the address of the taker token
-     * @param {string | number} takerAssetAmount taker amount (in wei)
-     * @param {string | number} orderDuration duration in seconds for order to be valid
-     * @param {string} makerAddress users address, defaults to coinbase
+     * @param {object} options object with the following properties:
+     *   - makerAsset: either ("WETH/DAI/ZRX") or a full 42 char hex address
+     *   - takerAsset: either ("WETH/DAI/ZRX") or a full 42 char hex address 
+     *   - makerAssetAmount: units are wei, value can be string/number or BigNumber
+     *   - takerAssetAmount: units are wei, value can be string/number or BigNumber 
+     *   - orderDuration: the number of seconds the order should be valid for
+     *   - makerAddress: *can* be provided to override coinbase, but shouldn't
      */
-    async createAndSignOrder(
-        makerAssetAddress,
+    async createAndSignOrder(options) {
+     /* makerAssetAddress,
         makerAssetAmount,
         takerAssetAddress,
         takerAssetAmount,
         orderDuration,
-        makerAddress = this.coinbase,
-    ) {
+        makerAddress = this.coinbase, 
+    ) {*/
+        const makerAddress = options.makerAddress || this.coinbase;
+
+        const {
+            makerAssetAddress,
+            takerAssetAddress,
+            makerAssetAmount,
+            takerAssetAmount,
+            orderDuration
+        } = options;
+
+        // turn order duration into expiry unix timestamp
         const getExpiration = (secondsFromNow) => {
             const nowSec = Math.floor(Date.now()/1000);
             const duration = parseInt(secondsFromNow.toString());
             const expirationTimeSeconds = nowSec + duration;
             return new BigNumber(expirationTimeSeconds);
         }
+
+        // allows shorthand (instead of full address) for these tokens
         const parseCommonToken = (identifier) => {
             switch (identifier) {
                 case "WETH": {
@@ -117,11 +139,21 @@ class Create {
                 }
             }
         }
+
+        /**
+         * Will accept either a 42 char (including the '0x' prefix) Ethereum
+         * address, or the ticker of a pre-loaded "common token":
+         * - "ZRX" (0x protocol token)
+         * - "WETH" (wrapped ether)
+         * - "DAI" (dai stablecoin)
+        */
         const loadAddress = (maybeAddress) => {
             if (maybeAddress.slice(0, 2) == "0x" && maybeAddress.length === 42) {
                 return maybeAddress;
-            } else {
+            } else if (["WETH", "DAI", "ZRX"].indexOf(maybeAddress) === -1) {
                 return parseCommonToken(maybeAddress);
+            } else {
+                throw new Error("not and address or a common token.");
             }
         }
 
@@ -149,8 +181,15 @@ class Create {
             senderAddress:       this.NULL_ADDRESS,
         };
 
-        // hash and sign order
-        const orderHash = orderHashUtils.getOrderHashHex(zeroExOrder);
+        // hash order (requires valid 0x order schema)
+        let orderHash;
+        try {
+            orderHash = orderHashUtils.getOrderHashHex(zeroExOrder);
+        } catch {
+            throw new Error("invalid 0x order (check that the input values)");
+        }
+
+        // prompts for metamask signature of the order hash
         const signature = await signatureUtils.ecSignHashAsync(
             this.subProvider,
             orderHash,
@@ -158,9 +197,38 @@ class Create {
             "DEFAULT"
         );
 
-        // construct signed order object
-        const signedZeroExOrder = { ...zeroExOrder, signature };
+        const signedZeroExOrder = {
+            ...zeroExOrder,
+            signature
+        };
+
         return signedZeroExOrder;
+    }
+
+    /**
+     * 
+     * @param {object} signedZeroExOrder as outputted from `createAndSignOrder`
+     */
+    async signAndPost(signedZeroExOrder) {
+        const makerValues = zeroExFormatter(signedZeroExOrder);
+        const kosuOrder = {
+            maker: this.coinbase,
+            subContract: this.ZRX_SUBCONTRACT_ADDRESS,
+            makerValues
+        }
+        const posterHex = OrderSerializer.posterHex(
+            order,
+            ZRX_SUBCONTRACT_MAKER_ARGS
+        );
+        const signed = {
+            ...kosuOrder,
+            posterSignature: await Signature.generate(
+                this.web3,
+                posterHex,
+                this.coinbase,
+            ),
+        };
+        console.log(JSON.stringify(signed, null, 2));
     }
 
     /**

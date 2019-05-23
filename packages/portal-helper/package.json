@@ -8,7 +8,8 @@
   "private": false,
   "scripts": {
     "compile:assets": "webpack",
-    "develop": "./scripts/develop.sh"
+    "develop": "./scripts/develop.sh",
+    "docs": "jsdoc2md src/index.js > API_REFERENCE.md"
   },
   "dependencies": {
     "0x.js": "^6.0.9",
@@ -18,6 +19,7 @@
     "web3": "1.0.0-beta.37"
   },
   "devDependencies": {
+    "jsdoc-to-markdown": "^5.0.0",
     "webpack": "^4.32.1"
   }
 }
