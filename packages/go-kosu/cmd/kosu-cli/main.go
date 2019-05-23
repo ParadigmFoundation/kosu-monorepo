@@ -50,8 +50,28 @@ func main() {
 	}
 
 	abci := cli.New(&client)
-	rootCmd.AddCommand(
+
+	tx := &cobra.Command{
+		Use:   "tx",
+		Short: "execute transactions",
+	}
+	tx.AddCommand(
 		abci.RebalanceTx(),
+	)
+
+	query := &cobra.Command{
+		Use:   "query",
+		Short: "query",
+	}
+	query.AddCommand(
+		abci.QueryConsensusParams(),
+		abci.QueryPoster(),
+		abci.QueryRoundInfo(),
+	)
+
+	rootCmd.AddCommand(
+		tx,
+		query,
 	)
 
 	if err := rootCmd.Execute(); err != nil {

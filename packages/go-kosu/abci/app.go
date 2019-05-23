@@ -5,6 +5,7 @@ import (
 	"errors"
 	"fmt"
 	"log"
+	"regexp"
 
 	abci "github.com/tendermint/tendermint/abci/types"
 	cfg "github.com/tendermint/tendermint/config"
@@ -25,6 +26,8 @@ type App struct {
 
 	state *store.State
 	tree  *store.StateTree
+
+	handlers map[*regexp.Regexp]QueryHandler
 }
 
 // NewApp returns a new ABCI App
@@ -35,7 +38,15 @@ func NewApp(state *store.State, db db.DB, homedir string) *App {
 	}
 
 	tree := store.NewStateTree(db, new(store.GobCodec))
-	return &App{state: state, tree: tree, Config: config}
+	app := &App{
+		state:    state,
+		tree:     tree,
+		Config:   config,
+		handlers: make(map[*regexp.Regexp]QueryHandler),
+	}
+	app.registerHandlers()
+
+	return app
 }
 
 // Info loads the state from the db.
