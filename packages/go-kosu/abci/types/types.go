@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"crypto/sha256"
 	"errors"
+	fmt "fmt"
 	"math/big"
 	"sort"
 
@@ -27,6 +28,13 @@ func (b *BigInt) Bytes() []byte { return b.Value }
 // BigInt returns the math.BigInt representation
 func (b *BigInt) BigInt() *big.Int {
 	return big.NewInt(0).SetBytes(b.Value)
+}
+
+// MarshalText overloads the default Marshaling in order to pretty the Value as a formatted String
+func (b *BigInt) MarshalText() ([]byte, error) {
+	n := big.NewInt(0).SetBytes(b.Value)
+	str := fmt.Sprintf("value: %s", n.String())
+	return []byte(str), nil
 }
 
 var (
