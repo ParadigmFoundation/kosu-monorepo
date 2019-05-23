@@ -22,10 +22,6 @@ func (app *App) checkRebalanceTx(tx *types.TransactionRebalance) error {
 }
 
 func (app *App) deliverRebalance(tx *types.TransactionRebalance) abci.ResponseDeliverTx {
-	if err := app.checkRebalanceTx(tx); err != nil {
-		return abci.ResponseDeliverTx{Code: 1, Info: err.Error()}
-	}
-
 	info := &app.state.RoundInfo
 
 	// Begin state update
