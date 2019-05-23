@@ -88,13 +88,13 @@ class Create {
     /**
      * Generate and sign a 0x order. Will prompt user for a MetaMask signature.
      * 
-     * @param {object} options object with the following properties:
-     *   - makerAsset: either ("WETH/DAI/ZRX") or a full 42 char hex address
-     *   - takerAsset: either ("WETH/DAI/ZRX") or a full 42 char hex address 
-     *   - makerAssetAmount: units are wei, value can be string/number or BigNumber
-     *   - takerAssetAmount: units are wei, value can be string/number or BigNumber 
-     *   - orderDuration: the number of seconds the order should be valid for
-     *   - makerAddress: *can* be provided to override coinbase, but shouldn't
+     * @param {object} options object with the following properties: </br>
+     *   - makerAsset: either ("WETH/DAI/ZRX") or a full 42 char hex address</br>
+     *   - takerAsset: either ("WETH/DAI/ZRX") or a full 42 char hex address</br>
+     *   - makerAssetAmount: units are wei, value can be string/number or BigNumber</br>
+     *   - takerAssetAmount: units are wei, value can be string/number or BigNumber</br> 
+     *   - orderDuration: the number of seconds the order should be valid for</br>
+     *   - makerAddress: *can* be provided to override `coinbase`, but shouldn't</br>
      */
     async createAndSignOrder(options) {
      /* makerAssetAddress,
@@ -206,6 +206,9 @@ class Create {
     }
 
     /**
+     * Signs a (already signed) 0x order as the Kosu poster, and posts and order
+     * to the Kosu network. Requires the poster to have a bonded amount of KOSU
+     * in the `PosterRegistry` contract.
      * 
      * @param {object} signedZeroExOrder as outputted from `createAndSignOrder`
      */
