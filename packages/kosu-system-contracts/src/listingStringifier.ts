@@ -9,5 +9,5 @@ export const listingStringifier = (listing: Listing): PrettyListing => {
         currentChallenge: listing.currentChallenge.toString(),
     };
 
-    return {...listing, ...prettyListing};
+    return { ...listing, ...prettyListing };
 };

@@ -51,8 +51,12 @@ export class EventEmitter {
             .then((logs: any[]) => {
                 return logs.map(log => {
                     const decoded: LogWithDecodedKosuArgs<
-                        DecodedLogArgs, DecodedKosuLogArgs
-                    > = this.web3Wrapper.abiDecoder.tryToDecodeLogOrNoop(log) as unknown as LogWithDecodedKosuArgs<DecodedLogArgs, DecodedKosuLogArgs>;
+                        DecodedLogArgs,
+                        DecodedKosuLogArgs
+                    > = (this.web3Wrapper.abiDecoder.tryToDecodeLogOrNoop(log) as unknown) as LogWithDecodedKosuArgs<
+                        DecodedLogArgs,
+                        DecodedKosuLogArgs
+                    >;
                     decoded.decodedArgs = eventDecoder(decoded.args);
                     return decoded;
                 });

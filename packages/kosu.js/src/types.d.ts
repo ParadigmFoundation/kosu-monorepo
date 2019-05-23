@@ -42,8 +42,7 @@ interface KosuUtils {
     NULL_ADDRESS: string;
 }
 
-interface DecodedKosuLogArgs {
-}
+interface DecodedKosuLogArgs {}
 
 interface LogWithDecodedKosuArgs<A, B> extends LogWithDecodedArgs {
     event: string;
