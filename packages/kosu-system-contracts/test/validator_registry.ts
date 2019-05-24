@@ -183,9 +183,13 @@ describe("ValidatorRegistry", async function() {
 
     describe("setImplementation", () => {
         it("should set the implementation", async () => {
-            await validatorRegistryProxy.setImplementation.sendTransactionAsync(accounts[0]).then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash)).should.eventually.be.fulfilled;
+            await validatorRegistryProxy.setImplementation
+                .sendTransactionAsync(accounts[0])
+                .then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash)).should.eventually.be.fulfilled;
             await validatorRegistryProxy.maxRewardRate.callAsync().should.eventually.be.rejected;
-            await validatorRegistryProxy.setImplementation.sendTransactionAsync(validatorRegistry.address).then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash)).should.eventually.be.fulfilled;
+            await validatorRegistryProxy.setImplementation
+                .sendTransactionAsync(validatorRegistry.address)
+                .then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash)).should.eventually.be.fulfilled;
         });
     });
 
@@ -461,8 +465,7 @@ describe("ValidatorRegistry", async function() {
             it("should be initialized correctly", async () => {
                 const maxReward = await validatorRegistryProxy.maxRewardRate.callAsync();
 
-                await kosuToken.approve
-                    .sendTransactionAsync(treasury.address, testValues.sixEther);
+                await kosuToken.approve.sendTransactionAsync(treasury.address, testValues.sixEther);
                 const result = await validatorRegistryProxy.registerListing
                     .sendTransactionAsync(tendermintPublicKey, testValues.sixEther, maxReward, paradigmMarket)
                     .then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash)).should.eventually.be.fulfilled;

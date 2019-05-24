@@ -1,6 +1,6 @@
 import { BigNumber } from "@0x/utils";
 
-import {AuthorizedAddressesContract, KosuTokenContract, PosterRegistryProxyContract, TreasuryContract} from "../src";
+import { AuthorizedAddressesContract, KosuTokenContract, PosterRegistryProxyContract, TreasuryContract } from "../src";
 
 describe("Treasury", async () => {
     let treasury: TreasuryContract;
@@ -59,33 +59,59 @@ describe("Treasury", async () => {
             const initialCurrentBalance = await treasury.currentBalance.callAsync(from);
             const initialSystemBalance = await treasury.systemBalance.callAsync(from);
 
-            await treasury.deposit.sendTransactionAsync(expectedValue, { from }).then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash));
+            await treasury.deposit
+                .sendTransactionAsync(expectedValue, { from })
+                .then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash));
 
             const finalTokenBalance = await kosuToken.balanceOf.callAsync(from);
             const finalCurrentBalance = await treasury.currentBalance.callAsync(from);
             const finalSystemBalance = await treasury.systemBalance.callAsync(from);
 
-            initialTokenBalance.minus(finalTokenBalance).toString().should.eq(expectedValue.toString());
-            finalCurrentBalance.minus(initialCurrentBalance).toString().should.eq(expectedValue.toString());
-            finalSystemBalance.minus(initialSystemBalance).toString().should.eq(expectedValue.toString());
+            initialTokenBalance
+                .minus(finalTokenBalance)
+                .toString()
+                .should.eq(expectedValue.toString());
+            finalCurrentBalance
+                .minus(initialCurrentBalance)
+                .toString()
+                .should.eq(expectedValue.toString());
+            finalSystemBalance
+                .minus(initialSystemBalance)
+                .toString()
+                .should.eq(expectedValue.toString());
         });
 
         it("should work up to the current treasury allowance", async () => {
             const initialTokenBalance = await kosuToken.balanceOf.callAsync(from);
             const initialCurrentBalance = await treasury.currentBalance.callAsync(from);
             const initialSystemBalance = await treasury.systemBalance.callAsync(from);
-            (await kosuToken.allowance.callAsync(from, treasury.address)).toString().should.eq(expectedValue.toString());
+            (await kosuToken.allowance.callAsync(from, treasury.address))
+                .toString()
+                .should.eq(expectedValue.toString());
 
-            await treasury.deposit.sendTransactionAsync(expectedValue.plus(1), { from }).then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash)).should.be.rejected;
-            await treasury.deposit.sendTransactionAsync(expectedValue, { from }).then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash));
+            await treasury.deposit
+                .sendTransactionAsync(expectedValue.plus(1), { from })
+                .then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash)).should.be.rejected;
+            await treasury.deposit
+                .sendTransactionAsync(expectedValue, { from })
+                .then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash));
 
             const finalTokenBalance = await kosuToken.balanceOf.callAsync(from);
             const finalCurrentBalance = await treasury.currentBalance.callAsync(from);
             const finalSystemBalance = await treasury.systemBalance.callAsync(from);
 
-            initialTokenBalance.minus(finalTokenBalance).toString().should.eq(expectedValue.toString());
-            finalCurrentBalance.minus(initialCurrentBalance).toString().should.eq(expectedValue.toString());
-            finalSystemBalance.minus(initialSystemBalance).toString().should.eq(expectedValue.toString());
+            initialTokenBalance
+                .minus(finalTokenBalance)
+                .toString()
+                .should.eq(expectedValue.toString());
+            finalCurrentBalance
+                .minus(initialCurrentBalance)
+                .toString()
+                .should.eq(expectedValue.toString());
+            finalSystemBalance
+                .minus(initialSystemBalance)
+                .toString()
+                .should.eq(expectedValue.toString());
         });
     });
 
@@ -99,26 +125,43 @@ describe("Treasury", async () => {
         });
 
         it("should return to user reducing current and system balances", async () => {
-            await treasury.deposit.sendTransactionAsync(expectedValue, { from }).then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash));
+            await treasury.deposit
+                .sendTransactionAsync(expectedValue, { from })
+                .then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash));
 
             const initialTokenBalance = await kosuToken.balanceOf.callAsync(from);
             const initialCurrentBalance = await treasury.currentBalance.callAsync(from);
             const initialSystemBalance = await treasury.systemBalance.callAsync(from);
 
-            await treasury.withdraw.sendTransactionAsync(expectedValue, { from }).then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash));
+            await treasury.withdraw
+                .sendTransactionAsync(expectedValue, { from })
+                .then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash));
 
             const finalTokenBalance = await kosuToken.balanceOf.callAsync(from);
             const finalCurrentBalance = await treasury.currentBalance.callAsync(from);
             const finalSystemBalance = await treasury.systemBalance.callAsync(from);
 
-            finalTokenBalance.minus(initialTokenBalance).toString().should.eq(expectedValue.toString());
-            initialCurrentBalance.minus(finalCurrentBalance).toString().should.eq(expectedValue.toString());
-            initialSystemBalance.minus(finalSystemBalance).toString().should.eq(expectedValue.toString());
+            finalTokenBalance
+                .minus(initialTokenBalance)
+                .toString()
+                .should.eq(expectedValue.toString());
+            initialCurrentBalance
+                .minus(finalCurrentBalance)
+                .toString()
+                .should.eq(expectedValue.toString());
+            initialSystemBalance
+                .minus(finalSystemBalance)
+                .toString()
+                .should.eq(expectedValue.toString());
         });
 
         it("should up to the total current balance", async () => {
-            await treasury.deposit.sendTransactionAsync(expectedValue, { from }).then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash));
-            await posterRegistry.registerTokens.sendTransactionAsync(testValues.oneWei, { from }).then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash));
+            await treasury.deposit
+                .sendTransactionAsync(expectedValue, { from })
+                .then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash));
+            await posterRegistry.registerTokens
+                .sendTransactionAsync(testValues.oneWei, { from })
+                .then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash));
 
             const initialTokenBalance = await kosuToken.balanceOf.callAsync(from);
             const initialCurrentBalance = await treasury.currentBalance.callAsync(from);
@@ -126,17 +169,32 @@ describe("Treasury", async () => {
 
             initialCurrentBalance.toNumber().should.be.lt(expectedValue.toNumber());
 
-            await treasury.withdraw.sendTransactionAsync(expectedValue, { from }).then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash)).should.be.rejected;
-            await treasury.withdraw.sendTransactionAsync(expectedValue.minus(1), { from }).then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash)).should.be.fulfilled;
+            await treasury.withdraw
+                .sendTransactionAsync(expectedValue, { from })
+                .then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash)).should.be.rejected;
+            await treasury.withdraw
+                .sendTransactionAsync(expectedValue.minus(1), { from })
+                .then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash)).should.be.fulfilled;
 
             const finalTokenBalance = await kosuToken.balanceOf.callAsync(from);
             const finalCurrentBalance = await treasury.currentBalance.callAsync(from);
             const finalSystemBalance = await treasury.systemBalance.callAsync(from);
 
-            finalTokenBalance.minus(initialTokenBalance).toString().should.eq(expectedValue.minus(1).toString());
-            initialCurrentBalance.minus(finalCurrentBalance).toString().should.eq(expectedValue.minus(1).toString());
-            initialSystemBalance.minus(finalSystemBalance).toString().should.eq(expectedValue.minus(1).toString());
-            await posterRegistry.releaseTokens.sendTransactionAsync(testValues.oneWei, { from }).then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash));
+            finalTokenBalance
+                .minus(initialTokenBalance)
+                .toString()
+                .should.eq(expectedValue.minus(1).toString());
+            initialCurrentBalance
+                .minus(finalCurrentBalance)
+                .toString()
+                .should.eq(expectedValue.minus(1).toString());
+            initialSystemBalance
+                .minus(finalSystemBalance)
+                .toString()
+                .should.eq(expectedValue.minus(1).toString());
+            await posterRegistry.releaseTokens
+                .sendTransactionAsync(testValues.oneWei, { from })
+                .then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash));
         });
     });
 
@@ -202,14 +260,18 @@ describe("Treasury", async () => {
         });
 
         it("should take tokens from user currentBalance and transfer to the requesting authorized caller", async () => {
-            await treasury.deposit.sendTransactionAsync(expectedValue, { from: target }).then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash));
+            await treasury.deposit
+                .sendTransactionAsync(expectedValue, { from: target })
+                .then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash));
 
             const initialTargetTokenBalance = await kosuToken.balanceOf.callAsync(target);
             const initialFromTokenBalance = await kosuToken.balanceOf.callAsync(from);
             const initialCurrentBalance = await treasury.currentBalance.callAsync(target);
             const initialSystemBalance = await treasury.systemBalance.callAsync(target);
 
-            await treasury.claimTokens.sendTransactionAsync(target, expectedValue, { from }).then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash));
+            await treasury.claimTokens
+                .sendTransactionAsync(target, expectedValue, { from })
+                .then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash));
 
             const finalTargetTokenBalance = await kosuToken.balanceOf.callAsync(target);
             const finalFromTokenBalance = await kosuToken.balanceOf.callAsync(from);
@@ -217,12 +279,20 @@ describe("Treasury", async () => {
             const finalSystemBalance = await treasury.systemBalance.callAsync(target);
 
             initialTargetTokenBalance.toString().should.eq(finalTargetTokenBalance.toString(), "Target Token Balance");
-            finalFromTokenBalance.minus(initialFromTokenBalance).toString().should.eq(expectedValue.toString(), "From Token Balance");
-            initialCurrentBalance.minus(finalCurrentBalance).toString().should.eq(expectedValue.toString(), "Current Balance");
+            finalFromTokenBalance
+                .minus(initialFromTokenBalance)
+                .toString()
+                .should.eq(expectedValue.toString(), "From Token Balance");
+            initialCurrentBalance
+                .minus(finalCurrentBalance)
+                .toString()
+                .should.eq(expectedValue.toString(), "Current Balance");
             initialSystemBalance.toString().should.eq(finalSystemBalance.toString(), "System Balance");
 
             await kosuToken.approve.sendTransactionAsync(treasury.address, expectedValue, { from });
-            await treasury.releaseTokens.sendTransactionAsync(target, expectedValue, { from }).then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash));
+            await treasury.releaseTokens
+                .sendTransactionAsync(target, expectedValue, { from })
+                .then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash));
         });
 
         it("should pull tokens from the user automatically with a treasury allowance set", async () => {
@@ -231,20 +301,36 @@ describe("Treasury", async () => {
             const initialCurrentBalance = await treasury.currentBalance.callAsync(target);
             const initialSystemBalance = await treasury.systemBalance.callAsync(target);
 
-            await treasury.claimTokens.sendTransactionAsync(target, expectedValue, { from }).then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash));
+            await treasury.claimTokens
+                .sendTransactionAsync(target, expectedValue, { from })
+                .then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash));
 
             const finalTargetTokenBalance = await kosuToken.balanceOf.callAsync(target);
             const finalFromTokenBalance = await kosuToken.balanceOf.callAsync(from);
             const finalCurrentBalance = await treasury.currentBalance.callAsync(target);
             const finalSystemBalance = await treasury.systemBalance.callAsync(target);
 
-            initialTargetTokenBalance.minus(finalTargetTokenBalance).toString().should.eq(expectedValue.toString(), "Target Token Balance");
-            finalFromTokenBalance.minus(initialFromTokenBalance).toString().should.eq(expectedValue.toString(), "From Token Balance");
-            initialCurrentBalance.minus(finalCurrentBalance).toString().should.eq("0", "Current Balance");
-            finalSystemBalance.minus(initialSystemBalance).toString().should.eq(expectedValue.toString(), "System Balance");
+            initialTargetTokenBalance
+                .minus(finalTargetTokenBalance)
+                .toString()
+                .should.eq(expectedValue.toString(), "Target Token Balance");
+            finalFromTokenBalance
+                .minus(initialFromTokenBalance)
+                .toString()
+                .should.eq(expectedValue.toString(), "From Token Balance");
+            initialCurrentBalance
+                .minus(finalCurrentBalance)
+                .toString()
+                .should.eq("0", "Current Balance");
+            finalSystemBalance
+                .minus(initialSystemBalance)
+                .toString()
+                .should.eq(expectedValue.toString(), "System Balance");
 
             await kosuToken.approve.sendTransactionAsync(treasury.address, expectedValue, { from });
-            await treasury.releaseTokens.sendTransactionAsync(target, expectedValue, { from }).then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash));
+            await treasury.releaseTokens
+                .sendTransactionAsync(target, expectedValue, { from })
+                .then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash));
         });
     });
 
@@ -260,7 +346,9 @@ describe("Treasury", async () => {
         });
 
         it("should take tokens from user currentBalance and transfer to the requesting authorized caller", async () => {
-            await treasury.claimTokens.sendTransactionAsync(target, expectedValue, { from }).then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash));
+            await treasury.claimTokens
+                .sendTransactionAsync(target, expectedValue, { from })
+                .then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash));
 
             const initialTargetTokenBalance = await kosuToken.balanceOf.callAsync(target);
             const initialFromTokenBalance = await kosuToken.balanceOf.callAsync(from);
@@ -268,7 +356,9 @@ describe("Treasury", async () => {
             const initialSystemBalance = await treasury.systemBalance.callAsync(target);
 
             await kosuToken.approve.sendTransactionAsync(treasury.address, expectedValue, { from });
-            await treasury.releaseTokens.sendTransactionAsync(target, expectedValue, { from }).then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash));
+            await treasury.releaseTokens
+                .sendTransactionAsync(target, expectedValue, { from })
+                .then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash));
 
             const finalTargetTokenBalance = await kosuToken.balanceOf.callAsync(target);
             const finalFromTokenBalance = await kosuToken.balanceOf.callAsync(from);
@@ -276,8 +366,14 @@ describe("Treasury", async () => {
             const finalSystemBalance = await treasury.systemBalance.callAsync(target);
 
             initialTargetTokenBalance.toString().should.eq(finalTargetTokenBalance.toString(), "Target Token Balance");
-            initialFromTokenBalance.minus(finalFromTokenBalance).toString().should.eq(expectedValue.toString(), "From Token Balance");
-            finalCurrentBalance.minus(initialCurrentBalance).toString().should.eq(expectedValue.toString(), "Current Balance");
+            initialFromTokenBalance
+                .minus(finalFromTokenBalance)
+                .toString()
+                .should.eq(expectedValue.toString(), "From Token Balance");
+            finalCurrentBalance
+                .minus(initialCurrentBalance)
+                .toString()
+                .should.eq(expectedValue.toString(), "Current Balance");
             finalSystemBalance.toString().should.eq(initialSystemBalance.toString(), "System Balance");
         });
     });
@@ -424,14 +520,20 @@ describe("Treasury", async () => {
         });
 
         it("should correctly remove systemBalance from the user", async () => {
-            await treasury.deposit.sendTransactionAsync(expectedValue, { from: target }).then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash));
-            await treasury.claimTokens.sendTransactionAsync(target, expectedValue, { from }).then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash));
+            await treasury.deposit
+                .sendTransactionAsync(expectedValue, { from: target })
+                .then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash));
+            await treasury.claimTokens
+                .sendTransactionAsync(target, expectedValue, { from })
+                .then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash));
 
             const initialTargetTokenBalance = await kosuToken.balanceOf.callAsync(target);
             const initialCurrentBalance = await treasury.currentBalance.callAsync(target);
             const initialSystemBalance = await treasury.systemBalance.callAsync(target);
 
-            await treasury.confiscate.sendTransactionAsync(target, expectedValue, { from }).then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash));
+            await treasury.confiscate
+                .sendTransactionAsync(target, expectedValue, { from })
+                .then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash));
 
             const finalTargetTokenBalance = await kosuToken.balanceOf.callAsync(target);
             const finalCurrentBalance = await treasury.currentBalance.callAsync(target);
@@ -439,10 +541,15 @@ describe("Treasury", async () => {
 
             initialTargetTokenBalance.toString().should.eq(finalTargetTokenBalance.toString(), "Target Token Balance");
             finalCurrentBalance.toString().should.eq(initialCurrentBalance.toString(), "Current Balance");
-            initialSystemBalance.minus(finalSystemBalance).toString().should.eq(expectedValue.toString(), "System Balance");
+            initialSystemBalance
+                .minus(finalSystemBalance)
+                .toString()
+                .should.eq(expectedValue.toString(), "System Balance");
 
             await kosuToken.approve.sendTransactionAsync(treasury.address, expectedValue, { from });
-            await treasury.award.sendTransactionAsync(target, expectedValue, { from }).then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash));
+            await treasury.award
+                .sendTransactionAsync(target, expectedValue, { from })
+                .then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash));
         });
     });
 
@@ -457,29 +564,40 @@ describe("Treasury", async () => {
             target = accounts[1];
         });
 
-        it(
-            "should transfer tokens held by the calling address to the recipient and increase its current and system balances",
-            async () => {
-                await treasury.deposit.sendTransactionAsync(expectedValue, { from: target }).then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash));
-                await treasury.claimTokens.sendTransactionAsync(target, expectedValue, { from }).then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash));
-                await treasury.confiscate.sendTransactionAsync(target, expectedValue, { from }).then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash));
+        it("should transfer tokens held by the calling address to the recipient and increase its current and system balances", async () => {
+            await treasury.deposit
+                .sendTransactionAsync(expectedValue, { from: target })
+                .then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash));
+            await treasury.claimTokens
+                .sendTransactionAsync(target, expectedValue, { from })
+                .then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash));
+            await treasury.confiscate
+                .sendTransactionAsync(target, expectedValue, { from })
+                .then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash));
 
-                const initialTargetTokenBalance = await kosuToken.balanceOf.callAsync(target); // 50
-                const initialCurrentBalance = await treasury.currentBalance.callAsync(target); // 0
-                const initialSystemBalance = await treasury.systemBalance.callAsync(target); // 0
+            const initialTargetTokenBalance = await kosuToken.balanceOf.callAsync(target); // 50
+            const initialCurrentBalance = await treasury.currentBalance.callAsync(target); // 0
+            const initialSystemBalance = await treasury.systemBalance.callAsync(target); // 0
 
-                await kosuToken.approve.sendTransactionAsync(treasury.address, expectedValue, { from });
-                await treasury.award.sendTransactionAsync(target, expectedValue, { from }).then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash));
+            await kosuToken.approve.sendTransactionAsync(treasury.address, expectedValue, { from });
+            await treasury.award
+                .sendTransactionAsync(target, expectedValue, { from })
+                .then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash));
 
-                const finalTargetTokenBalance = await kosuToken.balanceOf.callAsync(target); // 50
-                const finalCurrentBalance = await treasury.currentBalance.callAsync(target); // 50
-                const finalSystemBalance = await treasury.systemBalance.callAsync(target); // 50
+            const finalTargetTokenBalance = await kosuToken.balanceOf.callAsync(target); // 50
+            const finalCurrentBalance = await treasury.currentBalance.callAsync(target); // 50
+            const finalSystemBalance = await treasury.systemBalance.callAsync(target); // 50
 
-                initialTargetTokenBalance.toString().should.eq(finalTargetTokenBalance.toString(), "Target Token Balance");
-                finalCurrentBalance.minus(initialCurrentBalance).toString().should.eq(expectedValue.toString(), "Current Balance");
-                finalSystemBalance.minus(initialSystemBalance).toString().should.eq(expectedValue.toString(), "System Balance");
-            },
-        );
+            initialTargetTokenBalance.toString().should.eq(finalTargetTokenBalance.toString(), "Target Token Balance");
+            finalCurrentBalance
+                .minus(initialCurrentBalance)
+                .toString()
+                .should.eq(expectedValue.toString(), "Current Balance");
+            finalSystemBalance
+                .minus(initialSystemBalance)
+                .toString()
+                .should.eq(expectedValue.toString(), "System Balance");
+        });
     });
 
     describe("currentBalance", () => {
