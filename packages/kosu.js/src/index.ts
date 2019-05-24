@@ -34,7 +34,7 @@ export class Kosu {
     constructor(options: KosuOptions = { provider: "https://ropsten.infura.io" }) {
         // Configuring web3
         this.web3 = new Web3(options.provider);
-        this.web3Wrapper = new Web3Wrapper(options.provider);
+        this.web3Wrapper = new Web3Wrapper(this.web3.currentProvider);
         options.web3 = this.web3;
         options.web3Wrapper = this.web3Wrapper;
 
@@ -58,6 +58,8 @@ export class Kosu {
         this.version = version;
     }
 }
+
+export { OrderSerializer } from "./OrderSerializer";
 
 export {
     KosuToken,
