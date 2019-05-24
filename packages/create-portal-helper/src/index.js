@@ -102,7 +102,7 @@ class Create {
         this.EXCHANGE_ADDRESS = this.zeroExContracts.exchange.address;
 
         // ropsten web3 provider required for check poster bond
-        this.kosu = new Kosu({ provider: this.web3.currentProvider });
+        this.kosu = new Kosu();
 
         this.initialized = true;
     }
@@ -248,6 +248,11 @@ class Create {
      * to the Kosu network. Requires the poster to have a bonded amount of KOSU
      * in the `PosterRegistry` contract.
      *
+     * @todo:
+     *  - undo split-network ugly-ness
+     *  - don't pull `makerArguments` from subcontract if provided
+     *  - ability to use direct kosu.js to sign
+     *
      * @param {object} signedZeroExOrder as outputted from `createAndSignOrder`
      */
     async signAndPost(signedZeroExOrder) {
@@ -257,10 +262,15 @@ class Create {
             subContract: this.ZRX_SUBCONTRACT_ADDRESS,
             makerValues,
         };
-        const signedKosuOrder = await this.kosu.orderHelper.prepareForPost(
-            kosuOrder,
-            this.coinbase
+        const posterSignature = await Signature.generate(
+            this.web3,
+            OrderSerializer.posterHex(kosuOrder, ZRX_SUBCONTRACT_MAKER_ARGS),
+            this.coinbase,
         );
+        const signedKosuOrder = {
+            ...kosuOrder,
+            posterSignature,
+        };
         console.log(JSON.stringify(signedKosuOrder, null, 2));
     }
 

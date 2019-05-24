@@ -59,6 +59,8 @@ export class Kosu {
     }
 }
 
+export { OrderSerializer } from "./OrderSerializer";
+
 export {
     KosuToken,
     OrderGateway,
