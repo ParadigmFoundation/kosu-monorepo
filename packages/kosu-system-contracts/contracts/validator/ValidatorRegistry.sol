@@ -1,4 +1,5 @@
 pragma solidity ^0.5.0;
+pragma experimental ABIEncoderV2;
 
 import "openzeppelin-solidity/contracts/math/SafeMath.sol";
 import "../event/EventEmitter.sol";
@@ -148,10 +149,18 @@ contract ValidatorRegistry is IValidatorRegistry, Authorizable {
         @notice Expose listing data
         @param pubKey Hex encoded tendermint public key
     */
-    function getListing(bytes32 pubKey) public view returns (Status status, uint applicationBlock, bytes32 tendermintPublicKey, address owner) {
+    function getListing(bytes32 pubKey) public view returns (Listing memory) {
         //TODO: update output when structure more final
-        Listing memory listing = _listings[pubKey];
-        return (listing.status, listing.applicationBlock, listing.tendermintPublicKey, listing.owner);
+        return _listings[pubKey];
+
+    }
+
+    function getListings() public view returns (Listing[] memory) {
+        Listing[] memory listings = new Listing[](_listingKeys.length);
+        for(uint i = 0; i < _listingKeys.length; i++) {
+            listings[i] = _listings[_listingKeys[i]];
+        }
+        return listings;
     }
 
     /** @dev Register a listing

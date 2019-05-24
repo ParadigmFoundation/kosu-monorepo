@@ -14,7 +14,7 @@
     },
     "scripts": {
         "test": "ts-mocha -p test/tsconfig.json test/*",
-        "test:ci": "ts-mocha -p test/tsconfig.json test/* -- geth",
+        "test:ci": "ts-mocha -p test/tsconfig.json test/* --timeout 4000 -- geth",
         "coverage": "yarn test -- --timeout 10000 -- runCoverage && istanbul report html && open coverage/index.html",
         "build": "run-s contracts:clean compile:solidity generate_contract_wrappers compile:typescript",
         "compile:solidity": "sol-compiler",
@@ -23,7 +23,7 @@
         "truffle:clean": "shx rm -rf build/contracts",
         "contracts:clean": "shx rm -rf  generated-artifacts generated-wrappers",
         "deploy": "yarn deploy:ropsten",
-        "deploy:ropsten": "ts-node -T src/migrate.ts",
+        "deploy:ropsten": "ts-node -T src/migrate.ts --rpc-url=https://ethnet.zaidan.io/ropsten",
         "ganache_rpc": "docker run --rm -p 8545:8545 ${npm_package_config_kosu_ganache_image}",
         "ganache_rpc:detached": "docker run --rm -d -p 8545:8545 ${npm_package_config_kosu_ganache_image}",
         "generate_contract_wrappers": "abi-gen --abis  ${npm_package_config_abis} --template ../../node_modules/@0x/abi-gen-templates/contract.handlebars --partials '../../node_modules/@0x/abi-gen-templates/partials/**/*.handlebars' --output generated-wrappers --backend ethers"

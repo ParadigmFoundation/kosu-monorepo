@@ -1,4 +1,5 @@
 const Kosu = require("@kosu/kosu.js").Kosu;
+const eventDecoder = require("@kosu/system-contracts").eventDecoder;
 const Web3 = require("web3");
 const uuid = require("uuid/v4");
 
@@ -359,6 +360,15 @@ const activateForms = async () => {
 
 const initApp = async provider => {
     global.kosuJS = new Kosu({ provider });
+    await kosuJS.eventEmitter
+        .getPastDecodedLogs({
+            fromBlock: 0,
+        })
+        .then(decodedLogs => {
+            decodedLogs.forEach(log => {
+                console.log(log);
+            });
+        });
     await kosuJS.treasury.getContract();
     resetValues();
     activateForms();

@@ -11,7 +11,6 @@ import {
     ValidatorRegistryProxyContract,
     VotingContract,
 } from "../src";
-import { listingDecoder } from "../src/listingDecoder";
 
 describe("ValidatorRegistry", async function() {
     this.timeout(10000);
@@ -59,7 +58,7 @@ describe("ValidatorRegistry", async function() {
     };
 
     const exitListing = async (publicKey = tendermintPublicKey, from = accounts[0]) => {
-        const { status } = listingDecoder(await validatorRegistryProxy.getListing.callAsync(publicKey));
+        const { status } = await validatorRegistryProxy.getListing.callAsync(publicKey);
         const result = await validatorRegistryProxy.initExit
             .sendTransactionAsync(publicKey, { from })
             .then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash));
@@ -165,8 +164,34 @@ describe("ValidatorRegistry", async function() {
     });
 
     describe("token", () => {
-        it("should have a token token configured", async () => {
+        it("should have a token configured", async () => {
             await validatorRegistryProxy.kosuToken.callAsync().should.eventually.eq(kosuToken.address);
+        });
+    });
+
+    describe("voting", () => {
+        it("should have voting configured", async () => {
+            await validatorRegistryProxy.voting.callAsync().should.eventually.eq(voting.address);
+        });
+    });
+
+    describe("treasury", () => {
+        it("should have a treasury configured", async () => {
+            await validatorRegistryProxy.treasury.callAsync().should.eventually.eq(treasury.address);
+        });
+    });
+
+    describe("setImplementation", () => {
+        it("should set the implementation", async () => {
+            await validatorRegistryProxy.setImplementation
+                .sendTransactionAsync(accounts[0])
+                .then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash)).should.eventually.be.fulfilled;
+            await validatorRegistryProxy.claimWinnings
+                .sendTransactionAsync(testValues.zero)
+                .then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash)).should.eventually.be.rejected;
+            await validatorRegistryProxy.setImplementation
+                .sendTransactionAsync(validatorRegistry.address)
+                .then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash)).should.eventually.be.fulfilled;
         });
     });
 
@@ -221,6 +246,45 @@ describe("ValidatorRegistry", async function() {
                     from: accounts[5],
                 })
                 .then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash));
+        });
+    });
+
+    describe("getListings", () => {
+        let publicKeys;
+
+        before(() => {
+            publicKeys = accounts.map(a => padRight(a, 64).toLowerCase());
+        });
+
+        beforeEach(async () => {
+            for (const account of accounts) {
+                await kosuToken.approve.sendTransactionAsync(treasury.address, minimumBalance, { from: account });
+                await validatorRegistryProxy.registerListing
+                    .sendTransactionAsync(account, minimumBalance, testValues.zero, paradigmMarket, { from: account })
+                    .then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash));
+            }
+        });
+
+        afterEach(async () => {
+            for (const account of accounts) {
+                await validatorRegistryProxy.initExit.sendTransactionAsync(account, { from: account });
+                await treasury.withdraw
+                    .sendTransactionAsync(new BigNumber(minimumBalance), { from: account })
+                    .then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash));
+            }
+        });
+
+        it("should return a list of listing keys", async () => {
+            const listings: Listing[] = await validatorRegistryProxy.getListings.callAsync();
+
+            listings.length.should.eq(publicKeys.length);
+            listings.forEach(listing => {
+                publicKeys.should.contain(listing.tendermintPublicKey);
+                accounts.should.contain(listing.owner);
+                listing.stakedBalance.toString().should.eq(minimumBalance.toString());
+                listing.rewardRate.toString().should.eq("0");
+                listing.status.should.eq(1);
+            });
         });
     });
 
@@ -296,9 +360,7 @@ describe("ValidatorRegistry", async function() {
                 await validatorRegistryProxy.registerListing
                     .sendTransactionAsync(tendermintPublicKey, minimumBalance, testValues.zero, paradigmMarket)
                     .then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash)).should.eventually.be.fulfilled;
-                const listing = await validatorRegistryProxy.getListing
-                    .callAsync(tendermintPublicKey)
-                    .then(listingDecoder);
+                const listing = await validatorRegistryProxy.getListing.callAsync(tendermintPublicKey);
 
                 listing.status.toString().should.eq("1"); // Pending is 1
             });
@@ -402,7 +464,23 @@ describe("ValidatorRegistry", async function() {
                     .should.eq(allInToken.toString());
             });
 
-            it("should be initialized correctly"); // TODO: maybe work on this after the read function is more descriptive
+            it("should be initialized correctly", async () => {
+                const maxReward = await validatorRegistryProxy.maxRewardRate.callAsync();
+
+                await kosuToken.approve.sendTransactionAsync(treasury.address, testValues.sixEther);
+                const result = await validatorRegistryProxy.registerListing
+                    .sendTransactionAsync(tendermintPublicKey, testValues.sixEther, maxReward, paradigmMarket)
+                    .then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash)).should.eventually.be.fulfilled;
+
+                const listing = await validatorRegistryProxy.getListing.callAsync(tendermintPublicKey);
+                listing.tendermintPublicKey.should.eq(tendermintPublicKey);
+                listing.owner.should.eq(accounts[0]);
+                listing.applicationBlock.toString().should.eq(result.blockNumber.toString());
+                listing.rewardRate.toString().should.eq(maxReward.toString());
+                listing.stakedBalance.toString().should.eq(testValues.sixEther.toString());
+                listing.status.should.eq(1);
+                listing.details.should.eq(paradigmMarket);
+            });
         });
     });
 
@@ -484,9 +562,7 @@ describe("ValidatorRegistry", async function() {
                 await validatorRegistryProxy.confirmListing
                     .sendTransactionAsync(tendermintPublicKey)
                     .then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash)).should.eventually.be.fulfilled;
-                const listing = await validatorRegistryProxy.getListing
-                    .callAsync(tendermintPublicKey)
-                    .then(listingDecoder);
+                const listing = await validatorRegistryProxy.getListing.callAsync(tendermintPublicKey);
 
                 listing.status.toString().should.eq("2"); // Accepted is 2
                 listing.tendermintPublicKey.should.eq(tendermintPublicKey, "tendermint");
@@ -503,7 +579,7 @@ describe("ValidatorRegistry", async function() {
             await validatorRegistryProxy.initExit
                 .sendTransactionAsync(tendermintPublicKey)
                 .then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash)).should.eventually.be.fulfilled;
-            const listing = await validatorRegistryProxy.getListing.callAsync(tendermintPublicKey).then(listingDecoder);
+            const listing = await validatorRegistryProxy.getListing.callAsync(tendermintPublicKey);
 
             listing.status.toString().should.eq("0");
             listing.owner.should.eq("0x0000000000000000000000000000000000000000");
@@ -539,7 +615,7 @@ describe("ValidatorRegistry", async function() {
             const result = await validatorRegistryProxy.initExit
                 .sendTransactionAsync(tendermintPublicKey)
                 .then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash)).should.eventually.be.fulfilled;
-            const listing = await validatorRegistryProxy.getListing.callAsync(tendermintPublicKey).then(listingDecoder);
+            const listing = await validatorRegistryProxy.getListing.callAsync(tendermintPublicKey);
 
             listing.status.toString().should.eq("4");
 
@@ -570,7 +646,7 @@ describe("ValidatorRegistry", async function() {
                 .sendTransactionAsync(tendermintPublicKey)
                 .then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash)).should.eventually.be.fulfilled;
 
-            const listing = await validatorRegistryProxy.getListing.callAsync(tendermintPublicKey).then(listingDecoder);
+            const listing = await validatorRegistryProxy.getListing.callAsync(tendermintPublicKey);
 
             listing.status.toString().should.eq("0");
             listing.tendermintPublicKey.should.eq(nilKey);
@@ -705,7 +781,7 @@ describe("ValidatorRegistry", async function() {
                 .sendTransactionAsync(tendermintPublicKey)
                 .then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash)).should.eventually.be.fulfilled;
 
-            const listing = await validatorRegistryProxy.getListing.callAsync(tendermintPublicKey).then(listingDecoder);
+            const listing = await validatorRegistryProxy.getListing.callAsync(tendermintPublicKey);
             listing.status.toString().should.eq("2"); // Accepted is 2
 
             const result = await validatorRegistryProxy.challengeListing
@@ -735,7 +811,7 @@ describe("ValidatorRegistry", async function() {
                 .then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash));
             const initialNextPoll = await voting.nextPollId.callAsync();
 
-            const listing = await validatorRegistryProxy.getListing.callAsync(tendermintPublicKey).then(listingDecoder);
+            const listing = await validatorRegistryProxy.getListing.callAsync(tendermintPublicKey);
             listing.status.toString().should.eq("1"); // PENDING is 1
 
             const result = await validatorRegistryProxy.challengeListing
@@ -830,7 +906,7 @@ describe("ValidatorRegistry", async function() {
             await validatorRegistryProxy.challengeListing
                 .sendTransactionAsync(tendermintPublicKey, paradigmMarket)
                 .then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash)).should.eventually.be.fulfilled;
-            const listing = await validatorRegistryProxy.getListing.callAsync(tendermintPublicKey).then(listingDecoder);
+            const listing = await validatorRegistryProxy.getListing.callAsync(tendermintPublicKey);
             listing.status.toString().should.eq("0");
 
             await withdrawAll();
@@ -1520,9 +1596,7 @@ describe("ValidatorRegistry", async function() {
                     .sendTransactionAsync(tendermintPublicKey)
                     .then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash));
 
-                const listing = await validatorRegistryProxy.getListing
-                    .callAsync(tendermintPublicKey)
-                    .then(listingDecoder);
+                const listing = await validatorRegistryProxy.getListing.callAsync(tendermintPublicKey);
                 listing.status.toString().should.eq("0");
 
                 withdrawAll(accounts[1]);

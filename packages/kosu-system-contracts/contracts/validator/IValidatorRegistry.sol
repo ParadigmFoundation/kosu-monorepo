@@ -1,4 +1,5 @@
 pragma solidity ^0.5.0;
+pragma experimental ABIEncoderV2;
 
 /** @title IValidatorRegistry
     @author Freydal
@@ -78,7 +79,10 @@ interface IValidatorRegistry {
     function listingKeys() external view returns (bytes32[] memory);
 
     /** @dev Interface method */
-    function getListing(bytes32) external view returns (Status, uint, bytes32, address);
+    function getListing(bytes32) external view returns (Listing memory);
+
+    /** @dev Interface method */
+    function getListings() external view returns (Listing[] memory);
 
     /** @dev Interface method */
     function registerListing(address, bytes32, uint, int, string calldata) external;

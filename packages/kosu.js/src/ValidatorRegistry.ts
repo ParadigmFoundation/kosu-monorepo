@@ -1,6 +1,6 @@
 import { BigNumber } from "@0x/utils";
 import { Web3Wrapper } from "@0x/web3-wrapper";
-import { artifacts, DeployedAddresses, listingDecoder, ValidatorRegistryProxyContract } from "@kosu/system-contracts";
+import { artifacts, DeployedAddresses, ValidatorRegistryProxyContract } from "@kosu/system-contracts";
 import { TransactionReceiptWithDecodedLogs } from "ethereum-protocol";
 import Web3 from "web3";
 
@@ -147,7 +147,16 @@ export class ValidatorRegistry {
     public async getListing(_pubKey: string): Promise<Listing> {
         const contract = await this.getContract();
         // TODO convert pub key if needed?
-        return contract.getListing.callAsync(_pubKey).then(array => listingDecoder(array));
+        return contract.getListing.callAsync(_pubKey);
+    }
+
+    /**
+     * Reads the registered listings
+     */
+    public async getListings(): Promise<Listing[]> {
+        const contract = await this.getContract();
+        // TODO convert pub key if needed?
+        return contract.getListings.callAsync();
     }
 
     /**
