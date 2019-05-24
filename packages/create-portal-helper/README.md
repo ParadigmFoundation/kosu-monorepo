@@ -73,7 +73,7 @@ let order = await create.createAndSignOrder({
   makerAssetAddress: "WETH",
   takerAssetAddress: "0x9f8f72aa9304c8b593d555f12ef6589cc3a579a2",
   makerAssetAmount: create.convertToWei("0.5"),
-  takerAssetAmount: create.convertFromWei("80"),
+  takerAssetAmount: create.convertToWei("80"),
   orderDuration: 600
 });
 ```
