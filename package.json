@@ -1,7 +1,7 @@
 {
     "name": "@kosu/monorepo",
     "description": "Monorepo for the Kosu protocol. Includes network client, contracts, and supporting libraries/tooling.",
-    "license": "CC0-1.0",
+    "license": "MIT",
     "repository": {
         "type": "git",
         "url": "https://github.com/ParadigmFoundation/kosu-monorepo.git"

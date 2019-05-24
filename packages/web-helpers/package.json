@@ -4,7 +4,7 @@
     "private": true,
     "description": "Simple web interfaces for interacting with the Kosu contract system and network.",
     "dependencies": {
-        "@kosu/kosu.js": "0.1.0",
+        "@kosu/kosu.js": "0.1.0-alpha.1",
         "uuid": "^3.3.2"
     },
     "devDependencies": {

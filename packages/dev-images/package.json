@@ -3,7 +3,7 @@
     "version": "0.0.4",
     "description": "Development and CI docker images and supporting scripts for Kosu.",
     "repository": "https://github.com/ParadigmFoundation/kosu-monorepo.git",
-    "license": "CC0-1.0",
+    "license": "MIT",
     "private": false,
     "scripts": {
         "postpublish": "yarn build:ganache_db && yarn build:ganache_docker",
@@ -15,7 +15,7 @@
         "ganache_db_bucket": "gs://kosu-system-contracts-ganache-db"
     },
     "devDependencies": {
-        "@kosu/system-contracts": "^0.1.0",
+        "@kosu/system-contracts": "^0.1.0-alpha.1",
         "ganache-cli": "^6.4.3",
         "node-docker-api": "^1.1.22",
         "npm": "^6.9.0",

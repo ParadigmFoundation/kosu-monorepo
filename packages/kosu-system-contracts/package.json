@@ -1,8 +1,8 @@
 {
     "name": "@kosu/system-contracts",
-    "version": "0.1.0",
+    "version": "0.1.0-alpha.1",
     "description": "Kosu protocol core contracts in Solidity.",
-    "license": "CC0-1.0",
+    "license": "MIT",
     "repository": {
         "type": "git",
         "url": "https://github.com/ParadigmFoundation/kosu-monorepo.git"
@@ -39,7 +39,7 @@
         "@0x/subproviders": "^4.0.5",
         "@0x/utils": "^4.3.1",
         "@0x/web3-wrapper": "^6.0.5",
-        "@kosu/subcontract-sdk": "0.1.0",
+        "@kosu/subcontract-sdk": "0.1.0-alpha.1",
         "ethereum-types": "^2.1.2",
         "openzeppelin-solidity": "2.1.2",
         "safe-node-require": "^1.0.0",
@@ -67,5 +67,8 @@
         "truffle-hdwallet-provider": "^1.0.6",
         "typescript": "^3.4.5",
         "yargs": "^13.2.2"
+    },
+    "publishConfig": {
+        "access": "public"
     }
 }
