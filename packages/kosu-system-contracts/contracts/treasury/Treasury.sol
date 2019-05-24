@@ -91,6 +91,8 @@ contract Treasury is Authorizable {
     function confiscate(address account, uint amount) isAuthorized public {
         //Remove the system balance
         setSystemBalance(account, getSystemBalance(account).sub(amount));
+        // Require the tokens being confiscated are only tokens already in kosu system contract control
+        require(getSystemBalance(account) >= getCurrentBalance(account));
     }
 
     /** @dev Allows contracts to be rewarded with new tokens
