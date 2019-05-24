@@ -82,9 +82,11 @@ class Create {
         let networkId = await this.web3.eth.net.getId();
 
         // throw if not mainnet
+        /*
         if (networkId !== 1) {
             throw new Error("wrong network");
         }
+        */
 
         // store user address
         this.coinbase = await this.web3.eth.getCoinbase();
@@ -100,7 +102,7 @@ class Create {
         this.EXCHANGE_ADDRESS = this.zeroExContracts.exchange.address;
 
         // ropsten web3 provider required for check poster bond
-        this.kosu = new Kosu();
+        this.kosu = new Kosu({ provider: this.web3.currentProvider });
 
         this.initialized = true;
     }
@@ -255,12 +257,11 @@ class Create {
             subContract: this.ZRX_SUBCONTRACT_ADDRESS,
             makerValues,
         };
-        const posterHex = OrderSerializer.posterHex(order, ZRX_SUBCONTRACT_MAKER_ARGS);
-        const signed = {
-            ...kosuOrder,
-            posterSignature: await Signature.generate(this.web3, posterHex, this.coinbase),
-        };
-        console.log(JSON.stringify(signed, null, 2));
+        const signedKosuOrder = await this.kosu.orderHelper.prepareForPost(
+            kosuOrder,
+            this.coinbase
+        );
+        console.log(JSON.stringify(signedKosuOrder, null, 2));
     }
 
     /**
