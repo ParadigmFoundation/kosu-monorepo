@@ -286,8 +286,14 @@ class Create {
      * Converts a number (assumed to be number of tokens) as a string to 
      * units of wei, which must be used for generating 0x orders.
      * 
-     * @param {string} etherAmount a number of tokens in full units (ether)
-     * @returns {string} the same amount in wei
+     * @param {string | BigNumber} etherAmount a number of tokens in full units (ether)
+     * @returns {BigNumber} the same amount in wei
+     * @example
+     * ```javascript
+     * // convert 100 tokens (as entered by user) to wei
+     * create.convertToWei("100")  // > "100000000000000000000" (BigNumber)
+     * create.convertToWei(100)    // > "100000000000000000000" (BigNumber)
+     * ```
      */
     convertToWei(etherAmount) {
         return this.web3.utils.toWei(etherAmount.toString());
@@ -297,8 +303,14 @@ class Create {
      * Converts a number (assumed to be number of tokens in wei) as a string to 
      * units of ether, which is more common to display to users.
      * 
-     * @param {string} weiAmount a number of tokens in smallest units (wei)
-     * @returns {string} the same amount in ether
+     * @param {string | BigNumber} weiAmount a number of tokens in smallest units (wei)
+     * @returns {BigNumber} the same amount in ether
+     * @example
+     * ```javascript
+     * // convert 100 tokens (as received as balance or allowance) to tokens
+     * create.convertToWei("100000000000000000000")  // > "100" (BigNumber)
+     * create.convertToWei(100000000000000000000)    // > "100" (BigNumber)    
+     * ```
      */
     convertFromWei(weiAmount) {
         return this.web3.utils.fromWei(weiAmount.toString());
@@ -309,9 +321,15 @@ class Create {
      * returns `false`.
      * 
      * @param {string} address a string to be validated as an Ethereum address.
+     * @example
+     * ```javascript
+     * create.isValidAddress("0x4f833a24e1f95d70f028921e27040ca56e09ab0b")  // > true
+     * create.isValidAddress("4f833a24e1f95d70f028921e27040ca56e09ab0b")    // > false
+     * create.isValidAddress("0x4f833a24e1f95d70f028921e27040ca56e09ab0")   // > false
+     * ```
      */
     isValidAddress(address) {
-        return /^0x[a-fA-F0-9]{40}$/.test(address);
+        return /^0x[a-fA-F0-9]{40}$/.test(address.toString());
     }
 
     /**
@@ -435,6 +453,12 @@ class Create {
      * 
      * @param {string} tokenAddress 0x-prefixed address of the custom token
      * @param {string} userAddress override user's detected coinbase address
+     * @example 
+     * ```javascript
+     * const balance = await create.getUserCustomBalance(
+     *   "0x4f833a24e1f95d70f028921e27040ca56e09ab0b"
+     * );
+     * ```
      */
     async getUserCustomBalance(tokenAddress, userAddress = this.coinbase) {
         return await this._getERC20Balance(userAddress, tokenAddress);
@@ -446,6 +470,12 @@ class Create {
      * 
      * @param {string} tokenAddress 0x-prefixed address of the custom token
      * @param {string} userAddress override user's detected coinbase address
+     * @example 
+     * ```javascript
+     * const allowance = await create.getUserCustomAllowance(
+     *   "0x4f833a24e1f95d70f028921e27040ca56e09ab0b"
+     * );
+     * ```
      */
     async getUserCustomAllowance(tokenAddress, userAddress = this.coinbase) {
         return await this._getERC20ProxyAllowance(userAddress, tokenAddress);
@@ -457,6 +487,12 @@ class Create {
      * 
      * @param {string} tokenAddress 0x-prefixed address of the custom token
      * @param {string} userAddress override user's detected coinbase address
+     * @example 
+     * ```javascript
+     * await create.setProxyAllowanceCustom(
+     *   "0x4f833a24e1f95d70f028921e27040ca56e09ab0b"
+     * );
+     * ```
      */
     async setProxyAllowanceCustom(tokenAddress, userAddress = this.coinbase) {
         return await this._setUnlimitedERC20ProxyAllowance(

@@ -10,8 +10,8 @@ Helper methods for building the Paradigm "Create" portal.
     * [.init()](#Create+init)
     * [.createAndSignOrder(options)](#Create+createAndSignOrder)
     * [.signAndPost(signedZeroExOrder)](#Create+signAndPost)
-    * [.convertToWei(etherAmount)](#Create+convertToWei) ⇒ <code>string</code>
-    * [.convertFromWei(weiAmount)](#Create+convertFromWei) ⇒ <code>string</code>
+    * [.convertToWei(etherAmount)](#Create+convertToWei) ⇒ <code>BigNumber</code>
+    * [.convertFromWei(weiAmount)](#Create+convertFromWei) ⇒ <code>BigNumber</code>
     * [.isValidAddress(address)](#Create+isValidAddress)
     * [.userHasBond(userAddress)](#Create+userHasBond)
     * [.getUserWethBalance(userAddress)](#Create+getUserWethBalance)
@@ -92,30 +92,42 @@ in the `PosterRegistry` contract.
 
 <a name="Create+convertToWei"></a>
 
-### create.convertToWei(etherAmount) ⇒ <code>string</code>
+### create.convertToWei(etherAmount) ⇒ <code>BigNumber</code>
 Converts a number (assumed to be number of tokens) as a string to 
 units of wei, which must be used for generating 0x orders.
 
 **Kind**: instance method of [<code>Create</code>](#Create)  
-**Returns**: <code>string</code> - the same amount in wei  
+**Returns**: <code>BigNumber</code> - the same amount in wei  
 
 | Param | Type | Description |
 | --- | --- | --- |
-| etherAmount | <code>string</code> | a number of tokens in full units (ether) |
+| etherAmount | <code>string</code> \| <code>BigNumber</code> | a number of tokens in full units (ether) |
 
+**Example**  
+```javascript
+// convert 100 tokens (as entered by user) to wei
+create.convertToWei("100")  // > "100000000000000000000" (BigNumber)
+create.convertToWei(100)    // > "100000000000000000000" (BigNumber)
+```
 <a name="Create+convertFromWei"></a>
 
-### create.convertFromWei(weiAmount) ⇒ <code>string</code>
+### create.convertFromWei(weiAmount) ⇒ <code>BigNumber</code>
 Converts a number (assumed to be number of tokens in wei) as a string to 
 units of ether, which is more common to display to users.
 
 **Kind**: instance method of [<code>Create</code>](#Create)  
-**Returns**: <code>string</code> - the same amount in ether  
+**Returns**: <code>BigNumber</code> - the same amount in ether  
 
 | Param | Type | Description |
 | --- | --- | --- |
-| weiAmount | <code>string</code> | a number of tokens in smallest units (wei) |
+| weiAmount | <code>string</code> \| <code>BigNumber</code> | a number of tokens in smallest units (wei) |
 
+**Example**  
+```javascript
+// convert 100 tokens (as received as balance or allowance) to tokens
+create.convertToWei("100000000000000000000")  // > "100" (BigNumber)
+create.convertToWei(100000000000000000000)    // > "100" (BigNumber)    
+```
 <a name="Create+isValidAddress"></a>
 
 ### create.isValidAddress(address)
@@ -128,6 +140,12 @@ returns `false`.
 | --- | --- | --- |
 | address | <code>string</code> | a string to be validated as an Ethereum address. |
 
+**Example**  
+```javascript
+create.isValidAddress("0x4f833a24e1f95d70f028921e27040ca56e09ab0b")  // > true
+create.isValidAddress("4f833a24e1f95d70f028921e27040ca56e09ab0b")    // > false
+create.isValidAddress("0x4f833a24e1f95d70f028921e27040ca56e09ab0")   // > false
+```
 <a name="Create+userHasBond"></a>
 
 ### create.userHasBond(userAddress)
@@ -255,6 +273,12 @@ provided by token address.
 | tokenAddress | <code>string</code> | 0x-prefixed address of the custom token |
 | userAddress | <code>string</code> | override user's detected coinbase address |
 
+**Example**  
+```javascript
+const balance = await create.getUserCustomBalance(
+  "0x4f833a24e1f95d70f028921e27040ca56e09ab0b"
+);
+```
 <a name="Create+getUserCustomAllowance"></a>
 
 ### create.getUserCustomAllowance(tokenAddress, userAddress)
@@ -268,6 +292,12 @@ contract system of a custom token, provided by tokenAddress.
 | tokenAddress | <code>string</code> | 0x-prefixed address of the custom token |
 | userAddress | <code>string</code> | override user's detected coinbase address |
 
+**Example**  
+```javascript
+const allowance = await create.getUserCustomAllowance(
+  "0x4f833a24e1f95d70f028921e27040ca56e09ab0b"
+);
+```
 <a name="Create+setProxyAllowanceCustom"></a>
 
 ### create.setProxyAllowanceCustom(tokenAddress, userAddress)
@@ -281,3 +311,9 @@ custom token address (tokenAddress).
 | tokenAddress | <code>string</code> | 0x-prefixed address of the custom token |
 | userAddress | <code>string</code> | override user's detected coinbase address |
 
+**Example**  
+```javascript
+await create.setProxyAllowanceCustom(
+  "0x4f833a24e1f95d70f028921e27040ca56e09ab0b"
+);
+```
