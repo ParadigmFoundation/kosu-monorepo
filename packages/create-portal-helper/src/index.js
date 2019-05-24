@@ -104,8 +104,7 @@ class Create {
         this.EXCHANGE_ADDRESS = this.zeroExContracts.exchange.address;
 
         // ropsten web3 provider required for check poster bond
-        this.ropstenWeb3 = new Web3("https://ethnet.zaidan.io/ropsten");
-        this.kosu = new Kosu({ provider: this.ropstenWeb3.currentProvider});
+        this.kosu = new Kosu();
 
         this.initialized = true;
     }
@@ -116,12 +115,22 @@ class Create {
      * Generate and sign a 0x order. Will prompt user for a MetaMask signature.
      * 
      * @param {object} options object with the following properties: </br>
-     *   - makerAsset: either ("WETH/DAI/ZRX") or a full 42 char hex address</br>
-     *   - takerAsset: either ("WETH/DAI/ZRX") or a full 42 char hex address</br>
+     *   - makerAssetAddress: either ("WETH/DAI/ZRX") or a full 42 char hex address</br>
+     *   - takerAssetAddress: either ("WETH/DAI/ZRX") or a full 42 char hex address</br>
      *   - makerAssetAmount: units are wei, value can be string/number or BigNumber</br>
      *   - takerAssetAmount: units are wei, value can be string/number or BigNumber</br> 
      *   - orderDuration: the number of seconds the order should be valid for</br>
      *   - makerAddress: *can* be provided to override `coinbase`, but shouldn't</br>
+     * @example
+     * ```
+     * let order = await create.createAndSignOrder({
+     *   makerAssetAddress: "WETH",
+     *   takerAssetAddress: "0x9f8f72aa9304c8b593d555f12ef6589cc3a579a2",
+     *   makerAssetAmount: create.convertToWei("0.5"),
+     *   takerAssetAmount: create.convertFromWei("80"),
+     *   orderDuration: 600
+     * });
+     * ```
      */
     async createAndSignOrder(options) {
         const makerAddress = options.makerAddress || this.coinbase;
@@ -280,7 +289,7 @@ class Create {
      * @returns {string} the same amount in wei
      */
     convertToWei(etherAmount) {
-        return this.web3.utils.toWei(etherAmount);
+        return this.web3.utils.toWei(etherAmount.toString());
     }
 
     /**
@@ -290,8 +299,8 @@ class Create {
      * @param {string} weiAmount a number of tokens in smallest units (wei)
      * @returns {string} the same amount in ether
      */
-    convertToWei(weiAmount) {
-        return this.web3.utils.fromWei(weiAmount);
+    convertFromWei(weiAmount) {
+        return this.web3.utils.fromWei(weiAmount.toString());
     }
 
     /**

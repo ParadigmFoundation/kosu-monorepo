@@ -11,7 +11,7 @@ Helper methods for building the Paradigm "Create" portal.
     * [.createAndSignOrder(options)](#Create+createAndSignOrder)
     * [.signAndPost(signedZeroExOrder)](#Create+signAndPost)
     * [.convertToWei(etherAmount)](#Create+convertToWei) ⇒ <code>string</code>
-    * [.convertToWei(weiAmount)](#Create+convertToWei) ⇒ <code>string</code>
+    * [.convertFromWei(weiAmount)](#Create+convertFromWei) ⇒ <code>string</code>
     * [.isValidAddress(address)](#Create+isValidAddress)
     * [.userHasBond(userAddress)](#Create+userHasBond)
     * [.getUserWethBalance(userAddress)](#Create+getUserWethBalance)
@@ -64,8 +64,18 @@ Generate and sign a 0x order. Will prompt user for a MetaMask signature.
 
 | Param | Type | Description |
 | --- | --- | --- |
-| options | <code>object</code> | object with the following properties: </br>   - makerAsset: either ("WETH/DAI/ZRX") or a full 42 char hex address</br>   - takerAsset: either ("WETH/DAI/ZRX") or a full 42 char hex address</br>   - makerAssetAmount: units are wei, value can be string/number or BigNumber</br>   - takerAssetAmount: units are wei, value can be string/number or BigNumber</br>    - orderDuration: the number of seconds the order should be valid for</br>   - makerAddress: *can* be provided to override `coinbase`, but shouldn't</br> |
+| options | <code>object</code> | object with the following properties: </br>   - makerAssetAddress: either ("WETH/DAI/ZRX") or a full 42 char hex address</br>   - takerAssetAddress: either ("WETH/DAI/ZRX") or a full 42 char hex address</br>   - makerAssetAmount: units are wei, value can be string/number or BigNumber</br>   - takerAssetAmount: units are wei, value can be string/number or BigNumber</br>    - orderDuration: the number of seconds the order should be valid for</br>   - makerAddress: *can* be provided to override `coinbase`, but shouldn't</br> |
 
+**Example**  
+```
+let order = await create.createAndSignOrder({
+  makerAssetAddress: "WETH",
+  takerAssetAddress: "0x9f8f72aa9304c8b593d555f12ef6589cc3a579a2",
+  makerAssetAmount: create.convertToWei("0.5"),
+  takerAssetAmount: create.convertFromWei("80"),
+  orderDuration: 600
+});
+```
 <a name="Create+signAndPost"></a>
 
 ### create.signAndPost(signedZeroExOrder)
@@ -92,9 +102,9 @@ units of wei, which must be used for generating 0x orders.
 | --- | --- | --- |
 | etherAmount | <code>string</code> | a number of tokens in full units (ether) |
 
-<a name="Create+convertToWei"></a>
+<a name="Create+convertFromWei"></a>
 
-### create.convertToWei(weiAmount) ⇒ <code>string</code>
+### create.convertFromWei(weiAmount) ⇒ <code>string</code>
 Converts a number (assumed to be number of tokens in wei) as a string to 
 units of ether, which is more common to display to users.
 
@@ -124,10 +134,6 @@ Check if the user (by their `coinbase` address) is allowed to post to the
 Kosu network. Returns `true` if they are, and `false` if they are not.
 
 **Kind**: instance method of [<code>Create</code>](#Create)  
-**Todo**
-
-- [ ] implement.
-
 
 | Param | Type | Description |
 | --- | --- | --- |
