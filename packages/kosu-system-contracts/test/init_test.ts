@@ -35,6 +35,7 @@ before(async () => {
             coverageSubprovider = new CoverageSubprovider(
                 artifactAdapter,
                 "0xc521f483f607eb5ea4d6b2dfdbd540134753a865",
+                { ignoreFilesGlobs: ["**/node_modules/**", "**/IValidatorRegistry.sol", "**/IPosterRegistry.sol"]},
             );
             provider.addProvider(coverageSubprovider);
         }
