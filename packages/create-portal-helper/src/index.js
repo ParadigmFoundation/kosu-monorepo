@@ -320,7 +320,8 @@ class Create {
      * Returns `true` if the inputted string is a valid Ethereum address, otherwise
      * returns `false`.
      * 
-     * @param {string} address a string to be validated as an Ethereum address.
+     * @param {string} address a string to be validated as an Ethereum address
+     * @returns {boolean} `true` if valid Ethereum address, otherwise `false`
      * @example
      * ```javascript
      * create.isValidAddress("0x4f833a24e1f95d70f028921e27040ca56e09ab0b")  // > true
@@ -337,6 +338,7 @@ class Create {
      * Kosu network. Returns `true` if they are, and `false` if they are not.
      *
      * @param {string} userAddress can be provided to override coinbase, but shouldn't
+     * @returns {boolean} `true` if user has active bond, `false` otherwise
      */
     async userHasBond(userAddress = this.coinbase) {
         const bond = await this.kosu.posterRegistry.tokensRegisteredFor(userAddress);
@@ -352,6 +354,7 @@ class Create {
      * Returns a BigNumber representing the users WETH balance (in wei).
      * 
      * @param {string} userAddress override user's detected coinbase address
+     * @returns {BigNumber} the user's WETH balance in `wei`
      */
     async getUserWethBalance(userAddress = this.coinbase) {
         return await this._getERC20Balance(userAddress, this.WETH_ADDRESS);
@@ -362,6 +365,7 @@ class Create {
      * contract system.
      * 
      * @param {string} userAddress override user's detected coinbase address
+     * @returns {BigNumber} the user's 0x proxy WETH allowance in `wei`
      */
     async getUserWethAllowance(userAddress = this.coinbase) {
         return await this._getERC20ProxyAllowance(userAddress, this.WETH_ADDRESS);
@@ -371,6 +375,7 @@ class Create {
      * Sets an unlimited allowance for the 0x contract system for WETH.
      * 
      * @param {string} userAddress override user's detected coinbase address
+     * @returns {string} the transaction hash of the resulting tx
      */
     async setProxyAllowanceWeth(userAddress = this.coinbase) {
         return await this._setUnlimitedERC20ProxyAllowance(
@@ -385,6 +390,7 @@ class Create {
      * Returns a BigNumber representing the users ZRX balance (in wei).
      * 
      * @param {string} userAddress override user's detected coinbase address
+     * @returns {BigNumber} the user's ZRX balance in `wei`
      */
     async getUserZrxBalance(userAddress = this.coinbase) {
         return await this._getERC20Balance(userAddress, this.ZRX_ADDRESS);
@@ -395,6 +401,7 @@ class Create {
      * contract system.
      * 
      * @param {string} userAddress override user's detected coinbase address
+     * @returns {BigNumber} the user's 0x proxy ZRX allowance in `wei`
      */
     async getUserZrxAllowance(userAddress = this.coinbase) {
         return await this._getERC20ProxyAllowance(userAddress, this.ZRX_ADDRESS);
@@ -404,6 +411,7 @@ class Create {
      * Sets an unlimited allowance for the 0x contract system for ZRX.
      * 
      * @param {string} userAddress override user's detected coinbase address
+     * @returns {string} the transaction hash of the resulting tx
      */
     async setProxyAllowanceZrx(userAddress = this.coinbase) {
         return await this._setUnlimitedERC20ProxyAllowance(
@@ -418,6 +426,7 @@ class Create {
      * Returns a BigNumber representing the users DAI balance (in wei).
      * 
      * @param {string} userAddress override user's detected coinbase address
+     * @returns {BigNumber} the user's DAI balance in `wei`
      */
     async getUserDaiBalance(userAddress = this.coinbase) {
         return await this._getERC20Balance(userAddress, this.DAI_ADDRESS);
@@ -428,6 +437,7 @@ class Create {
      * contract system.
      * 
      * @param {string} userAddress override user's detected coinbase address
+     * @returns {BigNumber} the user's 0x proxy DAI allowance in `wei`
      */
     async getUserDaiAllowance(userAddress = this.coinbase) {
         return await this._getERC20ProxyAllowance(userAddress, this.DAI_ADDRESS);
@@ -437,6 +447,7 @@ class Create {
      * Sets an unlimited allowance for the 0x contract system for DAI.
      * 
      * @param {string} userAddress override user's detected coinbase address
+     * @returns {string} the transaction hash of the resulting tx
      */
     async setProxyAllowanceDai(userAddress = this.coinbase) {
         return await this._setUnlimitedERC20ProxyAllowance(
@@ -453,6 +464,7 @@ class Create {
      * 
      * @param {string} tokenAddress 0x-prefixed address of the custom token
      * @param {string} userAddress override user's detected coinbase address
+     * @returns {BigNumber} the user's balance in `wei` of custom token 
      * @example 
      * ```javascript
      * const balance = await create.getUserCustomBalance(
@@ -470,6 +482,7 @@ class Create {
      * 
      * @param {string} tokenAddress 0x-prefixed address of the custom token
      * @param {string} userAddress override user's detected coinbase address
+     * @returns {BigNumber} the user's 0x proxy allowance in `wei` for custom token
      * @example 
      * ```javascript
      * const allowance = await create.getUserCustomAllowance(
@@ -487,6 +500,7 @@ class Create {
      * 
      * @param {string} tokenAddress 0x-prefixed address of the custom token
      * @param {string} userAddress override user's detected coinbase address
+     * @returns {string} the transaction hash of the resulting tx
      * @example 
      * ```javascript
      * await create.setProxyAllowanceCustom(

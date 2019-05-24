@@ -12,20 +12,20 @@ Helper methods for building the Paradigm "Create" portal.
     * [.signAndPost(signedZeroExOrder)](#Create+signAndPost)
     * [.convertToWei(etherAmount)](#Create+convertToWei) ⇒ <code>BigNumber</code>
     * [.convertFromWei(weiAmount)](#Create+convertFromWei) ⇒ <code>BigNumber</code>
-    * [.isValidAddress(address)](#Create+isValidAddress)
-    * [.userHasBond(userAddress)](#Create+userHasBond)
-    * [.getUserWethBalance(userAddress)](#Create+getUserWethBalance)
-    * [.getUserWethAllowance(userAddress)](#Create+getUserWethAllowance)
-    * [.setProxyAllowanceWeth(userAddress)](#Create+setProxyAllowanceWeth)
-    * [.getUserZrxBalance(userAddress)](#Create+getUserZrxBalance)
-    * [.getUserZrxAllowance(userAddress)](#Create+getUserZrxAllowance)
-    * [.setProxyAllowanceZrx(userAddress)](#Create+setProxyAllowanceZrx)
-    * [.getUserDaiBalance(userAddress)](#Create+getUserDaiBalance)
-    * [.getUserDaiAllowance(userAddress)](#Create+getUserDaiAllowance)
-    * [.setProxyAllowanceDai(userAddress)](#Create+setProxyAllowanceDai)
-    * [.getUserCustomBalance(tokenAddress, userAddress)](#Create+getUserCustomBalance)
-    * [.getUserCustomAllowance(tokenAddress, userAddress)](#Create+getUserCustomAllowance)
-    * [.setProxyAllowanceCustom(tokenAddress, userAddress)](#Create+setProxyAllowanceCustom)
+    * [.isValidAddress(address)](#Create+isValidAddress) ⇒ <code>boolean</code>
+    * [.userHasBond(userAddress)](#Create+userHasBond) ⇒ <code>boolean</code>
+    * [.getUserWethBalance(userAddress)](#Create+getUserWethBalance) ⇒ <code>BigNumber</code>
+    * [.getUserWethAllowance(userAddress)](#Create+getUserWethAllowance) ⇒ <code>BigNumber</code>
+    * [.setProxyAllowanceWeth(userAddress)](#Create+setProxyAllowanceWeth) ⇒ <code>string</code>
+    * [.getUserZrxBalance(userAddress)](#Create+getUserZrxBalance) ⇒ <code>BigNumber</code>
+    * [.getUserZrxAllowance(userAddress)](#Create+getUserZrxAllowance) ⇒ <code>BigNumber</code>
+    * [.setProxyAllowanceZrx(userAddress)](#Create+setProxyAllowanceZrx) ⇒ <code>string</code>
+    * [.getUserDaiBalance(userAddress)](#Create+getUserDaiBalance) ⇒ <code>BigNumber</code>
+    * [.getUserDaiAllowance(userAddress)](#Create+getUserDaiAllowance) ⇒ <code>BigNumber</code>
+    * [.setProxyAllowanceDai(userAddress)](#Create+setProxyAllowanceDai) ⇒ <code>string</code>
+    * [.getUserCustomBalance(tokenAddress, userAddress)](#Create+getUserCustomBalance) ⇒ <code>BigNumber</code>
+    * [.getUserCustomAllowance(tokenAddress, userAddress)](#Create+getUserCustomAllowance) ⇒ <code>BigNumber</code>
+    * [.setProxyAllowanceCustom(tokenAddress, userAddress)](#Create+setProxyAllowanceCustom) ⇒ <code>string</code>
 
 <a name="new_Create_new"></a>
 
@@ -130,15 +130,16 @@ create.convertToWei(100000000000000000000)    // > "100" (BigNumber)
 ```
 <a name="Create+isValidAddress"></a>
 
-### create.isValidAddress(address)
+### create.isValidAddress(address) ⇒ <code>boolean</code>
 Returns `true` if the inputted string is a valid Ethereum address, otherwise
 returns `false`.
 
 **Kind**: instance method of [<code>Create</code>](#Create)  
+**Returns**: <code>boolean</code> - `true` if valid Ethereum address, otherwise `false`  
 
 | Param | Type | Description |
 | --- | --- | --- |
-| address | <code>string</code> | a string to be validated as an Ethereum address. |
+| address | <code>string</code> | a string to be validated as an Ethereum address |
 
 **Example**  
 ```javascript
@@ -148,11 +149,12 @@ create.isValidAddress("0x4f833a24e1f95d70f028921e27040ca56e09ab0")   // > false
 ```
 <a name="Create+userHasBond"></a>
 
-### create.userHasBond(userAddress)
+### create.userHasBond(userAddress) ⇒ <code>boolean</code>
 Check if the user (by their `coinbase` address) is allowed to post to the
 Kosu network. Returns `true` if they are, and `false` if they are not.
 
 **Kind**: instance method of [<code>Create</code>](#Create)  
+**Returns**: <code>boolean</code> - `true` if user has active bond, `false` otherwise  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -160,10 +162,11 @@ Kosu network. Returns `true` if they are, and `false` if they are not.
 
 <a name="Create+getUserWethBalance"></a>
 
-### create.getUserWethBalance(userAddress)
+### create.getUserWethBalance(userAddress) ⇒ <code>BigNumber</code>
 Returns a BigNumber representing the users WETH balance (in wei).
 
 **Kind**: instance method of [<code>Create</code>](#Create)  
+**Returns**: <code>BigNumber</code> - the user's WETH balance in `wei`  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -171,11 +174,12 @@ Returns a BigNumber representing the users WETH balance (in wei).
 
 <a name="Create+getUserWethAllowance"></a>
 
-### create.getUserWethAllowance(userAddress)
+### create.getUserWethAllowance(userAddress) ⇒ <code>BigNumber</code>
 Returns a BigNumber representing the users WETH allowance for the 0x
 contract system.
 
 **Kind**: instance method of [<code>Create</code>](#Create)  
+**Returns**: <code>BigNumber</code> - the user's 0x proxy WETH allowance in `wei`  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -183,10 +187,11 @@ contract system.
 
 <a name="Create+setProxyAllowanceWeth"></a>
 
-### create.setProxyAllowanceWeth(userAddress)
+### create.setProxyAllowanceWeth(userAddress) ⇒ <code>string</code>
 Sets an unlimited allowance for the 0x contract system for WETH.
 
 **Kind**: instance method of [<code>Create</code>](#Create)  
+**Returns**: <code>string</code> - the transaction hash of the resulting tx  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -194,10 +199,11 @@ Sets an unlimited allowance for the 0x contract system for WETH.
 
 <a name="Create+getUserZrxBalance"></a>
 
-### create.getUserZrxBalance(userAddress)
+### create.getUserZrxBalance(userAddress) ⇒ <code>BigNumber</code>
 Returns a BigNumber representing the users ZRX balance (in wei).
 
 **Kind**: instance method of [<code>Create</code>](#Create)  
+**Returns**: <code>BigNumber</code> - the user's ZRX balance in `wei`  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -205,11 +211,12 @@ Returns a BigNumber representing the users ZRX balance (in wei).
 
 <a name="Create+getUserZrxAllowance"></a>
 
-### create.getUserZrxAllowance(userAddress)
+### create.getUserZrxAllowance(userAddress) ⇒ <code>BigNumber</code>
 Returns a BigNumber representing the users ZRX allowance for the 0x
 contract system.
 
 **Kind**: instance method of [<code>Create</code>](#Create)  
+**Returns**: <code>BigNumber</code> - the user's 0x proxy ZRX allowance in `wei`  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -217,10 +224,11 @@ contract system.
 
 <a name="Create+setProxyAllowanceZrx"></a>
 
-### create.setProxyAllowanceZrx(userAddress)
+### create.setProxyAllowanceZrx(userAddress) ⇒ <code>string</code>
 Sets an unlimited allowance for the 0x contract system for ZRX.
 
 **Kind**: instance method of [<code>Create</code>](#Create)  
+**Returns**: <code>string</code> - the transaction hash of the resulting tx  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -228,10 +236,11 @@ Sets an unlimited allowance for the 0x contract system for ZRX.
 
 <a name="Create+getUserDaiBalance"></a>
 
-### create.getUserDaiBalance(userAddress)
+### create.getUserDaiBalance(userAddress) ⇒ <code>BigNumber</code>
 Returns a BigNumber representing the users DAI balance (in wei).
 
 **Kind**: instance method of [<code>Create</code>](#Create)  
+**Returns**: <code>BigNumber</code> - the user's DAI balance in `wei`  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -239,11 +248,12 @@ Returns a BigNumber representing the users DAI balance (in wei).
 
 <a name="Create+getUserDaiAllowance"></a>
 
-### create.getUserDaiAllowance(userAddress)
+### create.getUserDaiAllowance(userAddress) ⇒ <code>BigNumber</code>
 Returns a BigNumber representing the users DAI allowance for the 0x
 contract system.
 
 **Kind**: instance method of [<code>Create</code>](#Create)  
+**Returns**: <code>BigNumber</code> - the user's 0x proxy DAI allowance in `wei`  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -251,10 +261,11 @@ contract system.
 
 <a name="Create+setProxyAllowanceDai"></a>
 
-### create.setProxyAllowanceDai(userAddress)
+### create.setProxyAllowanceDai(userAddress) ⇒ <code>string</code>
 Sets an unlimited allowance for the 0x contract system for DAI.
 
 **Kind**: instance method of [<code>Create</code>](#Create)  
+**Returns**: <code>string</code> - the transaction hash of the resulting tx  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -262,11 +273,12 @@ Sets an unlimited allowance for the 0x contract system for DAI.
 
 <a name="Create+getUserCustomBalance"></a>
 
-### create.getUserCustomBalance(tokenAddress, userAddress)
+### create.getUserCustomBalance(tokenAddress, userAddress) ⇒ <code>BigNumber</code>
 Returns a BigNumber representing the users balance of a custom token, 
 provided by token address.
 
 **Kind**: instance method of [<code>Create</code>](#Create)  
+**Returns**: <code>BigNumber</code> - the user's balance in `wei` of custom token  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -281,11 +293,12 @@ const balance = await create.getUserCustomBalance(
 ```
 <a name="Create+getUserCustomAllowance"></a>
 
-### create.getUserCustomAllowance(tokenAddress, userAddress)
+### create.getUserCustomAllowance(tokenAddress, userAddress) ⇒ <code>BigNumber</code>
 Returns a BigNumber representing the users allowance for the 0x
 contract system of a custom token, provided by tokenAddress.
 
 **Kind**: instance method of [<code>Create</code>](#Create)  
+**Returns**: <code>BigNumber</code> - the user's 0x proxy allowance in `wei` for custom token  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -300,11 +313,12 @@ const allowance = await create.getUserCustomAllowance(
 ```
 <a name="Create+setProxyAllowanceCustom"></a>
 
-### create.setProxyAllowanceCustom(tokenAddress, userAddress)
+### create.setProxyAllowanceCustom(tokenAddress, userAddress) ⇒ <code>string</code>
 Sets an unlimited allowance for the 0x contract system for the provided
 custom token address (tokenAddress).
 
 **Kind**: instance method of [<code>Create</code>](#Create)  
+**Returns**: <code>string</code> - the transaction hash of the resulting tx  
 
 | Param | Type | Description |
 | --- | --- | --- |
