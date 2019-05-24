@@ -1,73 +1,74 @@
-[{
-    "dataType": "address",
-    "name": "makerAddress"
-},
-{
-    "dataType": "address",
-    "name": "takerAddress"
-},
-{
-    "dataType": "address",
-    "name": "feeRecipientAddress"
-},
-{
-    "dataType": "address",
-    "name": "senderAddress"
-},
-{
-    "dataType": "uint",
-    "name": "makerAssetAmount"
-},
-{
-    "dataType": "uint",
-    "name": "takerAssetAmount"
-},
-{
-    "dataType": "uint",
-    "name": "makerFee"
-},
-{
-    "dataType": "uint",
-    "name": "takerFee"
-},
-{
-    "dataType": "uint",
-    "name": "expirationTimeSeconds"
-},
-{
-    "dataType": "uint",
-    "name": "salt"
-},
-{
-    "dataType": "bytes32",
-    "name": "makerAssetData0"
-},
-{
-    "dataType": "bytes32",
-    "name": "makerAssetData1"
-},
-{
-    "dataType": "bytes32",
-    "name": "takerAssetData0"
-},
-{
-    "dataType": "bytes32",
-    "name": "takerAssetData1"
-},
-{
-    "dataType": "bytes32",
-    "name": "signature0"
-},
-{
-    "dataType": "bytes32",
-    "name": "signature1"
-},
-{
-    "dataType": "bytes32",
-    "name": "signature2"
-},
-{
-    "dataType": "address",
-    "name": "exchangeAddress"
-}
+[
+    {
+        "dataType": "address",
+        "name": "makerAddress"
+    },
+    {
+        "dataType": "address",
+        "name": "takerAddress"
+    },
+    {
+        "dataType": "address",
+        "name": "feeRecipientAddress"
+    },
+    {
+        "dataType": "address",
+        "name": "senderAddress"
+    },
+    {
+        "dataType": "uint",
+        "name": "makerAssetAmount"
+    },
+    {
+        "dataType": "uint",
+        "name": "takerAssetAmount"
+    },
+    {
+        "dataType": "uint",
+        "name": "makerFee"
+    },
+    {
+        "dataType": "uint",
+        "name": "takerFee"
+    },
+    {
+        "dataType": "uint",
+        "name": "expirationTimeSeconds"
+    },
+    {
+        "dataType": "uint",
+        "name": "salt"
+    },
+    {
+        "dataType": "bytes32",
+        "name": "makerAssetData0"
+    },
+    {
+        "dataType": "bytes32",
+        "name": "makerAssetData1"
+    },
+    {
+        "dataType": "bytes32",
+        "name": "takerAssetData0"
+    },
+    {
+        "dataType": "bytes32",
+        "name": "takerAssetData1"
+    },
+    {
+        "dataType": "bytes32",
+        "name": "signature0"
+    },
+    {
+        "dataType": "bytes32",
+        "name": "signature1"
+    },
+    {
+        "dataType": "bytes32",
+        "name": "signature2"
+    },
+    {
+        "dataType": "address",
+        "name": "exchangeAddress"
+    }
 ]
