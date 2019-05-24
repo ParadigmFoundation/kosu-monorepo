@@ -11,7 +11,6 @@ import {
     ValidatorRegistryProxyContract,
     VotingContract,
 } from "../src";
-import { listingDecoder } from "../src/listingDecoder";
 
 describe("ValidatorRegistry", async function() {
     this.timeout(10000);
@@ -165,8 +164,28 @@ describe("ValidatorRegistry", async function() {
     });
 
     describe("token", () => {
-        it("should have a token token configured", async () => {
+        it("should have a token configured", async () => {
             await validatorRegistryProxy.kosuToken.callAsync().should.eventually.eq(kosuToken.address);
+        });
+    });
+
+    describe("voting", () => {
+        it("should have voting configured", async () => {
+            await validatorRegistryProxy.voting.callAsync().should.eventually.eq(voting.address);
+        });
+    });
+
+    describe("treasury", () => {
+        it("should have a treasury configured", async () => {
+            await validatorRegistryProxy.treasury.callAsync().should.eventually.eq(treasury.address);
+        });
+    });
+
+    describe("setImplementation", () => {
+        it("should set the implementation", async () => {
+            await validatorRegistryProxy.setImplementation.sendTransactionAsync(accounts[0]).then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash)).should.eventually.be.fulfilled;
+            await validatorRegistryProxy.maxRewardRate.callAsync().should.eventually.be.rejected;
+            await validatorRegistryProxy.setImplementation.sendTransactionAsync(validatorRegistry.address).then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash)).should.eventually.be.fulfilled;
         });
     });
 
@@ -221,6 +240,45 @@ describe("ValidatorRegistry", async function() {
                     from: accounts[5],
                 })
                 .then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash));
+        });
+    });
+
+    describe("getListings", () => {
+        let publicKeys;
+
+        before(() => {
+            publicKeys = accounts.map(a => padRight(a, 64).toLowerCase());
+        });
+
+        beforeEach(async () => {
+            for (const account of accounts) {
+                await kosuToken.approve.sendTransactionAsync(treasury.address, minimumBalance, { from: account });
+                await validatorRegistryProxy.registerListing
+                    .sendTransactionAsync(account, minimumBalance, testValues.zero, paradigmMarket, { from: account })
+                    .then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash));
+            }
+        });
+
+        afterEach(async () => {
+            for (const account of accounts) {
+                await validatorRegistryProxy.initExit.sendTransactionAsync(account, { from: account });
+                await treasury.withdraw
+                    .sendTransactionAsync(new BigNumber(minimumBalance), { from: account })
+                    .then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash));
+            }
+        });
+
+        it("should return a list of listing keys", async () => {
+            const listings: Listing[] = await validatorRegistryProxy.getListings.callAsync();
+
+            listings.length.should.eq(publicKeys.length);
+            listings.forEach(listing => {
+                publicKeys.should.contain(listing.tendermintPublicKey);
+                accounts.should.contain(listing.owner);
+                listing.stakedBalance.toString().should.eq(minimumBalance.toString());
+                listing.rewardRate.toString().should.eq("0");
+                listing.status.should.eq(1);
+            });
         });
     });
 
@@ -400,7 +458,24 @@ describe("ValidatorRegistry", async function() {
                     .should.eq(allInToken.toString());
             });
 
-            it("should be initialized correctly"); // TODO: maybe work on this after the read function is more descriptive
+            it("should be initialized correctly", async () => {
+                const maxReward = await validatorRegistryProxy.maxRewardRate.callAsync();
+
+                await kosuToken.approve
+                    .sendTransactionAsync(treasury.address, testValues.sixEther);
+                const result = await validatorRegistryProxy.registerListing
+                    .sendTransactionAsync(tendermintPublicKey, testValues.sixEther, maxReward, paradigmMarket)
+                    .then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash)).should.eventually.be.fulfilled;
+
+                const listing = await validatorRegistryProxy.getListing.callAsync(tendermintPublicKey);
+                listing.tendermintPublicKey.should.eq(tendermintPublicKey);
+                listing.owner.should.eq(accounts[0]);
+                listing.applicationBlock.toString().should.eq(result.blockNumber.toString());
+                listing.rewardRate.toString().should.eq(maxReward.toString());
+                listing.stakedBalance.toString().should.eq(testValues.sixEther.toString());
+                listing.status.should.eq(1);
+                listing.details.should.eq(paradigmMarket);
+            });
         });
     });
 
