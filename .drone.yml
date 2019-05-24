@@ -49,7 +49,7 @@ steps:
     image: gcr.io/kosu-io/go-kosu-ci:latest
     pull: always
     environment:
-      ETHEREUM_TEST_ADDRESS: wss://ropsten.infura.io/ws
+      ETHEREUM_TEST_ADDRESS: wss://ethnet.zaidan.io/ws/ropsten
     commands:
     - cd packages/go-kosu
     - make ci
