@@ -43,7 +43,7 @@ export class Kosu {
         }
 
         // Initializing contract objects
-        // this.orderGateway = new OrderGateway(options);
+        this.orderGateway = new OrderGateway(options);
         this.kosuToken = new KosuToken(options);
         this.treasury = new Treasury(options, this.kosuToken);
         this.voting = new Voting(options, this.treasury);
