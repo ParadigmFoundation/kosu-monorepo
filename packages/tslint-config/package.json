@@ -6,7 +6,7 @@
     "main": "tslint.json",
     "repository": "https://github.com/ParadigmFoundation/kosu-monorepo/blob/master/packages/tslint-config/README.md",
     "author": "Henry Harder",
-    "license": "CC0-1.0",
+    "license": "MIT",
     "publishConfig": {
         "access": "public"
     }

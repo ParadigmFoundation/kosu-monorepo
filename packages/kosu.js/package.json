@@ -3,6 +3,7 @@
     "version": "0.1.0-alpha.1",
     "description": "JavaScript module for connecting with Kosu.",
     "main": "dist/index.js",
+    "license": "MIT",
     "scripts": {
         "test": "ts-mocha -p tsconfig.json test/",
         "test:ci": "ts-mocha -p tsconfig.json test/ --timeout 4000 -- geth",
@@ -11,7 +12,6 @@
         "build": "tsc",
         "lint": "tslint -p ."
     },
-    "license": "CC0-1.0",
     "repository": {
         "type": "git",
         "url": "https://github.com/ParadigmFoundation/kosu-monorepo.git"

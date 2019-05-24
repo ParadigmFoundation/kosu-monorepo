@@ -2,7 +2,7 @@
     "name": "@kosu/system-contracts",
     "version": "0.1.0-alpha.1",
     "description": "Kosu protocol core contracts in Solidity.",
-    "license": "CC0-1.0",
+    "license": "MIT",
     "repository": {
         "type": "git",
         "url": "https://github.com/ParadigmFoundation/kosu-monorepo.git"
