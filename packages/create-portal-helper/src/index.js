@@ -13,8 +13,7 @@ let {
 
 let { MetamaskSubprovider } = require("@0x/subproviders");
 let { Web3Wrapper } = require("@0x/web3-wrapper");
-const zeroExFormatter = require("paradigm-0x-contracts");
-let { Signature, OrderSerializer } = require("@kosu/kosu.js");
+let { Kosu, Signature, OrderSerializer } = require("@kosu/kosu.js");
 
 // stores common token addresses
 const addresses = require("./addresses.json");
@@ -26,7 +25,6 @@ const ZRX_SUBCONTRACT_MAKER_ARGS = require("./zrx_subcontract_maker_args.json");
  * Helper methods for building the Paradigm "Create" portal.
  */
 class Create {
-
     /**
      * Construct a new `Create` instance. Accepts no arguments, and returns an
      * un-initialized instance.
@@ -53,6 +51,7 @@ class Create {
         this.kosu = null;
         this.web3 = null;
         this.web3Wrapper = null;
+        this.ropstenWeb3 = null;
         this.coinbase = null;
         this.subProvider = null;
         this.zeroExContracts = null;
@@ -103,6 +102,10 @@ class Create {
         this.subProvider = new MetamaskSubprovider(this.web3.currentProvider);
         this.zeroExContracts = new ContractWrappers(this.subProvider, { networkId });
         this.EXCHANGE_ADDRESS = this.zeroExContracts.exchange.address;
+
+        // ropsten web3 provider required for check poster bond
+        this.ropstenWeb3 = new Web3("https://ethnet.zaidan.io/ropsten");
+        this.kosu = new Kosu({ provider: this.ropstenWeb3.currentProvider});
 
         this.initialized = true;
     }
@@ -220,12 +223,17 @@ class Create {
             throw new Error("invalid 0x order (check that the input values)");
         }
 
-        // prompts for metamask signature of the order hash
-        const signature = await signatureUtils.ecSignHashAsync(
-            this.subProvider,
-            orderHash,
-            makerAddress
-        );
+        // prompts for Metamask signature of the order hash
+        let signature;
+        try {
+            signature = await signatureUtils.ecSignHashAsync(
+                this.subProvider,
+                orderHash,
+                makerAddress
+            );
+        } catch {
+            throw new Error("failed to sign order");
+        }
 
         const signedZeroExOrder = {
             ...zeroExOrder,
@@ -243,7 +251,7 @@ class Create {
      * @param {object} signedZeroExOrder as outputted from `createAndSignOrder`
      */
     async signAndPost(signedZeroExOrder) {
-        const makerValues = zeroExFormatter(signedZeroExOrder);
+        const makerValues = this._formatZeroExOrder(signedZeroExOrder);
         const kosuOrder = {
             maker: this.coinbase,
             subContract: this.ZRX_SUBCONTRACT_ADDRESS,
@@ -300,11 +308,14 @@ class Create {
      * Check if the user (by their `coinbase` address) is allowed to post to the
      * Kosu network. Returns `true` if they are, and `false` if they are not.
      *
-     * @todo implement.
      * @param {string} userAddress can be provided to override coinbase, but shouldn't
      */
-    userHasBond(userAddress = this.coinbase) {
-        return true;
+    async userHasBond(userAddress = this.coinbase) {
+        const bond = await this.kosu.posterRegistry.tokensRegisteredFor(userAddress);
+        if (bond.gt(0)) {
+            return true;
+        }
+        return false;
     }
 
     // WETH (wrapped ether)
@@ -444,7 +455,7 @@ class Create {
         );
     }
 
-    // INTERNAL
+    // Internal implementation methods
 
     async _getERC20Balance(user, token) {
         return await this.erc20TokenWrapper.getBalanceAsync(
@@ -481,6 +492,24 @@ class Create {
         } else {
             throw new Error("non-ethereum browser detected");
         }
+    }
+
+    _formatZeroExOrder(signedOrder) {
+        const makerAsset = signedOrder.makerAssetData.substr(2).match(/.{1,64}/g);
+        const takerAsset = signedOrder.takerAssetData.substr(2).match(/.{1,64}/g);
+        const signature = signedOrder.signature.substr(2).match(/.{1,64}/g);
+        
+        signedOrder.makerAssetData0 = `0x${makerAsset[0]}`;
+        signedOrder.makerAssetData1 = `0x${makerAsset[1]}`;
+        
+        signedOrder.takerAssetData0 = `0x${takerAsset[0]}`;
+        signedOrder.takerAssetData1 = `0x${takerAsset[1]}`;
+        
+        signedOrder.signature0 = `0x${signature[0]}`;
+        signedOrder.signature1 = `0x${signature[1]}`;
+        signedOrder.signature2 = `0x${signature[2]}`;
+        
+        return signedOrder;
     }
 }
 
