@@ -67,7 +67,7 @@ Generate and sign a 0x order. Will prompt user for a MetaMask signature.
 | options | <code>object</code> | object with the following properties: </br>   - makerAssetAddress: either ("WETH/DAI/ZRX") or a full 42 char hex address</br>   - takerAssetAddress: either ("WETH/DAI/ZRX") or a full 42 char hex address</br>   - makerAssetAmount: units are wei, value can be string/number or BigNumber</br>   - takerAssetAmount: units are wei, value can be string/number or BigNumber</br>    - orderDuration: the number of seconds the order should be valid for</br>   - makerAddress: *can* be provided to override `coinbase`, but shouldn't</br> |
 
 **Example**  
-```
+```javascript
 let order = await create.createAndSignOrder({
   makerAssetAddress: "WETH",
   takerAssetAddress: "0x9f8f72aa9304c8b593d555f12ef6589cc3a579a2",

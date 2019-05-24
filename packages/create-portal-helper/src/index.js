@@ -122,7 +122,7 @@ class Create {
      *   - orderDuration: the number of seconds the order should be valid for</br>
      *   - makerAddress: *can* be provided to override `coinbase`, but shouldn't</br>
      * @example
-     * ```
+     * ```javascript
      * let order = await create.createAndSignOrder({
      *   makerAssetAddress: "WETH",
      *   takerAssetAddress: "0x9f8f72aa9304c8b593d555f12ef6589cc3a579a2",
