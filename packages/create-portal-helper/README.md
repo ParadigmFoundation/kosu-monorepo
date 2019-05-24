@@ -68,6 +68,7 @@ Generate and sign a 0x order. Will prompt user for a MetaMask signature.
 
 **Example**  
 ```javascript
+// create an order for 0.5 WETH <> 80 custom token, valid for 10 minutes
 let order = await create.createAndSignOrder({
   makerAssetAddress: "WETH",
   takerAssetAddress: "0x9f8f72aa9304c8b593d555f12ef6589cc3a579a2",
