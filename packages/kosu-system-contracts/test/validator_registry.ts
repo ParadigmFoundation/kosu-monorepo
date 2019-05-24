@@ -186,7 +186,9 @@ describe("ValidatorRegistry", async function() {
             await validatorRegistryProxy.setImplementation
                 .sendTransactionAsync(accounts[0])
                 .then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash)).should.eventually.be.fulfilled;
-            await validatorRegistryProxy.maxRewardRate.callAsync().should.eventually.be.rejected;
+            await validatorRegistryProxy.claimWinnings
+                .sendTransactionAsync(testValues.zero)
+                .then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash)).should.eventually.be.rejected;
             await validatorRegistryProxy.setImplementation
                 .sendTransactionAsync(validatorRegistry.address)
                 .then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash)).should.eventually.be.fulfilled;
