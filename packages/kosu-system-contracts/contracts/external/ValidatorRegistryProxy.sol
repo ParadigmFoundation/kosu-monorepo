@@ -1,4 +1,5 @@
 pragma solidity ^0.5.0;
+pragma experimental ABIEncoderV2;
 
 import "../validator/IValidatorRegistry.sol";
 import "../base/Authorizable.sol";
@@ -126,12 +127,22 @@ contract ValidatorRegistryProxy is Authorizable {
     /** @dev Reads the current registries listing entry for provided key.
         @notice Reads the current registries listing entry for provided key.
         @param _pubKey hex encoded tendermint public used as listing mapping key
-        @return TODO currently returing some data that was used in the past.  will need a pass to update output
+        @return The listing
     */
     function getListing(bytes32 _pubKey) external view returns
-        (IValidatorRegistry.Status status, uint applicationBlock, bytes32 tendermintPublicKey, address owner)
+    (IValidatorRegistry.Listing memory)
     {
         return registry.getListing(_pubKey);
+    }
+
+    /** @dev Reads the current registries listing entries
+        @notice Reads the current registries listing entries
+        @return The listings
+    */
+    function getListings() external view returns
+    (IValidatorRegistry.Listing[] memory)
+    {
+        return registry.getListings();
     }
 
     /** @dev Executes registerListing on the current registry.

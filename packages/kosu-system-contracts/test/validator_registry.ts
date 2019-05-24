@@ -59,7 +59,7 @@ describe("ValidatorRegistry", async function() {
     };
 
     const exitListing = async (publicKey = tendermintPublicKey, from = accounts[0]) => {
-        const { status } = listingDecoder(await validatorRegistryProxy.getListing.callAsync(publicKey));
+        const { status } = await validatorRegistryProxy.getListing.callAsync(publicKey);
         const result = await validatorRegistryProxy.initExit
             .sendTransactionAsync(publicKey, { from })
             .then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash));
@@ -296,9 +296,7 @@ describe("ValidatorRegistry", async function() {
                 await validatorRegistryProxy.registerListing
                     .sendTransactionAsync(tendermintPublicKey, minimumBalance, testValues.zero, paradigmMarket)
                     .then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash)).should.eventually.be.fulfilled;
-                const listing = await validatorRegistryProxy.getListing
-                    .callAsync(tendermintPublicKey)
-                    .then(listingDecoder);
+                const listing = await validatorRegistryProxy.getListing.callAsync(tendermintPublicKey);
 
                 listing.status.toString().should.eq("1"); // Pending is 1
             });
@@ -484,9 +482,7 @@ describe("ValidatorRegistry", async function() {
                 await validatorRegistryProxy.confirmListing
                     .sendTransactionAsync(tendermintPublicKey)
                     .then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash)).should.eventually.be.fulfilled;
-                const listing = await validatorRegistryProxy.getListing
-                    .callAsync(tendermintPublicKey)
-                    .then(listingDecoder);
+                const listing = await validatorRegistryProxy.getListing.callAsync(tendermintPublicKey);
 
                 listing.status.toString().should.eq("2"); // Accepted is 2
                 listing.tendermintPublicKey.should.eq(tendermintPublicKey, "tendermint");
@@ -503,7 +499,7 @@ describe("ValidatorRegistry", async function() {
             await validatorRegistryProxy.initExit
                 .sendTransactionAsync(tendermintPublicKey)
                 .then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash)).should.eventually.be.fulfilled;
-            const listing = await validatorRegistryProxy.getListing.callAsync(tendermintPublicKey).then(listingDecoder);
+            const listing = await validatorRegistryProxy.getListing.callAsync(tendermintPublicKey);
 
             listing.status.toString().should.eq("0");
             listing.owner.should.eq("0x0000000000000000000000000000000000000000");
@@ -539,7 +535,7 @@ describe("ValidatorRegistry", async function() {
             const result = await validatorRegistryProxy.initExit
                 .sendTransactionAsync(tendermintPublicKey)
                 .then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash)).should.eventually.be.fulfilled;
-            const listing = await validatorRegistryProxy.getListing.callAsync(tendermintPublicKey).then(listingDecoder);
+            const listing = await validatorRegistryProxy.getListing.callAsync(tendermintPublicKey);
 
             listing.status.toString().should.eq("4");
 
@@ -570,7 +566,7 @@ describe("ValidatorRegistry", async function() {
                 .sendTransactionAsync(tendermintPublicKey)
                 .then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash)).should.eventually.be.fulfilled;
 
-            const listing = await validatorRegistryProxy.getListing.callAsync(tendermintPublicKey).then(listingDecoder);
+            const listing = await validatorRegistryProxy.getListing.callAsync(tendermintPublicKey);
 
             listing.status.toString().should.eq("0");
             listing.tendermintPublicKey.should.eq(nilKey);
@@ -705,7 +701,7 @@ describe("ValidatorRegistry", async function() {
                 .sendTransactionAsync(tendermintPublicKey)
                 .then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash)).should.eventually.be.fulfilled;
 
-            const listing = await validatorRegistryProxy.getListing.callAsync(tendermintPublicKey).then(listingDecoder);
+            const listing = await validatorRegistryProxy.getListing.callAsync(tendermintPublicKey);
             listing.status.toString().should.eq("2"); // Accepted is 2
 
             const result = await validatorRegistryProxy.challengeListing
@@ -735,7 +731,7 @@ describe("ValidatorRegistry", async function() {
                 .then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash));
             const initialNextPoll = await voting.nextPollId.callAsync();
 
-            const listing = await validatorRegistryProxy.getListing.callAsync(tendermintPublicKey).then(listingDecoder);
+            const listing = await validatorRegistryProxy.getListing.callAsync(tendermintPublicKey);
             listing.status.toString().should.eq("1"); // PENDING is 1
 
             const result = await validatorRegistryProxy.challengeListing
@@ -830,7 +826,7 @@ describe("ValidatorRegistry", async function() {
             await validatorRegistryProxy.challengeListing
                 .sendTransactionAsync(tendermintPublicKey, paradigmMarket)
                 .then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash)).should.eventually.be.fulfilled;
-            const listing = await validatorRegistryProxy.getListing.callAsync(tendermintPublicKey).then(listingDecoder);
+            const listing = await validatorRegistryProxy.getListing.callAsync(tendermintPublicKey);
             listing.status.toString().should.eq("0");
 
             await withdrawAll();
@@ -1520,9 +1516,7 @@ describe("ValidatorRegistry", async function() {
                     .sendTransactionAsync(tendermintPublicKey)
                     .then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash));
 
-                const listing = await validatorRegistryProxy.getListing
-                    .callAsync(tendermintPublicKey)
-                    .then(listingDecoder);
+                const listing = await validatorRegistryProxy.getListing.callAsync(tendermintPublicKey);
                 listing.status.toString().should.eq("0");
 
                 withdrawAll(accounts[1]);

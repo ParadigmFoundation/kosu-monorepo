@@ -13,7 +13,24 @@ interface MigratedContracts {
 
 interface Listing {
     status: number;
-    applicationBlock: number;
+    stakedBalance: BigNumber;
+    applicationBlock: BigNumber;
+    confirmationBlock: BigNumber;
+    exitBlock: BigNumber;
+    rewardRate: BigNumber;
+    lastRewardBlock: BigNumber;
     tendermintPublicKey: string;
     owner: string;
+    currentChallenge: BigNumber;
+    details: string;
+}
+
+interface PrettyListing extends Listing {
+    stakedBalance: string;
+    applicationBlock: string;
+    confirmationBlock: string;
+    exitBlock: string;
+    rewardRate: string;
+    lastRewardBlock: string;
+    currentChallenge: string;
 }
