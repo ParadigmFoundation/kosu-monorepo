@@ -47,7 +47,7 @@ export class OrderGateway {
         }
 
         this.contract = new OrderGatewayContract(abi, this.address, this.web3.currentProvider, {
-            from: await this.web3.eth.getCoinbase(),
+            from: await this.web3.eth.getCoinbase().catch(() => undefined),
         });
     }
 
