@@ -10,11 +10,15 @@ import (
 func (app *App) checkRebalanceTx(tx *types.TransactionRebalance) error {
 	// Next round should matches the next block number
 	if (tx.RoundInfo.Number - app.state.RoundInfo.Number) != 1 {
+		log.Printf("%s: round difference != 1 (tx:%d,state:%d)",
+			errProposalRejected, tx.RoundInfo.Number, app.state.RoundInfo.Number)
 		return errProposalRejected
 	}
 
 	period := tx.RoundInfo.EndsAt - tx.RoundInfo.StartsAt
 	if uint32(period) != app.state.ConsensusParams.PeriodLength {
+		log.Printf("%s: invalid period(StartsAt:%d,EndsAt:%d)",
+			errProposalRejected, tx.RoundInfo.StartsAt, tx.RoundInfo.EndsAt)
 		return errProposalRejected
 	}
 

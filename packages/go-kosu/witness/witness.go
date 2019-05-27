@@ -92,6 +92,7 @@ func (w *Witness) Start(ctx context.Context) error {
 		return err
 	}
 	w.initHeight = num
+	log.Printf("witness: started with initHeight = %d", num)
 
 	// Load the current RoundInfo and keep it local
 	info, err := w.client.QueryRoundInfo()
@@ -101,6 +102,7 @@ func (w *Witness) Start(ctx context.Context) error {
 	w.roundMutex.Lock()
 	w.roundInfo.FromProto(info)
 	w.roundMutex.Unlock()
+	log.Printf("witness: started with RoundInfo = %v", info)
 
 	if err := w.subscribe(ctx); err != nil {
 		return err
@@ -157,13 +159,17 @@ func (w *Witness) handleBlocks(ctx context.Context) error {
 	ch := make(chan *Block)
 	errCh := make(chan error)
 	go func() {
-		errCh <- w.provider.WatchBlocks(ctx, ch)
+		err := w.provider.WatchBlocks(ctx, ch)
+		log.Printf("WatchBlocks: err = %+v\n", err)
+		errCh <- err
+		close(ch)
 	}()
 
 	for block := range ch {
 		if block == nil {
-			return nil
+			break
 		}
+		log.Printf("witness: new block %s", block)
 
 		num := w.roundInfo.Number
 		cur := block.Number.Uint64()
