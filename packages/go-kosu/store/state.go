@@ -62,6 +62,9 @@ type Poster struct {
 	Limit   uint64
 }
 
+// Validator .
+type Validator types.Validator
+
 // ConsensusParams are the parameters required for validators within a network to reach consensus on valid transactions.
 type ConsensusParams struct {
 	FinalityThreshold     uint32
@@ -85,6 +88,9 @@ type State struct {
 	deletedPosters []string
 	postersLock    sync.RWMutex
 
+	// validators
+	Validators map[string]*Validator
+
 	// lastEvent stores the height of the Ethereum blockchain at which the last event was applied in-state.
 	LastEvent uint64
 
@@ -103,6 +109,7 @@ func NewState() *State {
 
 		posters:        make(map[string]*Poster),
 		deletedPosters: []string{},
+		Validators:     make(map[string]*Validator),
 		events:         make(map[uint64]WitnessEvents),
 	}
 }

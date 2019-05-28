@@ -213,13 +213,13 @@ Validator
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
 | balance | [BigInt](#kosu.BigInt) |  | balance in registry contract |
-| power | [int32](#int32) |  | vote power on tendermint chain |
+| power | [int64](#int64) |  | vote power on tendermint chain |
 | publicKey | [bytes](#bytes) |  | raw 32 byte public key |
 | ethAccount | [string](#string) |  |  |
-| firstVote | [int32](#int32) |  |  |
-| lastVoted | [int32](#int32) |  |  |
-| lastProposed | [int32](#int32) |  |  |
-| totalVotes | [int32](#int32) |  |  |
+| firstVote | [int64](#int64) |  |  |
+| lastVoted | [int64](#int64) |  |  |
+| lastProposed | [int64](#int64) |  |  |
+| totalVotes | [int64](#int64) |  |  |
 | active | [bool](#bool) |  | true if voted on last block |
 | genesis | [bool](#bool) |  | true if val was in genesis.json = 5; |
 | applied | [bool](#bool) |  | true if a) in genesis or b) through endblock = 5; |

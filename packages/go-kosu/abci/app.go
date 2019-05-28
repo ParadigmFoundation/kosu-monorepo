@@ -90,7 +90,36 @@ func (app *App) InitChain(req abci.RequestInitChain) abci.ResponseInitChain {
 
 // BeginBlock .
 func (app *App) BeginBlock(req abci.RequestBeginBlock) abci.ResponseBeginBlock {
-	_ = req.LastCommitInfo.Votes
+	currHeight := req.Header.Height
+	proposer := hex.EncodeToString(req.Header.ProposerAddress)
+
+	for _, vote := range req.LastCommitInfo.Votes {
+		nodeID := hex.EncodeToString(vote.Validator.Address)
+
+		v := app.state.Validators[nodeID]
+		if v == nil {
+			v = &store.Validator{}
+			app.state.Validators[nodeID] = v
+		}
+
+		v.Active = vote.SignedLastBlock
+		v.Power = vote.Validator.Power
+
+		if vote.SignedLastBlock {
+			v.TotalVotes++
+			v.LastVoted = (currHeight - 1)
+		}
+
+		// record if they are proposer this round
+		if proposer == nodeID {
+			v.LastProposed = currHeight
+		}
+
+		// update (or skip) first vote
+		if v.FirstVote == 0 {
+			v.FirstVote = currHeight
+		}
+	}
 	return abci.ResponseBeginBlock{}
 }
 
@@ -150,5 +179,6 @@ func (app *App) DeliverTx(req []byte) abci.ResponseDeliverTx {
 
 // EndBlock .
 func (app *App) EndBlock(req abci.RequestEndBlock) abci.ResponseEndBlock {
+	log.Printf("app.state.Validators = %+v\n", app.state.Validators)
 	return abci.ResponseEndBlock{}
 }

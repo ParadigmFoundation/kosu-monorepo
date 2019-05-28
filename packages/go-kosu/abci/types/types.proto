@@ -59,13 +59,13 @@ message RateLimit {
  */
 message Validator {
     BigInt balance = 1; // balance in registry contract
-    int32 power = 2; // vote power on tendermint chain
+    int64 power = 2; // vote power on tendermint chain
     bytes publicKey = 3; // raw 32 byte public key 
     string ethAccount = 4;
-    int32 firstVote = 5;
-    int32 lastVoted = 6;
-    int32 lastProposed = 7;
-    int32 totalVotes = 8;
+    int64 firstVote = 5;
+    int64 lastVoted = 6;
+    int64 lastProposed = 7;
+    int64 totalVotes = 8;
     bool active = 9; // true if voted on last block
     bool genesis = 10; // true if val was in genesis.json = 5;
     bool applied = 11;// true if a) in genesis or b) through endblock = 5;
