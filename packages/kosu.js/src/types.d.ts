@@ -18,6 +18,8 @@ interface Order {
     maker: string;
     makerValues: any;
     makerSignature: any;
+    makerArguments?: any;
+    takerArguments?: any;
     id: any;
     poster: string;
 }
