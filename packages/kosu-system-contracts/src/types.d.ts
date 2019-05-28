@@ -25,6 +25,18 @@ interface Listing {
     details: string;
 }
 
+interface Challenge {
+    listingKey: string;
+    challenger: string;
+    voterTotal: BigNumber;
+    balance: BigNumber;
+    pollId: BigNumber;
+    challengeEnd: BigNumber;
+    finalized: boolean;
+    passed: boolean;
+    details: string;
+}
+
 interface PrettyListing extends Listing {
     stakedBalance: string;
     applicationBlock: string;

@@ -160,6 +160,16 @@ export class ValidatorRegistry {
     }
 
     /**
+     * Reads the challenge by challengeId
+     *
+     * @param challengeId hex encoded tendermint public key
+     */
+    public async getChallenge(challengeId: BigNumber): Promise<Challenge> {
+        const contract = await this.getContract();
+        return contract.getChallenge.callAsync(challengeId);
+    }
+
+    /**
      * Register a new listing
      *
      * @param _pubKey hex encoded tendermint public key
