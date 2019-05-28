@@ -155,12 +155,25 @@ contract ValidatorRegistry is IValidatorRegistry, Authorizable {
 
     }
 
+    /** @dev Expose all listings
+        @notice Expose all listings
+    */
     function getListings() public view returns (Listing[] memory) {
         Listing[] memory listings = new Listing[](_listingKeys.length);
         for(uint i = 0; i < _listingKeys.length; i++) {
             listings[i] = _listings[_listingKeys[i]];
         }
         return listings;
+    }
+
+    /** @dev Expose listing data
+        @notice Expose listing data
+        @param challengeId Hex encoded tendermint public key
+    */
+    function getChallenge(uint challengeId) public view returns (Challenge memory) {
+        //TODO: update output when structure more final
+        return _challenges[challengeId];
+
     }
 
     /** @dev Register a listing

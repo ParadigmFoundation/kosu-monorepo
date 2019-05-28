@@ -145,6 +145,17 @@ contract ValidatorRegistryProxy is Authorizable {
         return registry.getListings();
     }
 
+    /** @dev Reads the current registries listing entry for provided key.
+        @notice Reads the current registries listing entry for provided key.
+        @param challengeId hex encoded tendermint public used as listing mapping key
+        @return The challenge
+    */
+    function getChallenge(uint challengeId) external view returns
+    (IValidatorRegistry.Challenge memory)
+    {
+        return registry.getChallenge(challengeId);
+    }
+
     /** @dev Executes registerListing on the current registry.
         @notice Executes registerListing on the current registry.
         @param _pubKey hex encoded tendermint public used as listing mapping key

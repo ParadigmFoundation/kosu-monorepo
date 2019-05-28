@@ -825,6 +825,9 @@ describe("ValidatorRegistry", async function() {
             decodedLogs.pollId.should.eq(initialNextPoll.toString());
             decodedLogs.details.should.eq(paradigmMarket);
 
+            const challenge = await validatorRegistryProxy.getChallenge.callAsync(decodedLogs.challengeId);
+            challenge.challenger.should.eq(accounts[1].toLowerCase());
+
             await finishChallenge(tendermintPublicKey, result.blockNumber);
             await exitListing();
         });
