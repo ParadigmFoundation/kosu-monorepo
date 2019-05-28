@@ -138,7 +138,7 @@ func (app *App) BeginBlock(req abci.RequestBeginBlock) abci.ResponseBeginBlock {
 
 // EndBlock .
 func (app *App) EndBlock(req abci.RequestEndBlock) abci.ResponseEndBlock {
-	var updates []abci.ValidatorUpdate
+	updates := []abci.ValidatorUpdate{}
 
 	for addr, v := range app.state.Validators {
 
