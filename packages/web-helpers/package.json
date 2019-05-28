@@ -1,6 +1,5 @@
 {
     "name": "@kosu/web-helpers",
-    "version": "0.1.0",
     "private": true,
     "description": "Simple web interfaces for interacting with the Kosu contract system and network.",
     "dependencies": {
