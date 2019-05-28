@@ -24,6 +24,7 @@
         "contracts:clean": "shx rm -rf  generated-artifacts generated-wrappers",
         "deploy": "yarn deploy:ropsten",
         "deploy:ropsten": "ts-node -T src/migrate.ts --rpc-url=https://ethnet.zaidan.io/ropsten",
+        "deploy:kosu": "ts-node -T src/migrate.ts --rpc-url=https://ethnet.zaidan.io/kosu",
         "ganache_rpc": "docker run --rm -p 8545:8545 ${npm_package_config_kosu_ganache_image}",
         "ganache_rpc:detached": "docker run --rm -d -p 8545:8545 ${npm_package_config_kosu_ganache_image}",
         "generate_contract_wrappers": "abi-gen --abis  ${npm_package_config_abis} --template ../../node_modules/@0x/abi-gen-templates/contract.handlebars --partials '../../node_modules/@0x/abi-gen-templates/partials/**/*.handlebars' --output generated-wrappers --backend ethers"
