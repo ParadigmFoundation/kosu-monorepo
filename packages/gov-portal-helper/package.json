@@ -1,22 +1,22 @@
 {
-  "name": "@kosu/gov-portal-helper",
-  "version": "0.0.0",
-  "description": "Abstraction library for interacting with the Kosu contract system governance functions.",
-  "main": "lib/index.js",
-  "license": "MIT",
-  "private": false,
-  "scripts": {
-    "compile:assets": "webpack",
-    "develop": "yarn compile:assets && cd dist && python -m SimpleHTTPServer",
-    "docs": "jsdoc2md src/index.js > README.md"
-  },
-  "dependencies": {
-    "@kosu/kosu.js": "^0.1.0-alpha.3",
-    "bignumber.js": "^9.0.0",
-    "web3": "1.0.0-beta.37"
-  },
-  "devDependencies": {
-    "jsdoc-to-markdown": "^5.0.0",
-    "webpack": "^4.32.2"
-  }
+    "name": "@kosu/gov-portal-helper",
+    "version": "0.0.0",
+    "description": "Abstraction library for interacting with the Kosu contract system governance functions.",
+    "main": "lib/index.js",
+    "license": "MIT",
+    "private": false,
+    "scripts": {
+        "compile:assets": "webpack",
+        "develop": "yarn compile:assets && cd dist && python -m SimpleHTTPServer",
+        "docs": "jsdoc2md src/index.js > README.md"
+    },
+    "dependencies": {
+        "@kosu/kosu.js": "^0.1.0-alpha.3",
+        "bignumber.js": "^9.0.0",
+        "web3": "1.0.0-beta.37"
+    },
+    "devDependencies": {
+        "jsdoc-to-markdown": "^5.0.0",
+        "webpack": "^4.32.2"
+    }
 }

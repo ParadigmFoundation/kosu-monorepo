@@ -5,15 +5,14 @@ const { Kosu } = require("@kosu/kosu.js");
 /**
  * `Gov` is a helper library for interacting with the Kosu validator governance
  * system (primarily the Kosu `ValidatorRegistry` contract).
- * 
+ *
  * It is designed with the browser in mind, and is intended to be used in front-
  * end projects for simplifying interaction with the governance system.
  */
 class Gov {
-
     /**
      * Create a new `Gov` instance (`gov`). Requires no arguments.
-     * 
+     *
      * Prior to using most `gov` functionality, the async `gov.init()` method
      * must be called, which will initialize the module and load state from
      * the Kosu contract system.
@@ -43,7 +42,7 @@ class Gov {
      * prior to interacting with most module functionality, and `gov.init()` will
      * load the current registry status (validators, proposals, etc.) so it should
      * be called early-on in the page lifecycle.
-     * 
+     *
      * Performs many functions, including:
      * - prompt user to connect MetaMask
      * - load user's address (the "coinbase")
@@ -69,7 +68,7 @@ class Gov {
             challengePeriod: (await this.kosu.validatorRegistry.challengePeriod()).toNumber(),
             exitPeriod: (await this.kosu.validatorRegistry.exitPeriod()).toNumber(),
             rewardPeriod: (await this.kosu.validatorRegistry.rewardPeriod()).toNumber(),
-        }
+        };
 
         // temp
         const listings = await this.kosu.validatorRegistry.getListings();
@@ -81,10 +80,10 @@ class Gov {
     /**
      * Convert a number of tokens, denominated in the smallest unit - "wei" - to
      * "full" units, called "ether". One ether = 1*10^18 wei.
-     * 
+     *
      * All contract calls require amounts in wei, but the user should be shown
      * amounts in ether.
-     * 
+     *
      * @param {BigNumber | string | number} wei the token amount in wei to convert
      * @returns {string} the same amount in ether, string used for precision
      * @example
@@ -100,10 +99,10 @@ class Gov {
     /**
      * Convert a number of tokens (full units, called "ether") to "wei", the
      * smallest denomination of most ERC-20 tokens with 18 decimals.
-     * 
+     *
      * All contract calls require amounts in wei, but the user should be shown
      * amounts in ether.
-     * 
+     *
      * @param {BigNumber | string | number} ether the token amount to convert
      * @returns {string} the same amount in wei, string used for precision
      * @example
@@ -119,14 +118,14 @@ class Gov {
     /**
      * Estimate the UNIX timestamp (in seconds) at which a given `block` will be
      * mined.
-     * 
+     *
      * @param {number} block the block number to estimate the timestamp for
      * @returns {number} the block's estimated UNIX timestamp (in seconds)
      * @example
      * ```javascript
      * const block = 6102105;
      * const unixTs = gov.estimateFutureBlockTimestamp(block);
-     * 
+     *
      * // use as a normal date object (multiply by 1000 to get ms)
      * const blockDate = new Date(ts * 1000);
      * ```
@@ -161,10 +160,11 @@ class Gov {
                 console.log("exiting");
                 break;
             }
-            default: {
-                console.error("unknown listing status");
-            }
-            console.log(JSON.stringify(listing, null, 2));
+            default:
+                {
+                    console.error("unknown listing status");
+                }
+                console.log(JSON.stringify(listing, null, 2));
         }
     }
 
@@ -179,7 +179,7 @@ class Gov {
         const acceptUnix = await this.estimateFutureBlockTimestamp(acceptAt);
         const stakeSize = this.weiToEther(listing.stakedBalance);
         const dailyReward = this._estimateDailyReward(listing.rewardRate);
-        const power = "0" // @todo
+        const power = "0"; // @todo
 
         const proposal = {
             owner,
@@ -188,7 +188,7 @@ class Gov {
             power,
             acceptUnix: acceptUnix.toString(),
         };
-        
+
         console.log(JSON.stringify(proposal, null, 2));
         this.proposals[listing.tendermintPublicKey] = proposal;
     }
