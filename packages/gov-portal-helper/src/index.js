@@ -1,28 +1,35 @@
 const Web3 = require("web3");
 const BigNumber = require("bignumber.js");
+const EventEmitter = require("events");
 const { Kosu } = require("@kosu/kosu.js");
 
 /**
  * `Gov` is a helper library for interacting with the Kosu validator governance
  * system (primarily the Kosu `ValidatorRegistry` contract).
- *
+ * 
  * It is designed with the browser in mind, and is intended to be used in front-
  * end projects for simplifying interaction with the governance system.
  */
 class Gov {
+
     /**
-     * Create a new `Gov` instance (`gov`). Requires no arguments.
-     *
+     * Create a new `Gov` instance (`gov`). Requires no arguments, but can be
+     * set to "debug" mode by passing `true` or `1` (or another truthy object to
+     * the constructor).
+     * 
      * Prior to using most `gov` functionality, the async `gov.init()` method
      * must be called, which will initialize the module and load state from
      * the Kosu contract system.
      */
-    constructor() {
+    constructor(debug) {
         // set to true after successful `gov.init()`
         this.initialized = false;
 
-        // Avg. blocks per day = 86400 sec/day / 13.5 (sec/block)
+        // avg. blocks per day = 86400 sec/day / 13.5 (sec/block)
         this.blocksPerDay = 6400;
+
+        // enables debug logs at various steps
+        this.debug = debug ? true : false;
 
         this.validators = {};
         this.challenges = {};
@@ -35,6 +42,8 @@ class Gov {
         this.web3 = null;
 
         this.initBlock = null;
+
+        this.ee = new EventEmitter();
     }
 
     /**
@@ -42,7 +51,7 @@ class Gov {
      * prior to interacting with most module functionality, and `gov.init()` will
      * load the current registry status (validators, proposals, etc.) so it should
      * be called early-on in the page lifecycle.
-     *
+     * 
      * Performs many functions, including:
      * - prompt user to connect MetaMask
      * - load user's address (the "coinbase")
@@ -68,9 +77,9 @@ class Gov {
             challengePeriod: (await this.kosu.validatorRegistry.challengePeriod()).toNumber(),
             exitPeriod: (await this.kosu.validatorRegistry.exitPeriod()).toNumber(),
             rewardPeriod: (await this.kosu.validatorRegistry.rewardPeriod()).toNumber(),
-        };
+        }
 
-        // temp
+        // process current listings from contract system
         const listings = await this.kosu.validatorRegistry.getListings();
         for (const listing of listings) {
             await this._processListing(listing);
@@ -80,10 +89,10 @@ class Gov {
     /**
      * Convert a number of tokens, denominated in the smallest unit - "wei" - to
      * "full" units, called "ether". One ether = 1*10^18 wei.
-     *
+     * 
      * All contract calls require amounts in wei, but the user should be shown
      * amounts in ether.
-     *
+     * 
      * @param {BigNumber | string | number} wei the token amount in wei to convert
      * @returns {string} the same amount in ether, string used for precision
      * @example
@@ -99,10 +108,10 @@ class Gov {
     /**
      * Convert a number of tokens (full units, called "ether") to "wei", the
      * smallest denomination of most ERC-20 tokens with 18 decimals.
-     *
+     * 
      * All contract calls require amounts in wei, but the user should be shown
      * amounts in ether.
-     *
+     * 
      * @param {BigNumber | string | number} ether the token amount to convert
      * @returns {string} the same amount in wei, string used for precision
      * @example
@@ -118,14 +127,14 @@ class Gov {
     /**
      * Estimate the UNIX timestamp (in seconds) at which a given `block` will be
      * mined.
-     *
+     * 
      * @param {number} block the block number to estimate the timestamp for
      * @returns {number} the block's estimated UNIX timestamp (in seconds)
      * @example
      * ```javascript
      * const block = 6102105;
      * const unixTs = gov.estimateFutureBlockTimestamp(block);
-     *
+     * 
      * // use as a normal date object (multiply by 1000 to get ms)
      * const blockDate = new Date(ts * 1000);
      * ```
@@ -149,10 +158,12 @@ class Gov {
                 break;
             }
             case 2: {
+                await this._processValidator(listing);
                 console.log("validator");
                 break;
             }
             case 3: {
+                await this._processChallenge(listing);
                 console.log("in challenge");
                 break;
             }
@@ -160,12 +171,12 @@ class Gov {
                 console.log("exiting");
                 break;
             }
-            default:
-                {
-                    console.error("unknown listing status");
-                }
-                console.log(JSON.stringify(listing, null, 2));
+            default: {
+                console.error("unknown listing status");
+            }
         }
+
+        this._debugLog(`Raw listing:\n${JSON.stringify(listing, null, 2)}`);
     }
 
     // @todo implement "estimatedVotePower"
@@ -179,18 +190,84 @@ class Gov {
         const acceptUnix = await this.estimateFutureBlockTimestamp(acceptAt);
         const stakeSize = this.weiToEther(listing.stakedBalance);
         const dailyReward = this._estimateDailyReward(listing.rewardRate);
-        const power = "0"; // @todo
+        const power = "0" // @todo
 
         const proposal = {
             owner,
             stakeSize,
             dailyReward,
             power,
+            details: listing.details,
             acceptUnix: acceptUnix.toString(),
         };
 
-        console.log(JSON.stringify(proposal, null, 2));
-        this.proposals[listing.tendermintPublicKey] = proposal;
+        this._addProposal(listing.tendermintPublicKey, proposal);
+    }
+
+    async _processValidator(listing) {
+        if (listing.status !== 2) {
+            throw new Error("listing is not a validator");
+        }
+
+        // @todo
+        console.error("_processValidator not implemented");
+    }
+
+    // @todo
+    async _processChallenge(listing) {
+        if (listing.status !== 3) {
+            throw new Error("listing is not in challenge");
+        }
+
+        let challengeType;
+        if (listing.confirmationBlock === "0") {
+            challengeType = "proposal";
+        } else {
+            challengeType = "validator";
+        }
+
+        this._debugLog(`Challenge type: ${challengeType}`);
+
+        const owner = listing.owner;
+        const challengeId = listing.currentChallenge;
+        const details = listing.details;
+        const listingStake = this.weiToEther(listing.stakedBalance);
+
+        const challenge = {
+            owner,
+            listingStake,
+            listingPower,
+            challenger,
+            challengeId,
+            challengerStake,
+            challengeEndUnix,
+            challengeType, // "proposal" or "validator"
+            details
+        };
+
+        // @todo
+        console.error("_processValidator not implemented");
+    }
+
+    _addProposal(pubKey, proposal) {
+        this.proposals[pubKey] = proposal;
+        this.ee.emit("gov_newProposal", proposal);
+
+        this._debugLog(`New proposal:\n${JSON.stringify(proposal, null, 2)}`);
+    }
+
+    _addValidator(pubKey, validator) {
+        this.validators[pubKey] = validator;
+        this.ee.emit("gov_newValidator", validator);
+
+        this._debugLog(`New validator:\n${JSON.stringify(validator, null, 2)}`);
+    }
+
+    _addChallenge(pubKey, challenge) {
+        this.challenges[pubKey] = challenge;
+        this.ee.emit("gov_newChallenge", challenge);
+
+        this._debugLog(`New challenge:\n${JSON.stringify(challenge, null, 2)}`);
     }
 
     _estimateDailyReward(rewardRate) {
@@ -200,6 +277,10 @@ class Gov {
         const tokensPerBlock = rate.div(rewardPeriod);
         const tokensPerDay = tokensPerBlock.times(blocksPerDay);
         return this.weiToEther(tokensPerDay.integerValue());
+    }
+
+    _debugLog(message) {
+        if (this.debug) { console.log(message); }
     }
 
     async _connectMetamask() {
