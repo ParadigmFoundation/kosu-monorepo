@@ -160,6 +160,14 @@ export class ValidatorRegistry {
     }
 
     /**
+     * Reads the max reward rate
+     */
+    public async maxRewardRate(): Promise<BigNumber> {
+        const contract = await this.getContract();
+        return contract.maxRewardRate.callAsync();
+    }
+
+    /**
      * Reads the challenge by challengeId
      *
      * @param challengeId hex encoded tendermint public key
