@@ -73,7 +73,9 @@ class Gov {
 
         // temp
         const listings = await this.kosu.validatorRegistry.getListings();
-        await this._processListings(listings);
+        for (const listing of listings) {
+            await this._processListing(listing);
+        }
     }
 
     /**
@@ -141,31 +143,29 @@ class Gov {
         return ts;
     }
 
-    async _processListings(listings) {
-        for (const listing of listings) {
-            switch (listing.status) {
-                case 1: {
-                    await this._processProposal(listing);
-                    break;
-                }
-                case 2: {
-                    console.log("validator");
-                    break;
-                }
-                case 3: {
-                    console.log("in challenge");
-                    break;
-                }
-                case 4: {
-                    console.log("exiting");
-                    break;
-                }
-                default: {
-                    console.error("unknown listing status");
-                }
+    async _processListing(listing) {
+        switch (listing.status) {
+            case 1: {
+                await this._processProposal(listing);
+                break;
             }
+            case 2: {
+                console.log("validator");
+                break;
+            }
+            case 3: {
+                console.log("in challenge");
+                break;
+            }
+            case 4: {
+                console.log("exiting");
+                break;
+            }
+            default: {
+                console.error("unknown listing status");
+            }
+            console.log(JSON.stringify(listing, null, 2));
         }
-        console.log(JSON.stringify(this.proposals, null, 2));
     }
 
     // @todo implement "estimatedVotePower"
@@ -188,7 +188,8 @@ class Gov {
             power,
             acceptUnix: acceptUnix.toString(),
         };
-
+        
+        console.log(JSON.stringify(proposal, null, 2));
         this.proposals[listing.tendermintPublicKey] = proposal;
     }
 
