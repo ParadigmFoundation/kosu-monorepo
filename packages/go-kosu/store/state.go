@@ -153,6 +153,11 @@ func (s *State) UpdateFromTree(tree *StateTree) error {
 	})
 	s.postersLock.Unlock()
 
+	// Load Validators
+	tree.IterateValidators(func(addr string, v *Validator) {
+		s.Validators[addr] = v
+	})
+
 	return nil
 }
 
@@ -186,6 +191,12 @@ func (s *State) PersistToTree(tree *StateTree) error {
 		}
 	}
 	defer s.postersLock.RUnlock()
+
+	for addr, v := range s.Validators {
+		if err := tree.SetValidator(addr, v); err != nil {
+			return err
+		}
+	}
 
 	return nil
 }

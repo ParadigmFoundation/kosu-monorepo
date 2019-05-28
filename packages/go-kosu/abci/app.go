@@ -179,6 +179,5 @@ func (app *App) DeliverTx(req []byte) abci.ResponseDeliverTx {
 
 // EndBlock .
 func (app *App) EndBlock(req abci.RequestEndBlock) abci.ResponseEndBlock {
-	log.Printf("app.state.Validators = %+v\n", app.state.Validators)
 	return abci.ResponseEndBlock{}
 }
