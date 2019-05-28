@@ -1,5 +1,7 @@
+import { BlockchainLifecycle } from "@0x/dev-utils";
 import { MnemonicWalletSubprovider, RPCSubprovider } from "@0x/subproviders";
 import { providerUtils } from "@0x/utils";
+import { Web3Wrapper } from "@0x/web3-wrapper";
 import fs from "fs";
 import safeRequire from "safe-node-require";
 import Web3 from "web3";
@@ -38,6 +40,15 @@ const args = yargs.option("rpc-url", {
     };
 
     const networkId = await web3.eth.net.getId();
+
+    if (networkId === 6174) {
+        // @ts-ignore
+        await new BlockchainLifecycle(new Web3Wrapper(new Web3.providers.HttpProvider(args["rpc-url"]))).startAsync();
+        if ((await web3.eth.getTransactionCount(normalizedFromAddress)) > 0) {
+            throw new Error("Reset Kosu Chain");
+        }
+    }
+
     const migratedContracts = await migrations(provider, txDefaults, {});
 
     const contracts = {};
