@@ -28,7 +28,8 @@
         "packages/tslint-config",
         "packages/dev-images",
         "packages/web-helpers",
-        "packages/create-portal-helper"
+        "packages/create-portal-helper",
+        "packages/gov-portal-helper"
     ],
     "dependencies": {},
     "private": true,

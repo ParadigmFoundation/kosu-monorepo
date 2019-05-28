@@ -1075,6 +1075,45 @@
     lodash "^4.17.11"
     to-fast-properties "^2.0.0"
 
+"@kosu/kosu.js@^0.1.0-alpha.3":
+  version "0.1.0-alpha.3"
+  resolved "https://registry.yarnpkg.com/@kosu/kosu.js/-/kosu.js-0.1.0-alpha.3.tgz#0eac4ca0ea0ccedfdae46ae179c42867a92a88ea"
+  integrity sha512-9n6cXpn5i23FGub4Ze1vYeNS1bCnI0TUmcbk51oAxRqsGYrsKy/azCEl7YxJJ6Ff3i6IZVHoa471imTY7HWtKw==
+  dependencies:
+    "@0x/utils" "^4.3.1"
+    "@0x/web3-wrapper" "^6.0.5"
+    "@babel/core" "^7.4.4"
+    "@kosu/system-contracts" "^0.1.0-alpha.2"
+    ethereum-protocol "^1.0.1"
+    ethereumjs-abi "^0.6.6"
+    ethereumjs-util "^5.2.0"
+    isomorphic-ws "^4.0.1"
+    node-fetch "^2.2.0"
+    truffle-contract "^4.0.11"
+    web3 "1.0.0-beta.37"
+    web3-eth-contract "^1.0.0-beta.53"
+    web3-provider-engine "^15.0.0"
+    web3-utils "^1.0.0-beta.53"
+    ws "^6.1.4"
+
+"@kosu/system-contracts@^0.1.0-alpha.2":
+  version "0.1.0-alpha.2"
+  resolved "https://registry.yarnpkg.com/@kosu/system-contracts/-/system-contracts-0.1.0-alpha.2.tgz#827f1ac3924e8faa7d1c1a841fb18e7356da390e"
+  integrity sha512-hBz6AQzWtpfB4VBgYzQGSnV2C07eC6XdmpyNI/VaaUrcMAGDseMBAYKgWe9Yxg02VNdWnYllHLkxNwzkz3JBvg==
+  dependencies:
+    "@0x/base-contract" "^5.0.5"
+    "@0x/subproviders" "^4.0.5"
+    "@0x/utils" "^4.3.1"
+    "@0x/web3-wrapper" "^6.0.5"
+    "@kosu/subcontract-sdk" "0.1.0-alpha.1"
+    ethereum-types "^2.1.2"
+    openzeppelin-solidity "2.1.2"
+    safe-node-require "^1.0.0"
+    web3 "1.0.0-beta.37"
+    web3-eth-abi "1.0.0-beta.37"
+    web3-provider-engine "^15.0.0"
+    web3-utils "1.0.0-beta.37"
+
 "@ledgerhq/devices@^4.60.2":
   version "4.60.2"
   resolved "https://registry.yarnpkg.com/@ledgerhq/devices/-/devices-4.60.2.tgz#dbb2232b12e104bc53e9fdd278b29a5323aa931e"
@@ -3227,6 +3266,11 @@ bignumber.js@7.2.1, bignumber.js@^7.2.1:
   version "7.2.1"
   resolved "https://registry.yarnpkg.com/bignumber.js/-/bignumber.js-7.2.1.tgz#80c048759d826800807c4bfd521e50edbba57a5f"
   integrity sha512-S4XzBk5sMB+Rcb/LNcpzXr57VRTxgAvaAEDAl1AwRx27j00hT84O6OkteE7u8UB3NuaaygCRrEpqox4uDOrbdQ==
+
+bignumber.js@^9.0.0:
+  version "9.0.0"
+  resolved "https://registry.yarnpkg.com/bignumber.js/-/bignumber.js-9.0.0.tgz#805880f84a329b5eac6e7cb6f8274b6d82bdf075"
+  integrity sha512-t/OYhhJ2SD+YGBQcjY8GzzDHEk9f3nerxjtfa6tlMXfe7frs/WozhvCNoGvpM0P3bNf3Gq5ZRMlGr5f3r4/N8A==
 
 "bignumber.js@git+https://github.com/frozeman/bignumber.js-nolookahead.git":
   version "2.0.7"
