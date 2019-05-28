@@ -73,7 +73,7 @@ class Gov {
 
         // temp
         const listings = await this.kosu.validatorRegistry.getListings();
-        this._processListings(listings);
+        await this._processListings(listings);
     }
 
     /**
@@ -88,6 +88,7 @@ class Gov {
      * @example
      * ```javascript
      * gov.weiToEther("100000000000000000000") // > "100"
+     * gov.weiToEther(100000000000000000000)   // > "100"
      * ```
      */
     weiToEther(wei) {
@@ -105,7 +106,8 @@ class Gov {
      * @returns {string} the same amount in wei, string used for precision
      * @example
      * ```javascript
-     * gov.etherToWei(10) // > "10000000000000000000"
+     * gov.etherToWei(10)  // > "10000000000000000000"
+     * gov.etherToWei("1") // > "1000000000000000000"
      * ```
      */
     etherToWei(ether) {
@@ -139,11 +141,11 @@ class Gov {
         return ts;
     }
 
-    _processListings(listings) {
+    async _processListings(listings) {
         for (const listing of listings) {
             switch (listing.status) {
                 case 1: {
-                    this._processProposal(listing);
+                    await this._processProposal(listing);
                     break;
                 }
                 case 2: {
@@ -163,6 +165,7 @@ class Gov {
                 }
             }
         }
+        console.log(JSON.stringify(this.proposals, null, 2));
     }
 
     // @todo implement "estimatedVotePower"
@@ -173,9 +176,9 @@ class Gov {
 
         const owner = listing.owner;
         const acceptAt = parseInt(listing.applicationBlock) + this.params.applicationPeriod;
-        const acceptUnix = await this._estimateFutureBlockTimestamp(acceptAt);
+        const acceptUnix = await this.estimateFutureBlockTimestamp(acceptAt);
         const stakeSize = this.weiToEther(listing.stakedBalance);
-        const dailyReward = this.estimateDailyReward(listing.rewardRate);
+        const dailyReward = this._estimateDailyReward(listing.rewardRate);
         const power = "0" // @todo
 
         const proposal = {
@@ -186,7 +189,7 @@ class Gov {
             acceptUnix: acceptUnix.toString(),
         };
 
-        console.log(JSON.stringify(listing, null, 2));
+        this.proposals[listing.tendermintPublicKey] = proposal;
     }
 
     _estimateDailyReward(rewardRate) {

@@ -59,6 +59,7 @@ amounts in ether.
 **Example**  
 ```javascript
 gov.weiToEther("100000000000000000000") // > "100"
+gov.weiToEther(100000000000000000000)   // > "100"
 ```
 <a name="Gov+etherToWei"></a>
 
@@ -78,7 +79,8 @@ amounts in ether.
 
 **Example**  
 ```javascript
-gov.etherToWei(10) // > "10000000000000000000"
+gov.etherToWei(10)  // > "10000000000000000000"
+gov.etherToWei("1") // > "1000000000000000000"
 ```
 <a name="Gov+estimateFutureBlockTimestamp"></a>
 
