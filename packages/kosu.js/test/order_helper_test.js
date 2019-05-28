@@ -1,3 +1,5 @@
+const NULL_ADDRESS = require("../src/utils").NULL_ADDRESS;
+
 describe("OrderHelper", () => {
     let maker, taker, order, orderGateway, orderHelper, Signature;
 
@@ -104,6 +106,18 @@ describe("OrderHelper", () => {
             preparedOrder.makerValues.buyerToken = accounts[4];
 
             (await orderHelper.recoverPoster(preparedOrder)).should.not.eq(accounts[5].toLowerCase());
+        });
+    });
+
+    describe("custom orders", () => {
+        it("should sign an order with a bogus subContract and provided makerArguments", async () => {
+            const customOrder = {
+                subContract: NULL_ADDRESS,
+                makerArguments: [{ dataType: "address" }, { dataType: "uint" }],
+                makerValues: [accounts[9], 4],
+            };
+            const preparedOrder = await orderHelper.prepareForPost(customOrder, accounts[5]);
+            await orderHelper.recoverPoster(preparedOrder).should.eventually.eq(accounts[5].toLowerCase());
         });
     });
 });

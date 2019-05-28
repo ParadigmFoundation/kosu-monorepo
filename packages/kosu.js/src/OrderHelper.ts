@@ -45,7 +45,10 @@ export class OrderHelper {
             ...order,
             posterSignature: await Signature.generate(
                 this.web3,
-                OrderSerializer.posterHex(order, await this.orderGateway.makerArguments(order.subContract)),
+                OrderSerializer.posterHex(
+                    order,
+                    order.makerArguments || (await this.orderGateway.makerArguments(order.subContract)),
+                ),
                 poster,
             ),
         };
@@ -56,7 +59,7 @@ export class OrderHelper {
      * @todo refactor for subContract changes or modularize to be less messy
      */
     public async makerHex(order: Order): Promise<string> {
-        const _arguments = await this.orderGateway.makerArguments(order.subContract);
+        const _arguments = order.makerArguments || (await this.orderGateway.makerArguments(order.subContract));
         return OrderSerializer.makerHex(order, _arguments);
     }
 
@@ -65,7 +68,7 @@ export class OrderHelper {
      * @todo refactor for subContract changes or modularize to be less messy
      */
     public async recoverMaker(order: Order): Promise<string> {
-        const _arguments = await this.orderGateway.makerArguments(order.subContract);
+        const _arguments = order.makerArguments || (await this.orderGateway.makerArguments(order.subContract));
         return OrderSerializer.recoverMaker(order, _arguments);
     }
 
@@ -74,7 +77,7 @@ export class OrderHelper {
      * @todo refactor for subContract changes or modularize to be less messy
      */
     public async recoverPoster(order: PostableOrder): Promise<string> {
-        const _arguments = await this.orderGateway.makerArguments(order.subContract);
+        const _arguments = order.makerArguments || (await this.orderGateway.makerArguments(order.subContract));
         return OrderSerializer.recoverPoster(order, _arguments);
     }
 }
