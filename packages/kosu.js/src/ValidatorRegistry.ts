@@ -194,10 +194,15 @@ export class ValidatorRegistry {
         const contract = await this.getContract();
 
         const systemBalance = await this.treasury.systemBalance(this.coinbase);
+        const maxRewardRate = await this.maxRewardRate();
 
         if (systemBalance.lt(_tokensToStake)) {
             const tokensShort = _tokensToStake.minus(systemBalance);
             await this.treasury.deposit(tokensShort);
+        }
+
+        if (maxRewardRate.lt(_rewardRate)) {
+            throw new Error(`Reward rate: ${_rewardRate.toString()} exceeds maxmimum of ${maxRewardRate.toString()}`);
         }
 
         return contract.registerListing
