@@ -66,6 +66,8 @@ export const eventDecoder = (eventReturnValues: any): any => {
             Object.assign(decoded, {
                 pollCreator: bytes32ToAddressString(data[0]),
                 pollId: hexToNumberString(data[1]),
+                commitEndBlock: hexToNumberString(data[2]),
+                revealEndBlock: hexToNumberString(data[3]),
             });
             break;
 

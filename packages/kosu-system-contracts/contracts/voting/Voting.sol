@@ -32,7 +32,7 @@ contract Voting {
         bytes32 hiddenVote;
         uint tokensCommitted;
         uint salt;
-        uint voteOption; //TODO: what do we want Vote to be as far as datat type  bool vs uint;
+        uint voteOption;
     }
 
     /** @dev Create a new voting engine
@@ -66,10 +66,11 @@ contract Voting {
         nextPollId++;
 
         //Format data and emit event
-        bytes32[] memory data = new bytes32[](2);
+        bytes32[] memory data = new bytes32[]();
         data[0] = bytes32(uint(p.creator));
         data[1] = bytes32(p.id);
-        //TODO: emit commit end and reveal end
+        data[2] = bytes32(_commitEndBlock);
+        data[3] = bytes32(_revealEndBlock);
         emitter.emitEvent('PollCreated', data, "");
 
         //Return the poll id
