@@ -150,7 +150,6 @@ contract ValidatorRegistry is IValidatorRegistry, Authorizable {
         @param pubKey Hex encoded tendermint public key
     */
     function getListing(bytes32 pubKey) public view returns (Listing memory) {
-        //TODO: update output when structure more final
         return _listings[pubKey];
 
     }
@@ -171,7 +170,6 @@ contract ValidatorRegistry is IValidatorRegistry, Authorizable {
         @param challengeId Hex encoded tendermint public key
     */
     function getChallenge(uint challengeId) public view returns (Challenge memory) {
-        //TODO: update output when structure more final
         return _challenges[challengeId];
 
     }
@@ -229,11 +227,14 @@ contract ValidatorRegistry is IValidatorRegistry, Authorizable {
         //Challenge pending and accepted listings.  -- More valid status may be added.
         require(listing.status == Status.PENDING || listing.status == Status.ACCEPTED || listing.status == Status.EXITING);
 
-        //TODO When min balance becomes variable touch and remove if below balance;
-
         //Ensure earns and burns are up to date  return if a touch and remove was executed
         processRewards(listing);
         if(listing.status == Status.NULL) return;
+
+        if(listing.stakedBalance < _minimumBalance) {
+            touchAndRemoveListing(listing);
+            return;
+        }
 
         //Update the listing
         listing.status = Status.CHALLENGED;

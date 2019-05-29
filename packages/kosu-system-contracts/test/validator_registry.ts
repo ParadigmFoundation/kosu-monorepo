@@ -930,6 +930,8 @@ describe("ValidatorRegistry", async () => {
             await withdrawAll();
             await withdrawAll(accounts[1]);
         });
+
+        it("should touch and remove a listing when the stakedBalance is below minimumBalance");
     });
 
     describe("resolveChallenge", () => {
