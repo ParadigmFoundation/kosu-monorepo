@@ -7,7 +7,6 @@ import Web3 from "web3";
 /**
  * Integration with KosuToken contract on an Ethereum blockchain.
  *
- * @todo Refactor contract integration after migration away from truffle
  */
 export class KosuToken {
     private readonly web3: Web3;

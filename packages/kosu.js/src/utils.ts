@@ -1,12 +1,9 @@
-import { BigNumber } from "@0x/utils";
 import { toHex, toTwosComplement } from "web3-utils";
 
 /**
- * todo
- *
- * @param value todo
+ * @param value String value to be converted into bytes32 representation.
  */
-export function toBytes32(value: string): number | string | BigNumber {
+export function toBytes32(value: string): string {
     return toTwosComplement(toHex(value));
 }
 

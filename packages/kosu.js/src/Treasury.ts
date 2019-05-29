@@ -8,8 +8,6 @@ import { KosuToken } from "./KosuToken";
 
 /**
  * Integration with Treasury contract on an Ethereum blockchain.
- *
- * @todo Refactor contract integration after migration away from truffle
  */
 export class Treasury {
     public readonly kosuToken: KosuToken;
