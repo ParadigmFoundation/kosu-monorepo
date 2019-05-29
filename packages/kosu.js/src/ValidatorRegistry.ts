@@ -205,9 +205,7 @@ export class ValidatorRegistry {
             throw new Error(`Reward rate: ${_rewardRate.toString()} exceeds maxmimum of ${maxRewardRate.toString()}`);
         }
 
-        return contract.registerListing
-            .sendTransactionAsync(_pubKey, _tokensToStake, _rewardRate, _details)
-            .then(txHash => this.web3Wrapper.awaitTransactionSuccessAsync(txHash));
+        return contract.registerListing.awaitTransactionSuccessAsync(_pubKey, _tokensToStake, _rewardRate, _details);
     }
 
     /**
@@ -217,9 +215,7 @@ export class ValidatorRegistry {
      */
     public async confirmListing(_pubKey: string): Promise<TransactionReceiptWithDecodedLogs> {
         const contract = await this.getContract();
-        return contract.confirmListing
-            .sendTransactionAsync(_pubKey)
-            .then(txHash => this.web3Wrapper.awaitTransactionSuccessAsync(txHash));
+        return contract.confirmListing.awaitTransactionSuccessAsync(_pubKey);
     }
 
     /**
@@ -231,9 +227,7 @@ export class ValidatorRegistry {
     public async challengeListing(_pubKey: string, _details: string): Promise<TransactionReceiptWithDecodedLogs> {
         // TODO Check balance after looking up specific listing's tokens committed
         const contract = await this.getContract();
-        return contract.challengeListing
-            .sendTransactionAsync(_pubKey, _details)
-            .then(txHash => this.web3Wrapper.awaitTransactionSuccessAsync(txHash));
+        return contract.challengeListing.awaitTransactionSuccessAsync(_pubKey, _details);
     }
 
     /**
@@ -243,9 +237,7 @@ export class ValidatorRegistry {
      */
     public async resolveChallenge(_pubKey: string): Promise<TransactionReceiptWithDecodedLogs> {
         const contract = await this.getContract();
-        return contract.resolveChallenge
-            .sendTransactionAsync(_pubKey)
-            .then(txHash => this.web3Wrapper.awaitTransactionSuccessAsync(txHash));
+        return contract.resolveChallenge.awaitTransactionSuccessAsync(_pubKey);
     }
 
     /**
@@ -255,9 +247,7 @@ export class ValidatorRegistry {
      */
     public async claimRewards(_pubKey: string): Promise<TransactionReceiptWithDecodedLogs> {
         const contract = await this.getContract();
-        return contract.claimRewards
-            .sendTransactionAsync(_pubKey)
-            .then(txHash => this.web3Wrapper.awaitTransactionSuccessAsync(txHash));
+        return contract.claimRewards.awaitTransactionSuccessAsync(_pubKey);
     }
 
     /**
@@ -267,9 +257,7 @@ export class ValidatorRegistry {
      */
     public async initExit(_pubKey: string): Promise<TransactionReceiptWithDecodedLogs> {
         const contract = await this.getContract();
-        return contract.initExit
-            .sendTransactionAsync(_pubKey)
-            .then(txHash => this.web3Wrapper.awaitTransactionSuccessAsync(txHash));
+        return contract.initExit.awaitTransactionSuccessAsync(_pubKey);
     }
 
     /**
@@ -279,9 +267,7 @@ export class ValidatorRegistry {
      */
     public async finalizeExit(_pubKey: string): Promise<TransactionReceiptWithDecodedLogs> {
         const contract = await this.getContract();
-        return contract.finalizeExit
-            .sendTransactionAsync(_pubKey)
-            .then(txHash => this.web3Wrapper.awaitTransactionSuccessAsync(txHash));
+        return contract.finalizeExit.awaitTransactionSuccessAsync(_pubKey);
     }
 
     /**
@@ -291,9 +277,7 @@ export class ValidatorRegistry {
      */
     public async claimWinnings(challengeId: BigNumber): Promise<TransactionReceiptWithDecodedLogs> {
         const contract = await this.getContract();
-        return contract.claimWinnings
-            .sendTransactionAsync(challengeId)
-            .then(txHash => this.web3Wrapper.awaitTransactionSuccessAsync(txHash));
+        return contract.claimWinnings.awaitTransactionSuccessAsync(challengeId);
     }
 
     /**

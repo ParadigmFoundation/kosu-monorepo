@@ -103,9 +103,7 @@ export class PosterRegistry {
             }
         }
 
-        return contract.registerTokens
-            .sendTransactionAsync(amount)
-            .then(txHash => this.web3Wrapper.awaitTransactionSuccessAsync(txHash));
+        return contract.registerTokens.awaitTransactionSuccessAsync(amount);
     }
 
     /**
@@ -115,8 +113,6 @@ export class PosterRegistry {
      */
     public async releaseTokens(amount: BigNumber): Promise<TransactionReceiptWithDecodedLogs> {
         const contract = await this.getContract();
-        return contract.releaseTokens
-            .sendTransactionAsync(amount)
-            .then(txHash => this.web3Wrapper.awaitTransactionSuccessAsync(txHash));
+        return contract.releaseTokens.awaitTransactionSuccessAsync(amount);
     }
 }

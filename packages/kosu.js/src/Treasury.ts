@@ -79,9 +79,7 @@ export class Treasury {
             await this.kosuToken.approve(this.address, value);
         }
 
-        return contract.deposit
-            .sendTransactionAsync(value)
-            .then(txHash => this.web3Wrapper.awaitTransactionSuccessAsync(txHash));
+        return contract.deposit.awaitTransactionSuccessAsync(value);
     }
 
     /**
@@ -91,9 +89,7 @@ export class Treasury {
      */
     public async withdraw(value: BigNumber): Promise<TransactionReceiptWithDecodedLogs> {
         const contract = await this.getContract();
-        return contract.withdraw
-            .sendTransactionAsync(value)
-            .then(txHash => this.web3Wrapper.awaitTransactionSuccessAsync(txHash));
+        return contract.withdraw.awaitTransactionSuccessAsync(value);
     }
 
     /**
