@@ -52,7 +52,7 @@ export class Treasury {
                 artifacts.Treasury.compilerOutput.abi,
                 this.address,
                 this.web3Wrapper.getProvider(),
-                { from: coinbase },
+                { from: this.coinbase },
             );
         }
         return this.contract;
