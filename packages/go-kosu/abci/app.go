@@ -59,11 +59,6 @@ func (app *App) Info(req abci.RequestInfo) abci.ResponseInfo {
 		LastBlockAppHash: app.tree.CommitInfo.Hash,
 	}
 
-	log.Printf("-- INFO: hash=%s ver=%d --",
-		hex.EncodeToString(res.LastBlockAppHash),
-		res.LastBlockHeight,
-	)
-
 	if err := app.state.UpdateFromTree(app.tree); err != nil {
 		panic(err)
 	}
@@ -99,7 +94,7 @@ func (app *App) BeginBlock(req abci.RequestBeginBlock) abci.ResponseBeginBlock {
 
 		v := app.state.Validators[nodeID]
 		if v == nil {
-			v = &store.Validator{}
+			v = store.NewValidator()
 			app.state.Validators[nodeID] = v
 		}
 
@@ -141,7 +136,6 @@ func (app *App) EndBlock(req abci.RequestEndBlock) abci.ResponseEndBlock {
 	updates := []abci.ValidatorUpdate{}
 
 	for addr, v := range app.state.Validators {
-
 		if v.Active {
 			continue
 		}

@@ -17,9 +17,7 @@ import (
 
 // GivenABCIServer a ABCI Server inside a Convey block
 func GivenABCIServer(t *testing.T, suite *Suite, fn func(*testing.T)) {
-	if suite.state == nil {
-		suite.state = store.NewState()
-	}
+	suite.state = store.NewState()
 
 	convey.Convey("Given an ABCI Server", t, func() {
 		app, closer := startServer(t, db.NewMemDB(), suite.state)

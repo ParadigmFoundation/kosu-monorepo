@@ -65,6 +65,13 @@ type Poster struct {
 // Validator .
 type Validator types.Validator
 
+// NewValidator returns a new Validator
+func NewValidator() *Validator {
+	return &Validator{
+		Balance: types.NewBigIntFromInt(0),
+	}
+}
+
 // ConsensusParams are the parameters required for validators within a network to reach consensus on valid transactions.
 type ConsensusParams struct {
 	FinalityThreshold     uint32
@@ -327,6 +334,10 @@ func (s *State) IterateWitnessEventsForBlock(block uint64, fn func(id []byte, ev
 // UpdateConfirmationThreshold sets a confirmation threshold as n*(2/3).
 // This threshold is used to apply certain transactions.
 func (s *State) UpdateConfirmationThreshold(n uint32) {
+	if n == 0 {
+		return
+	}
+
 	if n > 1 {
 		n = 2 * (n / 3)
 	}
