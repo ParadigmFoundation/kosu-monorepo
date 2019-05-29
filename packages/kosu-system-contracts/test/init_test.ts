@@ -87,15 +87,14 @@ before(async () => {
                 const currentBalance = await contracts.treasury.currentBalance.callAsync(address);
                 if (systemBalance.gt(currentBalance)) {
                     transactions.push(
-                        contracts.treasury.releaseTokens
-                            .sendTransactionAsync(address, systemBalance.minus(currentBalance))
-                            .then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash)),
+                        contracts.treasury.releaseTokens.awaitTransactionSuccessAsync(
+                            address,
+                            systemBalance.minus(currentBalance),
+                        ),
                     );
                 }
                 transactions.push(
-                    contracts.treasury.withdraw
-                        .sendTransactionAsync(systemBalance, { from: address })
-                        .then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash)),
+                    contracts.treasury.withdraw.awaitTransactionSuccessAsync(systemBalance, { from: address }),
                 );
                 await Promise.all(transactions);
             }
@@ -105,19 +104,18 @@ before(async () => {
             await contracts.kosuToken.balanceOf.callAsync(address).then(async balance => {
                 if (balance.gt(desiredValue)) {
                     transactions.push(
-                        contracts.kosuToken.transfer
-                            .sendTransactionAsync(accounts[0], balance.minus(desiredValue), {
+                        contracts.kosuToken.transfer.awaitTransactionSuccessAsync(
+                            accounts[0],
+                            balance.minus(desiredValue),
+                            {
                                 from: address,
-                            })
-                            .then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash)).should.eventually.be
-                            .fulfilled,
+                            },
+                        ).should.eventually.be.fulfilled,
                     );
                 } else if (balance.lt(desiredValue)) {
                     transactions.push(
-                        contracts.kosuToken.transfer
-                            .sendTransactionAsync(address, desiredValue.minus(balance))
-                            .then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash)).should.eventually.be
-                            .fulfilled,
+                        contracts.kosuToken.transfer.awaitTransactionSuccessAsync(address, desiredValue.minus(balance))
+                            .should.eventually.be.fulfilled,
                     );
                 }
             });
@@ -146,11 +144,13 @@ before(async () => {
                     await testHelpers.ensureTokenBalance(account, testValues.zero);
                 }
                 transactions.push(
-                    contracts.kosuToken.approve
-                        .sendTransactionAsync(contracts.treasury.address, testValues.zero, {
+                    contracts.kosuToken.approve.awaitTransactionSuccessAsync(
+                        contracts.treasury.address,
+                        testValues.zero,
+                        {
                             from: account,
-                        })
-                        .then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash)),
+                        },
+                    ),
                 );
             }
         },

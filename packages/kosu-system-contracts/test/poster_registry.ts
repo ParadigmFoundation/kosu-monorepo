@@ -19,9 +19,9 @@ describe("PosterRegistry", function() {
     let auth: AuthorizedAddressesContract;
 
     const cleanupUser = async (from: string): Promise<void> => {
-        await posterRegistryProxy.releaseTokens
-            .sendTransactionAsync(await posterRegistryProxy.tokensRegisteredFor.callAsync(from))
-            .then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash));
+        await posterRegistryProxy.releaseTokens.awaitTransactionSuccessAsync(
+            await posterRegistryProxy.tokensRegisteredFor.callAsync(from),
+        );
     };
 
     before(() => {
@@ -36,11 +36,12 @@ describe("PosterRegistry", function() {
         const transactions = [];
         for (const account of accounts) {
             transactions.push(
-                posterRegistryProxy.releaseTokens
-                    .sendTransactionAsync(await posterRegistryProxy.tokensRegisteredFor.callAsync(account), {
+                posterRegistryProxy.releaseTokens.awaitTransactionSuccessAsync(
+                    await posterRegistryProxy.tokensRegisteredFor.callAsync(account),
+                    {
                         from: account,
-                    })
-                    .then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash)),
+                    },
+                ),
             );
         }
     });
@@ -54,9 +55,8 @@ describe("PosterRegistry", function() {
                 .callAsync(from)
                 .then(x => x.toString())
                 .should.eventually.eq("0");
-            await posterRegistryProxy.registerTokens
-                .sendTransactionAsync(value, { from })
-                .then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash)).should.eventually.be.rejected;
+            await posterRegistryProxy.registerTokens.awaitTransactionSuccessAsync(value, { from }).should.eventually.be
+                .rejected;
         });
 
         it("should require an approval greater or equal to the amount registered", async () => {
@@ -68,16 +68,13 @@ describe("PosterRegistry", function() {
                 .then(x => x.toString())
                 .then(parseInt)
                 .should.eventually.gt(parseInt(value));
-            await token.approve
-                .sendTransactionAsync(treasury.address, toBN("0"))
-                .then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash)).should.eventually.be.fulfilled;
+            await token.approve.awaitTransactionSuccessAsync(treasury.address, toBN("0")).should.eventually.be
+                .fulfilled;
             await token.allowance
                 .callAsync(from, treasury.address)
                 .then(x => x.toString())
                 .should.eventually.eq("0");
-            await posterRegistryProxy.registerTokens
-                .sendTransactionAsync(value)
-                .then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash)).should.eventually.be.rejected;
+            await posterRegistryProxy.registerTokens.awaitTransactionSuccessAsync(value).should.eventually.be.rejected;
         });
 
         it("should increase tokensContributed and tokensRegisteredFor by the amount", async () => {
@@ -85,10 +82,8 @@ describe("PosterRegistry", function() {
             const double = toWei("100");
             const from = accounts[0];
 
-            await token.approve.sendTransactionAsync(treasury.address, value);
-            await posterRegistryProxy.registerTokens
-                .sendTransactionAsync(value)
-                .then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash));
+            await token.approve.awaitTransactionSuccessAsync(treasury.address, value);
+            await posterRegistryProxy.registerTokens.awaitTransactionSuccessAsync(value);
 
             await posterRegistryProxy.tokensRegisteredFor
                 .callAsync(from)
@@ -99,10 +94,8 @@ describe("PosterRegistry", function() {
                 .then(x => x.toString())
                 .should.eventually.eq(value);
 
-            await token.approve.sendTransactionAsync(treasury.address, value);
-            await posterRegistryProxy.registerTokens
-                .sendTransactionAsync(value)
-                .then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash));
+            await token.approve.awaitTransactionSuccessAsync(treasury.address, value);
+            await posterRegistryProxy.registerTokens.awaitTransactionSuccessAsync(value);
 
             await posterRegistryProxy.tokensRegisteredFor
                 .callAsync(from)
@@ -127,9 +120,7 @@ describe("PosterRegistry", function() {
                 .then(x => x.toString())
                 .should.eventually.eq("0");
 
-            await posterRegistryProxy.releaseTokens
-                .sendTransactionAsync(amount)
-                .then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash)).should.eventually.be.rejected;
+            await posterRegistryProxy.releaseTokens.awaitTransactionSuccessAsync(amount).should.eventually.be.rejected;
         });
 
         it("should reduce balance and total by the amount", async () => {
@@ -137,10 +128,8 @@ describe("PosterRegistry", function() {
             const double = toWei("100");
             const from = accounts[0];
 
-            await token.approve.sendTransactionAsync(treasury.address, double);
-            await posterRegistryProxy.registerTokens
-                .sendTransactionAsync(double)
-                .then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash));
+            await token.approve.awaitTransactionSuccessAsync(treasury.address, double);
+            await posterRegistryProxy.registerTokens.awaitTransactionSuccessAsync(double);
 
             await posterRegistryProxy.tokensRegisteredFor
                 .callAsync(from)
@@ -151,9 +140,7 @@ describe("PosterRegistry", function() {
                 .then(x => x.toString())
                 .should.eventually.eq(double);
 
-            await posterRegistryProxy.releaseTokens
-                .sendTransactionAsync(value, { from })
-                .then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash));
+            await posterRegistryProxy.releaseTokens.awaitTransactionSuccessAsync(value, { from });
 
             await posterRegistryProxy.tokensRegisteredFor
                 .callAsync(from)
@@ -169,16 +156,12 @@ describe("PosterRegistry", function() {
             const value = toWei("50");
             const from = accounts[0];
 
-            await token.approve.sendTransactionAsync(treasury.address, value);
-            await posterRegistryProxy.registerTokens
-                .sendTransactionAsync(value)
-                .then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash));
+            await token.approve.awaitTransactionSuccessAsync(treasury.address, value);
+            await posterRegistryProxy.registerTokens.awaitTransactionSuccessAsync(value);
 
             const initialBalance = await treasury.currentBalance.callAsync(from);
 
-            await posterRegistryProxy.releaseTokens
-                .sendTransactionAsync(value)
-                .then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash));
+            await posterRegistryProxy.releaseTokens.awaitTransactionSuccessAsync(value);
 
             const afterBalance: BigNumber = await treasury.currentBalance.callAsync(from);
 
@@ -202,10 +185,8 @@ describe("PosterRegistry", function() {
 
             await cleanupUser(from);
 
-            await token.approve.sendTransactionAsync(treasury.address, value, { from });
-            await posterRegistryProxy.registerTokens
-                .sendTransactionAsync(value, { from })
-                .then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash));
+            await token.approve.awaitTransactionSuccessAsync(treasury.address, value, { from });
+            await posterRegistryProxy.registerTokens.awaitTransactionSuccessAsync(value, { from });
 
             await posterRegistryProxy.tokensRegisteredFor
                 .callAsync(from)
@@ -221,10 +202,8 @@ describe("PosterRegistry", function() {
 
             await cleanupUser(from);
 
-            await token.approve.sendTransactionAsync(treasury.address, value);
-            await posterRegistryProxy.registerTokens
-                .sendTransactionAsync(value)
-                .then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash));
+            await token.approve.awaitTransactionSuccessAsync(treasury.address, value);
+            await posterRegistryProxy.registerTokens.awaitTransactionSuccessAsync(value);
 
             await posterRegistryProxy.tokensContributed
                 .callAsync()
@@ -238,10 +217,8 @@ describe("PosterRegistry", function() {
 
             await cleanupUser(from);
 
-            await token.approve.sendTransactionAsync(treasury.address, value);
-            await posterRegistryProxy.registerTokens
-                .sendTransactionAsync(value)
-                .then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash));
+            await token.approve.awaitTransactionSuccessAsync(treasury.address, value);
+            await posterRegistryProxy.registerTokens.awaitTransactionSuccessAsync(value);
 
             await posterRegistryProxy.tokensContributed
                 .callAsync()
@@ -261,12 +238,8 @@ describe("PosterRegistry", function() {
 
             await cleanupUser(from);
 
-            await token.approve
-                .sendTransactionAsync(treasury.address, value)
-                .then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash));
-            const result = await posterRegistryProxy.registerTokens
-                .sendTransactionAsync(value)
-                .then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash));
+            await token.approve.awaitTransactionSuccessAsync(treasury.address, value);
+            const result = await posterRegistryProxy.registerTokens.awaitTransactionSuccessAsync(value);
             const decodedLogs = decodeKosuEvents(result.logs)[0];
 
             decodedLogs.eventType.should.eq("PosterRegistryUpdate");
@@ -280,14 +253,10 @@ describe("PosterRegistry", function() {
 
             await cleanupUser(from);
 
-            await token.approve.sendTransactionAsync(treasury.address, value);
-            await posterRegistryProxy.registerTokens
-                .sendTransactionAsync(value)
-                .then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash));
+            await token.approve.awaitTransactionSuccessAsync(treasury.address, value);
+            await posterRegistryProxy.registerTokens.awaitTransactionSuccessAsync(value);
 
-            const result = await posterRegistryProxy.releaseTokens
-                .sendTransactionAsync(value)
-                .then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash));
+            const result = await posterRegistryProxy.releaseTokens.awaitTransactionSuccessAsync(value);
             const decodedLogs = decodeKosuEvents(result.logs)[0];
 
             decodedLogs.eventType.should.eq("PosterRegistryUpdate");
