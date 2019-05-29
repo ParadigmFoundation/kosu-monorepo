@@ -8,8 +8,6 @@ import { Treasury } from "./Treasury";
 
 /**
  * Integration with Voting contract on an Ethereum blockchain.
- *
- * @todo Refactor contract integration after migration away from truffle
  */
 export class Voting {
     private readonly web3: Web3;

@@ -16,6 +16,7 @@ export class Treasury {
     private address: string;
     private contract: TreasuryContract;
     private readonly web3Wrapper: Web3Wrapper;
+    private coinbase: string;
 
     /**
      * Creates a new Treasury instance
@@ -38,7 +39,7 @@ export class Treasury {
     private async getContract(): Promise<TreasuryContract> {
         if (!this.contract) {
             const networkId = await this.web3Wrapper.getNetworkIdAsync();
-            const coinbase = await this.web3.eth.getCoinbase().catch(() => undefined);
+            this.coinbase = await this.web3.eth.getCoinbase().catch(() => undefined);
 
             if (!this.address) {
                 this.address = DeployedAddresses[networkId].Treasury;
@@ -108,5 +109,15 @@ export class Treasury {
     public async currentBalance(address: string): Promise<BigNumber> {
         const contract = await this.getContract();
         return contract.currentBalance.callAsync(address);
+    }
+
+    public async treasuryAllowance(): Promise<BigNumber> {
+        const contract = await this.getContract();
+        return this.kosuToken.allowance(this.coinbase, contract.address);
+    }
+
+    public async approveTreasury(value: BigNumber): Promise<TransactionReceiptWithDecodedLogs> {
+        const contract = await this.getContract();
+        return this.kosuToken.approve(contract.address, value);
     }
 }

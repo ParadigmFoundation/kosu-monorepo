@@ -8,8 +8,6 @@ import { Treasury } from "./Treasury";
 
 /**
  * Integration with ValidatorRegistry contract on an Ethereum blockchain.
- *
- * @todo Refactor contract integration after migration away from truffle
  */
 export class ValidatorRegistry {
     private readonly web3: Web3;
@@ -146,8 +144,7 @@ export class ValidatorRegistry {
      */
     public async getListing(_pubKey: string): Promise<Listing> {
         const contract = await this.getContract();
-        // TODO convert pub key if needed?
-        return contract.getListing.callAsync(_pubKey);
+        return contract.getListing.callAsync(this.convertPubKey(_pubKey));
     }
 
     /**
@@ -155,7 +152,6 @@ export class ValidatorRegistry {
      */
     public async getListings(): Promise<Listing[]> {
         const contract = await this.getContract();
-        // TODO convert pub key if needed?
         return contract.getListings.callAsync();
     }
 
@@ -225,8 +221,16 @@ export class ValidatorRegistry {
      * @param _details String value (often a url) to support listing claim
      */
     public async challengeListing(_pubKey: string, _details: string): Promise<TransactionReceiptWithDecodedLogs> {
-        // TODO Check balance after looking up specific listing's tokens committed
         const contract = await this.getContract();
+
+        const listing: Listing = await this.getListing(_pubKey);
+        const approval: BigNumber = await this.treasury.treasuryAllowance();
+        const currenBalance: BigNumber = await this.treasury.currentBalance(this.coinbase);
+
+        if (approval.plus(currenBalance).lt(listing.stakedBalance)) {
+            this.treasury.approveTreasury(listing.stakedBalance.minus(currenBalance));
+        }
+
         return contract.challengeListing.awaitTransactionSuccessAsync(_pubKey, _details);
     }
 
@@ -288,13 +292,21 @@ export class ValidatorRegistry {
      * @param _pubKey .
      * @returns hex encoded tendermint public key
      */
-    // tslint:disable-next-line: prefer-function-over-method
-    public convertPubKey(_pubKey: string): string {
+    public convertPubKey = (_pubKey: string): string => {
+        let out;
         if (_pubKey.length === 66 && _pubKey.startsWith("0x")) {
             return _pubKey;
+        } else if (_pubKey.startsWith("0x") && _pubKey.length < 66) {
+            out = _pubKey;
+        } else {
+            out = `0x${Buffer.from(_pubKey, "base64").toString("hex")}`;
         }
 
-        return `0x${Buffer.from(_pubKey, "base64").toString("hex")}`;
+        if (out.length > 66) {
+            out = out.substr(0, 66);
+        }
+
+        return this.web3.utils.padRight(out, 64);
     }
 
     /**
