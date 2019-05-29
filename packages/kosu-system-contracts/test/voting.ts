@@ -4,8 +4,7 @@ import { soliditySha3 } from "web3-utils";
 import { decodeKosuEvents, KosuTokenContract, TreasuryContract, VotingContract } from "../src";
 import { migrations } from "../src/migrations";
 
-describe("Voting", function() {
-    this.timeout(10000);
+describe("Voting", () => {
     let voting: VotingContract;
     let kosuToken: KosuTokenContract;
     let treasury: TreasuryContract;

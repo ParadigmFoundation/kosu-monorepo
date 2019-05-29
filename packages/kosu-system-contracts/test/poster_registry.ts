@@ -10,8 +10,7 @@ import {
     TreasuryContract,
 } from "../src";
 
-describe("PosterRegistry", function() {
-    this.timeout(10000);
+describe("PosterRegistry", () => {
     let posterRegistryProxy: PosterRegistryProxyContract;
     let posterRegistry: PosterRegistryContract;
     let token: KosuTokenContract;

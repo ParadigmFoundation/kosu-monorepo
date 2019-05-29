@@ -12,9 +12,7 @@ import {
     VotingContract,
 } from "../src";
 
-describe("ValidatorRegistry", async function() {
-    this.timeout(10000);
-
+describe("ValidatorRegistry", async () => {
     let validatorRegistryProxy: ValidatorRegistryProxyContract;
     let validatorRegistry: ValidatorRegistryContract;
     let kosuToken: KosuTokenContract;
