@@ -159,16 +159,14 @@ class Gov {
             }
             case 2: {
                 await this._processValidator(listing);
-                console.log("validator");
                 break;
             }
             case 3: {
                 await this._processChallenge(listing);
-                console.log("in challenge");
                 break;
             }
             case 4: {
-                console.log("exiting");
+                await this._processValidator(listing);
                 break;
             }
             default: {
