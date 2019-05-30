@@ -39,6 +39,7 @@ export const eventDecoder = (eventReturnValues: any): any => {
         case "ValidatorRegistryUpdate":
             Object.assign(decoded, {
                 tendermintPublicKey: bytes32ToBase64(data[0]),
+                tendermintPublicKeyHex: data[0],
                 owner: bytes32ToAddressString(data[1]),
                 stake: hexToNumberString(data[2]), // TODO: better name
             });
@@ -46,6 +47,7 @@ export const eventDecoder = (eventReturnValues: any): any => {
         case "ValidatorRegistered":
             Object.assign(decoded, {
                 tendermintPublicKey: bytes32ToBase64(data[0]),
+                tendermintPublicKeyHex: data[0],
                 applicationBlockNumber: hexToNumberString(data[1]),
                 owner: bytes32ToAddressString(data[2]),
                 rewardRate: Decoder.decodeParameter("int", data[3]).toString(),
@@ -55,6 +57,7 @@ export const eventDecoder = (eventReturnValues: any): any => {
         case "ValidatorChallenged":
             Object.assign(decoded, {
                 tendermintPublicKey: bytes32ToBase64(data[0]),
+                tendermintPublicKeyHex: data[0],
                 owner: bytes32ToAddressString(data[1]),
                 challenger: bytes32ToAddressString(data[2]),
                 challengeId: hexToNumberString(data[3]),
@@ -73,16 +76,19 @@ export const eventDecoder = (eventReturnValues: any): any => {
         case "ValidatorRemoved":
             Object.assign(decoded, {
                 tendermintPublicKey: bytes32ToBase64(data[0]),
+                tendermintPublicKeyHex: data[0],
             });
             break;
         case "ValidatorChallengeResolved":
             Object.assign(decoded, {
                 tendermintPublicKey: bytes32ToBase64(data[0]),
+                tendermintPublicKeyHex: data[0],
             });
             break;
         case "ValidatorConfirmed":
             Object.assign(decoded, {
                 tendermintPublicKey: bytes32ToBase64(data[0]),
+                tendermintPublicKeyHex: data[0],
             });
             break;
 
