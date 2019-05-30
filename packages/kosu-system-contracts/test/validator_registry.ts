@@ -1099,8 +1099,12 @@ describe("ValidatorRegistry", async () => {
             const initialListingHolderSystemBalance = await treasury.systemBalance.callAsync(accounts[0]);
             const initialListingHolderCurrentBalance = await treasury.currentBalance.callAsync(accounts[0]);
 
-            await validatorRegistryProxy.resolveChallenge.awaitTransactionSuccessAsync(tendermintPublicKey).should
+            const result = await validatorRegistryProxy.resolveChallenge.awaitTransactionSuccessAsync(tendermintPublicKey).should
                 .eventually.be.fulfilled;
+
+            const decodedLogs = decodeKosuEvents(result.logs);
+            decodedLogs[0].eventType.should.eq("ValidatorChallengeResolved");
+            decodedLogs[0].tendermintPublicKey.should.eq(base64Key);
 
             const finalChallengerSystemBalance = await treasury.systemBalance.callAsync(accounts[1]);
             const finalListingHolderSystemBalance = await treasury.systemBalance.callAsync(accounts[0]);
@@ -1215,8 +1219,12 @@ describe("ValidatorRegistry", async () => {
             const initialListingHolderSystemBalance = await treasury.systemBalance.callAsync(accounts[0]);
             const initialListingHolderCurrentBalance = await treasury.currentBalance.callAsync(accounts[0]);
 
-            await validatorRegistryProxy.resolveChallenge.awaitTransactionSuccessAsync(tendermintPublicKey).should
+            const result = await validatorRegistryProxy.resolveChallenge.awaitTransactionSuccessAsync(tendermintPublicKey).should
                 .eventually.be.fulfilled;
+
+            const decodedLogs = decodeKosuEvents(result.logs);
+            decodedLogs[0].eventType.should.eq("ValidatorChallengeResolved");
+            decodedLogs[0].tendermintPublicKey.should.eq(base64Key);
 
             const finalChallengerSystemBalance = await treasury.systemBalance.callAsync(accounts[1]);
             const finalListingHolderSystemBalance = await treasury.systemBalance.callAsync(accounts[0]);

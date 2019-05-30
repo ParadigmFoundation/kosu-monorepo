@@ -331,9 +331,11 @@ contract ValidatorRegistry is IValidatorRegistry, Authorizable {
             } else if(listing.confirmationBlock > 0) { //Confirmed challenge is returned to accepted
                 listing.status = Status.ACCEPTED;
                 listing.currentChallenge = 0;
+                emitValidatorChallengeResolved(listing);
             } else { //Pending challege returned to pending
                 listing.status = Status.PENDING;
                 listing.currentChallenge = 0;
+                emitValidatorChallengeResolved(listing);
             }
 
             //ensure the ending state is correct
@@ -603,5 +605,11 @@ contract ValidatorRegistry is IValidatorRegistry, Authorizable {
         data[3] = bytes32(challengeId);
         data[4] = bytes32(pollId);
         e.emitEvent("ValidatorChallenged", data, details);
+    }
+
+    function emitValidatorChallengeResolved(Listing storage l) internal {
+        bytes32[] memory data = new bytes32[](1);
+        data[0] = l.tendermintPublicKey;
+        e.emitEvent("ValidatorChallengeResolved", data, "");
     }
 }
