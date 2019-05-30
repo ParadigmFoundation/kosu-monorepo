@@ -43,6 +43,7 @@ class Gov {
         this.initBlock = null;
 
         this.ee = new EventEmitter();
+        this.init();
     }
 
     /**
