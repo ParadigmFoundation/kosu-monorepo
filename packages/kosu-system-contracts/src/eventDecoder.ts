@@ -70,6 +70,21 @@ export const eventDecoder = (eventReturnValues: any): any => {
                 revealEndBlock: hexToNumberString(data[3]),
             });
             break;
+        case "ValidatorRemoved":
+            Object.assign(decoded, {
+                tendermintPublicKey: bytes32ToBase64(data[0]),
+            });
+            break;
+        case "ValidatorChallengeResolved":
+            Object.assign(decoded, {
+                tendermintPublicKey: bytes32ToBase64(data[0]),
+            });
+            break;
+        case "ValidatorConfirmed":
+            Object.assign(decoded, {
+                tendermintPublicKey: bytes32ToBase64(data[0]),
+            });
+            break;
 
         default:
             console.warn(`Unrecognized eventType: ${eventType}`);
