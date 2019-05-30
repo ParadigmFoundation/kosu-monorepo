@@ -264,25 +264,30 @@ class Gov {
     async _handleEvents(events) {
         for (const event of events) {
             const { decodedArgs } = event;
+            this._debugLog(`Handling event: ${JSON.stringify(decodedArgs)}`);
             switch (decodedArgs.eventType) {
                 case "ValidatorRegistered":
                     const registeredListing = await this.kosu.validatorRegistry.getListing(decodedArgs.tendermintPublicKey);
+                    this._debugLog(`Event type: ${decodedArgs.eventType}\nListing: ${JSON.stringify(registeredListing)}`);
                     await this._processProposal(registeredListing);
                     break;
                 case "ValidatorChallenged":
                     const challengedListing = await this.kosu.validatorRegistry.getListing(decodedArgs.tendermintPublicKey);
+                    this._debugLog(`Event type: ${decodedArgs.eventType}\nListing: ${JSON.stringify(challengedListing)}`);
                     delete this.proposals[decodedArgs.tendermintPublicKeyHex];
                     delete this.validators[decodedArgs.tendermintPublicKeyHex];
                     await this._processChallenge(challengedListing);
                     break;
                 case "ValidatorRemoved":
                     const removedListing = await this.kosu.validatorRegistry.getListing(decodedArgs.tendermintPublicKey);
+                    this._debugLog(`Event type: ${decodedArgs.eventType}\nListing: ${JSON.stringify(removedListing)}`);
                     delete this.proposals[decodedArgs.tendermintPublicKeyHex];
                     delete this.validators[decodedArgs.tendermintPublicKeyHex];
                     delete this.challenges[decodedArgs.tendermintPublicKeyHex];
                     break;
                 case "ValidatorChallengeResolved":
                     const resolvedChallengeListing = await this.kosu.validatorRegistry.getListing(decodedArgs.tendermintPublicKey);
+                    this._debugLog(`Event type: ${decodedArgs.eventType}\nListing: ${JSON.stringify(resolvedChallengeListing)}`);
                     delete this.challenges[resolvedChallengeListing.tendermintPublicKeyHex];
                     if (resolvedChallengeListing.status === 1) {
                         await this._processProposal(resolvedChallengeListing)
@@ -292,6 +297,7 @@ class Gov {
                     break;
                 case "ValidatorConfirmed":
                     const confirmedListing = await this.kosu.validatorRegistry.getListing(decodedArgs.tendermintPublicKey);
+                    this._debugLog(`Event type: ${decodedArgs.eventType}\nListing: ${JSON.stringify(confirmedListing)}`);
                     delete this.proposals[decodedArgs.tendermintPublicKeyHex];
                     await this._processValidator(confirmedListing)
                     break;
