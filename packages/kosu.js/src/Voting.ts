@@ -15,7 +15,7 @@ export class Voting {
     private readonly web3Wrapper: Web3Wrapper;
     private address: string;
     private contract: any;
-    private readonly coinbase: string;
+    private coinbase: string;
 
     /**
      * Create a new Voting instance.
