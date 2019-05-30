@@ -205,12 +205,24 @@ class Gov {
     }
 
     async _processValidator(listing) {
-        if (listing.status !== 2) {
+        if (listing.status !== 2 && listing.challengeId === 0) {
             throw new Error("listing is not a validator");
         }
 
-        // @todo
-        console.error("_processValidator not implemented");
+        const owner = listing.owner;
+        const stakeSize = this.weiToEther(listing.stakedBalance);
+        const dailyReward = this._estimateDailyReward(listing.rewardRate);
+        const power = "0"; // @todo
+
+        const validator = {
+            owner,
+            stakeSize,
+            dailyReward,
+            power,
+            details: listing.details,
+        };
+
+        this._addValidator(listing.tendermintPublicKey, validator);
     }
 
     // @todo
