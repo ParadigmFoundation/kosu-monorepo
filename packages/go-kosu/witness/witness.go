@@ -89,6 +89,7 @@ func New(client *abci.Client, p Provider, opts Options) *Witness {
 	return w.WithLogger(log.NewTMLogger(os.Stdout))
 }
 
+// WithLogger .
 func (w *Witness) WithLogger(logger log.Logger) *Witness {
 	if logger == nil {
 		logger = log.NewNopLogger()
