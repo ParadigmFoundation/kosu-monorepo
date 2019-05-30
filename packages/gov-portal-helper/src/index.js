@@ -225,7 +225,6 @@ class Gov {
         this._addValidator(listing.tendermintPublicKey, validator);
     }
 
-    // @todo
     async _processChallenge(listing) {
         if (listing.status !== 3) {
             throw new Error("listing is not in challenge");
@@ -240,25 +239,28 @@ class Gov {
 
         this._debugLog(`Challenge type: ${challengeType}`);
 
-        const owner = listing.owner;
-        const challengeId = listing.currentChallenge;
-        const details = listing.details;
+
+        const listingChallenge = await this.kosu.validatorRegistry.getChallenge(listing.currentChallenge);
         const listingStake = this.weiToEther(listing.stakedBalance);
+        const listingPower = "0"; // @todo
+        const challengeEndUnix = await this.estimateFutureBlockTimestamp(listingChallenge.challengeEnd);
+
 
         const challenge = {
-            owner,
+            listingOwner: listing.owner,
             listingStake,
             listingPower,
-            challenger,
-            challengeId,
-            challengerStake,
+            challenger: listingChallenge.challenger,
+            challengeId: listing.currentChallenge,
+            challengerStake: listingChallenge.balance,
             challengeEndUnix,
             challengeType, // "proposal" or "validator"
-            details,
+            listingDetails: listing.details,
+            challengeDetails: listingChallenge.details,
         };
 
-        // @todo
-        console.error("_processValidator not implemented");
+        this._addChallenge(listing.tendermintPublicKey, challenge);
+    }
     }
 
     _addProposal(pubKey, proposal) {
