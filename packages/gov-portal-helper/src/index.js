@@ -288,7 +288,7 @@ class Gov {
                 case "ValidatorChallengeResolved":
                     const resolvedChallengeListing = await this.kosu.validatorRegistry.getListing(decodedArgs.tendermintPublicKey);
                     this._debugLog(`Event type: ${decodedArgs.eventType}\nListing: ${JSON.stringify(resolvedChallengeListing)}`);
-                    delete this.challenges[resolvedChallengeListing.tendermintPublicKeyHex];
+                    delete this.challenges[decodedArgs.tendermintPublicKeyHex];
                     if (resolvedChallengeListing.status === 1) {
                         await this._processProposal(resolvedChallengeListing)
                     } else if (resolvedChallengeListing.status === 2) {
