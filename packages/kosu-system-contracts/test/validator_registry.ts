@@ -1037,8 +1037,13 @@ describe("ValidatorRegistry", async () => {
 
             const initialChallengerCurrentBalance = await treasury.currentBalance.callAsync(accounts[1]);
 
-            await validatorRegistryProxy.resolveChallenge.awaitTransactionSuccessAsync(tendermintPublicKey).should
+            const result = await validatorRegistryProxy.resolveChallenge.awaitTransactionSuccessAsync(tendermintPublicKey).should
                 .eventually.be.fulfilled;
+
+            const decodedLogs = decodeKosuEvents(result.logs);
+            decodedLogs[1].eventType.should.eq("ValidatorRemoved");
+            decodedLogs[1].tendermintPublicKey.should.eq(base64Key);
+
             const finalListingHolderSystemBalance = await treasury.systemBalance.callAsync(accounts[0]);
             const finalChallengerSystemBalance = await treasury.systemBalance.callAsync(accounts[1]);
 

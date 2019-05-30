@@ -557,6 +557,10 @@ contract ValidatorRegistry is IValidatorRegistry, Authorizable {
             _maxGenerationSum = _maxGenerationSum.sub(rewardRate.mul(rewardRate));
         }
 
+        bytes32[] memory data = new bytes32[](1);
+        data[0] = l.tendermintPublicKey;
+        e.emitEvent("ValidatorRemoved", data, "");
+
         removeListingKey(l.tendermintPublicKey);
         delete _listings[l.tendermintPublicKey];
     }
