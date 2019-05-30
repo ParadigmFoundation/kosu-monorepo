@@ -302,7 +302,7 @@ class Gov {
                     await this._processValidator(confirmedListing)
                     break;
                 default:
-                    console.warn(`Unrecognized eventType: ${eventType}`);
+                    console.warn(`Unrecognized eventType: ${decodedArgs.eventType}`);
             }
         }
     }
