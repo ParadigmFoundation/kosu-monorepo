@@ -197,7 +197,7 @@ class Gov {
             dailyReward,
             power,
             details: listing.details,
-            acceptUnix: acceptUnix.toString(),
+            acceptUnix: acceptUnix,
         };
 
         this._addProposal(listing.tendermintPublicKey, proposal);
