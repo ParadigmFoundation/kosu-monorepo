@@ -7,7 +7,7 @@
     "private": false,
     "scripts": {
         "compile:assets": "webpack",
-        "develop": "yarn compile:assets && cd dist && python -m SimpleHTTPServer",
+        "develop": "webpack-dev-server",
         "docs": "jsdoc2md src/index.js > README.md"
     },
     "dependencies": {
@@ -19,6 +19,7 @@
     "devDependencies": {
         "jsdoc-to-markdown": "^5.0.0",
         "webpack": "^4.32.2",
-        "webpack-cli": "^3.3.2"
+        "webpack-cli": "^3.3.2",
+        "webpack-dev-server": "^3.4.1"
     }
 }
