@@ -85,7 +85,7 @@ class Gov {
             await this._processListing(listing);
         }
         const startupBlock = await this.web3.eth.getBlockNumber();
-        this.kosu.eventEmitter.getFutureDecodedLogs(startupBlock + 1, this._handleEvents);
+        this.kosu.eventEmitter.getFutureDecodedLogs(startupBlock + 1, this._handleEvents.bind(this));
     }
 
     /**
