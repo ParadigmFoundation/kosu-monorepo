@@ -229,7 +229,7 @@ class Gov {
         }
 
         let challengeType;
-        if (listing.confirmationBlock === "0") {
+        if (listing.confirmationBlock.toString() === "0") {
             challengeType = "proposal";
         } else {
             challengeType = "validator";
