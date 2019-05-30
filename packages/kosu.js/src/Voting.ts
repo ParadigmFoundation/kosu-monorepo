@@ -38,7 +38,7 @@ export class Voting {
     private async getContract(): Promise<VotingContract> {
         if (!this.contract) {
             const networkId = await this.web3Wrapper.getNetworkIdAsync();
-            const coinbase = await this.web3.eth.getCoinbase().catch(() => undefined);
+            this.coinbase = await this.web3.eth.getCoinbase().catch(() => undefined);
 
             if (!this.address) {
                 this.address = DeployedAddresses[networkId].Voting;
@@ -51,7 +51,7 @@ export class Voting {
                 artifacts.Voting.compilerOutput.abi,
                 this.address,
                 this.web3Wrapper.getProvider(),
-                { from: coinbase },
+                { from: this.coinbase },
             );
         }
         return this.contract;
