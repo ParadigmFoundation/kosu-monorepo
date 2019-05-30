@@ -119,6 +119,16 @@ export class Voting {
     }
 
     /**
+     * Reads the total winning tokens for poll
+     *
+     * @param _pollId uint poll index
+     */
+    public async totalRevealedTokens(_pollId: BigNumber): Promise<BigNumber> {
+        const contract = await this.getContract();
+        return contract.totalRevealedTokens.callAsync(_pollId);
+    }
+
+    /**
      * Reads users winning tokens committed for poll
      *
      * @param _pollId uint poll index
