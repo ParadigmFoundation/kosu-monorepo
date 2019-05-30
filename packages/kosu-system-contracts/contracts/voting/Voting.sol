@@ -66,7 +66,7 @@ contract Voting {
         nextPollId++;
 
         //Format data and emit event
-        bytes32[] memory data = new bytes32[]();
+        bytes32[] memory data = new bytes32[](4);
         data[0] = bytes32(uint(p.creator));
         data[1] = bytes32(p.id);
         data[2] = bytes32(_commitEndBlock);
