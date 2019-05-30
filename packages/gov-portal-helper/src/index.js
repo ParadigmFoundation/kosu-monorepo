@@ -267,33 +267,33 @@ class Gov {
             switch (decodedArgs.eventType) {
                 case "ValidatorRegistered":
                     const registeredListing = await this.kosu.validatorRegistry.getListing(decodedArgs.tendermintPublicKey);
-                    await this._processProposal(registeredListing.tendermintPublicKey, registeredListing);
+                    await this._processProposal(registeredListing);
                     break;
                 case "ValidatorChallenged":
                     const challengedListing = await this.kosu.validatorRegistry.getListing(decodedArgs.tendermintPublicKey);
-                    delete this.proposals[challengedListing.tendermintPublicKey];
-                    delete this.validators[challengedListing.tendermintPublicKey];
-                    await this._processChallenge(challengedListing.tendermintPublicKey, challengedListing);
+                    delete this.proposals[decodedArgs.tendermintPublicKeyHex];
+                    delete this.validators[decodedArgs.tendermintPublicKeyHex];
+                    await this._processChallenge(challengedListing);
                     break;
                 case "ValidatorRemoved":
                     const removedListing = await this.kosu.validatorRegistry.getListing(decodedArgs.tendermintPublicKey);
-                    delete this.proposals[removedListing.tendermintPublicKey];
-                    delete this.validators[removedListing.tendermintPublicKey];
-                    delete this.challenges[removedListing.tendermintPublicKey];
+                    delete this.proposals[decodedArgs.tendermintPublicKeyHex];
+                    delete this.validators[decodedArgs.tendermintPublicKeyHex];
+                    delete this.challenges[decodedArgs.tendermintPublicKeyHex];
                     break;
                 case "ValidatorChallengeResolved":
                     const resolvedChallengeListing = await this.kosu.validatorRegistry.getListing(decodedArgs.tendermintPublicKey);
-                    delete this.challenges[resolvedChallengeListing.tendermintPublicKey];
+                    delete this.challenges[resolvedChallengeListing.tendermintPublicKeyHex];
                     if (resolvedChallengeListing.status === 1) {
-                        await this._processProposal(resolvedChallengeListing.tendermintPublicKey, resolvedChallengeListing)
+                        await this._processProposal(resolvedChallengeListing)
                     } else if (resolvedChallengeListing.status === 2) {
-                        await this._processValidator(resolvedChallengeListing.tendermintPublicKey, resolvedChallengeListing)
+                        await this._processValidator(resolvedChallengeListing)
                     }
                     break;
                 case "ValidatorConfirmed":
                     const confirmedListing = await this.kosu.validatorRegistry.getListing(decodedArgs.tendermintPublicKey);
-                    delete this.proposals[confirmedListing.tendermintPublicKey];
-                    await this._processValidator(confirmedListing.tendermintPublicKey, confirmedListing)
+                    delete this.proposals[decodedArgs.tendermintPublicKeyHex];
+                    await this._processValidator(confirmedListing)
                     break;
                 default:
                     console.warn(`Unrecognized eventType: ${eventType}`);
