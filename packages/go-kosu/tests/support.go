@@ -10,7 +10,7 @@ import (
 	"github.com/stretchr/testify/require"
 
 	"github.com/tendermint/tendermint/libs/db"
-	"github.com/tendermint/tendermint/libs/log"
+	tmlog "github.com/tendermint/tendermint/libs/log"
 	rpctypes "github.com/tendermint/tendermint/rpc/core/types"
 
 	"go-kosu/abci"
@@ -38,7 +38,7 @@ func startServer(t *testing.T, db db.DB, state *store.State) (*abci.App, func())
 	dir, err := ioutil.TempDir("/tmp", "/go-kosu-go-tests_")
 	require.NoError(t, err)
 
-	err = abci.InitTendermintWithLogger(dir, log.NewNopLogger())
+	err = abci.InitTendermintWithLogger(dir, tmlog.NewNopLogger())
 	require.NoError(t, err)
 
 	// Initialize the server
