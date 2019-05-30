@@ -242,6 +242,14 @@ class Gov {
         const listingPower = "0"; // @todo
         const challengeEndUnix = await this.estimateFutureBlockTimestamp(listingChallenge.challengeEnd);
 
+        let totalTokens, winningTokens, result;
+        if (!challengeEndUnix) {
+            totalTokens = await this.kosu.voting.totalRevealedTokens(listingChallenge.pollId);
+            winningTokens = await this.kosu.voting.totalWinningTokens(listingChallenge.pollId);
+            result = await this.kosu.voting.winningOption(listingChallenge.pollId)
+                .then(option => (option.toString() === "1" ? "Passed" : "Failed"));
+        }
+
         const challenge = {
             listingOwner: listing.owner,
             listingStake,
@@ -250,6 +258,9 @@ class Gov {
             challengeId: listing.currentChallenge,
             challengerStake: listingChallenge.balance,
             challengeEndUnix,
+            totalTokens,
+            winningTokens,
+            result,
             challengeType, // "proposal" or "validator"
             listingDetails: listing.details,
             challengeDetails: listingChallenge.details,
