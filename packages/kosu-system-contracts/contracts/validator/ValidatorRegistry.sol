@@ -410,8 +410,11 @@ contract ValidatorRegistry is IValidatorRegistry, Authorizable {
         }
         processRewards(listing);
 
-        //Emit update event
-        emitValidatorRegistryUpdate(listing.tendermintPublicKey, listing.owner, listing.stakedBalance);
+        if (listing.status != Status.NULL) {
+            //Emit update event if listing wasn't removed
+            emitValidatorConfirmed(listing);
+            emitValidatorRegistryUpdate(listing.tendermintPublicKey, listing.owner, listing.stakedBalance);
+        }
     }
 
     /** @dev Initiate a listing exit
@@ -573,6 +576,12 @@ contract ValidatorRegistry is IValidatorRegistry, Authorizable {
         data[2] = bytes32(uint(owner));
         data[3] = bytes32(rewardRate);
         e.emitEvent("ValidatorRegistered", data, details);
+    }
+
+    function emitValidatorConfirmed(Listing storage l) internal {
+        bytes32[] memory data = new bytes32[](1);
+        data[0] = l.tendermintPublicKey;
+        e.emitEvent("ValidatorConfirmed", data, "");
     }
 
     function emitValidatorTouchedAndRemoved(Listing storage l) internal {

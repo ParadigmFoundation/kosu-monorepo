@@ -1749,15 +1749,18 @@ describe("ValidatorRegistry", async () => {
     describe("ValidatorRegistryUpdate", () => {
         beforeEach(prepareListing);
 
-        it("should emit event when listing is confirmed", async () => {
+        it("should emit events when listing is confirmed", async () => {
             const result = await validatorRegistryProxy.confirmListing.awaitTransactionSuccessAsync(tendermintPublicKey)
                 .should.eventually.be.fulfilled;
-            const decodedLogs = decodeKosuEvents(result.logs)[0];
+            const decodedLogs = decodeKosuEvents(result.logs);
 
-            decodedLogs.eventType.should.eq("ValidatorRegistryUpdate");
-            decodedLogs.tendermintPublicKey.should.eq(base64Key);
-            decodedLogs.owner.should.eq(accounts[0].toLowerCase());
-            decodedLogs.stake.should.eq(minimumBalance.toString());
+            decodedLogs[0].eventType.should.eq("ValidatorConfirmed");
+            decodedLogs[0].tendermintPublicKey.should.eq(base64Key);
+
+            decodedLogs[1].eventType.should.eq("ValidatorRegistryUpdate");
+            decodedLogs[1].tendermintPublicKey.should.eq(base64Key);
+            decodedLogs[1].owner.should.eq(accounts[0].toLowerCase());
+            decodedLogs[1].stake.should.eq(minimumBalance.toString());
 
             await exitListing();
         });
