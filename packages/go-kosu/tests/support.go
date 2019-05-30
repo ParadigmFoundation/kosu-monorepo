@@ -6,7 +6,7 @@ import (
 	"testing"
 
 	"github.com/smartystreets/goconvey/convey"
-	. "github.com/smartystreets/goconvey/convey"
+	. "github.com/smartystreets/goconvey/convey" //nolint
 	"github.com/stretchr/testify/require"
 
 	"github.com/tendermint/tendermint/libs/db"
