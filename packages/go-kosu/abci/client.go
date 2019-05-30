@@ -135,7 +135,7 @@ func (c *Client) query(path string, pb proto.Message) error {
 	res := out.Response
 
 	if res.IsErr() {
-		return errors.New(res.GetInfo())
+		return errors.New(res.GetLog())
 	}
 
 	return proto.Unmarshal(res.Value, pb)
