@@ -639,6 +639,21 @@ describe("ValidatorRegistry", async () => {
 
             await exitListing();
         });
+
+        it("should not reduce maxRewardRate when removing a pending listing.", async () => {
+            await validatorRegistryProxy.initExit.awaitTransactionSuccessAsync(tendermintPublicKey)
+                .should.eventually.be.fulfilled;
+
+            const iniitalMaxRewardRate = await validatorRegistryProxy.maxRewardRate.callAsync();
+
+            await prepareListing({reward: iniitalMaxRewardRate });
+            await validatorRegistryProxy.initExit.awaitTransactionSuccessAsync(tendermintPublicKey)
+                .should.eventually.be.fulfilled;
+
+            const finalMaxRewardRate = await validatorRegistryProxy.maxRewardRate.callAsync();
+
+            iniitalMaxRewardRate.toString().should.eq(finalMaxRewardRate.toString());
+        });
     });
 
     describe("finalizeExit", () => {

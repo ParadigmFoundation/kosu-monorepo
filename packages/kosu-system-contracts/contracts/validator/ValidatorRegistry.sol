@@ -554,7 +554,7 @@ contract ValidatorRegistry is IValidatorRegistry, Authorizable {
     }
 
     function removeListing(Listing storage l) internal {
-        if(l.rewardRate > 0) {
+        if(l.rewardRate > 0 && l.confirmationBlock > 0) {
             uint rewardRate = uint(l.rewardRate);
             _maxGenerationSum = _maxGenerationSum.sub(rewardRate.mul(rewardRate));
         }
