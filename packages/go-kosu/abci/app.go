@@ -1,10 +1,8 @@
 package abci
 
 import (
-	"encoding/hex"
 	"errors"
 	"fmt"
-	"log"
 	"regexp"
 
 	abci "github.com/tendermint/tendermint/abci/types"
@@ -57,11 +55,6 @@ func (app *App) Info(req abci.RequestInfo) abci.ResponseInfo {
 		LastBlockHeight:  app.tree.CommitInfo.Version,
 		LastBlockAppHash: app.tree.CommitInfo.Hash,
 	}
-
-	log.Printf("-- INFO: hash=%s ver=%d --",
-		hex.EncodeToString(res.LastBlockAppHash),
-		res.LastBlockHeight,
-	)
 
 	if err := app.state.UpdateFromTree(app.tree); err != nil {
 		panic(err)
