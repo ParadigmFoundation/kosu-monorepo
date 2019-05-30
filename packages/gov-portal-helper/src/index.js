@@ -301,6 +301,9 @@ class Gov {
                     delete this.proposals[decodedArgs.tendermintPublicKeyHex];
                     await this._processValidator(confirmedListing)
                     break;
+                case "ValidatorRegistryUpdate":
+                    // Do nothing
+                    break;
                 default:
                     console.warn(`Unrecognized eventType: ${decodedArgs.eventType}`);
             }
