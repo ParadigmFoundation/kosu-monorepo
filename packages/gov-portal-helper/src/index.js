@@ -288,7 +288,7 @@ class Gov {
         const blocksPerDay = new BigNumber(this.blocksPerDay);
         const tokensPerBlock = rate.div(rewardPeriod);
         const tokensPerDay = tokensPerBlock.times(blocksPerDay);
-        return this.weiToEther(tokensPerDay.integerValue());
+        return this.weiToEther(tokensPerDay.toFixed());
     }
 
     _debugLog(message) {
