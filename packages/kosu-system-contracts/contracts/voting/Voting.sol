@@ -22,6 +22,7 @@ contract Voting {
         uint revealEndBlock;
         uint currentLeadingOption;
         uint leadingTokens;
+        uint totalRevealedTokens;
         mapping(uint => uint) voteValues;
         mapping(address => bool) didCommit;
         mapping(address => bool) didReveal;
@@ -128,6 +129,7 @@ contract Voting {
         v.voteOption = _voteOption;
         p.didReveal[msg.sender] = true;
         p.voteValues[_voteOption] = p.voteValues[_voteOption].add(v.tokensCommitted);
+        p.totalRevealedTokens = p.totalRevealedTokens.add(v.tokensCommitted);
 
         //Update winner and tracking
         if(p.currentLeadingOption != _voteOption && p.voteValues[_voteOption] > p.leadingTokens) {
@@ -147,6 +149,12 @@ contract Voting {
         Poll memory p = polls[_pollId];
         require(p.revealEndBlock < block.number);
         return p.leadingTokens;
+    }
+
+    function totalRevealedTokens(uint _pollId) public view returns (uint) {
+        Poll memory p = polls[_pollId];
+        require(p.revealEndBlock < block.number);
+        return p.totalRevealedTokens;
     }
 
     function userWinningTokens(uint _pollId, address _user) public view returns (uint tokens) {
