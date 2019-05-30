@@ -1,6 +1,7 @@
 package abci
 
 import (
+	"encoding/hex"
 	"errors"
 	"fmt"
 	"regexp"
@@ -8,6 +9,7 @@ import (
 	abci "github.com/tendermint/tendermint/abci/types"
 	cfg "github.com/tendermint/tendermint/config"
 	"github.com/tendermint/tendermint/libs/db"
+	"github.com/tendermint/tendermint/libs/log"
 
 	"go-kosu/abci/types"
 	"go-kosu/store"
@@ -26,11 +28,18 @@ type App struct {
 	tree  *store.StateTree
 
 	handlers map[*regexp.Regexp]QueryHandler
+
+	log log.Logger
 }
 
 // NewApp returns a new ABCI App
 func NewApp(state *store.State, db db.DB, homedir string) *App {
 	config, err := LoadConfig(homedir)
+	if err != nil {
+		panic(err)
+	}
+
+	logger, err := NewLogger(config)
 	if err != nil {
 		panic(err)
 	}
@@ -41,6 +50,7 @@ func NewApp(state *store.State, db db.DB, homedir string) *App {
 		tree:     tree,
 		Config:   config,
 		handlers: make(map[*regexp.Regexp]QueryHandler),
+		log:      logger.With("module", "app"),
 	}
 	app.registerHandlers()
 
@@ -55,6 +65,11 @@ func (app *App) Info(req abci.RequestInfo) abci.ResponseInfo {
 		LastBlockHeight:  app.tree.CommitInfo.Version,
 		LastBlockAppHash: app.tree.CommitInfo.Hash,
 	}
+
+	app.log.Info("-- INFO --",
+		"hash", hex.EncodeToString(res.LastBlockAppHash),
+		"ver", res.LastBlockHeight,
+	)
 
 	if err := app.state.UpdateFromTree(app.tree); err != nil {
 		panic(err)

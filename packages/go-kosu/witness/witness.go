@@ -4,9 +4,11 @@ import (
 	"context"
 	"encoding/hex"
 	"fmt"
-	"log"
 	"math/big"
+	"os"
 	"sync"
+
+	"github.com/tendermint/tendermint/libs/log"
 
 	"go-kosu/abci"
 	"go-kosu/abci/types"
@@ -72,6 +74,7 @@ type Witness struct {
 	client   *abci.Client
 	provider Provider
 	opts     Options
+	log      log.Logger
 
 	roundMutex sync.RWMutex
 	roundInfo  store.RoundInfo
@@ -82,7 +85,16 @@ type Witness struct {
 
 // New returns a new instance of the witness process
 func New(client *abci.Client, p Provider, opts Options) *Witness {
-	return &Witness{client: client, provider: p, opts: opts}
+	w := &Witness{client: client, provider: p, opts: opts}
+	return w.WithLogger(log.NewTMLogger(os.Stdout))
+}
+
+func (w *Witness) WithLogger(logger log.Logger) *Witness {
+	if logger == nil {
+		logger = log.NewNopLogger()
+	}
+	w.log = logger.With("module", "witness")
+	return w
 }
 
 // Start starts the rebalancer and the event forwarder
@@ -92,7 +104,6 @@ func (w *Witness) Start(ctx context.Context) error {
 		return err
 	}
 	w.initHeight = num
-	log.Printf("witness: started with initHeight = %d", num)
 
 	// Load the current RoundInfo and keep it local
 	info, err := w.client.QueryRoundInfo()
@@ -102,8 +113,8 @@ func (w *Witness) Start(ctx context.Context) error {
 	w.roundMutex.Lock()
 	w.roundInfo.FromProto(info)
 	w.roundMutex.Unlock()
-	log.Printf("witness: started with RoundInfo = %v", info)
 
+	w.log.Info("started", "initHeight", num, "RoundInfo", info)
 	if err := w.subscribe(ctx); err != nil {
 		return err
 	}
@@ -125,7 +136,7 @@ func (w *Witness) subscribe(ctx context.Context) error {
 		for e := range sub {
 			info, err := abci.NewRoundInfoFromTags(e.Tags)
 			if err != nil {
-				log.Printf("subscribe: invalid tags: %+v", err)
+				w.log.Error("subscribe: invalid tags", "err", err)
 				continue
 			}
 
@@ -136,7 +147,7 @@ func (w *Witness) subscribe(ctx context.Context) error {
 			w.roundInfo.EndsAt = info.EndsAt
 			w.roundMutex.Unlock()
 
-			log.Printf("detected rebalance tx in block, now on round %v", info)
+			w.log.Info("detected rebalance tx in block, now on round", info)
 		}
 	}()
 
@@ -148,10 +159,10 @@ func (w *Witness) forward(ctx context.Context) error {
 	return ForwardEvents(ctx, w.provider, 10, func(e *Event) {
 		res, err := w.client.BroadcastTxSync(e.WitnessTx())
 		if err != nil {
-			log.Printf("BroadcastTxSync: %+v", err)
+			w.log.Error("BroadcastTxSync", "err", err)
 			return
 		}
-		log.Printf("witness event: %+v (%s)", e, res.Log)
+		w.log.Info("witness event", "event", e, "log", res.Log)
 	})
 }
 
@@ -160,7 +171,7 @@ func (w *Witness) handleBlocks(ctx context.Context) error {
 	errCh := make(chan error)
 	go func() {
 		err := w.provider.WatchBlocks(ctx, ch)
-		log.Printf("WatchBlocks: err = %+v\n", err)
+		w.log.Error("WatchBlocks", "err", err)
 		errCh <- err
 		close(ch)
 	}()
@@ -169,7 +180,7 @@ func (w *Witness) handleBlocks(ctx context.Context) error {
 		if block == nil {
 			break
 		}
-		log.Printf("witness: new block %s", block)
+		w.log.Info("witness: new block", block)
 
 		num := w.roundInfo.Number
 		cur := block.Number.Uint64()
@@ -179,7 +190,7 @@ func (w *Witness) handleBlocks(ctx context.Context) error {
 		// If it's the first block || round has ended
 		if (num == 0 && (cur > w.initHeight)) || mat >= w.roundInfo.EndsAt {
 			if err := w.rebalance(num, cur); err != nil {
-				log.Printf("rebalance: %+v", err)
+				w.log.Error("rebalance", "err", err)
 			}
 		}
 	}
@@ -201,7 +212,7 @@ func (w *Witness) rebalance(round, start uint64) error {
 		return err
 	}
 
-	log.Printf("res = %+v\n", res)
+	w.log.Info("rebalance", "result", res)
 	return nil
 }
 

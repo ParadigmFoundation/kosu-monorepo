@@ -10,7 +10,10 @@ import (
 
 	"github.com/spf13/viper"
 	"github.com/tendermint/tendermint/config"
+	cfg "github.com/tendermint/tendermint/config"
+	tmflags "github.com/tendermint/tendermint/libs/cli/flags"
 	"github.com/tendermint/tendermint/libs/common"
+	"github.com/tendermint/tendermint/libs/log"
 )
 
 const (
@@ -77,4 +80,19 @@ func LoadPrivateKey(homedir string) ([]byte, error) {
 	}
 
 	return base64.StdEncoding.DecodeString(filepv.PrivKey.Value)
+}
+
+// NewLogger creates a new logger out of a given config
+func NewLogger(config *cfg.Config) (log.Logger, error) {
+	var w log.Logger
+	switch config.LogFormat {
+	case "json":
+		w = log.NewTMJSONLogger(os.Stdout)
+	case "", "plain":
+		w = log.NewTMLogger(os.Stdout)
+	case "none":
+		w = log.NewNopLogger()
+	}
+
+	return tmflags.ParseLogLevel(config.LogLevel, w, "error")
 }
