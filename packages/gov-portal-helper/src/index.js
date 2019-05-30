@@ -84,6 +84,8 @@ class Gov {
         for (const listing of listings) {
             await this._processListing(listing);
         }
+        const startupBlock = await this.web3.eth.getBlockNumber();
+        this.kosu.eventEmitter.getFutureDecodedLogs(startupBlock + 1, this._handleEvents);
     }
 
     /**
@@ -259,6 +261,45 @@ class Gov {
 
         this._addChallenge(listing.tendermintPublicKey, challenge);
     }
+
+    async _handleEvents(events) {
+        for (const event of events) {
+            const { decodedArgs } = event;
+            switch (decodedArgs.eventType) {
+                case "ValidatorRegistered":
+                    const registeredListing = await this.kosu.validatorRegistry.getListing(decodedArgs.tendermintPublicKey);
+                    await this._processProposal(registeredListing.tendermintPublicKey, registeredListing);
+                    break;
+                case "ValidatorChallenged":
+                    const challengedListing = await this.kosu.validatorRegistry.getListing(decodedArgs.tendermintPublicKey);
+                    delete this.proposals[challengedListing.tendermintPublicKey];
+                    delete this.validators[challengedListing.tendermintPublicKey];
+                    await this._processChallenge(challengedListing.tendermintPublicKey, challengedListing);
+                    break;
+                case "ValidatorRemoved":
+                    const removedListing = await this.kosu.validatorRegistry.getListing(decodedArgs.tendermintPublicKey);
+                    delete this.proposals[removedListing.tendermintPublicKey];
+                    delete this.validators[removedListing.tendermintPublicKey];
+                    delete this.challenges[removedListing.tendermintPublicKey];
+                    break;
+                case "ValidatorChallengeResolved":
+                    const resolvedChallengeListing = await this.kosu.validatorRegistry.getListing(decodedArgs.tendermintPublicKey);
+                    delete this.challenges[resolvedChallengeListing.tendermintPublicKey];
+                    if (resolvedChallengeListing.status === 1) {
+                        await this._processProposal(resolvedChallengeListing.tendermintPublicKey, resolvedChallengeListing)
+                    } else if (resolvedChallengeListing.status === 2) {
+                        await this._processValidator(resolvedChallengeListing.tendermintPublicKey, resolvedChallengeListing)
+                    }
+                    break;
+                case "ValidatorConfirmed":
+                    const confirmedListing = await this.kosu.validatorRegistry.getListing(decodedArgs.tendermintPublicKey);
+                    delete this.proposals[confirmedListing.tendermintPublicKey];
+                    await this._processValidator(confirmedListing.tendermintPublicKey, confirmedListing)
+                    break;
+                default:
+                    console.warn(`Unrecognized eventType: ${eventType}`);
+            }
+        }
     }
 
     _addProposal(pubKey, proposal) {
