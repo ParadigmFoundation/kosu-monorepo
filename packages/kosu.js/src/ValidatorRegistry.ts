@@ -307,7 +307,7 @@ export class ValidatorRegistry {
         }
 
         return this.web3.utils.padRight(out, 64);
-    }
+    };
 
     /**
      * Converts hex encoded public key back to tendermint base64

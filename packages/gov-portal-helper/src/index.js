@@ -237,12 +237,10 @@ class Gov {
 
         this._debugLog(`Challenge type: ${challengeType}`);
 
-
         const listingChallenge = await this.kosu.validatorRegistry.getChallenge(listing.currentChallenge);
         const listingStake = this.weiToEther(listing.stakedBalance);
         const listingPower = "0"; // @todo
         const challengeEndUnix = await this.estimateFutureBlockTimestamp(listingChallenge.challengeEnd);
-
 
         const challenge = {
             listingOwner: listing.owner,
@@ -266,39 +264,57 @@ class Gov {
             this._debugLog(`Handling event: ${JSON.stringify(decodedArgs)}`);
             switch (decodedArgs.eventType) {
                 case "ValidatorRegistered":
-                    const registeredListing = await this.kosu.validatorRegistry.getListing(decodedArgs.tendermintPublicKey);
-                    this._debugLog(`Event type: ${decodedArgs.eventType}\nListing: ${JSON.stringify(registeredListing)}`);
+                    const registeredListing = await this.kosu.validatorRegistry.getListing(
+                        decodedArgs.tendermintPublicKey,
+                    );
+                    this._debugLog(
+                        `Event type: ${decodedArgs.eventType}\nListing: ${JSON.stringify(registeredListing)}`,
+                    );
                     await this._processProposal(registeredListing);
                     break;
                 case "ValidatorChallenged":
-                    const challengedListing = await this.kosu.validatorRegistry.getListing(decodedArgs.tendermintPublicKey);
-                    this._debugLog(`Event type: ${decodedArgs.eventType}\nListing: ${JSON.stringify(challengedListing)}`);
+                    const challengedListing = await this.kosu.validatorRegistry.getListing(
+                        decodedArgs.tendermintPublicKey,
+                    );
+                    this._debugLog(
+                        `Event type: ${decodedArgs.eventType}\nListing: ${JSON.stringify(challengedListing)}`,
+                    );
                     delete this.proposals[decodedArgs.tendermintPublicKeyHex];
                     delete this.validators[decodedArgs.tendermintPublicKeyHex];
                     await this._processChallenge(challengedListing);
                     break;
                 case "ValidatorRemoved":
-                    const removedListing = await this.kosu.validatorRegistry.getListing(decodedArgs.tendermintPublicKey);
+                    const removedListing = await this.kosu.validatorRegistry.getListing(
+                        decodedArgs.tendermintPublicKey,
+                    );
                     this._debugLog(`Event type: ${decodedArgs.eventType}\nListing: ${JSON.stringify(removedListing)}`);
                     delete this.proposals[decodedArgs.tendermintPublicKeyHex];
                     delete this.validators[decodedArgs.tendermintPublicKeyHex];
                     delete this.challenges[decodedArgs.tendermintPublicKeyHex];
                     break;
                 case "ValidatorChallengeResolved":
-                    const resolvedChallengeListing = await this.kosu.validatorRegistry.getListing(decodedArgs.tendermintPublicKey);
-                    this._debugLog(`Event type: ${decodedArgs.eventType}\nListing: ${JSON.stringify(resolvedChallengeListing)}`);
+                    const resolvedChallengeListing = await this.kosu.validatorRegistry.getListing(
+                        decodedArgs.tendermintPublicKey,
+                    );
+                    this._debugLog(
+                        `Event type: ${decodedArgs.eventType}\nListing: ${JSON.stringify(resolvedChallengeListing)}`,
+                    );
                     delete this.challenges[decodedArgs.tendermintPublicKeyHex];
                     if (resolvedChallengeListing.status === 1) {
-                        await this._processProposal(resolvedChallengeListing)
+                        await this._processProposal(resolvedChallengeListing);
                     } else if (resolvedChallengeListing.status === 2) {
-                        await this._processValidator(resolvedChallengeListing)
+                        await this._processValidator(resolvedChallengeListing);
                     }
                     break;
                 case "ValidatorConfirmed":
-                    const confirmedListing = await this.kosu.validatorRegistry.getListing(decodedArgs.tendermintPublicKey);
-                    this._debugLog(`Event type: ${decodedArgs.eventType}\nListing: ${JSON.stringify(confirmedListing)}`);
+                    const confirmedListing = await this.kosu.validatorRegistry.getListing(
+                        decodedArgs.tendermintPublicKey,
+                    );
+                    this._debugLog(
+                        `Event type: ${decodedArgs.eventType}\nListing: ${JSON.stringify(confirmedListing)}`,
+                    );
                     delete this.proposals[decodedArgs.tendermintPublicKeyHex];
-                    await this._processValidator(confirmedListing)
+                    await this._processValidator(confirmedListing);
                     break;
                 case "ValidatorRegistryUpdate":
                     // Do nothing
