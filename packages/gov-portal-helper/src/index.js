@@ -144,13 +144,12 @@ class Gov {
     async estimateFutureBlockTimestamp(block) {
         const nowUnixSec = Math.floor(Date.now() / 1000);
         const currentBlock = await this.web3.eth.getBlockNumber();
-        const diff = parseInt(block) - currentBlock;
-        if (diff < 0) {
-            throw new Error("block has been mined");
+        if (currentBlock > block) {
+            return null;
         }
+        const diff = parseInt(block) - currentBlock;
         const estSeconds = diff * 13.5;
-        const ts = Math.floor(nowUnixSec + estSeconds);
-        return ts;
+        return Math.floor(nowUnixSec + estSeconds);
     }
 
     async _processListing(listing) {
