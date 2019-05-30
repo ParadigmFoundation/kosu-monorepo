@@ -345,6 +345,7 @@ class Gov {
 
     _addValidator(pubKey, validator) {
         this.validators[pubKey] = validator;
+        this._updateVotePowers();
         this.ee.emit("gov_newValidator", validator);
 
         this._debugLog(`New validator:\n${JSON.stringify(validator, null, 2)}`);
@@ -364,6 +365,23 @@ class Gov {
         const tokensPerBlock = rate.div(rewardPeriod);
         const tokensPerDay = tokensPerBlock.times(blocksPerDay);
         return this.weiToEther(tokensPerDay.toFixed());
+    }
+
+    _updateVotePowers() {
+        let totalStake = new BigNumber(0);
+        const ONE_HUNDRED = new BigNumber(100);
+        Object.keys(this.validators).forEach((id) => {
+            const validator = this.validators[id];
+            const stake = new BigNumber(validator.stakeSize);
+            totalStake = totalStake.plus(stake);
+        });
+        Object.keys(this.validators).forEach((id) => {
+            const validator = this.validators[id];
+            const stake = new BigNumber(validator.stakeSize);
+            const power = stake.div(totalStake).times(ONE_HUNDRED);
+            validator.power = power.toString();
+            console.log(power.toString());
+        });
     }
 
     _debugLog(message) {
