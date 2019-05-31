@@ -427,65 +427,73 @@ class Gov {
             this._debugLog(`Handling event: ${JSON.stringify(decodedArgs)}`);
             switch (decodedArgs.eventType) {
                 case "ValidatorRegistered":
-                    const registeredListing = await this.kosu.validatorRegistry.getListing(
-                        decodedArgs.tendermintPublicKey,
-                    );
+                    const registeredListing = await this._getListing(decodedArgs.tendermintPublicKey,);
                     this._debugLog(
                         `Event type: ${decodedArgs.eventType}\nListing: ${JSON.stringify(registeredListing)}`,
                     );
+
                     await this._processProposal(registeredListing);
+                    
+                    this.ee.emit("gov_update");
                     break;
                 case "ValidatorChallenged":
-                    const challengedListing = await this.kosu.validatorRegistry.getListing(
-                        decodedArgs.tendermintPublicKey,
-                    );
+                    const challengedListing = await this._getListing(decodedArgs.tendermintPublicKey);
                     this._debugLog(
                         `Event type: ${decodedArgs.eventType}\nListing: ${JSON.stringify(challengedListing)}`,
                     );
+
                     delete this.proposals[decodedArgs.tendermintPublicKeyHex];
                     delete this.validators[decodedArgs.tendermintPublicKeyHex];
                     await this._processChallenge(challengedListing);
+                    
+                    this.ee.emit("gov_update");
                     break;
                 case "ValidatorRemoved":
-                    const removedListing = await this.kosu.validatorRegistry.getListing(
-                        decodedArgs.tendermintPublicKey,
-                    );
+                    const removedListing = await this._getListing(decodedArgs.tendermintPublicKey,);
                     this._debugLog(`Event type: ${decodedArgs.eventType}\nListing: ${JSON.stringify(removedListing)}`);
+
                     delete this.proposals[decodedArgs.tendermintPublicKeyHex];
                     delete this.validators[decodedArgs.tendermintPublicKeyHex];
                     delete this.challenges[decodedArgs.tendermintPublicKeyHex];
+
+                    this.ee.emit("gov_update");
                     break;
                 case "ValidatorChallengeResolved":
-                    const resolvedChallengeListing = await this.kosu.validatorRegistry.getListing(
-                        decodedArgs.tendermintPublicKey,
-                    );
+                    const resolvedChallengeListing = await this._getListing(decodedArgs.tendermintPublicKey);
                     this._debugLog(
                         `Event type: ${decodedArgs.eventType}\nListing: ${JSON.stringify(resolvedChallengeListing)}`,
                     );
+
                     delete this.challenges[decodedArgs.tendermintPublicKeyHex];
                     if (resolvedChallengeListing.status === 1) {
                         await this._processProposal(resolvedChallengeListing);
                     } else if (resolvedChallengeListing.status === 2) {
                         await this._processValidator(resolvedChallengeListing);
                     }
+                    
+                    this.ee.emit("gov_update");
                     break;
                 case "ValidatorConfirmed":
-                    const confirmedListing = await this.kosu.validatorRegistry.getListing(
-                        decodedArgs.tendermintPublicKey,
-                    );
+                    const confirmedListing = await this._getListing(decodedArgs.tendermintPublicKey);
                     this._debugLog(
                         `Event type: ${decodedArgs.eventType}\nListing: ${JSON.stringify(confirmedListing)}`,
                     );
+
                     delete this.proposals[decodedArgs.tendermintPublicKeyHex];
                     await this._processValidator(confirmedListing);
+                    
+                    this.ee.emit("gov_update");
                     break;
                 case "ValidatorRegistryUpdate":
-                    // Do nothing
                     break;
                 default:
                     console.warn(`Unrecognized eventType: ${decodedArgs.eventType}`);
             }
         }
+    }
+
+    async _getListing(pubKey) {
+        return await this.kosu.validatorRegistry.getListing(pubKey);
     }
 
     async _getValidatorPower(pubKey) {
@@ -527,7 +535,6 @@ class Gov {
 
     _addProposal(pubKey, proposal) {
         this.proposals[pubKey] = proposal;
-        this.ee.emit("gov_newProposal", proposal);
 
         this._debugLog(`New proposal:\n${JSON.stringify(proposal, null, 2)}`);
     }
@@ -535,14 +542,12 @@ class Gov {
     _addValidator(pubKey, validator) {
         this.validators[pubKey] = validator;
         this._updateVotePowers();
-        this.ee.emit("gov_newValidator", validator);
 
         this._debugLog(`New validator:\n${JSON.stringify(validator, null, 2)}`);
     }
 
     _addChallenge(pubKey, challenge) {
         this.challenges[pubKey] = challenge;
-        this.ee.emit("gov_newChallenge", challenge);
 
         this._debugLog(`New challenge:\n${JSON.stringify(challenge, null, 2)}`);
     }
