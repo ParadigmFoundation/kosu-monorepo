@@ -35,6 +35,7 @@ interface Challenge {
     finalized: boolean;
     passed: boolean;
     details: string;
+    listingSnapshot: Listing;
 }
 
 interface PrettyListing extends Listing {

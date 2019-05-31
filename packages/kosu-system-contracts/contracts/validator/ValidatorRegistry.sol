@@ -154,10 +154,22 @@ contract ValidatorRegistry is IValidatorRegistry, Authorizable {
 
     }
 
+    /** @dev Expose listings
+        @notice Expose listings
+        @param pubKeys Hex encoded tendermint public keys
+    */
+    function getListings(bytes32[] memory pubKeys) public view returns (Listing[] memory) {
+        Listing[] memory listings = new Listing[](pubKeys.length);
+        for(uint i = 0; i < pubKeys.length; i++) {
+            listings[i] = _listings[pubKeys[i]];
+        }
+        return listings;
+    }
+
     /** @dev Expose all listings
         @notice Expose all listings
     */
-    function getListings() public view returns (Listing[] memory) {
+    function getAllListings() public view returns (Listing[] memory) {
         Listing[] memory listings = new Listing[](_listingKeys.length);
         for(uint i = 0; i < _listingKeys.length; i++) {
             listings[i] = _listings[_listingKeys[i]];
@@ -165,13 +177,36 @@ contract ValidatorRegistry is IValidatorRegistry, Authorizable {
         return listings;
     }
 
-    /** @dev Expose listing data
-        @notice Expose listing data
-        @param challengeId Hex encoded tendermint public key
+    /** @dev Expose challenge data
+        @notice Expose challenge data
+        @param challengeId challenge id
     */
     function getChallenge(uint challengeId) public view returns (Challenge memory) {
         return _challenges[challengeId];
 
+    }
+
+    /** @dev Expose challenge data
+        @notice Expose challenge data
+        @param challengeIds challenge id
+    */
+    function getChallenges(uint[] memory challengeIds) public view returns (Challenge[] memory) {
+        Challenge[] memory challenges = new Challenge[](challengeIds.length);
+        for(uint i = 0; i < challengeIds.length; i++) {
+            challenges[i] = _challenges[challengeIds[i]];
+        }
+        return challenges;
+    }
+
+    /** @dev Expose all challenges
+        @notice Expose all challenges
+    */
+    function getAllChallenges() public view returns (Challenge[] memory) {
+        Challenge[] memory challenges = new Challenge[](nextChallenge - 1);
+        for(uint i = 0; i < nextChallenge; i++) {
+            challenges[i] = _challenges[i];
+        }
+        return challenges;
     }
 
     /** @dev Register a listing

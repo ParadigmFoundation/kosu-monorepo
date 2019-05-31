@@ -83,10 +83,19 @@ interface IValidatorRegistry {
     function getListing(bytes32) external view returns (Listing memory);
 
     /** @dev Interface method */
-    function getListings() external view returns (Listing[] memory);
+    function getListings(bytes32[] calldata) external view returns (Listing[] memory);
+
+    /** @dev Interface method */
+    function getAllListings() external view returns (Listing[] memory);
 
     /** @dev Interface method */
     function getChallenge(uint) external view returns (Challenge memory);
+
+    /** @dev Interface method */
+    function getChallenges(uint[] calldata) external view returns (Challenge[] memory);
+
+    /** @dev Interface method */
+    function getAllChallenges() external view returns (Challenge[] memory);
 
     /** @dev Interface method */
     function registerListing(address, bytes32, uint, int, string calldata) external;

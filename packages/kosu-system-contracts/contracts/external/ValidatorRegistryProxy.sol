@@ -137,23 +137,51 @@ contract ValidatorRegistryProxy is Authorizable {
 
     /** @dev Reads the current registries listing entries
         @notice Reads the current registries listing entries
+        @param _pubKeys List if public keys to read
         @return The listings
     */
-    function getListings() external view returns
+    function getListings(bytes32[] calldata _pubKeys) external view returns
     (IValidatorRegistry.Listing[] memory)
     {
-        return registry.getListings();
+        return registry.getListings(_pubKeys);
     }
 
-    /** @dev Reads the current registries listing entry for provided key.
-        @notice Reads the current registries listing entry for provided key.
-        @param challengeId hex encoded tendermint public used as listing mapping key
+    /** @dev Reads the current registries listing entries
+        @notice Reads the current registries listing entries
+        @return The listings
+    */
+    function getAllListings() external view returns
+    (IValidatorRegistry.Listing[] memory)
+    {
+        return registry.getAllListings();
+    }
+
+    /** @dev Reads the current registries challege
+        @notice Reads the current registries challege
+        @param challengeId challengeId
         @return The challenge
     */
     function getChallenge(uint challengeId) external view returns
     (IValidatorRegistry.Challenge memory)
     {
         return registry.getChallenge(challengeId);
+    }
+
+    /** @dev Reads the current registries challeges
+        @notice Reads the current registries challeges
+        @param challengeIds challengeIds
+        @return The challenges
+    */
+    function getChallenges(uint[] calldata challengeIds) external view returns (IValidatorRegistry.Challenge[] memory) {
+        return registry.getChallenges(challengeIds);
+    }
+
+    /** @dev Reads the current registries challeges
+        @notice Reads the current registries challeges
+        @return All challenges
+    */
+    function getAllChallenges() external view returns (IValidatorRegistry.Challenge[] memory) {
+        return registry.getAllChallenges();
     }
 
     /** @dev Executes registerListing on the current registry.

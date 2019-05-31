@@ -270,7 +270,7 @@ describe("ValidatorRegistry", async () => {
         });
 
         it("should return a list of listing keys", async () => {
-            const listings: Listing[] = await validatorRegistryProxy.getListings.callAsync();
+            const listings: Listing[] = await validatorRegistryProxy.getAllListings.callAsync();
 
             listings.length.should.eq(publicKeys.length);
             listings.forEach(listing => {
