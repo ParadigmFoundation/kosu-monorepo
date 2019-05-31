@@ -13,15 +13,7 @@ end projects for simplifying interaction with the governance system.</p>
 
 <dl>
 <dt><a href="#HistoricalActivity">HistoricalActivity</a> : <code>Object</code></dt>
-<dd><p>This method returns an object (described below) that contains all 
-historical listings (proposals and validators, including current) listings
-and information about all past challenges.</p>
-<p>It will take a significant amount of time (~12s) to resolve, and the
-return object can be large (on the order of 30 KB) depending on the number
-of past governance activities.</p>
-<p>Because it a) takes a long time to load and b) is network I/O intensive,
-it should only be called when the user requests to load all historical
-data.</p>
+<dd><p>represents a ValidatorRegistry listing</p>
 </dd>
 </dl>
 
@@ -42,6 +34,7 @@ end projects for simplifying interaction with the governance system.
     * [.weiToEther(wei)](#Gov+weiToEther) ⇒ <code>string</code>
     * [.etherToWei(ether)](#Gov+etherToWei) ⇒ <code>string</code>
     * [.estimateFutureBlockTimestamp(block)](#Gov+estimateFutureBlockTimestamp) ⇒ <code>number</code>
+    * [.getHistoricalActivity()](#Gov+getHistoricalActivity) ⇒ [<code>HistoricalActivity</code>](#HistoricalActivity)
 
 <a name="new_Gov_new"></a>
 
@@ -132,9 +125,9 @@ const unixTs = gov.estimateFutureBlockTimestamp(block);
 // use as a normal date object (multiply by 1000 to get ms)
 const blockDate = new Date(ts * 1000);
 ```
-<a name="HistoricalActivity"></a>
+<a name="Gov+getHistoricalActivity"></a>
 
-## HistoricalActivity : <code>Object</code>
+### gov.getHistoricalActivity() ⇒ [<code>HistoricalActivity</code>](#HistoricalActivity)
 This method returns an object (described below) that contains all 
 historical listings (proposals and validators, including current) listings
 and information about all past challenges.
@@ -146,6 +139,13 @@ of past governance activities.
 Because it a) takes a long time to load and b) is network I/O intensive,
 it should only be called when the user requests to load all historical
 data.
+
+**Kind**: instance method of [<code>Gov</code>](#Gov)  
+**Returns**: [<code>HistoricalActivity</code>](#HistoricalActivity) - all historical `challenges` and `listings`.  
+<a name="HistoricalActivity"></a>
+
+## HistoricalActivity : <code>Object</code>
+represents a ValidatorRegistry listing
 
 **Kind**: global typedef  
 
