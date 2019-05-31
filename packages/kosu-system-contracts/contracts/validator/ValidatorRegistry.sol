@@ -236,13 +236,8 @@ contract ValidatorRegistry is IValidatorRegistry, Authorizable {
             return;
         }
 
-        //Update the listing
-        listing.status = Status.CHALLENGED;
-        listing.currentChallenge = nextChallenge;
-
         //Create challenge
         Challenge storage challenge = _challenges[nextChallenge];
-        nextChallenge++;
 
         //Pull tokens out of the treasury
         _treasury.claimTokens(msgSender, listing.stakedBalance);
@@ -254,6 +249,14 @@ contract ValidatorRegistry is IValidatorRegistry, Authorizable {
         challenge.challengeEnd = block.number + _challengePeriod;
         challenge.pollId = _voting.createPoll(block.number + _commitPeriod, block.number + _challengePeriod);
         challenge.details = details;
+        challenge.listingSnapshot = listing;
+
+        //Update the listing
+        listing.status = Status.CHALLENGED;
+        listing.currentChallenge = nextChallenge;
+
+        //Increment challengeId
+        nextChallenge++;
 
         //Emit challenged event
         emitValidatorChallenged(listing.tendermintPublicKey, listing.owner, challenge.challenger, listing.currentChallenge, challenge.pollId, challenge.details);

@@ -40,6 +40,7 @@ interface IValidatorRegistry {
         bool finalized;
         bool passed;
         string details;
+        Listing listingSnapshot;
     }
 
     /** @dev Interface method */
