@@ -2,13 +2,14 @@ package main
 
 import (
 	"context"
-	"log"
+	stdlog "log"
 	"os/user"
 	"path/filepath"
 	"strings"
 
 	"github.com/spf13/cobra"
 	"github.com/tendermint/tendermint/libs/db"
+	"github.com/tendermint/tendermint/libs/log"
 
 	"go-kosu/abci"
 	"go-kosu/store"
@@ -41,7 +42,7 @@ func newDB(dir string, debug bool) (db.DB, error) {
 	return gdb, nil
 }
 
-func startWitness(ctx context.Context, ethAddr string, nodeAddr string, key []byte) error {
+func startWitness(ctx context.Context, ethAddr string, nodeAddr string, key []byte, logger log.Logger) error {
 	client := abci.NewHTTPClient(nodeAddr, key)
 	p, err := witness.NewEthereumProvider(ethAddr)
 
@@ -50,7 +51,7 @@ func startWitness(ctx context.Context, ethAddr string, nodeAddr string, key []by
 	}
 
 	w := witness.New(client, p, witness.DefaultOptions)
-	return w.Start(ctx)
+	return w.WithLogger(logger).Start(ctx)
 }
 
 func run(cfg *Config, key []byte) error {
@@ -64,12 +65,17 @@ func run(cfg *Config, key []byte) error {
 	if err != nil {
 		return err
 	}
+	logger, err := abci.NewLogger(app.Config)
+	if err != nil {
+		return err
+	}
+
 	// TODO, call defer srv.Stop() ?
 
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
 
-	if err := startWitness(ctx, ethAddr, nodeAddr, key); err != nil {
+	if err := startWitness(ctx, ethAddr, nodeAddr, key, logger); err != nil {
 		return err
 	}
 
@@ -88,7 +94,7 @@ func main() {
 		Short: "Starts the kosu node",
 		Run: func(cmd *cobra.Command, args []string) {
 			if err := run(&cfg, key); err != nil {
-				log.Fatal(err)
+				stdlog.Fatal(err)
 			}
 		},
 	}
@@ -101,19 +107,19 @@ func main() {
 		cfg.Home = expandPath(cfg.Home)
 		if cfg.Init {
 			if err := abci.InitTendermint(cfg.Home); err != nil {
-				log.Fatal(err)
+				stdlog.Fatal(err)
 			}
 		}
 
 		var err error
 		key, err = abci.LoadPrivateKey(cfg.Home)
 		if err != nil {
-			log.Fatal(err)
+			stdlog.Fatal(err)
 		}
 	})
 
 	if err := rootCmd.Execute(); err != nil {
-		log.Fatal(err)
+		stdlog.Fatal(err)
 	}
 }
 
