@@ -151,6 +151,145 @@ class Gov {
         return Math.floor(nowUnixSec + estSeconds);
     }
 
+    /**
+     * This method returns an object (described below) that contains all 
+     * historical listings (proposals and validators, including current) listings
+     * and information about all past challenges.
+     * 
+     * It will take a significant amount of time (~12s) to resolve, and the
+     * return object can be large (on the order of 30 KB) depending on the number
+     * of past governance activities.
+     * 
+     * Because it a) takes a long time to load and b) is network I/O intensive,
+     * it should only be called when the user requests to load all historical
+     * data.
+     * 
+     * @typedef {Object} Listing represents a ValidatorRegistry listing
+     * @param {string} owner the Ethereum address of the listing holder
+     * @param {BigNumber} rewardRate the number of KOSU (in wei) rewarded per period
+     * @param {BigNumber} applyBlock the block number the listing was created at
+     * @param {string} pubKey the hex-string Tendermint public key of the listing
+     * @param {string | null} confBlock the block the listing was confirmed to the registry at (`null` if they were never accepted).
+     * @param {string} status the most recent listing state ("proposal", "validator", or "removed")
+     * @param {boolean} inChallenge `true` if the listing has an open challenge against it
+     * @param {string | null} challenger the Ethereum address of the challenger, if the listing was challenged
+     * @param {number} challengeEnd the Ethereum block at which the challenge ends (or ended) and `null` if they were never challenged
+     * @param {string} challengeId the unique sequential ID number (as a string) that can be used to reference the challenge
+     * @param {string} pollId the underlying `pollId` from the voting contract; usually but not always equal to `challengeId`
+     * @param {string} challengeResult the result of the challenge, either "succeeded", "failed", or `null` (`null` if challenge is pending, or never happened).
+     * 
+     * @typedef {Object} Challenge represents a challenge and its results (if present)
+     * @param {string} listingKey the public key of the challenged listing
+     * @param {string} challenger the Ethereum address of the challenging entity
+     * @param {BigNumber} voterTotal the total amount of KOSU (in wei) that participated in the vote
+     * @param {BigNumber} 
+     * 
+     * @typedef {Object} HistoricalActivity a gigantic object with all governance activity
+     * @param {Array<Listing>} allListings an array of all historical listings
+     * @param {Array<Challenge>} allChallenges an arry of all historical challenges, and their results
+     */
+    async getHistoricalActivity() {
+        console.log(Date.now());
+        // output objects
+        const allListings = [];
+        const allChallenges = [];
+
+        // cache/temp-state tracking
+        const challenges = {};
+        const store = {};
+
+        const challengePeriod = (await this.kosu.validatorRegistry.challengePeriod()).toNumber();
+        const pastEvents = await this.kosu.eventEmitter.getPastDecodedLogs({
+            fromBlock: 0,
+        });
+
+        // process all historical events in order and run state transitions
+        pastEvents.forEach((event) => {
+            const decoded = event.decodedArgs;
+            const eventType = decoded.eventType;
+
+            switch (eventType) {
+                case "ValidatorRegistered": {
+                    store[decoded.tendermintPublicKeyHex] = {
+                        owner: decoded.owner,
+                        rewardRate: new BigNumber(decoded.rewardRate),
+                        applyBlock: new BigNumber(decoded.applicationBlockNumber),
+                        pubKey: decoded.tendermintPublicKeyHex,
+                        confBlock: null,
+                        status: "proposal",
+                        inChallenge: false,
+                        challenger: null,
+                        challengeEnd: null,
+                        challengeId: null,
+                        pollId: null,
+                        challengeResult: null,
+                    };
+                    break;
+                }
+                case "ValidatorConfirmed": {
+                    const listing = store[decoded.tendermintPublicKeyHex];
+                    listing.status = "validator";
+                    listing.confBlock = event.blockNumber;
+                    break;
+                }
+                case "ValidatorChallenged": {
+                    const listing = store[decoded.tendermintPublicKeyHex];
+
+                    listing.inChallenge = true;
+                    listing.challenger = decoded.challenger;
+                    listing.challengeId = decoded.challengeId;
+                    listing.pollId = decoded.pollId;
+                    listing.challengeEnd = event.blockNumber + challengePeriod;
+
+                    // load all challenge ID's (will be loaded later)
+                    challenges[decoded.challengeId] = null;
+                    break;
+                }
+                case "ValidatorRemoved": {
+                    const listing = store[decoded.tendermintPublicKeyHex];
+
+                    listing.status = "removed";
+                    listing.inChallenge = false;
+                    listing.challengeResult = "succeeded";
+                    break;
+                }
+                case "ValidatorChallengeResolved": {
+                    const listing = store[decoded.tendermintPublicKeyHex];
+
+                    listing.inChallenge = false;
+                    listing.challengeResult = "failed";
+                    break;
+                }
+            }
+        });
+
+        // load historical challenge results
+        for (const key in challenges) {
+            challenges[key] = await this.kosu.validatorRegistry.getChallenge(key);
+
+            const challenge = challenges[key];
+            challenge.totalTokens = await this.kosu.voting.totalRevealedTokens(challenge.pollId);
+            challenge.winningTokens = await this.kosu.voting.totalWinningTokens(challenge.pollId);
+        }
+
+        // convert store objects to arrays for output
+        Object.keys(store).forEach((id) => {
+            const listing = store[id];
+            allListings.push(listing);
+        });
+        Object.keys(challenges).forEach((id) => {
+            const challenge = challenges[id];
+            challenge.number = id;
+            allChallenges.push(challenge);
+        }); 
+
+        console.log(Date.now());
+        return {
+            allListings,
+            allChallenges
+        };
+    }
+
     async _processListing(listing) {
         switch (listing.status) {
             case 1: {
@@ -208,7 +347,7 @@ class Gov {
         }
 
         const owner = listing.owner;
-        const stakeSize = this.weiToEther(listing.stakedBalance);
+        const stakeSize = listing.stakedBalance;
         const dailyReward = this._estimateDailyReward(listing.rewardRate);
         const power = "0"; // @todo
 
@@ -239,7 +378,12 @@ class Gov {
 
         const listingChallenge = await this.kosu.validatorRegistry.getChallenge(listing.currentChallenge);
         const listingStake = this.weiToEther(listing.stakedBalance);
-        const listingPower = "0"; // @todo
+        
+        // copy over listing power if validator challenge
+        const listingPower = challengeType === "validator" ? 
+            await this._getValidatorPower(listing.tendermintPublicKey) :
+            null;
+        
         const challengeEndUnix = await this.estimateFutureBlockTimestamp(listingChallenge.challengeEnd);
 
         let totalTokens, winningTokens, result;
@@ -336,6 +480,43 @@ class Gov {
         }
     }
 
+    async _getValidatorPower(pubKey) {
+        let cache = {};
+        let power, stake;
+
+        const ZER0 = new BigNumber(0);
+        const ONE_HUNDRED = new BigNumber(100);
+
+        if (!/^0x[a-faF0-9]{64}$/.test(pubKey)) {
+            throw new Error("invalid public key");
+        }
+
+        const listings = await this.kosu.validatorRegistry.getListings();
+        listings.forEach((listing) => {
+            cache[listing.tendermintPublicKey] = listing;
+        });
+
+        const listing = cache[pubKey];
+        if (!listing || listing.confirmationBlock.eq(ZER0)) {
+            return "0";
+        }
+
+        let totalStake = new BigNumber(0);
+        Object.keys(cache).forEach((id) => {
+            const lst = cache[id];
+            if (lst.confirmationBlock.eq(ZER0)) {
+                return;
+            }
+
+            const stake = new BigNumber(cache[id].stakedBalance);
+            totalStake = totalStake.plus(stake);
+        });
+
+        stake = new BigNumber(cache[pubKey].stakedBalance);
+        power = stake.div(totalStake).times(ONE_HUNDRED);
+        return power.toString();
+    }
+
     _addProposal(pubKey, proposal) {
         this.proposals[pubKey] = proposal;
         this.ee.emit("gov_newProposal", proposal);
@@ -380,7 +561,6 @@ class Gov {
             const stake = new BigNumber(validator.stakeSize);
             const power = stake.div(totalStake).times(ONE_HUNDRED);
             validator.power = power.toString();
-            console.log(power.toString());
         });
     }
 
