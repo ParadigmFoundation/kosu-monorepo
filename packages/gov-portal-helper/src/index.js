@@ -5,28 +5,28 @@ const { Kosu } = require("@kosu/kosu.js");
 
 /**
  * @typedef {Object} Listing represents a ValidatorRegistry listing
- * @param {string} owner the Ethereum address of the listing holder
- * @param {BigNumber} rewardRate the number of KOSU (in wei) rewarded per period
- * @param {BigNumber} applyBlock the block number the listing was created at
- * @param {string} pubKey the hex-string Tendermint public key of the listing
- * @param {string | null} confBlock the block the listing was confirmed to the registry at (`null` if they were never accepted).
- * @param {string} status the most recent listing state ("proposal", "validator", or "removed")
- * @param {boolean} inChallenge `true` if the listing has an open challenge against it
- * @param {string | null} challenger the Ethereum address of the challenger, if the listing was challenged
- * @param {number} challengeEnd the Ethereum block at which the challenge ends (or ended) and `null` if they were never challenged
- * @param {string} challengeId the unique sequential ID number (as a string) that can be used to reference the challenge
- * @param {string} pollId the underlying `pollId` from the voting contract; usually but not always equal to `challengeId`
- * @param {string} challengeResult the result of the challenge, either "succeeded", "failed", or `null` (`null` if challenge is pending, or never happened).
+ * @property {string} owner the Ethereum address of the listing holder
+ * @property {BigNumber} rewardRate the number of KOSU (in wei) rewarded per period
+ * @property {BigNumber} applyBlock the block number the listing was created at
+ * @property {string} pubKey the hex-string Tendermint public key of the listing
+ * @property {string | null} confBlock the block the listing was confirmed to the registry at (`null` if they were never accepted).
+ * @property {string} status the most recent listing state ("proposal", "validator", or "removed")
+ * @property {boolean} inChallenge `true` if the listing has an open challenge against it
+ * @property {string | null} challenger the Ethereum address of the challenger, if the listing was challenged
+ * @property {number} challengeEnd the Ethereum block at which the challenge ends (or ended) and `null` if they were never challenged
+ * @property {string} challengeId the unique sequential ID number (as a string) that can be used to reference the challenge
+ * @property {string} pollId the underlying `pollId` from the voting contract; usually but not always equal to `challengeId`
+ * @property {string} challengeResult the result of the challenge, either "succeeded", "failed", or `null` (`null` if challenge is pending, or never happened).
  * 
  * @typedef {Object} Challenge represents a challenge and its results (if present)
- * @param {string} listingKey the public key of the challenged listing
- * @param {string} challenger the Ethereum address of the challenging entity
- * @param {BigNumber} voterTotal the total amount of KOSU (in wei) that participated in the vote
- * @param {BigNumber} 
+ * @property {string} listingKey the public key of the challenged listing
+ * @property {string} challenger the Ethereum address of the challenging entity
+ * @property {BigNumber} voterTotal the total amount of KOSU (in wei) that participated in the vote
+ * @property {BigNumber} 
  * 
  * @typedef {Object} HistoricalActivity a gigantic object with all governance activity
- * @param {Array<Listing>} allListings an array of all historical listings
- * @param {Array<Challenge>} allChallenges an arry of all historical challenges, and their results
+ * @property {Array<Listing>} allListings an array of all historical listings
+ * @property {Array<Challenge>} allChallenges an arry of all historical challenges, and their results
  */
 
 /**

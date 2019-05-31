@@ -148,8 +148,9 @@ data.
 represents a ValidatorRegistry listing
 
 **Kind**: global typedef  
+**Properties**
 
-| Param | Type | Description |
+| Name | Type | Description |
 | --- | --- | --- |
 | owner | <code>string</code> | the Ethereum address of the listing holder |
 | rewardRate | <code>BigNumber</code> | the number of KOSU (in wei) rewarded per period |
