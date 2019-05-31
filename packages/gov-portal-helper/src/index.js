@@ -4,7 +4,8 @@ const EventEmitter = require("events");
 const { Kosu } = require("@kosu/kosu.js");
 
 /**
- * @typedef {Object} Listing represents a ValidatorRegistry listing
+ * Represents a ValidatorRegistry listing
+ * @typedef {Object} Listing 
  * @property {string} owner the Ethereum address of the listing holder
  * @property {BigNumber} rewardRate the number of KOSU (in wei) rewarded per period
  * @property {BigNumber} applyBlock the block number the listing was created at
@@ -18,15 +19,17 @@ const { Kosu } = require("@kosu/kosu.js");
  * @property {string} pollId the underlying `pollId` from the voting contract; usually but not always equal to `challengeId`
  * @property {string} challengeResult the result of the challenge, either "succeeded", "failed", or `null` (`null` if challenge is pending, or never happened).
  * 
- * @typedef {Object} Challenge represents a challenge and its results (if present)
+ * Represents a challenge and its results (if present)
+ * @typedef {Object} Challenge 
  * @property {string} listingKey the public key of the challenged listing
  * @property {string} challenger the Ethereum address of the challenging entity
  * @property {BigNumber} voterTotal the total amount of KOSU (in wei) that participated in the vote
  * @property {BigNumber} 
  * 
- * @typedef {Object} HistoricalActivity a gigantic object with all governance activity
- * @property {Array<Listing>} allListings an array of all historical listings
- * @property {Array<Challenge>} allChallenges an arry of all historical challenges, and their results
+ * A gigantic object with all governance activity
+ * @typedef {Object} HistoricalActivity
+ * @property {Listing[]} allListings an array of all historical listings
+ * @property {Challenge[]} allChallenges an arry of all historical challenges, and their results
  */
 
 /**

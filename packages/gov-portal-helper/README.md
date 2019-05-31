@@ -13,7 +13,7 @@ end projects for simplifying interaction with the governance system.</p>
 
 <dl>
 <dt><a href="#HistoricalActivity">HistoricalActivity</a> : <code>Object</code></dt>
-<dd><p>represents a ValidatorRegistry listing</p>
+<dd><p>Represents a ValidatorRegistry listing</p>
 </dd>
 </dl>
 
@@ -145,7 +145,7 @@ data.
 <a name="HistoricalActivity"></a>
 
 ## HistoricalActivity : <code>Object</code>
-represents a ValidatorRegistry listing
+Represents a ValidatorRegistry listing
 
 **Kind**: global typedef  
 **Properties**
@@ -163,11 +163,11 @@ represents a ValidatorRegistry listing
 | challengeEnd | <code>number</code> | the Ethereum block at which the challenge ends (or ended) and `null` if they were never challenged |
 | challengeId | <code>string</code> | the unique sequential ID number (as a string) that can be used to reference the challenge |
 | pollId | <code>string</code> | the underlying `pollId` from the voting contract; usually but not always equal to `challengeId` |
-| challengeResult | <code>string</code> | the result of the challenge, either "succeeded", "failed", or `null` (`null` if challenge is pending, or never happened). |
+| challengeResult | <code>string</code> | the result of the challenge, either "succeeded", "failed", or `null` (`null` if challenge is pending, or never happened). Represents a challenge and its results (if present) |
 | listingKey | <code>string</code> | the public key of the challenged listing |
 | challenger | <code>string</code> | the Ethereum address of the challenging entity |
 | voterTotal | <code>BigNumber</code> | the total amount of KOSU (in wei) that participated in the vote |
-|  | <code>BigNumber</code> |  |
+| A | <code>BigNumber</code> | gigantic object with all governance activity |
 | allListings | <code>Array.&lt;Listing&gt;</code> | an array of all historical listings |
 | allChallenges | <code>Array.&lt;Challenge&gt;</code> | an arry of all historical challenges, and their results |
 
