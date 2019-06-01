@@ -4,7 +4,7 @@ const EventEmitter = require("events");
 const { Kosu } = require("@kosu/kosu.js");
 
 /**
- * @typedef {Object} Listing 
+ * @typedef {Object} Listing
  * @property {string} owner the Ethereum address of the listing holder
  * @property {BigNumber} rewardRate the number of KOSU (in wei) rewarded per period
  * @property {BigNumber} applyBlock the block number the listing was created at
@@ -20,11 +20,11 @@ const { Kosu } = require("@kosu/kosu.js");
  */
 
 /**
- * @typedef {Object} Challenge 
+ * @typedef {Object} Challenge
  * @property {string} listingKey the public key of the challenged listing
  * @property {string} challenger the Ethereum address of the challenging entity
  * @property {BigNumber} voterTotal the total amount of KOSU (in wei) that participated in the vote
- * @property {BigNumber} 
+ * @property {BigNumber}
  */
 
 /**
@@ -180,13 +180,19 @@ class Gov {
         const netId = await this.web3.eth.net.getId();
         switch (netId) {
             // mainnet
-            case 1: blockTimeSeconds = 13.5; break;
+            case 1:
+                blockTimeSeconds = 13.5;
+                break;
 
             // ropsten
-            case 3: blockTimeSeconds = 15; break;
+            case 3:
+                blockTimeSeconds = 15;
+                break;
 
             // kosu-poa dev net
-            case 6174: blockTimeSeconds = 2; break;
+            case 6174:
+                blockTimeSeconds = 2;
+                break;
 
             default: {
                 throw new Error("unknown blockTime for current network");
@@ -203,7 +209,7 @@ class Gov {
      * Retrieve the Unix timestamp of a block that has already been mined.
      * Should be used to display times of things that have happened (validator
      * confirmed, etc.).
-     * 
+     *
      * @param {number} blockNumber the block to get the unix timestamp for
      * @returns {number} the Unix timestamp of the specified `blockNumber`
      * @example
@@ -223,18 +229,18 @@ class Gov {
     }
 
     /**
-     * This method returns an object (described below) that contains all 
+     * This method returns an object (described below) that contains all
      * historical listings (proposals and validators, including current) listings
      * and information about all past challenges.
-     * 
+     *
      * It will take a significant amount of time (~12s) to resolve, and the
      * return object can be large (on the order of 30 KB) depending on the number
      * of past governance activities.
-     * 
+     *
      * Because it a) takes a long time to load and b) is network I/O intensive,
      * it should only be called when the user requests to load all historical
      * data.
-     * 
+     *
      * @returns {HistoricalActivity} all historical `challenges` and `listings`.
      */
     async getHistoricalActivity() {
@@ -253,7 +259,7 @@ class Gov {
         });
 
         // process all historical events in order and run state transitions
-        pastEvents.forEach((event) => {
+        pastEvents.forEach(event => {
             const decoded = event.decodedArgs;
             const eventType = decoded.eventType;
 
@@ -322,20 +328,20 @@ class Gov {
         }
 
         // convert store objects to arrays for output
-        Object.keys(store).forEach((id) => {
+        Object.keys(store).forEach(id => {
             const listing = store[id];
             allListings.push(listing);
         });
-        Object.keys(challenges).forEach((id) => {
+        Object.keys(challenges).forEach(id => {
             const challenge = challenges[id];
             challenge.number = id;
             allChallenges.push(challenge);
-        }); 
+        });
 
         console.log(Date.now());
         return {
             allListings,
-            allChallenges
+            allChallenges,
         };
     }
 
@@ -435,19 +441,19 @@ class Gov {
 
         const listingChallenge = await this.kosu.validatorRegistry.getChallenge(listing.currentChallenge);
         const listingStake = listing.stakedBalance;
-        
+
         // copy over listing power if validator challenge
-        const listingPower = challengeType === "validator" ? 
-            await this._getValidatorPower(listing.tendermintPublicKey) :
-            null;
-        
+        const listingPower =
+            challengeType === "validator" ? await this._getValidatorPower(listing.tendermintPublicKey) : null;
+
         const challengeEndUnix = await this.estimateFutureBlockTimestamp(listingChallenge.challengeEnd);
 
         let totalTokens, winningTokens, result;
-        if (challengeEndUnix <= Math.floor(Date.now()/1000)) {
+        if (challengeEndUnix <= Math.floor(Date.now() / 1000)) {
             totalTokens = await this.kosu.voting.totalRevealedTokens(listingChallenge.pollId);
             winningTokens = await this.kosu.voting.totalWinningTokens(listingChallenge.pollId);
-            result = await this.kosu.voting.winningOption(listingChallenge.pollId)
+            result = await this.kosu.voting
+                .winningOption(listingChallenge.pollId)
                 .then(option => (option.toString() === "1" ? "Passed" : "Failed"));
         }
 
@@ -485,7 +491,7 @@ class Gov {
             this._debugLog(`Handling event: ${JSON.stringify(decodedArgs)}`);
             switch (decodedArgs.eventType) {
                 case "ValidatorRegistered":
-                    const registeredListing = await this._getListing(decodedArgs.tendermintPublicKey,);
+                    const registeredListing = await this._getListing(decodedArgs.tendermintPublicKey);
                     this._debugLog(
                         `Event type: ${decodedArgs.eventType}\nListing: ${JSON.stringify(registeredListing)}`,
                     );
@@ -501,7 +507,7 @@ class Gov {
                     await this._processChallenge(challengedListing);
                     break;
                 case "ValidatorRemoved":
-                    const removedListing = await this._getListing(decodedArgs.tendermintPublicKey,);
+                    const removedListing = await this._getListing(decodedArgs.tendermintPublicKey);
                     this._debugLog(`Event type: ${decodedArgs.eventType}\nListing: ${JSON.stringify(removedListing)}`);
 
                     this._removeValidator(decodedArgs.tendermintPublicKeyHex);
@@ -543,7 +549,7 @@ class Gov {
         }
 
         const listings = await this.kosu.validatorRegistry.getListings();
-        listings.forEach((listing) => {
+        listings.forEach(listing => {
             cache[listing.tendermintPublicKey] = listing;
         });
 
@@ -553,7 +559,7 @@ class Gov {
         }
 
         let totalStake = new BigNumber(0);
-        Object.keys(cache).forEach((id) => {
+        Object.keys(cache).forEach(id => {
             const lst = cache[id];
             if (lst.confirmationBlock.eq(Gov.ZERO)) {
                 return;
@@ -616,7 +622,7 @@ class Gov {
 
     _updateVotePowers() {
         const totalStake = this._getTotalStake();
-        Object.keys(this.validators).forEach((id) => {
+        Object.keys(this.validators).forEach(id => {
             const validator = this.validators[id];
             const stake = new BigNumber(validator.stakeSize);
             const power = stake.div(totalStake).times(Gov.ONE_HUNDRED);
@@ -626,12 +632,12 @@ class Gov {
 
     _getTotalStake() {
         let totalStake = new BigNumber(0);
-        Object.keys(this.validators).forEach((id) => {
+        Object.keys(this.validators).forEach(id => {
             const validator = this.validators[id];
             const stake = new BigNumber(validator.stakeSize);
             totalStake = totalStake.plus(stake);
         });
-        Object.keys(this.challenges).forEach((id) => {
+        Object.keys(this.challenges).forEach(id => {
             const challenge = this.challenges[id];
             if (challenge.challengeType === "validator") {
                 const stake = new BigNumber(challenge.stakeSize);
@@ -666,15 +672,15 @@ class Gov {
 
 /**
  * Create new `BigNumber` instance. Identical to calling `BigNumber` constructor.
- * 
+ *
  * @param {number | string | BigNumber} input value to wrap as a BigNumber
  * @returns {BigNumber} the `BigNumber` version of `input`
  * @example
  * ```javascript
- * const bn = new Gov.BigNumber(10); 
+ * const bn = new Gov.BigNumber(10);
  * ```
  */
-Gov.BigNumber = (input) => new BigNumber(input);
+Gov.BigNumber = input => new BigNumber(input);
 
 /** The value `0` as an instance of`BigNumber`. */
 Gov.ZERO = new BigNumber(0);
