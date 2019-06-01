@@ -33,11 +33,19 @@ end projects for simplifying interaction with the governance system.
 
 * [Gov](#Gov)
     * [new Gov()](#new_Gov_new)
-    * [.init()](#Gov+init)
-    * [.weiToEther(wei)](#Gov+weiToEther) ⇒ <code>string</code>
-    * [.etherToWei(ether)](#Gov+etherToWei) ⇒ <code>string</code>
-    * [.estimateFutureBlockTimestamp(block)](#Gov+estimateFutureBlockTimestamp) ⇒ <code>number</code>
-    * [.getHistoricalActivity()](#Gov+getHistoricalActivity) ⇒ [<code>HistoricalActivity</code>](#HistoricalActivity)
+    * _instance_
+        * [.init()](#Gov+init)
+        * [.weiToEther(wei)](#Gov+weiToEther) ⇒ <code>string</code>
+        * [.etherToWei(ether)](#Gov+etherToWei) ⇒ <code>string</code>
+        * [.estimateFutureBlockTimestamp(blockNumber)](#Gov+estimateFutureBlockTimestamp) ⇒ <code>number</code>
+        * [.getPastBlockTimestamp(blockNumber)](#Gov+getPastBlockTimestamp) ⇒ <code>number</code>
+        * [.getHistoricalActivity()](#Gov+getHistoricalActivity) ⇒ [<code>HistoricalActivity</code>](#HistoricalActivity)
+    * _static_
+        * [.ZERO](#Gov.ZERO)
+        * [.ONE](#Gov.ONE)
+        * [.ONE_HUNDRED](#Gov.ONE_HUNDRED)
+        * [.BLOCKS_PER_DAY](#Gov.BLOCKS_PER_DAY)
+        * [.BigNumber(input)](#Gov.BigNumber) ⇒ <code>BigNumber</code>
 
 <a name="new_Gov_new"></a>
 
@@ -109,7 +117,7 @@ gov.etherToWei("1") // > "1000000000000000000"
 ```
 <a name="Gov+estimateFutureBlockTimestamp"></a>
 
-### gov.estimateFutureBlockTimestamp(block) ⇒ <code>number</code>
+### gov.estimateFutureBlockTimestamp(blockNumber) ⇒ <code>number</code>
 Estimate the UNIX timestamp (in seconds) at which a given `block` will be
 mined.
 
@@ -118,7 +126,7 @@ mined.
 
 | Param | Type | Description |
 | --- | --- | --- |
-| block | <code>number</code> | the block number to estimate the timestamp for |
+| blockNumber | <code>number</code> | the block number to estimate the timestamp for |
 
 **Example**  
 ```javascript
@@ -127,6 +135,24 @@ const unixTs = gov.estimateFutureBlockTimestamp(block);
 
 // use as a normal date object (multiply by 1000 to get ms)
 const blockDate = new Date(ts * 1000);
+```
+<a name="Gov+getPastBlockTimestamp"></a>
+
+### gov.getPastBlockTimestamp(blockNumber) ⇒ <code>number</code>
+Retrieve the Unix timestamp of a block that has already been mined.
+Should be used to display times of things that have happened (validator
+confirmed, etc.).
+
+**Kind**: instance method of [<code>Gov</code>](#Gov)  
+**Returns**: <code>number</code> - the Unix timestamp of the specified `blockNumber`  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| blockNumber | <code>number</code> | the block to get the unix timestamp for |
+
+**Example**  
+```javascript
+await gov.getPastBlockTimestamp(515237) // > 1559346404
 ```
 <a name="Gov+getHistoricalActivity"></a>
 
@@ -145,6 +171,46 @@ data.
 
 **Kind**: instance method of [<code>Gov</code>](#Gov)  
 **Returns**: [<code>HistoricalActivity</code>](#HistoricalActivity) - all historical `challenges` and `listings`.  
+<a name="Gov.ZERO"></a>
+
+### Gov.ZERO
+The value `0` as an instance of`BigNumber`.
+
+**Kind**: static property of [<code>Gov</code>](#Gov)  
+<a name="Gov.ONE"></a>
+
+### Gov.ONE
+The value `1` as an instance of`BigNumber`.
+
+**Kind**: static property of [<code>Gov</code>](#Gov)  
+<a name="Gov.ONE_HUNDRED"></a>
+
+### Gov.ONE\_HUNDRED
+The value `100` as an instance of`BigNumber`.
+
+**Kind**: static property of [<code>Gov</code>](#Gov)  
+<a name="Gov.BLOCKS_PER_DAY"></a>
+
+### Gov.BLOCKS\_PER\_DAY
+Estimated blocks per day (mainnet only).
+
+**Kind**: static property of [<code>Gov</code>](#Gov)  
+<a name="Gov.BigNumber"></a>
+
+### Gov.BigNumber(input) ⇒ <code>BigNumber</code>
+Create new `BigNumber` instance. Identical to calling `BigNumber` constructor.
+
+**Kind**: static method of [<code>Gov</code>](#Gov)  
+**Returns**: <code>BigNumber</code> - the `BigNumber` version of `input`  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| input | <code>number</code> \| <code>string</code> \| <code>BigNumber</code> | value to wrap as a BigNumber |
+
+**Example**  
+```javascript
+const bn = new Gov.BigNumber(10); 
+```
 <a name="Listing"></a>
 
 ## Listing : <code>Object</code>
