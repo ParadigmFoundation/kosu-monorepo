@@ -225,10 +225,10 @@ export class ValidatorRegistry {
 
         const listing: Listing = await this.getListing(_pubKey);
         const approval: BigNumber = await this.treasury.treasuryAllowance();
-        const currenBalance: BigNumber = await this.treasury.currentBalance(this.coinbase);
+        const currentBalance: BigNumber = await this.treasury.currentBalance(this.coinbase);
 
-        if (approval.plus(currenBalance).lt(listing.stakedBalance)) {
-            this.treasury.approveTreasury(listing.stakedBalance.minus(currenBalance));
+        if (approval.plus(currentBalance).lt(listing.stakedBalance)) {
+            await this.treasury.approveTreasury(listing.stakedBalance.minus(currentBalance));
         }
 
         return contract.challengeListing.awaitTransactionSuccessAsync(_pubKey, _details);
