@@ -15,7 +15,7 @@
         "lint": "wsrun --exclude-missing lint",
         "build": "wsrun --exclude-missing --stages build",
         "test": "wsrun --exclude-missing test",
-        "test:ci": "wsrun --exclude-missing test:ci",
+        "test:ci": "wsrun --exclude-missing --fast-exit test:ci",
         "prettier": "prettier --write '**/*.{ts,tsx,json,md,js}' --config .prettierrc",
         "prettier:ci": "prettier --list-different '**/*.{ts,tsx,json,md,js}' --config .prettierrc",
         "postinstall": "lerna link --force-local"
