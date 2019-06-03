@@ -45,10 +45,7 @@ before(async () => {
         .minus(BigNumber("1"))
         .toString();
 
-    const migratedContracts = await migrations(
-        provider,
-        { from: accounts[0].toLowerCase(), gas: "4500000" },
-    );
+    const migratedContracts = await migrations(provider, { from: accounts[0].toLowerCase(), gas: "4500000" });
 
     global.kosu = new Kosu({
         provider: web3.currentProvider,
