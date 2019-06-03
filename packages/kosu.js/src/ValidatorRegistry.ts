@@ -147,7 +147,7 @@ export class ValidatorRegistry {
         return contract.getListing.callAsync(this.convertPubKey(_pubKey));
     }
 
-/*    /!**
+    /*    /!**
      * Reads the requested listings
      *!/
     public async getListings(_pubKeys: string[]): Promise<Listing[]> {
@@ -181,7 +181,7 @@ export class ValidatorRegistry {
         return contract.getChallenge.callAsync(challengeId);
     }
 
-/*    /!**
+    /*    /!**
      * Reads the challenges by challengeIds
      *
      * @param challengeIds hex encoded tendermint public key
@@ -191,7 +191,7 @@ export class ValidatorRegistry {
         return contract.getChallenges.callAsync(challengeIds);
     }*/
 
-/*    /!**
+    /*    /!**
      * Reads all challenges
      *
      *!/
