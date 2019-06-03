@@ -48,7 +48,6 @@ before(async () => {
     const migratedContracts = await migrations(
         provider,
         { from: accounts[0].toLowerCase(), gas: "4500000" },
-        { noLogs: true },
     );
 
     global.kosu = new Kosu({
