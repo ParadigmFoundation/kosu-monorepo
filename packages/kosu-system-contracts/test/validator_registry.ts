@@ -240,48 +240,48 @@ describe("ValidatorRegistry", async () => {
         });
     });
 
-    describe("getListings", () => {
-        let publicKeys;
-
-        before(() => {
-            publicKeys = accounts.map(a => padRight(a, 64).toLowerCase());
-        });
-
-        beforeEach(async () => {
-            for (const account of accounts) {
-                await kosuToken.approve.awaitTransactionSuccessAsync(treasury.address, minimumBalance, {
-                    from: account,
-                });
-                await validatorRegistryProxy.registerListing.awaitTransactionSuccessAsync(
-                    account,
-                    minimumBalance,
-                    testValues.zero,
-                    paradigmMarket,
-                    { from: account },
-                );
-            }
-        });
-
-        afterEach(async () => {
-            for (const account of accounts) {
-                await validatorRegistryProxy.initExit.awaitTransactionSuccessAsync(account, { from: account });
-                await treasury.withdraw.awaitTransactionSuccessAsync(new BigNumber(minimumBalance), { from: account });
-            }
-        });
-
-        it("should return a list of listing keys", async () => {
-            const listings: Listing[] = await validatorRegistryProxy.getAllListings.callAsync();
-
-            listings.length.should.eq(publicKeys.length);
-            listings.forEach(listing => {
-                publicKeys.should.contain(listing.tendermintPublicKey);
-                accounts.should.contain(listing.owner);
-                listing.stakedBalance.toString().should.eq(minimumBalance.toString());
-                listing.rewardRate.toString().should.eq("0");
-                listing.status.should.eq(1);
-            });
-        });
-    });
+    // describe("getListings", () => {
+    //     let publicKeys;
+    //
+    //     before(() => {
+    //         publicKeys = accounts.map(a => padRight(a, 64).toLowerCase());
+    //     });
+    //
+    //     beforeEach(async () => {
+    //         for (const account of accounts) {
+    //             await kosuToken.approve.awaitTransactionSuccessAsync(treasury.address, minimumBalance, {
+    //                 from: account,
+    //             });
+    //             await validatorRegistryProxy.registerListing.awaitTransactionSuccessAsync(
+    //                 account,
+    //                 minimumBalance,
+    //                 testValues.zero,
+    //                 paradigmMarket,
+    //                 { from: account },
+    //             );
+    //         }
+    //     });
+    //
+    //     afterEach(async () => {
+    //         for (const account of accounts) {
+    //             await validatorRegistryProxy.initExit.awaitTransactionSuccessAsync(account, { from: account });
+    //             await treasury.withdraw.awaitTransactionSuccessAsync(new BigNumber(minimumBalance), { from: account });
+    //         }
+    //     });
+    //
+    //     it("should return a list of listing keys", async () => {
+    //         const listings: Listing[] = await validatorRegistryProxy.getAllListings.callAsync();
+    //
+    //         listings.length.should.eq(publicKeys.length);
+    //         listings.forEach(listing => {
+    //             publicKeys.should.contain(listing.tendermintPublicKey);
+    //             accounts.should.contain(listing.owner);
+    //             listing.stakedBalance.toString().should.eq(minimumBalance.toString());
+    //             listing.rewardRate.toString().should.eq("0");
+    //             listing.status.should.eq(1);
+    //         });
+    //     });
+    // });
 
     describe("registerListing", () => {
         it("should require a balance greater or equal to the minimumBalance", async () => {
