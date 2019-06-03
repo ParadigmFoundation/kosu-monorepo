@@ -1075,15 +1075,15 @@
     lodash "^4.17.11"
     to-fast-properties "^2.0.0"
 
-"@kosu/kosu.js@^0.1.0-alpha.3":
-  version "0.1.0-alpha.3"
-  resolved "https://registry.yarnpkg.com/@kosu/kosu.js/-/kosu.js-0.1.0-alpha.3.tgz#0eac4ca0ea0ccedfdae46ae179c42867a92a88ea"
-  integrity sha512-9n6cXpn5i23FGub4Ze1vYeNS1bCnI0TUmcbk51oAxRqsGYrsKy/azCEl7YxJJ6Ff3i6IZVHoa471imTY7HWtKw==
+"@kosu/kosu.js@0.1.0-alpha.1":
+  version "0.1.0-alpha.1"
+  resolved "https://registry.yarnpkg.com/@kosu/kosu.js/-/kosu.js-0.1.0-alpha.1.tgz#6a49f37fc40aa98684223fd2622f82bfca86ca3e"
+  integrity sha512-2GzE4Q4ufN4/r9fGgoMGD0Tq3oXyG0B8FVAcos/zJDgbaVYErwE0i2zSvnZU62Eti7/I9fpozkyTMvIYnLkEVw==
   dependencies:
     "@0x/utils" "^4.3.1"
     "@0x/web3-wrapper" "^6.0.5"
     "@babel/core" "^7.4.4"
-    "@kosu/system-contracts" "^0.1.0-alpha.2"
+    "@kosu/system-contracts" "^0.1.0-alpha.1"
     ethereum-protocol "^1.0.1"
     ethereumjs-abi "^0.6.6"
     ethereumjs-util "^5.2.0"
@@ -1095,24 +1095,6 @@
     web3-provider-engine "^15.0.0"
     web3-utils "^1.0.0-beta.53"
     ws "^6.1.4"
-
-"@kosu/system-contracts@^0.1.0-alpha.2":
-  version "0.1.0-alpha.2"
-  resolved "https://registry.yarnpkg.com/@kosu/system-contracts/-/system-contracts-0.1.0-alpha.2.tgz#827f1ac3924e8faa7d1c1a841fb18e7356da390e"
-  integrity sha512-hBz6AQzWtpfB4VBgYzQGSnV2C07eC6XdmpyNI/VaaUrcMAGDseMBAYKgWe9Yxg02VNdWnYllHLkxNwzkz3JBvg==
-  dependencies:
-    "@0x/base-contract" "^5.0.5"
-    "@0x/subproviders" "^4.0.5"
-    "@0x/utils" "^4.3.1"
-    "@0x/web3-wrapper" "^6.0.5"
-    "@kosu/subcontract-sdk" "0.1.0-alpha.1"
-    ethereum-types "^2.1.2"
-    openzeppelin-solidity "2.1.2"
-    safe-node-require "^1.0.0"
-    web3 "1.0.0-beta.37"
-    web3-eth-abi "1.0.0-beta.37"
-    web3-provider-engine "^15.0.0"
-    web3-utils "1.0.0-beta.37"
 
 "@ledgerhq/devices@^4.60.2":
   version "4.60.2"
