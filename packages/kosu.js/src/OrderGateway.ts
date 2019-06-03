@@ -63,6 +63,8 @@ export class OrderGateway {
         const takerArguments = await this.takerArguments(order.subContract);
         const makerValuesBytes = OrderSerializer.serializeMaker(makerArguments, order);
         const takerValuesBytes = OrderSerializer.serializeTaker(takerArguments, takerValues);
+
+        // tslint:disable-next-line: await-promise
         await this.contract.participate.awaitTransactionSuccessAsync(
             order.subContract,
             order.id || 1,

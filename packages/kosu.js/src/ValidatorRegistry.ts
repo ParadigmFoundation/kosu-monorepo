@@ -252,10 +252,10 @@ export class ValidatorRegistry {
 
         const listing: Listing = await this.getListing(_pubKey);
         const approval: BigNumber = await this.treasury.treasuryAllowance();
-        const currenBalance: BigNumber = await this.treasury.currentBalance(this.coinbase);
+        const currentBalance: BigNumber = await this.treasury.currentBalance(this.coinbase);
 
-        if (approval.plus(currenBalance).lt(listing.stakedBalance)) {
-            this.treasury.approveTreasury(listing.stakedBalance.minus(currenBalance));
+        if (approval.plus(currentBalance).lt(listing.stakedBalance)) {
+            await this.treasury.approveTreasury(listing.stakedBalance.minus(currentBalance));
         }
 
         return contract.challengeListing.awaitTransactionSuccessAsync(_pubKey, _details);
@@ -319,7 +319,7 @@ export class ValidatorRegistry {
      * @param _pubKey .
      * @returns hex encoded tendermint public key
      */
-    public convertPubKey = (_pubKey: string): string => {
+    public convertPubKey(_pubKey: string): string {
         let out;
         if (_pubKey.length === 66 && _pubKey.startsWith("0x")) {
             return _pubKey;
@@ -334,7 +334,7 @@ export class ValidatorRegistry {
         }
 
         return this.web3.utils.padRight(out, 64);
-    };
+    }
 
     /**
      * Converts hex encoded public key back to tendermint base64

@@ -4,7 +4,7 @@ const EventEmitter = require("events");
 const { Kosu } = require("@kosu/kosu.js");
 
 /**
- * @typedef {Object} Listing 
+ * @typedef {Object} Listing
  * @property {string} owner the Ethereum address of the listing holder
  * @property {BigNumber} rewardRate the number of KOSU (in wei) rewarded per period
  * @property {BigNumber} applyBlock the block number the listing was created at
@@ -20,11 +20,11 @@ const { Kosu } = require("@kosu/kosu.js");
  */
 
 /**
- * @typedef {Object} Challenge 
+ * @typedef {Object} Challenge
  * @property {string} listingKey the public key of the challenged listing
  * @property {string} challenger the Ethereum address of the challenging entity
  * @property {BigNumber} voterTotal the total amount of KOSU (in wei) that participated in the vote
- * @property {BigNumber} 
+ * @property {BigNumber}
  */
 
 /**
@@ -53,9 +53,6 @@ class Gov {
     constructor(debug) {
         // set to true after successful `gov.init()`
         this.initialized = false;
-
-        // avg. blocks per day = 86400 sec/day / 13.5 (sec/block)
-        this.blocksPerDay = 6400;
 
         // enables debug logs at various steps
         this.debug = debug ? true : false;
@@ -113,8 +110,7 @@ class Gov {
         for (const listing of listings) {
             await this._processListing(listing);
         }
-        const startupBlock = await this.web3.eth.getBlockNumber();
-        this.kosu.eventEmitter.getFutureDecodedLogs(startupBlock + 1, this._handleEvents.bind(this));
+        this.kosu.eventEmitter.getFutureDecodedLogs(this.initBlock + 1, this._handleEvents.bind(this));
     }
 
     /**
@@ -159,7 +155,7 @@ class Gov {
      * Estimate the UNIX timestamp (in seconds) at which a given `block` will be
      * mined.
      *
-     * @param {number} block the block number to estimate the timestamp for
+     * @param {number} blockNumber the block number to estimate the timestamp for
      * @returns {number} the block's estimated UNIX timestamp (in seconds)
      * @example
      * ```javascript
@@ -170,30 +166,81 @@ class Gov {
      * const blockDate = new Date(ts * 1000);
      * ```
      */
-    async estimateFutureBlockTimestamp(block) {
+    async estimateFutureBlockTimestamp(blockNumber) {
         const nowUnixSec = Math.floor(Date.now() / 1000);
         const currentBlock = await this.web3.eth.getBlockNumber();
-        if (currentBlock > block) {
-            return null;
+
+        // don't throw if historical block, just return  the real timestamp
+        if (currentBlock > blockNumber) {
+            return this.getPastBlockTimestamp(blockNumber);
         }
-        const diff = parseInt(block) - currentBlock;
-        const estSeconds = diff * 13.5;
+
+        // blockTime depends on networkId
+        let blockTimeSeconds;
+        const netId = await this.web3.eth.net.getId();
+        switch (netId) {
+            // mainnet
+            case 1:
+                blockTimeSeconds = 13.5;
+                break;
+
+            // ropsten
+            case 3:
+                blockTimeSeconds = 15;
+                break;
+
+            // kosu-poa dev net
+            case 6174:
+                blockTimeSeconds = 2;
+                break;
+
+            default: {
+                throw new Error("unknown blockTime for current network");
+            }
+        }
+
+        const diff = parseInt(blockNumber) - currentBlock;
+        const estSeconds = diff * blockTimeSeconds;
+
         return Math.floor(nowUnixSec + estSeconds);
     }
 
     /**
-     * This method returns an object (described below) that contains all 
+     * Retrieve the Unix timestamp of a block that has already been mined.
+     * Should be used to display times of things that have happened (validator
+     * confirmed, etc.).
+     *
+     * @param {number} blockNumber the block to get the unix timestamp for
+     * @returns {number} the Unix timestamp of the specified `blockNumber`
+     * @example
+     * ```javascript
+     * await gov.getPastBlockTimestamp(515237) // > 1559346404
+     * ```
+     */
+    async getPastBlockTimestamp(blockNumber) {
+        let block;
+        try {
+            block = await this.web3.eth.getBlock(blockNumber);
+        } catch (error) {
+            throw new Error(`failed to get timestamp: ${error.message}`);
+        }
+
+        return block.timestamp;
+    }
+
+    /**
+     * This method returns an object (described below) that contains all
      * historical listings (proposals and validators, including current) listings
      * and information about all past challenges.
-     * 
+     *
      * It will take a significant amount of time (~12s) to resolve, and the
      * return object can be large (on the order of 30 KB) depending on the number
      * of past governance activities.
-     * 
+     *
      * Because it a) takes a long time to load and b) is network I/O intensive,
      * it should only be called when the user requests to load all historical
      * data.
-     * 
+     *
      * @returns {HistoricalActivity} all historical `challenges` and `listings`.
      */
     async getHistoricalActivity() {
@@ -212,7 +259,7 @@ class Gov {
         });
 
         // process all historical events in order and run state transitions
-        pastEvents.forEach((event) => {
+        pastEvents.forEach(event => {
             const decoded = event.decodedArgs;
             const eventType = decoded.eventType;
 
@@ -281,20 +328,20 @@ class Gov {
         }
 
         // convert store objects to arrays for output
-        Object.keys(store).forEach((id) => {
+        Object.keys(store).forEach(id => {
             const listing = store[id];
             allListings.push(listing);
         });
-        Object.keys(challenges).forEach((id) => {
+        Object.keys(challenges).forEach(id => {
             const challenge = challenges[id];
             challenge.number = id;
             allChallenges.push(challenge);
-        }); 
+        });
 
         console.log(Date.now());
         return {
             allListings,
-            allChallenges
+            allChallenges,
         };
     }
 
@@ -324,18 +371,19 @@ class Gov {
         this._debugLog(`Raw listing:\n${JSON.stringify(listing, null, 2)}`);
     }
 
-    // @todo implement "estimatedVotePower"
     async _processProposal(listing) {
         if (listing.status !== 1) {
             throw new Error("listing is not a proposal");
         }
 
         const owner = listing.owner;
+        const stakeSize = listing.stakedBalance;
+
         const acceptAt = parseInt(listing.applicationBlock) + this.params.applicationPeriod;
         const acceptUnix = await this.estimateFutureBlockTimestamp(acceptAt);
-        const stakeSize = this.weiToEther(listing.stakedBalance);
         const dailyReward = this._estimateDailyReward(listing.rewardRate);
-        const power = "0"; // @todo
+
+        const power = this._estimateProposalPower(listing.stakedBalance);
 
         const proposal = {
             owner,
@@ -357,7 +405,9 @@ class Gov {
         const owner = listing.owner;
         const stakeSize = listing.stakedBalance;
         const dailyReward = this._estimateDailyReward(listing.rewardRate);
-        const power = "0"; // @todo
+
+        // power is set after update
+        const power = null;
 
         const validator = {
             owner,
@@ -367,10 +417,15 @@ class Gov {
             details: listing.details,
         };
 
+        delete this.proposals[listing.tendermintPublicKeyHex];
+
         this._addValidator(listing.tendermintPublicKey, validator);
     }
 
     async _processChallenge(listing) {
+        delete this.proposals[listing.tendermintPublicKeyHex];
+        delete this.validators[listing.tendermintPublicKeyHex];
+
         if (listing.status !== 3) {
             throw new Error("listing is not in challenge");
         }
@@ -385,20 +440,20 @@ class Gov {
         this._debugLog(`Challenge type: ${challengeType}`);
 
         const listingChallenge = await this.kosu.validatorRegistry.getChallenge(listing.currentChallenge);
-        const listingStake = this.weiToEther(listing.stakedBalance);
-        
+        const listingStake = listing.stakedBalance;
+
         // copy over listing power if validator challenge
-        const listingPower = challengeType === "validator" ? 
-            await this._getValidatorPower(listing.tendermintPublicKey) :
-            null;
-        
+        const listingPower =
+            challengeType === "validator" ? await this._getValidatorPower(listing.tendermintPublicKey) : null;
+
         const challengeEndUnix = await this.estimateFutureBlockTimestamp(listingChallenge.challengeEnd);
 
         let totalTokens, winningTokens, result;
-        if (!challengeEndUnix) {
+        if (challengeEndUnix <= Math.floor(Date.now() / 1000)) {
             totalTokens = await this.kosu.voting.totalRevealedTokens(listingChallenge.pollId);
             winningTokens = await this.kosu.voting.totalWinningTokens(listingChallenge.pollId);
-            result = await this.kosu.voting.winningOption(listingChallenge.pollId)
+            result = await this.kosu.voting
+                .winningOption(listingChallenge.pollId)
                 .then(option => (option.toString() === "1" ? "Passed" : "Failed"));
         }
 
@@ -421,66 +476,59 @@ class Gov {
         this._addChallenge(listing.tendermintPublicKey, challenge);
     }
 
+    async _processResolvedChallenge(pubKey, listing) {
+        delete this.challenges[pubKey];
+        if (listing.status === 1) {
+            await this._processProposal(listing);
+        } else if (listing.status === 2) {
+            await this._processValidator(listing);
+        }
+    }
+
     async _handleEvents(events) {
         for (const event of events) {
             const { decodedArgs } = event;
             this._debugLog(`Handling event: ${JSON.stringify(decodedArgs)}`);
             switch (decodedArgs.eventType) {
                 case "ValidatorRegistered":
-                    const registeredListing = await this.kosu.validatorRegistry.getListing(
-                        decodedArgs.tendermintPublicKey,
-                    );
+                    const registeredListing = await this._getListing(decodedArgs.tendermintPublicKey);
                     this._debugLog(
                         `Event type: ${decodedArgs.eventType}\nListing: ${JSON.stringify(registeredListing)}`,
                     );
+
                     await this._processProposal(registeredListing);
                     break;
                 case "ValidatorChallenged":
-                    const challengedListing = await this.kosu.validatorRegistry.getListing(
-                        decodedArgs.tendermintPublicKey,
-                    );
+                    const challengedListing = await this._getListing(decodedArgs.tendermintPublicKey);
                     this._debugLog(
                         `Event type: ${decodedArgs.eventType}\nListing: ${JSON.stringify(challengedListing)}`,
                     );
-                    delete this.proposals[decodedArgs.tendermintPublicKeyHex];
-                    delete this.validators[decodedArgs.tendermintPublicKeyHex];
+
                     await this._processChallenge(challengedListing);
                     break;
                 case "ValidatorRemoved":
-                    const removedListing = await this.kosu.validatorRegistry.getListing(
-                        decodedArgs.tendermintPublicKey,
-                    );
+                    const removedListing = await this._getListing(decodedArgs.tendermintPublicKey);
                     this._debugLog(`Event type: ${decodedArgs.eventType}\nListing: ${JSON.stringify(removedListing)}`);
-                    delete this.proposals[decodedArgs.tendermintPublicKeyHex];
-                    delete this.validators[decodedArgs.tendermintPublicKeyHex];
-                    delete this.challenges[decodedArgs.tendermintPublicKeyHex];
+
+                    this._removeValidator(decodedArgs.tendermintPublicKeyHex);
                     break;
                 case "ValidatorChallengeResolved":
-                    const resolvedChallengeListing = await this.kosu.validatorRegistry.getListing(
-                        decodedArgs.tendermintPublicKey,
-                    );
+                    const resolvedChallengeListing = await this._getListing(decodedArgs.tendermintPublicKey);
                     this._debugLog(
                         `Event type: ${decodedArgs.eventType}\nListing: ${JSON.stringify(resolvedChallengeListing)}`,
                     );
-                    delete this.challenges[decodedArgs.tendermintPublicKeyHex];
-                    if (resolvedChallengeListing.status === 1) {
-                        await this._processProposal(resolvedChallengeListing);
-                    } else if (resolvedChallengeListing.status === 2) {
-                        await this._processValidator(resolvedChallengeListing);
-                    }
+
+                    this._processResolvedChallenge(decodedArgs.tendermintPublicKeyHex, resolvedChallengeListing);
                     break;
                 case "ValidatorConfirmed":
-                    const confirmedListing = await this.kosu.validatorRegistry.getListing(
-                        decodedArgs.tendermintPublicKey,
-                    );
+                    const confirmedListing = await this._getListing(decodedArgs.tendermintPublicKey);
                     this._debugLog(
                         `Event type: ${decodedArgs.eventType}\nListing: ${JSON.stringify(confirmedListing)}`,
                     );
-                    delete this.proposals[decodedArgs.tendermintPublicKeyHex];
+
                     await this._processValidator(confirmedListing);
                     break;
                 case "ValidatorRegistryUpdate":
-                    // Do nothing
                     break;
                 default:
                     console.warn(`Unrecognized eventType: ${decodedArgs.eventType}`);
@@ -488,31 +536,32 @@ class Gov {
         }
     }
 
+    async _getListing(pubKey) {
+        return await this.kosu.validatorRegistry.getListing(pubKey);
+    }
+
     async _getValidatorPower(pubKey) {
         let cache = {};
         let power, stake;
-
-        const ZER0 = new BigNumber(0);
-        const ONE_HUNDRED = new BigNumber(100);
 
         if (!/^0x[a-faF0-9]{64}$/.test(pubKey)) {
             throw new Error("invalid public key");
         }
 
         const listings = await this.kosu.validatorRegistry.getListings();
-        listings.forEach((listing) => {
+        listings.forEach(listing => {
             cache[listing.tendermintPublicKey] = listing;
         });
 
         const listing = cache[pubKey];
-        if (!listing || listing.confirmationBlock.eq(ZER0)) {
+        if (!listing || listing.confirmationBlock.eq(Gov.ZERO)) {
             return "0";
         }
 
         let totalStake = new BigNumber(0);
-        Object.keys(cache).forEach((id) => {
+        Object.keys(cache).forEach(id => {
             const lst = cache[id];
-            if (lst.confirmationBlock.eq(ZER0)) {
+            if (lst.confirmationBlock.eq(Gov.ZERO)) {
                 return;
             }
 
@@ -521,55 +570,81 @@ class Gov {
         });
 
         stake = new BigNumber(cache[pubKey].stakedBalance);
-        power = stake.div(totalStake).times(ONE_HUNDRED);
-        return power.toString();
+        power = stake.div(totalStake).times(Gov.ONE_HUNDRED);
+        return power;
     }
 
     _addProposal(pubKey, proposal) {
         this.proposals[pubKey] = proposal;
-        this.ee.emit("gov_newProposal", proposal);
+        this.ee.emit("gov_update");
 
         this._debugLog(`New proposal:\n${JSON.stringify(proposal, null, 2)}`);
     }
 
     _addValidator(pubKey, validator) {
+        delete this.proposals[pubKey];
         this.validators[pubKey] = validator;
         this._updateVotePowers();
-        this.ee.emit("gov_newValidator", validator);
+        this.ee.emit("gov_update");
 
         this._debugLog(`New validator:\n${JSON.stringify(validator, null, 2)}`);
     }
 
+    _removeValidator(pubKey) {
+        delete this.proposals[pubKey];
+        delete this.validators[pubKey];
+        delete this.challenges[pubKey];
+        this.ee.emit("gov_update");
+    }
+
     _addChallenge(pubKey, challenge) {
         this.challenges[pubKey] = challenge;
-        this.ee.emit("gov_newChallenge", challenge);
+        this.ee.emit("gov_update");
 
         this._debugLog(`New challenge:\n${JSON.stringify(challenge, null, 2)}`);
+    }
+
+    _estimateProposalPower(stake) {
+        const stakeBn = new BigNumber(stake);
+        const totalStake = this._getTotalStake();
+        const newTotal = totalStake.plus(stakeBn);
+        const power = stakeBn.div(newTotal);
+        return power.times(Gov.ONE_HUNDRED);
     }
 
     _estimateDailyReward(rewardRate) {
         const rate = new BigNumber(rewardRate);
         const rewardPeriod = new BigNumber(this.params.rewardPeriod);
-        const blocksPerDay = new BigNumber(this.blocksPerDay);
         const tokensPerBlock = rate.div(rewardPeriod);
-        const tokensPerDay = tokensPerBlock.times(blocksPerDay);
-        return this.weiToEther(tokensPerDay.toFixed());
+        const tokensPerDay = tokensPerBlock.times(Gov.BLOCKS_PER_DAY);
+        return tokensPerDay.toFixed();
     }
 
     _updateVotePowers() {
+        const totalStake = this._getTotalStake();
+        Object.keys(this.validators).forEach(id => {
+            const validator = this.validators[id];
+            const stake = new BigNumber(validator.stakeSize);
+            const power = stake.div(totalStake).times(Gov.ONE_HUNDRED);
+            validator.power = power.toString();
+        });
+    }
+
+    _getTotalStake() {
         let totalStake = new BigNumber(0);
-        const ONE_HUNDRED = new BigNumber(100);
-        Object.keys(this.validators).forEach((id) => {
+        Object.keys(this.validators).forEach(id => {
             const validator = this.validators[id];
             const stake = new BigNumber(validator.stakeSize);
             totalStake = totalStake.plus(stake);
         });
-        Object.keys(this.validators).forEach((id) => {
-            const validator = this.validators[id];
-            const stake = new BigNumber(validator.stakeSize);
-            const power = stake.div(totalStake).times(ONE_HUNDRED);
-            validator.power = power.toString();
+        Object.keys(this.challenges).forEach(id => {
+            const challenge = this.challenges[id];
+            if (challenge.challengeType === "validator") {
+                const stake = new BigNumber(challenge.stakeSize);
+                totalStake = totalStake.plus(stake);
+            }
         });
+        return totalStake;
     }
 
     _debugLog(message) {
@@ -594,5 +669,29 @@ class Gov {
         }
     }
 }
+
+/**
+ * Create new `BigNumber` instance. Identical to calling `BigNumber` constructor.
+ *
+ * @param {number | string | BigNumber} input value to wrap as a BigNumber
+ * @returns {BigNumber} the `BigNumber` version of `input`
+ * @example
+ * ```javascript
+ * const bn = new Gov.BigNumber(10);
+ * ```
+ */
+Gov.BigNumber = input => new BigNumber(input);
+
+/** The value `0` as an instance of`BigNumber`. */
+Gov.ZERO = new BigNumber(0);
+
+/** The value `1` as an instance of`BigNumber`. */
+Gov.ONE = new BigNumber(1);
+
+/** The value `100` as an instance of`BigNumber`. */
+Gov.ONE_HUNDRED = new BigNumber(100);
+
+/** Estimated blocks per day (mainnet only). */
+Gov.BLOCKS_PER_DAY = new BigNumber(6400);
 
 module.exports = Gov;

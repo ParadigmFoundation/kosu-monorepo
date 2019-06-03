@@ -1,6 +1,8 @@
 import { toHex, toTwosComplement } from "web3-utils";
 
 /**
+ * Convert an arbitrary string to a `bytes32` version.
+ *
  * @param value String value to be converted into bytes32 representation.
  */
 export function toBytes32(value: string): string {

@@ -3,66 +3,63 @@ package tests
 import (
 	"context"
 	"testing"
-	"time"
 
 	. "github.com/smartystreets/goconvey/convey"
 	"github.com/stretchr/testify/require"
 
+	tmtypes "github.com/tendermint/tendermint/types"
+
 	"go-kosu/abci/types"
-	"go-kosu/store"
 	"go-kosu/witness"
 )
 
 func (s *Suite) TestWitnessTx() {
 	GivenABCIServer(s.T(), s, func(t *testing.T) {
-		s.state.LastEvent = 10
-
 		tx := &types.TransactionWitness{
-			Block:   s.state.LastEvent + 1,
+			Block:   10,
 			Address: "0xffff",
+			Amount:  types.NewBigIntFromInt(100),
 		}
 
-		Convey("When Tx is commited", func() {
-			res, err := s.client.BroadcastTxCommit(tx)
-			require.NoError(t, err)
-			require.True(t, res.CheckTx.IsOK())
-			require.True(t, res.DeliverTx.IsOK())
+		ctx, cancel := context.WithCancel(context.Background())
+		defer cancel()
 
-			Convey("state should keep the last block number", func() {
-				So(s.state.LastEvent, ShouldEqual, tx.Block)
-			})
-		})
+		ch, err := s.client.Subscribe(ctx, "tm.event = 'Tx'")
+		So(err, ShouldBeNil)
 
-		Convey("When Tx's Block Height is older than the one in state", func() {
-			s.state.LastEvent = 30
+		Convey("And a Witness Tx", func() {
+			BroadcastTxSync(t, s.client, tx)
 
-			res, err := s.client.BroadcastTxSync(tx)
-			require.NoError(t, err)
+			Convey("Querying Poster by Tx.Address should be found after N confirmations", func() {
+				<-ch
 
-			Convey("Request should fail", func() {
-				So(res.Code, ShouldEqual, 1)
-			})
-		})
-
-		Convey("When Tx has not enough confirmations in State", func() {
-			s.state.UpdateConfirmationThreshold(100)
-			res, err := s.client.BroadcastTxCommit(tx)
-			require.NoError(t, err)
-
-			Convey("It should be added to State.events", func() {
-				found := false
-				err := s.state.IterateWitnessEventsForBlock(tx.Block, func(id []byte, ev *store.WitnessEvent) bool {
-					found = true
-					So(tx.Id, ShouldResemble, tx.Hash())
-					return true
-				})
+				p, err := s.client.QueryPoster(tx.Address)
 				So(err, ShouldBeNil)
-				So(found, ShouldBeTrue)
+				require.EqualValues(t, p.Balance.BigInt(), tx.Amount.BigInt())
 			})
 
-			Convey("It should be accepted", func() {
-				So(res.CheckTx.Code, ShouldEqual, 0)
-				So(res.DeliverTx.Code, ShouldEqual, 0)
+			Convey("Broadcasting a Witness Tx with smaller block number should error", func() {
+				tx.Block--
+
+				BroadcastTxSync(t, s.client, tx)
+
+				<-ch // discard the first tx
+				e := <-ch
+				txEvent := e.Data.(tmtypes.EventDataTx)
+				So(txEvent.Result.IsErr(), ShouldBeTrue)
+			})
+		})
+
+		Convey("Broadcasting a Witness Tx without required confirmations", func() {
+			s.state.UpdateConfirmationThreshold(100)
+			BroadcastTxSync(t, s.client, tx)
+
+			Convey("Querying Poster by Tx.Address should NOT be found after N confirmations", func() {
+				<-ch
+
+				p, err := s.client.QueryPoster(tx.Address)
+				So(err, ShouldNotBeNil)
+				So(p, ShouldBeNil)
 			})
 		})
 	})
@@ -83,24 +80,23 @@ func (s *Suite) TestWitnessRebalance() {
 		// Create the witness
 		ch := make(chan interface{})
 		w := witness.New(s.client, witness.NewMockProvider(ch), witness.DefaultOptions)
-		require.NoError(t, w.Start(ctx))
+		require.NoError(t, w.WithLogger(nil).Start(ctx))
 
 		Convey("When a set of Rebalance Tx are commited", func() {
 			roundNumber := []uint64{1, 2, 3}
 			for _, n := range roundNumber {
 				tx.RoundInfo.Number = n
 
-				res, err := s.client.BroadcastTxCommit(tx)
-				require.NoError(t, err)
-				require.Zero(t, res.DeliverTx.Code, res.DeliverTx.Log)
-				require.True(t, res.CheckTx.IsOK(), res.CheckTx.Log)
-				require.True(t, res.DeliverTx.IsOK(), res.DeliverTx.Log)
+				BroadcastTxCommit(t, s.client, tx)
 
 				tx.RoundInfo.StartsAt = tx.RoundInfo.EndsAt
 				tx.RoundInfo.EndsAt += 10
 			}
-			time.Sleep(100 * time.Millisecond)
-			// give TM some time to pass the tx to the witness's subscriber
+
+			// Wait until the next block is minted
+			sub, err := s.client.Subscribe(ctx, "tm.event = 'NewBlock'")
+			So(err, ShouldBeNil)
+			<-sub
 
 			Convey("It should update the local witness state", func() {
 				So(w.RoundInfo().Number, ShouldEqual, 3)

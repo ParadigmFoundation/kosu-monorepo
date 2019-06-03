@@ -1,6 +1,6 @@
 {
     "name": "@kosu/kosu.js",
-    "version": "0.1.0-alpha.1",
+    "version": "0.1.0-alpha.3",
     "description": "JavaScript module for connecting with Kosu.",
     "main": "dist/index.js",
     "license": "MIT",
@@ -27,6 +27,7 @@
         "@0x/web3-wrapper": "^6.0.5",
         "@babel/core": "^7.4.4",
         "@kosu/system-contracts": "^0.1.0-alpha.1",
+        "@kosu/tslint-config": "^0.0.4",
         "ethereum-protocol": "^1.0.1",
         "ethereumjs-abi": "^0.6.6",
         "ethereumjs-util": "^5.2.0",
