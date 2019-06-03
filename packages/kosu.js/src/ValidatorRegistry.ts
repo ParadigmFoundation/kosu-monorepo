@@ -292,7 +292,7 @@ export class ValidatorRegistry {
      * @param _pubKey .
      * @returns hex encoded tendermint public key
      */
-    public convertPubKey = (_pubKey: string): string => {
+    public convertPubKey(_pubKey: string): string {
         let out;
         if (_pubKey.length === 66 && _pubKey.startsWith("0x")) {
             return _pubKey;
