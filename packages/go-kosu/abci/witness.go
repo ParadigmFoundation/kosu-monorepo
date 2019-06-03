@@ -16,6 +16,10 @@ func (app *App) checkWitnessTx(tx *types.TransactionWitness) error {
 }
 
 func (app *App) deliverWitnessTx(tx *types.TransactionWitness) abci.ResponseDeliverTx {
+	if err := app.checkWitnessTx(tx); err != nil {
+		return abci.ResponseDeliverTx{Code: 1, Info: err.Error()}
+	}
+
 	if err := app.state.PushTransactionWitness(tx); err != nil {
 		return abci.ResponseDeliverTx{Code: 1, Info: err.Error()}
 	}
