@@ -84,13 +84,13 @@ contract ValidatorRegistry {
         rewardPeriod = _rewardPeriod;
     }
 
-        /** @dev Expose the list of active listing keys
-            @notice Expose the list of active listing keys
-            @return An array of hex encoded tendermint keys
-        */
-        function listingKeys() public view returns (bytes32[] memory) {
-            return _listingKeys;
-        }
+    /** @dev Expose the list of active listing keys
+        @notice Expose the list of active listing keys
+        @return An array of hex encoded tendermint keys
+    */
+    function listingKeys() public view returns (bytes32[] memory) {
+        return _listingKeys;
+    }
 
     /** @dev Calculate the maximum KosuToken a validator can generate
         @notice Calculate the maximum KosuToken a validator can generate
@@ -109,28 +109,28 @@ contract ValidatorRegistry {
 
     }
 
-        /** @dev Expose listings
-            @notice Expose listings
-            @param pubKeys Hex encoded tendermint public keys
-        */
-        function getListings(bytes32[] memory pubKeys) public view returns (Listing[] memory) {
-            Listing[] memory listings = new Listing[](pubKeys.length);
-            for(uint i = 0; i < pubKeys.length; i++) {
-                listings[i] = _listings[pubKeys[i]];
-            }
-            return listings;
+    /** @dev Expose listings
+        @notice Expose listings
+        @param pubKeys Hex encoded tendermint public keys
+    */
+    function getListings(bytes32[] memory pubKeys) public view returns (Listing[] memory) {
+        Listing[] memory listings = new Listing[](pubKeys.length);
+        for (uint i = 0; i < pubKeys.length; i++) {
+            listings[i] = _listings[pubKeys[i]];
         }
+        return listings;
+    }
 
-        /** @dev Expose all listings
-            @notice Expose all listings
-        */
-        function getAllListings() public view returns (Listing[] memory) {
-            Listing[] memory listings = new Listing[](_listingKeys.length);
-            for(uint i = 0; i < _listingKeys.length; i++) {
-                listings[i] = _listings[_listingKeys[i]];
-            }
-            return listings;
+    /** @dev Expose all listings
+        @notice Expose all listings
+    */
+    function getAllListings() public view returns (Listing[] memory) {
+        Listing[] memory listings = new Listing[](_listingKeys.length);
+        for (uint i = 0; i < _listingKeys.length; i++) {
+            listings[i] = _listings[_listingKeys[i]];
         }
+        return listings;
+    }
 
     /** @dev Expose challenge data
         @notice Expose challenge data
@@ -141,28 +141,29 @@ contract ValidatorRegistry {
 
     }
 
-        /** @dev Expose challenge data
-            @notice Expose challenge data
-            @param challengeIds challenge id
-        */
-        function getChallenges(uint[] memory challengeIds) public view returns (Challenge[] memory) {
-            Challenge[] memory challenges = new Challenge[](challengeIds.length);
-            for(uint i = 0; i < challengeIds.length; i++) {
-                challenges[i] = _challenges[challengeIds[i]];
-            }
-            return challenges;
+    /** @dev Expose challenge data
+        @notice Expose challenge data
+        @param challengeIds challenge id
+    */
+    function getChallenges(uint[] memory challengeIds) public view returns (Challenge[] memory) {
+        Challenge[] memory challenges = new Challenge[](challengeIds.length);
+        for (uint i = 0; i < challengeIds.length; i++) {
+            challenges[i] = _challenges[challengeIds[i]];
         }
+        return challenges;
+    }
 
-        /** @dev Expose all challenges
-            @notice Expose all challenges
-        */
-        function getAllChallenges() public view returns (Challenge[] memory) {
-            Challenge[] memory challenges = new Challenge[](nextChallenge - 1);
-            for(uint i = 0; i < nextChallenge; i++) {
-                challenges[i] = _challenges[i];
-            }
-            return challenges;
+    /** @dev Expose all challenges
+        @notice Expose all challenges
+    */
+    function getAllChallenges() public view returns (Challenge[] memory) {
+        uint challengeCount = nextChallenge - 1;
+        Challenge[] memory challenges = new Challenge[](challengeCount);
+        for (uint i = 0; i < challengeCount; i++) {
+            challenges[i] = _challenges[i+1];
         }
+        return challenges;
+    }
 
     /** @dev Register a listing
         @notice Register a listing
