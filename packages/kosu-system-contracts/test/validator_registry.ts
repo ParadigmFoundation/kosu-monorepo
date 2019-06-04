@@ -3,6 +3,7 @@ import { BigNumber } from "@0x/utils";
 import { padRight, soliditySha3, stringToHex, toTwosComplement, toWei } from "web3-utils";
 
 import {
+    artifacts,
     AuthorizedAddressesContract,
     decodeKosuEvents,
     KosuTokenContract,
@@ -149,6 +150,27 @@ describe("ValidatorRegistry", async () => {
             transactions.push(kosuToken.transfer.awaitTransactionSuccessAsync(account, testValues.oneHundredEther));
         }
         await Promise.all(transactions);
+    });
+
+    describe("constructor", () => {
+        it("should have a resonable gas cost", async () => {
+            const { txReceipt } = await ValidatorRegistryContract.deployFrom0xArtifactAsync(
+                artifacts.ValidatorRegistry,
+                web3.currentProvider,
+                txDefaults,
+                treasury.address,
+                voting.address,
+                contracts.authorizedAddresses.address,
+                contracts.eventEmitter.address,
+                testValues.oneWei,
+                testValues.oneWei,
+                testValues.oneWei,
+                testValues.oneWei,
+                testValues.oneWei,
+            );
+
+            txReceipt.gasUsed.should.be.lt(4000000);
+        });
     });
 
     describe("token", () => {
