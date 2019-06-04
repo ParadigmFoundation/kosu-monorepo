@@ -20,7 +20,6 @@
         "Voting": "0x959cd7dfdc1c4dc6dc57ccd1887efab9519abe1d",
         "PosterRegistry": "0xda482dbf14605baba07c0b5448a7fe8191faa43d",
         "PosterRegistryProxy": "0xb799a47faa865080e4df4fbdbdcfbec30ac10345",
-        "ValidatorRegistry": "0x42ebd135cac8339ce118205dc75c65e65ed5ce56",
-        "ValidatorRegistryProxy": "0xedd87a9f55f48fb9a8448fdc7996c396e16c4a6e"
+        "ValidatorRegistry": "0x42ebd135cac8339ce118205dc75c65e65ed5ce56"
     }
 }
