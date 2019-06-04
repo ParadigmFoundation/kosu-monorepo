@@ -10,7 +10,7 @@ interface KosuOptions {
     eventEmitterAddress?: string;
     orderGatewayAddress?: string;
     posterRegistryProxyAddress?: string;
-    validatorRegistryProxyAddress?: string;
+    validatorRegistryAddress?: string;
 }
 
 interface Order {

@@ -26,7 +26,7 @@ export class ValidatorRegistry {
     constructor(options: KosuOptions, treasury: Treasury) {
         this.web3 = options.web3;
         this.web3Wrapper = options.web3Wrapper;
-        this.address = options.validatorRegistryProxyAddress;
+        this.address = options.validatorRegistryAddress;
         this.treasury = treasury;
     }
 
@@ -41,7 +41,7 @@ export class ValidatorRegistry {
             this.coinbase = await this.web3.eth.getCoinbase().catch(() => undefined);
 
             if (!this.address) {
-                this.address = DeployedAddresses[networkId].ValidatorRegistryProxy;
+                this.address = DeployedAddresses[networkId].ValidatorRegistry;
             }
             if (!this.address) {
                 throw new Error("Invalid network for ValidatorRegistry");
