@@ -181,24 +181,24 @@ export class ValidatorRegistry {
         return contract.getChallenge.callAsync(challengeId);
     }
 
-    /*    /!**
+    /**
      * Reads the challenges by challengeIds
      *
      * @param challengeIds hex encoded tendermint public key
-     *!/
+     */
     public async getChallenges(challengeIds: BigNumber[]): Promise<Challenge[]> {
         const contract = await this.getContract();
         return contract.getChallenges.callAsync(challengeIds);
-    }*/
+    }
 
-    /*    /!**
+    /**
      * Reads all challenges
      *
-     *!/
+     */
     public async getAllChallenges(): Promise<Challenge[]> {
         const contract = await this.getContract();
         return contract.getAllChallenges.callAsync();
-    }*/
+    }
 
     /**
      * Register a new listing
