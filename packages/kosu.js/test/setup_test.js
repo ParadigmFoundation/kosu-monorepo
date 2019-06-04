@@ -53,7 +53,6 @@ before(async () => {
         posterRegistryProxyAddress: migratedContracts.posterRegistryProxy.address,
         kosuTokenAddress: migratedContracts.kosuToken.address,
         orderGatewayAddress: migratedContracts.orderGateway.address,
-        validatorRegistryProxyAddress: migratedContracts.validatorRegistryProxy.address,
         votingAddress: migratedContracts.voting.address,
         treasuryAddress: migratedContracts.treasury.address,
     });
