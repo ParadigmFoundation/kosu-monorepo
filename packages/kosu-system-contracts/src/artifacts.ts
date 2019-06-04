@@ -13,14 +13,12 @@ import * as PosterRegistry from "../generated-artifacts/PosterRegistry.json";
 import * as PosterRegistryProxy from "../generated-artifacts/PosterRegistryProxy.json";
 import * as Treasury from "../generated-artifacts/Treasury.json";
 import * as ValidatorRegistry from "../generated-artifacts/ValidatorRegistry.json";
-import * as ValidatorRegistryProxy from "../generated-artifacts/ValidatorRegistryProxy.json";
 import * as Voting from "../generated-artifacts/Voting.json";
 export const artifacts = {
     AuthorizedAddresses: AuthorizedAddresses as ContractArtifact,
     EventEmitter: EventEmitter as ContractArtifact,
     OrderGateway: OrderGateway as ContractArtifact,
     PosterRegistryProxy: PosterRegistryProxy as ContractArtifact,
-    ValidatorRegistryProxy: ValidatorRegistryProxy as ContractArtifact,
     KosuToken: KosuToken as ContractArtifact,
     PosterRegistry: PosterRegistry as ContractArtifact,
     Treasury: Treasury as ContractArtifact,

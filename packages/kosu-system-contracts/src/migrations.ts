@@ -12,7 +12,6 @@ import {
     PosterRegistryProxyContract,
     TreasuryContract,
     ValidatorRegistryContract,
-    ValidatorRegistryProxyContract,
     VotingContract,
 } from "./index";
 
@@ -110,7 +109,7 @@ export async function migrations(
         posterRegistryImpl.address,
         authorizedAddresses.address,
     );
-    const validatorRegistryImpl = await ValidatorRegistryContract.deployFrom0xArtifactAsync(
+    const validatorRegistry = await ValidatorRegistryContract.deployFrom0xArtifactAsync(
         artifacts.ValidatorRegistry,
         provider,
         txDefaults,
@@ -123,13 +122,6 @@ export async function migrations(
         config._challengePeriod,
         config._exitPeriod,
         config._rewardPeriod,
-    );
-    const validatorRegistryProxy = await ValidatorRegistryProxyContract.deployFrom0xArtifactAsync(
-        artifacts.ValidatorRegistryProxy,
-        provider,
-        txDefaults,
-        validatorRegistryImpl.address,
-        authorizedAddresses.address,
     );
 
     const transactions = [
@@ -158,21 +150,15 @@ export async function migrations(
             },
         },
         {
-            hash: await authorizedAddresses.authorizeAddress.sendTransactionAsync(validatorRegistryProxy.address),
-            success: () => {
-                console.log(`Authorized address: ${validatorRegistryProxy.address}`);
-            },
-        },
-        {
             hash: await kosuToken.mint.sendTransactionAsync(new BN(toWei("1000000000"))),
             success: () => {
                 console.log(`Minted ${toWei("1000000000")} tokens`);
             },
         },
         {
-            hash: await authorizedAddresses.authorizeAddress.sendTransactionAsync(validatorRegistryImpl.address),
+            hash: await authorizedAddresses.authorizeAddress.sendTransactionAsync(validatorRegistry.address),
             success: () => {
-                console.log(`Authorized address: ${validatorRegistryImpl.address}`);
+                console.log(`Authorized address: ${validatorRegistry.address}`);
             },
         },
     ];
@@ -196,7 +182,6 @@ export async function migrations(
         voting,
         posterRegistryImpl,
         posterRegistryProxy,
-        validatorRegistryImpl,
-        validatorRegistryProxy,
+        validatorRegistry,
     };
 }

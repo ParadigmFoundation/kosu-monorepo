@@ -1,6 +1,6 @@
 import { BigNumber } from "@0x/utils";
 import { Web3Wrapper } from "@0x/web3-wrapper";
-import { artifacts, DeployedAddresses, ValidatorRegistryProxyContract } from "@kosu/system-contracts";
+import { artifacts, DeployedAddresses, ValidatorRegistryContract } from "@kosu/system-contracts";
 import { TransactionReceiptWithDecodedLogs } from "ethereum-protocol";
 import Web3 from "web3";
 
@@ -12,7 +12,7 @@ import { Treasury } from "./Treasury";
 export class ValidatorRegistry {
     private readonly web3: Web3;
     private readonly treasury: Treasury;
-    private contract: ValidatorRegistryProxyContract;
+    private contract: ValidatorRegistryContract;
     private coinbase: string;
     private readonly web3Wrapper: Web3Wrapper;
     private address: string;
@@ -35,7 +35,7 @@ export class ValidatorRegistry {
      *
      * @returns The contract
      */
-    private async getContract(): Promise<ValidatorRegistryProxyContract> {
+    private async getContract(): Promise<ValidatorRegistryContract> {
         if (!this.contract) {
             const networkId = await this.web3Wrapper.getNetworkIdAsync();
             this.coinbase = await this.web3.eth.getCoinbase().catch(() => undefined);
@@ -47,8 +47,8 @@ export class ValidatorRegistry {
                 throw new Error("Invalid network for ValidatorRegistry");
             }
 
-            this.contract = new ValidatorRegistryProxyContract(
-                artifacts.ValidatorRegistryProxy.compilerOutput.abi,
+            this.contract = new ValidatorRegistryContract(
+                artifacts.ValidatorRegistry.compilerOutput.abi,
                 this.address,
                 this.web3Wrapper.getProvider(),
                 { from: this.coinbase },
@@ -147,21 +147,21 @@ export class ValidatorRegistry {
         return contract.getListing.callAsync(this.convertPubKey(_pubKey));
     }
 
-    /*    /!**
+    /**
      * Reads the requested listings
-     *!/
+     */
     public async getListings(_pubKeys: string[]): Promise<Listing[]> {
         const contract = await this.getContract();
         return contract.getListings.callAsync(_pubKeys);
     }
 
-    /!**
+    /**
      * Reads the registered listings
-     *!/
+     */
     public async getAllListings(): Promise<Listing[]> {
         const contract = await this.getContract();
         return contract.getAllListings.callAsync();
-    }*/
+    }
 
     /**
      * Reads the max reward rate
