@@ -14,6 +14,7 @@ steps:
       WEB3_URI: http://kosu-geth:8545
     commands:
       - cp -r /cache/node_modules node_modules
+      - ls node_modules
       - yarn
       - yarn prettier:ci
       - yarn lint
