@@ -8,7 +8,7 @@ steps:
     image: gcr.io/kosu-io/node-ci:latest
     volumes:
       - name: node_modules
-        path: /node_modules
+        path: /drone/src/node_modules
     pull: always
     environment:
       WEB3_URI: http://kosu-geth:8545
