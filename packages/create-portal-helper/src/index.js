@@ -104,6 +104,12 @@ class Create {
         // ropsten web3 provider required for check poster bond
         this.kosu = new Kosu();
 
+        // get a reasonable gas price, use 5 if API fails
+        const rawRes = await fetch("https://ethgasstation.info/json/ethgasAPI.json");
+        const parsed = await rawRes.json()
+        const gasPriceGwei = parsed["safeLow"] ? parsed["safeLow"] : "5";
+        this.gasPriceWei = this.web3.utils.toWei(gasPriceGwei, "Gwei");
+
         this.initialized = true;
     }
 
@@ -530,7 +536,13 @@ class Create {
     }
 
     async _setUnlimitedERC20ProxyAllowance(user, token) {
-        return await this.erc20TokenWrapper.setUnlimitedProxyAllowanceAsync(token, user);
+        return await this.erc20TokenWrapper.setUnlimitedProxyAllowanceAsync(
+            token,
+            user,
+            {
+                gasPrice: this.gasPriceWei,
+            },
+        );
     }
 
     async _connectMetamask() {
