@@ -23,7 +23,6 @@ steps:
     environment:
       WEB3_URI: http://kosu-geth:8545
     commands:
-      - ls node_modules/@0x/sol-compiler/lib/solc_bin/
       - yarn
       - yarn prettier:ci
       - yarn lint
