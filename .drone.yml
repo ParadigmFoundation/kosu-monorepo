@@ -1,5 +1,4 @@
-# Kosu-monorepo CI configuration file (last updated 3 June 2019)
-# Version v0.1.0-alpha.4
+# Kosu-monorepo CI configuration file (last updated 5 June 2019)
 
 kind: pipeline
 name: node-tests
