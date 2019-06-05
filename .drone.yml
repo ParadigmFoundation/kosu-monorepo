@@ -13,13 +13,13 @@ steps:
     environment:
       WEB3_URI: http://kosu-geth:8545
     commands:
-      - cp /cache/node_modules node_modules
+      - cp -r /cache/node_modules node_modules
       - yarn
       - yarn prettier:ci
       - yarn lint
       - yarn build
       - yarn test:ci
-      - cp node_modules /cache/node_modules
+      - cp -r node_modules /cache/node_modules
 
 volumes:
   - name: node_modules
