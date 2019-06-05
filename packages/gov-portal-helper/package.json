@@ -4,7 +4,7 @@
     "description": "Abstraction library for interacting with the Kosu contract system governance functions.",
     "main": "lib/index.js",
     "license": "MIT",
-    "private": false,
+    "private": true,
     "scripts": {
         "compile:assets": "webpack",
         "develop": "webpack-dev-server",
