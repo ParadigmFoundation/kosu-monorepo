@@ -106,7 +106,7 @@ class Gov {
         };
 
         // process current listings from contract system
-        const listings = await this.kosu.validatorRegistry.getListings();
+        const listings = await this.kosu.validatorRegistry.getAllListings();
         for (const listing of listings) {
             await this._processListing(listing);
         }
@@ -243,6 +243,23 @@ class Gov {
      *
      * @returns {HistoricalActivity} all historical `challenges` and `listings`.
      */
+    async getHistoricalChallenges() {
+        return this.kosu.validatorRegistry.getAllChallenges().then(a => a.reverse());
+    } /*/!**
+     * This method returns an object (described below) that contains all
+     * historical listings (proposals and validators, including current) listings
+     * and information about all past challenges.
+     *
+     * It will take a significant amount of time (~12s) to resolve, and the
+     * return object can be large (on the order of 30 KB) depending on the number
+     * of past governance activities.
+     *
+     * Because it a) takes a long time to load and b) is network I/O intensive,
+     * it should only be called when the user requests to load all historical
+     * data.
+     *
+     * @returns {HistoricalActivity} all historical `challenges` and `listings`.
+     *!/
     async getHistoricalActivity() {
         console.log(Date.now());
         // output objects
@@ -343,7 +360,7 @@ class Gov {
             allListings,
             allChallenges,
         };
-    }
+    }*/
 
     async _processListing(listing) {
         switch (listing.status) {

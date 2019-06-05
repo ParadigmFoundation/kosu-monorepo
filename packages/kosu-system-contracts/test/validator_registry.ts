@@ -264,7 +264,9 @@ describe("ValidatorRegistry", async () => {
                     paradigmMarket,
                     { from: account },
                 );
-                await validatorRegistry.challengeListing.awaitTransactionSuccessAsync(account, paradigmMarket, { from: account });
+                await validatorRegistry.challengeListing.awaitTransactionSuccessAsync(account, paradigmMarket, {
+                    from: account,
+                });
             }
         });
 
@@ -273,7 +275,9 @@ describe("ValidatorRegistry", async () => {
                 await finishChallenge(account);
                 await validatorRegistry.initExit.awaitTransactionSuccessAsync(account, { from: account });
                 await clearTreasury(account);
-                await kosuToken.approve.awaitTransactionSuccessAsync(treasury.address, testValues.zero, { from: account });
+                await kosuToken.approve.awaitTransactionSuccessAsync(treasury.address, testValues.zero, {
+                    from: account,
+                });
             }
         });
 
