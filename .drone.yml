@@ -8,19 +8,18 @@ steps:
     image: gcr.io/kosu-io/node-ci:latest
     volumes:
       - name: node_modules
-        path: /drone/src/node_modules
+        path: /cache/node_modules
     pull: always
     environment:
       WEB3_URI: http://kosu-geth:8545
     commands:
-      - pwd
-      - ls
-      - touch node_modules/file
+      - cp /cache/node_modules node_modules
       - yarn
       - yarn prettier:ci
       - yarn lint
       - yarn build
       - yarn test:ci
+      - cp node_modules /cache/node_modules
 
 volumes:
   - name: node_modules
