@@ -8,6 +8,7 @@ steps:
     image: drillster/drone-volume-cache
     volumes:
       - name: project
+        path: /var/lib/project
     settings:
       rebuild: true
       mount:
@@ -15,6 +16,9 @@ steps:
 
   - name: node-projects
     image: gcr.io/kosu-io/node-ci:latest
+    volumes:
+      - name: project
+        path: /var/lib/project
     pull: always
     environment:
       WEB3_URI: http://kosu-geth:8545
@@ -28,7 +32,8 @@ steps:
   - name: rebuild-node-modules
     image: drillster/drone-volume-cache
     volumes:
-      - name: proejct
+      - name: project
+        path: /var/lib/project
     settings:
       rebuild: true
       mount:
