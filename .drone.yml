@@ -39,7 +39,7 @@ trigger:
       packages/tslint-config/**/*.*,
       packages/tsc-config/**/*.*,
       packages/create-portal-helper/**/*.*,
-      packages/gov-portal-helper/**/*.*,
+      packages/gov-portal-helper/**/*.*
     ]
 
 ---
