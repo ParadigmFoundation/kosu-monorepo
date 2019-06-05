@@ -5,8 +5,11 @@ kind: pipeline
 name: node-tests
 
 steps:
-  - name: npm-projects
+  - name: node-projects
     image: gcr.io/kosu-io/node-ci:latest
+    volumes:
+      - name: node_modules
+        path: ./node_modules
     pull: always
     environment:
       WEB3_URI: http://kosu-geth:8545
@@ -16,6 +19,10 @@ steps:
       - yarn lint
       - yarn build
       - yarn test:ci
+
+volumes:
+  - name: node_modules
+    host: /var/lib/node_modules
 
 services:
   - name: kosu-geth
@@ -39,30 +46,6 @@ trigger:
       packages/kosu-geth/**/*.*,
       packages/tslint-config/**/*.*,
       packages/tsc-config/**/*.*
-    ]
-
----
-kind: pipeline
-name: golang-tests
-
-steps:
-  - name: go-kosu
-    image: gcr.io/kosu-io/go-kosu-ci:latest
-    pull: always
-    environment:
-      ETHEREUM_TEST_ADDRESS: wss://ethnet.zaidan.io/ws/ropsten
-    commands:
-    - cd packages/go-kosu
-    - make ci
-
-trigger:
-  event:
-    - pull_request
-  changeset:
-    includes: [
-      .drone.yml,
-      packages/go-kosu/**/*.*,
-      packages/kosu-system-contracts/**/*.*
     ]
 
 # UNTESTED
