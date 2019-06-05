@@ -4,15 +4,15 @@ kind: pipeline
 name: node-tests
 
 steps:
-#  - name: restore-project
-#    image: drillster/drone-volume-cache
-#    volumes:
-#      - name: project
-#        path: /var/lib/project
-#    settings:
-#      rebuild: true
-#      mount:
-#        - .
+  - name: restore-project
+    image: drillster/drone-volume-cache
+    volumes:
+      - name: project
+        path: /var/lib/project
+    settings:
+      rebuild: true
+      mount:
+        - .
 
   - name: node-projects
     image: gcr.io/kosu-io/node-ci:latest
