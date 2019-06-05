@@ -92,9 +92,9 @@ class Create {
         this.coinbase = await this.web3.eth.getCoinbase();
 
         // 0x web3 and erc20 wrapper
-        let web3Wrapper = new Web3Wrapper(this.web3.currentProvider);
-        let erc20proxy = new ERC20ProxyWrapper(web3Wrapper, networkId);
-        this.erc20TokenWrapper = new ERC20TokenWrapper(web3Wrapper, networkId, erc20proxy);
+        this.web3Wrapper = new Web3Wrapper(this.web3.currentProvider);
+        let erc20proxy = new ERC20ProxyWrapper(this.web3Wrapper, networkId);
+        this.erc20TokenWrapper = new ERC20TokenWrapper(this.web3Wrapper, networkId, erc20proxy);
 
         // helpers for creating and signing 0x orders
         this.subProvider = new MetamaskSubprovider(this.web3.currentProvider);
@@ -103,6 +103,12 @@ class Create {
 
         // ropsten web3 provider required for check poster bond
         this.kosu = new Kosu();
+
+        // get a reasonable gas price, use 5 if API fails
+        const rawRes = await fetch("https://ethgasstation.info/json/ethgasAPI.json");
+        const parsed = await rawRes.json();
+        const gasPriceGwei = parsed["safeLow"] ? parsed["safeLow"] : "5";
+        this.gasPriceWei = this.web3.utils.toWei(gasPriceGwei, "Gwei");
 
         this.initialized = true;
     }
@@ -340,6 +346,30 @@ class Create {
         return false;
     }
 
+    /**
+     * Async function that returns a promise that resolves when the supplied txID
+     * is mined and executed successfully. If the transaction fails, the promise
+     * will reject. The resolved object is a full receipt that can usually be
+     * ignored. The purpose of this method is to simply wait until a transaction
+     * is successfully mined.
+     *
+     * @param {string} txID 32 byte (64-char) 0x-prefixed transaction hash
+     * @returns the full decoded transaction receipt (usually will not need)
+     * @example
+     * ```javascript
+     * const txId = await create.setProxyAllowanceWeth();
+     *
+     * // wait for the transaction to be mined, show loading icon, etc.
+     * await create.awaitTransactionSuccessOrThrow(txId);
+     * ```
+     */
+    async awaitTransactionSuccessOrThrow(txID) {
+        if (!/^0x[a-fA-F0-9]{64}$/.test(txID)) {
+            throw new Error("invalid transaction hash (txID)");
+        }
+        return await this.web3Wrapper.awaitTransactionSuccessAsync(txID);
+    }
+
     // WETH (wrapped ether)
 
     /**
@@ -506,7 +536,9 @@ class Create {
     }
 
     async _setUnlimitedERC20ProxyAllowance(user, token) {
-        return await this.erc20TokenWrapper.setUnlimitedProxyAllowanceAsync(token, user);
+        return await this.erc20TokenWrapper.setUnlimitedProxyAllowanceAsync(token, user, {
+            gasPrice: this.gasPriceWei,
+        });
     }
 
     async _connectMetamask() {

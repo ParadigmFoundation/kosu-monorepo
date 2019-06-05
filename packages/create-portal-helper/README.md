@@ -15,6 +15,7 @@ Helper methods for building the Paradigm "Create" portal.
     -   [.convertFromWei(weiAmount)](#Create+convertFromWei) ⇒ <code>BigNumber</code>
     -   [.isValidAddress(address)](#Create+isValidAddress) ⇒ <code>boolean</code>
     -   [.userHasBond(userAddress)](#Create+userHasBond) ⇒ <code>boolean</code>
+    -   [.awaitTransactionSuccessOrThrow(txID)](#Create+awaitTransactionSuccessOrThrow) ⇒
     -   [.getUserWethBalance(userAddress)](#Create+getUserWethBalance) ⇒ <code>BigNumber</code>
     -   [.getUserWethAllowance(userAddress)](#Create+getUserWethAllowance) ⇒ <code>BigNumber</code>
     -   [.setProxyAllowanceWeth(userAddress)](#Create+setProxyAllowanceWeth) ⇒ <code>string</code>
@@ -92,7 +93,11 @@ Signs a (already signed) 0x order as the Kosu poster, and posts and order
 to the Kosu network. Requires the poster to have a bonded amount of KOSU
 in the `PosterRegistry` contract.
 
-**Kind**: instance method of [<code>Create</code>](#Create)
+**Kind**: instance method of [<code>Create</code>](#Create)  
+**Todo:**: - undo split-network ugly-ness
+
+-   don't pull `makerArguments` from subcontract if provided
+-   ability to use direct kosu.js to sign
 
 | Param             | Type                | Description                            |
 | ----------------- | ------------------- | -------------------------------------- |
@@ -177,6 +182,32 @@ Kosu network. Returns `true` if they are, and `false` if they are not.
 | Param       | Type                | Description                                         |
 | ----------- | ------------------- | --------------------------------------------------- |
 | userAddress | <code>string</code> | can be provided to override coinbase, but shouldn't |
+
+<a name="Create+awaitTransactionSuccessOrThrow"></a>
+
+### create.awaitTransactionSuccessOrThrow(txID) ⇒
+
+Async function that returns a promise that resolves when the supplied txID
+is mined and executed successfully. If the transaction fails, the promise
+will reject. The resolved object is a full receipt that can usually be
+ignored. The purpose of this method is to simply wait until a transaction
+is successfully mined.
+
+**Kind**: instance method of [<code>Create</code>](#Create)  
+**Returns**: the full decoded transaction receipt (usually will not need)
+
+| Param | Type                | Description                                    |
+| ----- | ------------------- | ---------------------------------------------- |
+| txID  | <code>string</code> | 32 byte (64-char) 0x-prefixed transaction hash |
+
+**Example**
+
+```javascript
+const txId = await create.setProxyAllowanceWeth();
+
+// wait for the transaction to be mined, show loading icon, etc.
+await create.awaitTransactionSuccessOrThrow(txId);
+```
 
 <a name="Create+getUserWethBalance"></a>
 
