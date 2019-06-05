@@ -4,21 +4,21 @@ kind: pipeline
 name: node-tests
 
 steps:
-  - name: restore-project
-    image: drillster/drone-volume-cache
-    volumes:
-      - name: project
-        path: /var/lib/project
-    settings:
-      rebuild: true
-      mount:
-        - .
+#  - name: restore-project
+#    image: drillster/drone-volume-cache
+#    volumes:
+#      - name: project
+#        path: /var/lib/project
+#    settings:
+#      rebuild: true
+#      mount:
+#        - .
 
   - name: node-projects
     image: gcr.io/kosu-io/node-ci:latest
     volumes:
       - name: project
-        path: /var/lib/project
+        path: /var/lib/node_modules
     pull: always
     environment:
       WEB3_URI: http://kosu-geth:8545
@@ -33,7 +33,7 @@ steps:
     image: drillster/drone-volume-cache
     volumes:
       - name: project
-        path: /var/lib/project
+        path: /var/lib/node_modules
     settings:
       rebuild: true
       mount:
@@ -42,7 +42,7 @@ steps:
 volumes:
   - name: project
     host:
-      path: /var/lib/project
+      path: /var/lib/node_modules
 
 services:
   - name: kosu-geth
