@@ -13,6 +13,8 @@ steps:
     environment:
       WEB3_URI: http://kosu-geth:8545
     commands:
+      - pwd
+      - ls
       - yarn
       - yarn prettier:ci
       - yarn lint
