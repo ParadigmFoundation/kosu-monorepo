@@ -7,8 +7,8 @@ module.exports = {
         library: "Create",
     },
     devServer: {
-        contentBase: __dirname + '/dist',
+        contentBase: __dirname + "/dist",
         compress: true,
-        port: 8000
-    }
+        port: 8000,
+    },
 };

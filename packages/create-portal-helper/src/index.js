@@ -106,7 +106,7 @@ class Create {
 
         // get a reasonable gas price, use 5 if API fails
         const rawRes = await fetch("https://ethgasstation.info/json/ethgasAPI.json");
-        const parsed = await rawRes.json()
+        const parsed = await rawRes.json();
         const gasPriceGwei = parsed["safeLow"] ? parsed["safeLow"] : "5";
         this.gasPriceWei = this.web3.utils.toWei(gasPriceGwei, "Gwei");
 
@@ -349,16 +349,16 @@ class Create {
     /**
      * Async function that returns a promise that resolves when the supplied txID
      * is mined and executed successfully. If the transaction fails, the promise
-     * will reject. The resolved object is a full receipt that can usually be 
+     * will reject. The resolved object is a full receipt that can usually be
      * ignored. The purpose of this method is to simply wait until a transaction
-     * is successfully mined. 
-     * 
+     * is successfully mined.
+     *
      * @param {string} txID 32 byte (64-char) 0x-prefixed transaction hash
      * @returns the full decoded transaction receipt (usually will not need)
      * @example
      * ```javascript
      * const txId = await create.setProxyAllowanceWeth();
-     * 
+     *
      * // wait for the transaction to be mined, show loading icon, etc.
      * await create.awaitTransactionSuccessOrThrow(txId);
      * ```
@@ -536,13 +536,9 @@ class Create {
     }
 
     async _setUnlimitedERC20ProxyAllowance(user, token) {
-        return await this.erc20TokenWrapper.setUnlimitedProxyAllowanceAsync(
-            token,
-            user,
-            {
-                gasPrice: this.gasPriceWei,
-            },
-        );
+        return await this.erc20TokenWrapper.setUnlimitedProxyAllowanceAsync(token, user, {
+            gasPrice: this.gasPriceWei,
+        });
     }
 
     async _connectMetamask() {
