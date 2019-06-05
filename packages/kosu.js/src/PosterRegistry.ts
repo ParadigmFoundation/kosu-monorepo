@@ -1,23 +1,20 @@
-import BN = require("bn.js");
-import TruffleContract from "truffle-contract";
+import { BigNumber } from "@0x/utils";
+import { Web3Wrapper } from "@0x/web3-wrapper";
+import { artifacts, DeployedAddresses, PosterRegistryProxyContract } from "@kosu/system-contracts";
+import { TransactionReceiptWithDecodedLogs } from "ethereum-protocol";
 import Web3 from "web3";
 
 import { Treasury } from "./Treasury";
 
-// tslint:disable-next-line: no-var-requires
-const PosterRegistryProxyContractData = require("@kosu/system-contracts").contracts.PosterRegistryProxy;
-
 /**
  * Integration with PosterRegistry contract on an Ethereum blockchain.
- *
- * @todo Refactor contract integration after migration away from truffle
  */
 export class PosterRegistry {
     private readonly web3: Web3;
     private readonly treasury: Treasury;
-    private readonly initializing: Promise<void>;
-    private contract: any;
-    private coinbase: string;
+    private contract: PosterRegistryProxyContract;
+    private readonly web3Wrapper: Web3Wrapper;
+    private address: string;
 
     /**
      * Create a new PosterRegistry instance.
@@ -27,38 +24,44 @@ export class PosterRegistry {
      */
     constructor(options: KosuOptions, treasury: Treasury) {
         this.web3 = options.web3;
+        this.web3Wrapper = options.web3Wrapper;
         this.treasury = treasury;
-        this.initializing = this.init(options);
+        this.address = options.posterRegistryProxyAddress;
     }
 
     /**
-     * Asyncronously initializes the instance after construction
+     * Asynchronously initializes the contract instance or returns it from cache
      *
-     * @param options instantiation options
-     * @returns A promise to await complete instantiation for further calls
+     * @returns The contract
      */
-    public async init(options: KosuOptions): Promise<void> {
-        const PosterRegistryProxyContract = TruffleContract(PosterRegistryProxyContractData);
-        PosterRegistryProxyContract.setProvider(this.web3.currentProvider);
+    private async getContract(): Promise<PosterRegistryProxyContract> {
+        if (!this.contract) {
+            const networkId = await this.web3Wrapper.getNetworkIdAsync();
+            const coinbase = await this.web3.eth.getCoinbase().catch(() => undefined);
 
-        // tslint:disable-next-line: prefer-conditional-expression
-        if (options.posterRegistryProxyAddress) {
-            this.contract = PosterRegistryProxyContract.at(options.posterRegistryProxyAddress);
-        } else {
-            this.contract = await PosterRegistryProxyContract.deployed().catch(() => {
+            if (!this.address) {
+                this.address = DeployedAddresses[networkId].PosterRegistryProxy;
+            }
+            if (!this.address) {
                 throw new Error("Invalid network for PosterRegistry");
-            });
-        }
+            }
 
-        this.coinbase = await this.web3.eth.getCoinbase().catch(() => undefined);
+            this.contract = new PosterRegistryProxyContract(
+                artifacts.PosterRegistryProxy.compilerOutput.abi,
+                this.address,
+                this.web3Wrapper.getProvider(),
+                { from: coinbase },
+            );
+        }
+        return this.contract;
     }
 
     /**
      * Reads total tokens contributed to registry
      */
-    public async tokensContributed(): Promise<BN> {
-        await this.initializing;
-        return this.contract.tokensContributed.call();
+    public async tokensContributed(): Promise<BigNumber> {
+        const contract = await this.getContract();
+        return contract.tokensContributed.callAsync();
     }
 
     /**
@@ -66,9 +69,9 @@ export class PosterRegistry {
      *
      * @param address Address of registered user
      */
-    public async tokensRegisteredFor(address: string): Promise<BN> {
-        await this.initializing;
-        return this.contract.tokensRegisteredFor.call(address);
+    public async tokensRegisteredFor(address: string): Promise<BigNumber> {
+        const contract = await this.getContract();
+        return contract.tokensRegisteredFor.callAsync(address);
     }
 
     /**
@@ -76,9 +79,9 @@ export class PosterRegistry {
      *
      * @param amount uint value of tokens to register
      */
-    public async registerTokens(amount: string | number | BN): Promise<void> {
-        await this.initializing;
-        const parsed = new BN(amount);
+    public async registerTokens(amount: BigNumber): Promise<TransactionReceiptWithDecodedLogs> {
+        const contract = await this.getContract();
+        const parsed = new BigNumber(amount);
 
         const coinbase = await this.web3.eth.getCoinbase();
         const treasuryTokens = await this.treasury.currentBalance(coinbase);
@@ -86,8 +89,8 @@ export class PosterRegistry {
 
         if (!hasTreasuryBalance) {
             const tokenBalance = await this.treasury.kosuToken.balanceOf(coinbase);
-            const tokensNeeded = parsed.sub(treasuryTokens);
-            const hasEnoughTokens = tokenBalance.gte(tokensNeeded);
+            const tokensNeeded = parsed.minus(treasuryTokens);
+            const hasEnoughTokens = tokenBalance.gte(tokensNeeded as any);
 
             if (hasEnoughTokens) {
                 // tslint:disable-next-line: no-console
@@ -98,7 +101,7 @@ export class PosterRegistry {
             }
         }
 
-        return this.contract.registerTokens(parsed.toString(), { from: this.coinbase });
+        return contract.registerTokens.awaitTransactionSuccessAsync(amount);
     }
 
     /**
@@ -106,8 +109,8 @@ export class PosterRegistry {
      *
      * @param amount uint values of tokens to release
      */
-    public async releaseTokens(amount: string | BN ): Promise<void> {
-        await this.initializing;
-        return this.contract.releaseTokens(amount.toString(), { from: this.coinbase });
+    public async releaseTokens(amount: BigNumber): Promise<TransactionReceiptWithDecodedLogs> {
+        const contract = await this.getContract();
+        return contract.releaseTokens.awaitTransactionSuccessAsync(amount);
     }
 }

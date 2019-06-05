@@ -9,17 +9,17 @@ import "../lib/KosuToken.sol";
 contract Treasury is Authorizable {
     using SafeMath for uint;
 
-    KosuToken public digm;
+    KosuToken public kosuToken;
     mapping(address => uint) private currentBalances;
     mapping(address => uint) private systemBalances;
 
     /** @dev Creates a new Treasury
         @notice Creates a new Treasury
-        @param digmAddress The deployed KosuToken contract address
+        @param kosuTokenAddress The deployed KosuToken contract address
         @param auth AuthorizedAddresses deployed address.
     */
-    constructor(address digmAddress, address auth) Authorizable(auth) public {
-        digm = KosuToken(digmAddress);
+    constructor(address kosuTokenAddress, address auth) Authorizable(auth) public {
+        kosuToken = KosuToken(kosuTokenAddress);
     }
 
     /** @dev Deposits tokens into the treasury
@@ -68,7 +68,7 @@ contract Treasury is Authorizable {
         }
 
         //Transfer to requesting contract and update balance held in contract
-        require(digm.transfer(msg.sender, amount));
+        require(kosuToken.transfer(msg.sender, amount));
         setCurrentBalance(account, getCurrentBalance(account).sub(amount));
     }
 
@@ -79,7 +79,7 @@ contract Treasury is Authorizable {
     */
     function releaseTokens(address account, uint amount) isAuthorized public {
         //Transfer from requesting contract and update balance held in contract
-        require(digm.transferFrom(msg.sender, address(this), amount));
+        require(kosuToken.transferFrom(msg.sender, address(this), amount));
         setCurrentBalance(account, getCurrentBalance(account).add(amount));
     }
 
@@ -91,6 +91,8 @@ contract Treasury is Authorizable {
     function confiscate(address account, uint amount) isAuthorized public {
         //Remove the system balance
         setSystemBalance(account, getSystemBalance(account).sub(amount));
+        // Require the tokens being confiscated are only tokens already in kosu system contract control
+        require(getSystemBalance(account) >= getCurrentBalance(account));
     }
 
     /** @dev Allows contracts to be rewarded with new tokens
@@ -100,7 +102,7 @@ contract Treasury is Authorizable {
     */
     function award(address account, uint amount) isAuthorized public {
         //Transfer from requesting contract and update balance held in contract
-        require(digm.transferFrom(msg.sender, address(this), amount));
+        require(kosuToken.transferFrom(msg.sender, address(this), amount));
         //Increase current balance
         setCurrentBalance(account, getCurrentBalance(account).add(amount));
         //Increase systemBalance these tokens are new to the user
@@ -140,7 +142,7 @@ contract Treasury is Authorizable {
 
     function burnFrom(address account, uint amount) isAuthorized public {
         require(getCurrentBalance(account) >= amount);
-        digm.burn(amount);
+        kosuToken.burn(amount);
         setCurrentBalance(account, getCurrentBalance(account).sub(amount));
         setSystemBalance(account, getSystemBalance(account).sub(amount));
     }
@@ -167,7 +169,7 @@ contract Treasury is Authorizable {
 //  INTERNAL
     function _deposit(address account, uint amount) internal {
         //Pulls token from the user and increases both internal ans system balances by the value.
-        require(digm.transferFrom(account, address(this), amount));
+        require(kosuToken.transferFrom(account, address(this), amount));
         setSystemBalance(account, getSystemBalance(account).add(amount));
         setCurrentBalance(account, getCurrentBalance(account).add(amount));
     }
@@ -175,7 +177,7 @@ contract Treasury is Authorizable {
     function _withdraw(address account, uint amount) internal {
         //Sends tokens to the user reduce the values of internal and system balances by the value.
         require(getCurrentBalance(account) >= amount);
-        require(digm.transfer(account, amount));
+        require(kosuToken.transfer(account, amount));
         setSystemBalance(account, getSystemBalance(account).sub(amount));
         setCurrentBalance(account, getCurrentBalance(account).sub(amount));
     }

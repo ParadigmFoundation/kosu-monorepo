@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"crypto/sha256"
 	"errors"
+	fmt "fmt"
 	"math/big"
 	"sort"
 
@@ -27,6 +28,13 @@ func (b *BigInt) Bytes() []byte { return b.Value }
 // BigInt returns the math.BigInt representation
 func (b *BigInt) BigInt() *big.Int {
 	return big.NewInt(0).SetBytes(b.Value)
+}
+
+// MarshalText overloads the default Marshaling in order to pretty the Value as a formatted String
+func (b *BigInt) MarshalText() ([]byte, error) {
+	n := big.NewInt(0).SetBytes(b.Value)
+	str := fmt.Sprintf("value: %s", n.String())
+	return []byte(str), nil
 }
 
 var (
@@ -76,9 +84,14 @@ func (tx *TransactionWitness) Hash() []byte {
 	return hash[:]
 }
 
-// NewBigInt returns a new BigInt set to n.
-func NewBigInt(n int64) *BigInt {
-	return &BigInt{
-		Value: big.NewInt(n).Bytes(),
-	}
+// NewBigInt returns a new BigInt with value set to the provided byte slice.
+func NewBigInt(bytes []byte) *BigInt {
+	return &BigInt{Value: bytes}
+}
+
+// NewBigIntFromInt returns a new BigInt with value set to n.
+// If `n` comes from a *big.Int, make sure to call `.IsInt64() ` before invoking `Int64()`.
+func NewBigIntFromInt(n int64) *BigInt {
+	b := big.NewInt(n).Bytes()
+	return NewBigInt(b)
 }

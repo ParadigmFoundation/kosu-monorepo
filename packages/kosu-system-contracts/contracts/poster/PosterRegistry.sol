@@ -12,7 +12,7 @@ contract PosterRegistry is Authorizable {
 
     mapping(address => uint) private _balances;
     uint private _tokensContributed = 0;
-    KosuToken private _token;
+    KosuToken private _kosuToken;
     Treasury private _treasury;
     EventEmitter private e;
 
@@ -24,7 +24,7 @@ contract PosterRegistry is Authorizable {
     */
     constructor(address _treasuryAddress, address _events, address _auth) Authorizable(_auth) public {
         _treasury = Treasury(_treasuryAddress);
-        _token = _treasury.digm();
+        _kosuToken = _treasury.kosuToken();
         e = EventEmitter(_events);
     }
 
@@ -41,7 +41,7 @@ contract PosterRegistry is Authorizable {
         @return KosuToken address
     */
     function token() external view returns (address) {
-        return address(_token);
+        return address(_kosuToken);
     }
 
     /** @dev The Treasury address
@@ -81,7 +81,7 @@ contract PosterRegistry is Authorizable {
     */
     function releaseTokens(address msgSender, uint amount) external isAuthorized {
         //Approve treasury to take tokens from this contract, treasury takes tokens and updates accounting.
-        _token.approve(address(_treasury), amount);
+        _kosuToken.approve(address(_treasury), amount);
         _treasury.releaseTokens(msgSender, amount);
         _balances[msgSender] = _balances[msgSender].sub(amount);
         _tokensContributed = _tokensContributed.sub(amount);
@@ -94,7 +94,7 @@ contract PosterRegistry is Authorizable {
         bytes32[] memory data = new bytes32[](2);
         data[0] = bytes32(uint(a));
         data[1] = bytes32(tokensFor(a));
-        e.emitEvent("PosterRegistryUpdate", data);
+        e.emitEvent("PosterRegistryUpdate", data, "");
     }
 
     function tokensFor(address a) internal view returns (uint) {

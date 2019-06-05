@@ -1,33 +1,45 @@
 {
-  "name": "@kosu/monorepo",
-  "description": "Monorepo for the Kosu protocol. Includes network client, contracts, and supporting libraries/tooling.",
-  "license": "CC0-1.0",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/ParadigmFoundation/kosu-monorepo.git"
-  },
-  "bugs": {
-    "url": "https://github.com/ParadigmFoundation/kosu-monorepo/issues"
-  },
-  "scripts": {
-    "clean": "lerna clean -y",
-    "clean:install": "yarn clean && yarn",
-    "build": "wsrun --exclude-missing --stages build",
-    "test": "wsrun --exclude-missing test",
-    "test:ci": "wsrun --exclude-missing test:ci",
-    "postinstall": "lerna link"
-  },
-  "workspaces": [
-    "packages/kosu.js",
-    "packages/kosu-sdk-contracts",
-    "packages/kosu-system-contracts",
-    "pacakges/tsc-config",
-    "packages/tslint-config",
-    "packages/dev-images"
-  ],
-  "dependencies": {
-    "lerna": "^3.13.3",
-    "wsrun": "^3.6.4"
-  },
-  "private": true
+    "name": "@kosu/monorepo",
+    "description": "Monorepo for the Kosu protocol. Includes network client, contracts, and supporting libraries/tooling.",
+    "license": "MIT",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/ParadigmFoundation/kosu-monorepo.git"
+    },
+    "bugs": {
+        "url": "https://github.com/ParadigmFoundation/kosu-monorepo/issues"
+    },
+    "scripts": {
+        "clean": "lerna clean -y && rm -rf node_modules",
+        "clean:install": "yarn clean && yarn",
+        "lint": "wsrun --exclude-missing lint",
+        "build": "wsrun --exclude-missing --stages build",
+        "test": "wsrun --exclude-missing test",
+        "test:ci": "wsrun --exclude-missing --fast-exit test:ci",
+        "prettier": "prettier --write '**/*.{ts,tsx,json,md,js}' --config .prettierrc",
+        "prettier:ci": "prettier --list-different '**/*.{ts,tsx,json,md,js}' --config .prettierrc",
+        "postinstall": "lerna link --force-local"
+    },
+    "workspaces": [
+        "packages/kosu.js",
+        "packages/kosu-sdk-contracts",
+        "packages/kosu-system-contracts",
+        "pacakges/tsc-config",
+        "packages/tslint-config",
+        "packages/dev-images",
+        "packages/web-helpers",
+        "packages/create-portal-helper",
+        "packages/gov-portal-helper"
+    ],
+    "dependencies": {},
+    "private": true,
+    "devDependencies": {
+        "lerna": "^3.13.4",
+        "npm-run-all": "^4.1.5",
+        "@kosu/tslint-config": "^0.0.4",
+        "shx": "^0.3.2",
+        "typescript": "^3.4.5",
+        "prettier": "^1.17.0",
+        "wsrun": "^3.6.5"
+    }
 }

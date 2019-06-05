@@ -4,10 +4,12 @@ import (
 	"encoding/hex"
 	"errors"
 	"fmt"
-	"go-kosu/abci/types"
 	"math/big"
+	"sort"
 	"sync"
 	"sync/atomic"
+
+	"go-kosu/abci/types"
 )
 
 // RoundInfo is the persisted state of the RoundInfo
@@ -80,8 +82,9 @@ type State struct {
 	eventsLock sync.RWMutex
 
 	// posters keep track for Account and balance for 'posters'.
-	posters     map[string]*Poster
-	postersLock sync.RWMutex
+	posters        map[string]*Poster
+	deletedPosters []string
+	postersLock    sync.RWMutex
 
 	// lastEvent stores the height of the Ethereum blockchain at which the last event was applied in-state.
 	LastEvent uint64
@@ -93,8 +96,15 @@ type State struct {
 // NewState returns a new empty State
 func NewState() *State {
 	return &State{
-		posters: make(map[string]*Poster),
-		events:  make(map[uint64]WitnessEvents),
+		// Set default ConsensusParams
+		// TODO: this should comes from genesis block
+		ConsensusParams: ConsensusParams{
+			PeriodLength: 10,
+		},
+
+		posters:        make(map[string]*Poster),
+		deletedPosters: []string{},
+		events:         make(map[uint64]WitnessEvents),
 	}
 }
 
@@ -105,9 +115,9 @@ type element struct {
 
 func (s *State) elements() []element {
 	return []element{
-		{roundInfoKey, &s.RoundInfo},
-		{lastEventKey, &s.LastEvent},
-		{consensusParamsKey, &s.ConsensusParams},
+		{RoundInfoKey, &s.RoundInfo},
+		{LastEventKey, &s.LastEvent},
+		{ConsensusParamsKey, &s.ConsensusParams},
 	}
 }
 
@@ -148,25 +158,57 @@ func (s *State) PersistToTree(tree *StateTree) error {
 		}
 	}
 
-	// TODO: clear previous persisted events in the tree to avoid growing forever.
+	for _, addr := range s.deletedPosters {
+		tree.DeletePoster(addr)
+	}
+	s.deletedPosters = []string{}
+
+	if err := s.persistEvents(tree); err != nil {
+		return err
+	}
+
+	if err := s.persistPosters(tree); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (s *State) persistEvents(tree *StateTree) error {
 	s.eventsLock.RLock()
 	defer s.eventsLock.RUnlock()
-	for block, events := range s.events {
-		for id, event := range events {
-			if err := tree.SetEvent(block, id, event); err != nil {
+
+	keys := []uint64{}
+	for key := range s.events {
+		keys = append(keys, key)
+	}
+	sort.Slice(keys, func(i, j int) bool { return keys[i] < keys[j] })
+
+	for _, key := range keys {
+		for id, event := range s.events[key] {
+			if err := tree.SetEvent(key, id, event); err != nil {
 				return err
 			}
 		}
 	}
+	return nil
+}
 
+func (s *State) persistPosters(tree *StateTree) error {
 	s.postersLock.RLock()
-	for addr, p := range s.posters {
-		if err := tree.SetPoster(addr, p); err != nil {
+	defer s.postersLock.RUnlock()
+
+	keys := []string{}
+	for key := range s.posters {
+		keys = append(keys, key)
+	}
+
+	for _, key := range keys {
+		p := s.posters[key]
+		if err := tree.SetPoster(key, p); err != nil {
 			return nil
 		}
 	}
-	defer s.postersLock.RUnlock()
-
 	return nil
 }
 
@@ -178,7 +220,7 @@ func (s *State) PushTransactionWitness(tx *types.TransactionWitness) error {
 	}
 
 	if tx.Amount == nil {
-		tx.Amount = types.NewBigInt(0)
+		tx.Amount = types.NewBigIntFromInt(0)
 	}
 
 	event := s.addTxWitnessToEvents(tx)
@@ -247,6 +289,7 @@ func (s *State) updatePosters(addr string, p *Poster) {
 
 	if p.Balance.Cmp(big.NewInt(0)) == 0 {
 		delete(s.posters, addr)
+		s.deletedPosters = append(s.deletedPosters, addr)
 	}
 }
 
@@ -299,4 +342,27 @@ func (s *State) UpdateConfirmationThreshold(n uint32) {
 		n = 2 * (n / 3)
 	}
 	atomic.StoreUint32(&s.ConsensusParams.ConfirmationThreshold, n)
+}
+
+// Posters returns the current posters
+func (s *State) Posters() map[string]*Poster {
+	return s.posters
+}
+
+// GenLimits generate a rate-limit mapping based on staked balances
+// and the total order limit per staking period, from in-state 'posters' object.
+func (s *State) GenLimits() RateLimits {
+	total := big.NewInt(0)
+	for _, p := range s.posters {
+		total.Add(total, p.Balance)
+	}
+
+	rl := make(RateLimits)
+	for addr, p := range s.posters {
+		// TODO(hharder) Make sure the maths are right as we're not doing bitnum operations
+		lim := float64(p.Balance.Uint64()) / float64(total.Uint64())
+		rl[addr] = uint64(lim * float64(s.RoundInfo.Limit))
+	}
+
+	return rl
 }

@@ -1,43 +1,39 @@
 <!-- Pull request template for Kosu projects. Modify as needed. -->
 <!-- Delete any sub-sections not used rather than leaving them empty. -->
 
-# Overview
+## Overview
 
-<!-- Provide a brief (few sentences) summary of the PR and it's purpose. May include plans if a [WIP]. -->
+<!-- Provide a brief (1-3 sentence) summary of the PR and it's purpose. May include plans if a [WIP]. -->
 
-# Description
+## Description
 
 <!-- Describe in detail what changes you plan to make in this section and sub-sections. -->
 
-## Relevant links
-
-<!-- Link any supporting material to help people understand your PR. This may include links to discussions that took place in an issue or other forum, or links to the problematic code you plan to change.-->
-
 ## Testing instructions
 
-_Provide directors for reviewers and others to test your changes. What should happen when your changes are finalized?_
+<!-- If the PR changes how tests should be run, describe here. -->
 
 ## Types of changes
 
 <!-- Check one of the boxes below, and add additional information as necessary. -->
 
-- [ ] Bug fix (non-breaking change which fixes an issue)
-- [ ] New feature (non-breaking change which adds functionality, compatible with previous versions)
-- [ ] Breaking change (feature or bug-fix that changes behavior and requires a major/minor version bump)
-- [ ] Other, additional (describe below)
+-   [ ] Refactor/enhancement <!-- Non-breaking (patch bump). -->
+-   [ ] Bug fix/behavior correction <!-- Non-breaking (patch bump). -->
+-   [ ] New feature <!-- Non-breaking (minor bump), unless also specified as breaking. -->
+-   [ ] Breaking change <!-- Feature or bug fix that changes behavior and requires a major version bump. -->
+-   [ ] Other, additional <!-- Describe below/above. -->
 
-# Notes
+## Notes
 
-<!-- Include any additional comments, thoughts, questions, or discussion items here that don't fit elsewhere. Omit as needed. -->
+<!-- Include any additional comments, links, questions, or discussion items here. -->
 
-# Status
+## Status
 
-<!-- Use this section to keep reviewers and maintainers up-to-date with the status and progress of your PR. Check any boxes that are already complete upon creation of the PR, and update whenever necessary. Don't hesitate to ask for help. -->
-
+<!-- Check any boxes that are already complete upon creation of the PR, and update whenever necessary. -->
 <!-- Make sure to check the "Ready for review" box when you are signing off on your changes for merge! -->
 
 -   [ ] Prefix PR title with `[WIP]` if necessary (changes not yet made).
 -   [ ] Add tests to cover changes as needed.
--   [ ] Update documentation as needed.
--   [ ] Add new entries to the relevant CHANGELOG file(s).
--   [ ] Ready for review
+-   [ ] Update documentation/changelog as needed.
+-   [ ] Verify all tests run correctly in CI and pass.
+-   [ ] Ready for review/merge.

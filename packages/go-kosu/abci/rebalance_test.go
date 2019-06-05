@@ -23,8 +23,8 @@ func TestDeliverRebalanceTx(t *testing.T) {
 	rtx := &types.TransactionRebalance{
 		RoundInfo: &types.RoundInfo{
 			Number:   1,
-			StartsAt: 2,
-			EndsAt:   3,
+			StartsAt: 100,
+			EndsAt:   110,
 		},
 		Limits: []*types.RateLimit{
 			{Address: "0xcc", Limit: 20},
@@ -42,15 +42,15 @@ func TestDeliverRebalanceTx(t *testing.T) {
 
 	t.Run("AssertCode", func(t *testing.T) {
 		assert.Equal(t, abci.CodeTypeOK, res.Code,
-			"Unxpected DeliveryTx Code, err=%v", res.Info)
+			"Unexpected DeliveryTx Code, err=%v", res.Info)
 	})
 
 	t.Run("Assert Tags", func(t *testing.T) {
 		expectedTags := []common.KVPair{
 			{Key: []byte("tx.type"), Value: []byte("rebalance")},
-			{Key: []byte("round.number"), Value: []byte("2")},
-			{Key: []byte("round.start"), Value: []byte("2")},
-			{Key: []byte("round.end"), Value: []byte("3")},
+			{Key: []byte("round.number"), Value: []byte("1")},
+			{Key: []byte("round.start"), Value: []byte("100")},
+			{Key: []byte("round.end"), Value: []byte("110")},
 		}
 		assert.Equal(t, expectedTags, res.Tags)
 	})

@@ -2,9 +2,11 @@ package abci
 
 import (
 	"fmt"
+	"os"
 
 	cfg "github.com/tendermint/tendermint/config"
 	cmn "github.com/tendermint/tendermint/libs/common"
+	log "github.com/tendermint/tendermint/libs/log"
 	"github.com/tendermint/tendermint/p2p"
 	"github.com/tendermint/tendermint/privval"
 	"github.com/tendermint/tendermint/types"
@@ -13,19 +15,23 @@ import (
 
 var chainIDPrefix = "kosu-chain-%v"
 
-// InitTendermint creates an initial tendermint file structure
-func InitTendermint(homedir string) {
+// InitTendermint creates an initial tendermint file structure.
+func InitTendermint(homedir string) error {
+	logger := log.NewTMLogger(log.NewSyncWriter(os.Stdout)).With("module", "main")
+	return InitTendermintWithLogger(homedir, logger)
+}
+
+// InitTendermintWithLogger creates an initial tendermint file structure using a custom logger.
+func InitTendermintWithLogger(homedir string, logger log.Logger) error {
 	if homedir == "" {
 		homedir = DefaultHomeDir
 	}
 
-	if err := createConfig(homedir); err != nil {
-		panic(err)
-	}
+	return createConfig(homedir, logger)
 }
 
 // Code from tendermint init...
-func createConfig(homedir string) error {
+func createConfig(homedir string, logger log.Logger) error {
 	config := cfg.DefaultConfig()
 	if homedir == "" {
 		config.SetRoot(DefaultHomeDir)

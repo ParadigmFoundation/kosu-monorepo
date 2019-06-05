@@ -37,7 +37,7 @@ func TestPushTransactionWitness(t *testing.T) {
 	tx := &types.TransactionWitness{
 		Block:   10,
 		Address: "0xff",
-		Amount:  types.NewBigInt(128),
+		Amount:  types.NewBigIntFromInt(128),
 	}
 	tx.Id = tx.Hash()
 
@@ -105,7 +105,7 @@ func TestPushTransactionWitness(t *testing.T) {
 
 		t.Run("WithZeroBalance", func(t *testing.T) {
 			state.LastEvent = 0
-			tx.Amount = types.NewBigInt(0)
+			tx.Amount = types.NewBigIntFromInt(0)
 			require.NoError(t,
 				state.PushTransactionWitness(tx),
 			)
@@ -122,7 +122,7 @@ func TestPersistAndUpdate(t *testing.T) {
 
 	s1.LastEvent = 100
 	s1.RoundInfo = RoundInfo{Number: 1}
-	s1.ConsensusParams = ConsensusParams{FinalityThreshold: 99}
+	s1.ConsensusParams.FinalityThreshold = 99
 	s1.events = map[uint64]WitnessEvents{
 		10: {
 			"id1": &WitnessEvent{Address: "0xff"},
@@ -151,4 +151,23 @@ func requireNoErrors(t *testing.T, errs ...error) {
 	for _, err := range errs {
 		require.NoError(t, err)
 	}
+}
+
+func TestGenLimits(t *testing.T) {
+	s := NewState()
+	s.RoundInfo.Limit = 11
+
+	for _, tx := range []*types.TransactionWitness{
+		{Address: "a", Amount: types.NewBigIntFromInt(10), Block: 2},
+		{Address: "b", Amount: types.NewBigIntFromInt(20), Block: 3},
+		{Address: "c", Amount: types.NewBigIntFromInt(30), Block: 4},
+	} {
+		err := s.PushTransactionWitness(tx)
+		require.NoError(t, err)
+	}
+
+	rls := s.GenLimits()
+	assert.EqualValues(t, 1, rls["a"])
+	assert.EqualValues(t, 3, rls["b"])
+	assert.EqualValues(t, 5, rls["c"])
 }

@@ -1,22 +1,17 @@
 {
-  "name": "@kosu/subcontract-sdk",
-  "version": "0.1.0",
-  "license": "CC0-1.0",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/ParadigmFoundation/kosu-monorepo.git"
-  },
-  "bugs": {
-    "url": "https://github.com/ParadigmFoundation/kosu-monorepo/issues"
-  },
-  "description": "Kosu SubContract building utilities.",
-  "scripts": {
-    "build": "truffle compile"
-  },
-  "dependencies": {
-    "openzeppelin-solidity": "2.1.2"
-  },
-  "devDependencies": {
-    "truffle": "5.0.12"
-  }
+    "name": "@kosu/subcontract-sdk",
+    "version": "0.1.0-alpha.1",
+    "license": "MIT",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/ParadigmFoundation/kosu-monorepo.git"
+    },
+    "bugs": {
+        "url": "https://github.com/ParadigmFoundation/kosu-monorepo/issues"
+    },
+    "description": "Kosu SubContract building utilities.",
+    "scripts": {},
+    "dependencies": {
+        "openzeppelin-solidity": "2.1.2"
+    }
 }

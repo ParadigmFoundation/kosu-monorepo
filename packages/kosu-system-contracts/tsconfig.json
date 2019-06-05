@@ -1,0 +1,23 @@
+{
+    "extends": "../../tsconfig.json",
+    "compilerOptions": {
+        "outDir": "dist",
+        "rootDir": ".",
+        "resolveJsonModule": true,
+        "moduleResolution": "node",
+        "typeRoots": ["node_modules/@types"],
+        "types": ["mocha"]
+    },
+    "include": ["./generated-wrappers/*", "./src/**/*"],
+    "files": [
+        "generated-artifacts/AuthorizedAddresses.json",
+        "generated-artifacts/EventEmitter.json",
+        "generated-artifacts/KosuToken.json",
+        "generated-artifacts/OrderGateway.json",
+        "generated-artifacts/PosterRegistry.json",
+        "generated-artifacts/PosterRegistryProxy.json",
+        "generated-artifacts/Treasury.json",
+        "generated-artifacts/ValidatorRegistry.json",
+        "generated-artifacts/Voting.json"
+    ]
+}

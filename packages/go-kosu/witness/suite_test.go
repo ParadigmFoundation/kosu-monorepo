@@ -2,9 +2,7 @@ package witness
 
 import (
 	"context"
-	"math/big"
 	"testing"
-	"time"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -27,19 +25,25 @@ func (suite *WitnessTestSuite) TestHandleBlocks() {
 func (suite *WitnessTestSuite) testHandleBlocks(t *testing.T, w Provider) {
 	ctx, cancel := context.WithCancel(context.Background())
 
-	initHeight, err := w.GetBlockNumber(ctx)
+	initHeight, err := w.GetLastBlockNumber(ctx)
 	require.NoError(t, err)
-	require.True(t, initHeight.Cmp(big.NewInt(0)) == 1, "GetBlockNumber should > 0")
+	require.True(t, initHeight > 0, "GetLastBlockNumber should > 0")
 
-	err = w.HandleBlocks(ctx, func(blk *Block) {
+	ch := make(chan *Block, 10)
+	go func() {
 		defer cancel()
-		diff := new(big.Int).Sub(blk.Number, initHeight)
-		assert.True(t, diff.Int64() >= 0,
-			"Expeting blk.Number(%s) >= initHeight(%s)", blk.Number.String(), initHeight.String(),
+
+		blk := <-ch
+		diff := blk.Number.Uint64() - initHeight
+		assert.True(t, diff > 0,
+			"Expeting blk.Number(%s) >= initHeight(%d)", blk.Number.String(), initHeight,
 		)
-	})
-	require.Error(t, err)
-	require.Equal(t, context.Canceled, err)
+	}()
+
+	err = w.WatchBlocks(ctx, ch) //nolint
+	ctx.Done()
+	require.Equal(t, ctx.Err(), err)
+
 }
 
 func (suite *WitnessTestSuite) TestHandleEvents() {
@@ -47,23 +51,17 @@ func (suite *WitnessTestSuite) TestHandleEvents() {
 }
 
 func (suite *WitnessTestSuite) testHandleEvents(t *testing.T, w Provider) {
-	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
-	defer cancel()
+	ctx, cancel := context.WithCancel(context.Background())
 
-	var events []*Event
-	err := w.HandleEvents(ctx, func(e *Event) {
-		events = append(events, e)
-	})
-	require.Equal(t, context.DeadlineExceeded, err)
+	var event *Event
+	ch := make(chan *Event, 10)
+	go func() { event = <-ch; cancel() }()
 
-	t.Run("OrderedBlocks", func(t *testing.T) {
-		var lastBlock uint64
-		for _, e := range events {
-			require.NotZero(t, e.Block)
+	err := w.WatchEvents(ctx, ch)
+	require.Error(t, err)
 
-			curBlock := e.Block.Number.Uint64()
-			assert.True(t, curBlock >= lastBlock)
-			lastBlock = curBlock
-		}
-	})
+	last, err := w.GetLastBlockNumber(context.Background())
+	require.NoError(t, err)
+
+	assert.True(t, last > event.Block.Number.Uint64(), "First event should be older than last block")
 }

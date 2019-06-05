@@ -1,8 +1,11 @@
+import { Web3Wrapper } from "@0x/web3-wrapper";
+import { artifacts } from "@kosu/system-contracts";
 import Web3 from "web3";
 
+import { EventEmitter } from "./EventEmitter";
 import { KosuToken } from "./KosuToken";
 import { OrderGateway } from "./OrderGateway";
-import { OrderHelper} from "./OrderHelper";
+import { OrderHelper } from "./OrderHelper";
 import { PosterRegistry } from "./PosterRegistry";
 import { Signature } from "./Signature";
 import { Treasury } from "./Treasury";
@@ -15,6 +18,7 @@ const version = process.env.npm_package_version || require("../package.json").ve
 
 export class Kosu {
     public readonly web3: Web3;
+    public readonly web3Wrapper: Web3Wrapper;
     public readonly orderGateway: OrderGateway;
     public readonly orderHelper: OrderHelper;
     public readonly kosuToken: KosuToken;
@@ -22,6 +26,7 @@ export class Kosu {
     public readonly voting: Voting;
     public readonly posterRegistry: PosterRegistry;
     public readonly validatorRegistry: ValidatorRegistry;
+    public readonly eventEmitter: EventEmitter;
     public readonly utils: KosuUtils;
     public readonly Signature: Signature;
     public readonly version: string;
@@ -29,7 +34,13 @@ export class Kosu {
     constructor(options: KosuOptions = { provider: "https://ropsten.infura.io" }) {
         // Configuring web3
         this.web3 = new Web3(options.provider);
+        this.web3Wrapper = new Web3Wrapper(this.web3.currentProvider);
         options.web3 = this.web3;
+        options.web3Wrapper = this.web3Wrapper;
+
+        for (const contractName of Object.keys(artifacts)) {
+            this.web3Wrapper.abiDecoder.addABI(artifacts[contractName].compilerOutput.abi, contractName);
+        }
 
         // Initializing contract objects
         this.orderGateway = new OrderGateway(options);
@@ -39,6 +50,7 @@ export class Kosu {
         this.posterRegistry = new PosterRegistry(options, this.treasury);
         this.validatorRegistry = new ValidatorRegistry(options, this.treasury);
         this.orderHelper = new OrderHelper(this.web3, this.orderGateway);
+        this.eventEmitter = new EventEmitter(options);
 
         // Utilities
         this.utils = { toBytes32, NULL_ADDRESS };
@@ -46,6 +58,8 @@ export class Kosu {
         this.version = version;
     }
 }
+
+export { OrderSerializer } from "./OrderSerializer";
 
 export {
     KosuToken,
@@ -56,7 +70,6 @@ export {
     Treasury,
     ValidatorRegistry,
     Voting,
-
     toBytes32,
     NULL_ADDRESS,
 };

@@ -1,0 +1,76 @@
+body {
+    background: white;
+    font-family: 'Roboto', sans-serif;
+}
+
+section {
+    color: black;
+    padding: 1em;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-right: -50%;
+    transform: translate(-50%, -50%)
+}
+
+.loading:after {
+    overflow: hidden;
+    display: inline-block;
+    vertical-align: bottom;
+    -webkit-animation: ellipsis steps(4,end) 900ms infinite;      
+    animation: ellipsis steps(4,end) 900ms infinite;
+    content: "\2026"; /* ascii code for the ellipsis character */
+    width: 0px;
+}
+
+.title {
+    font-size: 14pt;
+    padding-top: 3vh;
+    padding-bottom: 1vh;
+}
+
+#main-section {
+    height: 10vh;
+}
+
+@keyframes ellipsis {
+    to {
+        width: 20px;    
+    }
+}
+
+@-webkit-keyframes ellipsis {
+    to {
+        width: 20px;    
+    }
+}
+
+/* Split the screen in half */
+.split {
+    height: 100%;
+    position: fixed;
+    top: 0;
+    overflow: auto;
+    padding-top: 20px;
+}
+
+/* Control the left side */
+.left {
+    left: 0;
+    width: 70%;
+}
+
+/* Control the right side */
+.right {
+    right: 0;
+    width: 30%;
+}
+
+.row {
+    text-align: left;
+}
+
+.block {
+    padding-left: 10px;
+    display: inline;
+}

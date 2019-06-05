@@ -40,7 +40,13 @@ func TestBigInt(t *testing.T) {
 	// Create a protobuf BigInt
 	b := &BigInt{Value: n.Bytes()}
 
-	assert.Equal(t, n, b.BigInt())
+	t.Run("Equality", func(t *testing.T) {
+		assert.Equal(t, n, b.BigInt())
+	})
+
+	t.Run("TextMarshaling", func(t *testing.T) {
+		assert.Equal(t, "value: 18446744065119617025", b.String())
+	})
 }
 
 func TestTransactionWitness(t *testing.T) {

@@ -1,3 +1,6 @@
+# Kosu-monorepo CI configuration file (last updated 3 June 2019)
+# Version v0.1.0-alpha.4
+
 kind: pipeline
 name: node-tests
 
@@ -6,20 +9,37 @@ steps:
     image: gcr.io/kosu-io/node-ci:latest
     pull: always
     environment:
-      WEB3_URI: http://kosu-ganache:8545
+      WEB3_URI: http://kosu-geth:8545
     commands:
       - yarn
+      - yarn prettier:ci
+      - yarn lint
       - yarn build
       - yarn test:ci
-    when:
-      event: pull_request
 
 services:
-- name: kosu-ganache
-  image: gcr.io/kosu-io/kosu-ganache:0.0.1
-  pull: always
-  ports:
-  - 8545
+  - name: kosu-geth
+    image: gcr.io/kosu-io/kosu-geth:latest
+    pull: always
+    ports:
+      - 8545
+
+# Pull request trigger is not correctly causing build to start on fresh pull request.
+trigger:
+  event:
+   - pull_request
+  changeset:
+    includes: [
+      .drone.yml,
+      packages/kosu.js/**/*.*,
+      packages/dev-images/**/*.*,
+      packages/kosu-sdk-contracts/**/*.*,
+      packages/kosu-system-contracts/**/*.*,
+      packages/web-helpers/**/*.*,
+      packages/kosu-geth/**/*.*,
+      packages/tslint-config/**/*.*,
+      packages/tsc-config/**/*.*
+    ]
 
 ---
 kind: pipeline
@@ -30,12 +50,20 @@ steps:
     image: gcr.io/kosu-io/go-kosu-ci:latest
     pull: always
     environment:
-      ETHEREUM_TEST_ADDRESS: wss://ropsten.infura.io/ws
+      ETHEREUM_TEST_ADDRESS: wss://ethnet.zaidan.io/ws/ropsten
     commands:
     - cd packages/go-kosu
     - make ci
-    when:
-      event: pull_request
+
+trigger:
+  event:
+    - pull_request
+  changeset:
+    includes: [
+      .drone.yml,
+      packages/go-kosu/**/*.*,
+      packages/kosu-system-contracts/**/*.*
+    ]
 
 # UNTESTED
 # ---

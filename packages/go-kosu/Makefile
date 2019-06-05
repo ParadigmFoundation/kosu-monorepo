@@ -1,4 +1,4 @@
-GOTEST_FLAGS ?= -race
+GOTEST_FLAGS ?=
 GOTEST_TAGS  ?= integration
 GOTEST = go test ./... ${GOTEST_FLAGS}
 
@@ -10,17 +10,19 @@ GOLINT = golangci-lint run --enable-all \
 		--exclude-use-default=false \
 		--deadline=10m
 
-vendors:
-	go mod vendor
+build:
+	go build -o kosud ./cmd/kosud
+	go build -o kosu-cli ./cmd/kosu-cli
 
-testnet: vendors
-	docker-compose up
+testnet: build
+	docker-compose rm -f
+	docker-compose up --build
 
-test-unit:
-	$(GOTEST)
+test-fast:
+	$(GOTEST) -failfast
 
 test:
-	$(GOTEST) -tags=$(GOTEST_TAGS)
+	$(GOTEST) -race -tags=$(GOTEST_TAGS)
 
 lint:
 	$(GOLINT)

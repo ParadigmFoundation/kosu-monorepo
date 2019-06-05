@@ -1,11 +1,11 @@
 {
-  "address": "E3CA71C1C50872D635A49CA3678F047309248957",
-  "pub_key": {
-    "type": "tendermint/PubKeyEd25519",
-    "value": "p2o/U/K/bcmLItaDgh08vkFhifHAJLkzQLyxnxseb5M="
-  },
-  "priv_key": {
-    "type": "tendermint/PrivKeyEd25519",
-    "value": "hnLkhVk9Gp/Gc/nYFa+sbw7Sxk4gYZ9Ln97XEGtdO/Snaj9T8r9tyYsi1oOCHTy+QWGJ8cAkuTNAvLGfGx5vkw=="
-  }
+    "address": "E3CA71C1C50872D635A49CA3678F047309248957",
+    "pub_key": {
+        "type": "tendermint/PubKeyEd25519",
+        "value": "p2o/U/K/bcmLItaDgh08vkFhifHAJLkzQLyxnxseb5M="
+    },
+    "priv_key": {
+        "type": "tendermint/PrivKeyEd25519",
+        "value": "hnLkhVk9Gp/Gc/nYFa+sbw7Sxk4gYZ9Ln97XEGtdO/Snaj9T8r9tyYsi1oOCHTy+QWGJ8cAkuTNAvLGfGx5vkw=="
+    }
 }

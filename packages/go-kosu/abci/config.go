@@ -1,13 +1,19 @@
 package abci
 
 import (
+	"encoding/base64"
+	"encoding/json"
 	"fmt"
+	"io/ioutil"
 	"os"
 	"path/filepath"
 
 	"github.com/spf13/viper"
 	"github.com/tendermint/tendermint/config"
+	cfg "github.com/tendermint/tendermint/config"
+	tmflags "github.com/tendermint/tendermint/libs/cli/flags"
 	"github.com/tendermint/tendermint/libs/common"
+	"github.com/tendermint/tendermint/libs/log"
 )
 
 const (
@@ -37,7 +43,7 @@ func LoadConfig(homedir string) (*config.Config, error) {
 	// I don't think this ever returns an err.  It seems to create a default config if missing
 	err := viper.ReadInConfig()
 	if err != nil {
-		return nil, fmt.Errorf("missing homedir/config file. Did you run the init command?")
+		return nil, fmt.Errorf("missing homedir/config file. Did you run 'kosud --init'?")
 	}
 
 	cfg := config.DefaultConfig()
@@ -49,4 +55,44 @@ func LoadConfig(homedir string) (*config.Config, error) {
 	config.EnsureRoot(cfg.RootDir)
 
 	return cfg, nil
+}
+
+// LoadPrivateKey loads the validator's private key using homedir as the base path of Tendermint
+func LoadPrivateKey(homedir string) ([]byte, error) {
+	conf, err := LoadConfig(homedir)
+	if err != nil {
+		return nil, err
+	}
+
+	f, err := ioutil.ReadFile(conf.PrivValidatorKeyFile())
+	if err != nil {
+		return nil, err
+	}
+
+	// Couldn't find a better way to do this, perhaps TM provides utilities for this
+	var filepv struct {
+		PrivKey struct {
+			Value string `json:"value"`
+		} `json:"priv_key"`
+	}
+	if err := json.Unmarshal(f, &filepv); err != nil {
+		return nil, err
+	}
+
+	return base64.StdEncoding.DecodeString(filepv.PrivKey.Value)
+}
+
+// NewLogger creates a new logger out of a given config
+func NewLogger(config *cfg.Config) (log.Logger, error) {
+	var w log.Logger
+	switch config.LogFormat {
+	case "json":
+		w = log.NewTMJSONLogger(os.Stdout)
+	case "", "plain":
+		w = log.NewTMLogger(os.Stdout)
+	case "none":
+		w = log.NewNopLogger()
+	}
+
+	return tmflags.ParseLogLevel(config.LogLevel, w, "error")
 }

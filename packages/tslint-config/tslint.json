@@ -32,7 +32,7 @@
         "max-file-line-count": [true, 800],
         "max-line-length": false,
         "member-access": true,
-        "member-ordering": [true],
+        "member-ordering": true,
         "new-parens": true,
         "newline-before-return": false,
         "no-angle-bracket-type-assertion": true,
@@ -109,6 +109,8 @@
             "check-type",
             "check-typecast",
             "check-preblock"
-        ]
+        ],
+        "radix": false,
+        "no-console": false
     }
 }

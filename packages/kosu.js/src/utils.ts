@@ -1,12 +1,11 @@
-import BN = require("bn.js");
 import { toHex, toTwosComplement } from "web3-utils";
 
 /**
- * todo
+ * Convert an arbitrary string to a `bytes32` version.
  *
- * @param value todo
+ * @param value String value to be converted into bytes32 representation.
  */
-export function toBytes32(value: string): number | string | BN {
+export function toBytes32(value: string): string {
     return toTwosComplement(toHex(value));
 }
 

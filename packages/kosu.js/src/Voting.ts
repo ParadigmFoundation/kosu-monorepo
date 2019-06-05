@@ -1,21 +1,19 @@
-import { contracts } from "@kosu/system-contracts";
-import BN = require("bn.js");
-import TruffleContract from "truffle-contract";
+import { BigNumber } from "@0x/utils";
+import { Web3Wrapper } from "@0x/web3-wrapper";
+import { artifacts, DeployedAddresses, VotingContract } from "@kosu/system-contracts";
+import { TransactionReceiptWithDecodedLogs } from "ethereum-protocol";
 import Web3 from "web3";
 
 import { Treasury } from "./Treasury";
 
-const VotingContractData = contracts.Voting;
-
 /**
  * Integration with Voting contract on an Ethereum blockchain.
- *
- * @todo Refactor contract integration after migration away from truffle
  */
 export class Voting {
     private readonly web3: Web3;
     private readonly treasury: Treasury;
-    private readonly initializing: Promise<void>;
+    private readonly web3Wrapper: Web3Wrapper;
+    private address: string;
     private contract: any;
     private coinbase: string;
 
@@ -27,25 +25,36 @@ export class Voting {
      */
     constructor(options: KosuOptions, treasury: Treasury) {
         this.web3 = options.web3;
+        this.web3Wrapper = options.web3Wrapper;
+        this.address = options.votingAddress;
         this.treasury = treasury;
-        this.initializing = this.init(options);
     }
 
     /**
-     * Asynchronously initializes the instance after construction
+     * Asynchronously initializes the contract instance or returns it from cache
      *
-     * @param options instantiation options
-     * @returns A promise to await complete instantiation for further calls
+     * @returns The contract
      */
-    public async init(options: KosuOptions): Promise<void> {
-        const VotingContract = TruffleContract(VotingContractData);
-        VotingContract.setProvider(this.web3.currentProvider);
+    private async getContract(): Promise<VotingContract> {
+        if (!this.contract) {
+            const networkId = await this.web3Wrapper.getNetworkIdAsync();
+            this.coinbase = await this.web3.eth.getCoinbase().catch(() => undefined);
 
-        this.contract = options.votingAddress ?
-            VotingContract.at(options.votingAddress) :
-            await VotingContract.deployed().catch(() => { throw new Error("Invalid network for Voting contract"); });
+            if (!this.address) {
+                this.address = DeployedAddresses[networkId].Voting;
+            }
+            if (!this.address) {
+                throw new Error("Invalid network for Voting");
+            }
 
-        this.coinbase = await this.web3.eth.getCoinbase().catch(() => undefined);
+            this.contract = new VotingContract(
+                artifacts.Voting.compilerOutput.abi,
+                this.address,
+                this.web3Wrapper.getProvider(),
+                { from: this.coinbase },
+            );
+        }
+        return this.contract;
     }
 
     /**
@@ -55,19 +64,22 @@ export class Voting {
      * @param _vote encoded vote option
      * @param _tokensToCommit uint number of tokens to be commited to vote
      */
-    public async commitVote(_pollId: string | number, _vote: string, _tokensToCommit: string | number): Promise<void> {
-        await this.initializing;
+    public async commitVote(
+        _pollId: BigNumber,
+        _vote: string,
+        _tokensToCommit: BigNumber,
+    ): Promise<TransactionReceiptWithDecodedLogs> {
+        const contract = await this.getContract();
 
         const systemBalance = await this.treasury.systemBalance(this.coinbase);
-        const totalTokens = this.web3.utils.toBN(_tokensToCommit);
-        if (systemBalance.lt(totalTokens)) {
-            const tokensShort = totalTokens.sub(systemBalance);
+        if (systemBalance.lt(_tokensToCommit)) {
+            const tokensShort = _tokensToCommit.minus(systemBalance);
             await this.treasury.deposit(tokensShort);
         }
 
         // tslint:disable-next-line: no-console
         console.log(`Committing vote ${_vote} with ${_tokensToCommit} DIGM tokens`);
-        await this.contract.commitVote(_pollId, _vote, _tokensToCommit, { from: this.coinbase });
+        return contract.commitVote.awaitTransactionSuccessAsync(_pollId, _vote, _tokensToCommit);
     }
 
     /**
@@ -77,9 +89,13 @@ export class Voting {
      * @param _voteOption uint representation of vote position
      * @param _voteSalt uint salt used to encode vote option
      */
-    public async revealVote(_pollId: string | number, _voteOption: string, _voteSalt: string): Promise<void> {
-        await this.initializing;
-        await this.contract.revealVote(_pollId, _voteOption, _voteSalt, { from: this.coinbase });
+    public async revealVote(
+        _pollId: BigNumber,
+        _voteOption: BigNumber,
+        _voteSalt: BigNumber,
+    ): Promise<TransactionReceiptWithDecodedLogs> {
+        const contract = await this.getContract();
+        return contract.revealVote.awaitTransactionSuccessAsync(_pollId, _voteOption, _voteSalt);
     }
 
     /**
@@ -87,9 +103,9 @@ export class Voting {
      *
      * @param _pollId uint poll index
      */
-    public async winningOption(_pollId: string | number): Promise<BN> {
-        await this.initializing;
-        return this.contract.winningOption.call(_pollId);
+    public async winningOption(_pollId: BigNumber): Promise<BigNumber> {
+        const contract = await this.getContract();
+        return contract.winningOption.callAsync(_pollId);
     }
 
     /**
@@ -97,9 +113,19 @@ export class Voting {
      *
      * @param _pollId uint poll index
      */
-    public async totalWinningTokens(_pollId: string | number): Promise<BN> {
-        await this.initializing;
-        return this.contract.totalWinningTokens.call(_pollId);
+    public async totalWinningTokens(_pollId: BigNumber): Promise<BigNumber> {
+        const contract = await this.getContract();
+        return contract.totalWinningTokens.callAsync(_pollId);
+    }
+
+    /**
+     * Reads the total winning tokens for poll
+     *
+     * @param _pollId uint poll index
+     */
+    public async totalRevealedTokens(_pollId: BigNumber): Promise<BigNumber> {
+        const contract = await this.getContract();
+        return contract.totalRevealedTokens.callAsync(_pollId);
     }
 
     /**
@@ -108,9 +134,9 @@ export class Voting {
      * @param _pollId uint poll index
      * @param _userAddress address of user whose winning contribution is
      */
-    public async userWinningTokens(_pollId: string | number, _userAddress: string = this.coinbase): Promise<BN> {
-        await this.initializing;
-        return this.contract.userWinningTokens.call(_pollId, _userAddress);
+    public async userWinningTokens(_pollId: BigNumber, _userAddress: string = this.coinbase): Promise<BigNumber> {
+        const contract = await this.getContract();
+        return contract.userWinningTokens.callAsync(_pollId, _userAddress);
     }
 
     /**

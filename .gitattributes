@@ -1,0 +1,2 @@
+**/test/*.* linguist-detectable=false
+*.sol linguist-language=Solidity
