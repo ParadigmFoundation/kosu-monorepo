@@ -1,4 +1,4 @@
-# Kosu-monorepo CI configuration file (last updated 5 June 2019)
+# kosu-monorepo CI configuration file (last updated 5 June 2019)
 
 kind: pipeline
 name: node-tests
@@ -37,7 +37,9 @@ trigger:
       packages/web-helpers/**/*.*,
       packages/kosu-geth/**/*.*,
       packages/tslint-config/**/*.*,
-      packages/tsc-config/**/*.*
+      packages/tsc-config/**/*.*,
+      packages/create-portal-helper/**/*.*,
+      packages/gov-portal-helper/**/*.*,
     ]
 
 ---
