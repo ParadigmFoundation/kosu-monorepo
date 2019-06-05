@@ -15,6 +15,7 @@ steps:
     commands:
       - pwd
       - ls
+      - touch /node_modules/file
       - yarn
       - yarn prettier:ci
       - yarn lint
