@@ -22,7 +22,8 @@ steps:
 
 volumes:
   - name: node_modules
-    host: /var/lib/node_modules
+    host:
+      path: /var/lib/node_modules
 
 services:
   - name: kosu-geth
