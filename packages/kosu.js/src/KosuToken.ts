@@ -7,7 +7,6 @@ import Web3 from "web3";
 /**
  * Integration with KosuToken contract on an Ethereum blockchain.
  *
- * @todo Refactor contract integration after migration away from truffle
  */
 export class KosuToken {
     private readonly web3: Web3;
@@ -79,9 +78,7 @@ export class KosuToken {
      */
     public async transfer(to: string, value: BigNumber): Promise<TransactionReceiptWithDecodedLogs> {
         const contract = await this.getContract();
-        return contract.transfer
-            .sendTransactionAsync(to, value)
-            .then(txHash => this.web3Wrapper.awaitTransactionSuccessAsync(txHash));
+        return contract.transfer.awaitTransactionSuccessAsync(to, value);
     }
 
     /**
@@ -93,9 +90,7 @@ export class KosuToken {
      */
     public async transferFrom(from: string, to: string, value: BigNumber): Promise<TransactionReceiptWithDecodedLogs> {
         const contract = await this.getContract();
-        return contract.transferFrom
-            .sendTransactionAsync(from, to, value)
-            .then(txHash => this.web3Wrapper.awaitTransactionSuccessAsync(txHash));
+        return contract.transferFrom.awaitTransactionSuccessAsync(from, to, value);
     }
 
     /**
@@ -106,9 +101,7 @@ export class KosuToken {
      */
     public async approve(spender: string, value: BigNumber): Promise<TransactionReceiptWithDecodedLogs> {
         const contract = await this.getContract();
-        return contract.approve
-            .sendTransactionAsync(spender, value)
-            .then(txHash => this.web3Wrapper.awaitTransactionSuccessAsync(txHash));
+        return contract.approve.awaitTransactionSuccessAsync(spender, value);
     }
 
     /**

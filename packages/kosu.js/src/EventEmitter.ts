@@ -1,7 +1,8 @@
 import { Web3Wrapper } from "@0x/web3-wrapper";
 import { DeployedAddresses, eventDecoder } from "@kosu/system-contracts";
-import { DecodedLogArgs, FilterObject, LogWithDecodedArgs } from "ethereum-protocol";
+import { DecodedLogArgs, FilterObject, LogEntry } from "ethereum-protocol";
 import Web3 from "web3";
+import Timeout = NodeJS.Timeout;
 
 // TODO: move to some const file?
 const KosuEndpoints = {
@@ -37,7 +38,9 @@ export class EventEmitter {
         return this.address;
     }
 
-    public async getPastDecodedLogs(config: FilterObject): Promise<any[]> {
+    public async getPastDecodedLogs(
+        config: FilterObject,
+    ): Promise<Array<LogWithDecodedKosuArgs<DecodedLogArgs, DecodedKosuLogArgs>>> {
         Object.assign(config, { address: await this.getAddress() });
         return this.web3Wrapper
             .getLogsAsync(config)
@@ -48,19 +51,26 @@ export class EventEmitter {
                     throw err;
                 }
             })
-            .then((logs: any[]) => {
-                return logs.map(log => {
-                    const decoded: LogWithDecodedKosuArgs<
-                        DecodedLogArgs,
-                        DecodedKosuLogArgs
-                    > = (this.web3Wrapper.abiDecoder.tryToDecodeLogOrNoop(log) as unknown) as LogWithDecodedKosuArgs<
-                        DecodedLogArgs,
-                        DecodedKosuLogArgs
-                    >;
-                    decoded.decodedArgs = eventDecoder(decoded.args);
-                    return decoded;
-                });
+            .then((logs: LogEntry[]) => {
+                return this._decodeLogs(logs);
             });
+    }
+
+    public getFutureDecodedLogs(
+        start: number,
+        callback: (a: Array<LogWithDecodedKosuArgs<DecodedLogArgs, DecodedKosuLogArgs>>) => void,
+    ): Timeout {
+        let fromBlock: number = start;
+        return setInterval(async () => {
+            const logs: LogEntry[] = await this.web3Wrapper.getLogsAsync({
+                fromBlock,
+                address: await this.getAddress(),
+            });
+            if (logs.length > 0) {
+                fromBlock = logs[logs.length - 1].blockNumber + 1;
+                callback(this._decodeLogs(logs));
+            }
+        }, 1000);
     }
 
     private async getPastLogsFromKosuEndpoint(config: FilterObject): Promise<any[]> {
@@ -71,5 +81,19 @@ export class EventEmitter {
         }
 
         return this.kosuWeb3Wrapper.getLogsAsync(config);
+    }
+
+    private _decodeLogs(logs: LogEntry[]): Array<LogWithDecodedKosuArgs<DecodedLogArgs, DecodedKosuLogArgs>> {
+        return logs.map(log => {
+            const decoded: LogWithDecodedKosuArgs<
+                DecodedLogArgs,
+                DecodedKosuLogArgs
+            > = (this.web3Wrapper.abiDecoder.tryToDecodeLogOrNoop(log) as unknown) as LogWithDecodedKosuArgs<
+                DecodedLogArgs,
+                DecodedKosuLogArgs
+            >;
+            decoded.decodedArgs = eventDecoder(decoded.args);
+            return decoded;
+        });
     }
 }

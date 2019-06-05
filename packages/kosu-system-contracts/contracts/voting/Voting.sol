@@ -22,6 +22,7 @@ contract Voting {
         uint revealEndBlock;
         uint currentLeadingOption;
         uint leadingTokens;
+        uint totalRevealedTokens;
         mapping(uint => uint) voteValues;
         mapping(address => bool) didCommit;
         mapping(address => bool) didReveal;
@@ -32,7 +33,7 @@ contract Voting {
         bytes32 hiddenVote;
         uint tokensCommitted;
         uint salt;
-        uint voteOption; //TODO: what do we want Vote to be as far as datat type  bool vs uint;
+        uint voteOption;
     }
 
     /** @dev Create a new voting engine
@@ -66,10 +67,11 @@ contract Voting {
         nextPollId++;
 
         //Format data and emit event
-        bytes32[] memory data = new bytes32[](2);
+        bytes32[] memory data = new bytes32[](4);
         data[0] = bytes32(uint(p.creator));
         data[1] = bytes32(p.id);
-        //TODO: emit commit end and reveal end
+        data[2] = bytes32(_commitEndBlock);
+        data[3] = bytes32(_revealEndBlock);
         emitter.emitEvent('PollCreated', data, "");
 
         //Return the poll id
@@ -127,6 +129,7 @@ contract Voting {
         v.voteOption = _voteOption;
         p.didReveal[msg.sender] = true;
         p.voteValues[_voteOption] = p.voteValues[_voteOption].add(v.tokensCommitted);
+        p.totalRevealedTokens = p.totalRevealedTokens.add(v.tokensCommitted);
 
         //Update winner and tracking
         if(p.currentLeadingOption != _voteOption && p.voteValues[_voteOption] > p.leadingTokens) {
@@ -146,6 +149,12 @@ contract Voting {
         Poll memory p = polls[_pollId];
         require(p.revealEndBlock < block.number);
         return p.leadingTokens;
+    }
+
+    function totalRevealedTokens(uint _pollId) public view returns (uint) {
+        Poll memory p = polls[_pollId];
+        require(p.revealEndBlock < block.number);
+        return p.totalRevealedTokens;
     }
 
     function userWinningTokens(uint _pollId, address _user) public view returns (uint tokens) {

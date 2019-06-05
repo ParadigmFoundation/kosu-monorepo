@@ -8,8 +8,6 @@ import { Treasury } from "./Treasury";
 
 /**
  * Integration with Voting contract on an Ethereum blockchain.
- *
- * @todo Refactor contract integration after migration away from truffle
  */
 export class Voting {
     private readonly web3: Web3;
@@ -17,7 +15,7 @@ export class Voting {
     private readonly web3Wrapper: Web3Wrapper;
     private address: string;
     private contract: any;
-    private readonly coinbase: string;
+    private coinbase: string;
 
     /**
      * Create a new Voting instance.
@@ -40,7 +38,7 @@ export class Voting {
     private async getContract(): Promise<VotingContract> {
         if (!this.contract) {
             const networkId = await this.web3Wrapper.getNetworkIdAsync();
-            const coinbase = await this.web3.eth.getCoinbase().catch(() => undefined);
+            this.coinbase = await this.web3.eth.getCoinbase().catch(() => undefined);
 
             if (!this.address) {
                 this.address = DeployedAddresses[networkId].Voting;
@@ -53,7 +51,7 @@ export class Voting {
                 artifacts.Voting.compilerOutput.abi,
                 this.address,
                 this.web3Wrapper.getProvider(),
-                { from: coinbase },
+                { from: this.coinbase },
             );
         }
         return this.contract;
@@ -81,9 +79,7 @@ export class Voting {
 
         // tslint:disable-next-line: no-console
         console.log(`Committing vote ${_vote} with ${_tokensToCommit} DIGM tokens`);
-        return contract.commitVote
-            .sendTransactionAsync(_pollId, _vote, _tokensToCommit)
-            .then(txHash => this.web3Wrapper.awaitTransactionSuccessAsync(txHash));
+        return contract.commitVote.awaitTransactionSuccessAsync(_pollId, _vote, _tokensToCommit);
     }
 
     /**
@@ -99,9 +95,7 @@ export class Voting {
         _voteSalt: BigNumber,
     ): Promise<TransactionReceiptWithDecodedLogs> {
         const contract = await this.getContract();
-        return contract.revealVote
-            .sendTransactionAsync(_pollId, _voteOption, _voteSalt)
-            .then(txHash => this.web3Wrapper.awaitTransactionSuccessAsync(txHash));
+        return contract.revealVote.awaitTransactionSuccessAsync(_pollId, _voteOption, _voteSalt);
     }
 
     /**
@@ -122,6 +116,16 @@ export class Voting {
     public async totalWinningTokens(_pollId: BigNumber): Promise<BigNumber> {
         const contract = await this.getContract();
         return contract.totalWinningTokens.callAsync(_pollId);
+    }
+
+    /**
+     * Reads the total winning tokens for poll
+     *
+     * @param _pollId uint poll index
+     */
+    public async totalRevealedTokens(_pollId: BigNumber): Promise<BigNumber> {
+        const contract = await this.getContract();
+        return contract.totalRevealedTokens.callAsync(_pollId);
     }
 
     /**

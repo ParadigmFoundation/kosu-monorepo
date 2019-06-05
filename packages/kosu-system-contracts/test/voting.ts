@@ -4,19 +4,16 @@ import { soliditySha3 } from "web3-utils";
 import { decodeKosuEvents, KosuTokenContract, TreasuryContract, VotingContract } from "../src";
 import { migrations } from "../src/migrations";
 
-describe("Voting", function() {
-    this.timeout(10000);
+describe("Voting", () => {
     let voting: VotingContract;
     let kosuToken: KosuTokenContract;
     let treasury: TreasuryContract;
 
     const prepareTokens = async (from, funds) => {
-        await kosuToken.approve
-            .sendTransactionAsync(treasury.address, funds, { from })
-            .then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash)).should.eventually.be.fulfilled;
-        await treasury.deposit
-            .sendTransactionAsync(new BigNumber(funds), { from })
-            .then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash)).should.eventually.be.fulfilled;
+        await kosuToken.approve.awaitTransactionSuccessAsync(treasury.address, funds, { from }).should.eventually.be
+            .fulfilled;
+        await treasury.deposit.awaitTransactionSuccessAsync(new BigNumber(funds), { from }).should.eventually.be
+            .fulfilled;
     };
 
     const shortPoll = async () => {
@@ -29,9 +26,7 @@ describe("Voting", function() {
         const creationBlock = base + 1;
         const commitEnd = creationBlock + start;
         const revealEnd = commitEnd + end;
-        const result = await voting.createPoll
-            .sendTransactionAsync(commitEnd, revealEnd)
-            .then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash));
+        const result = await voting.createPoll.awaitTransactionSuccessAsync(commitEnd, revealEnd);
         const { pollId } = decodeKosuEvents(result.logs)[0];
         return pollId;
     };
@@ -71,9 +66,8 @@ describe("Voting", function() {
     describe("createPoll", () => {
         it("should allow a poll to be created", async () => {
             const nextPoll = await voting.nextPollId.callAsync();
-            const result = await voting.createPoll
-                .sendTransactionAsync(block1, block2)
-                .then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash)).should.eventually.be.fulfilled;
+            const result = await voting.createPoll.awaitTransactionSuccessAsync(block1, block2).should.eventually.be
+                .fulfilled;
             const decodedLogs = decodeKosuEvents(result.logs)[0];
 
             decodedLogs.eventType.should.eq("PollCreated");
@@ -87,15 +81,11 @@ describe("Voting", function() {
         });
 
         it("should not allow the commit end to be before reveal end", async () => {
-            await voting.createPoll
-                .sendTransactionAsync(block2, block1)
-                .then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash)).should.eventually.be.rejected;
+            await voting.createPoll.awaitTransactionSuccessAsync(block2, block1).should.eventually.be.rejected;
         });
 
         it("should not allow the commit end to be equal to reveal end", async () => {
-            await voting.createPoll
-                .sendTransactionAsync(block1, block1)
-                .then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash)).should.eventually.be.rejected;
+            await voting.createPoll.awaitTransactionSuccessAsync(block1, block1).should.eventually.be.rejected;
         });
     });
 
@@ -106,32 +96,28 @@ describe("Voting", function() {
         });
 
         it("should allow a user to commit a vote", async () => {
-            await voting.commitVote
-                .sendTransactionAsync(pollId, secret1, testValues.fiveEther)
-                .then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash)).should.eventually.be.fulfilled;
+            await voting.commitVote.awaitTransactionSuccessAsync(pollId, secret1, testValues.fiveEther).should
+                .eventually.be.fulfilled;
         });
 
         it("should not let a vote to be commited after the commit phase", async () => {
             await skipBlocks(1);
-            await voting.commitVote
-                .sendTransactionAsync(pollId, secret1, testValues.fiveEther)
-                .then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash)).should.eventually.be.rejected;
+            await voting.commitVote.awaitTransactionSuccessAsync(pollId, secret1, testValues.fiveEther).should
+                .eventually.be.rejected;
         });
 
         it("should require tokens to vote", async () => {
-            await voting.commitVote
-                .sendTransactionAsync(pollId, secret1, testValues.fiveEther, { from: accounts[2] })
-                .then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash)).should.eventually.be.rejected;
+            await voting.commitVote.awaitTransactionSuccessAsync(pollId, secret1, testValues.fiveEther, {
+                from: accounts[2],
+            }).should.eventually.be.rejected;
         });
 
         it("should not let a voter commit twice", async () => {
             const testPoll = await twoOnePoll();
-            await voting.commitVote
-                .sendTransactionAsync(testPoll, secret1, testValues.fiveEther)
-                .then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash)).should.eventually.be.fulfilled;
-            await voting.commitVote
-                .sendTransactionAsync(testPoll, secret1, testValues.fiveEther)
-                .then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash)).should.eventually.be.rejected;
+            await voting.commitVote.awaitTransactionSuccessAsync(testPoll, secret1, testValues.fiveEther).should
+                .eventually.be.fulfilled;
+            await voting.commitVote.awaitTransactionSuccessAsync(testPoll, secret1, testValues.fiveEther).should
+                .eventually.be.rejected;
         });
     });
 
@@ -142,86 +128,64 @@ describe("Voting", function() {
         });
 
         it("should allow a user to reveal a vote", async () => {
-            await voting.commitVote
-                .sendTransactionAsync(pollId, secret1, testValues.fiveEther)
-                .then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash)).should.eventually.be.fulfilled;
-            await voting.revealVote
-                .sendTransactionAsync(pollId, vote1, salt)
-                .then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash)).should.eventually.be.fulfilled;
+            await voting.commitVote.awaitTransactionSuccessAsync(pollId, secret1, testValues.fiveEther).should
+                .eventually.be.fulfilled;
+            await voting.revealVote.awaitTransactionSuccessAsync(pollId, vote1, salt).should.eventually.be.fulfilled;
         });
 
         it("should not allow a user to reveal without commiting", async () => {
             await skipBlocks(1);
 
-            await voting.revealVote
-                .sendTransactionAsync(pollId, vote1, salt)
-                .then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash)).should.eventually.be.rejected;
+            await voting.revealVote.awaitTransactionSuccessAsync(pollId, vote1, salt).should.eventually.be.rejected;
         });
 
         it("should not allow a change in salt", async () => {
-            await voting.commitVote
-                .sendTransactionAsync(pollId, secret1, testValues.fiveEther)
-                .then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash)).should.eventually.be.fulfilled;
-            await voting.revealVote
-                .sendTransactionAsync(pollId, vote1, new BigNumber("24"))
-                .then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash)).should.eventually.be.rejected;
+            await voting.commitVote.awaitTransactionSuccessAsync(pollId, secret1, testValues.fiveEther).should
+                .eventually.be.fulfilled;
+            await voting.revealVote.awaitTransactionSuccessAsync(pollId, vote1, new BigNumber("24")).should.eventually
+                .be.rejected;
         });
 
         it("should not allow a change in vote", async () => {
-            await voting.commitVote
-                .sendTransactionAsync(pollId, secret1, testValues.fiveEther)
-                .then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash)).should.eventually.be.fulfilled;
-            await voting.revealVote
-                .sendTransactionAsync(pollId, vote2, salt)
-                .then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash)).should.eventually.be.rejected;
+            await voting.commitVote.awaitTransactionSuccessAsync(pollId, secret1, testValues.fiveEther).should
+                .eventually.be.fulfilled;
+            await voting.revealVote.awaitTransactionSuccessAsync(pollId, vote2, salt).should.eventually.be.rejected;
         });
 
         it("should not allow a voter to reveal twice", async () => {
             const testPoll = await oneTwoPoll();
-            await voting.commitVote
-                .sendTransactionAsync(testPoll, secret1, testValues.fiveEther)
-                .then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash)).should.eventually.be.fulfilled;
-            await voting.revealVote
-                .sendTransactionAsync(testPoll, vote1, salt)
-                .then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash)).should.eventually.be.fulfilled;
-            await voting.revealVote
-                .sendTransactionAsync(testPoll, vote1, salt)
-                .then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash)).should.eventually.be.rejected;
+            await voting.commitVote.awaitTransactionSuccessAsync(testPoll, secret1, testValues.fiveEther).should
+                .eventually.be.fulfilled;
+            await voting.revealVote.awaitTransactionSuccessAsync(testPoll, vote1, salt).should.eventually.be.fulfilled;
+            await voting.revealVote.awaitTransactionSuccessAsync(testPoll, vote1, salt).should.eventually.be.rejected;
         });
 
         it("should not allow a voter to reveal when the tokens are gone", async () => {
-            await treasury.withdraw.sendTransactionAsync(await treasury.currentBalance.callAsync(accounts[0]));
+            await treasury.withdraw.awaitTransactionSuccessAsync(await treasury.currentBalance.callAsync(accounts[0]));
             const testPoll = await oneTwoPoll();
-            await voting.commitVote
-                .sendTransactionAsync(testPoll, secret1, testValues.fiveEther)
-                .then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash)).should.eventually.be.fulfilled;
+            await voting.commitVote.awaitTransactionSuccessAsync(testPoll, secret1, testValues.fiveEther).should
+                .eventually.be.fulfilled;
 
-            await treasury.withdraw.sendTransactionAsync(testValues.oneWei);
+            await treasury.withdraw.awaitTransactionSuccessAsync(testValues.oneWei);
 
-            await voting.revealVote
-                .sendTransactionAsync(testPoll, vote1, salt)
-                .then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash)).should.eventually.be.rejected;
+            await voting.revealVote.awaitTransactionSuccessAsync(testPoll, vote1, salt).should.eventually.be.rejected;
         });
     });
 
     describe("winningOption", () => {
         it("should report the correct winningOption", async () => {
-            await kosuToken.transfer.sendTransactionAsync(accounts[1], testValues.fiveEther);
+            await kosuToken.transfer.awaitTransactionSuccessAsync(accounts[1], testValues.fiveEther);
             await prepareTokens(accounts[0], testValues.fiveEther);
             await prepareTokens(accounts[1], testValues.fiveEther);
             const pollId = await variablePoll(2, 2);
-            await voting.commitVote
-                .sendTransactionAsync(pollId, secret1, testValues.oneEther)
-                .then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash)).should.eventually.be.fulfilled;
-            await voting.commitVote
-                .sendTransactionAsync(pollId, secret2, testValues.fiveEther, { from: accounts[1] })
-                .then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash)).should.eventually.be.fulfilled;
-            await voting.revealVote
-                .sendTransactionAsync(pollId, vote1, salt)
-                .then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash)).should.eventually.be.fulfilled;
-            await voting.revealVote
-                .sendTransactionAsync(pollId, vote2, salt, { from: accounts[1] })
-                .then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash)).should.eventually.be.fulfilled;
+            await voting.commitVote.awaitTransactionSuccessAsync(pollId, secret1, testValues.oneEther).should.eventually
+                .be.fulfilled;
+            await voting.commitVote.awaitTransactionSuccessAsync(pollId, secret2, testValues.fiveEther, {
+                from: accounts[1],
+            }).should.eventually.be.fulfilled;
+            await voting.revealVote.awaitTransactionSuccessAsync(pollId, vote1, salt).should.eventually.be.fulfilled;
+            await voting.revealVote.awaitTransactionSuccessAsync(pollId, vote2, salt, { from: accounts[1] }).should
+                .eventually.be.fulfilled;
 
             await skipBlocks(new BigNumber(1));
             await voting.winningOption
@@ -231,22 +195,18 @@ describe("Voting", function() {
         });
 
         it("should report the first winning option in a tie", async () => {
-            await kosuToken.transfer.sendTransactionAsync(accounts[1], testValues.fiveEther);
+            await kosuToken.transfer.awaitTransactionSuccessAsync(accounts[1], testValues.fiveEther);
             await prepareTokens(accounts[0], testValues.fiveEther);
             await prepareTokens(accounts[1], testValues.fiveEther);
             const pollId = await variablePoll(2, 2);
-            await voting.commitVote
-                .sendTransactionAsync(pollId, secret1, testValues.fiveEther)
-                .then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash)).should.eventually.be.fulfilled;
-            await voting.commitVote
-                .sendTransactionAsync(pollId, secret2, testValues.fiveEther, { from: accounts[1] })
-                .then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash)).should.eventually.be.fulfilled;
-            await voting.revealVote
-                .sendTransactionAsync(pollId, vote2, salt, { from: accounts[1] })
-                .then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash)).should.eventually.be.fulfilled;
-            await voting.revealVote
-                .sendTransactionAsync(pollId, vote1, salt)
-                .then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash)).should.eventually.be.fulfilled;
+            await voting.commitVote.awaitTransactionSuccessAsync(pollId, secret1, testValues.fiveEther).should
+                .eventually.be.fulfilled;
+            await voting.commitVote.awaitTransactionSuccessAsync(pollId, secret2, testValues.fiveEther, {
+                from: accounts[1],
+            }).should.eventually.be.fulfilled;
+            await voting.revealVote.awaitTransactionSuccessAsync(pollId, vote2, salt, { from: accounts[1] }).should
+                .eventually.be.fulfilled;
+            await voting.revealVote.awaitTransactionSuccessAsync(pollId, vote1, salt).should.eventually.be.fulfilled;
 
             await skipBlocks(new BigNumber(1));
             await voting.winningOption
@@ -258,22 +218,18 @@ describe("Voting", function() {
 
     describe("totalWinningTokens", () => {
         it("should report the correct number of total tokens contributed", async () => {
-            await kosuToken.transfer.sendTransactionAsync(accounts[1], testValues.fiveEther);
+            await kosuToken.transfer.awaitTransactionSuccessAsync(accounts[1], testValues.fiveEther);
             await prepareTokens(accounts[0], testValues.fiveEther);
             await prepareTokens(accounts[1], testValues.fiveEther);
             const pollId = await variablePoll(2, 2);
-            await voting.commitVote
-                .sendTransactionAsync(pollId, secret1, testValues.oneEther)
-                .then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash)).should.eventually.be.fulfilled;
-            await voting.commitVote
-                .sendTransactionAsync(pollId, secret1, testValues.fiveEther, { from: accounts[1] })
-                .then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash)).should.eventually.be.fulfilled;
-            await voting.revealVote
-                .sendTransactionAsync(pollId, vote1, salt)
-                .then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash)).should.eventually.be.fulfilled;
-            await voting.revealVote
-                .sendTransactionAsync(pollId, vote1, salt, { from: accounts[1] })
-                .then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash)).should.eventually.be.fulfilled;
+            await voting.commitVote.awaitTransactionSuccessAsync(pollId, secret1, testValues.oneEther).should.eventually
+                .be.fulfilled;
+            await voting.commitVote.awaitTransactionSuccessAsync(pollId, secret1, testValues.fiveEther, {
+                from: accounts[1],
+            }).should.eventually.be.fulfilled;
+            await voting.revealVote.awaitTransactionSuccessAsync(pollId, vote1, salt).should.eventually.be.fulfilled;
+            await voting.revealVote.awaitTransactionSuccessAsync(pollId, vote1, salt, { from: accounts[1] }).should
+                .eventually.be.fulfilled;
 
             await skipBlocks(new BigNumber(1));
             await voting.totalWinningTokens
@@ -285,22 +241,18 @@ describe("Voting", function() {
 
     describe("userWinningTokens", () => {
         it("should report 0 when not a winning vote", async () => {
-            await kosuToken.transfer.sendTransactionAsync(accounts[1], testValues.fiveEther);
+            await kosuToken.transfer.awaitTransactionSuccessAsync(accounts[1], testValues.fiveEther);
             await prepareTokens(accounts[0], testValues.fiveEther);
             await prepareTokens(accounts[1], testValues.fiveEther);
             const pollId = await variablePoll(2, 2);
-            await voting.commitVote
-                .sendTransactionAsync(pollId, secret1, testValues.oneEther)
-                .then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash)).should.eventually.be.fulfilled;
-            await voting.commitVote
-                .sendTransactionAsync(pollId, secret2, testValues.fiveEther, { from: accounts[1] })
-                .then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash)).should.eventually.be.fulfilled;
-            await voting.revealVote
-                .sendTransactionAsync(pollId, vote1, salt)
-                .then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash)).should.eventually.be.fulfilled;
-            await voting.revealVote
-                .sendTransactionAsync(pollId, vote2, salt, { from: accounts[1] })
-                .then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash)).should.eventually.be.fulfilled;
+            await voting.commitVote.awaitTransactionSuccessAsync(pollId, secret1, testValues.oneEther).should.eventually
+                .be.fulfilled;
+            await voting.commitVote.awaitTransactionSuccessAsync(pollId, secret2, testValues.fiveEther, {
+                from: accounts[1],
+            }).should.eventually.be.fulfilled;
+            await voting.revealVote.awaitTransactionSuccessAsync(pollId, vote1, salt).should.eventually.be.fulfilled;
+            await voting.revealVote.awaitTransactionSuccessAsync(pollId, vote2, salt, { from: accounts[1] }).should
+                .eventually.be.fulfilled;
 
             await skipBlocks(new BigNumber(1));
             await voting.userWinningTokens
@@ -310,22 +262,18 @@ describe("Voting", function() {
         });
 
         it("should report the correct number of tokens", async () => {
-            await kosuToken.transfer.sendTransactionAsync(accounts[1], testValues.fiveEther);
+            await kosuToken.transfer.awaitTransactionSuccessAsync(accounts[1], testValues.fiveEther);
             await prepareTokens(accounts[0], testValues.fiveEther);
             await prepareTokens(accounts[1], testValues.fiveEther);
             const pollId = await variablePoll(2, 2);
-            await voting.commitVote
-                .sendTransactionAsync(pollId, secret1, testValues.oneEther)
-                .then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash)).should.eventually.be.fulfilled;
-            await voting.commitVote
-                .sendTransactionAsync(pollId, secret2, testValues.fiveEther, { from: accounts[1] })
-                .then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash)).should.eventually.be.fulfilled;
-            await voting.revealVote
-                .sendTransactionAsync(pollId, vote1, salt)
-                .then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash)).should.eventually.be.fulfilled;
-            await voting.revealVote
-                .sendTransactionAsync(pollId, vote2, salt, { from: accounts[1] })
-                .then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash)).should.eventually.be.fulfilled;
+            await voting.commitVote.awaitTransactionSuccessAsync(pollId, secret1, testValues.oneEther).should.eventually
+                .be.fulfilled;
+            await voting.commitVote.awaitTransactionSuccessAsync(pollId, secret2, testValues.fiveEther, {
+                from: accounts[1],
+            }).should.eventually.be.fulfilled;
+            await voting.revealVote.awaitTransactionSuccessAsync(pollId, vote1, salt).should.eventually.be.fulfilled;
+            await voting.revealVote.awaitTransactionSuccessAsync(pollId, vote2, salt, { from: accounts[1] }).should
+                .eventually.be.fulfilled;
 
             await skipBlocks(new BigNumber(1));
             await voting.userWinningTokens

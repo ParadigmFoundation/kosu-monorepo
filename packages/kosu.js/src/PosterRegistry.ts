@@ -8,8 +8,6 @@ import { Treasury } from "./Treasury";
 
 /**
  * Integration with PosterRegistry contract on an Ethereum blockchain.
- *
- * @todo Refactor contract integration after migration away from truffle
  */
 export class PosterRegistry {
     private readonly web3: Web3;
@@ -103,9 +101,7 @@ export class PosterRegistry {
             }
         }
 
-        return contract.registerTokens
-            .sendTransactionAsync(amount)
-            .then(txHash => this.web3Wrapper.awaitTransactionSuccessAsync(txHash));
+        return contract.registerTokens.awaitTransactionSuccessAsync(amount);
     }
 
     /**
@@ -115,8 +111,6 @@ export class PosterRegistry {
      */
     public async releaseTokens(amount: BigNumber): Promise<TransactionReceiptWithDecodedLogs> {
         const contract = await this.getContract();
-        return contract.releaseTokens
-            .sendTransactionAsync(amount)
-            .then(txHash => this.web3Wrapper.awaitTransactionSuccessAsync(txHash));
+        return contract.releaseTokens.awaitTransactionSuccessAsync(amount);
     }
 }

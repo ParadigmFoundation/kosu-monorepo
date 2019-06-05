@@ -7,8 +7,6 @@ import { OrderSerializer } from "./OrderSerializer";
 
 /**
  * Integration with OrderGateway contract on an Ethereum blockchain.
- *
- * @todo Refactor contract integration after migration away from truffle
  */
 export class OrderGateway {
     private readonly web3: Web3;
@@ -65,22 +63,9 @@ export class OrderGateway {
         const takerArguments = await this.takerArguments(order.subContract);
         const makerValuesBytes = OrderSerializer.serializeMaker(makerArguments, order);
         const takerValuesBytes = OrderSerializer.serializeTaker(takerArguments, takerValues);
-        await this.contract.participate
-            .sendTransactionAsync(order.subContract, order.id || 1, makerValuesBytes, takerValuesBytes, { from: taker })
-            .then(async txHash => this.web3Wrapper.awaitTransactionSuccessAsync(txHash));
-    }
 
-    /**
-     * @todo deprecate
-     */
-    public async participateEstimateGas(order: Order, takerValues: any[], taker: string): Promise<number> {
-        await this.initializing;
-        const makerArguments = await this.makerArguments(order.subContract);
-        const takerArguments = await this.takerArguments(order.subContract);
-        const makerValuesBytes = OrderSerializer.serializeMaker(makerArguments, order);
-        const takerValuesBytes = OrderSerializer.serializeTaker(takerArguments, takerValues);
-
-        return this.contract.participate.estimateGasAsync(
+        // tslint:disable-next-line: await-promise
+        await this.contract.participate.awaitTransactionSuccessAsync(
             order.subContract,
             order.id || 1,
             makerValuesBytes,

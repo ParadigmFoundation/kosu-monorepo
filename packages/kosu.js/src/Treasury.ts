@@ -8,8 +8,6 @@ import { KosuToken } from "./KosuToken";
 
 /**
  * Integration with Treasury contract on an Ethereum blockchain.
- *
- * @todo Refactor contract integration after migration away from truffle
  */
 export class Treasury {
     public readonly kosuToken: KosuToken;
@@ -18,6 +16,7 @@ export class Treasury {
     private address: string;
     private contract: TreasuryContract;
     private readonly web3Wrapper: Web3Wrapper;
+    private coinbase: string;
 
     /**
      * Creates a new Treasury instance
@@ -40,7 +39,7 @@ export class Treasury {
     private async getContract(): Promise<TreasuryContract> {
         if (!this.contract) {
             const networkId = await this.web3Wrapper.getNetworkIdAsync();
-            const coinbase = await this.web3.eth.getCoinbase().catch(() => undefined);
+            this.coinbase = await this.web3.eth.getCoinbase().catch(() => undefined);
 
             if (!this.address) {
                 this.address = DeployedAddresses[networkId].Treasury;
@@ -53,7 +52,7 @@ export class Treasury {
                 artifacts.Treasury.compilerOutput.abi,
                 this.address,
                 this.web3Wrapper.getProvider(),
-                { from: coinbase },
+                { from: this.coinbase },
             );
         }
         return this.contract;
@@ -79,9 +78,7 @@ export class Treasury {
             await this.kosuToken.approve(this.address, value);
         }
 
-        return contract.deposit
-            .sendTransactionAsync(value)
-            .then(txHash => this.web3Wrapper.awaitTransactionSuccessAsync(txHash));
+        return contract.deposit.awaitTransactionSuccessAsync(value);
     }
 
     /**
@@ -91,9 +88,7 @@ export class Treasury {
      */
     public async withdraw(value: BigNumber): Promise<TransactionReceiptWithDecodedLogs> {
         const contract = await this.getContract();
-        return contract.withdraw
-            .sendTransactionAsync(value)
-            .then(txHash => this.web3Wrapper.awaitTransactionSuccessAsync(txHash));
+        return contract.withdraw.awaitTransactionSuccessAsync(value);
     }
 
     /**
@@ -114,5 +109,15 @@ export class Treasury {
     public async currentBalance(address: string): Promise<BigNumber> {
         const contract = await this.getContract();
         return contract.currentBalance.callAsync(address);
+    }
+
+    public async treasuryAllowance(): Promise<BigNumber> {
+        const contract = await this.getContract();
+        return this.kosuToken.allowance(this.coinbase, contract.address);
+    }
+
+    public async approveTreasury(value: BigNumber): Promise<TransactionReceiptWithDecodedLogs> {
+        const contract = await this.getContract();
+        return this.kosuToken.approve(contract.address, value);
     }
 }

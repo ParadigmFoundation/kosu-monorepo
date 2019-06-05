@@ -369,6 +369,8 @@ const initApp = async provider => {
                 console.log(log);
             });
         });
+
+    kosuJS.eventEmitter.getFutureDecodedLogs(await kosuJS.web3Wrapper.getBlockNumberAsync(), console.log);
     await kosuJS.treasury.getContract();
     resetValues();
     activateForms();

@@ -32,7 +32,6 @@
         "event/EventEmitter.sol",
         "external/OrderGateway.sol",
         "external/PosterRegistryProxy.sol",
-        "external/ValidatorRegistryProxy.sol",
         "lib/KosuToken.sol",
         "poster/PosterRegistry.sol",
         "treasury/Treasury.sol",

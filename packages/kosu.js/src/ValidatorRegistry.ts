@@ -1,6 +1,6 @@
 import { BigNumber } from "@0x/utils";
 import { Web3Wrapper } from "@0x/web3-wrapper";
-import { artifacts, DeployedAddresses, ValidatorRegistryProxyContract } from "@kosu/system-contracts";
+import { artifacts, DeployedAddresses, ValidatorRegistryContract } from "@kosu/system-contracts";
 import { TransactionReceiptWithDecodedLogs } from "ethereum-protocol";
 import Web3 from "web3";
 
@@ -8,13 +8,11 @@ import { Treasury } from "./Treasury";
 
 /**
  * Integration with ValidatorRegistry contract on an Ethereum blockchain.
- *
- * @todo Refactor contract integration after migration away from truffle
  */
 export class ValidatorRegistry {
     private readonly web3: Web3;
     private readonly treasury: Treasury;
-    private contract: ValidatorRegistryProxyContract;
+    private contract: ValidatorRegistryContract;
     private coinbase: string;
     private readonly web3Wrapper: Web3Wrapper;
     private address: string;
@@ -28,7 +26,7 @@ export class ValidatorRegistry {
     constructor(options: KosuOptions, treasury: Treasury) {
         this.web3 = options.web3;
         this.web3Wrapper = options.web3Wrapper;
-        this.address = options.validatorRegistryProxyAddress;
+        this.address = options.validatorRegistryAddress;
         this.treasury = treasury;
     }
 
@@ -37,20 +35,20 @@ export class ValidatorRegistry {
      *
      * @returns The contract
      */
-    private async getContract(): Promise<ValidatorRegistryProxyContract> {
+    private async getContract(): Promise<ValidatorRegistryContract> {
         if (!this.contract) {
             const networkId = await this.web3Wrapper.getNetworkIdAsync();
             this.coinbase = await this.web3.eth.getCoinbase().catch(() => undefined);
 
             if (!this.address) {
-                this.address = DeployedAddresses[networkId].ValidatorRegistryProxy;
+                this.address = DeployedAddresses[networkId].ValidatorRegistry;
             }
             if (!this.address) {
                 throw new Error("Invalid network for ValidatorRegistry");
             }
 
-            this.contract = new ValidatorRegistryProxyContract(
-                artifacts.ValidatorRegistryProxy.compilerOutput.abi,
+            this.contract = new ValidatorRegistryContract(
+                artifacts.ValidatorRegistry.compilerOutput.abi,
                 this.address,
                 this.web3Wrapper.getProvider(),
                 { from: this.coinbase },
@@ -146,17 +144,60 @@ export class ValidatorRegistry {
      */
     public async getListing(_pubKey: string): Promise<Listing> {
         const contract = await this.getContract();
-        // TODO convert pub key if needed?
-        return contract.getListing.callAsync(_pubKey);
+        return contract.getListing.callAsync(this.convertPubKey(_pubKey));
+    }
+
+    /**
+     * Reads the requested listings
+     */
+    public async getListings(_pubKeys: string[]): Promise<Listing[]> {
+        const contract = await this.getContract();
+        return contract.getListings.callAsync(_pubKeys);
     }
 
     /**
      * Reads the registered listings
      */
-    public async getListings(): Promise<Listing[]> {
+    public async getAllListings(): Promise<Listing[]> {
         const contract = await this.getContract();
-        // TODO convert pub key if needed?
-        return contract.getListings.callAsync();
+        return contract.getAllListings.callAsync();
+    }
+
+    /**
+     * Reads the max reward rate
+     */
+    public async maxRewardRate(): Promise<BigNumber> {
+        const contract = await this.getContract();
+        return contract.maxRewardRate.callAsync();
+    }
+
+    /**
+     * Reads the challenge by challengeId
+     *
+     * @param challengeId hex encoded tendermint public key
+     */
+    public async getChallenge(challengeId: BigNumber): Promise<Challenge> {
+        const contract = await this.getContract();
+        return contract.getChallenge.callAsync(challengeId);
+    }
+
+    /**
+     * Reads the challenges by challengeIds
+     *
+     * @param challengeIds hex encoded tendermint public key
+     */
+    public async getChallenges(challengeIds: BigNumber[]): Promise<Challenge[]> {
+        const contract = await this.getContract();
+        return contract.getChallenges.callAsync(challengeIds);
+    }
+
+    /**
+     * Reads all challenges
+     *
+     */
+    public async getAllChallenges(): Promise<Challenge[]> {
+        const contract = await this.getContract();
+        return contract.getAllChallenges.callAsync();
     }
 
     /**
@@ -176,15 +217,18 @@ export class ValidatorRegistry {
         const contract = await this.getContract();
 
         const systemBalance = await this.treasury.systemBalance(this.coinbase);
+        const maxRewardRate = await this.maxRewardRate();
 
         if (systemBalance.lt(_tokensToStake)) {
             const tokensShort = _tokensToStake.minus(systemBalance);
             await this.treasury.deposit(tokensShort);
         }
 
-        return contract.registerListing
-            .sendTransactionAsync(_pubKey, _tokensToStake, _rewardRate, _details)
-            .then(txHash => this.web3Wrapper.awaitTransactionSuccessAsync(txHash));
+        if (maxRewardRate.lt(_rewardRate)) {
+            throw new Error(`Reward rate: ${_rewardRate.toString()} exceeds maxmimum of ${maxRewardRate.toString()}`);
+        }
+
+        return contract.registerListing.awaitTransactionSuccessAsync(_pubKey, _tokensToStake, _rewardRate, _details);
     }
 
     /**
@@ -194,9 +238,7 @@ export class ValidatorRegistry {
      */
     public async confirmListing(_pubKey: string): Promise<TransactionReceiptWithDecodedLogs> {
         const contract = await this.getContract();
-        return contract.confirmListing
-            .sendTransactionAsync(_pubKey)
-            .then(txHash => this.web3Wrapper.awaitTransactionSuccessAsync(txHash));
+        return contract.confirmListing.awaitTransactionSuccessAsync(_pubKey);
     }
 
     /**
@@ -206,11 +248,17 @@ export class ValidatorRegistry {
      * @param _details String value (often a url) to support listing claim
      */
     public async challengeListing(_pubKey: string, _details: string): Promise<TransactionReceiptWithDecodedLogs> {
-        // TODO Check balance after looking up specific listing's tokens committed
         const contract = await this.getContract();
-        return contract.challengeListing
-            .sendTransactionAsync(_pubKey, _details)
-            .then(txHash => this.web3Wrapper.awaitTransactionSuccessAsync(txHash));
+
+        const listing: Listing = await this.getListing(_pubKey);
+        const approval: BigNumber = await this.treasury.treasuryAllowance();
+        const currentBalance: BigNumber = await this.treasury.currentBalance(this.coinbase);
+
+        if (approval.plus(currentBalance).lt(listing.stakedBalance)) {
+            await this.treasury.approveTreasury(listing.stakedBalance.minus(currentBalance));
+        }
+
+        return contract.challengeListing.awaitTransactionSuccessAsync(_pubKey, _details);
     }
 
     /**
@@ -220,9 +268,7 @@ export class ValidatorRegistry {
      */
     public async resolveChallenge(_pubKey: string): Promise<TransactionReceiptWithDecodedLogs> {
         const contract = await this.getContract();
-        return contract.resolveChallenge
-            .sendTransactionAsync(_pubKey)
-            .then(txHash => this.web3Wrapper.awaitTransactionSuccessAsync(txHash));
+        return contract.resolveChallenge.awaitTransactionSuccessAsync(_pubKey);
     }
 
     /**
@@ -232,9 +278,7 @@ export class ValidatorRegistry {
      */
     public async claimRewards(_pubKey: string): Promise<TransactionReceiptWithDecodedLogs> {
         const contract = await this.getContract();
-        return contract.claimRewards
-            .sendTransactionAsync(_pubKey)
-            .then(txHash => this.web3Wrapper.awaitTransactionSuccessAsync(txHash));
+        return contract.claimRewards.awaitTransactionSuccessAsync(_pubKey);
     }
 
     /**
@@ -244,9 +288,7 @@ export class ValidatorRegistry {
      */
     public async initExit(_pubKey: string): Promise<TransactionReceiptWithDecodedLogs> {
         const contract = await this.getContract();
-        return contract.initExit
-            .sendTransactionAsync(_pubKey)
-            .then(txHash => this.web3Wrapper.awaitTransactionSuccessAsync(txHash));
+        return contract.initExit.awaitTransactionSuccessAsync(_pubKey);
     }
 
     /**
@@ -256,9 +298,7 @@ export class ValidatorRegistry {
      */
     public async finalizeExit(_pubKey: string): Promise<TransactionReceiptWithDecodedLogs> {
         const contract = await this.getContract();
-        return contract.finalizeExit
-            .sendTransactionAsync(_pubKey)
-            .then(txHash => this.web3Wrapper.awaitTransactionSuccessAsync(txHash));
+        return contract.finalizeExit.awaitTransactionSuccessAsync(_pubKey);
     }
 
     /**
@@ -268,9 +308,7 @@ export class ValidatorRegistry {
      */
     public async claimWinnings(challengeId: BigNumber): Promise<TransactionReceiptWithDecodedLogs> {
         const contract = await this.getContract();
-        return contract.claimWinnings
-            .sendTransactionAsync(challengeId)
-            .then(txHash => this.web3Wrapper.awaitTransactionSuccessAsync(txHash));
+        return contract.claimWinnings.awaitTransactionSuccessAsync(challengeId);
     }
 
     /**
@@ -281,13 +319,21 @@ export class ValidatorRegistry {
      * @param _pubKey .
      * @returns hex encoded tendermint public key
      */
-    // tslint:disable-next-line: prefer-function-over-method
     public convertPubKey(_pubKey: string): string {
+        let out;
         if (_pubKey.length === 66 && _pubKey.startsWith("0x")) {
             return _pubKey;
+        } else if (_pubKey.startsWith("0x") && _pubKey.length < 66) {
+            out = _pubKey;
+        } else {
+            out = `0x${Buffer.from(_pubKey, "base64").toString("hex")}`;
         }
 
-        return `0x${Buffer.from(_pubKey, "base64").toString("hex")}`;
+        if (out.length > 66) {
+            out = out.substr(0, 66);
+        }
+
+        return this.web3.utils.padRight(out, 64);
     }
 
     /**

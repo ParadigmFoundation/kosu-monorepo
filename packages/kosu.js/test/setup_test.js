@@ -45,11 +45,7 @@ before(async () => {
         .minus(BigNumber("1"))
         .toString();
 
-    const migratedContracts = await migrations(
-        provider,
-        { from: accounts[0].toLowerCase(), gas: "4500000" },
-        { noLogs: true },
-    );
+    const migratedContracts = await migrations(provider, { from: accounts[0].toLowerCase(), gas: "4500000" });
 
     global.kosu = new Kosu({
         provider: web3.currentProvider,
@@ -57,7 +53,6 @@ before(async () => {
         posterRegistryProxyAddress: migratedContracts.posterRegistryProxy.address,
         kosuTokenAddress: migratedContracts.kosuToken.address,
         orderGatewayAddress: migratedContracts.orderGateway.address,
-        validatorRegistryProxyAddress: migratedContracts.validatorRegistryProxy.address,
         votingAddress: migratedContracts.voting.address,
         treasuryAddress: migratedContracts.treasury.address,
     });

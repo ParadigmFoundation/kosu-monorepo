@@ -17,32 +17,34 @@ describe("Treasury", async () => {
 
     after(async () => {
         // Reverting setup
-        await auth.unauthorizeAddress
-            .sendTransactionAsync(accounts[5])
-            .then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash));
+        await auth.unauthorizeAddress.awaitTransactionSuccessAsync(accounts[5]);
         await cleanAccounts();
     });
 
     beforeEach(async () => {
         // Account 5 is the executor
-        await auth.authorizeAddress.sendTransactionAsync(accounts[5]);
+        await auth.authorizeAddress.awaitTransactionSuccessAsync(accounts[5]);
 
         // Account 1 holds 100 kosu, 50 approved
         await clearTreasury(accounts[1]);
         await ensureTokenBalance(accounts[1], testValues.oneHundredWei);
-        await kosuToken.approve.sendTransactionAsync(treasury.address, testValues.fiftyWei, { from: accounts[1] });
+        await kosuToken.approve.awaitTransactionSuccessAsync(treasury.address, testValues.fiftyWei, {
+            from: accounts[1],
+        });
 
         // Account 2 holds 100 kosu, 50 approved
         await clearTreasury(accounts[2]);
         await ensureTokenBalance(accounts[2], testValues.oneHundredWei);
-        await kosuToken.approve.sendTransactionAsync(treasury.address, testValues.fiftyWei, { from: accounts[2] });
+        await kosuToken.approve.awaitTransactionSuccessAsync(treasury.address, testValues.fiftyWei, {
+            from: accounts[2],
+        });
 
         // Account 3 has 100 kosu
         await clearTreasury(accounts[3]);
         await ensureTokenBalance(accounts[3], testValues.oneHundredWei);
-        await kosuToken.approve
-            .sendTransactionAsync(treasury.address, testValues.oneHundredWei, { from: accounts[3] })
-            .then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash));
+        await kosuToken.approve.awaitTransactionSuccessAsync(treasury.address, testValues.oneHundredWei, {
+            from: accounts[3],
+        });
     });
 
     describe("deposit", () => {
@@ -59,9 +61,7 @@ describe("Treasury", async () => {
             const initialCurrentBalance = await treasury.currentBalance.callAsync(from);
             const initialSystemBalance = await treasury.systemBalance.callAsync(from);
 
-            await treasury.deposit
-                .sendTransactionAsync(expectedValue, { from })
-                .then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash));
+            await treasury.deposit.awaitTransactionSuccessAsync(expectedValue, { from });
 
             const finalTokenBalance = await kosuToken.balanceOf.callAsync(from);
             const finalCurrentBalance = await treasury.currentBalance.callAsync(from);
@@ -89,12 +89,8 @@ describe("Treasury", async () => {
                 .toString()
                 .should.eq(expectedValue.toString());
 
-            await treasury.deposit
-                .sendTransactionAsync(expectedValue.plus(1), { from })
-                .then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash)).should.be.rejected;
-            await treasury.deposit
-                .sendTransactionAsync(expectedValue, { from })
-                .then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash));
+            await treasury.deposit.awaitTransactionSuccessAsync(expectedValue.plus(1), { from }).should.be.rejected;
+            await treasury.deposit.awaitTransactionSuccessAsync(expectedValue, { from });
 
             const finalTokenBalance = await kosuToken.balanceOf.callAsync(from);
             const finalCurrentBalance = await treasury.currentBalance.callAsync(from);
@@ -125,17 +121,13 @@ describe("Treasury", async () => {
         });
 
         it("should return to user reducing current and system balances", async () => {
-            await treasury.deposit
-                .sendTransactionAsync(expectedValue, { from })
-                .then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash));
+            await treasury.deposit.awaitTransactionSuccessAsync(expectedValue, { from });
 
             const initialTokenBalance = await kosuToken.balanceOf.callAsync(from);
             const initialCurrentBalance = await treasury.currentBalance.callAsync(from);
             const initialSystemBalance = await treasury.systemBalance.callAsync(from);
 
-            await treasury.withdraw
-                .sendTransactionAsync(expectedValue, { from })
-                .then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash));
+            await treasury.withdraw.awaitTransactionSuccessAsync(expectedValue, { from });
 
             const finalTokenBalance = await kosuToken.balanceOf.callAsync(from);
             const finalCurrentBalance = await treasury.currentBalance.callAsync(from);
@@ -156,12 +148,8 @@ describe("Treasury", async () => {
         });
 
         it("should up to the total current balance", async () => {
-            await treasury.deposit
-                .sendTransactionAsync(expectedValue, { from })
-                .then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash));
-            await posterRegistry.registerTokens
-                .sendTransactionAsync(testValues.oneWei, { from })
-                .then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash));
+            await treasury.deposit.awaitTransactionSuccessAsync(expectedValue, { from });
+            await posterRegistry.registerTokens.awaitTransactionSuccessAsync(testValues.oneWei, { from });
 
             const initialTokenBalance = await kosuToken.balanceOf.callAsync(from);
             const initialCurrentBalance = await treasury.currentBalance.callAsync(from);
@@ -169,12 +157,8 @@ describe("Treasury", async () => {
 
             initialCurrentBalance.toNumber().should.be.lt(expectedValue.toNumber());
 
-            await treasury.withdraw
-                .sendTransactionAsync(expectedValue, { from })
-                .then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash)).should.be.rejected;
-            await treasury.withdraw
-                .sendTransactionAsync(expectedValue.minus(1), { from })
-                .then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash)).should.be.fulfilled;
+            await treasury.withdraw.awaitTransactionSuccessAsync(expectedValue, { from }).should.be.rejected;
+            await treasury.withdraw.awaitTransactionSuccessAsync(expectedValue.minus(1), { from }).should.be.fulfilled;
 
             const finalTokenBalance = await kosuToken.balanceOf.callAsync(from);
             const finalCurrentBalance = await treasury.currentBalance.callAsync(from);
@@ -192,17 +176,15 @@ describe("Treasury", async () => {
                 .minus(finalSystemBalance)
                 .toString()
                 .should.eq(expectedValue.minus(1).toString());
-            await posterRegistry.releaseTokens
-                .sendTransactionAsync(testValues.oneWei, { from })
-                .then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash));
+            await posterRegistry.releaseTokens.awaitTransactionSuccessAsync(testValues.oneWei, { from });
         });
     });
 
     describe("contractDeposit", () => {
         it("should pull tokens from the given accounts and track the balance.", async () => {
-            await treasury.contractDeposit
-                .sendTransactionAsync(accounts[1], testValues.fiftyWei, { from: accounts[5] })
-                .then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash)).should.eventually.be.fulfilled;
+            await treasury.contractDeposit.awaitTransactionSuccessAsync(accounts[1], testValues.fiftyWei, {
+                from: accounts[5],
+            }).should.eventually.be.fulfilled;
 
             await treasury.currentBalance
                 .callAsync(accounts[1])
@@ -211,29 +193,29 @@ describe("Treasury", async () => {
         });
 
         it("should fail on insufficient token approval.", async () => {
-            await treasury.contractDeposit
-                .sendTransactionAsync(accounts[1], new BigNumber("51"), { from: accounts[5] })
-                .then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash)).should.eventually.be.rejected;
+            await treasury.contractDeposit.awaitTransactionSuccessAsync(accounts[1], new BigNumber("51"), {
+                from: accounts[5],
+            }).should.eventually.be.rejected;
         });
 
         it("should fail on insufficient token balance.", async () => {
-            await kosuToken.approve.sendTransactionAsync(treasury.address, new BigNumber("100000"), {
+            await kosuToken.approve.awaitTransactionSuccessAsync(treasury.address, new BigNumber("100000"), {
                 from: accounts[1],
             });
-            await treasury.contractDeposit
-                .sendTransactionAsync(accounts[1], new BigNumber("101"), { from: accounts[5] })
-                .then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash)).should.eventually.be.rejected;
+            await treasury.contractDeposit.awaitTransactionSuccessAsync(accounts[1], new BigNumber("101"), {
+                from: accounts[5],
+            }).should.eventually.be.rejected;
         });
     });
 
     describe("contractWithdraw", () => {
         it("should reduce the balance by the provided value.", async () => {
-            await treasury.contractDeposit.sendTransactionAsync(accounts[3], testValues.oneHundredWei, {
+            await treasury.contractDeposit.awaitTransactionSuccessAsync(accounts[3], testValues.oneHundredWei, {
                 from: accounts[5],
             });
-            await treasury.contractWithdraw
-                .sendTransactionAsync(accounts[3], new BigNumber("75"), { from: accounts[5] })
-                .then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash)).should.eventually.be.fulfilled;
+            await treasury.contractWithdraw.awaitTransactionSuccessAsync(accounts[3], new BigNumber("75"), {
+                from: accounts[5],
+            }).should.eventually.be.fulfilled;
 
             await treasury.currentBalance
                 .callAsync(accounts[3])
@@ -242,9 +224,9 @@ describe("Treasury", async () => {
         });
 
         it("should fail on over withdraw.", async () => {
-            await treasury.contractWithdraw
-                .sendTransactionAsync(accounts[3], new BigNumber("101"), { from: accounts[5] })
-                .then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash)).should.eventually.be.rejected;
+            await treasury.contractWithdraw.awaitTransactionSuccessAsync(accounts[3], new BigNumber("101"), {
+                from: accounts[5],
+            }).should.eventually.be.rejected;
         });
     });
 
@@ -260,18 +242,14 @@ describe("Treasury", async () => {
         });
 
         it("should take tokens from user currentBalance and transfer to the requesting authorized caller", async () => {
-            await treasury.deposit
-                .sendTransactionAsync(expectedValue, { from: target })
-                .then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash));
+            await treasury.deposit.awaitTransactionSuccessAsync(expectedValue, { from: target });
 
             const initialTargetTokenBalance = await kosuToken.balanceOf.callAsync(target);
             const initialFromTokenBalance = await kosuToken.balanceOf.callAsync(from);
             const initialCurrentBalance = await treasury.currentBalance.callAsync(target);
             const initialSystemBalance = await treasury.systemBalance.callAsync(target);
 
-            await treasury.claimTokens
-                .sendTransactionAsync(target, expectedValue, { from })
-                .then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash));
+            await treasury.claimTokens.awaitTransactionSuccessAsync(target, expectedValue, { from });
 
             const finalTargetTokenBalance = await kosuToken.balanceOf.callAsync(target);
             const finalFromTokenBalance = await kosuToken.balanceOf.callAsync(from);
@@ -289,10 +267,8 @@ describe("Treasury", async () => {
                 .should.eq(expectedValue.toString(), "Current Balance");
             initialSystemBalance.toString().should.eq(finalSystemBalance.toString(), "System Balance");
 
-            await kosuToken.approve.sendTransactionAsync(treasury.address, expectedValue, { from });
-            await treasury.releaseTokens
-                .sendTransactionAsync(target, expectedValue, { from })
-                .then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash));
+            await kosuToken.approve.awaitTransactionSuccessAsync(treasury.address, expectedValue, { from });
+            await treasury.releaseTokens.awaitTransactionSuccessAsync(target, expectedValue, { from });
         });
 
         it("should pull tokens from the user automatically with a treasury allowance set", async () => {
@@ -301,9 +277,7 @@ describe("Treasury", async () => {
             const initialCurrentBalance = await treasury.currentBalance.callAsync(target);
             const initialSystemBalance = await treasury.systemBalance.callAsync(target);
 
-            await treasury.claimTokens
-                .sendTransactionAsync(target, expectedValue, { from })
-                .then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash));
+            await treasury.claimTokens.awaitTransactionSuccessAsync(target, expectedValue, { from });
 
             const finalTargetTokenBalance = await kosuToken.balanceOf.callAsync(target);
             const finalFromTokenBalance = await kosuToken.balanceOf.callAsync(from);
@@ -327,10 +301,8 @@ describe("Treasury", async () => {
                 .toString()
                 .should.eq(expectedValue.toString(), "System Balance");
 
-            await kosuToken.approve.sendTransactionAsync(treasury.address, expectedValue, { from });
-            await treasury.releaseTokens
-                .sendTransactionAsync(target, expectedValue, { from })
-                .then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash));
+            await kosuToken.approve.awaitTransactionSuccessAsync(treasury.address, expectedValue, { from });
+            await treasury.releaseTokens.awaitTransactionSuccessAsync(target, expectedValue, { from });
         });
     });
 
@@ -346,19 +318,15 @@ describe("Treasury", async () => {
         });
 
         it("should take tokens from user currentBalance and transfer to the requesting authorized caller", async () => {
-            await treasury.claimTokens
-                .sendTransactionAsync(target, expectedValue, { from })
-                .then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash));
+            await treasury.claimTokens.awaitTransactionSuccessAsync(target, expectedValue, { from });
 
             const initialTargetTokenBalance = await kosuToken.balanceOf.callAsync(target);
             const initialFromTokenBalance = await kosuToken.balanceOf.callAsync(from);
             const initialCurrentBalance = await treasury.currentBalance.callAsync(target);
             const initialSystemBalance = await treasury.systemBalance.callAsync(target);
 
-            await kosuToken.approve.sendTransactionAsync(treasury.address, expectedValue, { from });
-            await treasury.releaseTokens
-                .sendTransactionAsync(target, expectedValue, { from })
-                .then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash));
+            await kosuToken.approve.awaitTransactionSuccessAsync(treasury.address, expectedValue, { from });
+            await treasury.releaseTokens.awaitTransactionSuccessAsync(target, expectedValue, { from });
 
             const finalTargetTokenBalance = await kosuToken.balanceOf.callAsync(target);
             const finalFromTokenBalance = await kosuToken.balanceOf.callAsync(from);
@@ -380,32 +348,30 @@ describe("Treasury", async () => {
 
     describe("updateBalance", () => {
         it("should make required changes for balance to end at desired value.", async () => {
-            await kosuToken.approve.sendTransactionAsync(treasury.address, new BigNumber("100000"), {
+            await kosuToken.approve.awaitTransactionSuccessAsync(treasury.address, new BigNumber("100000"), {
                 from: accounts[3],
             });
-            await treasury.contractDeposit
-                .sendTransactionAsync(accounts[3], testValues.oneHundredWei, {
-                    from: accounts[5],
-                })
-                .then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash));
+            await treasury.contractDeposit.awaitTransactionSuccessAsync(accounts[3], testValues.oneHundredWei, {
+                from: accounts[5],
+            });
 
             await treasury.currentBalance
                 .callAsync(accounts[3])
                 .then(x => x.toString())
                 .should.eventually.eq(testValues.oneHundredWei.toString());
 
-            await treasury.updateBalance
-                .sendTransactionAsync(accounts[3], new BigNumber("73"), { from: accounts[5] })
-                .then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash));
+            await treasury.updateBalance.awaitTransactionSuccessAsync(accounts[3], new BigNumber("73"), {
+                from: accounts[5],
+            });
 
             await treasury.currentBalance
                 .callAsync(accounts[3])
                 .then(x => x.toString())
                 .should.eventually.eq("73");
 
-            await treasury.updateBalance
-                .sendTransactionAsync(accounts[3], new BigNumber("80"), { from: accounts[5] })
-                .then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash));
+            await treasury.updateBalance.awaitTransactionSuccessAsync(accounts[3], new BigNumber("80"), {
+                from: accounts[5],
+            });
 
             await treasury.currentBalance
                 .callAsync(accounts[3])
@@ -419,59 +385,57 @@ describe("Treasury", async () => {
         });
 
         it("should fail on insufficient token approval.", async () => {
-            await treasury.updateBalance
-                .sendTransactionAsync(accounts[1], new BigNumber("51"), { from: accounts[5] })
-                .then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash)).should.eventually.be.rejected;
+            await treasury.updateBalance.awaitTransactionSuccessAsync(accounts[1], new BigNumber("51"), {
+                from: accounts[5],
+            }).should.eventually.be.rejected;
         });
 
         it("should fail on insufficient token balance.", async () => {
-            await kosuToken.approve.sendTransactionAsync(treasury.address, new BigNumber("100000"), {
+            await kosuToken.approve.awaitTransactionSuccessAsync(treasury.address, new BigNumber("100000"), {
                 from: accounts[1],
             });
 
-            await treasury.updateBalance
-                .sendTransactionAsync(accounts[1], new BigNumber("101"), { from: accounts[5] })
-                .then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash)).should.eventually.be.rejected;
+            await treasury.updateBalance.awaitTransactionSuccessAsync(accounts[1], new BigNumber("101"), {
+                from: accounts[5],
+            }).should.eventually.be.rejected;
         });
     });
 
     describe("adjustBalance", () => {
         it("should change the balance by the provided value", async () => {
-            await kosuToken.approve.sendTransactionAsync(treasury.address, new BigNumber("100000"), {
+            await kosuToken.approve.awaitTransactionSuccessAsync(treasury.address, new BigNumber("100000"), {
                 from: accounts[3],
             });
-            await treasury.contractDeposit
-                .sendTransactionAsync(accounts[3], testValues.oneHundredWei, {
-                    from: accounts[5],
-                })
-                .then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash));
+            await treasury.contractDeposit.awaitTransactionSuccessAsync(accounts[3], testValues.oneHundredWei, {
+                from: accounts[5],
+            });
             await treasury.currentBalance
                 .callAsync(accounts[3])
                 .then(x => x.toString())
                 .should.eventually.eq(testValues.oneHundredWei.toString());
 
             // should handle negative change
-            await treasury.adjustBalance
-                .sendTransactionAsync(accounts[3], new BigNumber("-27"), { from: accounts[5] })
-                .then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash));
+            await treasury.adjustBalance.awaitTransactionSuccessAsync(accounts[3], new BigNumber("-27"), {
+                from: accounts[5],
+            });
             await treasury.currentBalance
                 .callAsync(accounts[3])
                 .then(x => x.toString())
                 .should.eventually.eq("73");
 
             // should handle 0
-            await treasury.adjustBalance
-                .sendTransactionAsync(accounts[3], new BigNumber("0"), { from: accounts[5] })
-                .then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash));
+            await treasury.adjustBalance.awaitTransactionSuccessAsync(accounts[3], new BigNumber("0"), {
+                from: accounts[5],
+            });
             await treasury.currentBalance
                 .callAsync(accounts[3])
                 .then(x => x.toString())
                 .should.eventually.eq("73");
 
             // should handle positive change
-            await treasury.adjustBalance
-                .sendTransactionAsync(accounts[3], new BigNumber("7"), { from: accounts[5] })
-                .then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash));
+            await treasury.adjustBalance.awaitTransactionSuccessAsync(accounts[3], new BigNumber("7"), {
+                from: accounts[5],
+            });
             await treasury.currentBalance
                 .callAsync(accounts[3])
                 .then(x => x.toString())
@@ -484,27 +448,29 @@ describe("Treasury", async () => {
         });
 
         it("should fail on over withdraw.", async () => {
-            await treasury.adjustBalance
-                .sendTransactionAsync(accounts[3], new BigNumber("-101"), { from: accounts[5] })
-                .then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash)).should.eventually.be.rejected;
+            await treasury.adjustBalance.awaitTransactionSuccessAsync(accounts[3], new BigNumber("-101"), {
+                from: accounts[5],
+            }).should.eventually.be.rejected;
         });
 
         it("should fail on insufficient token approval.", async () => {
-            await kosuToken.approve.sendTransactionAsync(treasury.address, new BigNumber("0"), { from: accounts[3] });
-
-            await treasury.adjustBalance
-                .sendTransactionAsync(accounts[3], new BigNumber("1"), { from: accounts[5] })
-                .then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash)).should.eventually.be.rejected;
-        });
-
-        it("should fail on insufficient token balance.", async () => {
-            await kosuToken.approve.sendTransactionAsync(treasury.address, new BigNumber("100000"), {
+            await kosuToken.approve.awaitTransactionSuccessAsync(treasury.address, new BigNumber("0"), {
                 from: accounts[3],
             });
 
-            await treasury.adjustBalance
-                .sendTransactionAsync(accounts[3], new BigNumber("101"), { from: accounts[5] })
-                .then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash)).should.eventually.be.rejected;
+            await treasury.adjustBalance.awaitTransactionSuccessAsync(accounts[3], new BigNumber("1"), {
+                from: accounts[5],
+            }).should.eventually.be.rejected;
+        });
+
+        it("should fail on insufficient token balance.", async () => {
+            await kosuToken.approve.awaitTransactionSuccessAsync(treasury.address, new BigNumber("100000"), {
+                from: accounts[3],
+            });
+
+            await treasury.adjustBalance.awaitTransactionSuccessAsync(accounts[3], new BigNumber("101"), {
+                from: accounts[5],
+            }).should.eventually.be.rejected;
         });
     });
 
@@ -520,20 +486,14 @@ describe("Treasury", async () => {
         });
 
         it("should correctly remove systemBalance from the user", async () => {
-            await treasury.deposit
-                .sendTransactionAsync(expectedValue, { from: target })
-                .then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash));
-            await treasury.claimTokens
-                .sendTransactionAsync(target, expectedValue, { from })
-                .then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash));
+            await treasury.deposit.awaitTransactionSuccessAsync(expectedValue, { from: target });
+            await treasury.claimTokens.awaitTransactionSuccessAsync(target, expectedValue, { from });
 
             const initialTargetTokenBalance = await kosuToken.balanceOf.callAsync(target);
             const initialCurrentBalance = await treasury.currentBalance.callAsync(target);
             const initialSystemBalance = await treasury.systemBalance.callAsync(target);
 
-            await treasury.confiscate
-                .sendTransactionAsync(target, expectedValue, { from })
-                .then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash));
+            await treasury.confiscate.awaitTransactionSuccessAsync(target, expectedValue, { from });
 
             const finalTargetTokenBalance = await kosuToken.balanceOf.callAsync(target);
             const finalCurrentBalance = await treasury.currentBalance.callAsync(target);
@@ -546,10 +506,8 @@ describe("Treasury", async () => {
                 .toString()
                 .should.eq(expectedValue.toString(), "System Balance");
 
-            await kosuToken.approve.sendTransactionAsync(treasury.address, expectedValue, { from });
-            await treasury.award
-                .sendTransactionAsync(target, expectedValue, { from })
-                .then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash));
+            await kosuToken.approve.awaitTransactionSuccessAsync(treasury.address, expectedValue, { from });
+            await treasury.award.awaitTransactionSuccessAsync(target, expectedValue, { from });
         });
     });
 
@@ -565,24 +523,16 @@ describe("Treasury", async () => {
         });
 
         it("should transfer tokens held by the calling address to the recipient and increase its current and system balances", async () => {
-            await treasury.deposit
-                .sendTransactionAsync(expectedValue, { from: target })
-                .then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash));
-            await treasury.claimTokens
-                .sendTransactionAsync(target, expectedValue, { from })
-                .then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash));
-            await treasury.confiscate
-                .sendTransactionAsync(target, expectedValue, { from })
-                .then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash));
+            await treasury.deposit.awaitTransactionSuccessAsync(expectedValue, { from: target });
+            await treasury.claimTokens.awaitTransactionSuccessAsync(target, expectedValue, { from });
+            await treasury.confiscate.awaitTransactionSuccessAsync(target, expectedValue, { from });
 
             const initialTargetTokenBalance = await kosuToken.balanceOf.callAsync(target); // 50
             const initialCurrentBalance = await treasury.currentBalance.callAsync(target); // 0
             const initialSystemBalance = await treasury.systemBalance.callAsync(target); // 0
 
-            await kosuToken.approve.sendTransactionAsync(treasury.address, expectedValue, { from });
-            await treasury.award
-                .sendTransactionAsync(target, expectedValue, { from })
-                .then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash));
+            await kosuToken.approve.awaitTransactionSuccessAsync(treasury.address, expectedValue, { from });
+            await treasury.award.awaitTransactionSuccessAsync(target, expectedValue, { from });
 
             const finalTargetTokenBalance = await kosuToken.balanceOf.callAsync(target); // 50
             const finalCurrentBalance = await treasury.currentBalance.callAsync(target); // 50
@@ -606,11 +556,9 @@ describe("Treasury", async () => {
                 .callAsync(accounts[3])
                 .then(x => x.toString())
                 .should.eventually.eq("0");
-            await treasury.contractDeposit
-                .sendTransactionAsync(accounts[3], testValues.oneHundredWei, {
-                    from: accounts[5],
-                })
-                .then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash));
+            await treasury.contractDeposit.awaitTransactionSuccessAsync(accounts[3], testValues.oneHundredWei, {
+                from: accounts[5],
+            });
             await treasury.currentBalance
                 .callAsync(accounts[3])
                 .then(x => x.toString())
@@ -621,15 +569,13 @@ describe("Treasury", async () => {
     describe("Authorizeable", () => {
         describe("isAuthorized", () => {
             it("should allow an added account to call protected methods", async () => {
-                await auth.unauthorizeAddress.sendTransactionAsync(accounts[6]);
+                await auth.unauthorizeAddress.awaitTransactionSuccessAsync(accounts[6]);
 
-                await treasury.contractDeposit
-                    .sendTransactionAsync(accounts[1], testValues.fiftyWei, { from: accounts[6] })
-                    .then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash)).should.eventually.be.rejected;
+                await treasury.contractDeposit.awaitTransactionSuccessAsync(accounts[1], testValues.fiftyWei, {
+                    from: accounts[6],
+                }).should.eventually.be.rejected;
 
-                await auth.authorizeAddress
-                    .sendTransactionAsync(accounts[6])
-                    .then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash));
+                await auth.authorizeAddress.awaitTransactionSuccessAsync(accounts[6]);
 
                 await kosuToken.allowance
                     .callAsync(accounts[1], treasury.address)
@@ -639,9 +585,9 @@ describe("Treasury", async () => {
                     .callAsync(accounts[1])
                     .then(x => x.toString())
                     .should.eventually.eq(testValues.oneHundredWei.toString());
-                await treasury.contractDeposit
-                    .sendTransactionAsync(accounts[1], testValues.fiftyWei, { from: accounts[6] })
-                    .then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash)).should.eventually.be.fulfilled;
+                await treasury.contractDeposit.awaitTransactionSuccessAsync(accounts[1], testValues.fiftyWei, {
+                    from: accounts[6],
+                }).should.eventually.be.fulfilled;
             });
         });
     });
