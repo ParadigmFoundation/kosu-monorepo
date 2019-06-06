@@ -1,18 +1,21 @@
-import { LogDecoder } from "@0x/contracts-test-utils";
-import { BlockchainLifecycle } from "@0x/dev-utils";
-import { CoverageSubprovider } from "@0x/sol-coverage";
-import { SolCompilerArtifactAdapter } from "@0x/sol-trace";
-import { GanacheSubprovider, RPCSubprovider } from "@0x/subproviders";
-import { BigNumber, providerUtils } from "@0x/utils";
-import { Web3Wrapper } from "@0x/web3-wrapper";
+import {LogDecoder} from "@0x/contracts-test-utils";
+import {BlockchainLifecycle} from "@0x/dev-utils";
+import {CoverageSubprovider} from "@0x/sol-coverage";
+import {SolCompilerArtifactAdapter} from "@0x/sol-trace";
+import {GanacheSubprovider, RPCSubprovider} from "@0x/subproviders";
+import {BigNumber, providerUtils} from "@0x/utils";
+import {Web3Wrapper} from "@0x/web3-wrapper";
 import chai from "chai";
 import chaiAsPromised from "chai-as-promised";
+import {soliditySHA3 as solSHA3} from "ethereumjs-abi";
+import {bufferToHex} from "ethereumjs-util";
 import Web3 from "web3";
 import Web3ProviderEngine from "web3-provider-engine";
-import { toWei } from "web3-utils";
+import {toTwosComplement, toWei} from "web3-utils";
 
-import { artifacts } from "../src";
-import { migrations } from "../src/migrations";
+import {BasicTradeSubContractContract} from "../generated-wrappers/basic_trade_sub_contract";
+import {artifacts} from "../src";
+import {migrations} from "../src/migrations";
 
 const useGeth = process.argv.includes("geth");
 const runCoverage = process.argv.includes("runCoverage");
@@ -35,12 +38,12 @@ before(async () => {
             coverageSubprovider = new CoverageSubprovider(
                 artifactAdapter,
                 "0xc521f483f607eb5ea4d6b2dfdbd540134753a865",
-                { ignoreFilesGlobs: ["**/node_modules/**", "**/IValidatorRegistry.sol", "**/IPosterRegistry.sol"] },
+                {ignoreFilesGlobs: ["**/node_modules/**", "**/IValidatorRegistry.sol", "**/IPosterRegistry.sol"]},
             );
             provider.addProvider(coverageSubprovider);
         }
 
-        const ganacheSubprovider = new GanacheSubprovider({ mnemonic: process.env.npm_package_config_test_mnemonic });
+        const ganacheSubprovider = new GanacheSubprovider({mnemonic: process.env.npm_package_config_test_mnemonic});
         provider.addProvider(ganacheSubprovider);
     }
 
@@ -51,6 +54,7 @@ before(async () => {
 
     web3Wrapper.abiDecoder.addABI(artifacts.EventEmitter.compilerOutput.abi, artifacts.EventEmitter.contractName);
     web3Wrapper.abiDecoder.addABI(artifacts.KosuToken.compilerOutput.abi, artifacts.KosuToken.contractName);
+    web3Wrapper.abiDecoder.addABI(artifacts.BasicTradeSubContract.compilerOutput.abi, artifacts.BasicTradeSubContract.contractName);
 
     // @ts-ignore
     await new BlockchainLifecycle(web3Wrapper).startAsync();
@@ -132,7 +136,7 @@ before(async () => {
             const _num = typeof num === "number" ? num : num.toNumber();
             for (let i = 0; i < _num; i++) {
                 await web3Wrapper
-                    .sendTransactionAsync({ from: accounts[0], to: accounts[1], value: 0 })
+                    .sendTransactionAsync({from: accounts[0], to: accounts[1], value: 0})
                     .then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash));
             }
         },
@@ -156,7 +160,80 @@ before(async () => {
         },
     };
 
-    Object.assign(global, { ...testHelpers, txDefaults, testValues, contracts, accounts, web3, web3Wrapper });
+    Object.assign(global, {...testHelpers, txDefaults, testValues, contracts, accounts, web3, web3Wrapper});
+});
+
+describe.only("SubContract", () => {
+    const argumentsJson = {
+        "maker": [
+            {"dataType": "address", "name": "signer"}, // 0
+            {"dataType": "address", "name": "signerToken"}, // 1
+            {"dataType": "uint", "name": "signerTokenCount"}, // 2
+            {"dataType": "address", "name": "buyerToken"}, // 3
+            {"dataType": "uint", "name": "buyerTokenCount"}, // 4
+            {"dataType": "signature", "name": "signature", "signatureFields": [0, 1, 2, 3, 4]}, // 5
+        ],
+        "taker": [
+            {"dataType": "uint", "name": "tokensToBuy"}, // 6
+        ],
+    };
+
+    let subContract;
+
+    before(async () => {
+        subContract = await BasicTradeSubContractContract.deployFrom0xArtifactAsync(artifacts.BasicTradeSubContract, web3.currentProvider, txDefaults, JSON.stringify(argumentsJson));
+    });
+
+    it("should take an address from bytes", async () => {
+        const hex = accounts[0] + toTwosComplement("4").substr(2) + toTwosComplement("8").substr(2);
+        const resp = await subContract.test.awaitTransactionSuccessAsync(hex);
+        console.log(resp.logs);
+    });
+
+    it("should serialize and sign the data", async () => {
+        const order = {
+            signer: accounts[0],
+            signerToken: contracts.kosuToken.address,
+            signerTokenCount: 40,
+            buyerToken: contracts.kosuToken.address,
+            buyerTokenCount: 80,
+        };
+
+        const { signer } = order;
+
+        const dataTypes = [];
+        const values = [];
+        argumentsJson.maker.forEach(argument => {
+            if (argument.name.includes("signature")) {
+                return;
+            }
+            if (order[argument.name] !== undefined) {
+                dataTypes.push(argument.dataType);
+                values.push(order[argument.name].toString());
+            }
+        });
+        const orderHex = bufferToHex(solSHA3(dataTypes, values));
+
+        let raw: string;
+
+        try {
+            // @ts-ignore
+            raw = await web3.eth.personal.sign(orderHex, signer);
+        } catch (e) {
+            raw = await web3.eth.sign(orderHex, signer);
+        }
+
+        const hex = order.signer + order.signerToken.substr(2)
+        + toTwosComplement(order.signerTokenCount).substr(2)
+        + order.buyerToken.substr(2)
+        + toTwosComplement(order.buyerTokenCount).substr(2)
+        + raw.substr(2);
+
+        const resp = await web3Wrapper.awaitTransactionSuccessAsync(await subContract.test.sendTransactionAsync(hex));
+        console.log(JSON.stringify(resp.logs, null, 2));
+        console.log(JSON.stringify(order, null, 2));
+
+    });
 });
 
 after(async () => {

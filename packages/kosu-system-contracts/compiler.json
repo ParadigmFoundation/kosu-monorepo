@@ -36,6 +36,7 @@
         "poster/PosterRegistry.sol",
         "treasury/Treasury.sol",
         "validator/ValidatorRegistry.sol",
-        "voting/Voting.sol"
+        "voting/Voting.sol",
+        "test/BasicTradeSubContract.sol"
     ]
 }

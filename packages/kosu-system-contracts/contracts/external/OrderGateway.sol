@@ -7,8 +7,6 @@ import "@kosu/subcontract-sdk/contracts/SubContract.sol";
 */
 contract OrderGateway {
 
-    event Participation(address indexed subContract, string id);
-
     /** @dev Creates a new OrderGateway
         @notice Creates a new OrderGateway
     */
@@ -18,12 +16,10 @@ contract OrderGateway {
     /** @dev Calls participate on the provided subContract.
         @notice Calls participate on the provided subContract.
         @param subContract Address of contract implementing the SubContract interface.
-        @param id Id of order assigned when passing though the OrderStream
         @param data Encoded maker values for Order encoded based on the arguments.
         @return Boolean representing success of transaction.
     */
-    function participate(address subContract, string memory id, bytes memory data) public returns (bool) {
-        emit Participation(subContract, id);
+    function participate(address subContract, bytes memory data) public returns (bool) {
         return SubContract(subContract).participate(data);
     }
 
