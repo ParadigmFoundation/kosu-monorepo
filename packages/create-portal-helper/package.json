@@ -32,8 +32,8 @@
         "webpack": "^4.32.2"
     },
     "files": [
-        "lib/*",
-        "config/*"
+        "lib/index.js",
+        "lib/config/*"
     ],
     "publishConfig": {
         "access": "public"
