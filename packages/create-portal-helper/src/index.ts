@@ -44,7 +44,6 @@ class Create {
     public coinbase: string;
     public gasPriceWei: BigNumber;
 
-
     /**
      * Construct a new `Create` instance. Accepts no arguments, and returns an
      * un-initialized instance.
@@ -254,7 +253,7 @@ class Create {
         // prompts for Metamask signature of the order hash
         let signedOrder;
         try {
-            signedOrder = await signatureUtils.ecSignOrderAsync(this.subProvider, zeroExOrder, makerAddress)
+            signedOrder = await signatureUtils.ecSignOrderAsync(this.subProvider, zeroExOrder, makerAddress);
         } catch {
             throw new Error("failed to sign order");
         }

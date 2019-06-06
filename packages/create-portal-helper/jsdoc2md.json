@@ -2,18 +2,10 @@
     "source": {
         "includePattern": ".+\\.ts(doc|x)?$"
     },
-    "plugins": [
-        "plugins/markdown",
-        "jsdoc-babel"
-    ],
+    "plugins": ["plugins/markdown", "jsdoc-babel"],
     "babel": {
-        "extensions": [
-            "ts",
-            "tsx"
-        ],
-        "ignore": [
-            "**/*.(test|spec).ts"
-        ],
+        "extensions": ["ts", "tsx"],
+        "ignore": ["**/*.(test|spec).ts"],
         "babelrc": false,
         "presets": [
             [
@@ -26,9 +18,6 @@
             ],
             "@babel/preset-typescript"
         ],
-        "plugins": [
-            "@babel/proposal-class-properties",
-            "@babel/proposal-object-rest-spread"
-        ]
+        "plugins": ["@babel/proposal-class-properties", "@babel/proposal-object-rest-spread"]
     }
 }
