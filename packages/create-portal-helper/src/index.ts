@@ -16,10 +16,10 @@ import { Web3Wrapper, TransactionReceiptWithDecodedLogs } from "@0x/web3-wrapper
 import { Kosu, Signature, OrderSerializer } from "@kosu/kosu.js";
 
 // stores common token addresses
-import * as addresses from "../config/addresses.json";
+import * as addresses from "./config/addresses.json";
 
 // hard-coded 0x subcontract makerArguments
-import * as ZRX_SUBCONTRACT_MAKER_ARGS from "../config/zrx_subcontract_maker_args.json";
+import * as ZRX_SUBCONTRACT_MAKER_ARGS from "./config/zrx_subcontract_maker_args.json";
 
 /**
  * Helper methods for building the Paradigm "Create" portal.
