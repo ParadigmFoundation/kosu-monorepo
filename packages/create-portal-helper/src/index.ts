@@ -1,30 +1,49 @@
-const Web3 = require("web3");
+import * as Web3 from "web3";
 
-let {
+import {
     generatePseudoRandomSalt,
     assetDataUtils,
     ContractWrappers,
     signatureUtils,
-    orderHashUtils,
     BigNumber,
     ERC20ProxyWrapper,
     ERC20TokenWrapper,
-} = require("0x.js");
+    SignedOrder,
+} from "0x.js";
 
-let { MetamaskSubprovider } = require("@0x/subproviders");
-let { Web3Wrapper } = require("@0x/web3-wrapper");
-let { Kosu, Signature, OrderSerializer } = require("@kosu/kosu.js");
+import { MetamaskSubprovider } from "@0x/subproviders";
+import { Web3Wrapper, TransactionReceiptWithDecodedLogs } from "@0x/web3-wrapper";
+import { Kosu, Signature, OrderSerializer } from "@kosu/kosu.js";
 
 // stores common token addresses
-const addresses = require("./addresses.json");
+import * as addresses from "./config/addresses.json";
 
 // hard-coded 0x subcontract makerArguments
-const ZRX_SUBCONTRACT_MAKER_ARGS = require("./zrx_subcontract_maker_args.json");
+import * as ZRX_SUBCONTRACT_MAKER_ARGS from "./config/zrx_subcontract_maker_args.json";
 
 /**
  * Helper methods for building the Paradigm "Create" portal.
  */
 class Create {
+    public initialized: boolean;
+
+    public NULL_ADDRESS: string;
+    public WETH_ADDRESS: string;
+    public ZRX_ADDRESS: string;
+    public DAI_ADDRESS: string;
+    public ZRX_SUBCONTRACT_ADDRESS: string;
+    public EXCHANGE_ADDRESS: string;
+
+    public kosu: Kosu;
+    public web3: Web3;
+    public web3Wrapper: Web3Wrapper;
+    public subProvider: MetamaskSubprovider;
+    public zeroExContracts: ContractWrappers;
+    public erc20TokenWrapper: ERC20TokenWrapper;
+
+    public coinbase: string;
+    public gasPriceWei: BigNumber;
+
     /**
      * Construct a new `Create` instance. Accepts no arguments, and returns an
      * un-initialized instance.
@@ -51,7 +70,6 @@ class Create {
         this.kosu = null;
         this.web3 = null;
         this.web3Wrapper = null;
-        this.ropstenWeb3 = null;
         this.coinbase = null;
         this.subProvider = null;
         this.zeroExContracts = null;
@@ -107,8 +125,8 @@ class Create {
         // get a reasonable gas price, use 5 if API fails
         const rawRes = await fetch("https://ethgasstation.info/json/ethgasAPI.json");
         const parsed = await rawRes.json();
-        const gasPriceGwei = parsed["safeLow"] ? parsed["safeLow"] : "5";
-        this.gasPriceWei = this.web3.utils.toWei(gasPriceGwei, "Gwei");
+        const gasPriceGwei = parsed["safeLow"] ? parsed["safeLow"].toString() : "5";
+        this.gasPriceWei = new BigNumber(this.web3.utils.toWei(gasPriceGwei, "Gwei"));
 
         this.initialized = true;
     }
@@ -137,7 +155,14 @@ class Create {
      * });
      * ```
      */
-    async createAndSignOrder(options) {
+    async createAndSignOrder(options: {
+        makerAssetAddress: string;
+        takerAssetAddress: string;
+        makerAssetAmount: string;
+        takerAssetAmount: string;
+        orderDuration: number;
+        makerAddress?: string;
+    }): Promise<SignedOrder> {
         const makerAddress = options.makerAddress || this.coinbase;
 
         const { makerAssetAddress, takerAssetAddress, makerAssetAmount, takerAssetAmount, orderDuration } = options;
@@ -225,28 +250,15 @@ class Create {
             senderAddress: this.NULL_ADDRESS,
         };
 
-        // hash order (requires valid 0x order schema)
-        let orderHash;
-        try {
-            orderHash = orderHashUtils.getOrderHashHex(zeroExOrder);
-        } catch {
-            throw new Error("invalid 0x order (check that the input values)");
-        }
-
         // prompts for Metamask signature of the order hash
-        let signature;
+        let signedOrder;
         try {
-            signature = await signatureUtils.ecSignHashAsync(this.subProvider, orderHash, makerAddress);
+            signedOrder = await signatureUtils.ecSignOrderAsync(this.subProvider, zeroExOrder, makerAddress);
         } catch {
             throw new Error("failed to sign order");
         }
 
-        const signedZeroExOrder = {
-            ...zeroExOrder,
-            signature,
-        };
-
-        return signedZeroExOrder;
+        return signedOrder;
     }
 
     /**
@@ -261,7 +273,7 @@ class Create {
      *
      * @param {object} signedZeroExOrder as outputted from `createAndSignOrder`
      */
-    async signAndPost(signedZeroExOrder) {
+    async signAndPost(signedZeroExOrder: SignedOrder): Promise<string> {
         const makerValues = this._formatZeroExOrder(signedZeroExOrder);
         const kosuOrder = {
             maker: this.coinbase,
@@ -278,6 +290,7 @@ class Create {
             posterSignature,
         };
         console.log(JSON.stringify(signedKosuOrder, null, 2));
+        return "1234";
     }
 
     /**
@@ -285,7 +298,7 @@ class Create {
      * units of wei, which must be used for generating 0x orders.
      *
      * @param {string | BigNumber} etherAmount a number of tokens in full units (ether)
-     * @returns {BigNumber} the same amount in wei
+     * @returns {Promise<string>} the same amount in wei
      * @example
      * ```javascript
      * // convert 100 tokens (as entered by user) to wei
@@ -293,7 +306,7 @@ class Create {
      * create.convertToWei(100)    // > "100000000000000000000" (BigNumber)
      * ```
      */
-    convertToWei(etherAmount) {
+    convertToWei(etherAmount: string | BigNumber): Promise<string> {
         return this.web3.utils.toWei(etherAmount.toString());
     }
 
@@ -302,7 +315,7 @@ class Create {
      * units of ether, which is more common to display to users.
      *
      * @param {string | BigNumber} weiAmount a number of tokens in smallest units (wei)
-     * @returns {BigNumber} the same amount in ether
+     * @returns {Promise<string>} the same amount in ether
      * @example
      * ```javascript
      * // convert 100 tokens (as received as balance or allowance) to tokens
@@ -310,7 +323,7 @@ class Create {
      * create.convertToWei(100000000000000000000)    // > "100" (BigNumber)
      * ```
      */
-    convertFromWei(weiAmount) {
+    convertFromWei(weiAmount: string | BigNumber): Promise<string> {
         return this.web3.utils.fromWei(weiAmount.toString());
     }
 
@@ -327,7 +340,7 @@ class Create {
      * create.isValidAddress("0x4f833a24e1f95d70f028921e27040ca56e09ab0")   // > false
      * ```
      */
-    isValidAddress(address) {
+    isValidAddress(address: string): boolean {
         return /^0x[a-fA-F0-9]{40}$/.test(address.toString());
     }
 
@@ -336,9 +349,9 @@ class Create {
      * Kosu network. Returns `true` if they are, and `false` if they are not.
      *
      * @param {string} userAddress can be provided to override coinbase, but shouldn't
-     * @returns {boolean} `true` if user has active bond, `false` otherwise
+     * @returns {Promise<boolean>} `true` if user has active bond, `false` otherwise
      */
-    async userHasBond(userAddress = this.coinbase) {
+    async userHasBond(userAddress: string = this.coinbase): Promise<boolean> {
         const bond = await this.kosu.posterRegistry.tokensRegisteredFor(userAddress);
         if (bond.gt(0)) {
             return true;
@@ -363,7 +376,7 @@ class Create {
      * await create.awaitTransactionSuccessOrThrow(txId);
      * ```
      */
-    async awaitTransactionSuccessOrThrow(txID) {
+    async awaitTransactionSuccessOrThrow(txID: string): Promise<TransactionReceiptWithDecodedLogs> {
         if (!/^0x[a-fA-F0-9]{64}$/.test(txID)) {
             throw new Error("invalid transaction hash (txID)");
         }
@@ -376,9 +389,9 @@ class Create {
      * Returns a BigNumber representing the users WETH balance (in wei).
      *
      * @param {string} userAddress override user's detected coinbase address
-     * @returns {BigNumber} the user's WETH balance in `wei`
+     * @returns {Promise<BigNumber>} the user's WETH balance in `wei`
      */
-    async getUserWethBalance(userAddress = this.coinbase) {
+    async getUserWethBalance(userAddress: string = this.coinbase): Promise<BigNumber> {
         return await this._getERC20Balance(userAddress, this.WETH_ADDRESS);
     }
 
@@ -387,9 +400,9 @@ class Create {
      * contract system.
      *
      * @param {string} userAddress override user's detected coinbase address
-     * @returns {BigNumber} the user's 0x proxy WETH allowance in `wei`
+     * @returns {Promise<BigNumber>} the user's 0x proxy WETH allowance in `wei`
      */
-    async getUserWethAllowance(userAddress = this.coinbase) {
+    async getUserWethAllowance(userAddress: string = this.coinbase): Promise<BigNumber> {
         return await this._getERC20ProxyAllowance(userAddress, this.WETH_ADDRESS);
     }
 
@@ -399,7 +412,7 @@ class Create {
      * @param {string} userAddress override user's detected coinbase address
      * @returns {string} the transaction hash of the resulting tx
      */
-    async setProxyAllowanceWeth(userAddress = this.coinbase) {
+    async setProxyAllowanceWeth(userAddress: string = this.coinbase): Promise<string> {
         return await this._setUnlimitedERC20ProxyAllowance(userAddress, this.WETH_ADDRESS);
     }
 
@@ -409,9 +422,9 @@ class Create {
      * Returns a BigNumber representing the users ZRX balance (in wei).
      *
      * @param {string} userAddress override user's detected coinbase address
-     * @returns {BigNumber} the user's ZRX balance in `wei`
+     * @returns {Promise<BigNumber>} the user's ZRX balance in `wei`
      */
-    async getUserZrxBalance(userAddress = this.coinbase) {
+    async getUserZrxBalance(userAddress: string = this.coinbase): Promise<BigNumber> {
         return await this._getERC20Balance(userAddress, this.ZRX_ADDRESS);
     }
 
@@ -420,9 +433,9 @@ class Create {
      * contract system.
      *
      * @param {string} userAddress override user's detected coinbase address
-     * @returns {BigNumber} the user's 0x proxy ZRX allowance in `wei`
+     * @returns {Promise<BigNumber>} the user's 0x proxy ZRX allowance in `wei`
      */
-    async getUserZrxAllowance(userAddress = this.coinbase) {
+    async getUserZrxAllowance(userAddress: string = this.coinbase): Promise<BigNumber> {
         return await this._getERC20ProxyAllowance(userAddress, this.ZRX_ADDRESS);
     }
 
@@ -430,9 +443,9 @@ class Create {
      * Sets an unlimited allowance for the 0x contract system for ZRX.
      *
      * @param {string} userAddress override user's detected coinbase address
-     * @returns {string} the transaction hash of the resulting tx
+     * @returns {Promise<string>} the transaction hash of the resulting tx
      */
-    async setProxyAllowanceZrx(userAddress = this.coinbase) {
+    async setProxyAllowanceZrx(userAddress: string = this.coinbase): Promise<string> {
         return await this._setUnlimitedERC20ProxyAllowance(userAddress, this.ZRX_ADDRESS);
     }
 
@@ -442,9 +455,9 @@ class Create {
      * Returns a BigNumber representing the users DAI balance (in wei).
      *
      * @param {string} userAddress override user's detected coinbase address
-     * @returns {BigNumber} the user's DAI balance in `wei`
+     * @returns {Promise<BigNumber>} the user's DAI balance in `wei`
      */
-    async getUserDaiBalance(userAddress = this.coinbase) {
+    async getUserDaiBalance(userAddress: string = this.coinbase): Promise<BigNumber> {
         return await this._getERC20Balance(userAddress, this.DAI_ADDRESS);
     }
 
@@ -453,9 +466,9 @@ class Create {
      * contract system.
      *
      * @param {string} userAddress override user's detected coinbase address
-     * @returns {BigNumber} the user's 0x proxy DAI allowance in `wei`
+     * @returns {Promise<BigNumber>} the user's 0x proxy DAI allowance in `wei`
      */
-    async getUserDaiAllowance(userAddress = this.coinbase) {
+    async getUserDaiAllowance(userAddress: string = this.coinbase): Promise<BigNumber> {
         return await this._getERC20ProxyAllowance(userAddress, this.DAI_ADDRESS);
     }
 
@@ -463,9 +476,9 @@ class Create {
      * Sets an unlimited allowance for the 0x contract system for DAI.
      *
      * @param {string} userAddress override user's detected coinbase address
-     * @returns {string} the transaction hash of the resulting tx
+     * @returns {Promise<string>} the transaction hash of the resulting tx
      */
-    async setProxyAllowanceDai(userAddress = this.coinbase) {
+    async setProxyAllowanceDai(userAddress: string = this.coinbase): Promise<string> {
         return await this._setUnlimitedERC20ProxyAllowance(userAddress, this.DAI_ADDRESS);
     }
 
@@ -477,7 +490,7 @@ class Create {
      *
      * @param {string} tokenAddress 0x-prefixed address of the custom token
      * @param {string} userAddress override user's detected coinbase address
-     * @returns {BigNumber} the user's balance in `wei` of custom token
+     * @returns {Promise<BigNumber>} the user's balance in `wei` of custom token
      * @example
      * ```javascript
      * const balance = await create.getUserCustomBalance(
@@ -485,7 +498,7 @@ class Create {
      * );
      * ```
      */
-    async getUserCustomBalance(tokenAddress, userAddress = this.coinbase) {
+    async getUserCustomBalance(tokenAddress: string, userAddress: string = this.coinbase): Promise<BigNumber> {
         return await this._getERC20Balance(userAddress, tokenAddress);
     }
 
@@ -495,7 +508,7 @@ class Create {
      *
      * @param {string} tokenAddress 0x-prefixed address of the custom token
      * @param {string} userAddress override user's detected coinbase address
-     * @returns {BigNumber} the user's 0x proxy allowance in `wei` for custom token
+     * @returns {Promise<BigNumber>} the user's 0x proxy allowance in `wei` for custom token
      * @example
      * ```javascript
      * const allowance = await create.getUserCustomAllowance(
@@ -503,7 +516,7 @@ class Create {
      * );
      * ```
      */
-    async getUserCustomAllowance(tokenAddress, userAddress = this.coinbase) {
+    async getUserCustomAllowance(tokenAddress: string, userAddress: string = this.coinbase): Promise<BigNumber> {
         return await this._getERC20ProxyAllowance(userAddress, tokenAddress);
     }
 
@@ -513,7 +526,7 @@ class Create {
      *
      * @param {string} tokenAddress 0x-prefixed address of the custom token
      * @param {string} userAddress override user's detected coinbase address
-     * @returns {string} the transaction hash of the resulting tx
+     * @returns {Promise<string>} the transaction hash of the resulting tx
      * @example
      * ```javascript
      * await create.setProxyAllowanceCustom(
@@ -521,37 +534,37 @@ class Create {
      * );
      * ```
      */
-    async setProxyAllowanceCustom(tokenAddress, userAddress = this.coinbase) {
+    async setProxyAllowanceCustom(tokenAddress: string, userAddress: string = this.coinbase): Promise<string> {
         return await this._setUnlimitedERC20ProxyAllowance(userAddress, tokenAddress);
     }
 
     // Internal implementation methods
 
-    async _getERC20Balance(user, token) {
+    async _getERC20Balance(user: string, token: string): Promise<BigNumber> {
         return await this.erc20TokenWrapper.getBalanceAsync(token, user);
     }
 
-    async _getERC20ProxyAllowance(user, token) {
+    async _getERC20ProxyAllowance(user: string, token: string): Promise<BigNumber> {
         return await this.erc20TokenWrapper.getProxyAllowanceAsync(token, user);
     }
 
-    async _setUnlimitedERC20ProxyAllowance(user, token) {
+    async _setUnlimitedERC20ProxyAllowance(user: string, token: string): Promise<string> {
         return await this.erc20TokenWrapper.setUnlimitedProxyAllowanceAsync(token, user, {
             gasPrice: this.gasPriceWei,
         });
     }
 
     async _connectMetamask() {
-        if (typeof window.ethereum !== "undefined") {
+        if (typeof (window as any).ethereum !== "undefined") {
             try {
-                await window.ethereum.enable();
-                this.web3 = new Web3(window.ethereum);
+                await (window as any).ethereum.enable();
+                this.web3 = new Web3((window as any).ethereum);
             } catch (error) {
                 throw new Error("user denied site access");
             }
-        } else if (typeof window.web3 !== "undefined") {
-            this.web3 = new Web3(web3.currentProvider);
-            global.web3 = this.web3;
+        } else if (typeof (window as any).web3 !== "undefined") {
+            this.web3 = new Web3((window as any).web3.currentProvider);
+            (global as any).web3 = this.web3;
         } else {
             throw new Error("non-ethereum browser detected");
         }
