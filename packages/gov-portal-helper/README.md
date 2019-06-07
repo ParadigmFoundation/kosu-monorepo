@@ -1,5 +1,3 @@
-## Classes
-
 <dl>
 <dt><a href="#Gov">Gov</a></dt>
 <dd><p><code>Gov</code> is a helper library for interacting with the Kosu validator governance
@@ -7,6 +5,18 @@ system (primarily the Kosu <code>ValidatorRegistry</code> contract).</p>
 <p>It is designed with the browser in mind, and is intended to be used in front-
 end projects for simplifying interaction with the governance system.</p></dd>
 </dl>
+
+## Installation
+
+Add `gov-portal-helper` to your project via `npm` or `yarn`.
+
+```shell
+# install with yarn
+yarn add @kosu/gov-portal-helper
+
+# install with npm
+yarn add @kosu/gov-portal-helper
+```
 
 ## Typedefs
 
@@ -59,16 +69,6 @@ the constructor).</p>
 <p>Prior to using most <code>gov</code> functionality, the async <code>gov.init()</code> method
 must be called, which will initialize the module and load state from
 the Kosu contract system.</p>
-
-**Example**
-
-```shell
-# install with yarn
-yarn add @kosu/gov-portal-helper
-
-# install with npm
-npm i @kosu/gov-portal-helper
-```
 
 <a name="Gov+init"></a>
 

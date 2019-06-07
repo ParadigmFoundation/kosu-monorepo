@@ -179,15 +179,6 @@ interface Map<T> {
  *
  * It is designed with the browser in mind, and is intended to be used in front-
  * end projects for simplifying interaction with the governance system.
- *
- * @example
- * ```shell
- * # install with yarn
- * yarn add @kosu/gov-portal-helper
- *
- * # install with npm
- * npm i @kosu/gov-portal-helper
- * ```
  */
 class Gov {
     /** Create new BigNumber (mimics constructor) */
