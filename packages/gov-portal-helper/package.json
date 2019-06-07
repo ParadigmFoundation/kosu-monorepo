@@ -1,14 +1,14 @@
 {
     "name": "@kosu/gov-portal-helper",
-    "version": "0.0.0",
+    "version": "0.1.0",
     "description": "Abstraction library for interacting with the Kosu contract system governance functions.",
     "main": "lib/index.js",
     "license": "MIT",
     "private": true,
     "scripts": {
         "compile:assets": "webpack",
-        "develop": "webpack-dev-server",
-        "docs": "jsdoc2md src/index.js > README.md",
+        "develop": "tsc && webpack-dev-server",
+        "docs": "jsdoc2md --files ./src/index.ts --configure ./jsdoc.json > ./README.md",
         "build": "tsc"
     },
     "dependencies": {

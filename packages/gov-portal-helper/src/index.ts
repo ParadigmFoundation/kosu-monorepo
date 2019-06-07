@@ -27,7 +27,14 @@ interface Validator {
 /**
  * Represents a listing proposal in the live-updating store.
  */
-interface Proposal {}
+interface Proposal {
+    owner: string;
+    stakeSize: BigNumber;
+    dailyReward: BigNumber;
+    power: BigNumber;
+    details: string;
+    acceptUnix: number;
+}
 
 /**
  * Challenge representation in the live-updating store.
@@ -48,6 +55,9 @@ interface StoreChallenge {
     challengeDetails: string;
 }
 
+/**
+ * A challenge as returned from the ValidatorRegistry contract (past challenges).
+ */
 interface PastChallenge {
     balance: BigNumber;
     challengeEnd: BigNumber;
@@ -61,6 +71,9 @@ interface PastChallenge {
     voterTotal: BigNumber;
 }
 
+/**
+ * The state of the listing at the time of challenge.
+ */
 interface ListingSnapshot {
     applicationBlock: BigNumber;
     confirmationBlock: BigNumber;
@@ -159,7 +172,7 @@ class Gov {
      * Main initialization function for the `gov` module. You must call `init`
      * prior to interacting with most module functionality, and `gov.init()` will
      * load the current registry status (validators, proposals, etc.) so it should
-     * be called early-on in the page lifecycle.
+     * be called early-on in the page life-cycle.
      *
      * Performs many functions, including:
      * - prompt user to connect MetaMask
@@ -594,7 +607,7 @@ class Gov {
         const rewardPeriod = new BigNumber(this.params.rewardPeriod);
         const tokensPerBlock = rate.div(rewardPeriod);
         const tokensPerDay = tokensPerBlock.times(Gov.BLOCKS_PER_DAY);
-        return tokensPerDay.toFixed();
+        return tokensPerDay;
     }
 
     _updateVotePowers() {

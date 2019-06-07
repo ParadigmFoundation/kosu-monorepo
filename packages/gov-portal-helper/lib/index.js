@@ -194,19 +194,11 @@ class Gov {
         });
     }
     /**
-     * This method returns an object (described below) that contains all
-     * historical listings (proposals and validators, including current) listings
-     * and information about all past challenges.
+     * This method returns an array (described below) that contains information
+     * about all past challenges. Intended to be used for the "Past Challenges"
+     * section.
      *
-     * It will take a significant amount of time (~12s) to resolve, and the
-     * return object can be large (on the order of 30 KB) depending on the number
-     * of past governance activities.
-     *
-     * Because it a) takes a long time to load and b) is network I/O intensive,
-     * it should only be called when the user requests to load all historical
-     * data.
-     *
-     * @returns {HistoricalActivity} all historical `challenges` and `listings`.
+     * @returns {Promise<Array<PastChallenge>>} all historical `challenges`.
      */
     getHistoricalChallenges() {
         return __awaiter(this, void 0, void 0, function* () {
@@ -308,7 +300,7 @@ class Gov {
                 winningTokens = yield this.kosu.voting.totalWinningTokens(listingChallenge.pollId);
                 result = yield this.kosu.voting
                     .winningOption(listingChallenge.pollId)
-                    .then(option => (option.toString() === "1" ? "Passed" : "Failed"));
+                    .then(option => (option.toString() === "1" ? "passed" : "failed"));
             }
             const challenge = {
                 listingOwner: listing.owner,
@@ -468,7 +460,7 @@ class Gov {
         Object.keys(this.challenges).forEach(id => {
             const challenge = this.challenges[id];
             if (challenge.challengeType === "validator") {
-                const stake = new bignumber_js_1.default(challenge.stakeSize);
+                const stake = new bignumber_js_1.default(challenge.listingStake);
                 totalStake = totalStake.plus(stake);
             }
         });
