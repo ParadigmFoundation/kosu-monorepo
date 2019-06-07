@@ -9,7 +9,7 @@
     "scripts": {
         "compile:assets": "webpack",
         "develop": "yarn build && webpack-dev-server",
-        "docs": "jsdoc2md --files ./src/index.ts --configure ./jsdoc2md.json > ./README.md",
+        "docs": "jsdoc2md --files ./src/index.ts --configure ./jsdoc.json > ./README.md",
         "build": "tsc"
     },
     "dependencies": {
