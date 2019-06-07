@@ -36,5 +36,8 @@
     "files": [
         "lib/index.js",
         "webpack.config.js"
-    ]
+    ],
+    "publishConfig": {
+        "access": "public"
+    }
 }
