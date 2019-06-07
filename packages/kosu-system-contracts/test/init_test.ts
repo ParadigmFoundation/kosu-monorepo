@@ -184,12 +184,6 @@ describe.only("SubContract", () => {
         subContract = await BasicTradeSubContractContract.deployFrom0xArtifactAsync(artifacts.BasicTradeSubContract, web3.currentProvider, txDefaults, JSON.stringify(argumentsJson));
     });
 
-    it("should take an address from bytes", async () => {
-        const hex = accounts[0] + toTwosComplement("4").substr(2) + toTwosComplement("8").substr(2);
-        const resp = await subContract.test.awaitTransactionSuccessAsync(hex);
-        console.log(resp.logs);
-    });
-
     it("should serialize and sign the data", async () => {
         const order = {
             signer: accounts[0],
@@ -227,11 +221,13 @@ describe.only("SubContract", () => {
         + toTwosComplement(order.signerTokenCount).substr(2)
         + order.buyerToken.substr(2)
         + toTwosComplement(order.buyerTokenCount).substr(2)
-        + raw.substr(2);
+        + raw.substr(2) + toTwosComplement(order.signerTokenCount).substr(2);
 
-        const resp = await web3Wrapper.awaitTransactionSuccessAsync(await subContract.test.sendTransactionAsync(hex));
+        await contracts.kosuToken.approve.awaitTransactionSuccessAsync(subContract.address, testValues.maxUint);
+        const resp = await web3Wrapper.awaitTransactionSuccessAsync(await subContract.participate.sendTransactionAsync(hex));
         console.log(JSON.stringify(resp.logs, null, 2));
         console.log(JSON.stringify(order, null, 2));
+        console.log(JSON.stringify(raw, null, 2));
 
     });
 });

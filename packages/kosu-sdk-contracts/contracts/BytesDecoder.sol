@@ -12,4 +12,16 @@ library BytesDecoder {
             ui := mload(add(add(this, index), 32))
         }
     }
+
+    function getBytes(bytes memory this, uint start, uint length) internal pure returns (bytes memory) {
+        bytes memory result = new bytes(length);
+        for(uint i = start; i < length + start; i++) {
+            result[i-start] = this[i];
+        }
+        return result;
+    }
+
+    function getSignature(bytes memory this, uint start) internal pure returns (bytes memory) {
+        return getBytes(this, start, 65);
+    }
 }

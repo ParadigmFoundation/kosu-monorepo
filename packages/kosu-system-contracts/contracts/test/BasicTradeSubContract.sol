@@ -3,16 +3,20 @@ pragma solidity ^0.5.0;
 import "@kosu/subcontract-sdk/contracts/SubContract.sol";
 import "@kosu/subcontract-sdk/contracts/BytesDecoder.sol";
 import "@kosu/subcontract-sdk/contracts/SignatureVerification.sol";
+import "openzeppelin-solidity/contracts/token/ERC20/ERC20.sol";
+import "openzeppelin-solidity/contracts/math/SafeMath.sol";
 
 
 contract BasicTradeSubContract is SubContract {
     using BytesDecoder for bytes;
+    using SafeMath for uint;
 
     mapping(bytes32 => uint) bought;
     string private _arguments;
 
 
     event OriginalBytes(bytes val);
+    event SignatureBytes(bytes val);
     event AddressVal(address val);
     event UintVal(uint val);
 
@@ -20,14 +24,17 @@ contract BasicTradeSubContract is SubContract {
         _arguments = args;
     }
 
-    function test(bytes memory test) public {
-        emit OriginalBytes(test);
-        emit AddressVal(test.getAddress(0));
-        emit AddressVal(test.getAddress(20));
-        emit UintVal(test.getUint(40));
-        emit AddressVal(test.getAddress(72));
-        emit UintVal(test.getUint(92));
-//        emit SignatureBytes(test.getBytes());
+    function test(bytes memory test) public returns (bool){
+        address signer = test.getAddress(0);
+        address signerToken = test.getAddress(20);
+        uint signerTokenCount = test.getUint(40);
+        address buyerToken = test.getAddress(72);
+        uint buyerTokenCount = test.getUint(92);
+        bytes memory signature = test.getSignature(124);
+
+        bytes32 hash = getOrderHash(test);
+
+        return SignatureVerification.verifySignature(signer, hash, signature);
     }
 
     function arguments() external view returns (string memory) {
@@ -35,50 +42,68 @@ contract BasicTradeSubContract is SubContract {
     }
 
     function isValid(bytes calldata data) external view returns (bool) {
-        //TODO
-        return false;
+        address signer = data.getAddress(0);
+        address signerToken = data.getAddress(20);
+        uint signerTokenCount = data.getUint(40);
+        address buyerToken = data.getAddress(72);
+        uint buyerTokenCount = data.getUint(92);
+        bytes memory signature = data.getSignature(124);
+        bytes32 hash = getOrderHash(data);
+
+        return SignatureVerification.verifySignature(signer, hash, signature) && bought[hash] < signerTokenCount;
     }
 
     function amountRemaining(bytes calldata data) external view returns (uint) {
-        //TODO
-        return 0;
+        address signer = data.getAddress(0);
+        address signerToken = data.getAddress(20);
+        uint signerTokenCount = data.getUint(40);
+        address buyerToken = data.getAddress(72);
+        uint buyerTokenCount = data.getUint(92);
+        bytes memory signature = data.getSignature(124);
+        bytes32 hash = getOrderHash(data);
+
+        if (SignatureVerification.verifySignature(signer, hash, signature)) {
+            return  signerTokenCount - bought[hash];
+        } else {
+            return 0;
+        }
+
     }
 
     function participate(bytes calldata data) external returns (bool) {
-//        // 1. Standard validation
-//        require(verify(makerData));
-//
-//        // 2. Contract specific validation
-//        uint signerTokenCount = uint(makerData[2]);
-//        uint signerTokenCountToTake = uint(takerData[0]);
-//        require(bought[getOrderHash(makerData)] + signerTokenCountToTake <= signerTokenCount);
-//
-//        // transfer maker -> taker
-//        require(sendFromMaker(makerData, takerData));
-//        // transfer taker -> maker
-//        require(sendFromTaker(makerData, takerData));
-//        bought[getOrderHash(makerData)] = bought[getOrderHash(makerData)] + signerTokenCountToTake;
+        address signer = data.getAddress(0);
+        address signerToken = data.getAddress(20);
+        uint signerTokenCount = data.getUint(40);
+        address buyerToken = data.getAddress(72);
+        uint buyerTokenCount = data.getUint(92);
+        bytes memory signature = data.getSignature(124);
+        uint tokensToTake = data.getUint(189);
+
+        bytes32 hash = getOrderHash(data);
+//         1. Standard validation
+        require(SignatureVerification.verifySignature(signer, hash, signature));
+        require(bought[hash] + tokensToTake <= signerTokenCount);
+
+        // transfer maker -> taker
+        require(ERC20(signerToken).transferFrom(signer, msg.sender, tokensToTake));
+        // transfer taker -> maker
+        uint tokensTakerCount = ratioFor(buyerTokenCount, tokensToTake, signerTokenCount);
+        require(ERC20(buyerToken).transferFrom(msg.sender, signer, tokensTakerCount));
+        bought[hash] = bought[hash] + tokensTakerCount;
 
         return true;
     }
 
-//    function getOrderHash(bytes32[] makerData) returns (bytes32) {
-//        address signerToken = address(makerData[1]);
-//        uint signerTokenCount = uint(makerData[2]);
-//        address buyerToken = address(makerData[3]);
-//        uint buyerTokenCount = uint(makerData[4]);
-//        return keccak256(getSigner(makerData), signerToken, signerTokenCount, buyerToken, buyerTokenCount);
-//    }
-//
-//    function sendFromMaker(bytes32[] makerData, bytes32[] takerData) returns (bool) {
-//        //        TODO: Shouldn't use tx.origin?
-//        return Token(address(makerData[1])).transferFrom(address(makerData[0]), address(tx.origin), uint(takerData[0]));
-//    }
-//
-//    function sendFromTaker(bytes32[] makerData, bytes32[] takerData) returns (bool) {
-//        uint tokensTakerCount = ratioFor(uint(makerData[4]), uint(takerData[0]), uint(makerData[2]));
-//
-//
-//        return Token(address(makerData[3])).transferFrom(address(tx.origin), address(makerData[0]), tokensTakerCount);
-//    }
+    function getOrderHash(bytes memory data) internal returns (bytes32) {
+        address signer = data.getAddress(0);
+        address signerToken = data.getAddress(20);
+        uint signerTokenCount = data.getUint(40);
+        address buyerToken = data.getAddress(72);
+        uint buyerTokenCount = data.getUint(92);
+        return keccak256(abi.encodePacked(signer, signerToken, signerTokenCount, buyerToken, buyerTokenCount));
+    }
+
+    function ratioFor(uint value, uint numerator, uint denominator) internal pure returns (uint) {
+        return value.mul(numerator).div(denominator);
+    }
 }

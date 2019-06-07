@@ -27,18 +27,6 @@ library SignatureVerification {
     return keccak256(abi.encodePacked(getSigner(data)));
   }
 
-  /** @dev Validates the signed order assuming the last three maker values are v, r and s.
-      @notice Validates the signed order assuming the last three maker values are v, r and s.
-      @param data Kosu Order serialized based on makerArguments.
-      @return Validity of the signature boolean
-  */
-  function verify(bytes memory data) pure internal returns (bool) {
-//    bytes memory signature = data.length - 65;
-//
-//    return checkSignature(getSigner(data), getOrderHash(data), v, r, s);
-    return false;
-  }
-
   /** @dev Recovers the hash with the v, r and s.  And compares to the signer.
       @notice Recovers the hash with the v, r and s.  And compares to the signer.
       @param signer Signer address
@@ -46,7 +34,7 @@ library SignatureVerification {
       @param signature The signature
       @return Validity of the signature boolean
   */
-  function checkSignature(address signer, bytes32 orderHash, bytes memory signature) pure internal returns (bool) {
+  function verifySignature(address signer, bytes32 orderHash, bytes memory signature) pure internal returns (bool) {
     return signer == orderHash.toEthSignedMessageHash().recover(signature);
   }
 
