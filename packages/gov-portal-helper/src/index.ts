@@ -14,18 +14,6 @@ import { Kosu } from "@kosu/kosu.js";
  */
 
 /**
- * Represents a current validator in the live-updating store.
- */
-interface Validator {
-    owner: string;
-    stakeSize: BigNumber;
-    dailyReward: BigNumber;
-    confirmationUnix: number;
-    power: BigNumber;
-    details: string;
-}
-
-/**
  * @typedef Proposal Represents a pending listing application.
  * @property {string} owner the Ethereum address of the applicant
  * @property {BigNumber} stakeSize the total stake the applicant is including with their proposal (in wei)
@@ -34,18 +22,6 @@ interface Validator {
  * @property {string} details arbitrary details provided by the applicant with their proposal
  * @property {number} acceptUnix the approximate unix timestamp the listing will be accepted, if not challenged
  */
-
-/**
- * Represents a listing proposal in the live-updating store.
- */
-interface Proposal {
-    owner: string;
-    stakeSize: BigNumber;
-    dailyReward: BigNumber;
-    power: BigNumber;
-    details: string;
-    acceptUnix: number;
-}
 
 /**
  * @typedef StoreChallenge Represents a current challenge (in the `gov` state).
@@ -63,6 +39,60 @@ interface Proposal {
  * @property {string} listingDetails details provided by the listing holder
  * @property {string} challengeDetails details provided by the challenger
  */
+
+/**
+ * @typedef PastChallenge Represents a historical challenge.
+ * @property {BigNumber} balance the number of tokens (in wei) staked in the challenge
+ * @property {BigNumber} challengeEnd the block the challenge ends at
+ * @property {string} challenger the Ethereum address of the challenger
+ * @property {string} details additional details provided by the challenger
+ * @property {boolean} finalized `true` if the challenge result is final, `false` if it is ongoing
+ * @property {string} listingKey the key that corresponds to the challenged listing
+ * @property {ListingSnapshot} listingSnapshot an object representing the state of the challenged listing at the time of challenge
+ * @property {boolean} passed `true` if the challenge was successful, `false` otherwise
+ * @property {BigNumber} pollId the incremental ID used to identify the poll
+ * @property {BigNumber} voterTotal the total number of tokens participating in the vote
+ * @property {BigNumber} winningTokens the total number of tokens voting for the winning option
+ */
+
+/**
+ * @typedef ListingSnapshot A data-structure representing a listing at the time of challenge.
+ * @property {BigNumber} applicationBlock the block the listing application was submitted
+ * @property {BigNumber} confirmationBlock the block the listing was confirmed (0 if unconfirmed)
+ * @property {BigNumber} currentChallenge the ID of the current challenge against the listing
+ * @property {string} details arbitrary details provided by the listing applicant
+ * @property {BigNumber} exitBlock the block (if any) the listing exited at
+ * @property {BigNumber} lastRewardBlock the last block the listing owner claimed rewards for
+ * @property {string} owner the Ethereum address of the listing owner
+ * @property {BigNumber} rewardRate the number of tokens (in wei) rewarded to the listing per reward period
+ * @property {BigNumber} stakedBalance the number of tokens staked by the listing owner (in wei)
+ * @property {number} status the number representing the listing status (0: no listing, 1: proposal, 2: validator, 3: in-challenge, 4: exiting)
+ * @property {string} tendermintPublicKey the 32 byte Tendermint public key of the listing holder
+ */
+
+/**
+ * Represents a current validator in the live-updating store.
+ */
+interface Validator {
+    owner: string;
+    stakeSize: BigNumber;
+    dailyReward: BigNumber;
+    confirmationUnix: number;
+    power: BigNumber;
+    details: string;
+}
+
+/**
+ * Represents a listing proposal in the live-updating store.
+ */
+interface Proposal {
+    owner: string;
+    stakeSize: BigNumber;
+    dailyReward: BigNumber;
+    power: BigNumber;
+    details: string;
+    acceptUnix: number;
+}
 
 /**
  * Challenge representation in the live-updating store.
@@ -84,21 +114,6 @@ interface StoreChallenge {
 }
 
 /**
- * @typedef PastChallenge Represents a historical challenge.
- * @property {BigNumber} balance the number of tokens (in wei) staked in the challenge
- * @property {BigNumber} challengeEnd the block the challenge ends at
- * @property {string} challenger the Ethereum address of the challenger
- * @property {string} details additional details provided by the challenger
- * @property {boolean} finalized `true` if the challenge result is final, `false` if it is ongoing
- * @property {string} listingKey the key that corresponds to the challenged listing
- * @property {ListingSnapshot} listingSnapshot an object representing the state of the challenged listing at the time of challenge
- * @property {boolean} passed `true` if the challenge was successful, `false` otherwise
- * @property {BigNumber} pollId the incremental ID used to identify the poll
- * @property {BigNumber} voterTotal the total number of tokens participating in the vote
- * @property {BigNumber} winningTokens the total number of tokens voting for the winning option
- */
-
-/**
  * A challenge as returned from the ValidatorRegistry contract (past challenges).
  */
 interface PastChallenge {
@@ -114,21 +129,6 @@ interface PastChallenge {
     voterTotal: BigNumber;
     winningTokens: BigNumber;
 }
-
-/**
- * @typedef ListingSnapshot A data-structure representing a listing at the time of challenge.
- * @property {BigNumber} applicationBlock the block the listing application was submitted
- * @property {BigNumber} confirmationBlock the block the listing was confirmed (0 if unconfirmed)
- * @property {BigNumber} currentChallenge the ID of the current challenge against the listing
- * @property {string} details arbitrary details provided by the listing applicant
- * @property {BigNumber} exitBlock the block (if any) the listing exited at
- * @property {BigNumber} lastRewardBlock the last block the listing owner claimed rewards for
- * @property {string} owner the Ethereum address of the listing owner
- * @property {BigNumber} rewardRate the number of tokens (in wei) rewarded to the listing per reward period
- * @property {BigNumber} stakedBalance the number of tokens staked by the listing owner (in wei)
- * @property {number} status the number representing the listing status (0: no listing, 1: proposal, 2: validator, 3: in-challenge, 4: exiting)
- * @property {string} tendermintPublicKey the 32 byte Tendermint public key of the listing holder
- */
 
 /**
  * The state of the listing at the time of challenge.
@@ -167,6 +167,73 @@ interface Window {
 interface Map<T> {
     [key: string]: T;
 }
+
+/**
+ * @typedef Validator Represents an active validator.
+ * @property {string} owner the Ethereum address of the validator
+ * @property {BigNumber} stakeSize the staked balance (in wei) of the validator
+ * @property {BigNumber} dailyReward the approximate daily reward to the validator (in wei)
+ * @property {number} confirmationUnix the unix timestamp of the block the validator was confirmed in
+ * @property {BigNumber} power the validators approximate current vote power on the Kosu network
+ * @property {string} details arbitrary details provided by the validator when they applied
+ */
+
+/**
+ * @typedef Proposal Represents a pending listing application.
+ * @property {string} owner the Ethereum address of the applicant
+ * @property {BigNumber} stakeSize the total stake the applicant is including with their proposal (in wei)
+ * @property {BigNumber} dailyReward the approximate daily reward (in wei) the applicant is requesting
+ * @property {BigNumber} power the estimated vote power the listing would receive if accepted right now
+ * @property {string} details arbitrary details provided by the applicant with their proposal
+ * @property {number} acceptUnix the approximate unix timestamp the listing will be accepted, if not challenged
+ */
+
+/**
+ * @typedef StoreChallenge Represents a current challenge (in the `gov` state).
+ * @property {string} listingOwner the Ethereum address of the owner of the challenged listing
+ * @property {BigNumber} listingStake the total stake of the challenged listing
+ * @property {BigNumber} listingPower the current vote power of the listing (if they are a validator)
+ * @property {string} challenger the Ethereum address of the challenger
+ * @property {BigNumber} challengeId the incremental ID of the current challenge
+ * @property {BigNumber} challengerStake the staked balance of the challenger
+ * @property {number} challengeEndUnix the estimated unix timestamp the challenge ends at
+ * @property {BigNumber} totalTokens if finalized, the total number of tokens from participating voters
+ * @property {BigNumber} winningTokens if finalized, the number of tokens that voted on the winning side
+ * @property {string} result the final result of the challenge; "passed", "failed", or `null` if not finalized
+ * @property {string} challengeType the type of listing the challenge is against, either a "validator" or a "proposal"
+ * @property {string} listingDetails details provided by the listing holder
+ * @property {string} challengeDetails details provided by the challenger
+ */
+
+/**
+ * @typedef PastChallenge
+ * @property {BigNumber} balance the number of tokens (in wei) staked in the challenge
+ * @property {BigNumber} challengeEnd the block the challenge ends at
+ * @property {string} challenger the Ethereum address of the challenger
+ * @property {string} details additional details provided by the challenger
+ * @property {boolean} finalized `true` if the challenge result is final, `false` if it is ongoing
+ * @property {string} listingKey the key that corresponds to the challenged listing
+ * @property {ListingSnapshot} listingSnapshot an object representing the state of the challenged listing at the time of challenge
+ * @property {boolean} passed `true` if the challenge was successful, `false` otherwise
+ * @property {BigNumber} pollId the incremental ID used to identify the poll
+ * @property {BigNumber} voterTotal the total number of tokens participating in the vote
+ * @property {BigNumber} winningTokens the total number of tokens voting for the winning option
+ */
+
+/**
+ * @typedef ListingSnapshot
+ * @property {BigNumber} applicationBlock the block the listing application was submitted
+ * @property {BigNumber} confirmationBlock the block the listing was confirmed (0 if unconfirmed)
+ * @property {BigNumber} currentChallenge the ID of the current challenge against the listing
+ * @property {string} details arbitrary details provided by the listing applicant
+ * @property {BigNumber} exitBlock the block (if any) the listing exited at
+ * @property {BigNumber} lastRewardBlock the last block the listing owner claimed rewards for
+ * @property {string} owner the Ethereum address of the listing owner
+ * @property {BigNumber} rewardRate the number of tokens (in wei) rewarded to the listing per reward period
+ * @property {BigNumber} stakedBalance the number of tokens staked by the listing owner (in wei)
+ * @property {number} status the number representing the listing status (0: no listing, 1: proposal, 2: validator, 3: in-challenge, 4: exiting)
+ * @property {string} tendermintPublicKey the 32 byte Tendermint public key of the listing holder
+ */
 
 /**
  * `Gov` is a helper library for interacting with the Kosu validator governance

@@ -1,3 +1,28 @@
+## Classes
+
+<dl>
+<dt><a href="#Gov">Gov</a></dt>
+<dd><p><code>Gov</code> is a helper library for interacting with the Kosu validator governance
+system (primarily the Kosu <code>ValidatorRegistry</code> contract).</p>
+<p>It is designed with the browser in mind, and is intended to be used in front-
+end projects for simplifying interaction with the governance system.</p></dd>
+</dl>
+
+## Typedefs
+
+<dl>
+<dt><a href="#Validator">Validator</a></dt>
+<dd></dd>
+<dt><a href="#Proposal">Proposal</a></dt>
+<dd></dd>
+<dt><a href="#StoreChallenge">StoreChallenge</a></dt>
+<dd></dd>
+<dt><a href="#PastChallenge">PastChallenge</a></dt>
+<dd></dd>
+<dt><a href="#ListingSnapshot">ListingSnapshot</a></dt>
+<dd></dd>
+</dl>
+
 <a name="Gov"></a>
 
 ## Gov
@@ -161,3 +186,95 @@ section.</p>
 <p>Estimated blocks per day (mainnet only).</p>
 
 **Kind**: static property of [<code>Gov</code>](#Gov)  
+<a name="Validator"></a>
+
+## Validator
+**Kind**: global typedef  
+**Properties**
+
+| Name | Type | Description |
+| --- | --- | --- |
+| owner | <code>string</code> | <p>the Ethereum address of the validator</p> |
+| stakeSize | <code>BigNumber</code> | <p>the staked balance (in wei) of the validator</p> |
+| dailyReward | <code>BigNumber</code> | <p>the approximate daily reward to the validator (in wei)</p> |
+| confirmationUnix | <code>number</code> | <p>the unix timestamp of the block the validator was confirmed in</p> |
+| power | <code>BigNumber</code> | <p>the validators approximate current vote power on the Kosu network</p> |
+| details | <code>string</code> | <p>arbitrary details provided by the validator when they applied</p> |
+
+<a name="Proposal"></a>
+
+## Proposal
+**Kind**: global typedef  
+**Properties**
+
+| Name | Type | Description |
+| --- | --- | --- |
+| owner | <code>string</code> | <p>the Ethereum address of the applicant</p> |
+| stakeSize | <code>BigNumber</code> | <p>the total stake the applicant is including with their proposal (in wei)</p> |
+| dailyReward | <code>BigNumber</code> | <p>the approximate daily reward (in wei) the applicant is requesting</p> |
+| power | <code>BigNumber</code> | <p>the estimated vote power the listing would receive if accepted right now</p> |
+| details | <code>string</code> | <p>arbitrary details provided by the applicant with their proposal</p> |
+| acceptUnix | <code>number</code> | <p>the approximate unix timestamp the listing will be accepted, if not challenged</p> |
+
+<a name="StoreChallenge"></a>
+
+## StoreChallenge
+**Kind**: global typedef  
+**Properties**
+
+| Name | Type | Description |
+| --- | --- | --- |
+| listingOwner | <code>string</code> | <p>the Ethereum address of the owner of the challenged listing</p> |
+| listingStake | <code>BigNumber</code> | <p>the total stake of the challenged listing</p> |
+| listingPower | <code>BigNumber</code> | <p>the current vote power of the listing (if they are a validator)</p> |
+| challenger | <code>string</code> | <p>the Ethereum address of the challenger</p> |
+| challengeId | <code>BigNumber</code> | <p>the incremental ID of the current challenge</p> |
+| challengerStake | <code>BigNumber</code> | <p>the staked balance of the challenger</p> |
+| challengeEndUnix | <code>number</code> | <p>the estimated unix timestamp the challenge ends at</p> |
+| totalTokens | <code>BigNumber</code> | <p>if finalized, the total number of tokens from participating voters</p> |
+| winningTokens | <code>BigNumber</code> | <p>if finalized, the number of tokens that voted on the winning side</p> |
+| result | <code>string</code> | <p>the final result of the challenge; &quot;passed&quot;, &quot;failed&quot;, or <code>null</code> if not finalized</p> |
+| challengeType | <code>string</code> | <p>the type of listing the challenge is against, either a &quot;validator&quot; or a &quot;proposal&quot;</p> |
+| listingDetails | <code>string</code> | <p>details provided by the listing holder</p> |
+| challengeDetails | <code>string</code> | <p>details provided by the challenger</p> |
+
+<a name="PastChallenge"></a>
+
+## PastChallenge
+**Kind**: global typedef  
+**Properties**
+
+| Name | Type | Description |
+| --- | --- | --- |
+| balance | <code>BigNumber</code> | <p>the number of tokens (in wei) staked in the challenge</p> |
+| challengeEnd | <code>BigNumber</code> | <p>the block the challenge ends at</p> |
+| challenger | <code>string</code> | <p>the Ethereum address of the challenger</p> |
+| details | <code>string</code> | <p>additional details provided by the challenger</p> |
+| finalized | <code>boolean</code> | <p><code>true</code> if the challenge result is final, <code>false</code> if it is ongoing</p> |
+| listingKey | <code>string</code> | <p>the key that corresponds to the challenged listing</p> |
+| listingSnapshot | [<code>ListingSnapshot</code>](#ListingSnapshot) | <p>an object representing the state of the challenged listing at the time of challenge</p> |
+| passed | <code>boolean</code> | <p><code>true</code> if the challenge was successful, <code>false</code> otherwise</p> |
+| pollId | <code>BigNumber</code> | <p>the incremental ID used to identify the poll</p> |
+| voterTotal | <code>BigNumber</code> | <p>the total number of tokens participating in the vote</p> |
+| winningTokens | <code>BigNumber</code> | <p>the total number of tokens voting for the winning option</p> |
+
+<a name="ListingSnapshot"></a>
+
+## ListingSnapshot
+**Kind**: global typedef  
+**Properties**
+
+| Name | Type | Description |
+| --- | --- | --- |
+| applicationBlock | <code>BigNumber</code> | <p>the block the listing application was submitted</p> |
+| confirmationBlock | <code>BigNumber</code> | <p>the block the listing was confirmed (0 if unconfirmed)</p> |
+| currentChallenge | <code>BigNumber</code> | <p>the ID of the current challenge against the listing</p> |
+| details | <code>string</code> | <p>arbitrary details provided by the listing applicant</p> |
+| exitBlock | <code>BigNumber</code> | <p>the block (if any) the listing exited at</p> |
+| lastRewardBlock | <code>BigNumber</code> | <p>the last block the listing owner claimed rewards for</p> |
+| owner | <code>string</code> | <p>the Ethereum address of the listing owner</p> |
+| rewardRate | <code>BigNumber</code> | <p>the number of tokens (in wei) rewarded to the listing per reward period</p> |
+| stakedBalance | <code>BigNumber</code> | <p>the number of tokens staked by the listing owner (in wei)</p> |
+| status | <code>number</code> | <p>the number representing the listing status (0: no listing, 1: proposal, 2: validator, 3: in-challenge, 4: exiting)</p> |
+| tendermintPublicKey | <code>string</code> | <p>the 32 byte Tendermint public key of the listing holder</p> |
+
