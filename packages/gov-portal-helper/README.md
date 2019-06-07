@@ -1,10 +1,9 @@
-<dl>
-<dt><a href="#Gov">Gov</a></dt>
-<dd><p><code>Gov</code> is a helper library for interacting with the Kosu validator governance
+## `@kosu/gov-portal-helper`
+
+<p><code>Gov</code> is a helper library for interacting with the Kosu validator governance
 system (primarily the Kosu <code>ValidatorRegistry</code> contract).</p>
 <p>It is designed with the browser in mind, and is intended to be used in front-
-end projects for simplifying interaction with the governance system.</p></dd>
-</dl>
+end projects for simplifying interaction with the governance system.</p>
 
 ## Installation
 
