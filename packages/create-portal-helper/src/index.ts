@@ -560,7 +560,7 @@ class Create {
                 await (window as any).ethereum.enable();
                 this.web3 = new Web3((window as any).ethereum);
             } catch (error) {
-                console.log(error)
+                console.log(error);
                 throw new Error("user denied site access");
             }
         } else if (typeof (window as any).web3 !== "undefined") {
