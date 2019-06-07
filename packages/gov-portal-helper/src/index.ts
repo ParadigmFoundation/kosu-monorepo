@@ -20,8 +20,12 @@ interface Map<T> {
  * Represents a current validator in the live-updating store.
  */
 interface Validator {
-    stakeSize: string;
-    power: string;
+    owner: string;
+    stakeSize: BigNumber;
+    dailyReward: BigNumber;
+    confirmationUnix: number;
+    power: BigNumber;
+    details: string;
 }
 
 /**
@@ -95,6 +99,10 @@ interface ContractParams {
     exitPeriod: number;
     rewardPeriod: number;
 }
+
+/**
+ * @typedef
+ */
 
 /**
  * `Gov` is a helper library for interacting with the Kosu validator governance
@@ -394,13 +402,16 @@ class Gov {
 
         const owner = listing.owner;
         const stakeSize = listing.stakedBalance;
+        const confBlock = listing.confirmationBlock.toNumber();
         const dailyReward = this._estimateDailyReward(listing.rewardRate);
+        const confirmationUnix = await this.getPastBlockTimestamp(confBlock);
 
         // power is set after update
         const power = null;
 
         const validator = {
             owner,
+            confirmationUnix,
             stakeSize,
             dailyReward,
             power,
@@ -616,7 +627,7 @@ class Gov {
             const validator = this.validators[id];
             const stake = new BigNumber(validator.stakeSize);
             const power = stake.div(totalStake).times(Gov.ONE_HUNDRED);
-            validator.power = power.toString();
+            validator.power = power;
         });
     }
 

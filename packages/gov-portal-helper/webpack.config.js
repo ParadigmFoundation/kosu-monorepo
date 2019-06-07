@@ -1,7 +1,19 @@
 var path = require("path");
 
 module.exports = {
-    entry: __dirname + "/lib/index.js",
+    entry: __dirname + "/src/index.ts",
+    module: {
+        rules: [
+            {
+                test: /\.ts$/,
+                use: "ts-loader",
+                exclude: /node_modules/,
+            },
+        ],
+    },
+    resolve: {
+        extensions: [".tsx", ".ts", ".js"],
+    },
     output: {
         path: __dirname + "/dist",
         filename: "main.js",
