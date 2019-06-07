@@ -1,37 +1,87 @@
-const Web3 = require("web3");
-const BigNumber = require("bignumber.js");
-const EventEmitter = require("events");
-const { Kosu } = require("@kosu/kosu.js");
+import Web3 from "web3";
+import BigNumber from "bignumber.js";
+import { EventEmitter } from "events";
+import { Kosu } from "@kosu/kosu.js";
+
+// will be the global window object in browser
+declare var window, global: Window;
+
+interface Window {
+    web3: any;
+    ethereum: any;
+}
+
+// Simple key-value map string:T
+interface Map<T> {
+    [key: string]: T;
+}
 
 /**
- * @typedef {Object} Listing
- * @property {string} owner the Ethereum address of the listing holder
- * @property {BigNumber} rewardRate the number of KOSU (in wei) rewarded per period
- * @property {BigNumber} applyBlock the block number the listing was created at
- * @property {string} pubKey the hex-string Tendermint public key of the listing
- * @property {string | null} confBlock the block the listing was confirmed to the registry at (`null` if they were never accepted).
- * @property {string} status the most recent listing state ("proposal", "validator", or "removed")
- * @property {boolean} inChallenge `true` if the listing has an open challenge against it
- * @property {string | null} challenger the Ethereum address of the challenger, if the listing was challenged
- * @property {number} challengeEnd the Ethereum block at which the challenge ends (or ended) and `null` if they were never challenged
- * @property {string} challengeId the unique sequential ID number (as a string) that can be used to reference the challenge
- * @property {string} pollId the underlying `pollId` from the voting contract; usually but not always equal to `challengeId`
- * @property {string} challengeResult the result of the challenge, either "succeeded", "failed", or `null` (`null` if challenge is pending, or never happened).
+ * Represents a current validator in the live-updating store.
  */
+interface Validator {
+    stakeSize: string;
+    power: string;
+}
 
 /**
- * @typedef {Object} Challenge
- * @property {string} listingKey the public key of the challenged listing
- * @property {string} challenger the Ethereum address of the challenging entity
- * @property {BigNumber} voterTotal the total amount of KOSU (in wei) that participated in the vote
- * @property {BigNumber}
+ * Represents a listing proposal in the live-updating store.
  */
+interface Proposal {}
 
 /**
- * @typedef {Object} HistoricalActivity
- * @property {Listing[]} allListings an array of all historical listings
- * @property {Challenge[]} allChallenges an arry of all historical challenges, and their results
+ * Challenge representation in the live-updating store.
  */
+interface StoreChallenge {
+    listingOwner: string;
+    listingStake: string;
+    listingPower: string | null;
+    challenger: string;
+    challengeId: string;
+    challengerStake: string;
+    challengeEndUnix: number;
+    totalTokens: string;
+    winningTokens: string;
+    result: "passed" | "failed";
+    challengeType: "proposal" | "validator";
+    listingDetails: string;
+    challengeDetails: string;
+}
+
+interface PastChallenge {
+    balance: BigNumber;
+    challengeEnd: BigNumber;
+    challenger: string;
+    details: string;
+    finalized: boolean;
+    listingKey: string;
+    listingSnapshot: ListingSnapshot;
+    passed: boolean;
+    pollId: BigNumber;
+    voterTotal: BigNumber;
+}
+
+interface ListingSnapshot {
+    applicationBlock: BigNumber;
+    confirmationBlock: BigNumber;
+    currentChallenge: BigNumber;
+    details: string;
+    exitBlock: BigNumber;
+    lastRewardBlock: BigNumber;
+    owner: string;
+    rewardRate: BigNumber;
+    stakedBalance: BigNumber;
+    status: number;
+    tendermintPublicKey: string;
+}
+
+interface ContractParams {
+    applicationPeriod: number;
+    commitPeriod: number;
+    challengePeriod: number;
+    exitPeriod: number;
+    rewardPeriod: number;
+}
 
 /**
  * `Gov` is a helper library for interacting with the Kosu validator governance
@@ -41,6 +91,39 @@ const { Kosu } = require("@kosu/kosu.js");
  * end projects for simplifying interaction with the governance system.
  */
 class Gov {
+    /** Create new BigNumber (mimics constructor) */
+    public static BigNumber: (num: string | number) => BigNumber;
+
+    /** The value `0` as an instance of`BigNumber`. */
+    public static ZERO: BigNumber;
+
+    /** The value `1` as an instance of`BigNumber`. */
+    public static ONE: BigNumber;
+
+    /** The value `100` as an instance of`BigNumber`. */
+    public static ONE_HUNDRED: BigNumber;
+
+    /** Estimated blocks per day (mainnet only). */
+    public static BLOCKS_PER_DAY: BigNumber;
+
+    public initialized: boolean;
+    public debug: boolean;
+
+    public validators: Map<Validator>;
+    public challenges: Map<StoreChallenge>;
+    public proposals: Map<Proposal>;
+
+    public networkId: string;
+    public coinbase: string;
+
+    public kosu: Kosu;
+    public web3: Web3;
+
+    public params: ContractParams;
+
+    public initBlock: number;
+
+    public ee: EventEmitter;
     /**
      * Create a new `Gov` instance (`gov`). Requires no arguments, but can be
      * set to "debug" mode by passing `true` or `1` (or another truthy object to
@@ -120,7 +203,7 @@ class Gov {
      * All contract calls require amounts in wei, but the user should be shown
      * amounts in ether.
      *
-     * @param {BigNumber | string | number} wei the token amount in wei to convert
+     * @param {BigNumber | string } wei the token amount in wei to convert
      * @returns {string} the same amount in ether, string used for precision
      * @example
      * ```javascript
@@ -128,7 +211,7 @@ class Gov {
      * gov.weiToEther(100000000000000000000)   // > "100"
      * ```
      */
-    weiToEther(wei) {
+    weiToEther(wei: string | BigNumber): string {
         return this.web3.utils.fromWei(wei.toString());
     }
 
@@ -139,7 +222,7 @@ class Gov {
      * All contract calls require amounts in wei, but the user should be shown
      * amounts in ether.
      *
-     * @param {BigNumber | string | number} ether the token amount to convert
+     * @param {BigNumber | string} ether the token amount to convert
      * @returns {string} the same amount in wei, string used for precision
      * @example
      * ```javascript
@@ -147,7 +230,7 @@ class Gov {
      * gov.etherToWei("1") // > "1000000000000000000"
      * ```
      */
-    etherToWei(ether) {
+    etherToWei(ether: string | BigNumber): string {
         return this.web3.utils.toWei(ether.toString());
     }
 
@@ -156,7 +239,7 @@ class Gov {
      * mined.
      *
      * @param {number} blockNumber the block number to estimate the timestamp for
-     * @returns {number} the block's estimated UNIX timestamp (in seconds)
+     * @returns {Promise<number>} the block's estimated UNIX timestamp (in seconds)
      * @example
      * ```javascript
      * const block = 6102105;
@@ -166,7 +249,7 @@ class Gov {
      * const blockDate = new Date(ts * 1000);
      * ```
      */
-    async estimateFutureBlockTimestamp(blockNumber) {
+    async estimateFutureBlockTimestamp(blockNumber: number): Promise<number> {
         const nowUnixSec = Math.floor(Date.now() / 1000);
         const currentBlock = await this.web3.eth.getBlockNumber();
 
@@ -199,7 +282,7 @@ class Gov {
             }
         }
 
-        const diff = parseInt(blockNumber) - currentBlock;
+        const diff = parseInt(blockNumber.toString()) - currentBlock;
         const estSeconds = diff * blockTimeSeconds;
 
         return Math.floor(nowUnixSec + estSeconds);
@@ -217,7 +300,7 @@ class Gov {
      * await gov.getPastBlockTimestamp(515237) // > 1559346404
      * ```
      */
-    async getPastBlockTimestamp(blockNumber) {
+    async getPastBlockTimestamp(blockNumber: number): Promise<number> {
         let block;
         try {
             block = await this.web3.eth.getBlock(blockNumber);
@@ -229,138 +312,15 @@ class Gov {
     }
 
     /**
-     * This method returns an object (described below) that contains all
-     * historical listings (proposals and validators, including current) listings
-     * and information about all past challenges.
+     * This method returns an array (described below) that contains information
+     * about all past challenges. Intended to be used for the "Past Challenges"
+     * section.
      *
-     * It will take a significant amount of time (~12s) to resolve, and the
-     * return object can be large (on the order of 30 KB) depending on the number
-     * of past governance activities.
-     *
-     * Because it a) takes a long time to load and b) is network I/O intensive,
-     * it should only be called when the user requests to load all historical
-     * data.
-     *
-     * @returns {HistoricalActivity} all historical `challenges` and `listings`.
+     * @returns {Promise<Array<PastChallenge>>} all historical `challenges`.
      */
-    async getHistoricalChallenges() {
+    async getHistoricalChallenges(): Promise<Array<PastChallenge>> {
         return this.kosu.validatorRegistry.getAllChallenges().then(a => a.reverse());
-    } /*/!**
-     * This method returns an object (described below) that contains all
-     * historical listings (proposals and validators, including current) listings
-     * and information about all past challenges.
-     *
-     * It will take a significant amount of time (~12s) to resolve, and the
-     * return object can be large (on the order of 30 KB) depending on the number
-     * of past governance activities.
-     *
-     * Because it a) takes a long time to load and b) is network I/O intensive,
-     * it should only be called when the user requests to load all historical
-     * data.
-     *
-     * @returns {HistoricalActivity} all historical `challenges` and `listings`.
-     *!/
-    async getHistoricalActivity() {
-        console.log(Date.now());
-        // output objects
-        const allListings = [];
-        const allChallenges = [];
-
-        // cache/temp-state tracking
-        const challenges = {};
-        const store = {};
-
-        const challengePeriod = (await this.kosu.validatorRegistry.challengePeriod()).toNumber();
-        const pastEvents = await this.kosu.eventEmitter.getPastDecodedLogs({
-            fromBlock: 0,
-        });
-
-        // process all historical events in order and run state transitions
-        pastEvents.forEach(event => {
-            const decoded = event.decodedArgs;
-            const eventType = decoded.eventType;
-
-            switch (eventType) {
-                case "ValidatorRegistered": {
-                    store[decoded.tendermintPublicKeyHex] = {
-                        owner: decoded.owner,
-                        rewardRate: new BigNumber(decoded.rewardRate),
-                        applyBlock: new BigNumber(decoded.applicationBlockNumber),
-                        pubKey: decoded.tendermintPublicKeyHex,
-                        confBlock: null,
-                        status: "proposal",
-                        inChallenge: false,
-                        challenger: null,
-                        challengeEnd: null,
-                        challengeId: null,
-                        pollId: null,
-                        challengeResult: null,
-                    };
-                    break;
-                }
-                case "ValidatorConfirmed": {
-                    const listing = store[decoded.tendermintPublicKeyHex];
-                    listing.status = "validator";
-                    listing.confBlock = event.blockNumber;
-                    break;
-                }
-                case "ValidatorChallenged": {
-                    const listing = store[decoded.tendermintPublicKeyHex];
-
-                    listing.inChallenge = true;
-                    listing.challenger = decoded.challenger;
-                    listing.challengeId = decoded.challengeId;
-                    listing.pollId = decoded.pollId;
-                    listing.challengeEnd = event.blockNumber + challengePeriod;
-
-                    // load all challenge ID's (will be loaded later)
-                    challenges[decoded.challengeId] = null;
-                    break;
-                }
-                case "ValidatorRemoved": {
-                    const listing = store[decoded.tendermintPublicKeyHex];
-
-                    listing.status = "removed";
-                    listing.inChallenge = false;
-                    listing.challengeResult = "succeeded";
-                    break;
-                }
-                case "ValidatorChallengeResolved": {
-                    const listing = store[decoded.tendermintPublicKeyHex];
-
-                    listing.inChallenge = false;
-                    listing.challengeResult = "failed";
-                    break;
-                }
-            }
-        });
-
-        // load historical challenge results
-        for (const key in challenges) {
-            challenges[key] = await this.kosu.validatorRegistry.getChallenge(key);
-
-            const challenge = challenges[key];
-            challenge.totalTokens = await this.kosu.voting.totalRevealedTokens(challenge.pollId);
-            challenge.winningTokens = await this.kosu.voting.totalWinningTokens(challenge.pollId);
-        }
-
-        // convert store objects to arrays for output
-        Object.keys(store).forEach(id => {
-            const listing = store[id];
-            allListings.push(listing);
-        });
-        Object.keys(challenges).forEach(id => {
-            const challenge = challenges[id];
-            challenge.number = id;
-            allChallenges.push(challenge);
-        });
-
-        console.log(Date.now());
-        return {
-            allListings,
-            allChallenges,
-        };
-    }*/
+    }
 
     async _processListing(listing) {
         switch (listing.status) {
@@ -471,7 +431,7 @@ class Gov {
             winningTokens = await this.kosu.voting.totalWinningTokens(listingChallenge.pollId);
             result = await this.kosu.voting
                 .winningOption(listingChallenge.pollId)
-                .then(option => (option.toString() === "1" ? "Passed" : "Failed"));
+                .then(option => (option.toString() === "1" ? "passed" : "failed"));
         }
 
         const challenge = {
@@ -657,7 +617,7 @@ class Gov {
         Object.keys(this.challenges).forEach(id => {
             const challenge = this.challenges[id];
             if (challenge.challengeType === "validator") {
-                const stake = new BigNumber(challenge.stakeSize);
+                const stake = new BigNumber(challenge.listingStake);
                 totalStake = totalStake.plus(stake);
             }
         });
@@ -679,7 +639,7 @@ class Gov {
                 throw new Error("user denied site access");
             }
         } else if (typeof window.web3 !== "undefined") {
-            this.web3 = new Web3(web3.currentProvider);
+            this.web3 = new Web3(window.web3.currentProvider);
             global.web3 = this.web3;
         } else {
             throw new Error("non-ethereum browser detected");
