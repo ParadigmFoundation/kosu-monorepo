@@ -1,610 +1,108 @@
-# Class: Gov
-
-`Gov` is a helper library for interacting with the Kosu validator governance system (primarily the Kosu `ValidatorRegistry` contract).
-
-It is designed with the browser in mind, and is intended to be used in front- end projects for simplifying interaction with the governance system.
-
-## Hierarchy
-
-**Gov**
-
-## Index
-
-### Constructors
-
--   [constructor](_index_.gov.md#constructor)
-
-### Properties
-
--   [challenges](_index_.gov.md#challenges)
--   [coinbase](_index_.gov.md#coinbase)
--   [debug](_index_.gov.md#debug)
--   [ee](_index_.gov.md#ee)
--   [initBlock](_index_.gov.md#initblock)
--   [initialized](_index_.gov.md#initialized)
--   [kosu](_index_.gov.md#kosu)
--   [networkId](_index_.gov.md#networkid)
--   [params](_index_.gov.md#params)
--   [proposals](_index_.gov.md#proposals)
--   [validators](_index_.gov.md#validators)
--   [web3](_index_.gov.md#web3)
--   [BLOCKS_PER_DAY](_index_.gov.md#blocks_per_day)
--   [BigNumber](_index_.gov.md#bignumber)
--   [ONE](_index_.gov.md#one)
--   [ONE_HUNDRED](_index_.gov.md#one_hundred)
--   [ZERO](_index_.gov.md#zero)
-
-### Methods
-
--   [\_addChallenge](_index_.gov.md#_addchallenge)
--   [\_addProposal](_index_.gov.md#_addproposal)
--   [\_addValidator](_index_.gov.md#_addvalidator)
--   [\_connectMetamask](_index_.gov.md#_connectmetamask)
--   [\_debugLog](_index_.gov.md#_debuglog)
--   [\_estimateDailyReward](_index_.gov.md#_estimatedailyreward)
--   [\_estimateProposalPower](_index_.gov.md#_estimateproposalpower)
--   [\_getListing](_index_.gov.md#_getlisting)
--   [\_getTotalStake](_index_.gov.md#_gettotalstake)
--   [\_getValidatorPower](_index_.gov.md#_getvalidatorpower)
--   [\_handleEvents](_index_.gov.md#_handleevents)
--   [\_processChallenge](_index_.gov.md#_processchallenge)
--   [\_processListing](_index_.gov.md#_processlisting)
--   [\_processProposal](_index_.gov.md#_processproposal)
--   [\_processResolvedChallenge](_index_.gov.md#_processresolvedchallenge)
--   [\_processValidator](_index_.gov.md#_processvalidator)
--   [\_removeValidator](_index_.gov.md#_removevalidator)
--   [\_updateVotePowers](_index_.gov.md#_updatevotepowers)
--   [estimateFutureBlockTimestamp](_index_.gov.md#estimatefutureblocktimestamp)
--   [etherToWei](_index_.gov.md#ethertowei)
--   [getHistoricalChallenges](_index_.gov.md#gethistoricalchallenges)
--   [getPastBlockTimestamp](_index_.gov.md#getpastblocktimestamp)
--   [init](_index_.gov.md#init)
--   [weiToEther](_index_.gov.md#weitoether)
-
----
-
-## Constructors
-
-<a id="constructor"></a>
-
-### constructor
-
-⊕ **new Gov**(debug: _`any`_): [Gov](_index_.gov.md)
-
-_Defined in [index.ts:147](https://github.com/paradigmfoundation/kosu-monorepo/blob/f80822a/packages/gov-portal-helper/src/index.ts#L147)_
-
-Create a new `Gov` instance (`gov`). Requires no arguments, but can be set to "debug" mode by passing `true` or `1` (or another truthy object to the constructor).
-
-Prior to using most `gov` functionality, the async `gov.init()` method must be called, which will initialize the module and load state from the Kosu contract system.
-
-**Parameters:**
-
-| Name  | Type  |
-| ----- | ----- |
-| debug | `any` |
-
-**Returns:** [Gov](_index_.gov.md)
-
----
-
-## Properties
-
-<a id="challenges"></a>
-
-### challenges
-
-**● challenges**: _[Map](../interfaces/\_index_.map.md)<[StoreChallenge](../interfaces/_index_.storechallenge.md)>\_
-
-_Defined in [index.ts:134](https://github.com/paradigmfoundation/kosu-monorepo/blob/f80822a/packages/gov-portal-helper/src/index.ts#L134)_
-
----
-
-<a id="coinbase"></a>
-
-### coinbase
-
-**● coinbase**: _`string`_
-
-_Defined in [index.ts:138](https://github.com/paradigmfoundation/kosu-monorepo/blob/f80822a/packages/gov-portal-helper/src/index.ts#L138)_
-
----
-
-<a id="debug"></a>
-
-### debug
-
-**● debug**: _`boolean`_
-
-_Defined in [index.ts:131](https://github.com/paradigmfoundation/kosu-monorepo/blob/f80822a/packages/gov-portal-helper/src/index.ts#L131)_
-
----
-
-<a id="ee"></a>
-
-### ee
-
-**● ee**: _`EventEmitter`_
-
-_Defined in [index.ts:147](https://github.com/paradigmfoundation/kosu-monorepo/blob/f80822a/packages/gov-portal-helper/src/index.ts#L147)_
-
----
-
-<a id="initblock"></a>
-
-### initBlock
-
-**● initBlock**: _`number`_
-
-_Defined in [index.ts:145](https://github.com/paradigmfoundation/kosu-monorepo/blob/f80822a/packages/gov-portal-helper/src/index.ts#L145)_
-
----
-
-<a id="initialized"></a>
-
-### initialized
-
-**● initialized**: _`boolean`_
-
-_Defined in [index.ts:130](https://github.com/paradigmfoundation/kosu-monorepo/blob/f80822a/packages/gov-portal-helper/src/index.ts#L130)_
-
----
-
-<a id="kosu"></a>
-
-### kosu
-
-**● kosu**: _`Kosu`_
-
-_Defined in [index.ts:140](https://github.com/paradigmfoundation/kosu-monorepo/blob/f80822a/packages/gov-portal-helper/src/index.ts#L140)_
-
----
-
-<a id="networkid"></a>
-
-### networkId
-
-**● networkId**: _`string`_
-
-_Defined in [index.ts:137](https://github.com/paradigmfoundation/kosu-monorepo/blob/f80822a/packages/gov-portal-helper/src/index.ts#L137)_
-
----
-
-<a id="params"></a>
-
-### params
-
-**● params**: _[ContractParams](../interfaces/\_index_.contractparams.md)\_
-
-_Defined in [index.ts:143](https://github.com/paradigmfoundation/kosu-monorepo/blob/f80822a/packages/gov-portal-helper/src/index.ts#L143)_
-
----
-
-<a id="proposals"></a>
-
-### proposals
-
-**● proposals**: _[Map](../interfaces/\_index_.map.md)<[Proposal](../interfaces/_index_.proposal.md)>\_
-
-_Defined in [index.ts:135](https://github.com/paradigmfoundation/kosu-monorepo/blob/f80822a/packages/gov-portal-helper/src/index.ts#L135)_
-
----
-
-<a id="validators"></a>
-
-### validators
-
-**● validators**: _[Map](../interfaces/\_index_.map.md)<[Validator](../interfaces/_index_.validator.md)>\_
-
-_Defined in [index.ts:133](https://github.com/paradigmfoundation/kosu-monorepo/blob/f80822a/packages/gov-portal-helper/src/index.ts#L133)_
-
----
-
-<a id="web3"></a>
-
-### web3
-
-**● web3**: _`Web3`_
-
-_Defined in [index.ts:141](https://github.com/paradigmfoundation/kosu-monorepo/blob/f80822a/packages/gov-portal-helper/src/index.ts#L141)_
-
----
-
-<a id="blocks_per_day"></a>
-
-### `<Static>` BLOCKS_PER_DAY
-
-**● BLOCKS_PER_DAY**: _`BigNumber`_
-
-_Defined in [index.ts:128](https://github.com/paradigmfoundation/kosu-monorepo/blob/f80822a/packages/gov-portal-helper/src/index.ts#L128)_
-
-Estimated blocks per day (mainnet only).
-
----
-
-<a id="bignumber"></a>
-
-### `<Static>` BigNumber
-
-**● BigNumber**: _`function`_
-
-_Defined in [index.ts:116](https://github.com/paradigmfoundation/kosu-monorepo/blob/f80822a/packages/gov-portal-helper/src/index.ts#L116)_
-
-Create new BigNumber (mimics constructor)
-
-#### Type declaration
-
-▸(num: _`string` \| `number`_): `BigNumber`
-
-**Parameters:**
-
-| Name | Type                 |
-| ---- | -------------------- |
-| num  | `string` \| `number` |
-
-**Returns:** `BigNumber`
-
----
-
-<a id="one"></a>
-
-### `<Static>` ONE
-
-**● ONE**: _`BigNumber`_
-
-_Defined in [index.ts:122](https://github.com/paradigmfoundation/kosu-monorepo/blob/f80822a/packages/gov-portal-helper/src/index.ts#L122)_
-
-The value `1` as an instance of`BigNumber`.
-
----
-
-<a id="one_hundred"></a>
-
-### `<Static>` ONE_HUNDRED
-
-**● ONE_HUNDRED**: _`BigNumber`_
-
-_Defined in [index.ts:125](https://github.com/paradigmfoundation/kosu-monorepo/blob/f80822a/packages/gov-portal-helper/src/index.ts#L125)_
-
-The value `100` as an instance of`BigNumber`.
-
----
-
-<a id="zero"></a>
-
-### `<Static>` ZERO
-
-**● ZERO**: _`BigNumber`_
-
-_Defined in [index.ts:119](https://github.com/paradigmfoundation/kosu-monorepo/blob/f80822a/packages/gov-portal-helper/src/index.ts#L119)_
-
-The value `0` as an instance of`BigNumber`.
-
----
-
-## Methods
-
-<a id="_addchallenge"></a>
-
-### \_addChallenge
-
-▸ **\_addChallenge**(pubKey: _`any`_, challenge: _`any`_): `void`
-
-_Defined in [index.ts:601](https://github.com/paradigmfoundation/kosu-monorepo/blob/f80822a/packages/gov-portal-helper/src/index.ts#L601)_
-
-**Parameters:**
-
-| Name      | Type  |
-| --------- | ----- |
-| pubKey    | `any` |
-| challenge | `any` |
-
-**Returns:** `void`
-
----
-
-<a id="_addproposal"></a>
-
-### \_addProposal
-
-▸ **\_addProposal**(pubKey: _`any`_, proposal: _`any`_): `void`
-
-_Defined in [index.ts:578](https://github.com/paradigmfoundation/kosu-monorepo/blob/f80822a/packages/gov-portal-helper/src/index.ts#L578)_
-
-**Parameters:**
-
-| Name     | Type  |
-| -------- | ----- |
-| pubKey   | `any` |
-| proposal | `any` |
-
-**Returns:** `void`
-
----
-
-<a id="_addvalidator"></a>
-
-### \_addValidator
-
-▸ **\_addValidator**(pubKey: _`any`_, validator: _`any`_): `void`
-
-_Defined in [index.ts:585](https://github.com/paradigmfoundation/kosu-monorepo/blob/f80822a/packages/gov-portal-helper/src/index.ts#L585)_
-
-**Parameters:**
-
-| Name      | Type  |
-| --------- | ----- |
-| pubKey    | `any` |
-| validator | `any` |
-
-**Returns:** `void`
-
----
-
-<a id="_connectmetamask"></a>
-
-### \_connectMetamask
-
-▸ **\_connectMetamask**(): `Promise`<`void`>
-
-_Defined in [index.ts:657](https://github.com/paradigmfoundation/kosu-monorepo/blob/f80822a/packages/gov-portal-helper/src/index.ts#L657)_
-
-**Returns:** `Promise`<`void`>
-
----
-
-<a id="_debuglog"></a>
-
-### \_debugLog
-
-▸ **\_debugLog**(message: _`any`_): `void`
-
-_Defined in [index.ts:651](https://github.com/paradigmfoundation/kosu-monorepo/blob/f80822a/packages/gov-portal-helper/src/index.ts#L651)_
-
-**Parameters:**
-
-| Name    | Type  |
-| ------- | ----- |
-| message | `any` |
-
-**Returns:** `void`
-
----
-
-<a id="_estimatedailyreward"></a>
-
-### \_estimateDailyReward
-
-▸ **\_estimateDailyReward**(rewardRate: _`any`_): `BigNumber`
-
-_Defined in [index.ts:616](https://github.com/paradigmfoundation/kosu-monorepo/blob/f80822a/packages/gov-portal-helper/src/index.ts#L616)_
-
-**Parameters:**
-
-| Name       | Type  |
-| ---------- | ----- |
-| rewardRate | `any` |
-
-**Returns:** `BigNumber`
-
----
-
-<a id="_estimateproposalpower"></a>
-
-### \_estimateProposalPower
-
-▸ **\_estimateProposalPower**(stake: _`any`_): `BigNumber`
-
-_Defined in [index.ts:608](https://github.com/paradigmfoundation/kosu-monorepo/blob/f80822a/packages/gov-portal-helper/src/index.ts#L608)_
-
-**Parameters:**
-
-| Name  | Type  |
-| ----- | ----- |
-| stake | `any` |
-
-**Returns:** `BigNumber`
-
----
-
-<a id="_getlisting"></a>
-
-### \_getListing
-
-▸ **\_getListing**(pubKey: _`any`_): `Promise`<`any`>
-
-_Defined in [index.ts:540](https://github.com/paradigmfoundation/kosu-monorepo/blob/f80822a/packages/gov-portal-helper/src/index.ts#L540)_
-
-**Parameters:**
-
-| Name   | Type  |
-| ------ | ----- |
-| pubKey | `any` |
-
-**Returns:** `Promise`<`any`>
-
----
-
-<a id="_gettotalstake"></a>
-
-### \_getTotalStake
-
-▸ **\_getTotalStake**(): `BigNumber`
-
-_Defined in [index.ts:634](https://github.com/paradigmfoundation/kosu-monorepo/blob/f80822a/packages/gov-portal-helper/src/index.ts#L634)_
-
-**Returns:** `BigNumber`
-
----
-
-<a id="_getvalidatorpower"></a>
-
-### \_getValidatorPower
-
-▸ **\_getValidatorPower**(pubKey: _`any`_): `Promise`<`any`>
-
-_Defined in [index.ts:544](https://github.com/paradigmfoundation/kosu-monorepo/blob/f80822a/packages/gov-portal-helper/src/index.ts#L544)_
-
-**Parameters:**
-
-| Name   | Type  |
-| ------ | ----- |
-| pubKey | `any` |
-
-**Returns:** `Promise`<`any`>
-
----
-
-<a id="_handleevents"></a>
-
-### \_handleEvents
-
-▸ **\_handleEvents**(events: _`any`_): `Promise`<`void`>
-
-_Defined in [index.ts:489](https://github.com/paradigmfoundation/kosu-monorepo/blob/f80822a/packages/gov-portal-helper/src/index.ts#L489)_
-
-**Parameters:**
-
-| Name   | Type  |
-| ------ | ----- |
-| events | `any` |
-
-**Returns:** `Promise`<`void`>
-
----
-
-<a id="_processchallenge"></a>
-
-### \_processChallenge
-
-▸ **\_processChallenge**(listing: _`any`_): `Promise`<`void`>
-
-_Defined in [index.ts:426](https://github.com/paradigmfoundation/kosu-monorepo/blob/f80822a/packages/gov-portal-helper/src/index.ts#L426)_
-
-**Parameters:**
-
-| Name    | Type  |
-| ------- | ----- |
-| listing | `any` |
-
-**Returns:** `Promise`<`void`>
-
----
-
-<a id="_processlisting"></a>
-
-### \_processListing
-
-▸ **\_processListing**(listing: _`any`_): `Promise`<`void`>
-
-_Defined in [index.ts:346](https://github.com/paradigmfoundation/kosu-monorepo/blob/f80822a/packages/gov-portal-helper/src/index.ts#L346)_
-
-**Parameters:**
-
-| Name    | Type  |
-| ------- | ----- |
-| listing | `any` |
-
-**Returns:** `Promise`<`void`>
-
----
-
-<a id="_processproposal"></a>
-
-### \_processProposal
-
-▸ **\_processProposal**(listing: _`any`_): `Promise`<`void`>
-
-_Defined in [index.ts:372](https://github.com/paradigmfoundation/kosu-monorepo/blob/f80822a/packages/gov-portal-helper/src/index.ts#L372)_
-
-**Parameters:**
-
-| Name    | Type  |
-| ------- | ----- |
-| listing | `any` |
-
-**Returns:** `Promise`<`void`>
-
----
-
-<a id="_processresolvedchallenge"></a>
-
-### \_processResolvedChallenge
-
-▸ **\_processResolvedChallenge**(pubKey: _`any`_, listing: _`any`_): `Promise`<`void`>
-
-_Defined in [index.ts:480](https://github.com/paradigmfoundation/kosu-monorepo/blob/f80822a/packages/gov-portal-helper/src/index.ts#L480)_
-
-**Parameters:**
-
-| Name    | Type  |
-| ------- | ----- |
-| pubKey  | `any` |
-| listing | `any` |
-
-**Returns:** `Promise`<`void`>
-
----
-
-<a id="_processvalidator"></a>
-
-### \_processValidator
-
-▸ **\_processValidator**(listing: _`any`_): `Promise`<`void`>
-
-_Defined in [index.ts:398](https://github.com/paradigmfoundation/kosu-monorepo/blob/f80822a/packages/gov-portal-helper/src/index.ts#L398)_
-
-**Parameters:**
-
-| Name    | Type  |
-| ------- | ----- |
-| listing | `any` |
-
-**Returns:** `Promise`<`void`>
-
----
-
-<a id="_removevalidator"></a>
-
-### \_removeValidator
-
-▸ **\_removeValidator**(pubKey: _`any`_): `void`
-
-_Defined in [index.ts:594](https://github.com/paradigmfoundation/kosu-monorepo/blob/f80822a/packages/gov-portal-helper/src/index.ts#L594)_
-
-**Parameters:**
-
-| Name   | Type  |
-| ------ | ----- |
-| pubKey | `any` |
-
-**Returns:** `void`
-
----
-
-<a id="_updatevotepowers"></a>
-
-### \_updateVotePowers
-
-▸ **\_updateVotePowers**(): `void`
-
-_Defined in [index.ts:624](https://github.com/paradigmfoundation/kosu-monorepo/blob/f80822a/packages/gov-portal-helper/src/index.ts#L624)_
-
-**Returns:** `void`
-
----
-
-<a id="estimatefutureblocktimestamp"></a>
-
-### estimateFutureBlockTimestamp
-
-▸ **estimateFutureBlockTimestamp**(blockNumber: _`number`_): `Promise`<`number`>
-
-_Defined in [index.ts:273](https://github.com/paradigmfoundation/kosu-monorepo/blob/f80822a/packages/gov-portal-helper/src/index.ts#L273)_
-
-Estimate the UNIX timestamp (in seconds) at which a given `block` will be mined.
-
-_**example**_:
-
+<a name="Gov"></a>
+
+## Gov
+<p><code>Gov</code> is a helper library for interacting with the Kosu validator governance
+system (primarily the Kosu <code>ValidatorRegistry</code> contract).</p>
+<p>It is designed with the browser in mind, and is intended to be used in front-
+end projects for simplifying interaction with the governance system.</p>
+
+**Kind**: global class  
+
+* [Gov](#Gov)
+    * [new Gov()](#new_Gov_new)
+    * _instance_
+        * [.init()](#Gov+init)
+        * [.weiToEther(wei)](#Gov+weiToEther) ⇒ <code>string</code>
+        * [.etherToWei(ether)](#Gov+etherToWei) ⇒ <code>string</code>
+        * [.estimateFutureBlockTimestamp(blockNumber)](#Gov+estimateFutureBlockTimestamp) ⇒ <code>Promise.&lt;number&gt;</code>
+        * [.getPastBlockTimestamp(blockNumber)](#Gov+getPastBlockTimestamp) ⇒ <code>Promise.&lt;number&gt;</code>
+        * [.getHistoricalChallenges()](#Gov+getHistoricalChallenges) ⇒ <code>Promise.&lt;Array.&lt;PastChallenge&gt;&gt;</code>
+    * _static_
+        * [.ZERO](#Gov.ZERO)
+        * [.ONE](#Gov.ONE)
+        * [.ONE_HUNDRED](#Gov.ONE_HUNDRED)
+        * [.BLOCKS_PER_DAY](#Gov.BLOCKS_PER_DAY)
+
+<a name="new_Gov_new"></a>
+
+### new Gov()
+<p>Create a new <code>Gov</code> instance (<code>gov</code>). Requires no arguments, but can be
+set to &quot;debug&quot; mode by passing <code>true</code> or <code>1</code> (or another truthy object to
+the constructor).</p>
+<p>Prior to using most <code>gov</code> functionality, the async <code>gov.init()</code> method
+must be called, which will initialize the module and load state from
+the Kosu contract system.</p>
+
+<a name="Gov+init"></a>
+
+### gov.init()
+<p>Main initialization function for the <code>gov</code> module. You must call <code>init</code>
+prior to interacting with most module functionality, and <code>gov.init()</code> will
+load the current registry status (validators, proposals, etc.) so it should
+be called early-on in the page life-cycle.</p>
+<p>Performs many functions, including:</p>
+<ul>
+<li>prompt user to connect MetaMask</li>
+<li>load user's address (the &quot;coinbase&quot;)</li>
+<li>load the current Ethereum block height</li>
+<li>load and process the latest ValidatorRegistry state</li>
+</ul>
+
+**Kind**: instance method of [<code>Gov</code>](#Gov)  
+<a name="Gov+weiToEther"></a>
+
+### gov.weiToEther(wei) ⇒ <code>string</code>
+<p>Convert a number of tokens, denominated in the smallest unit - &quot;wei&quot; - to
+&quot;full&quot; units, called &quot;ether&quot;. One ether = 1*10^18 wei.</p>
+<p>All contract calls require amounts in wei, but the user should be shown
+amounts in ether.</p>
+
+**Kind**: instance method of [<code>Gov</code>](#Gov)  
+**Returns**: <code>string</code> - <p>the same amount in ether, string used for precision</p>  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| wei | <code>BigNumber</code> \| <code>string</code> | <p>the token amount in wei to convert</p> |
+
+**Example**  
+```javascript
+gov.weiToEther("100000000000000000000") // > "100"
+gov.weiToEther(100000000000000000000)   // > "100"
+```
+<a name="Gov+etherToWei"></a>
+
+### gov.etherToWei(ether) ⇒ <code>string</code>
+<p>Convert a number of tokens (full units, called &quot;ether&quot;) to &quot;wei&quot;, the
+smallest denomination of most ERC-20 tokens with 18 decimals.</p>
+<p>All contract calls require amounts in wei, but the user should be shown
+amounts in ether.</p>
+
+**Kind**: instance method of [<code>Gov</code>](#Gov)  
+**Returns**: <code>string</code> - <p>the same amount in wei, string used for precision</p>  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| ether | <code>BigNumber</code> \| <code>string</code> | <p>the token amount to convert</p> |
+
+**Example**  
+```javascript
+gov.etherToWei(10)  // > "10000000000000000000"
+gov.etherToWei("1") // > "1000000000000000000"
+```
+<a name="Gov+estimateFutureBlockTimestamp"></a>
+
+### gov.estimateFutureBlockTimestamp(blockNumber) ⇒ <code>Promise.&lt;number&gt;</code>
+<p>Estimate the UNIX timestamp (in seconds) at which a given <code>block</code> will be
+mined.</p>
+
+**Kind**: instance method of [<code>Gov</code>](#Gov)  
+**Returns**: <code>Promise.&lt;number&gt;</code> - <p>the block's estimated UNIX timestamp (in seconds)</p>  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| blockNumber | <code>number</code> | <p>the block number to estimate the timestamp for</p> |
+
+**Example**  
 ```javascript
 const block = 6102105;
 const unixTs = gov.estimateFutureBlockTimestamp(block);
@@ -612,576 +110,54 @@ const unixTs = gov.estimateFutureBlockTimestamp(block);
 // use as a normal date object (multiply by 1000 to get ms)
 const blockDate = new Date(ts * 1000);
 ```
+<a name="Gov+getPastBlockTimestamp"></a>
 
-**Parameters:**
+### gov.getPastBlockTimestamp(blockNumber) ⇒ <code>Promise.&lt;number&gt;</code>
+<p>Retrieve the Unix timestamp of a block that has already been mined.
+Should be used to display times of things that have happened (validator
+confirmed, etc.).</p>
 
-| Name        | Type     | Description                                    |
-| ----------- | -------- | ---------------------------------------------- |
-| blockNumber | `number` | the block number to estimate the timestamp for |
+**Kind**: instance method of [<code>Gov</code>](#Gov)  
+**Returns**: <code>Promise.&lt;number&gt;</code> - <p>the Unix timestamp of the specified <code>blockNumber</code></p>  
 
-**Returns:** `Promise`<`number`>
-the block's estimated UNIX timestamp (in seconds)
+| Param | Type | Description |
+| --- | --- | --- |
+| blockNumber | <code>number</code> | <p>the block to get the unix timestamp for</p> |
 
----
-
-<a id="ethertowei"></a>
-
-### etherToWei
-
-▸ **etherToWei**(ether: _`string` \| `BigNumber`_): `string`
-
-_Defined in [index.ts:254](https://github.com/paradigmfoundation/kosu-monorepo/blob/f80822a/packages/gov-portal-helper/src/index.ts#L254)_
-
-Convert a number of tokens (full units, called "ether") to "wei", the smallest denomination of most ERC-20 tokens with 18 decimals.
-
-All contract calls require amounts in wei, but the user should be shown amounts in ether.
-
-_**example**_:
-
+**Example**  
 ```javascript
-gov.etherToWei(10); // > "10000000000000000000"
-gov.etherToWei("1"); // > "1000000000000000000"
+await gov.getPastBlockTimestamp(515237) // > 1559346404
 ```
+<a name="Gov+getHistoricalChallenges"></a>
 
-**Parameters:**
+### gov.getHistoricalChallenges() ⇒ <code>Promise.&lt;Array.&lt;PastChallenge&gt;&gt;</code>
+<p>This method returns an array (described below) that contains information
+about all past challenges. Intended to be used for the &quot;Past Challenges&quot;
+section.</p>
 
-| Name  | Type                    | Description                 |
-| ----- | ----------------------- | --------------------------- |
-| ether | `string` \| `BigNumber` | the token amount to convert |
+**Kind**: instance method of [<code>Gov</code>](#Gov)  
+**Returns**: <code>Promise.&lt;Array.&lt;PastChallenge&gt;&gt;</code> - <p>all historical <code>challenges</code>.</p>  
+<a name="Gov.ZERO"></a>
 
-**Returns:** `string`
-the same amount in wei, string used for precision
+### Gov.ZERO
+<p>The value <code>0</code> as an instance of<code>BigNumber</code>.</p>
 
----
+**Kind**: static property of [<code>Gov</code>](#Gov)  
+<a name="Gov.ONE"></a>
 
-<a id="gethistoricalchallenges"></a>
+### Gov.ONE
+<p>The value <code>1</code> as an instance of<code>BigNumber</code>.</p>
 
-### getHistoricalChallenges
+**Kind**: static property of [<code>Gov</code>](#Gov)  
+<a name="Gov.ONE_HUNDRED"></a>
 
-▸ **getHistoricalChallenges**(): `Promise`<`Array`<[PastChallenge](../interfaces/_index_.pastchallenge.md)>>
+### Gov.ONE\_HUNDRED
+<p>The value <code>100</code> as an instance of<code>BigNumber</code>.</p>
 
-_Defined in [index.ts:342](https://github.com/paradigmfoundation/kosu-monorepo/blob/f80822a/packages/gov-portal-helper/src/index.ts#L342)_
+**Kind**: static property of [<code>Gov</code>](#Gov)  
+<a name="Gov.BLOCKS_PER_DAY"></a>
 
-This method returns an array (described below) that contains information about all past challenges. Intended to be used for the "Past Challenges" section.
+### Gov.BLOCKS\_PER\_DAY
+<p>Estimated blocks per day (mainnet only).</p>
 
-**Returns:** `Promise`<`Array`<[PastChallenge](../interfaces/_index_.pastchallenge.md)>>
-all historical `challenges`.
-
----
-
-<a id="getpastblocktimestamp"></a>
-
-### getPastBlockTimestamp
-
-▸ **getPastBlockTimestamp**(blockNumber: _`number`_): `Promise`<`number`>
-
-_Defined in [index.ts:324](https://github.com/paradigmfoundation/kosu-monorepo/blob/f80822a/packages/gov-portal-helper/src/index.ts#L324)_
-
-Retrieve the Unix timestamp of a block that has already been mined. Should be used to display times of things that have happened (validator confirmed, etc.).
-
-_**example**_:
-
-```javascript
-await gov.getPastBlockTimestamp(515237); // > 1559346404
-```
-
-**Parameters:**
-
-| Name        | Type     | Description                             |
-| ----------- | -------- | --------------------------------------- |
-| blockNumber | `number` | the block to get the unix timestamp for |
-
-**Returns:** `Promise`<`number`>
-the Unix timestamp of the specified `blockNumber`
-
----
-
-<a id="init"></a>
-
-### init
-
-▸ **init**(): `Promise`<`void`>
-
-_Defined in [index.ts:191](https://github.com/paradigmfoundation/kosu-monorepo/blob/f80822a/packages/gov-portal-helper/src/index.ts#L191)_
-
-Main initialization function for the `gov` module. You must call `init` prior to interacting with most module functionality, and `gov.init()` will load the current registry status (validators, proposals, etc.) so it should be called early-on in the page life-cycle.
-
-Performs many functions, including:
-
--   prompt user to connect MetaMask
--   load user's address (the "coinbase")
--   load the current Ethereum block height
--   load and process the latest ValidatorRegistry state
-
-**Returns:** `Promise`<`void`>
-
----
-
-<a id="weitoether"></a>
-
-### weiToEther
-
-▸ **weiToEther**(wei: _`string` \| `BigNumber`_): `string`
-
-_Defined in [index.ts:235](https://github.com/paradigmfoundation/kosu-monorepo/blob/f80822a/packages/gov-portal-helper/src/index.ts#L235)_
-
-Convert a number of tokens, denominated in the smallest unit - "wei" - to "full" units, called "ether". One ether = 1\*10^18 wei.
-
-All contract calls require amounts in wei, but the user should be shown amounts in ether.
-
-_**example**_:
-
-```javascript
-gov.weiToEther("100000000000000000000"); // > "100"
-gov.weiToEther(100000000000000000000); // > "100"
-```
-
-**Parameters:**
-
-| Name | Type                    | Description                        |
-| ---- | ----------------------- | ---------------------------------- |
-| wei  | `string` \| `BigNumber` | the token amount in wei to convert |
-
-**Returns:** `string`
-the same amount in ether, string used for precision
-
----
-
-[@kosu/gov-portal-helper](../README.md) > ["index"](../modules/_index_.md) > [ListingSnapshot](../interfaces/_index_.listingsnapshot.md)
-
-# Interface: ListingSnapshot
-
-The state of the listing at the time of challenge.
-
-## Hierarchy
-
-**ListingSnapshot**
-
-## Index
-
-### Properties
-
--   [applicationBlock](_index_.listingsnapshot.md#applicationblock)
--   [confirmationBlock](_index_.listingsnapshot.md#confirmationblock)
--   [currentChallenge](_index_.listingsnapshot.md#currentchallenge)
--   [details](_index_.listingsnapshot.md#details)
--   [exitBlock](_index_.listingsnapshot.md#exitblock)
--   [lastRewardBlock](_index_.listingsnapshot.md#lastrewardblock)
--   [owner](_index_.listingsnapshot.md#owner)
--   [rewardRate](_index_.listingsnapshot.md#rewardrate)
--   [stakedBalance](_index_.listingsnapshot.md#stakedbalance)
--   [status](_index_.listingsnapshot.md#status)
--   [tendermintPublicKey](_index_.listingsnapshot.md#tendermintpublickey)
-
----
-
-## Properties
-
-<a id="applicationblock"></a>
-
-### applicationBlock
-
-**● applicationBlock**: _`BigNumber`_
-
-_Defined in [index.ts:82](https://github.com/paradigmfoundation/kosu-monorepo/blob/f80822a/packages/gov-portal-helper/src/index.ts#L82)_
-
----
-
-<a id="confirmationblock"></a>
-
-### confirmationBlock
-
-**● confirmationBlock**: _`BigNumber`_
-
-_Defined in [index.ts:83](https://github.com/paradigmfoundation/kosu-monorepo/blob/f80822a/packages/gov-portal-helper/src/index.ts#L83)_
-
----
-
-<a id="currentchallenge"></a>
-
-### currentChallenge
-
-**● currentChallenge**: _`BigNumber`_
-
-_Defined in [index.ts:84](https://github.com/paradigmfoundation/kosu-monorepo/blob/f80822a/packages/gov-portal-helper/src/index.ts#L84)_
-
----
-
-<a id="details"></a>
-
-### details
-
-**● details**: _`string`_
-
-_Defined in [index.ts:85](https://github.com/paradigmfoundation/kosu-monorepo/blob/f80822a/packages/gov-portal-helper/src/index.ts#L85)_
-
----
-
-<a id="exitblock"></a>
-
-### exitBlock
-
-**● exitBlock**: _`BigNumber`_
-
-_Defined in [index.ts:86](https://github.com/paradigmfoundation/kosu-monorepo/blob/f80822a/packages/gov-portal-helper/src/index.ts#L86)_
-
----
-
-<a id="lastrewardblock"></a>
-
-### lastRewardBlock
-
-**● lastRewardBlock**: _`BigNumber`_
-
-_Defined in [index.ts:87](https://github.com/paradigmfoundation/kosu-monorepo/blob/f80822a/packages/gov-portal-helper/src/index.ts#L87)_
-
----
-
-<a id="owner"></a>
-
-### owner
-
-**● owner**: _`string`_
-
-_Defined in [index.ts:88](https://github.com/paradigmfoundation/kosu-monorepo/blob/f80822a/packages/gov-portal-helper/src/index.ts#L88)_
-
----
-
-<a id="rewardrate"></a>
-
-### rewardRate
-
-**● rewardRate**: _`BigNumber`_
-
-_Defined in [index.ts:89](https://github.com/paradigmfoundation/kosu-monorepo/blob/f80822a/packages/gov-portal-helper/src/index.ts#L89)_
-
----
-
-<a id="stakedbalance"></a>
-
-### stakedBalance
-
-**● stakedBalance**: _`BigNumber`_
-
-_Defined in [index.ts:90](https://github.com/paradigmfoundation/kosu-monorepo/blob/f80822a/packages/gov-portal-helper/src/index.ts#L90)_
-
----
-
-<a id="status"></a>
-
-### status
-
-**● status**: _`number`_
-
-_Defined in [index.ts:91](https://github.com/paradigmfoundation/kosu-monorepo/blob/f80822a/packages/gov-portal-helper/src/index.ts#L91)_
-
----
-
-<a id="tendermintpublickey"></a>
-
-### tendermintPublicKey
-
-**● tendermintPublicKey**: _`string`_
-
-_Defined in [index.ts:92](https://github.com/paradigmfoundation/kosu-monorepo/blob/f80822a/packages/gov-portal-helper/src/index.ts#L92)_
-
----
-
-[@kosu/gov-portal-helper](../README.md) > ["index"](../modules/_index_.md) > [PastChallenge](../interfaces/_index_.pastchallenge.md)
-
-# Interface: PastChallenge
-
-A challenge as returned from the ValidatorRegistry contract (past challenges).
-
-## Hierarchy
-
-**PastChallenge**
-
-## Index
-
-### Properties
-
--   [balance](_index_.pastchallenge.md#balance)
--   [challengeEnd](_index_.pastchallenge.md#challengeend)
--   [challenger](_index_.pastchallenge.md#challenger)
--   [details](_index_.pastchallenge.md#details)
--   [finalized](_index_.pastchallenge.md#finalized)
--   [listingKey](_index_.pastchallenge.md#listingkey)
--   [listingSnapshot](_index_.pastchallenge.md#listingsnapshot)
--   [passed](_index_.pastchallenge.md#passed)
--   [pollId](_index_.pastchallenge.md#pollid)
--   [voterTotal](_index_.pastchallenge.md#votertotal)
-
----
-
-## Properties
-
-<a id="balance"></a>
-
-### balance
-
-**● balance**: _`BigNumber`_
-
-_Defined in [index.ts:66](https://github.com/paradigmfoundation/kosu-monorepo/blob/f80822a/packages/gov-portal-helper/src/index.ts#L66)_
-
----
-
-<a id="challengeend"></a>
-
-### challengeEnd
-
-**● challengeEnd**: _`BigNumber`_
-
-_Defined in [index.ts:67](https://github.com/paradigmfoundation/kosu-monorepo/blob/f80822a/packages/gov-portal-helper/src/index.ts#L67)_
-
----
-
-<a id="challenger"></a>
-
-### challenger
-
-**● challenger**: _`string`_
-
-_Defined in [index.ts:68](https://github.com/paradigmfoundation/kosu-monorepo/blob/f80822a/packages/gov-portal-helper/src/index.ts#L68)_
-
----
-
-<a id="details"></a>
-
-### details
-
-**● details**: _`string`_
-
-_Defined in [index.ts:69](https://github.com/paradigmfoundation/kosu-monorepo/blob/f80822a/packages/gov-portal-helper/src/index.ts#L69)_
-
----
-
-<a id="finalized"></a>
-
-### finalized
-
-**● finalized**: _`boolean`_
-
-_Defined in [index.ts:70](https://github.com/paradigmfoundation/kosu-monorepo/blob/f80822a/packages/gov-portal-helper/src/index.ts#L70)_
-
----
-
-<a id="listingkey"></a>
-
-### listingKey
-
-**● listingKey**: _`string`_
-
-_Defined in [index.ts:71](https://github.com/paradigmfoundation/kosu-monorepo/blob/f80822a/packages/gov-portal-helper/src/index.ts#L71)_
-
----
-
-<a id="listingsnapshot"></a>
-
-### listingSnapshot
-
-**● listingSnapshot**: _[ListingSnapshot](\_index_.listingsnapshot.md)\_
-
-_Defined in [index.ts:72](https://github.com/paradigmfoundation/kosu-monorepo/blob/f80822a/packages/gov-portal-helper/src/index.ts#L72)_
-
----
-
-<a id="passed"></a>
-
-### passed
-
-**● passed**: _`boolean`_
-
-_Defined in [index.ts:73](https://github.com/paradigmfoundation/kosu-monorepo/blob/f80822a/packages/gov-portal-helper/src/index.ts#L73)_
-
----
-
-<a id="pollid"></a>
-
-### pollId
-
-**● pollId**: _`BigNumber`_
-
-_Defined in [index.ts:74](https://github.com/paradigmfoundation/kosu-monorepo/blob/f80822a/packages/gov-portal-helper/src/index.ts#L74)_
-
----
-
-<a id="votertotal"></a>
-
-### voterTotal
-
-**● voterTotal**: _`BigNumber`_
-
-_Defined in [index.ts:75](https://github.com/paradigmfoundation/kosu-monorepo/blob/f80822a/packages/gov-portal-helper/src/index.ts#L75)_
-
----
-
-[@kosu/gov-portal-helper](../README.md) > ["index"](../modules/_index_.md) > [Proposal](../interfaces/_index_.proposal.md)
-
-# Interface: Proposal
-
-Represents a listing proposal in the live-updating store.
-
-## Hierarchy
-
-**Proposal**
-
-## Index
-
-### Properties
-
--   [acceptUnix](_index_.proposal.md#acceptunix)
--   [dailyReward](_index_.proposal.md#dailyreward)
--   [details](_index_.proposal.md#details)
--   [owner](_index_.proposal.md#owner)
--   [power](_index_.proposal.md#power)
--   [stakeSize](_index_.proposal.md#stakesize)
-
----
-
-## Properties
-
-<a id="acceptunix"></a>
-
-### acceptUnix
-
-**● acceptUnix**: _`number`_
-
-_Defined in [index.ts:40](https://github.com/paradigmfoundation/kosu-monorepo/blob/f80822a/packages/gov-portal-helper/src/index.ts#L40)_
-
----
-
-<a id="dailyreward"></a>
-
-### dailyReward
-
-**● dailyReward**: _`BigNumber`_
-
-_Defined in [index.ts:37](https://github.com/paradigmfoundation/kosu-monorepo/blob/f80822a/packages/gov-portal-helper/src/index.ts#L37)_
-
----
-
-<a id="details"></a>
-
-### details
-
-**● details**: _`string`_
-
-_Defined in [index.ts:39](https://github.com/paradigmfoundation/kosu-monorepo/blob/f80822a/packages/gov-portal-helper/src/index.ts#L39)_
-
----
-
-<a id="owner"></a>
-
-### owner
-
-**● owner**: _`string`_
-
-_Defined in [index.ts:35](https://github.com/paradigmfoundation/kosu-monorepo/blob/f80822a/packages/gov-portal-helper/src/index.ts#L35)_
-
----
-
-<a id="power"></a>
-
-### power
-
-**● power**: _`BigNumber`_
-
-_Defined in [index.ts:38](https://github.com/paradigmfoundation/kosu-monorepo/blob/f80822a/packages/gov-portal-helper/src/index.ts#L38)_
-
----
-
-<a id="stakesize"></a>
-
-### stakeSize
-
-**● stakeSize**: _`BigNumber`_
-
-_Defined in [index.ts:36](https://github.com/paradigmfoundation/kosu-monorepo/blob/f80822a/packages/gov-portal-helper/src/index.ts#L36)_
-
----
-
-[@kosu/gov-portal-helper](../README.md) > ["index"](../modules/_index_.md) > [Validator](../interfaces/_index_.validator.md)
-
-# Interface: Validator
-
-Represents a current validator in the live-updating store.
-
-## Hierarchy
-
-**Validator**
-
-## Index
-
-### Properties
-
--   [confirmationUnix](_index_.validator.md#confirmationunix)
--   [dailyReward](_index_.validator.md#dailyreward)
--   [details](_index_.validator.md#details)
--   [owner](_index_.validator.md#owner)
--   [power](_index_.validator.md#power)
--   [stakeSize](_index_.validator.md#stakesize)
-
----
-
-## Properties
-
-<a id="confirmationunix"></a>
-
-### confirmationUnix
-
-**● confirmationUnix**: _`number`_
-
-_Defined in [index.ts:26](https://github.com/paradigmfoundation/kosu-monorepo/blob/f80822a/packages/gov-portal-helper/src/index.ts#L26)_
-
----
-
-<a id="dailyreward"></a>
-
-### dailyReward
-
-**● dailyReward**: _`BigNumber`_
-
-_Defined in [index.ts:25](https://github.com/paradigmfoundation/kosu-monorepo/blob/f80822a/packages/gov-portal-helper/src/index.ts#L25)_
-
----
-
-<a id="details"></a>
-
-### details
-
-**● details**: _`string`_
-
-_Defined in [index.ts:28](https://github.com/paradigmfoundation/kosu-monorepo/blob/f80822a/packages/gov-portal-helper/src/index.ts#L28)_
-
----
-
-<a id="owner"></a>
-
-### owner
-
-**● owner**: _`string`_
-
-_Defined in [index.ts:23](https://github.com/paradigmfoundation/kosu-monorepo/blob/f80822a/packages/gov-portal-helper/src/index.ts#L23)_
-
----
-
-<a id="power"></a>
-
-### power
-
-**● power**: _`BigNumber`_
-
-_Defined in [index.ts:27](https://github.com/paradigmfoundation/kosu-monorepo/blob/f80822a/packages/gov-portal-helper/src/index.ts#L27)_
-
----
-
-<a id="stakesize"></a>
-
-### stakeSize
-
-**● stakeSize**: _`BigNumber`_
-
-_Defined in [index.ts:24](https://github.com/paradigmfoundation/kosu-monorepo/blob/f80822a/packages/gov-portal-helper/src/index.ts#L24)_
-
----
+**Kind**: static property of [<code>Gov</code>](#Gov)  
