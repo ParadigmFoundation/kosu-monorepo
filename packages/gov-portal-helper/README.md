@@ -1,34 +1,51 @@
-## Classes
+## `@kosu/gov-portal-helper`
 
-<dl>
-<dt><a href="#Gov">Gov</a></dt>
-<dd><p><code>Gov</code> is a helper library for interacting with the Kosu validator governance
+<p><code>Gov</code> is a helper library for interacting with the Kosu validator governance
 system (primarily the Kosu <code>ValidatorRegistry</code> contract).</p>
 <p>It is designed with the browser in mind, and is intended to be used in front-
 end projects for simplifying interaction with the governance system.</p>
-</dd>
-</dl>
+
+## Installation
+
+Add `gov-portal-helper` to your project via `npm` or `yarn`.
+
+```shell
+# install with yarn
+yarn add @kosu/gov-portal-helper
+
+# install with npm
+yarn add @kosu/gov-portal-helper
+```
 
 ## Typedefs
 
 <dl>
-<dt><a href="#Listing">Listing</a> : <code>Object</code></dt>
-<dd></dd>
-<dt><a href="#Challenge">Challenge</a> : <code>Object</code></dt>
-<dd></dd>
-<dt><a href="#HistoricalActivity">HistoricalActivity</a> : <code>Object</code></dt>
-<dd></dd>
+<dt><a href="#Validator">Validator</a></dt>
+<dd><p>Represents an active validator in the registry.</p></dd>
+<dt><a href="#Proposal">Proposal</a></dt>
+<dd><p>Represents a pending listing application for a spot on the <code>ValidatorRegistry</code>.</p></dd>
+<dt><a href="#StoreChallenge">StoreChallenge</a></dt>
+<dd><p>Represents a current challenge (in the <code>gov</code> state).</p></dd>
+<dt><a href="#PastChallenge">PastChallenge</a></dt>
+<dd><p>Represents a historical challenge, and its outcome.</p></dd>
+<dt><a href="#ListingSnapshot">ListingSnapshot</a></dt>
+<dd><p>Represents a listing at the time it was challenged.</p></dd>
 </dl>
 
 <a name="Gov"></a>
 
 ## Gov
 
-`Gov` is a helper library for interacting with the Kosu validator governance
-system (primarily the Kosu `ValidatorRegistry` contract).
-
-It is designed with the browser in mind, and is intended to be used in front-
-end projects for simplifying interaction with the governance system.
+<p><code>Gov</code> is a helper library for interacting with the Kosu validator governance
+system (primarily the Kosu <code>ValidatorRegistry</code> contract).</p>
+<p>It is designed with the browser in mind, and is intended to be used in front-
+end projects for simplifying interaction with the governance system.</p>
+<p>Methods may be used to load the current <code>proposals</code>, <code>validators</code>, and
+<code>challenges</code> from the prototype's state, or the <code>gov.ee</code> object (an EventEmitter)
+may be used to detect updates to the state, emitted as <code>gov_update</code> events.</p>
+<p>After a <code>gov_update</code> event, the read methods for <code>proposals</code>, <code>challenges</code>,
+and <code>validators</code> must be called to load the current listings. Alternatively,
+access the objects directly with <code>gov.listings</code>, etc.</p>
 
 **Kind**: global class
 
@@ -36,63 +53,105 @@ end projects for simplifying interaction with the governance system.
     -   [new Gov()](#new_Gov_new)
     -   _instance_
         -   [.init()](#Gov+init)
+        -   [.currentProposals()](#Gov+currentProposals) ⇒ [<code>Map.&lt;Proposal&gt;</code>](#Proposal)
+        -   [.currentValidators()](#Gov+currentValidators) ⇒ [<code>Map.&lt;Validator&gt;</code>](#Validator)
+        -   [.currentChallenges()](#Gov+currentChallenges) ⇒ [<code>Map.&lt;StoreChallenge&gt;</code>](#StoreChallenge)
         -   [.weiToEther(wei)](#Gov+weiToEther) ⇒ <code>string</code>
         -   [.etherToWei(ether)](#Gov+etherToWei) ⇒ <code>string</code>
-        -   [.estimateFutureBlockTimestamp(blockNumber)](#Gov+estimateFutureBlockTimestamp) ⇒ <code>number</code>
-        -   [.getPastBlockTimestamp(blockNumber)](#Gov+getPastBlockTimestamp) ⇒ <code>number</code>
-        -   [.getHistoricalActivity()](#Gov+getHistoricalActivity) ⇒ [<code>HistoricalActivity</code>](#HistoricalActivity)
+        -   [.estimateFutureBlockTimestamp(blockNumber)](#Gov+estimateFutureBlockTimestamp) ⇒ <code>Promise.&lt;number&gt;</code>
+        -   [.getPastBlockTimestamp(blockNumber)](#Gov+getPastBlockTimestamp) ⇒ <code>Promise.&lt;number&gt;</code>
+        -   [.getHistoricalChallenges()](#Gov+getHistoricalChallenges) ⇒ <code>Promise.&lt;Array.&lt;PastChallenge&gt;&gt;</code>
     -   _static_
         -   [.ZERO](#Gov.ZERO)
         -   [.ONE](#Gov.ONE)
         -   [.ONE_HUNDRED](#Gov.ONE_HUNDRED)
         -   [.BLOCKS_PER_DAY](#Gov.BLOCKS_PER_DAY)
-        -   [.BigNumber(input)](#Gov.BigNumber) ⇒ <code>BigNumber</code>
 
 <a name="new_Gov_new"></a>
 
 ### new Gov()
 
-Create a new `Gov` instance (`gov`). Requires no arguments, but can be
-set to "debug" mode by passing `true` or `1` (or another truthy object to
-the constructor).
-
-Prior to using most `gov` functionality, the async `gov.init()` method
+<p>Create a new <code>Gov</code> instance (<code>gov</code>). Requires no arguments, but can be
+set to &quot;debug&quot; mode by passing <code>true</code> or <code>1</code> (or another truthy object to
+the constructor).</p>
+<p>Prior to using most <code>gov</code> functionality, the async <code>gov.init()</code> method
 must be called, which will initialize the module and load state from
-the Kosu contract system.
+the Kosu contract system.</p>
 
 <a name="Gov+init"></a>
 
 ### gov.init()
 
-Main initialization function for the `gov` module. You must call `init`
-prior to interacting with most module functionality, and `gov.init()` will
+<p>Main initialization function for the <code>gov</code> module. You must call <code>init</code>
+prior to interacting with most module functionality, and <code>gov.init()</code> will
 load the current registry status (validators, proposals, etc.) so it should
-be called early-on in the page lifecycle.
+be called early-on in the page life-cycle.</p>
+<p>Performs many functions, including:</p>
+<ul>
+<li>prompt user to connect MetaMask</li>
+<li>load user's address (the &quot;coinbase&quot;)</li>
+<li>load the current Ethereum block height</li>
+<li>load and process the latest ValidatorRegistry state</li>
+</ul>
 
-Performs many functions, including:
+**Kind**: instance method of [<code>Gov</code>](#Gov)
+<a name="Gov+currentProposals"></a>
 
--   prompt user to connect MetaMask
--   load user's address (the "coinbase")
--   load the current Ethereum block height
--   load and process the latest ValidatorRegistry state
+### gov.currentProposals() ⇒ [<code>Map.&lt;Proposal&gt;</code>](#Proposal)
+
+<p>Load the current proposal map from state.</p>
+
+**Kind**: instance method of [<code>Gov</code>](#Gov)
+**Returns**: [<code>Map.&lt;Proposal&gt;</code>](#Proposal) - <p>a map where the key is the listing public key, and the value is a proposal object</p>
+**Example**
+
+```javascript
+const proposals = gov.currentProposals();
+```
+
+<a name="Gov+currentValidators"></a>
+
+### gov.currentValidators() ⇒ [<code>Map.&lt;Validator&gt;</code>](#Validator)
+
+<p>Load the current validators map from state.</p>
 
 **Kind**: instance method of [<code>Gov</code>](#Gov)  
+**Returns**: [<code>Map.&lt;Validator&gt;</code>](#Validator) - <p>a map where the key is the listing public key, and the value is a validator object</p>  
+**Example**
+
+```javascript
+const validators = gov.currentValidators();
+```
+
+<a name="Gov+currentChallenges"></a>
+
+### gov.currentChallenges() ⇒ [<code>Map.&lt;StoreChallenge&gt;</code>](#StoreChallenge)
+
+<p>Load the current challenges map from state.</p>
+
+**Kind**: instance method of [<code>Gov</code>](#Gov)  
+**Returns**: [<code>Map.&lt;StoreChallenge&gt;</code>](#StoreChallenge) - <p>a map where the key is the listing public key, and the value is a challenge object</p>  
+**Example**
+
+```javascript
+const challenges = gov.currentChallenges();
+```
+
 <a name="Gov+weiToEther"></a>
 
 ### gov.weiToEther(wei) ⇒ <code>string</code>
 
-Convert a number of tokens, denominated in the smallest unit - "wei" - to
-"full" units, called "ether". One ether = 1\*10^18 wei.
-
-All contract calls require amounts in wei, but the user should be shown
-amounts in ether.
+<p>Convert a number of tokens, denominated in the smallest unit - &quot;wei&quot; - to
+&quot;full&quot; units, called &quot;ether&quot;. One ether = 1*10^18 wei.</p>
+<p>All contract calls require amounts in wei, but the user should be shown
+amounts in ether.</p>
 
 **Kind**: instance method of [<code>Gov</code>](#Gov)  
-**Returns**: <code>string</code> - the same amount in ether, string used for precision
+**Returns**: <code>string</code> - <p>the same amount in ether, string used for precision</p>
 
-| Param | Type                                                                 | Description                        |
-| ----- | -------------------------------------------------------------------- | ---------------------------------- |
-| wei   | <code>BigNumber</code> \| <code>string</code> \| <code>number</code> | the token amount in wei to convert |
+| Param | Type                                          | Description                               |
+| ----- | --------------------------------------------- | ----------------------------------------- |
+| wei   | <code>BigNumber</code> \| <code>string</code> | <p>the token amount in wei to convert</p> |
 
 **Example**
 
@@ -105,18 +164,17 @@ gov.weiToEther(100000000000000000000); // > "100"
 
 ### gov.etherToWei(ether) ⇒ <code>string</code>
 
-Convert a number of tokens (full units, called "ether") to "wei", the
-smallest denomination of most ERC-20 tokens with 18 decimals.
-
-All contract calls require amounts in wei, but the user should be shown
-amounts in ether.
+<p>Convert a number of tokens (full units, called &quot;ether&quot;) to &quot;wei&quot;, the
+smallest denomination of most ERC-20 tokens with 18 decimals.</p>
+<p>All contract calls require amounts in wei, but the user should be shown
+amounts in ether.</p>
 
 **Kind**: instance method of [<code>Gov</code>](#Gov)  
-**Returns**: <code>string</code> - the same amount in wei, string used for precision
+**Returns**: <code>string</code> - <p>the same amount in wei, string used for precision</p>
 
-| Param | Type                                                                 | Description                 |
-| ----- | -------------------------------------------------------------------- | --------------------------- |
-| ether | <code>BigNumber</code> \| <code>string</code> \| <code>number</code> | the token amount to convert |
+| Param | Type                                          | Description                        |
+| ----- | --------------------------------------------- | ---------------------------------- |
+| ether | <code>BigNumber</code> \| <code>string</code> | <p>the token amount to convert</p> |
 
 **Example**
 
@@ -127,17 +185,17 @@ gov.etherToWei("1"); // > "1000000000000000000"
 
 <a name="Gov+estimateFutureBlockTimestamp"></a>
 
-### gov.estimateFutureBlockTimestamp(blockNumber) ⇒ <code>number</code>
+### gov.estimateFutureBlockTimestamp(blockNumber) ⇒ <code>Promise.&lt;number&gt;</code>
 
-Estimate the UNIX timestamp (in seconds) at which a given `block` will be
-mined.
+<p>Estimate the UNIX timestamp (in seconds) at which a given <code>block</code> will be
+mined.</p>
 
 **Kind**: instance method of [<code>Gov</code>](#Gov)  
-**Returns**: <code>number</code> - the block's estimated UNIX timestamp (in seconds)
+**Returns**: <code>Promise.&lt;number&gt;</code> - <p>the block's estimated UNIX timestamp (in seconds)</p>
 
-| Param       | Type                | Description                                    |
-| ----------- | ------------------- | ---------------------------------------------- |
-| blockNumber | <code>number</code> | the block number to estimate the timestamp for |
+| Param       | Type                | Description                                           |
+| ----------- | ------------------- | ----------------------------------------------------- |
+| blockNumber | <code>number</code> | <p>the block number to estimate the timestamp for</p> |
 
 **Example**
 
@@ -151,18 +209,18 @@ const blockDate = new Date(ts * 1000);
 
 <a name="Gov+getPastBlockTimestamp"></a>
 
-### gov.getPastBlockTimestamp(blockNumber) ⇒ <code>number</code>
+### gov.getPastBlockTimestamp(blockNumber) ⇒ <code>Promise.&lt;number&gt;</code>
 
-Retrieve the Unix timestamp of a block that has already been mined.
+<p>Retrieve the Unix timestamp of a block that has already been mined.
 Should be used to display times of things that have happened (validator
-confirmed, etc.).
+confirmed, etc.).</p>
 
 **Kind**: instance method of [<code>Gov</code>](#Gov)  
-**Returns**: <code>number</code> - the Unix timestamp of the specified `blockNumber`
+**Returns**: <code>Promise.&lt;number&gt;</code> - <p>the Unix timestamp of the specified <code>blockNumber</code></p>
 
-| Param       | Type                | Description                             |
-| ----------- | ------------------- | --------------------------------------- |
-| blockNumber | <code>number</code> | the block to get the unix timestamp for |
+| Param       | Type                | Description                                    |
+| ----------- | ------------------- | ---------------------------------------------- |
+| blockNumber | <code>number</code> | <p>the block to get the unix timestamp for</p> |
 
 **Example**
 
@@ -170,115 +228,147 @@ confirmed, etc.).
 await gov.getPastBlockTimestamp(515237); // > 1559346404
 ```
 
-<a name="Gov+getHistoricalActivity"></a>
+<a name="Gov+getHistoricalChallenges"></a>
 
-### gov.getHistoricalActivity() ⇒ [<code>HistoricalActivity</code>](#HistoricalActivity)
+### gov.getHistoricalChallenges() ⇒ <code>Promise.&lt;Array.&lt;PastChallenge&gt;&gt;</code>
 
-This method returns an object (described below) that contains all
-historical listings (proposals and validators, including current) listings
-and information about all past challenges.
-
-It will take a significant amount of time (~12s) to resolve, and the
-return object can be large (on the order of 30 KB) depending on the number
-of past governance activities.
-
-Because it a) takes a long time to load and b) is network I/O intensive,
-it should only be called when the user requests to load all historical
-data.
+<p>This method returns an array (described below) that contains information
+about all past challenges. Intended to be used for the &quot;Past Challenges&quot;
+section.</p>
 
 **Kind**: instance method of [<code>Gov</code>](#Gov)  
-**Returns**: [<code>HistoricalActivity</code>](#HistoricalActivity) - all historical `challenges` and `listings`.  
+**Returns**: <code>Promise.&lt;Array.&lt;PastChallenge&gt;&gt;</code> - <p>all historical <code>challenges</code>.</p>  
 <a name="Gov.ZERO"></a>
 
 ### Gov.ZERO
 
-The value `0` as an instance of`BigNumber`.
+<p>The value <code>0</code> as an instance of<code>BigNumber</code>.</p>
 
 **Kind**: static property of [<code>Gov</code>](#Gov)  
 <a name="Gov.ONE"></a>
 
 ### Gov.ONE
 
-The value `1` as an instance of`BigNumber`.
+<p>The value <code>1</code> as an instance of<code>BigNumber</code>.</p>
 
 **Kind**: static property of [<code>Gov</code>](#Gov)  
 <a name="Gov.ONE_HUNDRED"></a>
 
 ### Gov.ONE_HUNDRED
 
-The value `100` as an instance of`BigNumber`.
+<p>The value <code>100</code> as an instance of<code>BigNumber</code>.</p>
 
 **Kind**: static property of [<code>Gov</code>](#Gov)  
 <a name="Gov.BLOCKS_PER_DAY"></a>
 
 ### Gov.BLOCKS_PER_DAY
 
-Estimated blocks per day (mainnet only).
+<p>Estimated blocks per day (mainnet only).</p>
 
 **Kind**: static property of [<code>Gov</code>](#Gov)  
-<a name="Gov.BigNumber"></a>
+<a name="Validator"></a>
 
-### Gov.BigNumber(input) ⇒ <code>BigNumber</code>
+## Validator
 
-Create new `BigNumber` instance. Identical to calling `BigNumber` constructor.
-
-**Kind**: static method of [<code>Gov</code>](#Gov)  
-**Returns**: <code>BigNumber</code> - the `BigNumber` version of `input`
-
-| Param | Type                                                                 | Description                  |
-| ----- | -------------------------------------------------------------------- | ---------------------------- |
-| input | <code>number</code> \| <code>string</code> \| <code>BigNumber</code> | value to wrap as a BigNumber |
-
-**Example**
-
-```javascript
-const bn = new Gov.BigNumber(10);
-```
-
-<a name="Listing"></a>
-
-## Listing : <code>Object</code>
+<p>Represents an active validator in the registry.</p>
 
 **Kind**: global typedef  
 **Properties**
 
-| Name            | Type                                     | Description                                                                                                               |
-| --------------- | ---------------------------------------- | ------------------------------------------------------------------------------------------------------------------------- |
-| owner           | <code>string</code>                      | the Ethereum address of the listing holder                                                                                |
-| rewardRate      | <code>BigNumber</code>                   | the number of KOSU (in wei) rewarded per period                                                                           |
-| applyBlock      | <code>BigNumber</code>                   | the block number the listing was created at                                                                               |
-| pubKey          | <code>string</code>                      | the hex-string Tendermint public key of the listing                                                                       |
-| confBlock       | <code>string</code> \| <code>null</code> | the block the listing was confirmed to the registry at (`null` if they were never accepted).                              |
-| status          | <code>string</code>                      | the most recent listing state ("proposal", "validator", or "removed")                                                     |
-| inChallenge     | <code>boolean</code>                     | `true` if the listing has an open challenge against it                                                                    |
-| challenger      | <code>string</code> \| <code>null</code> | the Ethereum address of the challenger, if the listing was challenged                                                     |
-| challengeEnd    | <code>number</code>                      | the Ethereum block at which the challenge ends (or ended) and `null` if they were never challenged                        |
-| challengeId     | <code>string</code>                      | the unique sequential ID number (as a string) that can be used to reference the challenge                                 |
-| pollId          | <code>string</code>                      | the underlying `pollId` from the voting contract; usually but not always equal to `challengeId`                           |
-| challengeResult | <code>string</code>                      | the result of the challenge, either "succeeded", "failed", or `null` (`null` if challenge is pending, or never happened). |
+| Name             | Type                   | Description                                                              |
+| ---------------- | ---------------------- | ------------------------------------------------------------------------ |
+| owner            | <code>string</code>    | <p>the Ethereum address of the validator</p>                             |
+| stakeSize        | <code>BigNumber</code> | <p>the staked balance (in wei) of the validator</p>                      |
+| dailyReward      | <code>BigNumber</code> | <p>the approximate daily reward to the validator (in wei)</p>            |
+| confirmationUnix | <code>number</code>    | <p>the unix timestamp of the block the validator was confirmed in</p>    |
+| power            | <code>BigNumber</code> | <p>the validators approximate current vote power on the Kosu network</p> |
+| details          | <code>string</code>    | <p>arbitrary details provided by the validator when they applied</p>     |
 
-<a name="Challenge"></a>
+<a name="Proposal"></a>
 
-## Challenge : <code>Object</code>
+## Proposal
+
+<p>Represents a pending listing application for a spot on the <code>ValidatorRegistry</code>.</p>
 
 **Kind**: global typedef  
 **Properties**
 
-| Name       | Type                   | Description                                                     |
-| ---------- | ---------------------- | --------------------------------------------------------------- |
-| listingKey | <code>string</code>    | the public key of the challenged listing                        |
-| challenger | <code>string</code>    | the Ethereum address of the challenging entity                  |
-| voterTotal | <code>BigNumber</code> | the total amount of KOSU (in wei) that participated in the vote |
-|            | <code>BigNumber</code> |                                                                 |
+| Name        | Type                   | Description                                                                           |
+| ----------- | ---------------------- | ------------------------------------------------------------------------------------- |
+| owner       | <code>string</code>    | <p>the Ethereum address of the applicant</p>                                          |
+| stakeSize   | <code>BigNumber</code> | <p>the total stake the applicant is including with their proposal (in wei)</p>        |
+| dailyReward | <code>BigNumber</code> | <p>the approximate daily reward (in wei) the applicant is requesting</p>              |
+| power       | <code>BigNumber</code> | <p>the estimated vote power the listing would receive if accepted right now</p>       |
+| details     | <code>string</code>    | <p>arbitrary details provided by the applicant with their proposal</p>                |
+| acceptUnix  | <code>number</code>    | <p>the approximate unix timestamp the listing will be accepted, if not challenged</p> |
 
-<a name="HistoricalActivity"></a>
+<a name="StoreChallenge"></a>
 
-## HistoricalActivity : <code>Object</code>
+## StoreChallenge
+
+<p>Represents a current challenge (in the <code>gov</code> state).</p>
 
 **Kind**: global typedef  
 **Properties**
 
-| Name          | Type                                               | Description                                             |
-| ------------- | -------------------------------------------------- | ------------------------------------------------------- |
-| allListings   | [<code>Array.&lt;Listing&gt;</code>](#Listing)     | an array of all historical listings                     |
-| allChallenges | [<code>Array.&lt;Challenge&gt;</code>](#Challenge) | an arry of all historical challenges, and their results |
+| Name             | Type                   | Description                                                                                                             |
+| ---------------- | ---------------------- | ----------------------------------------------------------------------------------------------------------------------- |
+| listingOwner     | <code>string</code>    | <p>the Ethereum address of the owner of the challenged listing</p>                                                      |
+| listingStake     | <code>BigNumber</code> | <p>the total stake of the challenged listing</p>                                                                        |
+| listingPower     | <code>BigNumber</code> | <p>the current vote power of the listing (if they are a validator)</p>                                                  |
+| challenger       | <code>string</code>    | <p>the Ethereum address of the challenger</p>                                                                           |
+| challengeId      | <code>BigNumber</code> | <p>the incremental ID of the current challenge</p>                                                                      |
+| challengerStake  | <code>BigNumber</code> | <p>the staked balance of the challenger</p>                                                                             |
+| challengeEndUnix | <code>number</code>    | <p>the estimated unix timestamp the challenge ends at</p>                                                               |
+| totalTokens      | <code>BigNumber</code> | <p>if finalized, the total number of tokens from participating voters</p>                                               |
+| winningTokens    | <code>BigNumber</code> | <p>if finalized, the number of tokens that voted on the winning side</p>                                                |
+| result           | <code>string</code>    | <p>the final result of the challenge; &quot;passed&quot;, &quot;failed&quot;, or <code>null</code> if not finalized</p> |
+| challengeType    | <code>string</code>    | <p>the type of listing the challenge is against, either a &quot;validator&quot; or a &quot;proposal&quot;</p>           |
+| listingDetails   | <code>string</code>    | <p>details provided by the listing holder</p>                                                                           |
+| challengeDetails | <code>string</code>    | <p>details provided by the challenger</p>                                                                               |
+
+<a name="PastChallenge"></a>
+
+## PastChallenge
+
+<p>Represents a historical challenge, and its outcome.</p>
+
+**Kind**: global typedef  
+**Properties**
+
+| Name            | Type                                             | Description                                                                                    |
+| --------------- | ------------------------------------------------ | ---------------------------------------------------------------------------------------------- |
+| balance         | <code>BigNumber</code>                           | <p>the number of tokens (in wei) staked in the challenge</p>                                   |
+| challengeEnd    | <code>BigNumber</code>                           | <p>the block the challenge ends at</p>                                                         |
+| challenger      | <code>string</code>                              | <p>the Ethereum address of the challenger</p>                                                  |
+| details         | <code>string</code>                              | <p>additional details provided by the challenger</p>                                           |
+| finalized       | <code>boolean</code>                             | <p><code>true</code> if the challenge result is final, <code>false</code> if it is ongoing</p> |
+| listingKey      | <code>string</code>                              | <p>the key that corresponds to the challenged listing</p>                                      |
+| listingSnapshot | [<code>ListingSnapshot</code>](#ListingSnapshot) | <p>an object representing the state of the challenged listing at the time of challenge</p>     |
+| passed          | <code>boolean</code>                             | <p><code>true</code> if the challenge was successful, <code>false</code> otherwise</p>         |
+| pollId          | <code>BigNumber</code>                           | <p>the incremental ID used to identify the poll</p>                                            |
+| voterTotal      | <code>BigNumber</code>                           | <p>the total number of tokens participating in the vote</p>                                    |
+| winningTokens   | <code>BigNumber</code>                           | <p>the total number of tokens voting for the winning option</p>                                |
+
+<a name="ListingSnapshot"></a>
+
+## ListingSnapshot
+
+<p>Represents a listing at the time it was challenged.</p>
+
+**Kind**: global typedef  
+**Properties**
+
+| Name                | Type                   | Description                                                                                                               |
+| ------------------- | ---------------------- | ------------------------------------------------------------------------------------------------------------------------- |
+| applicationBlock    | <code>BigNumber</code> | <p>the block the listing application was submitted</p>                                                                    |
+| confirmationBlock   | <code>BigNumber</code> | <p>the block the listing was confirmed (0 if unconfirmed)</p>                                                             |
+| currentChallenge    | <code>BigNumber</code> | <p>the ID of the current challenge against the listing</p>                                                                |
+| details             | <code>string</code>    | <p>arbitrary details provided by the listing applicant</p>                                                                |
+| exitBlock           | <code>BigNumber</code> | <p>the block (if any) the listing exited at</p>                                                                           |
+| lastRewardBlock     | <code>BigNumber</code> | <p>the last block the listing owner claimed rewards for</p>                                                               |
+| owner               | <code>string</code>    | <p>the Ethereum address of the listing owner</p>                                                                          |
+| rewardRate          | <code>BigNumber</code> | <p>the number of tokens (in wei) rewarded to the listing per reward period</p>                                            |
+| stakedBalance       | <code>BigNumber</code> | <p>the number of tokens staked by the listing owner (in wei)</p>                                                          |
+| status              | <code>number</code>    | <p>the number representing the listing status (0: no listing, 1: proposal, 2: validator, 3: in-challenge, 4: exiting)</p> |
+| tendermintPublicKey | <code>string</code>    | <p>the 32 byte Tendermint public key of the listing holder</p>                                                            |

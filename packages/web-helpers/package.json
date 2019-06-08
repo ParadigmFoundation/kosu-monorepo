@@ -14,7 +14,7 @@
     },
     "scripts": {
         "compile:assets": "./scripts/build.sh",
-        "develop": "./scripts/dev.sh",
+        "develop": "webpack-dev-server",
         "deploy": "./scripts/deploy.sh"
     },
     "repository": {
