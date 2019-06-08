@@ -40,6 +40,12 @@ yarn add @kosu/gov-portal-helper
 system (primarily the Kosu <code>ValidatorRegistry</code> contract).</p>
 <p>It is designed with the browser in mind, and is intended to be used in front-
 end projects for simplifying interaction with the governance system.</p>
+<p>Methods may be used to load the current <code>proposals</code>, <code>validators</code>, and
+<code>challenges</code> from the prototype's state, or the <code>gov.ee</code> object (an EventEmitter)
+may be used to detect updates to the state, emitted as <code>gov_update</code> events.</p>
+<p>After a <code>gov_update</code> event, the read methods for <code>proposals</code>, <code>challenges</code>,
+and <code>validators</code> must be called to load the current listings. Alternatively,
+access the objects directly with <code>gov.listings</code>, etc.</p>
 
 **Kind**: global class
 
@@ -47,6 +53,9 @@ end projects for simplifying interaction with the governance system.</p>
     -   [new Gov()](#new_Gov_new)
     -   _instance_
         -   [.init()](#Gov+init)
+        -   [.currentProposals()](#Gov+currentProposals) ⇒ [<code>Map.&lt;Proposal&gt;</code>](#Proposal)
+        -   [.currentValidators()](#Gov+currentValidators) ⇒ [<code>Map.&lt;Validator&gt;</code>](#Validator)
+        -   [.currentChallenges()](#Gov+currentChallenges) ⇒ [<code>Map.&lt;StoreChallenge&gt;</code>](#StoreChallenge)
         -   [.weiToEther(wei)](#Gov+weiToEther) ⇒ <code>string</code>
         -   [.etherToWei(ether)](#Gov+etherToWei) ⇒ <code>string</code>
         -   [.estimateFutureBlockTimestamp(blockNumber)](#Gov+estimateFutureBlockTimestamp) ⇒ <code>Promise.&lt;number&gt;</code>
@@ -85,7 +94,49 @@ be called early-on in the page life-cycle.</p>
 <li>load and process the latest ValidatorRegistry state</li>
 </ul>
 
+**Kind**: instance method of [<code>Gov</code>](#Gov)
+<a name="Gov+currentProposals"></a>
+
+### gov.currentProposals() ⇒ [<code>Map.&lt;Proposal&gt;</code>](#Proposal)
+
+<p>Load the current proposal map from state.</p>
+
+**Kind**: instance method of [<code>Gov</code>](#Gov)
+**Returns**: [<code>Map.&lt;Proposal&gt;</code>](#Proposal) - <p>a map where the key is the listing public key, and the value is a proposal object</p>
+**Example**
+
+```javascript
+const proposals = gov.currentProposals();
+```
+
+<a name="Gov+currentValidators"></a>
+
+### gov.currentValidators() ⇒ [<code>Map.&lt;Validator&gt;</code>](#Validator)
+
+<p>Load the current validators map from state.</p>
+
 **Kind**: instance method of [<code>Gov</code>](#Gov)  
+**Returns**: [<code>Map.&lt;Validator&gt;</code>](#Validator) - <p>a map where the key is the listing public key, and the value is a validator object</p>  
+**Example**
+
+```javascript
+const validators = gov.currentValidators();
+```
+
+<a name="Gov+currentChallenges"></a>
+
+### gov.currentChallenges() ⇒ [<code>Map.&lt;StoreChallenge&gt;</code>](#StoreChallenge)
+
+<p>Load the current challenges map from state.</p>
+
+**Kind**: instance method of [<code>Gov</code>](#Gov)  
+**Returns**: [<code>Map.&lt;StoreChallenge&gt;</code>](#StoreChallenge) - <p>a map where the key is the listing public key, and the value is a challenge object</p>  
+**Example**
+
+```javascript
+const challenges = gov.currentChallenges();
+```
+
 <a name="Gov+weiToEther"></a>
 
 ### gov.weiToEther(wei) ⇒ <code>string</code>

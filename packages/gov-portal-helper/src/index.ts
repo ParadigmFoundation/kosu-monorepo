@@ -179,6 +179,14 @@ interface Map<T> {
  *
  * It is designed with the browser in mind, and is intended to be used in front-
  * end projects for simplifying interaction with the governance system.
+ *
+ * Methods may be used to load the current `proposals`, `validators`, and
+ * `challenges` from the prototype's state, or the `gov.ee` object (an EventEmitter)
+ * may be used to detect updates to the state, emitted as `gov_update` events.
+ *
+ * After a `gov_update` event, the read methods for `proposals`, `challenges`,
+ * and `validators` must be called to load the current listings. Alternatively,
+ * access the objects directly with `gov.listings`, etc.
  */
 class Gov {
     /** Create new BigNumber (mimics constructor) */
@@ -284,6 +292,44 @@ class Gov {
             await this._processListing(listing);
         }
         this.kosu.eventEmitter.getFutureDecodedLogs(this.initBlock + 1, this._handleEvents.bind(this));
+    }
+
+    /**
+     * Load the current proposal map from state.
+     *
+     * @returns {Map<Proposal>} a map where the key is the listing public key, and the value is a proposal object
+     * @example
+     * ```javascript
+     * const proposals = gov.currentProposals();
+     * ```
+     */
+    public currentProposals(): Map<Proposal> {
+        return this.proposals;
+    }
+
+    /**
+     * Load the current validators map from state.
+     *
+     * @returns {Map<Validator>} a map where the key is the listing public key, and the value is a validator object
+     * @example
+     * ```javascript
+     * const validators = gov.currentValidators();
+     * ```
+     */
+    public currentValidators(): Map<Validator> {
+        return this.validators;
+    }
+    /**
+     * Load the current challenges map from state.
+     *
+     * @returns {Map<StoreChallenge>} a map where the key is the listing public key, and the value is a challenge object
+     * @example
+     * ```javascript
+     * const challenges = gov.currentChallenges();
+     * ```
+     */
+    public currentChallenges(): Map<StoreChallenge> {
+        return this.challenges;
     }
 
     /**
