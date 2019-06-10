@@ -38,6 +38,7 @@ interface StoreChallenge {
     challengeId: BigNumber;
     challengerStake: BigNumber;
     challengeEndUnix: number;
+    challengeEnd: BigNumber;
     totalTokens: BigNumber;
     winningTokens: BigNumber;
     result: "passed" | "failed";
@@ -88,6 +89,12 @@ interface ContractParams {
     rewardPeriod: number;
 }
 
+interface ChallengeInfo {
+    challengeStart: number;
+    endCommitPeriod: number;
+    challengeEnd: number;
+}
+
 // will be the global window object in browser
 declare var window, global: Window;
 
@@ -133,6 +140,7 @@ interface Map<T> {
  * @property {BigNumber} challengeId the incremental ID of the current challenge
  * @property {BigNumber} challengerStake the staked balance of the challenger
  * @property {number} challengeEndUnix the estimated unix timestamp the challenge ends at
+ * @property {BigNumber} challengeEnd the block at which the challenge reveal period ends
  * @property {BigNumber} totalTokens if finalized, the total number of tokens from participating voters
  * @property {BigNumber} winningTokens if finalized, the number of tokens that voted on the winning side
  * @property {string} result the final result of the challenge; "passed", "failed", or `null` if not finalized
@@ -462,6 +470,54 @@ class Gov {
         return pastChallenges.reverse();
     }
 
+    /**
+     * Returns an object with the block numbers of important times for a given
+     * challenge. Between `challengeStart` and `endCommitPeriod`, votes may be
+     * committed (submitted) to the challenge.
+     *
+     * Between `endCommitPeriod` and `challengeEnd`, votes may be revealed with
+     * the same salt and vote value.
+     *
+     * @param {string | number | BigNumber} challengeId the ID of the challenge to query
+     * @returns {Promise<ChallengeInfo>} the block numbers for this challenge
+     * @example
+     * ```javascript
+     * const info = await gov.getChallengeInfo(new BigNumber(1));
+     * const currentBlock = await gov.currentBlockNumber();
+     *
+     * if (currentBlock < endCommitPeriod && currentBlock >= challengeStart) {
+     *   // in "commit" period; voters may submit votes
+     * } else if (currentBlock >= endCommitPeriod && currentBlock <= challengeEnd) {
+     *   // in "reveal" period; voters may reveal votes
+     * } else {
+     *   // challenge has ended (or issues with block numbers)
+     * }
+     * ```
+     */
+    async getChallengeInfo(challengeId: number | BigNumber | string): Promise<ChallengeInfo> {
+        const id = new BigNumber(challengeId);
+        const challenge = await this.kosu.validatorRegistry.getChallenge(id);
+
+        const challengeEnd = challenge.challengeEnd.toNumber();
+        const challengeStart = challengeEnd - this.params.challengePeriod;
+        const endCommitPeriod = challengeStart + this.params.commitPeriod;
+
+        return {
+            challengeStart,
+            endCommitPeriod,
+            challengeEnd,
+        };
+    }
+
+    /**
+     * Returns the current block height (as a number).
+     *
+     * @returns {number} The current (or most recent) Ethereum block height.
+     */
+    async currentBlockNumber(): Promise<number> {
+        return await this.web3.eth.getBlockNumber();
+    }
+
     async _processListing(listing) {
         switch (listing.status) {
             case 1: {
@@ -585,6 +641,7 @@ class Gov {
             challengeId: listing.currentChallenge,
             challengerStake: listingChallenge.balance,
             challengeEndUnix,
+            challengeEnd: listingChallenge.challengeEnd,
             totalTokens,
             winningTokens,
             result,
