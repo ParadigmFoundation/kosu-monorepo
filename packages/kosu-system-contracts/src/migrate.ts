@@ -12,12 +12,15 @@ import yargs from "yargs";
 import * as deployedAddresses from "./deployedAddresses.json";
 import { migrations } from "./migrations";
 
-const mnemonic = safeRequire("./mnemonic.json");
+const args = yargs
+    .option("rpc-url", {
+        type: "string",
+        default: "http://localhost:8545",
+    })
+    .boolean("test-mnemonic").argv;
 
-const args = yargs.option("rpc-url", {
-    type: "string",
-    default: "http://localhost:8545",
-}).argv;
+let mnemonic = safeRequire("./mnemonic.json");
+if (args["test-mnemonic"] || !mnemonic) mnemonic = process.env.npm_package_config_test_mnemonic;
 
 (async () => {
     const mnemonicSubprovider = mnemonic ? new MnemonicWalletSubprovider({ mnemonic }) : null;
@@ -65,4 +68,5 @@ const args = yargs.option("rpc-url", {
     );
 })().catch(err => {
     console.log(err);
+    process.exit(1);
 });
