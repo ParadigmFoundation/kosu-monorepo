@@ -10,8 +10,7 @@ describe("OrderHelper", () => {
 
         maker = accounts[7].toLowerCase();
         taker = accounts[8].toLowerCase();
-        let makerArguments = await orderGateway.makerArguments(subContract);
-        let takerArguments = await orderGateway.takerArguments(subContract);
+        let args = await orderGateway.arguments(subContract);
 
         await tka.approve(subContract, MAX_UINT, maker);
         await tkb.approve(subContract, MAX_UINT, taker);
@@ -25,13 +24,13 @@ describe("OrderHelper", () => {
             buyerTokenCount: 1000,
         };
 
-        order = { subContract, maker: maker, makerArguments, takerArguments, makerValues };
+        order = { subContract, maker: maker, arguments: args, makerValues };
         await kosu.orderHelper.makeOrder(order);
     });
 
     describe("makeOrder()", () => {
-        it("signs the order details and stores the vrs", async () => {
-            let makerArguments = await orderGateway.makerArguments(subContract);
+        it("signs the order details and stores the signature", async () => {
+            let args = await orderGateway.arguments(subContract);
             let makerValues = {
                 signer: maker,
                 signerToken: TKA,
@@ -40,15 +39,10 @@ describe("OrderHelper", () => {
                 buyerToken: TKB,
                 buyerTokenCount: 1000,
             };
-            let o2 = { subContract, maker: maker, makerArguments, makerValues };
+            let o2 = { subContract, maker: maker, arguments: args, makerValues };
             await orderHelper.makeOrder(o2);
 
-            let signature = {
-                v: o2.makerValues.signatureV,
-                r: o2.makerValues.signatureR,
-                s: o2.makerValues.signatureS,
-            };
-            let recoveredAddress = Signature.recoverAddress(await orderHelper.makerHex(o2), signature);
+            let recoveredAddress = Signature.recoverAddress(await orderHelper.makerHex(o2), o2.makerValues.signature);
 
             assert.equal(recoveredAddress, maker);
         });
@@ -61,8 +55,8 @@ describe("OrderHelper", () => {
             const takerValues = {
                 tokensToBuy: 100,
             };
-
-            await orderHelper.takeOrder(order, takerValues, taker);
+            order.takerValues = takerValues;
+            await orderHelper.takeOrder(order, taker);
 
             const resultTKABalance = BigNumber(await tka.balanceOf(taker)).minus(initialTKABalance);
             const resultTKBBalance = BigNumber(await tkb.balanceOf(maker)).minus(initialTKBBalance);
@@ -113,8 +107,8 @@ describe("OrderHelper", () => {
         it("should sign an order with a bogus subContract and provided makerArguments", async () => {
             const customOrder = {
                 subContract: NULL_ADDRESS,
-                makerArguments: [{ dataType: "address" }, { dataType: "uint" }],
-                makerValues: [accounts[9], 4],
+                arguments: {maker:[{ datatype: "address", "name": "acc" }, { datatype: "uint", "name": "num" }]},
+                makerValues: { "acc": accounts[9], "num": 4},
             };
             const preparedOrder = await orderHelper.prepareForPost(customOrder, accounts[5]);
             await orderHelper.recoverPoster(preparedOrder).should.eventually.eq(accounts[5].toLowerCase());

@@ -17,26 +17,23 @@ interface Order {
     subContract: string;
     maker: string;
     makerValues: any;
-    makerSignature: any;
-    makerArguments?: any;
-    takerArguments?: any;
+    makerSignature?: any;
+    arguments?: any;
     id: any;
     poster: string;
 }
 
 interface PostableOrder extends Order {
-    posterSignature: { v: any; s: any; r: any };
+    posterSignature: string;
+}
+
+interface TakeableOrder extends Order{
+    takerValues: any;
 }
 
 interface OrderArgument {
     name: string;
-    dataType: string;
-}
-
-interface SignatureVRS {
-    v: number;
-    r: Buffer | Uint8Array;
-    s: Buffer | Uint8Array;
+    datatype: string;
 }
 
 interface KosuUtils {

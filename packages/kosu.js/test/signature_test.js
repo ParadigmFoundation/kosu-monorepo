@@ -9,7 +9,7 @@ describe("Signature", () => {
             const signer = accounts[5];
 
             let signature = await Signature.generate(web3, hash, signer);
-            assert.equal(typeof signature, "object");
+            assert.equal(typeof signature, "string");
         });
     });
 

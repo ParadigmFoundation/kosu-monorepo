@@ -57,21 +57,17 @@ export class OrderGateway {
      * @param taker address of the taker
      * @todo refactor makerData types after possible pending changes
      */
-    public async participate(order: Order, takerValues: any[], taker: string): Promise<void> {
+    public async participate(order: Order, taker: string): Promise<any> {
         await this.initializing;
-        const makerArguments = await this.makerArguments(order.subContract);
-        const takerArguments = await this.takerArguments(order.subContract);
-        const makerValuesBytes = OrderSerializer.serializeMaker(makerArguments, order);
-        const takerValuesBytes = OrderSerializer.serializeTaker(takerArguments, takerValues);
+        const args = await this.arguments(order.subContract);
+        const participateBytes = OrderSerializer.serialize(args, order);
 
         // tslint:disable-next-line: await-promise
-        await this.contract.participate.awaitTransactionSuccessAsync(
+        return this.contract.participate.sendTransactionAsync(
             order.subContract,
-            order.id || 1,
-            makerValuesBytes,
-            takerValuesBytes,
+            participateBytes,
             { from: taker },
-        );
+        ).then(txHash => this.web3Wrapper.awaitTransactionSuccessAsync(txHash));
     }
 
     /**
@@ -79,19 +75,9 @@ export class OrderGateway {
      *
      * @param subContract Address of deployed contract implementation
      */
-    public async makerArguments(subContract: string): Promise<any[]> {
+    public async arguments(subContract: string): Promise<any> {
         await this.initializing;
-        return JSON.parse(await this.contract.makerArguments.callAsync(subContract));
-    }
-
-    /**
-     * Read taker arguments
-     *
-     * @param subContract Address of deployed contract implementation
-     */
-    public async takerArguments(subContract: string): Promise<any[]> {
-        await this.initializing;
-        return JSON.parse(await this.contract.takerArguments.callAsync(subContract));
+        return JSON.parse(await this.contract.arguments.callAsync(subContract));
     }
 
     /**
@@ -102,8 +88,8 @@ export class OrderGateway {
      */
     public async isValid(order: Order): Promise<boolean> {
         await this.initializing;
-        const makerArguments = await this.makerArguments(order.subContract);
-        const makerValuesBytes = OrderSerializer.serializeMaker(makerArguments, order);
+        const args = await this.arguments(order.subContract);
+        const makerValuesBytes = OrderSerializer.serialize(args, order);
 
         return this.contract.isValid.callAsync(order.subContract, makerValuesBytes);
     }
@@ -116,8 +102,8 @@ export class OrderGateway {
      */
     public async amountRemaining(order: Order): Promise<BigNumber> {
         await this.initializing;
-        const makerArguments = await this.makerArguments(order.subContract);
-        const makerValuesBytes = OrderSerializer.serializeMaker(makerArguments, order);
+        const args = await this.arguments(order.subContract);
+        const makerValuesBytes = OrderSerializer.serialize(args, order);
 
         return this.contract.amountRemaining.callAsync(order.subContract, makerValuesBytes);
     }
