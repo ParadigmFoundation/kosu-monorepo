@@ -166,15 +166,15 @@ before(async () => {
 describe.only("SubContract", () => {
     const argumentsJson = {
         "maker": [
-            {"dataType": "address", "name": "signer"}, // 0
-            {"dataType": "address", "name": "signerToken"}, // 1
-            {"dataType": "uint", "name": "signerTokenCount"}, // 2
-            {"dataType": "address", "name": "buyerToken"}, // 3
-            {"dataType": "uint", "name": "buyerTokenCount"}, // 4
-            {"dataType": "signature", "name": "signature", "signatureFields": [0, 1, 2, 3, 4]}, // 5
+            {"datatype": "address", "name": "signer"}, // 0
+            {"datatype": "address", "name": "signerToken"}, // 1
+            {"datatype": "uint", "name": "signerTokenCount"}, // 2
+            {"datatype": "address", "name": "buyerToken"}, // 3
+            {"datatype": "uint", "name": "buyerTokenCount"}, // 4
+            {"datatype": "signature", "name": "signature", "signatureFields": [0, 1, 2, 3, 4]}, // 5
         ],
         "taker": [
-            {"dataType": "uint", "name": "tokensToBuy"}, // 6
+            {"datatype": "uint", "name": "tokensToBuy"}, // 6
         ],
     };
 
@@ -195,18 +195,18 @@ describe.only("SubContract", () => {
 
         const { signer } = order;
 
-        const dataTypes = [];
+        const datatypes = [];
         const values = [];
         argumentsJson.maker.forEach(argument => {
             if (argument.name.includes("signature")) {
                 return;
             }
             if (order[argument.name] !== undefined) {
-                dataTypes.push(argument.dataType);
+                datatypes.push(argument.datatype);
                 values.push(order[argument.name].toString());
             }
         });
-        const orderHex = bufferToHex(solSHA3(dataTypes, values));
+        const orderHex = bufferToHex(solSHA3(datatypes, values));
 
         let raw: string;
 
