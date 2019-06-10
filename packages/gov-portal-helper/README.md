@@ -60,7 +60,7 @@ access the objects directly with <code>gov.listings</code>, etc.</p>
         * [.weiToEther(wei)](#Gov+weiToEther) ⇒ <code>string</code>
         * [.etherToWei(ether)](#Gov+etherToWei) ⇒ <code>string</code>
         * [.commitVote(challengeId, value, amount)](#Gov+commitVote) ⇒ <code>Promise.&lt;string&gt;</code>
-        * [.revealVote()](#Gov+revealVote)
+        * [.revealVote(challengeId)](#Gov+revealVote) ⇒ <code>Promise.&lt;string&gt;</code>
         * [.estimateFutureBlockTimestamp(blockNumber)](#Gov+estimateFutureBlockTimestamp) ⇒ <code>Promise.&lt;number&gt;</code>
         * [.getPastBlockTimestamp(blockNumber)](#Gov+getPastBlockTimestamp) ⇒ <code>Promise.&lt;number&gt;</code>
         * [.getHistoricalChallenges()](#Gov+getHistoricalChallenges) ⇒ <code>Promise.&lt;Array.&lt;PastChallenge&gt;&gt;</code>
@@ -209,14 +209,22 @@ const revealTxId = await gov.revealVote(new BigNumber("13"));
 ```
 <a name="Gov+revealVote"></a>
 
-### gov.revealVote()
+### gov.revealVote(challengeId) ⇒ <code>Promise.&lt;string&gt;</code>
 <p>Reveal a previously committed vote, by challengeId (as a BigNumber).</p>
 <p>For this method to work, the user must have committed a vote during the
 commit period for the given challenge.</p>
 <p>This method must also be called during the reveal period in order for the
 transaction not to fail.</p>
+<p>Calling this method will trigger a MetaMask pop-up asking for the user's
+signature and approval.</p>
 
 **Kind**: instance method of [<code>Gov</code>](#Gov)  
+**Returns**: <code>Promise.&lt;string&gt;</code> - <p>the transaction hash of the reveal tx.</p>  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| challengeId | <code>BigNumber</code> | <p>the challenge to reveal a stored vote for</p> |
+
 <a name="Gov+estimateFutureBlockTimestamp"></a>
 
 ### gov.estimateFutureBlockTimestamp(blockNumber) ⇒ <code>Promise.&lt;number&gt;</code>

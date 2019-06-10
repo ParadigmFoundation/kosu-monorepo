@@ -453,6 +453,12 @@ class Gov {
      *
      * This method must also be called during the reveal period in order for the
      * transaction not to fail.
+     *
+     * Calling this method will trigger a MetaMask pop-up asking for the user's
+     * signature and approval.
+     *
+     * @param {BigNumber} challengeId the challenge to reveal a stored vote for
+     * @returns {Promise<string>} the transaction hash of the reveal tx.
      */
     async revealVote(challengeId: BigNumber): Promise<string> {
         const id = new BigNumber(challengeId);
