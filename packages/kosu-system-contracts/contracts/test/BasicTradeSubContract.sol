@@ -85,16 +85,16 @@ contract BasicTradeSubContract is SubContract {
         require(bought[hash] + tokensToTake <= signerTokenCount);
 
         // transfer maker -> taker
-        require(ERC20(signerToken).transferFrom(signer, msg.sender, tokensToTake));
+        require(ERC20(signerToken).transferFrom(signer, tx.origin, tokensToTake));
         // transfer taker -> maker
         uint tokensTakerCount = ratioFor(buyerTokenCount, tokensToTake, signerTokenCount);
-        require(ERC20(buyerToken).transferFrom(msg.sender, signer, tokensTakerCount));
+        require(ERC20(buyerToken).transferFrom(tx.origin, signer, tokensTakerCount));
         bought[hash] = bought[hash] + tokensTakerCount;
 
         return true;
     }
 
-    function getOrderHash(bytes memory data) internal returns (bytes32) {
+    function getOrderHash(bytes memory data) internal view returns (bytes32) {
         address signer = data.getAddress(0);
         address signerToken = data.getAddress(20);
         uint signerTokenCount = data.getUint(40);
