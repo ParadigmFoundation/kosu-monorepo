@@ -314,8 +314,6 @@ export class ValidatorRegistry {
     /**
      * Converts public key to hex if input is not currently in hex
      *
-     * todo: convert to util function
-     *
      * @param _pubKey .
      * @returns hex encoded tendermint public key
      */
@@ -338,8 +336,6 @@ export class ValidatorRegistry {
 
     /**
      * Converts hex encoded public key back to tendermint base64
-     *
-     * todo: convert to util function
      *
      * @param _pubKey hex encoded tendermint public key
      * @returns Base64 tendermint public key

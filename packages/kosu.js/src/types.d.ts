@@ -17,6 +17,7 @@ interface Order {
     subContract: string;
     maker: string;
     makerValues: any;
+    takerValues?: any;
     makerSignature?: any;
     arguments?: any;
     id: any;
@@ -27,7 +28,7 @@ interface PostableOrder extends Order {
     posterSignature: string;
 }
 
-interface TakeableOrder extends Order{
+interface TakeableOrder extends Order {
     takerValues: any;
 }
 

@@ -27,8 +27,6 @@ export class OrderHelper {
 
     /**
      * Take a prepared order on the ethereum blockchain
-     * @todo refactoring subContract may effect this
-     * @todo consider renaming
      */
     public async takeOrder(order: TakeableOrder, taker: string): Promise<any> {
         return this.orderGateway.participate(order, taker);
@@ -43,7 +41,7 @@ export class OrderHelper {
             ...order,
             posterSignature: await Signature.generate(
                 this.web3,
-                OrderSerializer.posterHex(
+                OrderSerializer.posterSignatureHex(
                     order,
                     order.arguments || (await this.orderGateway.arguments(order.subContract)),
                 ),

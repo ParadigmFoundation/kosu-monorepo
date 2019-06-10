@@ -55,7 +55,6 @@ export class OrderGateway {
      * @param order A Kosu order
      * @param takerValues Taker values to fulfill the order
      * @param taker address of the taker
-     * @todo refactor makerData types after possible pending changes
      */
     public async participate(order: Order, taker: string): Promise<any> {
         await this.initializing;
@@ -63,11 +62,9 @@ export class OrderGateway {
         const participateBytes = OrderSerializer.serialize(args, order);
 
         // tslint:disable-next-line: await-promise
-        return this.contract.participate.sendTransactionAsync(
-            order.subContract,
-            participateBytes,
-            { from: taker },
-        ).then(txHash => this.web3Wrapper.awaitTransactionSuccessAsync(txHash));
+        return this.contract.participate
+            .sendTransactionAsync(order.subContract, participateBytes, { from: taker })
+            .then(txHash => this.web3Wrapper.awaitTransactionSuccessAsync(txHash));
     }
 
     /**
@@ -84,7 +81,6 @@ export class OrderGateway {
      * Checks validity of order data
      *
      * @param order Kosu order to validate
-     * @todo refactor makerData types after possible pending changes
      */
     public async isValid(order: Order): Promise<boolean> {
         await this.initializing;
@@ -98,7 +94,6 @@ export class OrderGateway {
      * Checks amount of partial exchange tokens remaining
      *
      * @param order Kosu order to validate
-     * @todo refactor makerData types after possible pending changes
      */
     public async amountRemaining(order: Order): Promise<BigNumber> {
         await this.initializing;

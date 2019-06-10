@@ -1,11 +1,17 @@
+const { bufferToHex } = require("ethereumjs-util");
+const { soliditySHA3 } = require("ethereumjs-abi");
 const { Signature } = require("../src/Signature");
+
+const quickSign = (datatypes, values) => {
+    return bufferToHex(soliditySHA3(datatypes, values));
+};
 
 describe("Signature", () => {
     describe("generate()", () => {
         it("generates a signature given an array of data types and an array of values", async () => {
             const dataTypes = ["address", "address", "uint", "uint", "address"];
             const values = [accounts[1], accounts[2], 42, 57, accounts[3]];
-            const hash = Signature.hash(dataTypes, values);
+            const hash = quickSign(dataTypes, values);
             const signer = accounts[5];
 
             let signature = await Signature.generate(web3, hash, signer);
@@ -17,7 +23,7 @@ describe("Signature", () => {
         it("should validate a signature signer is equal to its recovered address", async () => {
             const dataTypes = ["address", "address", "uint", "uint", "address"];
             const values = [accounts[1], accounts[2], 42, 57, accounts[3]];
-            const hash = Signature.hash(dataTypes, values);
+            const hash = quickSign(dataTypes, values);
             const signer = accounts[5];
 
             let signature = await Signature.generate(web3, hash, signer);
@@ -27,7 +33,7 @@ describe("Signature", () => {
         it("should validate a signature signer is not equal to recovered address", async () => {
             const dataTypes = ["address", "address", "uint", "uint", "address"];
             const values = [accounts[1], accounts[2], 42, 57, accounts[3]];
-            const hash = Signature.hash(dataTypes, values);
+            const hash = quickSign(dataTypes, values);
             const signer = accounts[5];
 
             let signature = await Signature.generate(web3, hash, signer);

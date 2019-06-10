@@ -1,13 +1,11 @@
 {
     "maker": [
-        {"datatype": "address", "name": "signer"},
-        {"datatype": "address", "name": "signerToken"},
-        {"datatype": "uint", "name": "signerTokenCount"},
-        {"datatype": "address", "name": "buyerToken"},
-        {"datatype": "uint", "name": "buyerTokenCount"},
-        {"datatype": "signature", "name": "signature", "signatureFields": [0, 1, 2, 3, 4]}
+        { "datatype": "address", "name": "signer" },
+        { "datatype": "address", "name": "signerToken" },
+        { "datatype": "uint", "name": "signerTokenCount" },
+        { "datatype": "address", "name": "buyerToken" },
+        { "datatype": "uint", "name": "buyerTokenCount" },
+        { "datatype": "signature", "name": "signature", "signatureFields": [0, 1, 2, 3, 4] }
     ],
-    "taker": [
-        {"datatype": "uint", "name": "tokensToBuy"}
-    ]
+    "taker": [{ "datatype": "uint", "name": "tokensToBuy" }]
 }

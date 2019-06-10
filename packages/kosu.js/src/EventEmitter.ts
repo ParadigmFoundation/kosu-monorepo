@@ -4,7 +4,6 @@ import { DecodedLogArgs, FilterObject, LogEntry } from "ethereum-protocol";
 import Web3 from "web3";
 import Timeout = NodeJS.Timeout;
 
-// TODO: move to some const file?
 const KosuEndpoints = {
     1: {
         http: `https://ethnet.zaidan.io/mainnet`,
