@@ -15,8 +15,8 @@ export class OrderHelper {
 
     /**
      * Make an order by ensuring a required signature is  present
-     * @todo refactoring subContract may effect this
-     * @todo consider renaming
+     *
+     * @param order Order to make
      */
     public async makeOrder(order: Order): Promise<Order> {
         order.makerSignature = await Signature.generate(this.web3, await this.makerHex(order), order.maker);
@@ -34,7 +34,9 @@ export class OrderHelper {
 
     /**
      * Generate a poster signature for OrderStream submission
-     * @todo refactor/move implementation.
+     *
+     * @param order Order to prepare
+     * @param poster (Optional) Poster to sign order with
      */
     public async prepareForPost(order: Order, poster: string = order.maker): Promise<PostableOrder> {
         return {
@@ -52,7 +54,8 @@ export class OrderHelper {
 
     /**
      * Generate the maker hex
-     * @todo refactor for subContract changes or modularize to be less messy
+     *
+     * @param order Order to get maker hex for
      */
     public async makerHex(order: Order): Promise<string> {
         const _arguments = order.arguments || (await this.orderGateway.arguments(order.subContract));
@@ -61,7 +64,8 @@ export class OrderHelper {
 
     /**
      * Recover the maker
-     * @todo refactor for subContract changes or modularize to be less messy
+     *
+     * @param order Order to recover maker from
      */
     public async recoverMaker(order: Order): Promise<string> {
         const _arguments = order.arguments || (await this.orderGateway.arguments(order.subContract));
@@ -70,7 +74,8 @@ export class OrderHelper {
 
     /**
      * Recover the poster
-     * @todo refactor for subContract changes or modularize to be less messy
+     *
+     * @param order Order to recover poster from
      */
     public async recoverPoster(order: PostableOrder): Promise<string> {
         const _arguments = order.arguments || (await this.orderGateway.arguments(order.subContract));

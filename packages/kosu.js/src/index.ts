@@ -28,7 +28,7 @@ export class Kosu {
     public readonly validatorRegistry: ValidatorRegistry;
     public readonly eventEmitter: EventEmitter;
     public readonly utils: KosuUtils;
-    public readonly Signature: Signature;
+    public readonly Signature;
     public readonly version: string;
 
     constructor(options: KosuOptions = { provider: "https://ropsten.infura.io" }) {

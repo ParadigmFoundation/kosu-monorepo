@@ -42,6 +42,13 @@ interface KosuUtils {
     NULL_ADDRESS: string;
 }
 
+interface Signature {
+    generate(web3: Web3, messageHex: string, signer: string): Promise<string>;
+    validate(messageHex: string, signature: string, signer: string): boolean;
+    recoverAddress(messageHex: any, signature: string): string;
+    sign(web3: Web3, messageHex: string, signer: string): Promise<string>;
+}
+
 interface DecodedKosuLogArgs {}
 
 interface LogWithDecodedKosuArgs<A, B> extends LogWithDecodedArgs {

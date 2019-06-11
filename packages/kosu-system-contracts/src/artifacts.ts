@@ -6,6 +6,7 @@
 import { ContractArtifact } from "ethereum-types";
 
 import * as AuthorizedAddresses from "../generated-artifacts/AuthorizedAddresses.json";
+import * as BasicTradeSubContract from "../generated-artifacts/BasicTradeSubContract.json";
 import * as EventEmitter from "../generated-artifacts/EventEmitter.json";
 import * as KosuToken from "../generated-artifacts/KosuToken.json";
 import * as OrderGateway from "../generated-artifacts/OrderGateway.json";
@@ -14,7 +15,6 @@ import * as PosterRegistryProxy from "../generated-artifacts/PosterRegistryProxy
 import * as Treasury from "../generated-artifacts/Treasury.json";
 import * as ValidatorRegistry from "../generated-artifacts/ValidatorRegistry.json";
 import * as Voting from "../generated-artifacts/Voting.json";
-import * as BasicTradeSubContract from "../generated-artifacts/BasicTradeSubContract.json";
 export const artifacts = {
     AuthorizedAddresses: AuthorizedAddresses as ContractArtifact,
     EventEmitter: EventEmitter as ContractArtifact,
