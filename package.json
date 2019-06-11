@@ -18,7 +18,8 @@
         "test:ci": "wsrun --exclude-missing --fast-exit test:ci",
         "prettier": "prettier --write '**/*.{ts,tsx,json,md,js}' --config .prettierrc",
         "prettier:ci": "prettier --list-different '**/*.{ts,tsx,json,md,js}' --config .prettierrc",
-        "postinstall": "lerna link --force-local"
+        "postinstall": "lerna link --force-local",
+        "setup:ci": "run-p prettier:ci lint build"
     },
     "workspaces": [
         "packages/kosu.js",
