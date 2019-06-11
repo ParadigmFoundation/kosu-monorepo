@@ -1,23 +1,59 @@
 # kosu-monorepo CI configuration file (last updated 05 June 2019)
 
 kind: pipeline
-name: node-tests
+name: tests
 
 steps:
-    - name: npm-projects
-      image: gcr.io/kosu-io/node-ci:latest
-      pull: always
-      environment:
-          WEB3_URI: http://kosu-geth:8545
-      commands:
-          - yarn
-          - yarn prettier:ci
-          - yarn lint
-          - yarn build
-          - cd packages/kosu-system-contracts
-          - yarn deploy:kosu:ci
-          - cd -
-          - yarn test:ci
+  - name: build-project
+    image: gcr.io/kosu-io/node-ci:latest
+    pull: always
+    environment:
+      WEB3_URI: http://kosu-geth:8545
+    commands:
+      - yarn
+      - yarn setup:ci
+      - cd packages/kosu-system-contracts
+      - yarn deploy:kosu:ci
+
+  - name: npm-projects
+    image: gcr.io/kosu-io/node-ci:latest
+    pull: always
+    environment:
+      WEB3_URI: http://kosu-geth:8545
+    commands:
+      - yarn test:ci
+    depends_on:
+      - build-project
+    when:
+      changeset:
+        includes:
+          [
+            .drone.yml,
+            packages/kosu.js/**/*.*,
+            packages/dev-images/**/*.*,
+            packages/kosu-sdk-contracts/**/*.*,
+            packages/kosu-system-contracts/**/*.*,
+            packages/web-helpers/**/*.*,
+            packages/kosu-geth/**/*.*,
+            packages/tslint-config/**/*.*,
+            packages/tsc-config/**/*.*,
+            packages/create-portal-helper/**/*.*,
+            packages/gov-portal-helper/**/*.*,
+          ]
+
+  - name: go-kosu
+    image: gcr.io/kosu-io/go-kosu-ci:latest
+    pull: always
+    environment:
+      ETHEREUM_TEST_ADDRESS: wss://ethnet.zaidan.io/ws/ropsten
+    commands:
+      - cd packages/go-kosu
+      - make ci
+    depends_on:
+      - build-project
+    when:
+      changeset:
+        includes: [.drone.yml, packages/go-kosu/**/*.*, packages/kosu-system-contracts/**/*.*]
 
 services:
     - name: kosu-geth
@@ -30,41 +66,7 @@ services:
 trigger:
     event:
         - pull_request
-    changeset:
-        includes:
-            [
-                .drone.yml,
-                packages/kosu.js/**/*.*,
-                packages/dev-images/**/*.*,
-                packages/kosu-sdk-contracts/**/*.*,
-                packages/kosu-system-contracts/**/*.*,
-                packages/web-helpers/**/*.*,
-                packages/kosu-geth/**/*.*,
-                packages/tslint-config/**/*.*,
-                packages/tsc-config/**/*.*,
-                packages/create-portal-helper/**/*.*,
-                packages/gov-portal-helper/**/*.*,
-            ]
 
----
-kind: pipeline
-name: golang-tests
-
-steps:
-    - name: go-kosu
-      image: gcr.io/kosu-io/go-kosu-ci:latest
-      pull: always
-      environment:
-          ETHEREUM_TEST_ADDRESS: wss://ethnet.zaidan.io/ws/ropsten
-      commands:
-          - cd packages/go-kosu
-          - make ci
-
-trigger:
-    event:
-        - pull_request
-    changeset:
-        includes: [.drone.yml, packages/go-kosu/**/*.*, packages/kosu-system-contracts/**/*.*]
 # UNTESTED
 # ---
 # kind: pipeline
