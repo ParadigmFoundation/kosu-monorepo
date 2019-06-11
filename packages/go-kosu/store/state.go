@@ -198,7 +198,7 @@ func (s *State) PersistToTree(tree *StateTree) error {
 			return nil
 		}
 	}
-	
+
 	for addr, v := range s.Validators {
 		if err := tree.SetValidator(addr, v); err != nil {
 			return err
