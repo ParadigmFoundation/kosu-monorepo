@@ -148,7 +148,7 @@ func (w *Witness) subscribe(ctx context.Context) error {
 			w.roundInfo.EndsAt = info.EndsAt
 			w.roundMutex.Unlock()
 
-			w.log.Info("detected rebalance tx in block", "round", info)
+			w.log.Info("detected rebalance tx in block, now on round", info)
 		}
 	}()
 
@@ -156,26 +156,15 @@ func (w *Witness) subscribe(ctx context.Context) error {
 }
 
 func (w *Witness) forward(ctx context.Context) error {
-	fn := func(e *Event) {
-		args := []interface{}{
-			"event", e.Block.Number.String(),
-		}
-
+	// Forward events from the provider (probably Ethereum) to the local node as TXs
+	return ForwardEvents(ctx, w.provider, 10, func(e *Event) {
 		res, err := w.client.BroadcastTxSync(e.WitnessTx())
 		if err != nil {
-			args = append(args, "err", err)
-			if res.Log != "" {
-				args = append(args, "log", res.Log)
-			}
-			w.log.Error("BroadcastTxSync: WitnessTx", args...)
+			w.log.Error("BroadcastTxSync", "err", err)
 			return
-
 		}
-		w.log.Info("BroadcastTxSync: WitnessTx", append(args, "hash", res.Hash[0:4])...)
-	}
-
-	// Forward events from the provider (probably Ethereum) to the local node as TXs
-	return ForwardEvents(ctx, w.provider, int64(w.opts.FinalityThreshold), fn)
+		w.log.Info("witness event", "event", e, "log", res.Log)
+	})
 }
 
 func (w *Witness) handleBlocks(ctx context.Context) error {
@@ -192,6 +181,7 @@ func (w *Witness) handleBlocks(ctx context.Context) error {
 		if block == nil {
 			break
 		}
+		w.log.Info("witness: new block", block)
 
 		num := w.roundInfo.Number
 		cur := block.Number.Uint64()

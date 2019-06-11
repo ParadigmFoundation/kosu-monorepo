@@ -1,9 +1,6 @@
 package witness
 
-import (
-	"context"
-	"sort"
-)
+import "context"
 
 // ForwardEvents reads events from the Witness provider and forwards them as BroadcastTransactions to the ABCI node
 // using a abci.Client
@@ -13,26 +10,20 @@ func ForwardEvents(ctx context.Context, p Provider, mat int64, fn func(e *Event)
 
 	blocks := make(chan *Block)
 	events := make(chan *Event)
-	go func() { errors <- p.WatchEvents(ctx, events) }()
 	go func() { errors <- p.WatchBlocks(ctx, blocks) }()
+	go func() { errors <- p.WatchEvents(ctx, events) }()
 
 	for {
 		select {
 		case block := <-blocks:
-			// We need to traverse the buffer in order
-			keys := make([]int64, 0)
-			for key := range buffer {
-				if block.Number.Int64()-key >= mat {
-					keys = append(keys, key)
+			// TODO: We could use ordered maps so that we don't have to traverse it completely
+			for num, b := range buffer {
+				if block.Number.Int64()-num >= mat {
+					for _, event := range b {
+						fn(event)
+					}
+					delete(buffer, num)
 				}
-			}
-			sort.Slice(keys, func(i, j int) bool { return keys[i] < keys[j] })
-
-			for _, key := range keys {
-				for _, event := range buffer[key] {
-					fn(event)
-				}
-				delete(buffer, key)
 			}
 		case event := <-events:
 			n := event.Block.Number.Int64()

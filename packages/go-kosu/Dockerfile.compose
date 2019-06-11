@@ -1,8 +1,0 @@
-FROM golang:1.12
-
-WORKDIR /go-kosu
-COPY kosud .
-COPY kosu-cli .
-COPY ./testnet/ ./testnet/
-
-CMD ./kosud

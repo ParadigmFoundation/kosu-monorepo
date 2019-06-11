@@ -5,7 +5,6 @@ import (
 	"errors"
 	"fmt"
 	"math/big"
-	"sort"
 	"sync"
 	"sync/atomic"
 
@@ -63,6 +62,16 @@ type Poster struct {
 	Limit   uint64
 }
 
+// Validator .
+type Validator types.Validator
+
+// NewValidator returns a new Validator
+func NewValidator() *Validator {
+	return &Validator{
+		Balance: types.NewBigIntFromInt(0),
+	}
+}
+
 // ConsensusParams are the parameters required for validators within a network to reach consensus on valid transactions.
 type ConsensusParams struct {
 	FinalityThreshold     uint32
@@ -86,6 +95,9 @@ type State struct {
 	deletedPosters []string
 	postersLock    sync.RWMutex
 
+	// validators
+	Validators map[string]*Validator
+
 	// lastEvent stores the height of the Ethereum blockchain at which the last event was applied in-state.
 	LastEvent uint64
 
@@ -104,6 +116,7 @@ func NewState() *State {
 
 		posters:        make(map[string]*Poster),
 		deletedPosters: []string{},
+		Validators:     make(map[string]*Validator),
 		events:         make(map[uint64]WitnessEvents),
 	}
 }
@@ -147,6 +160,11 @@ func (s *State) UpdateFromTree(tree *StateTree) error {
 	})
 	s.postersLock.Unlock()
 
+	// Load Validators
+	tree.IterateValidators(func(addr string, v *Validator) {
+		s.Validators[addr] = v
+	})
+
 	return nil
 }
 
@@ -163,52 +181,30 @@ func (s *State) PersistToTree(tree *StateTree) error {
 	}
 	s.deletedPosters = []string{}
 
-	if err := s.persistEvents(tree); err != nil {
-		return err
-	}
-
-	if err := s.persistPosters(tree); err != nil {
-		return err
-	}
-
-	return nil
-}
-
-func (s *State) persistEvents(tree *StateTree) error {
 	s.eventsLock.RLock()
 	defer s.eventsLock.RUnlock()
-
-	keys := []uint64{}
-	for key := range s.events {
-		keys = append(keys, key)
-	}
-	sort.Slice(keys, func(i, j int) bool { return keys[i] < keys[j] })
-
-	for _, key := range keys {
-		for id, event := range s.events[key] {
-			if err := tree.SetEvent(key, id, event); err != nil {
+	for block, events := range s.events {
+		for id, event := range events {
+			if err := tree.SetEvent(block, id, event); err != nil {
 				return err
 			}
 		}
 	}
-	return nil
-}
 
-func (s *State) persistPosters(tree *StateTree) error {
 	s.postersLock.RLock()
 	defer s.postersLock.RUnlock()
-
-	keys := []string{}
-	for key := range s.posters {
-		keys = append(keys, key)
-	}
-
-	for _, key := range keys {
-		p := s.posters[key]
-		if err := tree.SetPoster(key, p); err != nil {
+	for addr, p := range s.posters {
+		if err := tree.SetPoster(addr, p); err != nil {
 			return nil
 		}
 	}
+	
+	for addr, v := range s.Validators {
+		if err := tree.SetValidator(addr, v); err != nil {
+			return err
+		}
+	}
+
 	return nil
 }
 
@@ -338,6 +334,10 @@ func (s *State) IterateWitnessEventsForBlock(block uint64, fn func(id []byte, ev
 // UpdateConfirmationThreshold sets a confirmation threshold as n*(2/3).
 // This threshold is used to apply certain transactions.
 func (s *State) UpdateConfirmationThreshold(n uint32) {
+	if n == 0 {
+		return
+	}
+
 	if n > 1 {
 		n = 2 * (n / 3)
 	}
