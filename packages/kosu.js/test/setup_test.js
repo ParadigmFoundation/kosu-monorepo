@@ -35,6 +35,7 @@ before(async () => {
     providerUtils.startProviderEngine(provider);
 
     const web3Wrapper = new Web3Wrapper(provider);
+    const networkId = await web3Wrapper.getNetworkIdAsync();
     await new BlockchainLifecycle(web3Wrapper).startAsync();
 
     global.web3 = new Web3(provider);
@@ -45,17 +46,24 @@ before(async () => {
         .minus(BigNumber("1"))
         .toString();
 
-    const migratedContracts = await migrations(provider, { from: accounts[0].toLowerCase(), gas: "4500000" });
-
-    global.kosu = new Kosu({
+    const config = {
         provider: web3.currentProvider,
         networkId: await web3.eth.net.getId(),
-        posterRegistryProxyAddress: migratedContracts.posterRegistryProxy.address,
-        kosuTokenAddress: migratedContracts.kosuToken.address,
-        orderGatewayAddress: migratedContracts.orderGateway.address,
-        votingAddress: migratedContracts.voting.address,
-        treasuryAddress: migratedContracts.treasury.address,
-    });
+    };
+
+    if (networkId !== 6174) {
+        const migratedContracts = await migrations(provider, { from: accounts[0].toLowerCase(), gas: "4500000" });
+
+        Object.assign(config, {
+            posterRegistryProxyAddress: migratedContracts.posterRegistryProxy.address,
+            kosuTokenAddress: migratedContracts.kosuToken.address,
+            orderGatewayAddress: migratedContracts.orderGateway.address,
+            votingAddress: migratedContracts.voting.address,
+            treasuryAddress: migratedContracts.treasury.address,
+        });
+    }
+
+    global.kosu = new Kosu(config);
 
     await kosuContractHelper();
     await tokenHelper();
