@@ -842,13 +842,16 @@ class Gov {
         const netId = await this.web3.eth.net.getId();
         switch (netId) {
             // mainnet
-            case 1: return new BigNumber(13.5);
+            case 1:
+                return new BigNumber(13.5);
 
             // ropsten
-            case 3: return new BigNumber(15);
+            case 3:
+                return new BigNumber(15);
 
             // kosu-poa dev net
-            case 6174: return new BigNumber(2);
+            case 6174:
+                return new BigNumber(2);
             default: {
                 throw new Error("[gov] unknown blockTime for current network");
             }
