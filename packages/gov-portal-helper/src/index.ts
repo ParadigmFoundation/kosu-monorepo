@@ -200,6 +200,14 @@ interface Map<T> {
  */
 
 /**
+ * Contains block numbers for various state changes for a given challenge.
+ * @typedef ChallengeInfo
+ * @property {number} challengeStart the block at which the challenge was initiated, and when the commit period starts
+ * @property {number} endCommitPeriod the block the commit period ends, and the reveal period starts
+ * @property {number} challengeEnd the block the reveal period ends, and the challenge finalizes
+ */
+
+/**
  * `Gov` is a helper library for interacting with the Kosu validator governance
  * system (primarily the Kosu `ValidatorRegistry` contract).
  *
