@@ -57,7 +57,7 @@ before(async () => {
         treasuryAddress: migratedContracts.treasury.address,
     });
 
-    await kosuContractHelper();
+    await kosuContractHelper(provider, { from: accounts[0].toLowerCase(), gas: "4500000" });
     await tokenHelper();
 });
 

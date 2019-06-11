@@ -1,15 +1,14 @@
-const BasicTradeSubContract = require("./BasicTradeSubContract");
-const BasicTradeSubContractConfig = require("./BasicTradeSubContractConfig");
+const BasicTradeSubContract = require("@kosu/system-contracts/dist/generated-wrappers/basic_trade_sub_contract.js")
+    .BasicTradeSubContractContract;
+const BasicTradeSubContractArtifact = require("@kosu/system-contracts/generated-artifacts/BasicTradeSubContract.json");
+const BasicTradeSubContractConfig = require("./BasicTradeSubContractConfig.json");
 
-module.exports = async () => {
-    const basicTradeSubContract = await new web3.eth.Contract(BasicTradeSubContract.abi)
-        .deploy({
-            data: BasicTradeSubContract.bytecode,
-            arguments: [
-                JSON.stringify(BasicTradeSubContractConfig.makerArguments),
-                JSON.stringify(BasicTradeSubContractConfig.takerArguments),
-            ],
-        })
-        .send({ from: accounts[0], gas: 4500000 });
-    global.subContract = basicTradeSubContract.options.address;
+module.exports = async (provider, options) => {
+    const basicTradeSubContract = await BasicTradeSubContract.deployFrom0xArtifactAsync(
+        BasicTradeSubContractArtifact,
+        provider,
+        options,
+        JSON.stringify(BasicTradeSubContractConfig),
+    );
+    global.subContract = basicTradeSubContract.address;
 };
