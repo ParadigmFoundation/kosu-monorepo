@@ -17,7 +17,6 @@ steps:
       - cd packages/kosu-system-contracts
       - yarn deploy:kosu:ci
 
-
   - name: npm-projects
     image: gcr.io/kosu-io/node-ci:latest
     pull: always
