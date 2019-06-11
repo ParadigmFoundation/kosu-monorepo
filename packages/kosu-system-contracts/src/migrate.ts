@@ -20,7 +20,7 @@ const args = yargs
     .boolean("test-mnemonic").argv;
 
 let mnemonic = safeRequire("./mnemonic.json");
-if (args["test-mnemonic"] || !mnemonic) mnemonic = process.env.npm_package_config_test_mnemonic;
+if (args["test-mnemonic"] || !mnemonic) { mnemonic = process.env.npm_package_config_test_mnemonic; }
 
 (async () => {
     const mnemonicSubprovider = mnemonic ? new MnemonicWalletSubprovider({ mnemonic }) : null;
