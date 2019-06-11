@@ -25,6 +25,7 @@
         "deploy": "yarn deploy:ropsten",
         "deploy:ropsten": "ts-node -T src/migrate.ts --rpc-url=https://ethnet.zaidan.io/ropsten && yarn prettier:deployedAddresses",
         "deploy:kosu": "ts-node -T src/migrate.ts --test-mnemonic --rpc-url=https://ethnet.zaidan.io/kosu && ts-node --files bin/deliver_tokens.ts --test-mnemonic --rpc-url=https://ethnet.zaidan.io/kosu && yarn prettier:deployedAddresses",
+        "deploy:kosu:ci": "ts-node -T src/migrate.ts --test-mnemonic --rpc-url=${WEB3_URI} && ts-node --files bin/deliver_tokens.ts --test-mnemonic --rpc-url=https://ethnet.zaidan.io/kosu && yarn prettier:deployedAddresses",
         "prettier:deployedAddresses": "prettier --write src/deployedAddresses.json --config ../../.prettierrc",
         "ganache_rpc": "docker run --rm -p 8545:8545 ${npm_package_config_kosu_ganache_image}",
         "ganache_rpc:detached": "docker run --rm -d -p 8545:8545 ${npm_package_config_kosu_ganache_image}",

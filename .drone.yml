@@ -15,7 +15,7 @@ steps:
           - yarn lint
           - yarn build
           - cd packages/kosu-system-contracts
-          - yarn deploy:kosu
+          - yarn deploy:kosu:ci
           - cd -
           - yarn test:ci
 
