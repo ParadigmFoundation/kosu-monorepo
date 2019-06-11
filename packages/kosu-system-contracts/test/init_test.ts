@@ -7,10 +7,13 @@ import { BigNumber, providerUtils } from "@0x/utils";
 import { Web3Wrapper } from "@0x/web3-wrapper";
 import chai from "chai";
 import chaiAsPromised from "chai-as-promised";
+import { soliditySHA3 as solSHA3 } from "ethereumjs-abi";
+import { bufferToHex } from "ethereumjs-util";
 import Web3 from "web3";
 import Web3ProviderEngine from "web3-provider-engine";
-import { toWei } from "web3-utils";
+import { toTwosComplement, toWei } from "web3-utils";
 
+import { BasicTradeSubContractContract } from "../generated-wrappers/basic_trade_sub_contract";
 import { artifacts } from "../src";
 import { migrations } from "../src/migrations";
 
@@ -51,6 +54,10 @@ before(async () => {
 
     web3Wrapper.abiDecoder.addABI(artifacts.EventEmitter.compilerOutput.abi, artifacts.EventEmitter.contractName);
     web3Wrapper.abiDecoder.addABI(artifacts.KosuToken.compilerOutput.abi, artifacts.KosuToken.contractName);
+    web3Wrapper.abiDecoder.addABI(
+        artifacts.BasicTradeSubContract.compilerOutput.abi,
+        artifacts.BasicTradeSubContract.contractName,
+    );
 
     // @ts-ignore
     await new BlockchainLifecycle(web3Wrapper).startAsync();
@@ -157,6 +164,84 @@ before(async () => {
     };
 
     Object.assign(global, { ...testHelpers, txDefaults, testValues, contracts, accounts, web3, web3Wrapper });
+});
+
+describe.only("SubContract", () => {
+    const argumentsJson = {
+        maker: [
+            { datatype: "address", name: "signer" }, // 0
+            { datatype: "address", name: "signerToken" }, // 1
+            { datatype: "uint", name: "signerTokenCount" }, // 2
+            { datatype: "address", name: "buyerToken" }, // 3
+            { datatype: "uint", name: "buyerTokenCount" }, // 4
+            { datatype: "signature", name: "signature", signatureFields: [0, 1, 2, 3, 4] }, // 5
+        ],
+        taker: [
+            { datatype: "uint", name: "tokensToBuy" }, // 6
+        ],
+    };
+
+    let subContract;
+
+    before(async () => {
+        subContract = await BasicTradeSubContractContract.deployFrom0xArtifactAsync(
+            artifacts.BasicTradeSubContract,
+            web3.currentProvider,
+            txDefaults,
+            JSON.stringify(argumentsJson),
+        );
+    });
+
+    it("should serialize and sign the data", async () => {
+        const order = {
+            signer: accounts[0],
+            signerToken: contracts.kosuToken.address,
+            signerTokenCount: 40,
+            buyerToken: contracts.kosuToken.address,
+            buyerTokenCount: 80,
+        };
+
+        const { signer } = order;
+
+        const datatypes = [];
+        const values = [];
+        argumentsJson.maker.forEach(argument => {
+            if (argument.name.includes("signature")) {
+                return;
+            }
+            if (order[argument.name] !== undefined) {
+                datatypes.push(argument.datatype);
+                values.push(order[argument.name].toString());
+            }
+        });
+        const orderHex = bufferToHex(solSHA3(datatypes, values));
+
+        let raw: string;
+
+        try {
+            // @ts-ignore
+            raw = await web3.eth.personal.sign(orderHex, signer);
+        } catch (e) {
+            raw = await web3.eth.sign(orderHex, signer);
+        }
+
+        const hex =
+            order.signer +
+            order.signerToken.substr(2) +
+            toTwosComplement(order.signerTokenCount).substr(2) +
+            order.buyerToken.substr(2) +
+            toTwosComplement(order.buyerTokenCount).substr(2) +
+            raw.substr(2) +
+            toTwosComplement(order.signerTokenCount).substr(2);
+
+        await contracts.kosuToken.approve.awaitTransactionSuccessAsync(subContract.address, testValues.maxUint);
+        const resp = await web3Wrapper.awaitTransactionSuccessAsync(
+            await subContract.participate.sendTransactionAsync(hex),
+        );
+        console.log(JSON.stringify(resp.logs, null, 2));
+        console.log(JSON.stringify(order, null, 2));
+        console.log(JSON.stringify(raw, null, 2));
+    });
 });
 
 after(async () => {
