@@ -29,7 +29,8 @@
         "prettier:deployedAddresses": "prettier --write src/deployedAddresses.json --config ../../.prettierrc",
         "ganache_rpc": "docker run --rm -p 8545:8545 ${npm_package_config_kosu_ganache_image}",
         "ganache_rpc:detached": "docker run --rm -d -p 8545:8545 ${npm_package_config_kosu_ganache_image}",
-        "generate_contract_wrappers": "abi-gen --abis  ${npm_package_config_abis} --template ./abi-gen-templates/contract.handlebars --partials './abi-gen-templates/partials/**/*.handlebars' --output generated-wrappers --backend ethers"
+        "generate_contract_wrappers": "abi-gen --abis  ${npm_package_config_abis} --template ./abi-gen-templates/contract.handlebars --partials './abi-gen-templates/partials/**/*.handlebars' --output generated-wrappers --backend ethers",
+        "setup:ci": "run-p prettier:ci lint build"
     },
     "config": {
         "kosu_ganache_image": "gcr.io/kosu-io/kosu-ganache",
