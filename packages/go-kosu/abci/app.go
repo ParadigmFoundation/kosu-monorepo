@@ -4,7 +4,6 @@ import (
 	"encoding/hex"
 	"errors"
 	"fmt"
-	"log"
 	"math"
 	"regexp"
 
@@ -151,7 +150,7 @@ func (app *App) EndBlock(req abci.RequestEndBlock) abci.ResponseEndBlock {
 
 		key, err := hex.DecodeString(addr)
 		if err != nil {
-			log.Printf("EndBlock: DecodeString: %v", err)
+			fmt.Printf("EndBlock: DecodeString: %v", err)
 			continue
 		}
 
