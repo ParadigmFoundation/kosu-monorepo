@@ -1,5 +1,7 @@
 import Web3 from "web3";
 import BigNumber from "bignumber.js";
+import cookies from "browser-cookies";
+import uuid from "uuid/v4";
 import { EventEmitter } from "events";
 import { Kosu } from "@kosu/kosu.js";
 
@@ -38,6 +40,7 @@ interface StoreChallenge {
     challengeId: BigNumber;
     challengerStake: BigNumber;
     challengeEndUnix: number;
+    challengeEnd: BigNumber;
     totalTokens: BigNumber;
     winningTokens: BigNumber;
     result: "passed" | "failed";
@@ -88,6 +91,19 @@ interface ContractParams {
     rewardPeriod: number;
 }
 
+interface ChallengeInfo {
+    challengeStart: number;
+    endCommitPeriod: number;
+    challengeEnd: number;
+}
+
+interface Vote {
+    id: BigNumber;
+    value: string;
+    salt: string;
+    encoded: string;
+}
+
 // will be the global window object in browser
 declare var window, global: Window;
 
@@ -133,6 +149,7 @@ interface Map<T> {
  * @property {BigNumber} challengeId the incremental ID of the current challenge
  * @property {BigNumber} challengerStake the staked balance of the challenger
  * @property {number} challengeEndUnix the estimated unix timestamp the challenge ends at
+ * @property {BigNumber} challengeEnd the block at which the challenge reveal period ends
  * @property {BigNumber} totalTokens if finalized, the total number of tokens from participating voters
  * @property {BigNumber} winningTokens if finalized, the number of tokens that voted on the winning side
  * @property {string} result the final result of the challenge; "passed", "failed", or `null` if not finalized
@@ -171,6 +188,23 @@ interface Map<T> {
  * @property {BigNumber} stakedBalance the number of tokens staked by the listing owner (in wei)
  * @property {number} status the number representing the listing status (0: no listing, 1: proposal, 2: validator, 3: in-challenge, 4: exiting)
  * @property {string} tendermintPublicKey the 32 byte Tendermint public key of the listing holder
+ */
+
+/**
+ * Represents a stored vote in a challenge poll.
+ * @typedef Vote
+ * @property {BigNumber} id the challengeId the vote is for
+ * @property {string} value the vote value (should be "1" or "0" for challenge votes)
+ * @property {string} salt a secret string used to hash the vote; must use same salt in commit as reveal
+ * @property {string} encoded the encoded vote, as passed to the contract system
+ */
+
+/**
+ * Contains block numbers for various state changes for a given challenge.
+ * @typedef ChallengeInfo
+ * @property {number} challengeStart the block at which the challenge was initiated, and when the commit period starts
+ * @property {number} endCommitPeriod the block the commit period ends, and the reveal period starts
+ * @property {number} challengeEnd the block the reveal period ends, and the challenge finalizes
  */
 
 /**
@@ -371,6 +405,90 @@ class Gov {
     }
 
     /**
+     * Commit a vote in an active a challenge poll.
+     *
+     * This method creates a vote (with value and salt), encodes it, and submits
+     * it as a transaction (requires MetaMask signature).
+     *
+     * It stores the vote data in a browser cookie so it may be revealed later,
+     * which means voters must reveal a vote with the same browser they used to
+     * commit it.
+     *
+     * @param {BigNumber} challengeId the pollId of the challenge, as a string
+     * @param {string} value the vote value, "1" to vote for the challenge, "0" to vote against
+     * @param {BigNumber} amount the number of tokens (in wei) to commit in the vote
+     * @returns {Promise<string>} the transaction hash of the commit tx
+     * @example
+     * ```javascript
+     * // we are looking at challenge #13, and want to vote AGAINST it with 10 tokens
+     * const pollId = new BigNumber(13);
+     * const amount = new BigNumber(gov.etherToWei("10"));
+     * const value = "0";
+     *
+     * // will prompt for MetaMask signature
+     * const commitVoteTxId = await gov.commitVote(pollId, value, amount);
+     *
+     * // ... some time passes, we now want to reveal ...
+     *
+     * // load vote from cookie and reveal
+     * const revealTxId = await gov.revealVote(new BigNumber("13"));
+     *
+     * // ... wait for Tx's to confirm or whatever, etc.
+     * ```
+     */
+    async commitVote(challengeId: BigNumber, value: string, amount: BigNumber): Promise<string> {
+        const vote = this._createVote(challengeId, value);
+        this._storeVote(vote);
+
+        const { id, encoded } = vote;
+        const pollId = new BigNumber(id);
+        const tokens = new BigNumber(amount);
+
+        let receipt;
+        try {
+            receipt = await this.kosu.voting.commitVote(pollId, encoded, tokens);
+        } catch (error) {
+            throw Error(`[gov] failed to commit vote: ${error.message}`);
+        }
+        return receipt.transactionHash;
+    }
+
+    /**
+     * Reveal a previously committed vote, by challengeId (as a BigNumber).
+     *
+     * For this method to work, the user must have committed a vote during the
+     * commit period for the given challenge.
+     *
+     * This method must also be called during the reveal period in order for the
+     * transaction not to fail.
+     *
+     * Calling this method will trigger a MetaMask pop-up asking for the user's
+     * signature and approval.
+     *
+     * @param {BigNumber} challengeId the challenge to reveal a stored vote for
+     * @returns {Promise<string>} the transaction hash of the reveal tx.
+     */
+    async revealVote(challengeId: BigNumber): Promise<string> {
+        const id = new BigNumber(challengeId);
+        const idStr = id.toString();
+
+        const vote = this._loadVote(idStr);
+        const { value, salt } = vote;
+
+        const voteNum = new BigNumber(value);
+        const saltNum = new BigNumber(salt);
+
+        let receipt;
+        try {
+            receipt = await this.kosu.voting.revealVote(id, voteNum, saltNum);
+        } catch (error) {
+            throw new Error(`[gov] failed to reveal vote: ${error.message}`);
+        }
+
+        return receipt.transactionHash;
+    }
+
+    /**
      * Estimate the UNIX timestamp (in seconds) at which a given `block` will be
      * mined.
      *
@@ -414,7 +532,7 @@ class Gov {
                 break;
 
             default: {
-                throw new Error("unknown blockTime for current network");
+                throw new Error("[gov] unknown blockTime for current network");
             }
         }
 
@@ -441,7 +559,7 @@ class Gov {
         try {
             block = await this.web3.eth.getBlock(blockNumber);
         } catch (error) {
-            throw new Error(`failed to get timestamp: ${error.message}`);
+            throw new Error(`[gov] failed to get timestamp: ${error.message}`);
         }
 
         return block.timestamp;
@@ -460,6 +578,54 @@ class Gov {
             pastChallenge.winningTokens = await this.kosu.voting.totalWinningTokens(pastChallenge.pollId);
         }
         return pastChallenges.reverse();
+    }
+
+    /**
+     * Returns an object with the block numbers of important times for a given
+     * challenge. Between `challengeStart` and `endCommitPeriod`, votes may be
+     * committed (submitted) to the challenge.
+     *
+     * Between `endCommitPeriod` and `challengeEnd`, votes may be revealed with
+     * the same salt and vote value.
+     *
+     * @param {string | number | BigNumber} challengeId the ID of the challenge to query
+     * @returns {Promise<ChallengeInfo>} the block numbers for this challenge
+     * @example
+     * ```javascript
+     * const info = await gov.getChallengeInfo(new BigNumber(1));
+     * const currentBlock = await gov.currentBlockNumber();
+     *
+     * if (currentBlock < endCommitPeriod && currentBlock >= challengeStart) {
+     *   // in "commit" period; voters may submit votes
+     * } else if (currentBlock >= endCommitPeriod && currentBlock <= challengeEnd) {
+     *   // in "reveal" period; voters may reveal votes
+     * } else {
+     *   // challenge has ended (or issues with block numbers)
+     * }
+     * ```
+     */
+    async getChallengeInfo(challengeId: number | BigNumber | string): Promise<ChallengeInfo> {
+        const id = new BigNumber(challengeId);
+        const challenge = await this.kosu.validatorRegistry.getChallenge(id);
+
+        const challengeEnd = challenge.challengeEnd.toNumber();
+        const challengeStart = challengeEnd - this.params.challengePeriod;
+        const endCommitPeriod = challengeStart + this.params.commitPeriod;
+
+        return {
+            challengeStart,
+            endCommitPeriod,
+            challengeEnd,
+        };
+    }
+
+    /**
+     * Returns the current block height (as a number).
+     *
+     * @returns {number} The current (or most recent) Ethereum block height.
+     */
+    async currentBlockNumber(): Promise<number> {
+        return await this.web3.eth.getBlockNumber();
     }
 
     async _processListing(listing) {
@@ -490,7 +656,7 @@ class Gov {
 
     async _processProposal(listing) {
         if (listing.status !== 1) {
-            throw new Error("listing is not a proposal");
+            throw new Error("[gov] listing is not a proposal");
         }
 
         const owner = listing.owner;
@@ -516,7 +682,7 @@ class Gov {
 
     async _processValidator(listing) {
         if (listing.status !== 2 && listing.challengeId === 0) {
-            throw new Error("listing is not a validator");
+            throw new Error("[gov] listing is not a validator");
         }
 
         const owner = listing.owner;
@@ -547,7 +713,7 @@ class Gov {
         delete this.validators[listing.tendermintPublicKeyHex];
 
         if (listing.status !== 3) {
-            throw new Error("listing is not in challenge");
+            throw new Error("[gov] listing is not in challenge");
         }
 
         let challengeType;
@@ -585,6 +751,7 @@ class Gov {
             challengeId: listing.currentChallenge,
             challengerStake: listingChallenge.balance,
             challengeEndUnix,
+            challengeEnd: listingChallenge.challengeEnd,
             totalTokens,
             winningTokens,
             result,
@@ -665,7 +832,7 @@ class Gov {
         let power, stake;
 
         if (!/^0x[a-faF0-9]{64}$/.test(pubKey)) {
-            throw new Error("invalid public key");
+            throw new Error("[gov] invalid public key");
         }
 
         const listings = await this.kosu.validatorRegistry.getListings();
@@ -771,6 +938,45 @@ class Gov {
         if (this.debug) {
             console.log(message);
         }
+    }
+
+    _generateRandomBigNumber() {
+        const randomNumber = BigNumber.random(15);
+        const factor = new BigNumber(10).pow(14);
+        const randomNumberScaledTo256Bits = randomNumber.times(factor).integerValue();
+        console.log(JSON.stringify(randomNumberScaledTo256Bits));
+        return randomNumberScaledTo256Bits;
+    }
+
+    _createVote(challengeId: BigNumber, value: string): Vote {
+        if (value !== "1" && value !== "0") {
+            throw new Error("invalid vote value for a challenge");
+        }
+        const id = challengeId;
+        const salt = this._generateRandomBigNumber().toString();
+        const encoded = this.kosu.voting.encodeVote(value, salt);
+        return {
+            id,
+            salt,
+            value,
+            encoded,
+        };
+    }
+
+    _storeVote(vote: Vote): void {
+        const { id, value, salt } = vote;
+        const key = `gov_vote#${id}#${this.coinbase}`;
+        const cookie = JSON.stringify(vote);
+        cookies.set(key, cookie);
+    }
+
+    _loadVote(id: string) {
+        const key = `gov_vote#${id}#${this.coinbase}`;
+        const cookie = cookies.get(key);
+        if (!cookie) {
+            throw new Error("[gov] vote not stored for this pollId");
+        }
+        return JSON.parse(cookie);
     }
 
     async _connectMetamask() {
