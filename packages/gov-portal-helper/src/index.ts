@@ -512,32 +512,9 @@ class Gov {
             return this.getPastBlockTimestamp(blockNumber);
         }
 
-        // blockTime depends on networkId
-        let blockTimeSeconds;
-        const netId = await this.web3.eth.net.getId();
-        switch (netId) {
-            // mainnet
-            case 1:
-                blockTimeSeconds = 13.5;
-                break;
-
-            // ropsten
-            case 3:
-                blockTimeSeconds = 15;
-                break;
-
-            // kosu-poa dev net
-            case 6174:
-                blockTimeSeconds = 2;
-                break;
-
-            default: {
-                throw new Error("[gov] unknown blockTime for current network");
-            }
-        }
-
+        const blockTimeSeconds = await this._getBlockTimeSeconds();
         const diff = parseInt(blockNumber.toString()) - currentBlock;
-        const estSeconds = diff * blockTimeSeconds;
+        const estSeconds = diff * blockTimeSeconds.toNumber();
 
         return Math.floor(nowUnixSec + estSeconds);
     }
@@ -664,7 +641,7 @@ class Gov {
 
         const acceptAt = parseInt(listing.applicationBlock) + this.params.applicationPeriod;
         const acceptUnix = await this.estimateFutureBlockTimestamp(acceptAt);
-        const dailyReward = this._estimateDailyReward(listing.rewardRate);
+        const dailyReward = await this._estimateDailyReward(listing.rewardRate);
 
         const power = this._estimateProposalPower(listing.stakedBalance);
 
@@ -688,7 +665,7 @@ class Gov {
         const owner = listing.owner;
         const stakeSize = listing.stakedBalance;
         const confBlock = listing.confirmationBlock.toNumber();
-        const dailyReward = this._estimateDailyReward(listing.rewardRate);
+        const dailyReward = await this._estimateDailyReward(listing.rewardRate);
         const confirmationUnix = await this.getPastBlockTimestamp(confBlock);
 
         // power is set after update
@@ -861,14 +838,46 @@ class Gov {
         return power;
     }
 
-    _addProposal(pubKey, proposal) {
+    async _getBlockTimeSeconds(): Promise<BigNumber> {
+        const netId = await this.web3.eth.net.getId();
+        switch (netId) {
+            // mainnet
+            case 1: return new BigNumber(13.5);
+
+            // ropsten
+            case 3: return new BigNumber(15);
+
+            // kosu-poa dev net
+            case 6174: return new BigNumber(2);
+            default: {
+                throw new Error("[gov] unknown blockTime for current network");
+            }
+        }
+    }
+
+    async _estimateDailyReward(rewardRate: string | number | BigNumber): Promise<BigNumber> {
+        const rate = new BigNumber(rewardRate);
+        const rewardPeriod = new BigNumber(this.params.rewardPeriod);
+        const tokensPerBlock = rate.div(rewardPeriod);
+        const blocksPerDay = await this._getBlocksPerDay();
+        const tokensPerDay = tokensPerBlock.times(blocksPerDay);
+        return tokensPerDay;
+    }
+
+    async _getBlocksPerDay(): Promise<BigNumber> {
+        const blockTimeSeconds = await this._getBlockTimeSeconds();
+        const secondsPerDay = new BigNumber(26 * 60 * 60);
+        return secondsPerDay.div(blockTimeSeconds);
+    }
+
+    _addProposal(pubKey: string, proposal: Proposal): void {
         this.proposals[pubKey] = proposal;
         this.ee.emit("gov_update");
 
         this._debugLog(`New proposal:\n${JSON.stringify(proposal, null, 2)}`);
     }
 
-    _addValidator(pubKey, validator) {
+    _addValidator(pubKey: string, validator: Validator): void {
         delete this.proposals[pubKey];
         this.validators[pubKey] = validator;
         this._updateVotePowers();
@@ -877,34 +886,26 @@ class Gov {
         this._debugLog(`New validator:\n${JSON.stringify(validator, null, 2)}`);
     }
 
-    _removeValidator(pubKey) {
+    _removeValidator(pubKey: string): void {
         delete this.proposals[pubKey];
         delete this.validators[pubKey];
         delete this.challenges[pubKey];
         this.ee.emit("gov_update");
     }
 
-    _addChallenge(pubKey, challenge) {
+    _addChallenge(pubKey: string, challenge: StoreChallenge): void {
         this.challenges[pubKey] = challenge;
         this.ee.emit("gov_update");
 
         this._debugLog(`New challenge:\n${JSON.stringify(challenge, null, 2)}`);
     }
 
-    _estimateProposalPower(stake) {
+    _estimateProposalPower(stake: string | number | BigNumber): BigNumber {
         const stakeBn = new BigNumber(stake);
         const totalStake = this._getTotalStake();
         const newTotal = totalStake.plus(stakeBn);
         const power = stakeBn.div(newTotal);
         return power.times(Gov.ONE_HUNDRED);
-    }
-
-    _estimateDailyReward(rewardRate) {
-        const rate = new BigNumber(rewardRate);
-        const rewardPeriod = new BigNumber(this.params.rewardPeriod);
-        const tokensPerBlock = rate.div(rewardPeriod);
-        const tokensPerDay = tokensPerBlock.times(Gov.BLOCKS_PER_DAY);
-        return tokensPerDay;
     }
 
     _updateVotePowers() {
