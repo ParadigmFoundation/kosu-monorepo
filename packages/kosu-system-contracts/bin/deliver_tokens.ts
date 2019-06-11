@@ -38,7 +38,7 @@ if (args["test-mnemonic"] || !mnemonic) {
     const aLot = new BigNumber(web3.utils.toWei("100000"));
     const from = await web3.eth.getCoinbase();
     const addresses = ["0xAA554D0c5ff879387Fc234dE5D22EC02983baA27", "0x8b366a3d4e46aC5406F12766Ad33E6482Ce4F081"];
-    addresses.push(await web3.eth.getAccounts());
+    addresses.push.apply(addresses, await web3.eth.getAccounts());
 
     for (const account of addresses) {
         await kosuToken.transfer.awaitTransactionSuccessAsync(account, aLot, { from });
