@@ -14,6 +14,9 @@ steps:
           - yarn prettier:ci
           - yarn lint
           - yarn build
+          - cd packages/kosu-system-contracts
+          - yarn deploy:kosu:ci
+          - cd -
           - yarn test:ci
 
 services:
