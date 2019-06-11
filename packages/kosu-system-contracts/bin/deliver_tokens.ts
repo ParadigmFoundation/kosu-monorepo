@@ -43,5 +43,4 @@ if (args["test-mnemonic"] || !mnemonic) {
     for (const account of addresses) {
         await kosuToken.transfer.awaitTransactionSuccessAsync(account, aLot, { from });
     }
-
 })().catch(err => console.log(err));
