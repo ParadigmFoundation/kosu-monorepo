@@ -69,7 +69,6 @@ trigger:
     event:
         - pull_request
 
----
 # UNTESTED
 # ---
 # kind: pipeline
