@@ -11,9 +11,7 @@ steps:
       WEB3_URI: http://kosu-geth:8545
     commands:
       - yarn
-      - yarn prettier:ci
-      - yarn lint
-      - yarn build
+      - run-p prettier:ci lint build
       - cd packages/kosu-system-contracts
       - yarn deploy:kosu:ci
 
