@@ -10,7 +10,11 @@ ENV GOLINTCI_RELEASE=1.16.0
 
 # setup
 RUN apt-get update
-RUN apt-get install -y unzip jq
+RUN apt-get install -y unzip build-essential jq
+
+RUN git clone https://github.com/ethereum/go-ethereum
+RUN cd go-ethereum && make devtools
+RUN rm -rf go-ethereum
 
 # test configuration
 ENV TENDERMINT_RELEASE=0.31.1
