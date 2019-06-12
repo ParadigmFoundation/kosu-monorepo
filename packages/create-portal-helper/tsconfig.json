@@ -1,5 +1,5 @@
 {
-    "extends": "../../tsconfig.json",
+    "extends": "@kosu/tsc-config",
     "compilerOptions": {
         "allowSyntheticDefaultImports": true,
         "esModuleInterop": true,
@@ -7,7 +7,12 @@
         "rootDir": "src",
         "resolveJsonModule": true,
         "moduleResolution": "node",
-        "typeRoots": ["node_modules/@types"]
+        "typeRoots": [
+            "node_modules/@types"
+        ]
     },
-    "include": ["./src/index.ts", "./src/config/*"]
+    "include": [
+        "./src/index.ts",
+        "./src/config/*"
+    ]
 }

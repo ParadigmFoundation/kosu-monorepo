@@ -16,6 +16,7 @@
         "0x.js": "^6.0.9",
         "@0x/subproviders": "^4.0.6",
         "@kosu/kosu.js": "^0.1.0-alpha.6",
+        "@kosu/tsc-config": "^0.1.0",
         "web3": "1.0.0-beta.37"
     },
     "devDependencies": {
