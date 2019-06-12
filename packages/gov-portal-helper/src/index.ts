@@ -811,7 +811,7 @@ class Gov {
             throw new Error("[gov] invalid public key");
         }
 
-        const listings = await this.kosu.validatorRegistry.getListings();
+        const listings = await this.kosu.validatorRegistry.getAllListings();
         listings.forEach(listing => {
             cache[listing.tendermintPublicKey] = listing;
         });
