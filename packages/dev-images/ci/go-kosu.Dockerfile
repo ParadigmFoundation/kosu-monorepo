@@ -10,7 +10,7 @@ ENV GOLINTCI_RELEASE=1.16.0
 
 # setup
 RUN apt-get update
-RUN apt-get install -y unzip
+RUN apt-get install -y unzip jq
 
 # test configuration
 ENV TENDERMINT_RELEASE=0.31.1
