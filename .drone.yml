@@ -5,11 +5,12 @@ name: tests
 
 steps:
   - name: build-project
-    image: gcr.io/kosu-io/node-ci:be5ef5c
+    image: gcr.io/kosu-io/node-ci:latest
     pull: always
     environment:
       WEB3_URI: http://kosu-geth:8545
     commands:
+      - jq --help
       - yarn
       - yarn setup:ci
       - cd packages/kosu-system-contracts
