@@ -16,6 +16,7 @@
         "build": "wsrun --exclude-missing --stages build",
         "test": "wsrun --exclude-missing test",
         "test:ci": "wsrun --exclude-missing --fast-exit test:ci",
+        "contracts:test:ci": "yarn workspace @kosu/system-contracts contracts:test:ci",
         "prettier": "prettier --write '**/*.{ts,tsx,json,md,js}' --config .prettierrc",
         "prettier:ci": "prettier --list-different '**/*.{ts,tsx,json,md,js}' --config .prettierrc",
         "postinstall": "lerna link --force-local",
