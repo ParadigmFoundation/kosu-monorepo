@@ -1156,27 +1156,6 @@
     web3-utils "^1.0.0-beta.53"
     ws "^6.1.4"
 
-"@kosu/kosu.js@0.1.0-alpha.3":
-  version "0.1.0-alpha.3"
-  resolved "https://registry.yarnpkg.com/@kosu/kosu.js/-/kosu.js-0.1.0-alpha.3.tgz#0eac4ca0ea0ccedfdae46ae179c42867a92a88ea"
-  integrity sha512-9n6cXpn5i23FGub4Ze1vYeNS1bCnI0TUmcbk51oAxRqsGYrsKy/azCEl7YxJJ6Ff3i6IZVHoa471imTY7HWtKw==
-  dependencies:
-    "@0x/utils" "^4.3.1"
-    "@0x/web3-wrapper" "^6.0.5"
-    "@babel/core" "^7.4.4"
-    "@kosu/system-contracts" "^0.1.0-alpha.2"
-    ethereum-protocol "^1.0.1"
-    ethereumjs-abi "^0.6.6"
-    ethereumjs-util "^5.2.0"
-    isomorphic-ws "^4.0.1"
-    node-fetch "^2.2.0"
-    truffle-contract "^4.0.11"
-    web3 "1.0.0-beta.37"
-    web3-eth-contract "^1.0.0-beta.53"
-    web3-provider-engine "^15.0.0"
-    web3-utils "^1.0.0-beta.53"
-    ws "^6.1.4"
-
 "@ledgerhq/devices@^4.60.2":
   version "4.60.2"
   resolved "https://registry.yarnpkg.com/@ledgerhq/devices/-/devices-4.60.2.tgz#dbb2232b12e104bc53e9fdd278b29a5323aa931e"
