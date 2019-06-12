@@ -282,7 +282,7 @@ class Create {
         };
         const posterSignature = await Signature.generate(
             this.web3,
-            OrderSerializer.posterHex(kosuOrder, ZRX_SUBCONTRACT_MAKER_ARGS),
+            OrderSerializer.posterSignatureHex(kosuOrder, ZRX_SUBCONTRACT_MAKER_ARGS),
             this.coinbase,
         );
         const signedKosuOrder = {
