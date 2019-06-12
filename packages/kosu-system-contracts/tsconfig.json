@@ -5,17 +5,10 @@
         "rootDir": ".",
         "resolveJsonModule": true,
         "moduleResolution": "node",
-        "typeRoots": [
-            "node_modules/@types"
-        ],
-        "types": [
-            "mocha"
-        ]
+        "typeRoots": ["node_modules/@types"],
+        "types": ["mocha"]
     },
-    "include": [
-        "./generated-wrappers/*",
-        "./src/**/*"
-    ],
+    "include": ["./generated-wrappers/*", "./src/**/*"],
     "files": [
         "generated-artifacts/AuthorizedAddresses.json",
         "generated-artifacts/EventEmitter.json",
