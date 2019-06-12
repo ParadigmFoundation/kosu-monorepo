@@ -15,7 +15,7 @@ steps:
       - cd packages/kosu-system-contracts
       - yarn deploy:kosu:ci
 
-  - name: npm-projects
+  - name: npm-tests
     image: gcr.io/kosu-io/node-ci:latest
     pull: always
     environment:
@@ -41,7 +41,7 @@ steps:
             packages/gov-portal-helper/**/*.*,
           ]
 
-  - name: go-kosu
+  - name: go-kosu-tests
     image: gcr.io/kosu-io/go-kosu-ci:latest
     pull: always
     environment:
