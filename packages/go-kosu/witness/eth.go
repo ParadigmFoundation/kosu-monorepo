@@ -14,7 +14,7 @@ import (
 
 const (
 	// KosuEventEmitterAddress is the address of the EventEmitter contract
-	// NOTE: the 'ParadigmEvent' has not yet been renamed to 'KosuEvent' in
+	// NOTE: the 'KosuEvent' has not yet been renamed to 'KosuEvent' in
 	// 	the EventEmitter contract yet.
 	KosuEventEmitterAddress = "0xf2098FB608098A562d24CCde594A304d739cc4B7"
 )
@@ -47,7 +47,7 @@ func NewEthereumProvider(addr string) (*EthereumProvider, error) {
 
 func (w *EthereumProvider) handleEvents(ctx context.Context, fn func(e *Event)) error {
 	var lastBlock uint64
-	handle := func(e *EventEmitterParadigmEvent) {
+	handle := func(e *EventEmitterKosuEvent) {
 		lastBlock = e.Raw.BlockNumber
 
 		switch e.EventType {
@@ -61,7 +61,7 @@ func (w *EthereumProvider) handleEvents(ctx context.Context, fn func(e *Event)) 
 		}
 	}
 
-	f, err := w.events.FilterParadigmEvent(nil)
+	f, err := w.events.FilterKosuEvent(nil)
 	if err != nil {
 		return err
 	}
@@ -75,8 +75,8 @@ func (w *EthereumProvider) handleEvents(ctx context.Context, fn func(e *Event)) 
 		}
 	}
 
-	events := make(chan *EventEmitterParadigmEvent, 128)
-	sub, err := w.events.WatchParadigmEvent(nil, events)
+	events := make(chan *EventEmitterKosuEvent, 128)
+	sub, err := w.events.WatchKosuEvent(nil, events)
 	if err != nil {
 		return err
 	}
@@ -98,7 +98,7 @@ func (w *EthereumProvider) handleEvents(ctx context.Context, fn func(e *Event)) 
 	}
 }
 
-func handlePosterRegistryUpdate(evt *EventEmitterParadigmEvent) (*Event, error) {
+func handlePosterRegistryUpdate(evt *EventEmitterKosuEvent) (*Event, error) {
 	if len(evt.Data) != 2 {
 		return nil, errors.New("invalid data")
 	}
