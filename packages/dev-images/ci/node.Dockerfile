@@ -2,13 +2,25 @@ FROM node:lts
 
 ENV DOCKER true
 
-RUN yarn global add npm npx ganache-cli typescript
+ENV GOCACHE=$HOME/.go-build
+ENV GO111MODULE=on
+ENV GOLINTCI_RELEASE=1.16.0
+ENV GOROOT=/usr/local/go
+ENV GOPATH=$HOME/go
 
 RUN apt-get update
 RUN apt-get install -y netcat build-essential libudev-dev jq
 
+RUN wget https://dl.google.com/go/go1.12.6.linux-amd64.tar.gz
+RUN tar -xvf go1.12.6.linux-amd64.tar.gz
+RUN mv go /usr/local
+ENV PATH=$GOPATH/bin:$GOROOT/bin:$PATH
+RUN go version
+
 RUN git clone https://github.com/ethereum/go-ethereum
 RUN cd go-ethereum && make devtools
 RUN rm -rf go-ethereum
+
+RUN yarn global add npm npx ganache-cli typescript
 
 CMD [ "node" ]
