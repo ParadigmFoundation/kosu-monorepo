@@ -1,11 +1,11 @@
 steps:
 # Pull images to build from cache
-  - name: 'gcr.io/cloud-builders/docker'
-    entrypoint: 'bash'
-    args:
-      - '-c'
-      - |
-        docker pull gcr.io/$PROJECT_ID/go-kosu-ci:latest || exit 0
+- name: 'gcr.io/cloud-builders/docker'
+  entrypoint: 'bash'
+  args:
+    - '-c'
+    - |
+      docker pull gcr.io/$PROJECT_ID/go-kosu-ci:latest || exit 0
 #      - |
 #        docker pull gcr.io/$PROJECT_ID/node-ci:latest || exit 0
 #      - |
