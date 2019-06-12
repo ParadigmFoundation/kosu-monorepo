@@ -1,5 +1,5 @@
 {
-    "extends": "../../tsconfig.json",
+    "extends": "@kosu/tsc-config",
     "compilerOptions": {
         "allowSyntheticDefaultImports": true,
         "esModuleInterop": true,

@@ -25,7 +25,7 @@
         "packages/kosu.js",
         "packages/kosu-sdk-contracts",
         "packages/kosu-system-contracts",
-        "pacakges/tsc-config",
+        "packages/tsc-config",
         "packages/tslint-config",
         "packages/dev-images",
         "packages/web-helpers",

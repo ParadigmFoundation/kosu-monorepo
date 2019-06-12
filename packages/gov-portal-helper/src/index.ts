@@ -1,7 +1,6 @@
 import Web3 from "web3";
 import BigNumber from "bignumber.js";
 import cookies from "browser-cookies";
-import uuid from "uuid/v4";
 import { EventEmitter } from "events";
 import { Kosu } from "@kosu/kosu.js";
 
@@ -812,7 +811,7 @@ class Gov {
             throw new Error("[gov] invalid public key");
         }
 
-        const listings = await this.kosu.validatorRegistry.getListings();
+        const listings = await this.kosu.validatorRegistry.getAllListings();
         listings.forEach(listing => {
             cache[listing.tendermintPublicKey] = listing;
         });
