@@ -5,11 +5,7 @@ steps:
   args:
     - '-c'
     - |
-      docker pull gcr.io/$PROJECT_ID/go-kosu-ci:latest || exit 0;
-    - |
-      docker pull gcr.io/$PROJECT_ID/node-ci:latest || exit 0;
-    - |
-      docker pull gcr.io/$PROJECT_ID/kosu-geth:latest || exit 0;
+      docker pull gcr.io/$PROJECT_ID/go-kosu-ci:latest || exit 0; docker pull gcr.io/$PROJECT_ID/node-ci:latest || exit 0; docker pull gcr.io/$PROJECT_ID/kosu-geth:latest || exit 0;
 
 # build and tag go-kosu ci image 
 - name: "gcr.io/cloud-builders/docker"
