@@ -30,7 +30,6 @@ steps:
           [
             .drone.yml,
             packages/kosu.js/**/*.*,
-            packages/dev-images/**/*.*,
             packages/kosu-sdk-contracts/**/*.*,
             packages/kosu-system-contracts/**/*.*,
             packages/web-helpers/**/*.*,
