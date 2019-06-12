@@ -40,6 +40,26 @@ steps:
             packages/gov-portal-helper/**/*.*,
           ]
 
+  - name: solidity-tests
+    image: gcr.io/kosu-io/node-ci:latest
+    pull: always
+    environment:
+      WEB3_URI: http://kosu-geth:8545
+    commands:
+      - yarn contracts:test:ci
+    depends_on:
+      - build-project
+    when:
+      changeset:
+        includes:
+          [
+            .drone.yml,
+            packages/kosu-sdk-contracts/**/*.*,
+            packages/kosu-system-contracts/**/*.*,
+            packages/tslint-config/**/*.*,
+            packages/tsc-config/**/*.*,
+          ]
+
   - name: go-kosu
     image: gcr.io/kosu-io/go-kosu-ci:latest
     pull: always
