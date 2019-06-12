@@ -1,7 +1,6 @@
 import Web3 from "web3";
 import BigNumber from "bignumber.js";
 import cookies from "browser-cookies";
-import uuid from "uuid/v4";
 import { EventEmitter } from "events";
 import { Kosu } from "@kosu/kosu.js";
 
