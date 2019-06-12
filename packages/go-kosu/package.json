@@ -9,8 +9,7 @@
         "build": "yarn abigen && make",
         "abigen": "jq '.compilerOutput.abi' node_modules/@kosu/system-contracts/generated-artifacts/EventEmitter.json | abigen -abi - --pkg witness  -out witness/event_emitter.go"
     },
-    "config": {
-    },
+    "config": {},
     "devDependencies": {
         "@kosu/system-contracts": "^0.1.0-alpha.4"
     }
