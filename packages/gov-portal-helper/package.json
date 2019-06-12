@@ -13,7 +13,7 @@
     },
     "dependencies": {
         "@kosu/kosu.js": "^0.1.0-alpha.5",
-        "bignumber.js": "^9.0.0",
+        "bignumber.js": "8.0.2",
         "browser-cookies": "^1.2.0",
         "events": "^3.0.0",
         "web3": "1.0.0-beta.37"
