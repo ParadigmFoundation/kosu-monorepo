@@ -11,6 +11,7 @@ steps:
       WEB3_URI: http://kosu-geth:8545
     commands:
       - jq --help
+      - abigen
       - yarn
       - yarn setup:ci
       - cd packages/kosu-system-contracts
