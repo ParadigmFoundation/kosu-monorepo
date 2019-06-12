@@ -40,7 +40,7 @@ steps:
               packages/gov-portal-helper/**/*.*,
             ]
 
-  - name: contracts-tests
+  - name: solidity-tests
       image: gcr.io/kosu-io/node-ci:latest
       pull: always
       environment:
