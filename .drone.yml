@@ -16,29 +16,49 @@ steps:
       - yarn deploy:kosu:ci
 
   - name: npm-projects
-    image: gcr.io/kosu-io/node-ci:latest
-    pull: always
-    environment:
-      WEB3_URI: http://kosu-geth:8545
-    commands:
-      - yarn test:ci
-    depends_on:
-      - build-project
-    when:
-      changeset:
-        includes:
-          [
-            .drone.yml,
-            packages/kosu.js/**/*.*,
-            packages/kosu-sdk-contracts/**/*.*,
-            packages/kosu-system-contracts/**/*.*,
-            packages/web-helpers/**/*.*,
-            packages/kosu-geth/**/*.*,
-            packages/tslint-config/**/*.*,
-            packages/tsc-config/**/*.*,
-            packages/create-portal-helper/**/*.*,
-            packages/gov-portal-helper/**/*.*,
-          ]
+      image: gcr.io/kosu-io/node-ci:latest
+      pull: always
+      environment:
+        WEB3_URI: http://kosu-geth:8545
+      commands:
+        - yarn test:ci
+      depends_on:
+        - build-project
+      when:
+        changeset:
+          includes:
+            [
+              .drone.yml,
+              packages/kosu.js/**/*.*,
+              packages/kosu-sdk-contracts/**/*.*,
+              packages/kosu-system-contracts/**/*.*,
+              packages/web-helpers/**/*.*,
+              packages/kosu-geth/**/*.*,
+              packages/tslint-config/**/*.*,
+              packages/tsc-config/**/*.*,
+              packages/create-portal-helper/**/*.*,
+              packages/gov-portal-helper/**/*.*,
+            ]
+
+  - name: contracts-tests
+      image: gcr.io/kosu-io/node-ci:latest
+      pull: always
+      environment:
+        WEB3_URI: http://kosu-geth:8545
+      commands:
+        - yarn contracts:test:ci
+      depends_on:
+        - build-project
+      when:
+        changeset:
+          includes:
+            [
+              .drone.yml,
+              packages/kosu-sdk-contracts/**/*.*,
+              packages/kosu-system-contracts/**/*.*,
+              packages/tslint-config/**/*.*,
+              packages/tsc-config/**/*.*,
+            ]
 
   - name: go-kosu
     image: gcr.io/kosu-io/go-kosu-ci:latest
