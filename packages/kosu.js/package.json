@@ -27,6 +27,7 @@
         "@0x/web3-wrapper": "^6.0.5",
         "@babel/core": "^7.4.4",
         "@kosu/system-contracts": "^0.1.0-alpha.4",
+        "@kosu/tsc-config": "^0.1.0",
         "@kosu/tslint-config": "^0.0.4",
         "ethereum-protocol": "^1.0.1",
         "ethereumjs-abi": "^0.6.6",
