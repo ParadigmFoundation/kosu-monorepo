@@ -15,7 +15,7 @@
     "scripts": {
         "compile:assets": "webpack",
         "develop": "webpack-dev-server",
-        "deploy": "./scripts/deploy.sh"
+        "deploy": "yarn compile:assets && gsutil -m rsync -d ./public gs://portal.kosu.io"
     },
     "repository": {
         "type": "git",
