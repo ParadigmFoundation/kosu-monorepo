@@ -1,6 +1,6 @@
 {
     "name": "@kosu/system-contracts",
-    "version": "0.1.0-alpha.4",
+    "version": "0.1.0-alpha.5",
     "description": "Kosu protocol core contracts in Solidity.",
     "license": "MIT",
     "repository": {
@@ -14,7 +14,7 @@
     },
     "scripts": {
         "test": "ts-mocha -p test/tsconfig.json test/* --timeout 4000",
-        "test:ci": "ts-mocha -p test/tsconfig.json test/* --timeout 20000 -b -- geth",
+        "contracts:test:ci": "ts-mocha -p test/tsconfig.json test/* --timeout 20000 -b -- geth",
         "coverage": "yarn test -- --timeout 10000 -- runCoverage && istanbul report html && open coverage/index.html",
         "build": "run-s compile:solidity generate_contract_wrappers compile:typescript",
         "compile:solidity": "sol-compiler",
@@ -43,6 +43,7 @@
         "@0x/utils": "^4.3.1",
         "@0x/web3-wrapper": "^6.0.5",
         "@kosu/subcontract-sdk": "0.1.0-alpha.1",
+        "@kosu/tsc-config": "^0.1.0",
         "@kosu/tslint-config": "^0.0.4",
         "bitcore-lib": "0.16",
         "ethereum-types": "^2.1.2",

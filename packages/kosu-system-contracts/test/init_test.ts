@@ -166,7 +166,7 @@ before(async () => {
     Object.assign(global, { ...testHelpers, txDefaults, testValues, contracts, accounts, web3, web3Wrapper });
 });
 
-describe.only("SubContract", () => {
+describe("SubContract", () => {
     const argumentsJson = {
         maker: [
             { datatype: "address", name: "signer" }, // 0

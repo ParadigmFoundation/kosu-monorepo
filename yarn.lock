@@ -1156,26 +1156,10 @@
     web3-utils "^1.0.0-beta.53"
     ws "^6.1.4"
 
-"@kosu/kosu.js@0.1.0-alpha.3":
-  version "0.1.0-alpha.3"
-  resolved "https://registry.yarnpkg.com/@kosu/kosu.js/-/kosu.js-0.1.0-alpha.3.tgz#0eac4ca0ea0ccedfdae46ae179c42867a92a88ea"
-  integrity sha512-9n6cXpn5i23FGub4Ze1vYeNS1bCnI0TUmcbk51oAxRqsGYrsKy/azCEl7YxJJ6Ff3i6IZVHoa471imTY7HWtKw==
-  dependencies:
-    "@0x/utils" "^4.3.1"
-    "@0x/web3-wrapper" "^6.0.5"
-    "@babel/core" "^7.4.4"
-    "@kosu/system-contracts" "^0.1.0-alpha.2"
-    ethereum-protocol "^1.0.1"
-    ethereumjs-abi "^0.6.6"
-    ethereumjs-util "^5.2.0"
-    isomorphic-ws "^4.0.1"
-    node-fetch "^2.2.0"
-    truffle-contract "^4.0.11"
-    web3 "1.0.0-beta.37"
-    web3-eth-contract "^1.0.0-beta.53"
-    web3-provider-engine "^15.0.0"
-    web3-utils "^1.0.0-beta.53"
-    ws "^6.1.4"
+"@kosu/tsc-config@^0.1.0":
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/@kosu/tsc-config/-/tsc-config-0.1.0.tgz#6af2d7bf6709b309132ec716688662909f1a84d0"
+  integrity sha512-K9lTksoWeevSU/mvWqrH1k+kxuyy9HBhsVeLaaA3GEHF0hHHH2ai8Fwe2jhKlIUCikhvs7wyVcIxjZdj7pWH4w==
 
 "@ledgerhq/devices@^4.60.2":
   version "4.60.2"
@@ -3335,19 +3319,14 @@ bignumber.js@7.2.1, bignumber.js@^7.2.1:
   resolved "https://registry.yarnpkg.com/bignumber.js/-/bignumber.js-7.2.1.tgz#80c048759d826800807c4bfd521e50edbba57a5f"
   integrity sha512-S4XzBk5sMB+Rcb/LNcpzXr57VRTxgAvaAEDAl1AwRx27j00hT84O6OkteE7u8UB3NuaaygCRrEpqox4uDOrbdQ==
 
-bignumber.js@^9.0.0:
-  version "9.0.0"
-  resolved "https://registry.yarnpkg.com/bignumber.js/-/bignumber.js-9.0.0.tgz#805880f84a329b5eac6e7cb6f8274b6d82bdf075"
-  integrity sha512-t/OYhhJ2SD+YGBQcjY8GzzDHEk9f3nerxjtfa6tlMXfe7frs/WozhvCNoGvpM0P3bNf3Gq5ZRMlGr5f3r4/N8A==
+bignumber.js@8.0.2, bignumber.js@~8.0.2:
+  version "8.0.2"
+  resolved "https://registry.yarnpkg.com/bignumber.js/-/bignumber.js-8.0.2.tgz#d8c4e1874359573b1ef03011a2d861214aeef137"
+  integrity sha512-EiuvFrnbv0jFixEQ9f58jo7X0qI2lNGIr/MxntmVzQc5JUweDSh8y8hbTCAomFtqwUPIOWcLXP0VEOSZTG7FFw==
 
 "bignumber.js@git+https://github.com/frozeman/bignumber.js-nolookahead.git":
   version "2.0.7"
   resolved "git+https://github.com/frozeman/bignumber.js-nolookahead.git#57692b3ecfc98bbdd6b3a516cb2353652ea49934"
-
-bignumber.js@~8.0.2:
-  version "8.0.2"
-  resolved "https://registry.yarnpkg.com/bignumber.js/-/bignumber.js-8.0.2.tgz#d8c4e1874359573b1ef03011a2d861214aeef137"
-  integrity sha512-EiuvFrnbv0jFixEQ9f58jo7X0qI2lNGIr/MxntmVzQc5JUweDSh8y8hbTCAomFtqwUPIOWcLXP0VEOSZTG7FFw==
 
 bin-links@^1.1.2:
   version "1.1.2"

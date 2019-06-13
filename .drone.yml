@@ -14,8 +14,22 @@ steps:
       - yarn setup:ci
       - cd packages/kosu-system-contracts
       - yarn deploy:kosu:ci
+    when:
+      changeset:
+        includes:
+          [
+            .drone.yml,
+            package.json,
+            tsconfig.json,
+            packages/go-kosu/**/*.*,
+            packages/kosu-sdk-contracts/**/*.*,
+            packages/kosu-system-contracts/**/*.*,
+            packages/kosu.js/**/*.*,
+            packages/tslint-config/**/*.*,
+            packages/tsc-config/**/*.*,
+          ]
 
-  - name: npm-projects
+  - name: npm-tests
     image: gcr.io/kosu-io/node-ci:latest
     pull: always
     environment:
@@ -29,23 +43,39 @@ steps:
         includes:
           [
             .drone.yml,
-            packages/kosu.js/**/*.*,
-            packages/dev-images/**/*.*,
             packages/kosu-sdk-contracts/**/*.*,
             packages/kosu-system-contracts/**/*.*,
-            packages/web-helpers/**/*.*,
-            packages/kosu-geth/**/*.*,
+            packages/kosu.js/**/*.*,
             packages/tslint-config/**/*.*,
             packages/tsc-config/**/*.*,
-            packages/create-portal-helper/**/*.*,
-            packages/gov-portal-helper/**/*.*,
+          ]
+
+  - name: solidity-tests
+    image: gcr.io/kosu-io/node-ci:latest
+    pull: always
+    environment:
+      WEB3_URI: http://kosu-geth:8545
+    commands:
+      - yarn contracts:test:ci
+    depends_on:
+      - build-project
+    when:
+      changeset:
+        includes:
+          [
+            .drone.yml,
+            packages/kosu-sdk-contracts/**/*.*,
+            packages/kosu-system-contracts/**/*.*,
+            packages/tslint-config/**/*.*,
+            packages/tsc-config/**/*.*,
+            tsconfig.json,
           ]
 
   - name: go-kosu
     image: gcr.io/kosu-io/go-kosu-ci:latest
     pull: always
     environment:
-      ETHEREUM_TEST_ADDRESS: wss://ethnet.zaidan.io/ws/ropsten
+      ETHEREUM_TEST_ADDRESS: wss://kosu-geth:8546
     commands:
       - cd packages/go-kosu
       - make ci
@@ -53,7 +83,13 @@ steps:
       - build-project
     when:
       changeset:
-        includes: [.drone.yml, packages/go-kosu/**/*.*, packages/kosu-system-contracts/**/*.*]
+        includes:
+          [
+            .drone.yml,
+            packages/go-kosu/**/*.*,
+            packages/kosu-sdk-contracts/**/*.*,
+            packages/kosu-system-contracts/**/*.*,
+          ]
 
 services:
     - name: kosu-geth
@@ -61,11 +97,24 @@ services:
       pull: always
       ports:
           - 8545
+          - 8546
 
-# Pull request trigger is not correctly causing build to start on fresh pull request.
 trigger:
     event:
         - pull_request
+
+
+
+
+
+# Excluding the following due to changes not effecting or having tests
+# Google builds these images on every push.  The commit push with these changes will fail until google build completes
+# packages/dev-images/**/*.*
+# packages/kosu-geth/**/*.*
+# Add these above if tests are added for these packages
+# packages/web-helpers/**/*.*
+# packages/create-portal-helper/**/*.*
+# packages/gov-portal-helper/**/*.*
 
 # UNTESTED
 # ---

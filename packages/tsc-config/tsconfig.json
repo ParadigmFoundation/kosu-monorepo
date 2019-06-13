@@ -1,24 +1,15 @@
 {
     "compilerOptions": {
         "module": "commonjs",
-        "target": "es5",
-        "lib": ["es2017", "dom"],
-        "removeComments": true,
-        "resolveJsonModule": true,
-        "experimentalDecorators": true,
+        "target": "es2015",
         "downlevelIteration": true,
         "noImplicitReturns": true,
         "pretty": true,
         "skipLibCheck": true,
+        "esModuleInterop": true,
+        "resolveJsonModule": true,
         "typeRoots": ["node_modules/@types"],
-        "strict": true,
-        // These settings are required for TypeScript project references
-        "composite": true,
-        "declaration": true,
-        "declarationMap": true,
-        "sourceMap": true
-    },
-
-    "include": [],
-    "references": [{ "path": "../tslint-config/tslint.json" }]
+        "sourceMap": true,
+        "declaration": true
+    }
 }
