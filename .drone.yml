@@ -87,28 +87,32 @@ services:
 trigger:
     event:
         - pull_request
-#    changeset:
-#      includes:
-#        [
-#          .drone.yml,
-#          package.json,
-#          tsconfig.json,
-#          packages/go-kosu/**/*.*,
-#          packages/kosu-sdk-contracts/**/*.*,
-#          packages/kosu-system-contracts/**/*.*,
-#          packages/kosu.js/**/*.*,
-#          packages/tslint-config/**/*.*,
-#          packages/tsc-config/**/*.*,
-#        ]
+    changeset:
+      includes:
+        [
+          .drone.yml,
+          package.json,
+          tsconfig.json,
+          packages/go-kosu/**/*.*,
+          packages/kosu-sdk-contracts/**/*.*,
+          packages/kosu-system-contracts/**/*.*,
+          packages/kosu.js/**/*.*,
+          packages/tslint-config/**/*.*,
+          packages/tsc-config/**/*.*,
+        ]
 
-#          Excluding the following due to changes not effecting or having tests
-#          Google builds these images on every push.  The commit push with these changes will fail until google build completes
-#          packages/dev-images/**/*.*
-#          packages/kosu-geth/**/*.*
-#          Add these above if tests are added for these packages
-#          packages/web-helpers/**/*.*
-#          packages/create-portal-helper/**/*.*
-#          packages/gov-portal-helper/**/*.*
+
+
+
+
+# Excluding the following due to changes not effecting or having tests
+# Google builds these images on every push.  The commit push with these changes will fail until google build completes
+# packages/dev-images/**/*.*
+# packages/kosu-geth/**/*.*
+# Add these above if tests are added for these packages
+# packages/web-helpers/**/*.*
+# packages/create-portal-helper/**/*.*
+# packages/gov-portal-helper/**/*.*
 
 # UNTESTED
 # ---
