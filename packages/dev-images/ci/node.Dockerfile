@@ -18,7 +18,7 @@ ENV PATH=$GOPATH/bin:$GOROOT/bin:$PATH
 RUN go version
 
 RUN git clone https://github.com/ethereum/go-ethereum
-RUN cd go-ethereum && make devtools
+RUN cd go-ethereum && git checkout release/1.8 && make devtools
 RUN rm -rf go-ethereum
 
 RUN yarn global add npm npx ganache-cli typescript
