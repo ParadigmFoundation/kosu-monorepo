@@ -72,12 +72,13 @@ steps:
       - build-project
     when:
       changeset:
-        includes: [
-          .drone.yml,
-          packages/go-kosu/**/*.*,
-          packages/kosu-sdk-contracts/**/*.*,
-          packages/kosu-system-contracts/**/*.*,
-        ]
+        includes:
+          [
+            .drone.yml,
+            packages/go-kosu/**/*.*,
+            packages/kosu-sdk-contracts/**/*.*,
+            packages/kosu-system-contracts/**/*.*,
+          ]
 
 services:
     - name: kosu-geth
