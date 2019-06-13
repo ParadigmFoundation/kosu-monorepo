@@ -82,7 +82,7 @@ func (s *Suite) TestWitnessRebalance() {
 		w := witness.New(s.client, witness.NewMockProvider(ch), witness.DefaultOptions)
 		require.NoError(t, w.WithLogger(nil).Start(ctx))
 
-		Convey("When a set of Rebalance Tx are commited", func() {
+		Convey("When a set of Rebalance Tx are committed", func() {
 			roundNumber := []uint64{1, 2, 3}
 			for _, n := range roundNumber {
 				tx.RoundInfo.Number = n
