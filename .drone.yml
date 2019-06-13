@@ -14,6 +14,20 @@ steps:
       - yarn setup:ci
       - cd packages/kosu-system-contracts
       - yarn deploy:kosu:ci
+    when:
+      changeset:
+        includes:
+          [
+            .drone.yml,
+            package.json,
+            tsconfig.json,
+            packages/go-kosu/**/*.*,
+            packages/kosu-sdk-contracts/**/*.*,
+            packages/kosu-system-contracts/**/*.*,
+            packages/kosu.js/**/*.*,
+            packages/tslint-config/**/*.*,
+            packages/tsc-config/**/*.*,
+          ]
 
   - name: npm-tests
     image: gcr.io/kosu-io/node-ci:latest
@@ -88,19 +102,6 @@ services:
 trigger:
     event:
         - pull_request
-    changeset:
-      includes:
-        [
-          .drone.yml,
-          package.json,
-          tsconfig.json,
-          packages/go-kosu/**/*.*,
-          packages/kosu-sdk-contracts/**/*.*,
-          packages/kosu-system-contracts/**/*.*,
-          packages/kosu.js/**/*.*,
-          packages/tslint-config/**/*.*,
-          packages/tsc-config/**/*.*,
-        ]
 
 
 
