@@ -35,9 +35,6 @@ steps:
             packages/tslint-config/**/*.*,
             packages/tsc-config/**/*.*,
           ]
-#            packages/web-helpers/**/*.*,
-#            packages/create-portal-helper/**/*.*,
-#            packages/gov-portal-helper/**/*.*,
 
   - name: solidity-tests
     image: gcr.io/kosu-io/node-ci:latest
