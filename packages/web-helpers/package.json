@@ -13,7 +13,7 @@
         "webpack-dev-server": "^3.3.1"
     },
     "scripts": {
-        "compile:assets": "./scripts/build.sh",
+        "compile:assets": "webpack",
         "develop": "webpack-dev-server",
         "deploy": "./scripts/deploy.sh"
     },

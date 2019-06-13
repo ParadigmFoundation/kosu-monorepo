@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # clean build before deploy
-./scripts/build.sh
+yarn compile:assets
 
 # deploy to GCP bucket
 gsutil -m rm gs://portal.kosu.io/*
