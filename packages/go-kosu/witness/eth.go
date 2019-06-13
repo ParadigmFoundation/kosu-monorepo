@@ -13,8 +13,8 @@ import (
 )
 
 const (
-// TODO use deployed addresses and network id to get address
 	// KosuEventEmitterAddress is the address of the EventEmitter contract
+	// TODO use deployed addresses and network id to get address
 	// NOTE: the 'KosuEvent' has not yet been renamed to 'KosuEvent' in
 	// 	the EventEmitter contract yet.
 	KosuEventEmitterAddress = "0xf2098FB608098A562d24CCde594A304d739cc4B7"
