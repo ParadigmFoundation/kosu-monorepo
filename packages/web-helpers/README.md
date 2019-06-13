@@ -24,4 +24,4 @@ View live changes at [`https://portal.kosu.io/`](https://portal.kosu.io/)
 
 ## Notes
 
-- Currently only supports the Kosu contract system, as the node is under construction.
+-   Currently only supports the Kosu contract system, as the node is under construction.
