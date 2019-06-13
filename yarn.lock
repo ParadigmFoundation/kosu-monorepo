@@ -1156,6 +1156,11 @@
     web3-utils "^1.0.0-beta.53"
     ws "^6.1.4"
 
+"@kosu/tsc-config@^0.1.0":
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/@kosu/tsc-config/-/tsc-config-0.1.0.tgz#6af2d7bf6709b309132ec716688662909f1a84d0"
+  integrity sha512-K9lTksoWeevSU/mvWqrH1k+kxuyy9HBhsVeLaaA3GEHF0hHHH2ai8Fwe2jhKlIUCikhvs7wyVcIxjZdj7pWH4w==
+
 "@ledgerhq/devices@^4.60.2":
   version "4.60.2"
   resolved "https://registry.yarnpkg.com/@ledgerhq/devices/-/devices-4.60.2.tgz#dbb2232b12e104bc53e9fdd278b29a5323aa931e"

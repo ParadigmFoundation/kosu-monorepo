@@ -40,7 +40,7 @@ type Event struct {
 }
 
 func (e *Event) String() string {
-	return fmt.Sprintf("<block:%d addr:%s amount:+%s>", e.Block.Number, e.Address, e.Amount.String())
+	return fmt.Sprintf("<block:%v addr:%s amount:+%s>", e.Block.Number, e.Address, e.Amount.String())
 }
 
 // WitnessTx builds TransactionWitness out of the event data

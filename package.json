@@ -22,17 +22,23 @@
         "postinstall": "lerna link --force-local",
         "setup:ci": "run-p prettier:ci lint build"
     },
-    "workspaces": [
-        "packages/kosu.js",
-        "packages/kosu-sdk-contracts",
-        "packages/kosu-system-contracts",
-        "packages/tsc-config",
-        "packages/tslint-config",
-        "packages/dev-images",
-        "packages/web-helpers",
-        "packages/create-portal-helper",
-        "packages/gov-portal-helper"
-    ],
+    "workspaces": {
+        "packages": [
+            "packages/kosu.js",
+            "packages/kosu-sdk-contracts",
+            "packages/kosu-system-contracts",
+            "pacakges/tsc-config",
+            "packages/tslint-config",
+            "packages/dev-images",
+            "packages/web-helpers",
+            "packages/create-portal-helper",
+            "packages/gov-portal-helper",
+            "packages/go-kosu"
+        ],
+        "nohoist": [
+            "packages/go-kosu"
+        ]
+    },
     "dependencies": {},
     "private": true,
     "devDependencies": {
