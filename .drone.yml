@@ -61,7 +61,7 @@ steps:
     image: gcr.io/kosu-io/go-kosu-ci:latest
     pull: always
     environment:
-      ETHEREUM_TEST_ADDRESS: wss://ethnet.zaidan.io/ws/ropsten
+      ETHEREUM_TEST_ADDRESS: wss://kosu-geth:8546
     commands:
       - cd packages/go-kosu
       - make ci
@@ -83,6 +83,7 @@ services:
       pull: always
       ports:
           - 8545
+          - 8546
 
 trigger:
     event:
