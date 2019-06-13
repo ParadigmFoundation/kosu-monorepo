@@ -14,6 +14,7 @@ steps:
       - yarn setup:ci
       - cd packages/kosu-system-contracts
       - yarn deploy:kosu:ci
+
   - name: npm-tests
     image: gcr.io/kosu-io/node-ci:latest
     pull: always
@@ -28,15 +29,14 @@ steps:
         includes:
           [
             .drone.yml,
-            packages/kosu.js/**/*.*,
             packages/kosu-sdk-contracts/**/*.*,
             packages/kosu-system-contracts/**/*.*,
-            packages/web-helpers/**/*.*,
-            packages/kosu-geth/**/*.*,
+            packages/kosu.js/**/*.*,
             packages/tslint-config/**/*.*,
             packages/tsc-config/**/*.*,
-            packages/create-portal-helper/**/*.*,
-            packages/gov-portal-helper/**/*.*,
+#            packages/web-helpers/**/*.*,
+#            packages/create-portal-helper/**/*.*,
+#            packages/gov-portal-helper/**/*.*,
           ]
 
   - name: solidity-tests
@@ -57,6 +57,7 @@ steps:
             packages/kosu-system-contracts/**/*.*,
             packages/tslint-config/**/*.*,
             packages/tsc-config/**/*.*,
+            tsconfig.json,
           ]
 
   - name: go-kosu
@@ -71,7 +72,12 @@ steps:
       - build-project
     when:
       changeset:
-        includes: [.drone.yml, packages/go-kosu/**/*.*, packages/kosu-system-contracts/**/*.*]
+        includes: [
+          .drone.yml,
+          packages/go-kosu/**/*.*,
+          packages/kosu-sdk-contracts/**/*.*,
+          packages/kosu-system-contracts/**/*.*,
+        ]
 
 services:
     - name: kosu-geth
@@ -80,10 +86,32 @@ services:
       ports:
           - 8545
 
-# Pull request trigger is not correctly causing build to start on fresh pull request.
 trigger:
     event:
         - pull_request
+    when:
+      changeset:
+        includes:
+          [
+            .drone.yml,
+            package.json,
+            tsconfig.json,
+            packages/go-kosu/**/*.*,
+            packages/kosu-sdk-contracts/**/*.*,
+            packages/kosu-system-contracts/**/*.*,
+            packages/kosu.js/**/*.*,
+            packages/tslint-config/**/*.*,
+            packages/tsc-config/**/*.*,
+          ]
+
+#          Excluding the following due to changes not effecting or having tests
+#          Google builds these images on every push.  The commit push with these changes will fail until google build completes
+#          packages/dev-images/**/*.*
+#          packages/kosu-geth/**/*.*
+#          Add these above if tests are added for these packages
+#          packages/web-helpers/**/*.*
+#          packages/create-portal-helper/**/*.*
+#          packages/gov-portal-helper/**/*.*
 
 # UNTESTED
 # ---
