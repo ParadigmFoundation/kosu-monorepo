@@ -7,7 +7,7 @@
     "license": "MIT",
     "scripts": {
         "build": "yarn abigen && make",
-        "abigen": "pwd && ls && jq '.compilerOutput.abi' node_modules/@kosu/system-contracts/generated-artifacts/EventEmitter.json && jq '.compilerOutput.abi' node_modules/@kosu/system-contracts/generated-artifacts/EventEmitter.json |  abigen --abi - --pkg witness --type EventEmitter -out witness/event_emitter.go"
+        "abigen": "jq '.compilerOutput.abi' node_modules/@kosu/system-contracts/generated-artifacts/EventEmitter.json |  abigen --abi - --pkg witness --type EventEmitter -out witness/event_emitter.go"
     },
     "config": {},
     "devDependencies": {
