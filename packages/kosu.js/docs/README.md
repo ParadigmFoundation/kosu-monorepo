@@ -1,42 +1,25 @@
----
-title: Overview
----
+> ## [@kosu/system-contracts](README.md)
 
-# KosuConnect
+[Globals](globals.md) /
 
-KosuConnect is the primary library for interacting with the Kosu protocol and settlement platform. It is currently only available in JavaScript. KosuConnect provides a convenient way to interface with the Kosu OrderStream and the Kosu OrderGateway.
+# Kosu Protocol Contracts
 
-Jump into KosuConnect by following one of the links below:
+This repository contains the contract system that implements the Kosu protocol, in conjunction with `go-kosu`.
 
--   [Quick start](./getting-started.md)
--   [Full API reference](./reference.md)
--   [Usage examples](./usage.md)
--   [Source code (on GitHub)](https://github.com/ParadigmFoundation/) <!-- TODO fix link -->
+These contracts support the inner workings of the OrderStream network, including validator governance, poster access control, and general economic coordination.
 
-## Current features
+These contracts are **under active development and may change extensively at any time**.
 
-KosuConnect provides client and server-side utilities for the following actions (all of which can be configured for local and remote OrderStream nodes):
+## Deployed addresses
 
--   Constructing and signing maker orders
--   Signing orders as a poster (for OrderStream submission)
--   Submitting orders to the OrderStream via RPC
--   Subscribing to the OrderStream to parse/process orders
+Below are the deployed addresses for the core Kosu protocol contract system **(on the Ropsten test-network)**:
 
-## Proposed features
-
-In the future, the library (or related tooling) may be extended to support:
-
--   Locking tokens to gain write access to the OrderStream
--   Auditing nodes and validators on the network
--   Submitting applications for validators
--   Voting on validator applications
-
-Until then, the above actions must be taken programmatically through libraries such as `web3`, or interacting with the Kosu contract system's interfaces manually on services like [Etherscan](https://etherscan.io)
-
-## Issues and proposals
-
-KosuConnect is under active development, and at this point should not be considered stable. If you find a bug, inconsistency, or vulnerability please open an issue.
-
-If you encounter errors setting up or running setting up KosuConnect, feel free to reach out on our [chat server.](https://chat.paradigm.market/)
-
-KosuConnect is open source software, and we encourage the suggestion of improvements and enhancements to the protocol. If you have a suggestion or specification, please submit a Paradigm Improvement Proposal (PIP) <!-- TODO Is this still valid? --> or open a pull request.
+| Contract Name                                                             | Last Deploy Date | Deployed Address                                                                                                              | Remarks |
+| ------------------------------------------------------------------------- | ---------------- | ----------------------------------------------------------------------------------------------------------------------------- | ------- |
+| [OrderGateway](./contracts/external/OrderGateway.sol)                     | 29 Mar 19        | [0x07a24e06d4279c0d8224957CDa6A349Aeb326963](https://ropsten.etherscan.io/address/0x07a24e06d4279c0d8224957CDa6A349Aeb326963) | -       |
+| [Treasury](./contracts/treasury/Treasury.sol)                             | 29 Mar 19        | [0x39Fa4aF991C0642744E0F05042Bcf38A96ab345f](https://ropsten.etherscan.io/address/0x39Fa4aF991C0642744E0F05042Bcf38A96ab345f) | -       |
+| [PosterRegistryProxy](./contracts/external/PosterRegistryProxy.sol)       | 29 Mar 19        | [0xBdd34B13Aff942b32C2660a11dA19Ff6E964724e](https://ropsten.etherscan.io/address/0xBdd34B13Aff942b32C2660a11dA19Ff6E964724e) | -       |
+| [ValidatorRegistryProxy](./contracts/external/ValidatorRegistryProxy.sol) | 29 Mar 19        | [0xf277f6009869B701AdaD8D29Cbc7D029Bbe5391d](https://ropsten.etherscan.io/address/0xf277f6009869B701AdaD8D29Cbc7D029Bbe5391d) | -       |
+| [EventEmitter](./contracts/event/EventEmitter.sol)                        | 29 Mar 19        | [0xf2098FB608098A562d24CCde594A304d739cc4B7](https://ropsten.etherscan.io/address/0xf2098FB608098A562d24CCde594A304d739cc4B7) | -       |
+| [Voting](./contracts/voting/Voting.sol)                                   | 29 Mar 19        | [0xd73B3E6B4b7702569720B93e1C27D33cB91f8407](https://ropsten.etherscan.io/address/0xd73B3E6B4b7702569720B93e1C27D33cB91f8407) | -       |
+| [KosuToken](contracts/lib/KosuToken.sol)                                  | 29 Mar 19        | [0x1513EFDA5170c8B1eC168bFB238278EeaA3B114e](https://ropsten.etherscan.io/address/0x1513EFDA5170c8B1eC168bFB238278EeaA3B114e) | -       |
