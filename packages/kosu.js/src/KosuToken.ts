@@ -58,7 +58,7 @@ export class KosuToken {
     /**
      * Asynchronously initializes the contract instance or returns it from cache.
      *
-     * @returns the KosuToken contract instance.
+     * @returns The low-level KosuToken contract wrapper instance.
      */
     private async getContract(): Promise<KosuTokenContract> {
         if (!this.contract) {
