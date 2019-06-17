@@ -6,152 +6,152 @@
 
 ## Hierarchy
 
--   **EventEmitter**
+* **EventEmitter**
 
 ### Index
 
 #### Constructors
 
--   [constructor](eventemitter.md#constructor)
+* [constructor](eventemitter.md#constructor)
 
 #### Properties
 
--   [address](eventemitter.md#private-address)
--   [kosuWeb3Wrapper](eventemitter.md#private-kosuweb3wrapper)
--   [web3Wrapper](eventemitter.md#private-web3wrapper)
+* [address](eventemitter.md#private-address)
+* [kosuWeb3Wrapper](eventemitter.md#private-kosuweb3wrapper)
+* [web3Wrapper](eventemitter.md#private-web3wrapper)
 
 #### Methods
 
--   [\_decodeLogs](eventemitter.md#private-_decodelogs)
--   [getAddress](eventemitter.md#getaddress)
--   [getFutureDecodedLogs](eventemitter.md#getfuturedecodedlogs)
--   [getPastDecodedLogs](eventemitter.md#getpastdecodedlogs)
--   [getPastLogsFromKosuEndpoint](eventemitter.md#private-getpastlogsfromkosuendpoint)
+* [_decodeLogs](eventemitter.md#private-_decodelogs)
+* [getAddress](eventemitter.md#getaddress)
+* [getFutureDecodedLogs](eventemitter.md#getfuturedecodedlogs)
+* [getPastDecodedLogs](eventemitter.md#getpastdecodedlogs)
+* [getPastLogsFromKosuEndpoint](eventemitter.md#private-getpastlogsfromkosuendpoint)
 
 ## Constructors
 
-### constructor
+###  constructor
 
-\+ **new EventEmitter**(`options`: `KosuOptions`): _[EventEmitter](eventemitter.md)_
+\+ **new EventEmitter**(`options`: `KosuOptions`): *[EventEmitter](eventemitter.md)*
 
-_Defined in [packages/kosu.js/src/EventEmitter.ts:25](url)_
+*Defined in [src/EventEmitter.ts:25](url)*
 
 **Parameters:**
 
-| Name      | Type          |
-| --------- | ------------- |
-| `options` | `KosuOptions` |
+Name | Type |
+------ | ------ |
+`options` | `KosuOptions` |
 
-**Returns:** _[EventEmitter](eventemitter.md)_
+**Returns:** *[EventEmitter](eventemitter.md)*
 
----
+___
 
 ## Properties
 
 ### `Private` address
 
-● **address**: _string_
+● **address**: *string*
 
-_Defined in [packages/kosu.js/src/EventEmitter.ts:24](url)_
+*Defined in [src/EventEmitter.ts:24](url)*
 
----
+___
 
 ### `Private` kosuWeb3Wrapper
 
-● **kosuWeb3Wrapper**: _`Web3Wrapper`_
+● **kosuWeb3Wrapper**: *`Web3Wrapper`*
 
-_Defined in [packages/kosu.js/src/EventEmitter.ts:25](url)_
+*Defined in [src/EventEmitter.ts:25](url)*
 
----
+___
 
 ### `Private` web3Wrapper
 
-● **web3Wrapper**: _`Web3Wrapper`_
+● **web3Wrapper**: *`Web3Wrapper`*
 
-_Defined in [packages/kosu.js/src/EventEmitter.ts:23](url)_
+*Defined in [src/EventEmitter.ts:23](url)*
 
----
+___
 
 ## Methods
 
-### `Private` \_decodeLogs
+### `Private` _decodeLogs
 
-▸ **\_decodeLogs**(`logs`: `LogEntry`[]): _`Array<LogWithDecodedKosuArgs<DecodedLogArgs, DecodedKosuLogArgs>>`_
+▸ **_decodeLogs**(`logs`: `LogEntry`[]): *`Array<LogWithDecodedKosuArgs<DecodedLogArgs, DecodedKosuLogArgs>>`*
 
-_Defined in [packages/kosu.js/src/EventEmitter.ts:85](url)_
-
-**Parameters:**
-
-| Name   | Type         |
-| ------ | ------------ |
-| `logs` | `LogEntry`[] |
-
-**Returns:** _`Array<LogWithDecodedKosuArgs<DecodedLogArgs, DecodedKosuLogArgs>>`_
-
----
-
-### getAddress
-
-▸ **getAddress**(): _`Promise<string>`_
-
-_Defined in [packages/kosu.js/src/EventEmitter.ts:32](url)_
-
-**Returns:** _`Promise<string>`_
-
----
-
-### getFutureDecodedLogs
-
-▸ **getFutureDecodedLogs**(`start`: number, `callback`: function): _`Timeout`_
-
-_Defined in [packages/kosu.js/src/EventEmitter.ts:58](url)_
+*Defined in [src/EventEmitter.ts:85](url)*
 
 **Parameters:**
 
-■`start`: _number_
+Name | Type |
+------ | ------ |
+`logs` | `LogEntry`[] |
 
-■`callback`: _function_
+**Returns:** *`Array<LogWithDecodedKosuArgs<DecodedLogArgs, DecodedKosuLogArgs>>`*
 
-▸ (`a`: `Array<LogWithDecodedKosuArgs<DecodedLogArgs, DecodedKosuLogArgs>>`): _void_
+___
+
+###  getAddress
+
+▸ **getAddress**(): *`Promise<string>`*
+
+*Defined in [src/EventEmitter.ts:32](url)*
+
+**Returns:** *`Promise<string>`*
+
+___
+
+###  getFutureDecodedLogs
+
+▸ **getFutureDecodedLogs**(`start`: number, `callback`: function): *`Timeout`*
+
+*Defined in [src/EventEmitter.ts:58](url)*
 
 **Parameters:**
 
-| Name | Type                                                                |
-| ---- | ------------------------------------------------------------------- |
-| `a`  | `Array<LogWithDecodedKosuArgs<DecodedLogArgs, DecodedKosuLogArgs>>` |
+■` start`: *number*
 
-**Returns:** _`Timeout`_
+■` callback`: *function*
 
----
-
-### getPastDecodedLogs
-
-▸ **getPastDecodedLogs**(`config`: `FilterObject`): _`Promise<Array<LogWithDecodedKosuArgs<DecodedLogArgs, DecodedKosuLogArgs>>>`_
-
-_Defined in [packages/kosu.js/src/EventEmitter.ts:40](url)_
+▸ (`a`: `Array<LogWithDecodedKosuArgs<DecodedLogArgs, DecodedKosuLogArgs>>`): *void*
 
 **Parameters:**
 
-| Name     | Type           |
-| -------- | -------------- |
-| `config` | `FilterObject` |
+Name | Type |
+------ | ------ |
+`a` | `Array<LogWithDecodedKosuArgs<DecodedLogArgs, DecodedKosuLogArgs>>` |
 
-**Returns:** _`Promise<Array<LogWithDecodedKosuArgs<DecodedLogArgs, DecodedKosuLogArgs>>>`_
+**Returns:** *`Timeout`*
 
----
+___
+
+###  getPastDecodedLogs
+
+▸ **getPastDecodedLogs**(`config`: `FilterObject`): *`Promise<Array<LogWithDecodedKosuArgs<DecodedLogArgs, DecodedKosuLogArgs>>>`*
+
+*Defined in [src/EventEmitter.ts:40](url)*
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`config` | `FilterObject` |
+
+**Returns:** *`Promise<Array<LogWithDecodedKosuArgs<DecodedLogArgs, DecodedKosuLogArgs>>>`*
+
+___
 
 ### `Private` getPastLogsFromKosuEndpoint
 
-▸ **getPastLogsFromKosuEndpoint**(`config`: `FilterObject`): _`Promise<any[]>`_
+▸ **getPastLogsFromKosuEndpoint**(`config`: `FilterObject`): *`Promise<any[]>`*
 
-_Defined in [packages/kosu.js/src/EventEmitter.ts:75](url)_
+*Defined in [src/EventEmitter.ts:75](url)*
 
 **Parameters:**
 
-| Name     | Type           |
-| -------- | -------------- |
-| `config` | `FilterObject` |
+Name | Type |
+------ | ------ |
+`config` | `FilterObject` |
 
-**Returns:** _`Promise<any[]>`_
+**Returns:** *`Promise<any[]>`*
 
----
+___

@@ -6,551 +6,551 @@
 
 ## Hierarchy
 
--   `BaseContract`
+* `BaseContract`
 
-    -   **OrderGatewayContract**
+  * **OrderGatewayContract**
 
 ### Index
 
 #### Constructors
 
--   [constructor](ordergatewaycontract.md#constructor)
+* [constructor](ordergatewaycontract.md#constructor)
 
 #### Properties
 
--   [\_abiEncoderByFunctionSignature](ordergatewaycontract.md#protected-_abiencoderbyfunctionsignature)
--   [\_web3Wrapper](ordergatewaycontract.md#protected-_web3wrapper)
--   [abi](ordergatewaycontract.md#abi)
--   [address](ordergatewaycontract.md#address)
--   [constructorArgs](ordergatewaycontract.md#constructorargs)
--   [contractName](ordergatewaycontract.md#contractname)
--   [txReceipt](ordergatewaycontract.md#optional-txreceipt)
+* [_abiEncoderByFunctionSignature](ordergatewaycontract.md#protected-_abiencoderbyfunctionsignature)
+* [_web3Wrapper](ordergatewaycontract.md#protected-_web3wrapper)
+* [abi](ordergatewaycontract.md#abi)
+* [address](ordergatewaycontract.md#address)
+* [constructorArgs](ordergatewaycontract.md#constructorargs)
+* [contractName](ordergatewaycontract.md#contractname)
+* [txReceipt](ordergatewaycontract.md#optional-txreceipt)
 
 #### Methods
 
--   [\_lookupAbi](ordergatewaycontract.md#protected-_lookupabi)
--   [\_lookupAbiEncoder](ordergatewaycontract.md#protected-_lookupabiencoder)
--   [\_strictEncodeArguments](ordergatewaycontract.md#protected-_strictencodearguments)
--   [\_applyDefaultsToTxDataAsync](ordergatewaycontract.md#static-protected-_applydefaultstotxdataasync)
--   [\_bigNumberToString](ordergatewaycontract.md#static-protected-_bignumbertostring)
--   [\_formatABIDataItemList](ordergatewaycontract.md#static-protected-_formatabidataitemlist)
--   [\_lookupConstructorAbi](ordergatewaycontract.md#static-protected-_lookupconstructorabi)
--   [\_lowercaseAddress](ordergatewaycontract.md#static-protected-_lowercaseaddress)
--   [\_throwIfRevertWithReasonCallResult](ordergatewaycontract.md#static-protected-_throwifrevertwithreasoncallresult)
--   [deployAsync](ordergatewaycontract.md#static-deployasync)
--   [deployFrom0xArtifactAsync](ordergatewaycontract.md#static-deployfrom0xartifactasync)
--   [strictArgumentEncodingCheck](ordergatewaycontract.md#static-strictargumentencodingcheck)
+* [_lookupAbi](ordergatewaycontract.md#protected-_lookupabi)
+* [_lookupAbiEncoder](ordergatewaycontract.md#protected-_lookupabiencoder)
+* [_strictEncodeArguments](ordergatewaycontract.md#protected-_strictencodearguments)
+* [_applyDefaultsToTxDataAsync](ordergatewaycontract.md#static-protected-_applydefaultstotxdataasync)
+* [_bigNumberToString](ordergatewaycontract.md#static-protected-_bignumbertostring)
+* [_formatABIDataItemList](ordergatewaycontract.md#static-protected-_formatabidataitemlist)
+* [_lookupConstructorAbi](ordergatewaycontract.md#static-protected-_lookupconstructorabi)
+* [_lowercaseAddress](ordergatewaycontract.md#static-protected-_lowercaseaddress)
+* [_throwIfRevertWithReasonCallResult](ordergatewaycontract.md#static-protected-_throwifrevertwithreasoncallresult)
+* [deployAsync](ordergatewaycontract.md#static-deployasync)
+* [deployFrom0xArtifactAsync](ordergatewaycontract.md#static-deployfrom0xartifactasync)
+* [strictArgumentEncodingCheck](ordergatewaycontract.md#static-strictargumentencodingcheck)
 
 #### Object literals
 
--   [amountRemaining](ordergatewaycontract.md#amountremaining)
--   [arguments](ordergatewaycontract.md#arguments)
--   [isValid](ordergatewaycontract.md#isvalid)
--   [participate](ordergatewaycontract.md#participate)
+* [amountRemaining](ordergatewaycontract.md#amountremaining)
+* [arguments](ordergatewaycontract.md#arguments)
+* [isValid](ordergatewaycontract.md#isvalid)
+* [participate](ordergatewaycontract.md#participate)
 
 ## Constructors
 
-### constructor
+###  constructor
 
-\+ **new OrderGatewayContract**(`abi`: `ContractAbi`, `address`: string, `supportedProvider`: `SupportedProvider`, `txDefaults?`: `Partial<TxData>`): _[OrderGatewayContract](ordergatewaycontract.md)_
+\+ **new OrderGatewayContract**(`abi`: `ContractAbi`, `address`: string, `supportedProvider`: `SupportedProvider`, `txDefaults?`: `Partial<TxData>`): *[OrderGatewayContract](ordergatewaycontract.md)*
 
-_Overrides void_
+*Overrides void*
 
 Defined in node_modules/@kosu/system-contracts/generated-wrappers/order_gateway.ts:276
 
 **Parameters:**
 
-| Name                | Type                |
-| ------------------- | ------------------- |
-| `abi`               | `ContractAbi`       |
-| `address`           | string              |
-| `supportedProvider` | `SupportedProvider` |
-| `txDefaults?`       | `Partial<TxData>`   |
+Name | Type |
+------ | ------ |
+`abi` | `ContractAbi` |
+`address` | string |
+`supportedProvider` | `SupportedProvider` |
+`txDefaults?` | `Partial<TxData>` |
 
-**Returns:** _[OrderGatewayContract](ordergatewaycontract.md)_
+**Returns:** *[OrderGatewayContract](ordergatewaycontract.md)*
 
----
+___
 
 ## Properties
 
-### `Protected` \_abiEncoderByFunctionSignature
+### `Protected` _abiEncoderByFunctionSignature
 
-● **\_abiEncoderByFunctionSignature**: _`AbiEncoderByFunctionSignature`_
+● **_abiEncoderByFunctionSignature**: *`AbiEncoderByFunctionSignature`*
 
-_Inherited from void_
+*Inherited from void*
 
-Defined in node_modules/@0x/base-contract/lib/src/index.d.ts:20
+Defined in /Users/hen/GitHub/km/node_modules/@0x/base-contract/lib/src/index.d.ts:20
 
----
+___
 
-### `Protected` \_web3Wrapper
+### `Protected` _web3Wrapper
 
-● **\_web3Wrapper**: _`Web3Wrapper`_
+● **_web3Wrapper**: *`Web3Wrapper`*
 
-_Inherited from void_
+*Inherited from void*
 
-Defined in node_modules/@0x/base-contract/lib/src/index.d.ts:21
+Defined in /Users/hen/GitHub/km/node_modules/@0x/base-contract/lib/src/index.d.ts:21
 
----
+___
 
-### abi
+###  abi
 
-● **abi**: _`ContractAbi`_
+● **abi**: *`ContractAbi`*
 
-_Inherited from void_
+*Inherited from void*
 
-Defined in node_modules/@0x/base-contract/lib/src/index.d.ts:22
+Defined in /Users/hen/GitHub/km/node_modules/@0x/base-contract/lib/src/index.d.ts:22
 
----
+___
 
-### address
+###  address
 
-● **address**: _string_
+● **address**: *string*
 
-_Inherited from void_
+*Inherited from void*
 
-Defined in node_modules/@0x/base-contract/lib/src/index.d.ts:23
+Defined in /Users/hen/GitHub/km/node_modules/@0x/base-contract/lib/src/index.d.ts:23
 
----
+___
 
-### constructorArgs
+###  constructorArgs
 
-● **constructorArgs**: _any[]_
+● **constructorArgs**: *any[]*
 
-_Inherited from void_
+*Inherited from void*
 
-Defined in node_modules/@0x/base-contract/lib/src/index.d.ts:25
+Defined in /Users/hen/GitHub/km/node_modules/@0x/base-contract/lib/src/index.d.ts:25
 
----
+___
 
-### contractName
+###  contractName
 
-● **contractName**: _string_
+● **contractName**: *string*
 
-_Inherited from void_
+*Inherited from void*
 
-Defined in node_modules/@0x/base-contract/lib/src/index.d.ts:24
+Defined in /Users/hen/GitHub/km/node_modules/@0x/base-contract/lib/src/index.d.ts:24
 
----
+___
 
 ### `Optional` txReceipt
 
-● **txReceipt**? : _`TransactionReceiptWithDecodedLogs`_
+● **txReceipt**? : *`TransactionReceiptWithDecodedLogs`*
 
 Defined in node_modules/@kosu/system-contracts/generated-wrappers/order_gateway.ts:29
 
----
+___
 
 ## Methods
 
-### `Protected` \_lookupAbi
+### `Protected` _lookupAbi
 
-▸ **\_lookupAbi**(`functionSignature`: string): _`MethodAbi`_
+▸ **_lookupAbi**(`functionSignature`: string): *`MethodAbi`*
 
-_Inherited from void_
+*Inherited from void*
 
-Defined in node_modules/@0x/base-contract/lib/src/index.d.ts:34
-
-**Parameters:**
-
-| Name                | Type   |
-| ------------------- | ------ |
-| `functionSignature` | string |
-
-**Returns:** _`MethodAbi`_
-
----
-
-### `Protected` \_lookupAbiEncoder
-
-▸ **\_lookupAbiEncoder**(`functionSignature`: string): _`Method`_
-
-_Inherited from void_
-
-Defined in node_modules/@0x/base-contract/lib/src/index.d.ts:33
+Defined in /Users/hen/GitHub/km/node_modules/@0x/base-contract/lib/src/index.d.ts:34
 
 **Parameters:**
 
-| Name                | Type   |
-| ------------------- | ------ |
-| `functionSignature` | string |
+Name | Type |
+------ | ------ |
+`functionSignature` | string |
 
-**Returns:** _`Method`_
+**Returns:** *`MethodAbi`*
 
----
+___
 
-### `Protected` \_strictEncodeArguments
+### `Protected` _lookupAbiEncoder
 
-▸ **\_strictEncodeArguments**(`functionSignature`: string, `functionArguments`: any): _string_
+▸ **_lookupAbiEncoder**(`functionSignature`: string): *`Method`*
 
-_Inherited from void_
+*Inherited from void*
 
-Defined in node_modules/@0x/base-contract/lib/src/index.d.ts:35
+Defined in /Users/hen/GitHub/km/node_modules/@0x/base-contract/lib/src/index.d.ts:33
 
 **Parameters:**
 
-| Name                | Type   |
-| ------------------- | ------ |
-| `functionSignature` | string |
-| `functionArguments` | any    |
+Name | Type |
+------ | ------ |
+`functionSignature` | string |
 
-**Returns:** _string_
+**Returns:** *`Method`*
 
----
+___
 
-### `Static` `Protected` \_applyDefaultsToTxDataAsync
+### `Protected` _strictEncodeArguments
 
-▸ **\_applyDefaultsToTxDataAsync**<**T**>(`txData`: `T`, `txDefaults`: `Partial<TxData>`, `estimateGasAsync?`: function): _`Promise<TxData>`_
+▸ **_strictEncodeArguments**(`functionSignature`: string, `functionArguments`: any): *string*
 
-_Inherited from void_
+*Inherited from void*
 
-Defined in node_modules/@0x/base-contract/lib/src/index.d.ts:30
+Defined in /Users/hen/GitHub/km/node_modules/@0x/base-contract/lib/src/index.d.ts:35
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`functionSignature` | string |
+`functionArguments` | any |
+
+**Returns:** *string*
+
+___
+
+### `Static` `Protected` _applyDefaultsToTxDataAsync
+
+▸ **_applyDefaultsToTxDataAsync**<**T**>(`txData`: `T`, `txDefaults`: `Partial<TxData>`, `estimateGasAsync?`: function): *`Promise<TxData>`*
+
+*Inherited from void*
+
+Defined in /Users/hen/GitHub/km/node_modules/@0x/base-contract/lib/src/index.d.ts:30
 
 **Type parameters:**
 
-■`T`: _`Partial<TxData | TxDataPayable>`_
+■` T`: *`Partial<TxData | TxDataPayable>`*
 
 **Parameters:**
 
-■`txData`: _`T`_
+■` txData`: *`T`*
 
-■`txDefaults`: _`Partial<TxData>`_
+■` txDefaults`: *`Partial<TxData>`*
 
-■`estimateGasAsync`: _function_
+■` estimateGasAsync`: *function*
 
-▸ (`txData`: `T`): _`Promise<number>`_
-
-**Parameters:**
-
-| Name     | Type |
-| -------- | ---- |
-| `txData` | `T`  |
-
-**Returns:** _`Promise<TxData>`_
-
----
-
-### `Static` `Protected` \_bigNumberToString
-
-▸ **\_bigNumberToString**(`_type`: string, `value`: any): _any_
-
-_Inherited from void_
-
-Defined in node_modules/@0x/base-contract/lib/src/index.d.ts:28
+▸ (`txData`: `T`): *`Promise<number>`*
 
 **Parameters:**
 
-| Name    | Type   |
-| ------- | ------ |
-| `_type` | string |
-| `value` | any    |
+Name | Type |
+------ | ------ |
+`txData` | `T` |
 
-**Returns:** _any_
+**Returns:** *`Promise<TxData>`*
 
----
+___
 
-### `Static` `Protected` \_formatABIDataItemList
+### `Static` `Protected` _bigNumberToString
 
-▸ **\_formatABIDataItemList**(`abis`: `DataItem`[], `values`: any[], `formatter`: function): _any_
+▸ **_bigNumberToString**(`_type`: string, `value`: any): *any*
 
-_Inherited from void_
+*Inherited from void*
 
-Defined in node_modules/@0x/base-contract/lib/src/index.d.ts:26
-
-**Parameters:**
-
-■`abis`: _`DataItem`[]_
-
-■`values`: _any[]_
-
-■`formatter`: _function_
-
-▸ (`type`: string, `value`: any): _any_
+Defined in /Users/hen/GitHub/km/node_modules/@0x/base-contract/lib/src/index.d.ts:28
 
 **Parameters:**
 
-| Name    | Type   |
-| ------- | ------ |
-| `type`  | string |
-| `value` | any    |
+Name | Type |
+------ | ------ |
+`_type` | string |
+`value` | any |
 
-**Returns:** _any_
+**Returns:** *any*
 
----
+___
 
-### `Static` `Protected` \_lookupConstructorAbi
+### `Static` `Protected` _formatABIDataItemList
 
-▸ **\_lookupConstructorAbi**(`abi`: `ContractAbi`): _`ConstructorAbi`_
+▸ **_formatABIDataItemList**(`abis`: `DataItem`[], `values`: any[], `formatter`: function): *any*
 
-_Inherited from void_
+*Inherited from void*
 
-Defined in node_modules/@0x/base-contract/lib/src/index.d.ts:29
-
-**Parameters:**
-
-| Name  | Type          |
-| ----- | ------------- |
-| `abi` | `ContractAbi` |
-
-**Returns:** _`ConstructorAbi`_
-
----
-
-### `Static` `Protected` \_lowercaseAddress
-
-▸ **\_lowercaseAddress**(`type`: string, `value`: string): _string_
-
-_Inherited from void_
-
-Defined in node_modules/@0x/base-contract/lib/src/index.d.ts:27
+Defined in /Users/hen/GitHub/km/node_modules/@0x/base-contract/lib/src/index.d.ts:26
 
 **Parameters:**
 
-| Name    | Type   |
-| ------- | ------ |
-| `type`  | string |
-| `value` | string |
+■` abis`: *`DataItem`[]*
 
-**Returns:** _string_
+■` values`: *any[]*
 
----
+■` formatter`: *function*
 
-### `Static` `Protected` \_throwIfRevertWithReasonCallResult
-
-▸ **\_throwIfRevertWithReasonCallResult**(`rawCallResult`: string): _void_
-
-_Inherited from void_
-
-Defined in node_modules/@0x/base-contract/lib/src/index.d.ts:31
+▸ (`type`: string, `value`: any): *any*
 
 **Parameters:**
 
-| Name            | Type   |
-| --------------- | ------ |
-| `rawCallResult` | string |
+Name | Type |
+------ | ------ |
+`type` | string |
+`value` | any |
 
-**Returns:** _void_
+**Returns:** *any*
 
----
+___
+
+### `Static` `Protected` _lookupConstructorAbi
+
+▸ **_lookupConstructorAbi**(`abi`: `ContractAbi`): *`ConstructorAbi`*
+
+*Inherited from void*
+
+Defined in /Users/hen/GitHub/km/node_modules/@0x/base-contract/lib/src/index.d.ts:29
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`abi` | `ContractAbi` |
+
+**Returns:** *`ConstructorAbi`*
+
+___
+
+### `Static` `Protected` _lowercaseAddress
+
+▸ **_lowercaseAddress**(`type`: string, `value`: string): *string*
+
+*Inherited from void*
+
+Defined in /Users/hen/GitHub/km/node_modules/@0x/base-contract/lib/src/index.d.ts:27
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`type` | string |
+`value` | string |
+
+**Returns:** *string*
+
+___
+
+### `Static` `Protected` _throwIfRevertWithReasonCallResult
+
+▸ **_throwIfRevertWithReasonCallResult**(`rawCallResult`: string): *void*
+
+*Inherited from void*
+
+Defined in /Users/hen/GitHub/km/node_modules/@0x/base-contract/lib/src/index.d.ts:31
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`rawCallResult` | string |
+
+**Returns:** *void*
+
+___
 
 ### `Static` deployAsync
 
-▸ **deployAsync**(`bytecode`: string, `abi`: `ContractAbi`, `supportedProvider`: `SupportedProvider`, `txDefaults`: `Partial<TxData>`): _`Promise<OrderGatewayContract>`_
+▸ **deployAsync**(`bytecode`: string, `abi`: `ContractAbi`, `supportedProvider`: `SupportedProvider`, `txDefaults`: `Partial<TxData>`): *`Promise<OrderGatewayContract>`*
 
 Defined in node_modules/@kosu/system-contracts/generated-wrappers/order_gateway.ts:246
 
 **Parameters:**
 
-| Name                | Type                |
-| ------------------- | ------------------- |
-| `bytecode`          | string              |
-| `abi`               | `ContractAbi`       |
-| `supportedProvider` | `SupportedProvider` |
-| `txDefaults`        | `Partial<TxData>`   |
+Name | Type |
+------ | ------ |
+`bytecode` | string |
+`abi` | `ContractAbi` |
+`supportedProvider` | `SupportedProvider` |
+`txDefaults` | `Partial<TxData>` |
 
-**Returns:** _`Promise<OrderGatewayContract>`_
+**Returns:** *`Promise<OrderGatewayContract>`*
 
----
+___
 
 ### `Static` deployFrom0xArtifactAsync
 
-▸ **deployFrom0xArtifactAsync**(`artifact`: `ContractArtifact` | `SimpleContractArtifact`, `supportedProvider`: `SupportedProvider`, `txDefaults`: `Partial<TxData>`): _`Promise<OrderGatewayContract>`_
+▸ **deployFrom0xArtifactAsync**(`artifact`: `ContractArtifact` | `SimpleContractArtifact`, `supportedProvider`: `SupportedProvider`, `txDefaults`: `Partial<TxData>`): *`Promise<OrderGatewayContract>`*
 
 Defined in node_modules/@kosu/system-contracts/generated-wrappers/order_gateway.ts:233
 
 **Parameters:**
 
-| Name                | Type                |
-| ------------------- | ------------------- |
-| `artifact`          | `ContractArtifact`  | `SimpleContractArtifact` |
-| `supportedProvider` | `SupportedProvider` |
-| `txDefaults`        | `Partial<TxData>`   |
+Name | Type |
+------ | ------ |
+`artifact` | `ContractArtifact` | `SimpleContractArtifact` |
+`supportedProvider` | `SupportedProvider` |
+`txDefaults` | `Partial<TxData>` |
 
-**Returns:** _`Promise<OrderGatewayContract>`_
+**Returns:** *`Promise<OrderGatewayContract>`*
 
----
+___
 
 ### `Static` strictArgumentEncodingCheck
 
-▸ **strictArgumentEncodingCheck**(`inputAbi`: `DataItem`[], `args`: any[]): _string_
+▸ **strictArgumentEncodingCheck**(`inputAbi`: `DataItem`[], `args`: any[]): *string*
 
-_Inherited from void_
+*Inherited from void*
 
-Defined in node_modules/@0x/base-contract/lib/src/index.d.ts:32
+Defined in /Users/hen/GitHub/km/node_modules/@0x/base-contract/lib/src/index.d.ts:32
 
 **Parameters:**
 
-| Name       | Type         |
-| ---------- | ------------ |
-| `inputAbi` | `DataItem`[] |
-| `args`     | any[]        |
+Name | Type |
+------ | ------ |
+`inputAbi` | `DataItem`[] |
+`args` | any[] |
 
-**Returns:** _string_
+**Returns:** *string*
 
----
+___
 
 ## Object literals
 
-### amountRemaining
+###  amountRemaining
 
-### ■ **amountRemaining**: _object_
+### ■ **amountRemaining**: *object*
 
 Defined in node_modules/@kosu/system-contracts/generated-wrappers/order_gateway.ts:173
 
-### callAsync
+###  callAsync
 
-▸ **callAsync**(`subContract`: string, `data`: string, `callData`: `Partial<CallData>`, `defaultBlock?`: `BlockParam`): _`Promise<BigNumber>`_
+▸ **callAsync**(`subContract`: string, `data`: string, `callData`: `Partial<CallData>`, `defaultBlock?`: `BlockParam`): *`Promise<BigNumber>`*
 
 Defined in node_modules/@kosu/system-contracts/generated-wrappers/order_gateway.ts:174
 
 **Parameters:**
 
-| Name            | Type                | Default value |
-| --------------- | ------------------- | ------------- |
-| `subContract`   | string              | -             |
-| `data`          | string              | -             |
-| `callData`      | `Partial<CallData>` | {}            |
-| `defaultBlock?` | `BlockParam`        | -             |
+Name | Type | Default value |
+------ | ------ | ------ |
+`subContract` | string | - |
+`data` | string | - |
+`callData` | `Partial<CallData>` |  {} |
+`defaultBlock?` | `BlockParam` | - |
 
-**Returns:** _`Promise<BigNumber>`_
+**Returns:** *`Promise<BigNumber>`*
 
----
+___
 
-### arguments
+###  arguments
 
-### ■ **arguments**: _object_
+### ■ **arguments**: *object*
 
 Defined in node_modules/@kosu/system-contracts/generated-wrappers/order_gateway.ts:145
 
-### callAsync
+###  callAsync
 
-▸ **callAsync**(`subContract`: string, `callData`: `Partial<CallData>`, `defaultBlock?`: `BlockParam`): _`Promise<string>`_
+▸ **callAsync**(`subContract`: string, `callData`: `Partial<CallData>`, `defaultBlock?`: `BlockParam`): *`Promise<string>`*
 
 Defined in node_modules/@kosu/system-contracts/generated-wrappers/order_gateway.ts:146
 
 **Parameters:**
 
-| Name            | Type                | Default value |
-| --------------- | ------------------- | ------------- |
-| `subContract`   | string              | -             |
-| `callData`      | `Partial<CallData>` | {}            |
-| `defaultBlock?` | `BlockParam`        | -             |
+Name | Type | Default value |
+------ | ------ | ------ |
+`subContract` | string | - |
+`callData` | `Partial<CallData>` |  {} |
+`defaultBlock?` | `BlockParam` | - |
 
-**Returns:** _`Promise<string>`_
+**Returns:** *`Promise<string>`*
 
----
+___
 
-### isValid
+###  isValid
 
-### ■ **isValid**: _object_
+### ■ **isValid**: *object*
 
 Defined in node_modules/@kosu/system-contracts/generated-wrappers/order_gateway.ts:203
 
-### callAsync
+###  callAsync
 
-▸ **callAsync**(`subContract`: string, `data`: string, `callData`: `Partial<CallData>`, `defaultBlock?`: `BlockParam`): _`Promise<boolean>`_
+▸ **callAsync**(`subContract`: string, `data`: string, `callData`: `Partial<CallData>`, `defaultBlock?`: `BlockParam`): *`Promise<boolean>`*
 
 Defined in node_modules/@kosu/system-contracts/generated-wrappers/order_gateway.ts:204
 
 **Parameters:**
 
-| Name            | Type                | Default value |
-| --------------- | ------------------- | ------------- |
-| `subContract`   | string              | -             |
-| `data`          | string              | -             |
-| `callData`      | `Partial<CallData>` | {}            |
-| `defaultBlock?` | `BlockParam`        | -             |
+Name | Type | Default value |
+------ | ------ | ------ |
+`subContract` | string | - |
+`data` | string | - |
+`callData` | `Partial<CallData>` |  {} |
+`defaultBlock?` | `BlockParam` | - |
 
-**Returns:** _`Promise<boolean>`_
+**Returns:** *`Promise<boolean>`*
 
----
+___
 
-### participate
+###  participate
 
-### ■ **participate**: _object_
+### ■ **participate**: *object*
 
 Defined in node_modules/@kosu/system-contracts/generated-wrappers/order_gateway.ts:30
 
-### awaitTransactionSuccessAsync
+###  awaitTransactionSuccessAsync
 
-▸ **awaitTransactionSuccessAsync**(`subContract`: string, `data`: string, `txData?`: `Partial<TxData>` | number, `pollingIntervalMs?`: number, `timeoutMs?`: number): _`PromiseWithTransactionHash<TransactionReceiptWithDecodedLogs>`_
+▸ **awaitTransactionSuccessAsync**(`subContract`: string, `data`: string, `txData?`: `Partial<TxData>` | number, `pollingIntervalMs?`: number, `timeoutMs?`: number): *`PromiseWithTransactionHash<TransactionReceiptWithDecodedLogs>`*
 
 Defined in node_modules/@kosu/system-contracts/generated-wrappers/order_gateway.ts:56
 
 **Parameters:**
 
-| Name                 | Type              |
-| -------------------- | ----------------- |
-| `subContract`        | string            |
-| `data`               | string            |
-| `txData?`            | `Partial<TxData>` | number |
-| `pollingIntervalMs?` | number            |
-| `timeoutMs?`         | number            |
+Name | Type |
+------ | ------ |
+`subContract` | string |
+`data` | string |
+`txData?` | `Partial<TxData>` | number |
+`pollingIntervalMs?` | number |
+`timeoutMs?` | number |
 
-**Returns:** _`PromiseWithTransactionHash<TransactionReceiptWithDecodedLogs>`_
+**Returns:** *`PromiseWithTransactionHash<TransactionReceiptWithDecodedLogs>`*
 
-### callAsync
+###  callAsync
 
-▸ **callAsync**(`subContract`: string, `data`: string, `callData`: `Partial<CallData>`, `defaultBlock?`: `BlockParam`): _`Promise<boolean>`_
+▸ **callAsync**(`subContract`: string, `data`: string, `callData`: `Partial<CallData>`, `defaultBlock?`: `BlockParam`): *`Promise<boolean>`*
 
 Defined in node_modules/@kosu/system-contracts/generated-wrappers/order_gateway.ts:116
 
 **Parameters:**
 
-| Name            | Type                | Default value |
-| --------------- | ------------------- | ------------- |
-| `subContract`   | string              | -             |
-| `data`          | string              | -             |
-| `callData`      | `Partial<CallData>` | {}            |
-| `defaultBlock?` | `BlockParam`        | -             |
+Name | Type | Default value |
+------ | ------ | ------ |
+`subContract` | string | - |
+`data` | string | - |
+`callData` | `Partial<CallData>` |  {} |
+`defaultBlock?` | `BlockParam` | - |
 
-**Returns:** _`Promise<boolean>`_
+**Returns:** *`Promise<boolean>`*
 
-### estimateGasAsync
+###  estimateGasAsync
 
-▸ **estimateGasAsync**(`subContract`: string, `data`: string, `txData`: `Partial<TxData>`): _`Promise<number>`_
+▸ **estimateGasAsync**(`subContract`: string, `data`: string, `txData`: `Partial<TxData>`): *`Promise<number>`*
 
 Defined in node_modules/@kosu/system-contracts/generated-wrappers/order_gateway.ts:86
 
 **Parameters:**
 
-| Name          | Type              | Default value |
-| ------------- | ----------------- | ------------- |
-| `subContract` | string            | -             |
-| `data`        | string            | -             |
-| `txData`      | `Partial<TxData>` | {}            |
+Name | Type | Default value |
+------ | ------ | ------ |
+`subContract` | string | - |
+`data` | string | - |
+`txData` | `Partial<TxData>` |  {} |
 
-**Returns:** _`Promise<number>`_
+**Returns:** *`Promise<number>`*
 
-### getABIEncodedTransactionData
+###  getABIEncodedTransactionData
 
-▸ **getABIEncodedTransactionData**(`subContract`: string, `data`: string): _string_
+▸ **getABIEncodedTransactionData**(`subContract`: string, `data`: string): *string*
 
 Defined in node_modules/@kosu/system-contracts/generated-wrappers/order_gateway.ts:106
 
 **Parameters:**
 
-| Name          | Type   |
-| ------------- | ------ |
-| `subContract` | string |
-| `data`        | string |
+Name | Type |
+------ | ------ |
+`subContract` | string |
+`data` | string |
 
-**Returns:** _string_
+**Returns:** *string*
 
-### sendTransactionAsync
+###  sendTransactionAsync
 
-▸ **sendTransactionAsync**(`subContract`: string, `data`: string, `txData`: `Partial<TxData>`): _`Promise<string>`_
+▸ **sendTransactionAsync**(`subContract`: string, `data`: string, `txData`: `Partial<TxData>`): *`Promise<string>`*
 
 Defined in node_modules/@kosu/system-contracts/generated-wrappers/order_gateway.ts:31
 
 **Parameters:**
 
-| Name          | Type              | Default value |
-| ------------- | ----------------- | ------------- |
-| `subContract` | string            | -             |
-| `data`        | string            | -             |
-| `txData`      | `Partial<TxData>` | {}            |
+Name | Type | Default value |
+------ | ------ | ------ |
+`subContract` | string | - |
+`data` | string | - |
+`txData` | `Partial<TxData>` |  {} |
 
-**Returns:** _`Promise<string>`_
+**Returns:** *`Promise<string>`*
 
----
+___

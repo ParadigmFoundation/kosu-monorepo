@@ -6,1452 +6,1452 @@
 
 ## Hierarchy
 
--   `BaseContract`
+* `BaseContract`
 
-    -   **TreasuryContract**
+  * **TreasuryContract**
 
 ### Index
 
 #### Constructors
 
--   [constructor](treasurycontract.md#constructor)
+* [constructor](treasurycontract.md#constructor)
 
 #### Properties
 
--   [\_abiEncoderByFunctionSignature](treasurycontract.md#protected-_abiencoderbyfunctionsignature)
--   [\_web3Wrapper](treasurycontract.md#protected-_web3wrapper)
--   [abi](treasurycontract.md#abi)
--   [address](treasurycontract.md#address)
--   [constructorArgs](treasurycontract.md#constructorargs)
--   [contractName](treasurycontract.md#contractname)
--   [txReceipt](treasurycontract.md#optional-txreceipt)
+* [_abiEncoderByFunctionSignature](treasurycontract.md#protected-_abiencoderbyfunctionsignature)
+* [_web3Wrapper](treasurycontract.md#protected-_web3wrapper)
+* [abi](treasurycontract.md#abi)
+* [address](treasurycontract.md#address)
+* [constructorArgs](treasurycontract.md#constructorargs)
+* [contractName](treasurycontract.md#contractname)
+* [txReceipt](treasurycontract.md#optional-txreceipt)
 
 #### Methods
 
--   [\_lookupAbi](treasurycontract.md#protected-_lookupabi)
--   [\_lookupAbiEncoder](treasurycontract.md#protected-_lookupabiencoder)
--   [\_strictEncodeArguments](treasurycontract.md#protected-_strictencodearguments)
--   [\_applyDefaultsToTxDataAsync](treasurycontract.md#static-protected-_applydefaultstotxdataasync)
--   [\_bigNumberToString](treasurycontract.md#static-protected-_bignumbertostring)
--   [\_formatABIDataItemList](treasurycontract.md#static-protected-_formatabidataitemlist)
--   [\_lookupConstructorAbi](treasurycontract.md#static-protected-_lookupconstructorabi)
--   [\_lowercaseAddress](treasurycontract.md#static-protected-_lowercaseaddress)
--   [\_throwIfRevertWithReasonCallResult](treasurycontract.md#static-protected-_throwifrevertwithreasoncallresult)
--   [deployAsync](treasurycontract.md#static-deployasync)
--   [deployFrom0xArtifactAsync](treasurycontract.md#static-deployfrom0xartifactasync)
--   [strictArgumentEncodingCheck](treasurycontract.md#static-strictargumentencodingcheck)
+* [_lookupAbi](treasurycontract.md#protected-_lookupabi)
+* [_lookupAbiEncoder](treasurycontract.md#protected-_lookupabiencoder)
+* [_strictEncodeArguments](treasurycontract.md#protected-_strictencodearguments)
+* [_applyDefaultsToTxDataAsync](treasurycontract.md#static-protected-_applydefaultstotxdataasync)
+* [_bigNumberToString](treasurycontract.md#static-protected-_bignumbertostring)
+* [_formatABIDataItemList](treasurycontract.md#static-protected-_formatabidataitemlist)
+* [_lookupConstructorAbi](treasurycontract.md#static-protected-_lookupconstructorabi)
+* [_lowercaseAddress](treasurycontract.md#static-protected-_lowercaseaddress)
+* [_throwIfRevertWithReasonCallResult](treasurycontract.md#static-protected-_throwifrevertwithreasoncallresult)
+* [deployAsync](treasurycontract.md#static-deployasync)
+* [deployFrom0xArtifactAsync](treasurycontract.md#static-deployfrom0xartifactasync)
+* [strictArgumentEncodingCheck](treasurycontract.md#static-strictargumentencodingcheck)
 
 #### Object literals
 
--   [adjustBalance](treasurycontract.md#adjustbalance)
--   [award](treasurycontract.md#award)
--   [burnFrom](treasurycontract.md#burnfrom)
--   [claimTokens](treasurycontract.md#claimtokens)
--   [confiscate](treasurycontract.md#confiscate)
--   [contractDeposit](treasurycontract.md#contractdeposit)
--   [contractWithdraw](treasurycontract.md#contractwithdraw)
--   [currentBalance](treasurycontract.md#currentbalance)
--   [deposit](treasurycontract.md#deposit)
--   [kosuToken](treasurycontract.md#kosutoken)
--   [releaseTokens](treasurycontract.md#releasetokens)
--   [systemBalance](treasurycontract.md#systembalance)
--   [updateBalance](treasurycontract.md#updatebalance)
--   [withdraw](treasurycontract.md#withdraw)
+* [adjustBalance](treasurycontract.md#adjustbalance)
+* [award](treasurycontract.md#award)
+* [burnFrom](treasurycontract.md#burnfrom)
+* [claimTokens](treasurycontract.md#claimtokens)
+* [confiscate](treasurycontract.md#confiscate)
+* [contractDeposit](treasurycontract.md#contractdeposit)
+* [contractWithdraw](treasurycontract.md#contractwithdraw)
+* [currentBalance](treasurycontract.md#currentbalance)
+* [deposit](treasurycontract.md#deposit)
+* [kosuToken](treasurycontract.md#kosutoken)
+* [releaseTokens](treasurycontract.md#releasetokens)
+* [systemBalance](treasurycontract.md#systembalance)
+* [updateBalance](treasurycontract.md#updatebalance)
+* [withdraw](treasurycontract.md#withdraw)
 
 ## Constructors
 
-### constructor
+###  constructor
 
-\+ **new TreasuryContract**(`abi`: `ContractAbi`, `address`: string, `supportedProvider`: `SupportedProvider`, `txDefaults?`: `Partial<TxData>`): _[TreasuryContract](treasurycontract.md)_
+\+ **new TreasuryContract**(`abi`: `ContractAbi`, `address`: string, `supportedProvider`: `SupportedProvider`, `txDefaults?`: `Partial<TxData>`): *[TreasuryContract](treasurycontract.md)*
 
-_Overrides void_
+*Overrides void*
 
 Defined in node_modules/@kosu/system-contracts/generated-wrappers/treasury.ts:1412
 
 **Parameters:**
 
-| Name                | Type                |
-| ------------------- | ------------------- |
-| `abi`               | `ContractAbi`       |
-| `address`           | string              |
-| `supportedProvider` | `SupportedProvider` |
-| `txDefaults?`       | `Partial<TxData>`   |
+Name | Type |
+------ | ------ |
+`abi` | `ContractAbi` |
+`address` | string |
+`supportedProvider` | `SupportedProvider` |
+`txDefaults?` | `Partial<TxData>` |
 
-**Returns:** _[TreasuryContract](treasurycontract.md)_
+**Returns:** *[TreasuryContract](treasurycontract.md)*
 
----
+___
 
 ## Properties
 
-### `Protected` \_abiEncoderByFunctionSignature
+### `Protected` _abiEncoderByFunctionSignature
 
-● **\_abiEncoderByFunctionSignature**: _`AbiEncoderByFunctionSignature`_
+● **_abiEncoderByFunctionSignature**: *`AbiEncoderByFunctionSignature`*
 
-_Inherited from void_
+*Inherited from void*
 
-Defined in node_modules/@0x/base-contract/lib/src/index.d.ts:20
+Defined in /Users/hen/GitHub/km/node_modules/@0x/base-contract/lib/src/index.d.ts:20
 
----
+___
 
-### `Protected` \_web3Wrapper
+### `Protected` _web3Wrapper
 
-● **\_web3Wrapper**: _`Web3Wrapper`_
+● **_web3Wrapper**: *`Web3Wrapper`*
 
-_Inherited from void_
+*Inherited from void*
 
-Defined in node_modules/@0x/base-contract/lib/src/index.d.ts:21
+Defined in /Users/hen/GitHub/km/node_modules/@0x/base-contract/lib/src/index.d.ts:21
 
----
+___
 
-### abi
+###  abi
 
-● **abi**: _`ContractAbi`_
+● **abi**: *`ContractAbi`*
 
-_Inherited from void_
+*Inherited from void*
 
-Defined in node_modules/@0x/base-contract/lib/src/index.d.ts:22
+Defined in /Users/hen/GitHub/km/node_modules/@0x/base-contract/lib/src/index.d.ts:22
 
----
+___
 
-### address
+###  address
 
-● **address**: _string_
+● **address**: *string*
 
-_Inherited from void_
+*Inherited from void*
 
-Defined in node_modules/@0x/base-contract/lib/src/index.d.ts:23
+Defined in /Users/hen/GitHub/km/node_modules/@0x/base-contract/lib/src/index.d.ts:23
 
----
+___
 
-### constructorArgs
+###  constructorArgs
 
-● **constructorArgs**: _any[]_
+● **constructorArgs**: *any[]*
 
-_Inherited from void_
+*Inherited from void*
 
-Defined in node_modules/@0x/base-contract/lib/src/index.d.ts:25
+Defined in /Users/hen/GitHub/km/node_modules/@0x/base-contract/lib/src/index.d.ts:25
 
----
+___
 
-### contractName
+###  contractName
 
-● **contractName**: _string_
+● **contractName**: *string*
 
-_Inherited from void_
+*Inherited from void*
 
-Defined in node_modules/@0x/base-contract/lib/src/index.d.ts:24
+Defined in /Users/hen/GitHub/km/node_modules/@0x/base-contract/lib/src/index.d.ts:24
 
----
+___
 
 ### `Optional` txReceipt
 
-● **txReceipt**? : _`TransactionReceiptWithDecodedLogs`_
+● **txReceipt**? : *`TransactionReceiptWithDecodedLogs`*
 
 Defined in node_modules/@kosu/system-contracts/generated-wrappers/treasury.ts:29
 
----
+___
 
 ## Methods
 
-### `Protected` \_lookupAbi
+### `Protected` _lookupAbi
 
-▸ **\_lookupAbi**(`functionSignature`: string): _`MethodAbi`_
+▸ **_lookupAbi**(`functionSignature`: string): *`MethodAbi`*
 
-_Inherited from void_
+*Inherited from void*
 
-Defined in node_modules/@0x/base-contract/lib/src/index.d.ts:34
-
-**Parameters:**
-
-| Name                | Type   |
-| ------------------- | ------ |
-| `functionSignature` | string |
-
-**Returns:** _`MethodAbi`_
-
----
-
-### `Protected` \_lookupAbiEncoder
-
-▸ **\_lookupAbiEncoder**(`functionSignature`: string): _`Method`_
-
-_Inherited from void_
-
-Defined in node_modules/@0x/base-contract/lib/src/index.d.ts:33
+Defined in /Users/hen/GitHub/km/node_modules/@0x/base-contract/lib/src/index.d.ts:34
 
 **Parameters:**
 
-| Name                | Type   |
-| ------------------- | ------ |
-| `functionSignature` | string |
+Name | Type |
+------ | ------ |
+`functionSignature` | string |
 
-**Returns:** _`Method`_
+**Returns:** *`MethodAbi`*
 
----
+___
 
-### `Protected` \_strictEncodeArguments
+### `Protected` _lookupAbiEncoder
 
-▸ **\_strictEncodeArguments**(`functionSignature`: string, `functionArguments`: any): _string_
+▸ **_lookupAbiEncoder**(`functionSignature`: string): *`Method`*
 
-_Inherited from void_
+*Inherited from void*
 
-Defined in node_modules/@0x/base-contract/lib/src/index.d.ts:35
+Defined in /Users/hen/GitHub/km/node_modules/@0x/base-contract/lib/src/index.d.ts:33
 
 **Parameters:**
 
-| Name                | Type   |
-| ------------------- | ------ |
-| `functionSignature` | string |
-| `functionArguments` | any    |
+Name | Type |
+------ | ------ |
+`functionSignature` | string |
 
-**Returns:** _string_
+**Returns:** *`Method`*
 
----
+___
 
-### `Static` `Protected` \_applyDefaultsToTxDataAsync
+### `Protected` _strictEncodeArguments
 
-▸ **\_applyDefaultsToTxDataAsync**<**T**>(`txData`: `T`, `txDefaults`: `Partial<TxData>`, `estimateGasAsync?`: function): _`Promise<TxData>`_
+▸ **_strictEncodeArguments**(`functionSignature`: string, `functionArguments`: any): *string*
 
-_Inherited from void_
+*Inherited from void*
 
-Defined in node_modules/@0x/base-contract/lib/src/index.d.ts:30
+Defined in /Users/hen/GitHub/km/node_modules/@0x/base-contract/lib/src/index.d.ts:35
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`functionSignature` | string |
+`functionArguments` | any |
+
+**Returns:** *string*
+
+___
+
+### `Static` `Protected` _applyDefaultsToTxDataAsync
+
+▸ **_applyDefaultsToTxDataAsync**<**T**>(`txData`: `T`, `txDefaults`: `Partial<TxData>`, `estimateGasAsync?`: function): *`Promise<TxData>`*
+
+*Inherited from void*
+
+Defined in /Users/hen/GitHub/km/node_modules/@0x/base-contract/lib/src/index.d.ts:30
 
 **Type parameters:**
 
-■`T`: _`Partial<TxData | TxDataPayable>`_
+■` T`: *`Partial<TxData | TxDataPayable>`*
 
 **Parameters:**
 
-■`txData`: _`T`_
+■` txData`: *`T`*
 
-■`txDefaults`: _`Partial<TxData>`_
+■` txDefaults`: *`Partial<TxData>`*
 
-■`estimateGasAsync`: _function_
+■` estimateGasAsync`: *function*
 
-▸ (`txData`: `T`): _`Promise<number>`_
-
-**Parameters:**
-
-| Name     | Type |
-| -------- | ---- |
-| `txData` | `T`  |
-
-**Returns:** _`Promise<TxData>`_
-
----
-
-### `Static` `Protected` \_bigNumberToString
-
-▸ **\_bigNumberToString**(`_type`: string, `value`: any): _any_
-
-_Inherited from void_
-
-Defined in node_modules/@0x/base-contract/lib/src/index.d.ts:28
+▸ (`txData`: `T`): *`Promise<number>`*
 
 **Parameters:**
 
-| Name    | Type   |
-| ------- | ------ |
-| `_type` | string |
-| `value` | any    |
+Name | Type |
+------ | ------ |
+`txData` | `T` |
 
-**Returns:** _any_
+**Returns:** *`Promise<TxData>`*
 
----
+___
 
-### `Static` `Protected` \_formatABIDataItemList
+### `Static` `Protected` _bigNumberToString
 
-▸ **\_formatABIDataItemList**(`abis`: `DataItem`[], `values`: any[], `formatter`: function): _any_
+▸ **_bigNumberToString**(`_type`: string, `value`: any): *any*
 
-_Inherited from void_
+*Inherited from void*
 
-Defined in node_modules/@0x/base-contract/lib/src/index.d.ts:26
-
-**Parameters:**
-
-■`abis`: _`DataItem`[]_
-
-■`values`: _any[]_
-
-■`formatter`: _function_
-
-▸ (`type`: string, `value`: any): _any_
+Defined in /Users/hen/GitHub/km/node_modules/@0x/base-contract/lib/src/index.d.ts:28
 
 **Parameters:**
 
-| Name    | Type   |
-| ------- | ------ |
-| `type`  | string |
-| `value` | any    |
+Name | Type |
+------ | ------ |
+`_type` | string |
+`value` | any |
 
-**Returns:** _any_
+**Returns:** *any*
 
----
+___
 
-### `Static` `Protected` \_lookupConstructorAbi
+### `Static` `Protected` _formatABIDataItemList
 
-▸ **\_lookupConstructorAbi**(`abi`: `ContractAbi`): _`ConstructorAbi`_
+▸ **_formatABIDataItemList**(`abis`: `DataItem`[], `values`: any[], `formatter`: function): *any*
 
-_Inherited from void_
+*Inherited from void*
 
-Defined in node_modules/@0x/base-contract/lib/src/index.d.ts:29
-
-**Parameters:**
-
-| Name  | Type          |
-| ----- | ------------- |
-| `abi` | `ContractAbi` |
-
-**Returns:** _`ConstructorAbi`_
-
----
-
-### `Static` `Protected` \_lowercaseAddress
-
-▸ **\_lowercaseAddress**(`type`: string, `value`: string): _string_
-
-_Inherited from void_
-
-Defined in node_modules/@0x/base-contract/lib/src/index.d.ts:27
+Defined in /Users/hen/GitHub/km/node_modules/@0x/base-contract/lib/src/index.d.ts:26
 
 **Parameters:**
 
-| Name    | Type   |
-| ------- | ------ |
-| `type`  | string |
-| `value` | string |
+■` abis`: *`DataItem`[]*
 
-**Returns:** _string_
+■` values`: *any[]*
 
----
+■` formatter`: *function*
 
-### `Static` `Protected` \_throwIfRevertWithReasonCallResult
-
-▸ **\_throwIfRevertWithReasonCallResult**(`rawCallResult`: string): _void_
-
-_Inherited from void_
-
-Defined in node_modules/@0x/base-contract/lib/src/index.d.ts:31
+▸ (`type`: string, `value`: any): *any*
 
 **Parameters:**
 
-| Name            | Type   |
-| --------------- | ------ |
-| `rawCallResult` | string |
+Name | Type |
+------ | ------ |
+`type` | string |
+`value` | any |
 
-**Returns:** _void_
+**Returns:** *any*
 
----
+___
+
+### `Static` `Protected` _lookupConstructorAbi
+
+▸ **_lookupConstructorAbi**(`abi`: `ContractAbi`): *`ConstructorAbi`*
+
+*Inherited from void*
+
+Defined in /Users/hen/GitHub/km/node_modules/@0x/base-contract/lib/src/index.d.ts:29
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`abi` | `ContractAbi` |
+
+**Returns:** *`ConstructorAbi`*
+
+___
+
+### `Static` `Protected` _lowercaseAddress
+
+▸ **_lowercaseAddress**(`type`: string, `value`: string): *string*
+
+*Inherited from void*
+
+Defined in /Users/hen/GitHub/km/node_modules/@0x/base-contract/lib/src/index.d.ts:27
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`type` | string |
+`value` | string |
+
+**Returns:** *string*
+
+___
+
+### `Static` `Protected` _throwIfRevertWithReasonCallResult
+
+▸ **_throwIfRevertWithReasonCallResult**(`rawCallResult`: string): *void*
+
+*Inherited from void*
+
+Defined in /Users/hen/GitHub/km/node_modules/@0x/base-contract/lib/src/index.d.ts:31
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`rawCallResult` | string |
+
+**Returns:** *void*
+
+___
 
 ### `Static` deployAsync
 
-▸ **deployAsync**(`bytecode`: string, `abi`: `ContractAbi`, `supportedProvider`: `SupportedProvider`, `txDefaults`: `Partial<TxData>`, `kosuTokenAddress`: string, `auth`: string): _`Promise<TreasuryContract>`_
+▸ **deployAsync**(`bytecode`: string, `abi`: `ContractAbi`, `supportedProvider`: `SupportedProvider`, `txDefaults`: `Partial<TxData>`, `kosuTokenAddress`: string, `auth`: string): *`Promise<TreasuryContract>`*
 
 Defined in node_modules/@kosu/system-contracts/generated-wrappers/treasury.ts:1372
 
 **Parameters:**
 
-| Name                | Type                |
-| ------------------- | ------------------- |
-| `bytecode`          | string              |
-| `abi`               | `ContractAbi`       |
-| `supportedProvider` | `SupportedProvider` |
-| `txDefaults`        | `Partial<TxData>`   |
-| `kosuTokenAddress`  | string              |
-| `auth`              | string              |
+Name | Type |
+------ | ------ |
+`bytecode` | string |
+`abi` | `ContractAbi` |
+`supportedProvider` | `SupportedProvider` |
+`txDefaults` | `Partial<TxData>` |
+`kosuTokenAddress` | string |
+`auth` | string |
 
-**Returns:** _`Promise<TreasuryContract>`_
+**Returns:** *`Promise<TreasuryContract>`*
 
----
+___
 
 ### `Static` deployFrom0xArtifactAsync
 
-▸ **deployFrom0xArtifactAsync**(`artifact`: `ContractArtifact` | `SimpleContractArtifact`, `supportedProvider`: `SupportedProvider`, `txDefaults`: `Partial<TxData>`, `kosuTokenAddress`: string, `auth`: string): _`Promise<TreasuryContract>`_
+▸ **deployFrom0xArtifactAsync**(`artifact`: `ContractArtifact` | `SimpleContractArtifact`, `supportedProvider`: `SupportedProvider`, `txDefaults`: `Partial<TxData>`, `kosuTokenAddress`: string, `auth`: string): *`Promise<TreasuryContract>`*
 
 Defined in node_modules/@kosu/system-contracts/generated-wrappers/treasury.ts:1355
 
 **Parameters:**
 
-| Name                | Type                |
-| ------------------- | ------------------- |
-| `artifact`          | `ContractArtifact`  | `SimpleContractArtifact` |
-| `supportedProvider` | `SupportedProvider` |
-| `txDefaults`        | `Partial<TxData>`   |
-| `kosuTokenAddress`  | string              |
-| `auth`              | string              |
+Name | Type |
+------ | ------ |
+`artifact` | `ContractArtifact` | `SimpleContractArtifact` |
+`supportedProvider` | `SupportedProvider` |
+`txDefaults` | `Partial<TxData>` |
+`kosuTokenAddress` | string |
+`auth` | string |
 
-**Returns:** _`Promise<TreasuryContract>`_
+**Returns:** *`Promise<TreasuryContract>`*
 
----
+___
 
 ### `Static` strictArgumentEncodingCheck
 
-▸ **strictArgumentEncodingCheck**(`inputAbi`: `DataItem`[], `args`: any[]): _string_
+▸ **strictArgumentEncodingCheck**(`inputAbi`: `DataItem`[], `args`: any[]): *string*
 
-_Inherited from void_
+*Inherited from void*
 
-Defined in node_modules/@0x/base-contract/lib/src/index.d.ts:32
+Defined in /Users/hen/GitHub/km/node_modules/@0x/base-contract/lib/src/index.d.ts:32
 
 **Parameters:**
 
-| Name       | Type         |
-| ---------- | ------------ |
-| `inputAbi` | `DataItem`[] |
-| `args`     | any[]        |
+Name | Type |
+------ | ------ |
+`inputAbi` | `DataItem`[] |
+`args` | any[] |
 
-**Returns:** _string_
+**Returns:** *string*
 
----
+___
 
 ## Object literals
 
-### adjustBalance
+###  adjustBalance
 
-### ■ **adjustBalance**: _object_
+### ■ **adjustBalance**: *object*
 
 Defined in node_modules/@kosu/system-contracts/generated-wrappers/treasury.ts:1010
 
-### awaitTransactionSuccessAsync
+###  awaitTransactionSuccessAsync
 
-▸ **awaitTransactionSuccessAsync**(`account`: string, `amount`: `BigNumber`, `txData?`: `Partial<TxData>` | number, `pollingIntervalMs?`: number, `timeoutMs?`: number): _`PromiseWithTransactionHash<TransactionReceiptWithDecodedLogs>`_
+▸ **awaitTransactionSuccessAsync**(`account`: string, `amount`: `BigNumber`, `txData?`: `Partial<TxData>` | number, `pollingIntervalMs?`: number, `timeoutMs?`: number): *`PromiseWithTransactionHash<TransactionReceiptWithDecodedLogs>`*
 
 Defined in node_modules/@kosu/system-contracts/generated-wrappers/treasury.ts:1036
 
 **Parameters:**
 
-| Name                 | Type              |
-| -------------------- | ----------------- |
-| `account`            | string            |
-| `amount`             | `BigNumber`       |
-| `txData?`            | `Partial<TxData>` | number |
-| `pollingIntervalMs?` | number            |
-| `timeoutMs?`         | number            |
+Name | Type |
+------ | ------ |
+`account` | string |
+`amount` | `BigNumber` |
+`txData?` | `Partial<TxData>` | number |
+`pollingIntervalMs?` | number |
+`timeoutMs?` | number |
 
-**Returns:** _`PromiseWithTransactionHash<TransactionReceiptWithDecodedLogs>`_
+**Returns:** *`PromiseWithTransactionHash<TransactionReceiptWithDecodedLogs>`*
 
-### callAsync
+###  callAsync
 
-▸ **callAsync**(`account`: string, `amount`: `BigNumber`, `callData`: `Partial<CallData>`, `defaultBlock?`: `BlockParam`): _`Promise<void>`_
+▸ **callAsync**(`account`: string, `amount`: `BigNumber`, `callData`: `Partial<CallData>`, `defaultBlock?`: `BlockParam`): *`Promise<void>`*
 
 Defined in node_modules/@kosu/system-contracts/generated-wrappers/treasury.ts:1096
 
 **Parameters:**
 
-| Name            | Type                | Default value |
-| --------------- | ------------------- | ------------- |
-| `account`       | string              | -             |
-| `amount`        | `BigNumber`         | -             |
-| `callData`      | `Partial<CallData>` | {}            |
-| `defaultBlock?` | `BlockParam`        | -             |
+Name | Type | Default value |
+------ | ------ | ------ |
+`account` | string | - |
+`amount` | `BigNumber` | - |
+`callData` | `Partial<CallData>` |  {} |
+`defaultBlock?` | `BlockParam` | - |
 
-**Returns:** _`Promise<void>`_
+**Returns:** *`Promise<void>`*
 
-### estimateGasAsync
+###  estimateGasAsync
 
-▸ **estimateGasAsync**(`account`: string, `amount`: `BigNumber`, `txData`: `Partial<TxData>`): _`Promise<number>`_
+▸ **estimateGasAsync**(`account`: string, `amount`: `BigNumber`, `txData`: `Partial<TxData>`): *`Promise<number>`*
 
 Defined in node_modules/@kosu/system-contracts/generated-wrappers/treasury.ts:1066
 
 **Parameters:**
 
-| Name      | Type              | Default value |
-| --------- | ----------------- | ------------- |
-| `account` | string            | -             |
-| `amount`  | `BigNumber`       | -             |
-| `txData`  | `Partial<TxData>` | {}            |
+Name | Type | Default value |
+------ | ------ | ------ |
+`account` | string | - |
+`amount` | `BigNumber` | - |
+`txData` | `Partial<TxData>` |  {} |
 
-**Returns:** _`Promise<number>`_
+**Returns:** *`Promise<number>`*
 
-### getABIEncodedTransactionData
+###  getABIEncodedTransactionData
 
-▸ **getABIEncodedTransactionData**(`account`: string, `amount`: `BigNumber`): _string_
+▸ **getABIEncodedTransactionData**(`account`: string, `amount`: `BigNumber`): *string*
 
 Defined in node_modules/@kosu/system-contracts/generated-wrappers/treasury.ts:1086
 
 **Parameters:**
 
-| Name      | Type        |
-| --------- | ----------- |
-| `account` | string      |
-| `amount`  | `BigNumber` |
+Name | Type |
+------ | ------ |
+`account` | string |
+`amount` | `BigNumber` |
 
-**Returns:** _string_
+**Returns:** *string*
 
-### sendTransactionAsync
+###  sendTransactionAsync
 
-▸ **sendTransactionAsync**(`account`: string, `amount`: `BigNumber`, `txData`: `Partial<TxData>`): _`Promise<string>`_
+▸ **sendTransactionAsync**(`account`: string, `amount`: `BigNumber`, `txData`: `Partial<TxData>`): *`Promise<string>`*
 
 Defined in node_modules/@kosu/system-contracts/generated-wrappers/treasury.ts:1011
 
 **Parameters:**
 
-| Name      | Type              | Default value |
-| --------- | ----------------- | ------------- |
-| `account` | string            | -             |
-| `amount`  | `BigNumber`       | -             |
-| `txData`  | `Partial<TxData>` | {}            |
+Name | Type | Default value |
+------ | ------ | ------ |
+`account` | string | - |
+`amount` | `BigNumber` | - |
+`txData` | `Partial<TxData>` |  {} |
 
-**Returns:** _`Promise<string>`_
+**Returns:** *`Promise<string>`*
 
----
+___
 
-### award
+###  award
 
-### ■ **award**: _object_
+### ■ **award**: *object*
 
 Defined in node_modules/@kosu/system-contracts/generated-wrappers/treasury.ts:277
 
-### awaitTransactionSuccessAsync
+###  awaitTransactionSuccessAsync
 
-▸ **awaitTransactionSuccessAsync**(`account`: string, `amount`: `BigNumber`, `txData?`: `Partial<TxData>` | number, `pollingIntervalMs?`: number, `timeoutMs?`: number): _`PromiseWithTransactionHash<TransactionReceiptWithDecodedLogs>`_
+▸ **awaitTransactionSuccessAsync**(`account`: string, `amount`: `BigNumber`, `txData?`: `Partial<TxData>` | number, `pollingIntervalMs?`: number, `timeoutMs?`: number): *`PromiseWithTransactionHash<TransactionReceiptWithDecodedLogs>`*
 
 Defined in node_modules/@kosu/system-contracts/generated-wrappers/treasury.ts:303
 
 **Parameters:**
 
-| Name                 | Type              |
-| -------------------- | ----------------- |
-| `account`            | string            |
-| `amount`             | `BigNumber`       |
-| `txData?`            | `Partial<TxData>` | number |
-| `pollingIntervalMs?` | number            |
-| `timeoutMs?`         | number            |
+Name | Type |
+------ | ------ |
+`account` | string |
+`amount` | `BigNumber` |
+`txData?` | `Partial<TxData>` | number |
+`pollingIntervalMs?` | number |
+`timeoutMs?` | number |
 
-**Returns:** _`PromiseWithTransactionHash<TransactionReceiptWithDecodedLogs>`_
+**Returns:** *`PromiseWithTransactionHash<TransactionReceiptWithDecodedLogs>`*
 
-### callAsync
+###  callAsync
 
-▸ **callAsync**(`account`: string, `amount`: `BigNumber`, `callData`: `Partial<CallData>`, `defaultBlock?`: `BlockParam`): _`Promise<void>`_
+▸ **callAsync**(`account`: string, `amount`: `BigNumber`, `callData`: `Partial<CallData>`, `defaultBlock?`: `BlockParam`): *`Promise<void>`*
 
 Defined in node_modules/@kosu/system-contracts/generated-wrappers/treasury.ts:363
 
 **Parameters:**
 
-| Name            | Type                | Default value |
-| --------------- | ------------------- | ------------- |
-| `account`       | string              | -             |
-| `amount`        | `BigNumber`         | -             |
-| `callData`      | `Partial<CallData>` | {}            |
-| `defaultBlock?` | `BlockParam`        | -             |
+Name | Type | Default value |
+------ | ------ | ------ |
+`account` | string | - |
+`amount` | `BigNumber` | - |
+`callData` | `Partial<CallData>` |  {} |
+`defaultBlock?` | `BlockParam` | - |
 
-**Returns:** _`Promise<void>`_
+**Returns:** *`Promise<void>`*
 
-### estimateGasAsync
+###  estimateGasAsync
 
-▸ **estimateGasAsync**(`account`: string, `amount`: `BigNumber`, `txData`: `Partial<TxData>`): _`Promise<number>`_
+▸ **estimateGasAsync**(`account`: string, `amount`: `BigNumber`, `txData`: `Partial<TxData>`): *`Promise<number>`*
 
 Defined in node_modules/@kosu/system-contracts/generated-wrappers/treasury.ts:333
 
 **Parameters:**
 
-| Name      | Type              | Default value |
-| --------- | ----------------- | ------------- |
-| `account` | string            | -             |
-| `amount`  | `BigNumber`       | -             |
-| `txData`  | `Partial<TxData>` | {}            |
+Name | Type | Default value |
+------ | ------ | ------ |
+`account` | string | - |
+`amount` | `BigNumber` | - |
+`txData` | `Partial<TxData>` |  {} |
 
-**Returns:** _`Promise<number>`_
+**Returns:** *`Promise<number>`*
 
-### getABIEncodedTransactionData
+###  getABIEncodedTransactionData
 
-▸ **getABIEncodedTransactionData**(`account`: string, `amount`: `BigNumber`): _string_
+▸ **getABIEncodedTransactionData**(`account`: string, `amount`: `BigNumber`): *string*
 
 Defined in node_modules/@kosu/system-contracts/generated-wrappers/treasury.ts:353
 
 **Parameters:**
 
-| Name      | Type        |
-| --------- | ----------- |
-| `account` | string      |
-| `amount`  | `BigNumber` |
+Name | Type |
+------ | ------ |
+`account` | string |
+`amount` | `BigNumber` |
 
-**Returns:** _string_
+**Returns:** *string*
 
-### sendTransactionAsync
+###  sendTransactionAsync
 
-▸ **sendTransactionAsync**(`account`: string, `amount`: `BigNumber`, `txData`: `Partial<TxData>`): _`Promise<string>`_
+▸ **sendTransactionAsync**(`account`: string, `amount`: `BigNumber`, `txData`: `Partial<TxData>`): *`Promise<string>`*
 
 Defined in node_modules/@kosu/system-contracts/generated-wrappers/treasury.ts:278
 
 **Parameters:**
 
-| Name      | Type              | Default value |
-| --------- | ----------------- | ------------- |
-| `account` | string            | -             |
-| `amount`  | `BigNumber`       | -             |
-| `txData`  | `Partial<TxData>` | {}            |
+Name | Type | Default value |
+------ | ------ | ------ |
+`account` | string | - |
+`amount` | `BigNumber` | - |
+`txData` | `Partial<TxData>` |  {} |
 
-**Returns:** _`Promise<string>`_
+**Returns:** *`Promise<string>`*
 
----
+___
 
-### burnFrom
+###  burnFrom
 
-### ■ **burnFrom**: _object_
+### ■ **burnFrom**: *object*
 
 Defined in node_modules/@kosu/system-contracts/generated-wrappers/treasury.ts:392
 
-### awaitTransactionSuccessAsync
+###  awaitTransactionSuccessAsync
 
-▸ **awaitTransactionSuccessAsync**(`account`: string, `amount`: `BigNumber`, `txData?`: `Partial<TxData>` | number, `pollingIntervalMs?`: number, `timeoutMs?`: number): _`PromiseWithTransactionHash<TransactionReceiptWithDecodedLogs>`_
+▸ **awaitTransactionSuccessAsync**(`account`: string, `amount`: `BigNumber`, `txData?`: `Partial<TxData>` | number, `pollingIntervalMs?`: number, `timeoutMs?`: number): *`PromiseWithTransactionHash<TransactionReceiptWithDecodedLogs>`*
 
 Defined in node_modules/@kosu/system-contracts/generated-wrappers/treasury.ts:418
 
 **Parameters:**
 
-| Name                 | Type              |
-| -------------------- | ----------------- |
-| `account`            | string            |
-| `amount`             | `BigNumber`       |
-| `txData?`            | `Partial<TxData>` | number |
-| `pollingIntervalMs?` | number            |
-| `timeoutMs?`         | number            |
+Name | Type |
+------ | ------ |
+`account` | string |
+`amount` | `BigNumber` |
+`txData?` | `Partial<TxData>` | number |
+`pollingIntervalMs?` | number |
+`timeoutMs?` | number |
 
-**Returns:** _`PromiseWithTransactionHash<TransactionReceiptWithDecodedLogs>`_
+**Returns:** *`PromiseWithTransactionHash<TransactionReceiptWithDecodedLogs>`*
 
-### callAsync
+###  callAsync
 
-▸ **callAsync**(`account`: string, `amount`: `BigNumber`, `callData`: `Partial<CallData>`, `defaultBlock?`: `BlockParam`): _`Promise<void>`_
+▸ **callAsync**(`account`: string, `amount`: `BigNumber`, `callData`: `Partial<CallData>`, `defaultBlock?`: `BlockParam`): *`Promise<void>`*
 
 Defined in node_modules/@kosu/system-contracts/generated-wrappers/treasury.ts:478
 
 **Parameters:**
 
-| Name            | Type                | Default value |
-| --------------- | ------------------- | ------------- |
-| `account`       | string              | -             |
-| `amount`        | `BigNumber`         | -             |
-| `callData`      | `Partial<CallData>` | {}            |
-| `defaultBlock?` | `BlockParam`        | -             |
+Name | Type | Default value |
+------ | ------ | ------ |
+`account` | string | - |
+`amount` | `BigNumber` | - |
+`callData` | `Partial<CallData>` |  {} |
+`defaultBlock?` | `BlockParam` | - |
 
-**Returns:** _`Promise<void>`_
+**Returns:** *`Promise<void>`*
 
-### estimateGasAsync
+###  estimateGasAsync
 
-▸ **estimateGasAsync**(`account`: string, `amount`: `BigNumber`, `txData`: `Partial<TxData>`): _`Promise<number>`_
+▸ **estimateGasAsync**(`account`: string, `amount`: `BigNumber`, `txData`: `Partial<TxData>`): *`Promise<number>`*
 
 Defined in node_modules/@kosu/system-contracts/generated-wrappers/treasury.ts:448
 
 **Parameters:**
 
-| Name      | Type              | Default value |
-| --------- | ----------------- | ------------- |
-| `account` | string            | -             |
-| `amount`  | `BigNumber`       | -             |
-| `txData`  | `Partial<TxData>` | {}            |
+Name | Type | Default value |
+------ | ------ | ------ |
+`account` | string | - |
+`amount` | `BigNumber` | - |
+`txData` | `Partial<TxData>` |  {} |
 
-**Returns:** _`Promise<number>`_
+**Returns:** *`Promise<number>`*
 
-### getABIEncodedTransactionData
+###  getABIEncodedTransactionData
 
-▸ **getABIEncodedTransactionData**(`account`: string, `amount`: `BigNumber`): _string_
+▸ **getABIEncodedTransactionData**(`account`: string, `amount`: `BigNumber`): *string*
 
 Defined in node_modules/@kosu/system-contracts/generated-wrappers/treasury.ts:468
 
 **Parameters:**
 
-| Name      | Type        |
-| --------- | ----------- |
-| `account` | string      |
-| `amount`  | `BigNumber` |
+Name | Type |
+------ | ------ |
+`account` | string |
+`amount` | `BigNumber` |
 
-**Returns:** _string_
+**Returns:** *string*
 
-### sendTransactionAsync
+###  sendTransactionAsync
 
-▸ **sendTransactionAsync**(`account`: string, `amount`: `BigNumber`, `txData`: `Partial<TxData>`): _`Promise<string>`_
+▸ **sendTransactionAsync**(`account`: string, `amount`: `BigNumber`, `txData`: `Partial<TxData>`): *`Promise<string>`*
 
 Defined in node_modules/@kosu/system-contracts/generated-wrappers/treasury.ts:393
 
 **Parameters:**
 
-| Name      | Type              | Default value |
-| --------- | ----------------- | ------------- |
-| `account` | string            | -             |
-| `amount`  | `BigNumber`       | -             |
-| `txData`  | `Partial<TxData>` | {}            |
+Name | Type | Default value |
+------ | ------ | ------ |
+`account` | string | - |
+`amount` | `BigNumber` | - |
+`txData` | `Partial<TxData>` |  {} |
 
-**Returns:** _`Promise<string>`_
+**Returns:** *`Promise<string>`*
 
----
+___
 
-### claimTokens
+###  claimTokens
 
-### ■ **claimTokens**: _object_
+### ■ **claimTokens**: *object*
 
 Defined in node_modules/@kosu/system-contracts/generated-wrappers/treasury.ts:1240
 
-### awaitTransactionSuccessAsync
+###  awaitTransactionSuccessAsync
 
-▸ **awaitTransactionSuccessAsync**(`account`: string, `amount`: `BigNumber`, `txData?`: `Partial<TxData>` | number, `pollingIntervalMs?`: number, `timeoutMs?`: number): _`PromiseWithTransactionHash<TransactionReceiptWithDecodedLogs>`_
+▸ **awaitTransactionSuccessAsync**(`account`: string, `amount`: `BigNumber`, `txData?`: `Partial<TxData>` | number, `pollingIntervalMs?`: number, `timeoutMs?`: number): *`PromiseWithTransactionHash<TransactionReceiptWithDecodedLogs>`*
 
 Defined in node_modules/@kosu/system-contracts/generated-wrappers/treasury.ts:1266
 
 **Parameters:**
 
-| Name                 | Type              |
-| -------------------- | ----------------- |
-| `account`            | string            |
-| `amount`             | `BigNumber`       |
-| `txData?`            | `Partial<TxData>` | number |
-| `pollingIntervalMs?` | number            |
-| `timeoutMs?`         | number            |
+Name | Type |
+------ | ------ |
+`account` | string |
+`amount` | `BigNumber` |
+`txData?` | `Partial<TxData>` | number |
+`pollingIntervalMs?` | number |
+`timeoutMs?` | number |
 
-**Returns:** _`PromiseWithTransactionHash<TransactionReceiptWithDecodedLogs>`_
+**Returns:** *`PromiseWithTransactionHash<TransactionReceiptWithDecodedLogs>`*
 
-### callAsync
+###  callAsync
 
-▸ **callAsync**(`account`: string, `amount`: `BigNumber`, `callData`: `Partial<CallData>`, `defaultBlock?`: `BlockParam`): _`Promise<void>`_
+▸ **callAsync**(`account`: string, `amount`: `BigNumber`, `callData`: `Partial<CallData>`, `defaultBlock?`: `BlockParam`): *`Promise<void>`*
 
 Defined in node_modules/@kosu/system-contracts/generated-wrappers/treasury.ts:1326
 
 **Parameters:**
 
-| Name            | Type                | Default value |
-| --------------- | ------------------- | ------------- |
-| `account`       | string              | -             |
-| `amount`        | `BigNumber`         | -             |
-| `callData`      | `Partial<CallData>` | {}            |
-| `defaultBlock?` | `BlockParam`        | -             |
+Name | Type | Default value |
+------ | ------ | ------ |
+`account` | string | - |
+`amount` | `BigNumber` | - |
+`callData` | `Partial<CallData>` |  {} |
+`defaultBlock?` | `BlockParam` | - |
 
-**Returns:** _`Promise<void>`_
+**Returns:** *`Promise<void>`*
 
-### estimateGasAsync
+###  estimateGasAsync
 
-▸ **estimateGasAsync**(`account`: string, `amount`: `BigNumber`, `txData`: `Partial<TxData>`): _`Promise<number>`_
+▸ **estimateGasAsync**(`account`: string, `amount`: `BigNumber`, `txData`: `Partial<TxData>`): *`Promise<number>`*
 
 Defined in node_modules/@kosu/system-contracts/generated-wrappers/treasury.ts:1296
 
 **Parameters:**
 
-| Name      | Type              | Default value |
-| --------- | ----------------- | ------------- |
-| `account` | string            | -             |
-| `amount`  | `BigNumber`       | -             |
-| `txData`  | `Partial<TxData>` | {}            |
+Name | Type | Default value |
+------ | ------ | ------ |
+`account` | string | - |
+`amount` | `BigNumber` | - |
+`txData` | `Partial<TxData>` |  {} |
 
-**Returns:** _`Promise<number>`_
+**Returns:** *`Promise<number>`*
 
-### getABIEncodedTransactionData
+###  getABIEncodedTransactionData
 
-▸ **getABIEncodedTransactionData**(`account`: string, `amount`: `BigNumber`): _string_
+▸ **getABIEncodedTransactionData**(`account`: string, `amount`: `BigNumber`): *string*
 
 Defined in node_modules/@kosu/system-contracts/generated-wrappers/treasury.ts:1316
 
 **Parameters:**
 
-| Name      | Type        |
-| --------- | ----------- |
-| `account` | string      |
-| `amount`  | `BigNumber` |
+Name | Type |
+------ | ------ |
+`account` | string |
+`amount` | `BigNumber` |
 
-**Returns:** _string_
+**Returns:** *string*
 
-### sendTransactionAsync
+###  sendTransactionAsync
 
-▸ **sendTransactionAsync**(`account`: string, `amount`: `BigNumber`, `txData`: `Partial<TxData>`): _`Promise<string>`_
+▸ **sendTransactionAsync**(`account`: string, `amount`: `BigNumber`, `txData`: `Partial<TxData>`): *`Promise<string>`*
 
 Defined in node_modules/@kosu/system-contracts/generated-wrappers/treasury.ts:1241
 
 **Parameters:**
 
-| Name      | Type              | Default value |
-| --------- | ----------------- | ------------- |
-| `account` | string            | -             |
-| `amount`  | `BigNumber`       | -             |
-| `txData`  | `Partial<TxData>` | {}            |
+Name | Type | Default value |
+------ | ------ | ------ |
+`account` | string | - |
+`amount` | `BigNumber` | - |
+`txData` | `Partial<TxData>` |  {} |
 
-**Returns:** _`Promise<string>`_
+**Returns:** *`Promise<string>`*
 
----
+___
 
-### confiscate
+###  confiscate
 
-### ■ **confiscate**: _object_
+### ■ **confiscate**: *object*
 
 Defined in node_modules/@kosu/system-contracts/generated-wrappers/treasury.ts:134
 
-### awaitTransactionSuccessAsync
+###  awaitTransactionSuccessAsync
 
-▸ **awaitTransactionSuccessAsync**(`account`: string, `amount`: `BigNumber`, `txData?`: `Partial<TxData>` | number, `pollingIntervalMs?`: number, `timeoutMs?`: number): _`PromiseWithTransactionHash<TransactionReceiptWithDecodedLogs>`_
+▸ **awaitTransactionSuccessAsync**(`account`: string, `amount`: `BigNumber`, `txData?`: `Partial<TxData>` | number, `pollingIntervalMs?`: number, `timeoutMs?`: number): *`PromiseWithTransactionHash<TransactionReceiptWithDecodedLogs>`*
 
 Defined in node_modules/@kosu/system-contracts/generated-wrappers/treasury.ts:160
 
 **Parameters:**
 
-| Name                 | Type              |
-| -------------------- | ----------------- |
-| `account`            | string            |
-| `amount`             | `BigNumber`       |
-| `txData?`            | `Partial<TxData>` | number |
-| `pollingIntervalMs?` | number            |
-| `timeoutMs?`         | number            |
+Name | Type |
+------ | ------ |
+`account` | string |
+`amount` | `BigNumber` |
+`txData?` | `Partial<TxData>` | number |
+`pollingIntervalMs?` | number |
+`timeoutMs?` | number |
 
-**Returns:** _`PromiseWithTransactionHash<TransactionReceiptWithDecodedLogs>`_
+**Returns:** *`PromiseWithTransactionHash<TransactionReceiptWithDecodedLogs>`*
 
-### callAsync
+###  callAsync
 
-▸ **callAsync**(`account`: string, `amount`: `BigNumber`, `callData`: `Partial<CallData>`, `defaultBlock?`: `BlockParam`): _`Promise<void>`_
+▸ **callAsync**(`account`: string, `amount`: `BigNumber`, `callData`: `Partial<CallData>`, `defaultBlock?`: `BlockParam`): *`Promise<void>`*
 
 Defined in node_modules/@kosu/system-contracts/generated-wrappers/treasury.ts:220
 
 **Parameters:**
 
-| Name            | Type                | Default value |
-| --------------- | ------------------- | ------------- |
-| `account`       | string              | -             |
-| `amount`        | `BigNumber`         | -             |
-| `callData`      | `Partial<CallData>` | {}            |
-| `defaultBlock?` | `BlockParam`        | -             |
+Name | Type | Default value |
+------ | ------ | ------ |
+`account` | string | - |
+`amount` | `BigNumber` | - |
+`callData` | `Partial<CallData>` |  {} |
+`defaultBlock?` | `BlockParam` | - |
 
-**Returns:** _`Promise<void>`_
+**Returns:** *`Promise<void>`*
 
-### estimateGasAsync
+###  estimateGasAsync
 
-▸ **estimateGasAsync**(`account`: string, `amount`: `BigNumber`, `txData`: `Partial<TxData>`): _`Promise<number>`_
+▸ **estimateGasAsync**(`account`: string, `amount`: `BigNumber`, `txData`: `Partial<TxData>`): *`Promise<number>`*
 
 Defined in node_modules/@kosu/system-contracts/generated-wrappers/treasury.ts:190
 
 **Parameters:**
 
-| Name      | Type              | Default value |
-| --------- | ----------------- | ------------- |
-| `account` | string            | -             |
-| `amount`  | `BigNumber`       | -             |
-| `txData`  | `Partial<TxData>` | {}            |
+Name | Type | Default value |
+------ | ------ | ------ |
+`account` | string | - |
+`amount` | `BigNumber` | - |
+`txData` | `Partial<TxData>` |  {} |
 
-**Returns:** _`Promise<number>`_
+**Returns:** *`Promise<number>`*
 
-### getABIEncodedTransactionData
+###  getABIEncodedTransactionData
 
-▸ **getABIEncodedTransactionData**(`account`: string, `amount`: `BigNumber`): _string_
+▸ **getABIEncodedTransactionData**(`account`: string, `amount`: `BigNumber`): *string*
 
 Defined in node_modules/@kosu/system-contracts/generated-wrappers/treasury.ts:210
 
 **Parameters:**
 
-| Name      | Type        |
-| --------- | ----------- |
-| `account` | string      |
-| `amount`  | `BigNumber` |
+Name | Type |
+------ | ------ |
+`account` | string |
+`amount` | `BigNumber` |
 
-**Returns:** _string_
+**Returns:** *string*
 
-### sendTransactionAsync
+###  sendTransactionAsync
 
-▸ **sendTransactionAsync**(`account`: string, `amount`: `BigNumber`, `txData`: `Partial<TxData>`): _`Promise<string>`_
+▸ **sendTransactionAsync**(`account`: string, `amount`: `BigNumber`, `txData`: `Partial<TxData>`): *`Promise<string>`*
 
 Defined in node_modules/@kosu/system-contracts/generated-wrappers/treasury.ts:135
 
 **Parameters:**
 
-| Name      | Type              | Default value |
-| --------- | ----------------- | ------------- |
-| `account` | string            | -             |
-| `amount`  | `BigNumber`       | -             |
-| `txData`  | `Partial<TxData>` | {}            |
+Name | Type | Default value |
+------ | ------ | ------ |
+`account` | string | - |
+`amount` | `BigNumber` | - |
+`txData` | `Partial<TxData>` |  {} |
 
-**Returns:** _`Promise<string>`_
+**Returns:** *`Promise<string>`*
 
----
+___
 
-### contractDeposit
+###  contractDeposit
 
-### ■ **contractDeposit**: _object_
+### ■ **contractDeposit**: *object*
 
 Defined in node_modules/@kosu/system-contracts/generated-wrappers/treasury.ts:622
 
-### awaitTransactionSuccessAsync
+###  awaitTransactionSuccessAsync
 
-▸ **awaitTransactionSuccessAsync**(`account`: string, `amount`: `BigNumber`, `txData?`: `Partial<TxData>` | number, `pollingIntervalMs?`: number, `timeoutMs?`: number): _`PromiseWithTransactionHash<TransactionReceiptWithDecodedLogs>`_
+▸ **awaitTransactionSuccessAsync**(`account`: string, `amount`: `BigNumber`, `txData?`: `Partial<TxData>` | number, `pollingIntervalMs?`: number, `timeoutMs?`: number): *`PromiseWithTransactionHash<TransactionReceiptWithDecodedLogs>`*
 
 Defined in node_modules/@kosu/system-contracts/generated-wrappers/treasury.ts:648
 
 **Parameters:**
 
-| Name                 | Type              |
-| -------------------- | ----------------- |
-| `account`            | string            |
-| `amount`             | `BigNumber`       |
-| `txData?`            | `Partial<TxData>` | number |
-| `pollingIntervalMs?` | number            |
-| `timeoutMs?`         | number            |
+Name | Type |
+------ | ------ |
+`account` | string |
+`amount` | `BigNumber` |
+`txData?` | `Partial<TxData>` | number |
+`pollingIntervalMs?` | number |
+`timeoutMs?` | number |
 
-**Returns:** _`PromiseWithTransactionHash<TransactionReceiptWithDecodedLogs>`_
+**Returns:** *`PromiseWithTransactionHash<TransactionReceiptWithDecodedLogs>`*
 
-### callAsync
+###  callAsync
 
-▸ **callAsync**(`account`: string, `amount`: `BigNumber`, `callData`: `Partial<CallData>`, `defaultBlock?`: `BlockParam`): _`Promise<void>`_
+▸ **callAsync**(`account`: string, `amount`: `BigNumber`, `callData`: `Partial<CallData>`, `defaultBlock?`: `BlockParam`): *`Promise<void>`*
 
 Defined in node_modules/@kosu/system-contracts/generated-wrappers/treasury.ts:708
 
 **Parameters:**
 
-| Name            | Type                | Default value |
-| --------------- | ------------------- | ------------- |
-| `account`       | string              | -             |
-| `amount`        | `BigNumber`         | -             |
-| `callData`      | `Partial<CallData>` | {}            |
-| `defaultBlock?` | `BlockParam`        | -             |
+Name | Type | Default value |
+------ | ------ | ------ |
+`account` | string | - |
+`amount` | `BigNumber` | - |
+`callData` | `Partial<CallData>` |  {} |
+`defaultBlock?` | `BlockParam` | - |
 
-**Returns:** _`Promise<void>`_
+**Returns:** *`Promise<void>`*
 
-### estimateGasAsync
+###  estimateGasAsync
 
-▸ **estimateGasAsync**(`account`: string, `amount`: `BigNumber`, `txData`: `Partial<TxData>`): _`Promise<number>`_
+▸ **estimateGasAsync**(`account`: string, `amount`: `BigNumber`, `txData`: `Partial<TxData>`): *`Promise<number>`*
 
 Defined in node_modules/@kosu/system-contracts/generated-wrappers/treasury.ts:678
 
 **Parameters:**
 
-| Name      | Type              | Default value |
-| --------- | ----------------- | ------------- |
-| `account` | string            | -             |
-| `amount`  | `BigNumber`       | -             |
-| `txData`  | `Partial<TxData>` | {}            |
+Name | Type | Default value |
+------ | ------ | ------ |
+`account` | string | - |
+`amount` | `BigNumber` | - |
+`txData` | `Partial<TxData>` |  {} |
 
-**Returns:** _`Promise<number>`_
+**Returns:** *`Promise<number>`*
 
-### getABIEncodedTransactionData
+###  getABIEncodedTransactionData
 
-▸ **getABIEncodedTransactionData**(`account`: string, `amount`: `BigNumber`): _string_
+▸ **getABIEncodedTransactionData**(`account`: string, `amount`: `BigNumber`): *string*
 
 Defined in node_modules/@kosu/system-contracts/generated-wrappers/treasury.ts:698
 
 **Parameters:**
 
-| Name      | Type        |
-| --------- | ----------- |
-| `account` | string      |
-| `amount`  | `BigNumber` |
+Name | Type |
+------ | ------ |
+`account` | string |
+`amount` | `BigNumber` |
 
-**Returns:** _string_
+**Returns:** *string*
 
-### sendTransactionAsync
+###  sendTransactionAsync
 
-▸ **sendTransactionAsync**(`account`: string, `amount`: `BigNumber`, `txData`: `Partial<TxData>`): _`Promise<string>`_
+▸ **sendTransactionAsync**(`account`: string, `amount`: `BigNumber`, `txData`: `Partial<TxData>`): *`Promise<string>`*
 
 Defined in node_modules/@kosu/system-contracts/generated-wrappers/treasury.ts:623
 
 **Parameters:**
 
-| Name      | Type              | Default value |
-| --------- | ----------------- | ------------- |
-| `account` | string            | -             |
-| `amount`  | `BigNumber`       | -             |
-| `txData`  | `Partial<TxData>` | {}            |
+Name | Type | Default value |
+------ | ------ | ------ |
+`account` | string | - |
+`amount` | `BigNumber` | - |
+`txData` | `Partial<TxData>` |  {} |
 
-**Returns:** _`Promise<string>`_
+**Returns:** *`Promise<string>`*
 
----
+___
 
-### contractWithdraw
+###  contractWithdraw
 
-### ■ **contractWithdraw**: _object_
+### ■ **contractWithdraw**: *object*
 
 Defined in node_modules/@kosu/system-contracts/generated-wrappers/treasury.ts:507
 
-### awaitTransactionSuccessAsync
+###  awaitTransactionSuccessAsync
 
-▸ **awaitTransactionSuccessAsync**(`account`: string, `amount`: `BigNumber`, `txData?`: `Partial<TxData>` | number, `pollingIntervalMs?`: number, `timeoutMs?`: number): _`PromiseWithTransactionHash<TransactionReceiptWithDecodedLogs>`_
+▸ **awaitTransactionSuccessAsync**(`account`: string, `amount`: `BigNumber`, `txData?`: `Partial<TxData>` | number, `pollingIntervalMs?`: number, `timeoutMs?`: number): *`PromiseWithTransactionHash<TransactionReceiptWithDecodedLogs>`*
 
 Defined in node_modules/@kosu/system-contracts/generated-wrappers/treasury.ts:533
 
 **Parameters:**
 
-| Name                 | Type              |
-| -------------------- | ----------------- |
-| `account`            | string            |
-| `amount`             | `BigNumber`       |
-| `txData?`            | `Partial<TxData>` | number |
-| `pollingIntervalMs?` | number            |
-| `timeoutMs?`         | number            |
+Name | Type |
+------ | ------ |
+`account` | string |
+`amount` | `BigNumber` |
+`txData?` | `Partial<TxData>` | number |
+`pollingIntervalMs?` | number |
+`timeoutMs?` | number |
 
-**Returns:** _`PromiseWithTransactionHash<TransactionReceiptWithDecodedLogs>`_
+**Returns:** *`PromiseWithTransactionHash<TransactionReceiptWithDecodedLogs>`*
 
-### callAsync
+###  callAsync
 
-▸ **callAsync**(`account`: string, `amount`: `BigNumber`, `callData`: `Partial<CallData>`, `defaultBlock?`: `BlockParam`): _`Promise<void>`_
+▸ **callAsync**(`account`: string, `amount`: `BigNumber`, `callData`: `Partial<CallData>`, `defaultBlock?`: `BlockParam`): *`Promise<void>`*
 
 Defined in node_modules/@kosu/system-contracts/generated-wrappers/treasury.ts:593
 
 **Parameters:**
 
-| Name            | Type                | Default value |
-| --------------- | ------------------- | ------------- |
-| `account`       | string              | -             |
-| `amount`        | `BigNumber`         | -             |
-| `callData`      | `Partial<CallData>` | {}            |
-| `defaultBlock?` | `BlockParam`        | -             |
+Name | Type | Default value |
+------ | ------ | ------ |
+`account` | string | - |
+`amount` | `BigNumber` | - |
+`callData` | `Partial<CallData>` |  {} |
+`defaultBlock?` | `BlockParam` | - |
 
-**Returns:** _`Promise<void>`_
+**Returns:** *`Promise<void>`*
 
-### estimateGasAsync
+###  estimateGasAsync
 
-▸ **estimateGasAsync**(`account`: string, `amount`: `BigNumber`, `txData`: `Partial<TxData>`): _`Promise<number>`_
+▸ **estimateGasAsync**(`account`: string, `amount`: `BigNumber`, `txData`: `Partial<TxData>`): *`Promise<number>`*
 
 Defined in node_modules/@kosu/system-contracts/generated-wrappers/treasury.ts:563
 
 **Parameters:**
 
-| Name      | Type              | Default value |
-| --------- | ----------------- | ------------- |
-| `account` | string            | -             |
-| `amount`  | `BigNumber`       | -             |
-| `txData`  | `Partial<TxData>` | {}            |
+Name | Type | Default value |
+------ | ------ | ------ |
+`account` | string | - |
+`amount` | `BigNumber` | - |
+`txData` | `Partial<TxData>` |  {} |
 
-**Returns:** _`Promise<number>`_
+**Returns:** *`Promise<number>`*
 
-### getABIEncodedTransactionData
+###  getABIEncodedTransactionData
 
-▸ **getABIEncodedTransactionData**(`account`: string, `amount`: `BigNumber`): _string_
+▸ **getABIEncodedTransactionData**(`account`: string, `amount`: `BigNumber`): *string*
 
 Defined in node_modules/@kosu/system-contracts/generated-wrappers/treasury.ts:583
 
 **Parameters:**
 
-| Name      | Type        |
-| --------- | ----------- |
-| `account` | string      |
-| `amount`  | `BigNumber` |
+Name | Type |
+------ | ------ |
+`account` | string |
+`amount` | `BigNumber` |
 
-**Returns:** _string_
+**Returns:** *string*
 
-### sendTransactionAsync
+###  sendTransactionAsync
 
-▸ **sendTransactionAsync**(`account`: string, `amount`: `BigNumber`, `txData`: `Partial<TxData>`): _`Promise<string>`_
+▸ **sendTransactionAsync**(`account`: string, `amount`: `BigNumber`, `txData`: `Partial<TxData>`): *`Promise<string>`*
 
 Defined in node_modules/@kosu/system-contracts/generated-wrappers/treasury.ts:508
 
 **Parameters:**
 
-| Name      | Type              | Default value |
-| --------- | ----------------- | ------------- |
-| `account` | string            | -             |
-| `amount`  | `BigNumber`       | -             |
-| `txData`  | `Partial<TxData>` | {}            |
+Name | Type | Default value |
+------ | ------ | ------ |
+`account` | string | - |
+`amount` | `BigNumber` | - |
+`txData` | `Partial<TxData>` |  {} |
 
-**Returns:** _`Promise<string>`_
+**Returns:** *`Promise<string>`*
 
----
+___
 
-### currentBalance
+###  currentBalance
 
-### ■ **currentBalance**: _object_
+### ■ **currentBalance**: *object*
 
 Defined in node_modules/@kosu/system-contracts/generated-wrappers/treasury.ts:737
 
-### callAsync
+###  callAsync
 
-▸ **callAsync**(`account`: string, `callData`: `Partial<CallData>`, `defaultBlock?`: `BlockParam`): _`Promise<BigNumber>`_
+▸ **callAsync**(`account`: string, `callData`: `Partial<CallData>`, `defaultBlock?`: `BlockParam`): *`Promise<BigNumber>`*
 
 Defined in node_modules/@kosu/system-contracts/generated-wrappers/treasury.ts:738
 
 **Parameters:**
 
-| Name            | Type                | Default value |
-| --------------- | ------------------- | ------------- |
-| `account`       | string              | -             |
-| `callData`      | `Partial<CallData>` | {}            |
-| `defaultBlock?` | `BlockParam`        | -             |
+Name | Type | Default value |
+------ | ------ | ------ |
+`account` | string | - |
+`callData` | `Partial<CallData>` |  {} |
+`defaultBlock?` | `BlockParam` | - |
 
-**Returns:** _`Promise<BigNumber>`_
+**Returns:** *`Promise<BigNumber>`*
 
----
+___
 
-### deposit
+###  deposit
 
-### ■ **deposit**: _object_
+### ■ **deposit**: *object*
 
 Defined in node_modules/@kosu/system-contracts/generated-wrappers/treasury.ts:765
 
-### awaitTransactionSuccessAsync
+###  awaitTransactionSuccessAsync
 
-▸ **awaitTransactionSuccessAsync**(`amount`: `BigNumber`, `txData?`: `Partial<TxData>` | number, `pollingIntervalMs?`: number, `timeoutMs?`: number): _`PromiseWithTransactionHash<TransactionReceiptWithDecodedLogs>`_
+▸ **awaitTransactionSuccessAsync**(`amount`: `BigNumber`, `txData?`: `Partial<TxData>` | number, `pollingIntervalMs?`: number, `timeoutMs?`: number): *`PromiseWithTransactionHash<TransactionReceiptWithDecodedLogs>`*
 
 Defined in node_modules/@kosu/system-contracts/generated-wrappers/treasury.ts:788
 
 **Parameters:**
 
-| Name                 | Type              |
-| -------------------- | ----------------- |
-| `amount`             | `BigNumber`       |
-| `txData?`            | `Partial<TxData>` | number |
-| `pollingIntervalMs?` | number            |
-| `timeoutMs?`         | number            |
+Name | Type |
+------ | ------ |
+`amount` | `BigNumber` |
+`txData?` | `Partial<TxData>` | number |
+`pollingIntervalMs?` | number |
+`timeoutMs?` | number |
 
-**Returns:** _`PromiseWithTransactionHash<TransactionReceiptWithDecodedLogs>`_
+**Returns:** *`PromiseWithTransactionHash<TransactionReceiptWithDecodedLogs>`*
 
-### callAsync
+###  callAsync
 
-▸ **callAsync**(`amount`: `BigNumber`, `callData`: `Partial<CallData>`, `defaultBlock?`: `BlockParam`): _`Promise<void>`_
+▸ **callAsync**(`amount`: `BigNumber`, `callData`: `Partial<CallData>`, `defaultBlock?`: `BlockParam`): *`Promise<void>`*
 
 Defined in node_modules/@kosu/system-contracts/generated-wrappers/treasury.ts:842
 
 **Parameters:**
 
-| Name            | Type                | Default value |
-| --------------- | ------------------- | ------------- |
-| `amount`        | `BigNumber`         | -             |
-| `callData`      | `Partial<CallData>` | {}            |
-| `defaultBlock?` | `BlockParam`        | -             |
+Name | Type | Default value |
+------ | ------ | ------ |
+`amount` | `BigNumber` | - |
+`callData` | `Partial<CallData>` |  {} |
+`defaultBlock?` | `BlockParam` | - |
 
-**Returns:** _`Promise<void>`_
+**Returns:** *`Promise<void>`*
 
-### estimateGasAsync
+###  estimateGasAsync
 
-▸ **estimateGasAsync**(`amount`: `BigNumber`, `txData`: `Partial<TxData>`): _`Promise<number>`_
+▸ **estimateGasAsync**(`amount`: `BigNumber`, `txData`: `Partial<TxData>`): *`Promise<number>`*
 
 Defined in node_modules/@kosu/system-contracts/generated-wrappers/treasury.ts:816
 
 **Parameters:**
 
-| Name     | Type              | Default value |
-| -------- | ----------------- | ------------- |
-| `amount` | `BigNumber`       | -             |
-| `txData` | `Partial<TxData>` | {}            |
+Name | Type | Default value |
+------ | ------ | ------ |
+`amount` | `BigNumber` | - |
+`txData` | `Partial<TxData>` |  {} |
 
-**Returns:** _`Promise<number>`_
+**Returns:** *`Promise<number>`*
 
-### getABIEncodedTransactionData
+###  getABIEncodedTransactionData
 
-▸ **getABIEncodedTransactionData**(`amount`: `BigNumber`): _string_
+▸ **getABIEncodedTransactionData**(`amount`: `BigNumber`): *string*
 
 Defined in node_modules/@kosu/system-contracts/generated-wrappers/treasury.ts:834
 
 **Parameters:**
 
-| Name     | Type        |
-| -------- | ----------- |
-| `amount` | `BigNumber` |
+Name | Type |
+------ | ------ |
+`amount` | `BigNumber` |
 
-**Returns:** _string_
+**Returns:** *string*
 
-### sendTransactionAsync
+###  sendTransactionAsync
 
-▸ **sendTransactionAsync**(`amount`: `BigNumber`, `txData`: `Partial<TxData>`): _`Promise<string>`_
+▸ **sendTransactionAsync**(`amount`: `BigNumber`, `txData`: `Partial<TxData>`): *`Promise<string>`*
 
 Defined in node_modules/@kosu/system-contracts/generated-wrappers/treasury.ts:766
 
 **Parameters:**
 
-| Name     | Type              | Default value |
-| -------- | ----------------- | ------------- |
-| `amount` | `BigNumber`       | -             |
-| `txData` | `Partial<TxData>` | {}            |
+Name | Type | Default value |
+------ | ------ | ------ |
+`amount` | `BigNumber` | - |
+`txData` | `Partial<TxData>` |  {} |
 
-**Returns:** _`Promise<string>`_
+**Returns:** *`Promise<string>`*
 
----
+___
 
-### kosuToken
+###  kosuToken
 
-### ■ **kosuToken**: _object_
+### ■ **kosuToken**: *object*
 
 Defined in node_modules/@kosu/system-contracts/generated-wrappers/treasury.ts:869
 
-### callAsync
+###  callAsync
 
-▸ **callAsync**(`callData`: `Partial<CallData>`, `defaultBlock?`: `BlockParam`): _`Promise<string>`_
+▸ **callAsync**(`callData`: `Partial<CallData>`, `defaultBlock?`: `BlockParam`): *`Promise<string>`*
 
 Defined in node_modules/@kosu/system-contracts/generated-wrappers/treasury.ts:870
 
 **Parameters:**
 
-| Name            | Type                | Default value |
-| --------------- | ------------------- | ------------- |
-| `callData`      | `Partial<CallData>` | {}            |
-| `defaultBlock?` | `BlockParam`        | -             |
+Name | Type | Default value |
+------ | ------ | ------ |
+`callData` | `Partial<CallData>` |  {} |
+`defaultBlock?` | `BlockParam` | - |
 
-**Returns:** _`Promise<string>`_
+**Returns:** *`Promise<string>`*
 
----
+___
 
-### releaseTokens
+###  releaseTokens
 
-### ■ **releaseTokens**: _object_
+### ■ **releaseTokens**: *object*
 
 Defined in node_modules/@kosu/system-contracts/generated-wrappers/treasury.ts:1125
 
-### awaitTransactionSuccessAsync
+###  awaitTransactionSuccessAsync
 
-▸ **awaitTransactionSuccessAsync**(`account`: string, `amount`: `BigNumber`, `txData?`: `Partial<TxData>` | number, `pollingIntervalMs?`: number, `timeoutMs?`: number): _`PromiseWithTransactionHash<TransactionReceiptWithDecodedLogs>`_
+▸ **awaitTransactionSuccessAsync**(`account`: string, `amount`: `BigNumber`, `txData?`: `Partial<TxData>` | number, `pollingIntervalMs?`: number, `timeoutMs?`: number): *`PromiseWithTransactionHash<TransactionReceiptWithDecodedLogs>`*
 
 Defined in node_modules/@kosu/system-contracts/generated-wrappers/treasury.ts:1151
 
 **Parameters:**
 
-| Name                 | Type              |
-| -------------------- | ----------------- |
-| `account`            | string            |
-| `amount`             | `BigNumber`       |
-| `txData?`            | `Partial<TxData>` | number |
-| `pollingIntervalMs?` | number            |
-| `timeoutMs?`         | number            |
+Name | Type |
+------ | ------ |
+`account` | string |
+`amount` | `BigNumber` |
+`txData?` | `Partial<TxData>` | number |
+`pollingIntervalMs?` | number |
+`timeoutMs?` | number |
 
-**Returns:** _`PromiseWithTransactionHash<TransactionReceiptWithDecodedLogs>`_
+**Returns:** *`PromiseWithTransactionHash<TransactionReceiptWithDecodedLogs>`*
 
-### callAsync
+###  callAsync
 
-▸ **callAsync**(`account`: string, `amount`: `BigNumber`, `callData`: `Partial<CallData>`, `defaultBlock?`: `BlockParam`): _`Promise<void>`_
+▸ **callAsync**(`account`: string, `amount`: `BigNumber`, `callData`: `Partial<CallData>`, `defaultBlock?`: `BlockParam`): *`Promise<void>`*
 
 Defined in node_modules/@kosu/system-contracts/generated-wrappers/treasury.ts:1211
 
 **Parameters:**
 
-| Name            | Type                | Default value |
-| --------------- | ------------------- | ------------- |
-| `account`       | string              | -             |
-| `amount`        | `BigNumber`         | -             |
-| `callData`      | `Partial<CallData>` | {}            |
-| `defaultBlock?` | `BlockParam`        | -             |
+Name | Type | Default value |
+------ | ------ | ------ |
+`account` | string | - |
+`amount` | `BigNumber` | - |
+`callData` | `Partial<CallData>` |  {} |
+`defaultBlock?` | `BlockParam` | - |
 
-**Returns:** _`Promise<void>`_
+**Returns:** *`Promise<void>`*
 
-### estimateGasAsync
+###  estimateGasAsync
 
-▸ **estimateGasAsync**(`account`: string, `amount`: `BigNumber`, `txData`: `Partial<TxData>`): _`Promise<number>`_
+▸ **estimateGasAsync**(`account`: string, `amount`: `BigNumber`, `txData`: `Partial<TxData>`): *`Promise<number>`*
 
 Defined in node_modules/@kosu/system-contracts/generated-wrappers/treasury.ts:1181
 
 **Parameters:**
 
-| Name      | Type              | Default value |
-| --------- | ----------------- | ------------- |
-| `account` | string            | -             |
-| `amount`  | `BigNumber`       | -             |
-| `txData`  | `Partial<TxData>` | {}            |
+Name | Type | Default value |
+------ | ------ | ------ |
+`account` | string | - |
+`amount` | `BigNumber` | - |
+`txData` | `Partial<TxData>` |  {} |
 
-**Returns:** _`Promise<number>`_
+**Returns:** *`Promise<number>`*
 
-### getABIEncodedTransactionData
+###  getABIEncodedTransactionData
 
-▸ **getABIEncodedTransactionData**(`account`: string, `amount`: `BigNumber`): _string_
+▸ **getABIEncodedTransactionData**(`account`: string, `amount`: `BigNumber`): *string*
 
 Defined in node_modules/@kosu/system-contracts/generated-wrappers/treasury.ts:1201
 
 **Parameters:**
 
-| Name      | Type        |
-| --------- | ----------- |
-| `account` | string      |
-| `amount`  | `BigNumber` |
+Name | Type |
+------ | ------ |
+`account` | string |
+`amount` | `BigNumber` |
 
-**Returns:** _string_
+**Returns:** *string*
 
-### sendTransactionAsync
+###  sendTransactionAsync
 
-▸ **sendTransactionAsync**(`account`: string, `amount`: `BigNumber`, `txData`: `Partial<TxData>`): _`Promise<string>`_
+▸ **sendTransactionAsync**(`account`: string, `amount`: `BigNumber`, `txData`: `Partial<TxData>`): *`Promise<string>`*
 
 Defined in node_modules/@kosu/system-contracts/generated-wrappers/treasury.ts:1126
 
 **Parameters:**
 
-| Name      | Type              | Default value |
-| --------- | ----------------- | ------------- |
-| `account` | string            | -             |
-| `amount`  | `BigNumber`       | -             |
-| `txData`  | `Partial<TxData>` | {}            |
+Name | Type | Default value |
+------ | ------ | ------ |
+`account` | string | - |
+`amount` | `BigNumber` | - |
+`txData` | `Partial<TxData>` |  {} |
 
-**Returns:** _`Promise<string>`_
+**Returns:** *`Promise<string>`*
 
----
+___
 
-### systemBalance
+###  systemBalance
 
-### ■ **systemBalance**: _object_
+### ■ **systemBalance**: *object*
 
 Defined in node_modules/@kosu/system-contracts/generated-wrappers/treasury.ts:249
 
-### callAsync
+###  callAsync
 
-▸ **callAsync**(`account`: string, `callData`: `Partial<CallData>`, `defaultBlock?`: `BlockParam`): _`Promise<BigNumber>`_
+▸ **callAsync**(`account`: string, `callData`: `Partial<CallData>`, `defaultBlock?`: `BlockParam`): *`Promise<BigNumber>`*
 
 Defined in node_modules/@kosu/system-contracts/generated-wrappers/treasury.ts:250
 
 **Parameters:**
 
-| Name            | Type                | Default value |
-| --------------- | ------------------- | ------------- |
-| `account`       | string              | -             |
-| `callData`      | `Partial<CallData>` | {}            |
-| `defaultBlock?` | `BlockParam`        | -             |
+Name | Type | Default value |
+------ | ------ | ------ |
+`account` | string | - |
+`callData` | `Partial<CallData>` |  {} |
+`defaultBlock?` | `BlockParam` | - |
 
-**Returns:** _`Promise<BigNumber>`_
+**Returns:** *`Promise<BigNumber>`*
 
----
+___
 
-### updateBalance
+###  updateBalance
 
-### ■ **updateBalance**: _object_
+### ■ **updateBalance**: *object*
 
 Defined in node_modules/@kosu/system-contracts/generated-wrappers/treasury.ts:895
 
-### awaitTransactionSuccessAsync
+###  awaitTransactionSuccessAsync
 
-▸ **awaitTransactionSuccessAsync**(`account`: string, `amount`: `BigNumber`, `txData?`: `Partial<TxData>` | number, `pollingIntervalMs?`: number, `timeoutMs?`: number): _`PromiseWithTransactionHash<TransactionReceiptWithDecodedLogs>`_
+▸ **awaitTransactionSuccessAsync**(`account`: string, `amount`: `BigNumber`, `txData?`: `Partial<TxData>` | number, `pollingIntervalMs?`: number, `timeoutMs?`: number): *`PromiseWithTransactionHash<TransactionReceiptWithDecodedLogs>`*
 
 Defined in node_modules/@kosu/system-contracts/generated-wrappers/treasury.ts:921
 
 **Parameters:**
 
-| Name                 | Type              |
-| -------------------- | ----------------- |
-| `account`            | string            |
-| `amount`             | `BigNumber`       |
-| `txData?`            | `Partial<TxData>` | number |
-| `pollingIntervalMs?` | number            |
-| `timeoutMs?`         | number            |
+Name | Type |
+------ | ------ |
+`account` | string |
+`amount` | `BigNumber` |
+`txData?` | `Partial<TxData>` | number |
+`pollingIntervalMs?` | number |
+`timeoutMs?` | number |
 
-**Returns:** _`PromiseWithTransactionHash<TransactionReceiptWithDecodedLogs>`_
+**Returns:** *`PromiseWithTransactionHash<TransactionReceiptWithDecodedLogs>`*
 
-### callAsync
+###  callAsync
 
-▸ **callAsync**(`account`: string, `amount`: `BigNumber`, `callData`: `Partial<CallData>`, `defaultBlock?`: `BlockParam`): _`Promise<void>`_
+▸ **callAsync**(`account`: string, `amount`: `BigNumber`, `callData`: `Partial<CallData>`, `defaultBlock?`: `BlockParam`): *`Promise<void>`*
 
 Defined in node_modules/@kosu/system-contracts/generated-wrappers/treasury.ts:981
 
 **Parameters:**
 
-| Name            | Type                | Default value |
-| --------------- | ------------------- | ------------- |
-| `account`       | string              | -             |
-| `amount`        | `BigNumber`         | -             |
-| `callData`      | `Partial<CallData>` | {}            |
-| `defaultBlock?` | `BlockParam`        | -             |
+Name | Type | Default value |
+------ | ------ | ------ |
+`account` | string | - |
+`amount` | `BigNumber` | - |
+`callData` | `Partial<CallData>` |  {} |
+`defaultBlock?` | `BlockParam` | - |
 
-**Returns:** _`Promise<void>`_
+**Returns:** *`Promise<void>`*
 
-### estimateGasAsync
+###  estimateGasAsync
 
-▸ **estimateGasAsync**(`account`: string, `amount`: `BigNumber`, `txData`: `Partial<TxData>`): _`Promise<number>`_
+▸ **estimateGasAsync**(`account`: string, `amount`: `BigNumber`, `txData`: `Partial<TxData>`): *`Promise<number>`*
 
 Defined in node_modules/@kosu/system-contracts/generated-wrappers/treasury.ts:951
 
 **Parameters:**
 
-| Name      | Type              | Default value |
-| --------- | ----------------- | ------------- |
-| `account` | string            | -             |
-| `amount`  | `BigNumber`       | -             |
-| `txData`  | `Partial<TxData>` | {}            |
+Name | Type | Default value |
+------ | ------ | ------ |
+`account` | string | - |
+`amount` | `BigNumber` | - |
+`txData` | `Partial<TxData>` |  {} |
 
-**Returns:** _`Promise<number>`_
+**Returns:** *`Promise<number>`*
 
-### getABIEncodedTransactionData
+###  getABIEncodedTransactionData
 
-▸ **getABIEncodedTransactionData**(`account`: string, `amount`: `BigNumber`): _string_
+▸ **getABIEncodedTransactionData**(`account`: string, `amount`: `BigNumber`): *string*
 
 Defined in node_modules/@kosu/system-contracts/generated-wrappers/treasury.ts:971
 
 **Parameters:**
 
-| Name      | Type        |
-| --------- | ----------- |
-| `account` | string      |
-| `amount`  | `BigNumber` |
+Name | Type |
+------ | ------ |
+`account` | string |
+`amount` | `BigNumber` |
 
-**Returns:** _string_
+**Returns:** *string*
 
-### sendTransactionAsync
+###  sendTransactionAsync
 
-▸ **sendTransactionAsync**(`account`: string, `amount`: `BigNumber`, `txData`: `Partial<TxData>`): _`Promise<string>`_
+▸ **sendTransactionAsync**(`account`: string, `amount`: `BigNumber`, `txData`: `Partial<TxData>`): *`Promise<string>`*
 
 Defined in node_modules/@kosu/system-contracts/generated-wrappers/treasury.ts:896
 
 **Parameters:**
 
-| Name      | Type              | Default value |
-| --------- | ----------------- | ------------- |
-| `account` | string            | -             |
-| `amount`  | `BigNumber`       | -             |
-| `txData`  | `Partial<TxData>` | {}            |
+Name | Type | Default value |
+------ | ------ | ------ |
+`account` | string | - |
+`amount` | `BigNumber` | - |
+`txData` | `Partial<TxData>` |  {} |
 
-**Returns:** _`Promise<string>`_
+**Returns:** *`Promise<string>`*
 
----
+___
 
-### withdraw
+###  withdraw
 
-### ■ **withdraw**: _object_
+### ■ **withdraw**: *object*
 
 Defined in node_modules/@kosu/system-contracts/generated-wrappers/treasury.ts:30
 
-### awaitTransactionSuccessAsync
+###  awaitTransactionSuccessAsync
 
-▸ **awaitTransactionSuccessAsync**(`amount`: `BigNumber`, `txData?`: `Partial<TxData>` | number, `pollingIntervalMs?`: number, `timeoutMs?`: number): _`PromiseWithTransactionHash<TransactionReceiptWithDecodedLogs>`_
+▸ **awaitTransactionSuccessAsync**(`amount`: `BigNumber`, `txData?`: `Partial<TxData>` | number, `pollingIntervalMs?`: number, `timeoutMs?`: number): *`PromiseWithTransactionHash<TransactionReceiptWithDecodedLogs>`*
 
 Defined in node_modules/@kosu/system-contracts/generated-wrappers/treasury.ts:53
 
 **Parameters:**
 
-| Name                 | Type              |
-| -------------------- | ----------------- |
-| `amount`             | `BigNumber`       |
-| `txData?`            | `Partial<TxData>` | number |
-| `pollingIntervalMs?` | number            |
-| `timeoutMs?`         | number            |
+Name | Type |
+------ | ------ |
+`amount` | `BigNumber` |
+`txData?` | `Partial<TxData>` | number |
+`pollingIntervalMs?` | number |
+`timeoutMs?` | number |
 
-**Returns:** _`PromiseWithTransactionHash<TransactionReceiptWithDecodedLogs>`_
+**Returns:** *`PromiseWithTransactionHash<TransactionReceiptWithDecodedLogs>`*
 
-### callAsync
+###  callAsync
 
-▸ **callAsync**(`amount`: `BigNumber`, `callData`: `Partial<CallData>`, `defaultBlock?`: `BlockParam`): _`Promise<void>`_
+▸ **callAsync**(`amount`: `BigNumber`, `callData`: `Partial<CallData>`, `defaultBlock?`: `BlockParam`): *`Promise<void>`*
 
 Defined in node_modules/@kosu/system-contracts/generated-wrappers/treasury.ts:107
 
 **Parameters:**
 
-| Name            | Type                | Default value |
-| --------------- | ------------------- | ------------- |
-| `amount`        | `BigNumber`         | -             |
-| `callData`      | `Partial<CallData>` | {}            |
-| `defaultBlock?` | `BlockParam`        | -             |
+Name | Type | Default value |
+------ | ------ | ------ |
+`amount` | `BigNumber` | - |
+`callData` | `Partial<CallData>` |  {} |
+`defaultBlock?` | `BlockParam` | - |
 
-**Returns:** _`Promise<void>`_
+**Returns:** *`Promise<void>`*
 
-### estimateGasAsync
+###  estimateGasAsync
 
-▸ **estimateGasAsync**(`amount`: `BigNumber`, `txData`: `Partial<TxData>`): _`Promise<number>`_
+▸ **estimateGasAsync**(`amount`: `BigNumber`, `txData`: `Partial<TxData>`): *`Promise<number>`*
 
 Defined in node_modules/@kosu/system-contracts/generated-wrappers/treasury.ts:81
 
 **Parameters:**
 
-| Name     | Type              | Default value |
-| -------- | ----------------- | ------------- |
-| `amount` | `BigNumber`       | -             |
-| `txData` | `Partial<TxData>` | {}            |
+Name | Type | Default value |
+------ | ------ | ------ |
+`amount` | `BigNumber` | - |
+`txData` | `Partial<TxData>` |  {} |
 
-**Returns:** _`Promise<number>`_
+**Returns:** *`Promise<number>`*
 
-### getABIEncodedTransactionData
+###  getABIEncodedTransactionData
 
-▸ **getABIEncodedTransactionData**(`amount`: `BigNumber`): _string_
+▸ **getABIEncodedTransactionData**(`amount`: `BigNumber`): *string*
 
 Defined in node_modules/@kosu/system-contracts/generated-wrappers/treasury.ts:99
 
 **Parameters:**
 
-| Name     | Type        |
-| -------- | ----------- |
-| `amount` | `BigNumber` |
+Name | Type |
+------ | ------ |
+`amount` | `BigNumber` |
 
-**Returns:** _string_
+**Returns:** *string*
 
-### sendTransactionAsync
+###  sendTransactionAsync
 
-▸ **sendTransactionAsync**(`amount`: `BigNumber`, `txData`: `Partial<TxData>`): _`Promise<string>`_
+▸ **sendTransactionAsync**(`amount`: `BigNumber`, `txData`: `Partial<TxData>`): *`Promise<string>`*
 
 Defined in node_modules/@kosu/system-contracts/generated-wrappers/treasury.ts:31
 
 **Parameters:**
 
-| Name     | Type              | Default value |
-| -------- | ----------------- | ------------- |
-| `amount` | `BigNumber`       | -             |
-| `txData` | `Partial<TxData>` | {}            |
+Name | Type | Default value |
+------ | ------ | ------ |
+`amount` | `BigNumber` | - |
+`txData` | `Partial<TxData>` |  {} |
 
-**Returns:** _`Promise<string>`_
+**Returns:** *`Promise<string>`*
 
----
+___

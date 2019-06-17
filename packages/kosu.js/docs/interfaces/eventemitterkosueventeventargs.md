@@ -6,44 +6,44 @@
 
 ## Hierarchy
 
--   `DecodedLogArgs`
+* `DecodedLogArgs`
 
-    -   **EventEmitterKosuEventEventArgs**
+  * **EventEmitterKosuEventEventArgs**
 
 ## Indexable
 
-● \[■&#x60; argName&#x60;: _string_\]: `ContractEventArg`
+● \[■&#x60; argName&#x60;: *string*\]: `ContractEventArg`
 
 ### Index
 
 #### Properties
 
--   [data](eventemitterkosueventeventargs.md#data)
--   [eventType](eventemitterkosueventeventargs.md#eventtype)
--   [stringData](eventemitterkosueventeventargs.md#stringdata)
+* [data](eventemitterkosueventeventargs.md#data)
+* [eventType](eventemitterkosueventeventargs.md#eventtype)
+* [stringData](eventemitterkosueventeventargs.md#stringdata)
 
 ## Properties
 
-### data
+###  data
 
-● **data**: _string[]_
+● **data**: *string[]*
 
 Defined in node_modules/@kosu/system-contracts/generated-wrappers/event_emitter.ts:33
 
----
+___
 
-### eventType
+###  eventType
 
-● **eventType**: _string_
+● **eventType**: *string*
 
 Defined in node_modules/@kosu/system-contracts/generated-wrappers/event_emitter.ts:32
 
----
+___
 
-### stringData
+###  stringData
 
-● **stringData**: _string_
+● **stringData**: *string*
 
 Defined in node_modules/@kosu/system-contracts/generated-wrappers/event_emitter.ts:34
 
----
+___
