@@ -25,7 +25,6 @@ const KosuEndpoints = {
  * to subscribe to future events.
  */
 export class EventEmitter {
-
     /**
      * The `web3Wrapper` instance with the contract's ABI loaded.
      */
