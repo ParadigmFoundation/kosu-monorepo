@@ -19,21 +19,48 @@ const KosuEndpoints = {
     },
 };
 
+/**
+ * The `EventEmitter` class simplifies interaction with the Kosu `EventEmitter`
+ * contract. It provides methods to access historical decoded event logs, and
+ * to subscribe to future events.
+ */
 export class EventEmitter {
+
+    /**
+     * The `web3Wrapper` instance with the contract's ABI loaded.
+     */
     private readonly web3Wrapper: Web3Wrapper;
+
+    /**
+     * The address of the deployed `EventEmitter` contract for the current Ethereum
+     * network.
+     */
     private address: string;
+
+    /**
+     * A separate `web3Wrapper` instance that can be configured with the Kosu
+     * development proof-of-authority network for testing purposes.
+     */
     private kosuWeb3Wrapper: Web3Wrapper;
 
+    /**
+     * Create a new `EventEmitter` instance.
+     *
+     * @param options Options object with `web3Wrapper` and optional `eventEmitterAddress`.
+     */
     constructor(options: KosuOptions) {
         this.web3Wrapper = options.web3Wrapper;
         this.address = options.eventEmitterAddress;
     }
 
+    /**
+     * Return the address of the configured deployed contract. If not already cached,
+     * will return the deployed address for the detected network ID (if available).
+     */
     public async getAddress(): Promise<string> {
         if (!this.address) {
             this.address = DeployedAddresses[await this.web3Wrapper.getNetworkIdAsync()].EventEmitter;
         }
-
         return this.address;
     }
 
