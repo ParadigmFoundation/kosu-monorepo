@@ -165,9 +165,6 @@ export class Kosu {
     }
 }
 
-/**
- * test
- */
 export { OrderSerializer } from "./OrderSerializer";
 
 export {
