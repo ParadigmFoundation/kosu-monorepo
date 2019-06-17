@@ -8,171 +8,171 @@ Integration with PosterRegistry contract on an Ethereum blockchain.
 
 ## Hierarchy
 
-* **PosterRegistry**
+-   **PosterRegistry**
 
 ### Index
 
 #### Constructors
 
-* [constructor](posterregistry.md#constructor)
+-   [constructor](posterregistry.md#constructor)
 
 #### Properties
 
-* [address](posterregistry.md#private-address)
-* [contract](posterregistry.md#private-contract)
-* [treasury](posterregistry.md#private-treasury)
-* [web3](posterregistry.md#private-web3)
-* [web3Wrapper](posterregistry.md#private-web3wrapper)
+-   [address](posterregistry.md#private-address)
+-   [contract](posterregistry.md#private-contract)
+-   [treasury](posterregistry.md#private-treasury)
+-   [web3](posterregistry.md#private-web3)
+-   [web3Wrapper](posterregistry.md#private-web3wrapper)
 
 #### Methods
 
-* [getContract](posterregistry.md#private-getcontract)
-* [registerTokens](posterregistry.md#registertokens)
-* [releaseTokens](posterregistry.md#releasetokens)
-* [tokensContributed](posterregistry.md#tokenscontributed)
-* [tokensRegisteredFor](posterregistry.md#tokensregisteredfor)
+-   [getContract](posterregistry.md#private-getcontract)
+-   [registerTokens](posterregistry.md#registertokens)
+-   [releaseTokens](posterregistry.md#releasetokens)
+-   [tokensContributed](posterregistry.md#tokenscontributed)
+-   [tokensRegisteredFor](posterregistry.md#tokensregisteredfor)
 
 ## Constructors
 
-###  constructor
+### constructor
 
-\+ **new PosterRegistry**(`options`: `KosuOptions`, `treasury`: [Treasury](treasury.md)): *[PosterRegistry](posterregistry.md)*
+\+ **new PosterRegistry**(`options`: `KosuOptions`, `treasury`: [Treasury](treasury.md)): _[PosterRegistry](posterregistry.md)_
 
-*Defined in [packages/kosu.js/src/PosterRegistry.ts:17](url)*
+_Defined in [packages/kosu.js/src/PosterRegistry.ts:17](url)_
 
 Create a new PosterRegistry instance.
 
 **Parameters:**
 
-Name | Type | Description |
------- | ------ | ------ |
-`options` | `KosuOptions` | instantiation options |
-`treasury` | [Treasury](treasury.md) | treasury integration instance  |
+| Name       | Type                    | Description                   |
+| ---------- | ----------------------- | ----------------------------- |
+| `options`  | `KosuOptions`           | instantiation options         |
+| `treasury` | [Treasury](treasury.md) | treasury integration instance |
 
-**Returns:** *[PosterRegistry](posterregistry.md)*
+**Returns:** _[PosterRegistry](posterregistry.md)_
 
-___
+---
 
 ## Properties
 
 ### `Private` address
 
-● **address**: *string*
+● **address**: _string_
 
-*Defined in [packages/kosu.js/src/PosterRegistry.ts:17](url)*
+_Defined in [packages/kosu.js/src/PosterRegistry.ts:17](url)_
 
-___
+---
 
 ### `Private` contract
 
-● **contract**: *[PosterRegistryProxyContract](posterregistryproxycontract.md)*
+● **contract**: _[PosterRegistryProxyContract](posterregistryproxycontract.md)_
 
-*Defined in [packages/kosu.js/src/PosterRegistry.ts:15](url)*
+_Defined in [packages/kosu.js/src/PosterRegistry.ts:15](url)_
 
-___
+---
 
 ### `Private` treasury
 
-● **treasury**: *[Treasury](treasury.md)*
+● **treasury**: _[Treasury](treasury.md)_
 
-*Defined in [packages/kosu.js/src/PosterRegistry.ts:14](url)*
+_Defined in [packages/kosu.js/src/PosterRegistry.ts:14](url)_
 
-___
+---
 
 ### `Private` web3
 
-● **web3**: *`Web3`*
+● **web3**: _`Web3`_
 
-*Defined in [packages/kosu.js/src/PosterRegistry.ts:13](url)*
+_Defined in [packages/kosu.js/src/PosterRegistry.ts:13](url)_
 
-___
+---
 
 ### `Private` web3Wrapper
 
-● **web3Wrapper**: *`Web3Wrapper`*
+● **web3Wrapper**: _`Web3Wrapper`_
 
-*Defined in [packages/kosu.js/src/PosterRegistry.ts:16](url)*
+_Defined in [packages/kosu.js/src/PosterRegistry.ts:16](url)_
 
-___
+---
 
 ## Methods
 
 ### `Private` getContract
 
-▸ **getContract**(): *`Promise<PosterRegistryProxyContract>`*
+▸ **getContract**(): _`Promise<PosterRegistryProxyContract>`_
 
-*Defined in [packages/kosu.js/src/PosterRegistry.ts:37](url)*
+_Defined in [packages/kosu.js/src/PosterRegistry.ts:37](url)_
 
 Asynchronously initializes the contract instance or returns it from cache
 
-**Returns:** *`Promise<PosterRegistryProxyContract>`*
+**Returns:** _`Promise<PosterRegistryProxyContract>`_
 
 The contract
 
-___
+---
 
-###  registerTokens
+### registerTokens
 
-▸ **registerTokens**(`amount`: `BigNumber`): *`Promise<TransactionReceiptWithDecodedLogs>`*
+▸ **registerTokens**(`amount`: `BigNumber`): _`Promise<TransactionReceiptWithDecodedLogs>`_
 
-*Defined in [packages/kosu.js/src/PosterRegistry.ts:82](url)*
+_Defined in [packages/kosu.js/src/PosterRegistry.ts:82](url)_
 
 Registers tokens
 
 **Parameters:**
 
-Name | Type | Description |
------- | ------ | ------ |
-`amount` | `BigNumber` | uint value of tokens to register  |
+| Name     | Type        | Description                      |
+| -------- | ----------- | -------------------------------- |
+| `amount` | `BigNumber` | uint value of tokens to register |
 
-**Returns:** *`Promise<TransactionReceiptWithDecodedLogs>`*
+**Returns:** _`Promise<TransactionReceiptWithDecodedLogs>`_
 
-___
+---
 
-###  releaseTokens
+### releaseTokens
 
-▸ **releaseTokens**(`amount`: `BigNumber`): *`Promise<TransactionReceiptWithDecodedLogs>`*
+▸ **releaseTokens**(`amount`: `BigNumber`): _`Promise<TransactionReceiptWithDecodedLogs>`_
 
-*Defined in [packages/kosu.js/src/PosterRegistry.ts:112](url)*
+_Defined in [packages/kosu.js/src/PosterRegistry.ts:112](url)_
 
 Releases tokens
 
 **Parameters:**
 
-Name | Type | Description |
------- | ------ | ------ |
-`amount` | `BigNumber` | uint values of tokens to release  |
+| Name     | Type        | Description                      |
+| -------- | ----------- | -------------------------------- |
+| `amount` | `BigNumber` | uint values of tokens to release |
 
-**Returns:** *`Promise<TransactionReceiptWithDecodedLogs>`*
+**Returns:** _`Promise<TransactionReceiptWithDecodedLogs>`_
 
-___
+---
 
-###  tokensContributed
+### tokensContributed
 
-▸ **tokensContributed**(): *`Promise<BigNumber>`*
+▸ **tokensContributed**(): _`Promise<BigNumber>`_
 
-*Defined in [packages/kosu.js/src/PosterRegistry.ts:62](url)*
+_Defined in [packages/kosu.js/src/PosterRegistry.ts:62](url)_
 
 Reads total tokens contributed to registry
 
-**Returns:** *`Promise<BigNumber>`*
+**Returns:** _`Promise<BigNumber>`_
 
-___
+---
 
-###  tokensRegisteredFor
+### tokensRegisteredFor
 
-▸ **tokensRegisteredFor**(`address`: string): *`Promise<BigNumber>`*
+▸ **tokensRegisteredFor**(`address`: string): _`Promise<BigNumber>`_
 
-*Defined in [packages/kosu.js/src/PosterRegistry.ts:72](url)*
+_Defined in [packages/kosu.js/src/PosterRegistry.ts:72](url)_
 
 Reads number of tokens registered for address
 
 **Parameters:**
 
-Name | Type | Description |
------- | ------ | ------ |
-`address` | string | Address of registered user  |
+| Name      | Type   | Description                |
+| --------- | ------ | -------------------------- |
+| `address` | string | Address of registered user |
 
-**Returns:** *`Promise<BigNumber>`*
+**Returns:** _`Promise<BigNumber>`_
 
-___
+---

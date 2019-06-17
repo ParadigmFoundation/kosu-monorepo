@@ -8,214 +8,214 @@ Integration with Treasury contract on an Ethereum blockchain.
 
 ## Hierarchy
 
-* **Treasury**
+-   **Treasury**
 
 ### Index
 
 #### Constructors
 
-* [constructor](treasury.md#constructor)
+-   [constructor](treasury.md#constructor)
 
 #### Properties
 
-* [address](treasury.md#private-address)
-* [coinbase](treasury.md#private-coinbase)
-* [contract](treasury.md#private-contract)
-* [kosuToken](treasury.md#kosutoken)
-* [web3](treasury.md#private-web3)
-* [web3Wrapper](treasury.md#private-web3wrapper)
+-   [address](treasury.md#private-address)
+-   [coinbase](treasury.md#private-coinbase)
+-   [contract](treasury.md#private-contract)
+-   [kosuToken](treasury.md#kosutoken)
+-   [web3](treasury.md#private-web3)
+-   [web3Wrapper](treasury.md#private-web3wrapper)
 
 #### Methods
 
-* [approveTreasury](treasury.md#approvetreasury)
-* [currentBalance](treasury.md#currentbalance)
-* [deposit](treasury.md#deposit)
-* [getContract](treasury.md#private-getcontract)
-* [systemBalance](treasury.md#systembalance)
-* [treasuryAllowance](treasury.md#treasuryallowance)
-* [withdraw](treasury.md#withdraw)
+-   [approveTreasury](treasury.md#approvetreasury)
+-   [currentBalance](treasury.md#currentbalance)
+-   [deposit](treasury.md#deposit)
+-   [getContract](treasury.md#private-getcontract)
+-   [systemBalance](treasury.md#systembalance)
+-   [treasuryAllowance](treasury.md#treasuryallowance)
+-   [withdraw](treasury.md#withdraw)
 
 ## Constructors
 
-###  constructor
+### constructor
 
-\+ **new Treasury**(`options`: `KosuOptions`, `kosuToken`: [KosuToken](kosutoken.md)): *[Treasury](treasury.md)*
+\+ **new Treasury**(`options`: `KosuOptions`, `kosuToken`: [KosuToken](kosutoken.md)): _[Treasury](treasury.md)_
 
-*Defined in [packages/kosu.js/src/Treasury.ts:19](url)*
+_Defined in [packages/kosu.js/src/Treasury.ts:19](url)_
 
 Creates a new Treasury instance
 
 **Parameters:**
 
-Name | Type | Description |
------- | ------ | ------ |
-`options` | `KosuOptions` | initialization options |
-`kosuToken` | [KosuToken](kosutoken.md) | KosuToken instance  |
+| Name        | Type                      | Description            |
+| ----------- | ------------------------- | ---------------------- |
+| `options`   | `KosuOptions`             | initialization options |
+| `kosuToken` | [KosuToken](kosutoken.md) | KosuToken instance     |
 
-**Returns:** *[Treasury](treasury.md)*
+**Returns:** _[Treasury](treasury.md)_
 
-___
+---
 
 ## Properties
 
 ### `Private` address
 
-● **address**: *string*
+● **address**: _string_
 
-*Defined in [packages/kosu.js/src/Treasury.ts:16](url)*
+_Defined in [packages/kosu.js/src/Treasury.ts:16](url)_
 
-___
+---
 
 ### `Private` coinbase
 
-● **coinbase**: *string*
+● **coinbase**: _string_
 
-*Defined in [packages/kosu.js/src/Treasury.ts:19](url)*
+_Defined in [packages/kosu.js/src/Treasury.ts:19](url)_
 
-___
+---
 
 ### `Private` contract
 
-● **contract**: *[TreasuryContract](treasurycontract.md)*
+● **contract**: _[TreasuryContract](treasurycontract.md)_
 
-*Defined in [packages/kosu.js/src/Treasury.ts:17](url)*
+_Defined in [packages/kosu.js/src/Treasury.ts:17](url)_
 
-___
+---
 
-###  kosuToken
+### kosuToken
 
-● **kosuToken**: *[KosuToken](kosutoken.md)*
+● **kosuToken**: _[KosuToken](kosutoken.md)_
 
-*Defined in [packages/kosu.js/src/Treasury.ts:13](url)*
+_Defined in [packages/kosu.js/src/Treasury.ts:13](url)_
 
-___
+---
 
 ### `Private` web3
 
-● **web3**: *`Web3`*
+● **web3**: _`Web3`_
 
-*Defined in [packages/kosu.js/src/Treasury.ts:15](url)*
+_Defined in [packages/kosu.js/src/Treasury.ts:15](url)_
 
-___
+---
 
 ### `Private` web3Wrapper
 
-● **web3Wrapper**: *`Web3Wrapper`*
+● **web3Wrapper**: _`Web3Wrapper`_
 
-*Defined in [packages/kosu.js/src/Treasury.ts:18](url)*
+_Defined in [packages/kosu.js/src/Treasury.ts:18](url)_
 
-___
+---
 
 ## Methods
 
-###  approveTreasury
+### approveTreasury
 
-▸ **approveTreasury**(`value`: `BigNumber`): *`Promise<TransactionReceiptWithDecodedLogs>`*
+▸ **approveTreasury**(`value`: `BigNumber`): _`Promise<TransactionReceiptWithDecodedLogs>`_
 
-*Defined in [packages/kosu.js/src/Treasury.ts:119](url)*
+_Defined in [packages/kosu.js/src/Treasury.ts:119](url)_
 
 **Parameters:**
 
-Name | Type |
------- | ------ |
-`value` | `BigNumber` |
+| Name    | Type        |
+| ------- | ----------- |
+| `value` | `BigNumber` |
 
-**Returns:** *`Promise<TransactionReceiptWithDecodedLogs>`*
+**Returns:** _`Promise<TransactionReceiptWithDecodedLogs>`_
 
-___
+---
 
-###  currentBalance
+### currentBalance
 
-▸ **currentBalance**(`address`: string): *`Promise<BigNumber>`*
+▸ **currentBalance**(`address`: string): _`Promise<BigNumber>`_
 
-*Defined in [packages/kosu.js/src/Treasury.ts:109](url)*
+_Defined in [packages/kosu.js/src/Treasury.ts:109](url)_
 
 Read addresses system balance
 
 **Parameters:**
 
-Name | Type | Description |
------- | ------ | ------ |
-`address` | string | Ethereum address  |
+| Name      | Type   | Description      |
+| --------- | ------ | ---------------- |
+| `address` | string | Ethereum address |
 
-**Returns:** *`Promise<BigNumber>`*
+**Returns:** _`Promise<BigNumber>`_
 
-___
+---
 
-###  deposit
+### deposit
 
-▸ **deposit**(`value`: `BigNumber`): *`Promise<TransactionReceiptWithDecodedLogs>`*
+▸ **deposit**(`value`: `BigNumber`): _`Promise<TransactionReceiptWithDecodedLogs>`_
 
-*Defined in [packages/kosu.js/src/Treasury.ts:66](url)*
+_Defined in [packages/kosu.js/src/Treasury.ts:66](url)_
 
 Deposit tokens in the treasury
 
 **Parameters:**
 
-Name | Type | Description |
------- | ------ | ------ |
-`value` | `BigNumber` | uint value of tokens to deposit  |
+| Name    | Type        | Description                     |
+| ------- | ----------- | ------------------------------- |
+| `value` | `BigNumber` | uint value of tokens to deposit |
 
-**Returns:** *`Promise<TransactionReceiptWithDecodedLogs>`*
+**Returns:** _`Promise<TransactionReceiptWithDecodedLogs>`_
 
-___
+---
 
 ### `Private` getContract
 
-▸ **getContract**(): *`Promise<TreasuryContract>`*
+▸ **getContract**(): _`Promise<TreasuryContract>`_
 
-*Defined in [packages/kosu.js/src/Treasury.ts:39](url)*
+_Defined in [packages/kosu.js/src/Treasury.ts:39](url)_
 
 Asynchronously initializes the contract instance or returns it from cache
 
-**Returns:** *`Promise<TreasuryContract>`*
+**Returns:** _`Promise<TreasuryContract>`_
 
 The contract
 
-___
+---
 
-###  systemBalance
+### systemBalance
 
-▸ **systemBalance**(`address`: string): *`Promise<BigNumber>`*
+▸ **systemBalance**(`address`: string): _`Promise<BigNumber>`_
 
-*Defined in [packages/kosu.js/src/Treasury.ts:99](url)*
+_Defined in [packages/kosu.js/src/Treasury.ts:99](url)_
 
 Read addresses system balance
 
 **Parameters:**
 
-Name | Type | Description |
------- | ------ | ------ |
-`address` | string | Ethereum address  |
+| Name      | Type   | Description      |
+| --------- | ------ | ---------------- |
+| `address` | string | Ethereum address |
 
-**Returns:** *`Promise<BigNumber>`*
+**Returns:** _`Promise<BigNumber>`_
 
-___
+---
 
-###  treasuryAllowance
+### treasuryAllowance
 
-▸ **treasuryAllowance**(): *`Promise<BigNumber>`*
+▸ **treasuryAllowance**(): _`Promise<BigNumber>`_
 
-*Defined in [packages/kosu.js/src/Treasury.ts:114](url)*
+_Defined in [packages/kosu.js/src/Treasury.ts:114](url)_
 
-**Returns:** *`Promise<BigNumber>`*
+**Returns:** _`Promise<BigNumber>`_
 
-___
+---
 
-###  withdraw
+### withdraw
 
-▸ **withdraw**(`value`: `BigNumber`): *`Promise<TransactionReceiptWithDecodedLogs>`*
+▸ **withdraw**(`value`: `BigNumber`): _`Promise<TransactionReceiptWithDecodedLogs>`_
 
-*Defined in [packages/kosu.js/src/Treasury.ts:89](url)*
+_Defined in [packages/kosu.js/src/Treasury.ts:89](url)_
 
 Withdraw tokens from treasury
 
 **Parameters:**
 
-Name | Type | Description |
------- | ------ | ------ |
-`value` | `BigNumber` | uint value of tokens to withdraw  |
+| Name    | Type        | Description                      |
+| ------- | ----------- | -------------------------------- |
+| `value` | `BigNumber` | uint value of tokens to withdraw |
 
-**Returns:** *`Promise<TransactionReceiptWithDecodedLogs>`*
+**Returns:** _`Promise<TransactionReceiptWithDecodedLogs>`_
 
-___
+---

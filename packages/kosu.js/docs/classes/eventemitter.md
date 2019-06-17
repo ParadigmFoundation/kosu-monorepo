@@ -6,152 +6,152 @@
 
 ## Hierarchy
 
-* **EventEmitter**
+-   **EventEmitter**
 
 ### Index
 
 #### Constructors
 
-* [constructor](eventemitter.md#constructor)
+-   [constructor](eventemitter.md#constructor)
 
 #### Properties
 
-* [address](eventemitter.md#private-address)
-* [kosuWeb3Wrapper](eventemitter.md#private-kosuweb3wrapper)
-* [web3Wrapper](eventemitter.md#private-web3wrapper)
+-   [address](eventemitter.md#private-address)
+-   [kosuWeb3Wrapper](eventemitter.md#private-kosuweb3wrapper)
+-   [web3Wrapper](eventemitter.md#private-web3wrapper)
 
 #### Methods
 
-* [_decodeLogs](eventemitter.md#private-_decodelogs)
-* [getAddress](eventemitter.md#getaddress)
-* [getFutureDecodedLogs](eventemitter.md#getfuturedecodedlogs)
-* [getPastDecodedLogs](eventemitter.md#getpastdecodedlogs)
-* [getPastLogsFromKosuEndpoint](eventemitter.md#private-getpastlogsfromkosuendpoint)
+-   [\_decodeLogs](eventemitter.md#private-_decodelogs)
+-   [getAddress](eventemitter.md#getaddress)
+-   [getFutureDecodedLogs](eventemitter.md#getfuturedecodedlogs)
+-   [getPastDecodedLogs](eventemitter.md#getpastdecodedlogs)
+-   [getPastLogsFromKosuEndpoint](eventemitter.md#private-getpastlogsfromkosuendpoint)
 
 ## Constructors
 
-###  constructor
+### constructor
 
-\+ **new EventEmitter**(`options`: `KosuOptions`): *[EventEmitter](eventemitter.md)*
+\+ **new EventEmitter**(`options`: `KosuOptions`): _[EventEmitter](eventemitter.md)_
 
-*Defined in [packages/kosu.js/src/EventEmitter.ts:25](url)*
+_Defined in [packages/kosu.js/src/EventEmitter.ts:25](url)_
 
 **Parameters:**
 
-Name | Type |
------- | ------ |
-`options` | `KosuOptions` |
+| Name      | Type          |
+| --------- | ------------- |
+| `options` | `KosuOptions` |
 
-**Returns:** *[EventEmitter](eventemitter.md)*
+**Returns:** _[EventEmitter](eventemitter.md)_
 
-___
+---
 
 ## Properties
 
 ### `Private` address
 
-● **address**: *string*
+● **address**: _string_
 
-*Defined in [packages/kosu.js/src/EventEmitter.ts:24](url)*
+_Defined in [packages/kosu.js/src/EventEmitter.ts:24](url)_
 
-___
+---
 
 ### `Private` kosuWeb3Wrapper
 
-● **kosuWeb3Wrapper**: *`Web3Wrapper`*
+● **kosuWeb3Wrapper**: _`Web3Wrapper`_
 
-*Defined in [packages/kosu.js/src/EventEmitter.ts:25](url)*
+_Defined in [packages/kosu.js/src/EventEmitter.ts:25](url)_
 
-___
+---
 
 ### `Private` web3Wrapper
 
-● **web3Wrapper**: *`Web3Wrapper`*
+● **web3Wrapper**: _`Web3Wrapper`_
 
-*Defined in [packages/kosu.js/src/EventEmitter.ts:23](url)*
+_Defined in [packages/kosu.js/src/EventEmitter.ts:23](url)_
 
-___
+---
 
 ## Methods
 
-### `Private` _decodeLogs
+### `Private` \_decodeLogs
 
-▸ **_decodeLogs**(`logs`: `LogEntry`[]): *`Array<LogWithDecodedKosuArgs<DecodedLogArgs, DecodedKosuLogArgs>>`*
+▸ **\_decodeLogs**(`logs`: `LogEntry`[]): _`Array<LogWithDecodedKosuArgs<DecodedLogArgs, DecodedKosuLogArgs>>`_
 
-*Defined in [packages/kosu.js/src/EventEmitter.ts:85](url)*
-
-**Parameters:**
-
-Name | Type |
------- | ------ |
-`logs` | `LogEntry`[] |
-
-**Returns:** *`Array<LogWithDecodedKosuArgs<DecodedLogArgs, DecodedKosuLogArgs>>`*
-
-___
-
-###  getAddress
-
-▸ **getAddress**(): *`Promise<string>`*
-
-*Defined in [packages/kosu.js/src/EventEmitter.ts:32](url)*
-
-**Returns:** *`Promise<string>`*
-
-___
-
-###  getFutureDecodedLogs
-
-▸ **getFutureDecodedLogs**(`start`: number, `callback`: function): *`Timeout`*
-
-*Defined in [packages/kosu.js/src/EventEmitter.ts:58](url)*
+_Defined in [packages/kosu.js/src/EventEmitter.ts:85](url)_
 
 **Parameters:**
 
-■` start`: *number*
+| Name   | Type         |
+| ------ | ------------ |
+| `logs` | `LogEntry`[] |
 
-■` callback`: *function*
+**Returns:** _`Array<LogWithDecodedKosuArgs<DecodedLogArgs, DecodedKosuLogArgs>>`_
 
-▸ (`a`: `Array<LogWithDecodedKosuArgs<DecodedLogArgs, DecodedKosuLogArgs>>`): *void*
+---
+
+### getAddress
+
+▸ **getAddress**(): _`Promise<string>`_
+
+_Defined in [packages/kosu.js/src/EventEmitter.ts:32](url)_
+
+**Returns:** _`Promise<string>`_
+
+---
+
+### getFutureDecodedLogs
+
+▸ **getFutureDecodedLogs**(`start`: number, `callback`: function): _`Timeout`_
+
+_Defined in [packages/kosu.js/src/EventEmitter.ts:58](url)_
 
 **Parameters:**
 
-Name | Type |
------- | ------ |
-`a` | `Array<LogWithDecodedKosuArgs<DecodedLogArgs, DecodedKosuLogArgs>>` |
+■`start`: _number_
 
-**Returns:** *`Timeout`*
+■`callback`: _function_
 
-___
-
-###  getPastDecodedLogs
-
-▸ **getPastDecodedLogs**(`config`: `FilterObject`): *`Promise<Array<LogWithDecodedKosuArgs<DecodedLogArgs, DecodedKosuLogArgs>>>`*
-
-*Defined in [packages/kosu.js/src/EventEmitter.ts:40](url)*
+▸ (`a`: `Array<LogWithDecodedKosuArgs<DecodedLogArgs, DecodedKosuLogArgs>>`): _void_
 
 **Parameters:**
 
-Name | Type |
------- | ------ |
-`config` | `FilterObject` |
+| Name | Type                                                                |
+| ---- | ------------------------------------------------------------------- |
+| `a`  | `Array<LogWithDecodedKosuArgs<DecodedLogArgs, DecodedKosuLogArgs>>` |
 
-**Returns:** *`Promise<Array<LogWithDecodedKosuArgs<DecodedLogArgs, DecodedKosuLogArgs>>>`*
+**Returns:** _`Timeout`_
 
-___
+---
+
+### getPastDecodedLogs
+
+▸ **getPastDecodedLogs**(`config`: `FilterObject`): _`Promise<Array<LogWithDecodedKosuArgs<DecodedLogArgs, DecodedKosuLogArgs>>>`_
+
+_Defined in [packages/kosu.js/src/EventEmitter.ts:40](url)_
+
+**Parameters:**
+
+| Name     | Type           |
+| -------- | -------------- |
+| `config` | `FilterObject` |
+
+**Returns:** _`Promise<Array<LogWithDecodedKosuArgs<DecodedLogArgs, DecodedKosuLogArgs>>>`_
+
+---
 
 ### `Private` getPastLogsFromKosuEndpoint
 
-▸ **getPastLogsFromKosuEndpoint**(`config`: `FilterObject`): *`Promise<any[]>`*
+▸ **getPastLogsFromKosuEndpoint**(`config`: `FilterObject`): _`Promise<any[]>`_
 
-*Defined in [packages/kosu.js/src/EventEmitter.ts:75](url)*
+_Defined in [packages/kosu.js/src/EventEmitter.ts:75](url)_
 
 **Parameters:**
 
-Name | Type |
------- | ------ |
-`config` | `FilterObject` |
+| Name     | Type           |
+| -------- | -------------- |
+| `config` | `FilterObject` |
 
-**Returns:** *`Promise<any[]>`*
+**Returns:** _`Promise<any[]>`_
 
-___
+---

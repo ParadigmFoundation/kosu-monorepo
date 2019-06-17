@@ -8,204 +8,204 @@ Integration with KosuToken contract on an Ethereum blockchain.
 
 ## Hierarchy
 
-* **KosuToken**
+-   **KosuToken**
 
 ### Index
 
 #### Constructors
 
-* [constructor](kosutoken.md#constructor)
+-   [constructor](kosutoken.md#constructor)
 
 #### Properties
 
-* [address](kosutoken.md#private-address)
-* [contract](kosutoken.md#private-contract)
-* [web3](kosutoken.md#private-web3)
-* [web3Wrapper](kosutoken.md#private-web3wrapper)
+-   [address](kosutoken.md#private-address)
+-   [contract](kosutoken.md#private-contract)
+-   [web3](kosutoken.md#private-web3)
+-   [web3Wrapper](kosutoken.md#private-web3wrapper)
 
 #### Methods
 
-* [allowance](kosutoken.md#allowance)
-* [approve](kosutoken.md#approve)
-* [balanceOf](kosutoken.md#balanceof)
-* [getContract](kosutoken.md#private-getcontract)
-* [totalSupply](kosutoken.md#totalsupply)
-* [transfer](kosutoken.md#transfer)
-* [transferFrom](kosutoken.md#transferfrom)
+-   [allowance](kosutoken.md#allowance)
+-   [approve](kosutoken.md#approve)
+-   [balanceOf](kosutoken.md#balanceof)
+-   [getContract](kosutoken.md#private-getcontract)
+-   [totalSupply](kosutoken.md#totalsupply)
+-   [transfer](kosutoken.md#transfer)
+-   [transferFrom](kosutoken.md#transferfrom)
 
 ## Constructors
 
-###  constructor
+### constructor
 
-\+ **new KosuToken**(`options`: `KosuOptions`): *[KosuToken](kosutoken.md)*
+\+ **new KosuToken**(`options`: `KosuOptions`): _[KosuToken](kosutoken.md)_
 
-*Defined in [packages/kosu.js/src/KosuToken.ts:15](url)*
+_Defined in [packages/kosu.js/src/KosuToken.ts:15](url)_
 
 Creates a new KosuToken instance
 
 **Parameters:**
 
-Name | Type | Description |
------- | ------ | ------ |
-`options` | `KosuOptions` | initialization options  |
+| Name      | Type          | Description            |
+| --------- | ------------- | ---------------------- |
+| `options` | `KosuOptions` | initialization options |
 
-**Returns:** *[KosuToken](kosutoken.md)*
+**Returns:** _[KosuToken](kosutoken.md)_
 
-___
+---
 
 ## Properties
 
 ### `Private` address
 
-● **address**: *string*
+● **address**: _string_
 
-*Defined in [packages/kosu.js/src/KosuToken.ts:15](url)*
+_Defined in [packages/kosu.js/src/KosuToken.ts:15](url)_
 
-___
+---
 
 ### `Private` contract
 
-● **contract**: *[KosuTokenContract](kosutokencontract.md)*
+● **contract**: _[KosuTokenContract](kosutokencontract.md)_
 
-*Defined in [packages/kosu.js/src/KosuToken.ts:13](url)*
+_Defined in [packages/kosu.js/src/KosuToken.ts:13](url)_
 
-___
+---
 
 ### `Private` web3
 
-● **web3**: *`Web3`*
+● **web3**: _`Web3`_
 
-*Defined in [packages/kosu.js/src/KosuToken.ts:12](url)*
+_Defined in [packages/kosu.js/src/KosuToken.ts:12](url)_
 
-___
+---
 
 ### `Private` web3Wrapper
 
-● **web3Wrapper**: *`Web3Wrapper`*
+● **web3Wrapper**: _`Web3Wrapper`_
 
-*Defined in [packages/kosu.js/src/KosuToken.ts:14](url)*
+_Defined in [packages/kosu.js/src/KosuToken.ts:14](url)_
 
-___
+---
 
 ## Methods
 
-###  allowance
+### allowance
 
-▸ **allowance**(`owner`: string, `spender`: string): *`Promise<BigNumber>`*
+▸ **allowance**(`owner`: string, `spender`: string): _`Promise<BigNumber>`_
 
-*Defined in [packages/kosu.js/src/KosuToken.ts:113](url)*
+_Defined in [packages/kosu.js/src/KosuToken.ts:113](url)_
 
 Reads approved allowance for user pair
 
 **Parameters:**
 
-Name | Type | Description |
------- | ------ | ------ |
-`owner` | string | Address of source tokens |
-`spender` | string | Address of spender of tokens  |
+| Name      | Type   | Description                  |
+| --------- | ------ | ---------------------------- |
+| `owner`   | string | Address of source tokens     |
+| `spender` | string | Address of spender of tokens |
 
-**Returns:** *`Promise<BigNumber>`*
+**Returns:** _`Promise<BigNumber>`_
 
-___
+---
 
-###  approve
+### approve
 
-▸ **approve**(`spender`: string, `value`: `BigNumber`): *`Promise<TransactionReceiptWithDecodedLogs>`*
+▸ **approve**(`spender`: string, `value`: `BigNumber`): _`Promise<TransactionReceiptWithDecodedLogs>`_
 
-*Defined in [packages/kosu.js/src/KosuToken.ts:102](url)*
+_Defined in [packages/kosu.js/src/KosuToken.ts:102](url)_
 
 Sets approval for user to transfer tokens on coinbase's behalf
 
 **Parameters:**
 
-Name | Type | Description |
------- | ------ | ------ |
-`spender` | string | Address allowed to spend coinbase's tokens |
-`value` | `BigNumber` | uint value of tokens to transfer  |
+| Name      | Type        | Description                                |
+| --------- | ----------- | ------------------------------------------ |
+| `spender` | string      | Address allowed to spend coinbase's tokens |
+| `value`   | `BigNumber` | uint value of tokens to transfer           |
 
-**Returns:** *`Promise<TransactionReceiptWithDecodedLogs>`*
+**Returns:** _`Promise<TransactionReceiptWithDecodedLogs>`_
 
-___
+---
 
-###  balanceOf
+### balanceOf
 
-▸ **balanceOf**(`owner`: string): *`Promise<BigNumber>`*
+▸ **balanceOf**(`owner`: string): _`Promise<BigNumber>`_
 
-*Defined in [packages/kosu.js/src/KosuToken.ts:68](url)*
+_Defined in [packages/kosu.js/src/KosuToken.ts:68](url)_
 
 Reads the balance for a user address
 
 **Parameters:**
 
-Name | Type | Description |
------- | ------ | ------ |
-`owner` | string | Address of token holder  |
+| Name    | Type   | Description             |
+| ------- | ------ | ----------------------- |
+| `owner` | string | Address of token holder |
 
-**Returns:** *`Promise<BigNumber>`*
+**Returns:** _`Promise<BigNumber>`_
 
-___
+---
 
 ### `Private` getContract
 
-▸ **getContract**(): *`Promise<KosuTokenContract>`*
+▸ **getContract**(): _`Promise<KosuTokenContract>`_
 
-*Defined in [packages/kosu.js/src/KosuToken.ts:33](url)*
+_Defined in [packages/kosu.js/src/KosuToken.ts:33](url)_
 
 Asynchronously initializes the contract instance or returns it from cache
 
-**Returns:** *`Promise<KosuTokenContract>`*
+**Returns:** _`Promise<KosuTokenContract>`_
 
 The contract
 
-___
+---
 
-###  totalSupply
+### totalSupply
 
-▸ **totalSupply**(): *`Promise<BigNumber>`*
+▸ **totalSupply**(): _`Promise<BigNumber>`_
 
-*Defined in [packages/kosu.js/src/KosuToken.ts:58](url)*
+_Defined in [packages/kosu.js/src/KosuToken.ts:58](url)_
 
 Reads the total supply
 
-**Returns:** *`Promise<BigNumber>`*
+**Returns:** _`Promise<BigNumber>`_
 
-___
+---
 
-###  transfer
+### transfer
 
-▸ **transfer**(`to`: string, `value`: `BigNumber`): *`Promise<TransactionReceiptWithDecodedLogs>`*
+▸ **transfer**(`to`: string, `value`: `BigNumber`): _`Promise<TransactionReceiptWithDecodedLogs>`_
 
-*Defined in [packages/kosu.js/src/KosuToken.ts:79](url)*
+_Defined in [packages/kosu.js/src/KosuToken.ts:79](url)_
 
 Transfers tokens to a user
 
 **Parameters:**
 
-Name | Type | Description |
------- | ------ | ------ |
-`to` | string | Address of token receiver |
-`value` | `BigNumber` | uint value of tokens to transfer  |
+| Name    | Type        | Description                      |
+| ------- | ----------- | -------------------------------- |
+| `to`    | string      | Address of token receiver        |
+| `value` | `BigNumber` | uint value of tokens to transfer |
 
-**Returns:** *`Promise<TransactionReceiptWithDecodedLogs>`*
+**Returns:** _`Promise<TransactionReceiptWithDecodedLogs>`_
 
-___
+---
 
-###  transferFrom
+### transferFrom
 
-▸ **transferFrom**(`from`: string, `to`: string, `value`: `BigNumber`): *`Promise<TransactionReceiptWithDecodedLogs>`*
+▸ **transferFrom**(`from`: string, `to`: string, `value`: `BigNumber`): _`Promise<TransactionReceiptWithDecodedLogs>`_
 
-*Defined in [packages/kosu.js/src/KosuToken.ts:91](url)*
+_Defined in [packages/kosu.js/src/KosuToken.ts:91](url)_
 
 Transfers token from an address to a destination address
 
 **Parameters:**
 
-Name | Type | Description |
------- | ------ | ------ |
-`from` | string | Address of token source |
-`to` | string | Address of token destination |
-`value` | `BigNumber` | uint value of tokens to transfer  |
+| Name    | Type        | Description                      |
+| ------- | ----------- | -------------------------------- |
+| `from`  | string      | Address of token source          |
+| `to`    | string      | Address of token destination     |
+| `value` | `BigNumber` | uint value of tokens to transfer |
 
-**Returns:** *`Promise<TransactionReceiptWithDecodedLogs>`*
+**Returns:** _`Promise<TransactionReceiptWithDecodedLogs>`_
 
-___
+---

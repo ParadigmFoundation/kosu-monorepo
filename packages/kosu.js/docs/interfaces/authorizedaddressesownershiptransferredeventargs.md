@@ -6,35 +6,35 @@
 
 ## Hierarchy
 
-* `DecodedLogArgs`
+-   `DecodedLogArgs`
 
-  * **AuthorizedAddressesOwnershipTransferredEventArgs**
+    -   **AuthorizedAddressesOwnershipTransferredEventArgs**
 
 ## Indexable
 
-● \[■&#x60; argName&#x60;: *string*\]: `ContractEventArg`
+● \[■&#x60; argName&#x60;: _string_\]: `ContractEventArg`
 
 ### Index
 
 #### Properties
 
-* [newOwner](authorizedaddressesownershiptransferredeventargs.md#newowner)
-* [previousOwner](authorizedaddressesownershiptransferredeventargs.md#previousowner)
+-   [newOwner](authorizedaddressesownershiptransferredeventargs.md#newowner)
+-   [previousOwner](authorizedaddressesownershiptransferredeventargs.md#previousowner)
 
 ## Properties
 
-###  newOwner
+### newOwner
 
-● **newOwner**: *string*
+● **newOwner**: _string_
 
 Defined in node_modules/@kosu/system-contracts/generated-wrappers/authorized_addresses.ts:33
 
-___
+---
 
-###  previousOwner
+### previousOwner
 
-● **previousOwner**: *string*
+● **previousOwner**: _string_
 
 Defined in node_modules/@kosu/system-contracts/generated-wrappers/authorized_addresses.ts:32
 
-___
+---

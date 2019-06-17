@@ -6,150 +6,150 @@
 
 ## Hierarchy
 
-* **Kosu**
+-   **Kosu**
 
 ### Index
 
 #### Constructors
 
-* [constructor](kosu.md#constructor)
+-   [constructor](kosu.md#constructor)
 
 #### Properties
 
-* [Signature](kosu.md#signature)
-* [eventEmitter](kosu.md#eventemitter)
-* [kosuToken](kosu.md#kosutoken)
-* [orderGateway](kosu.md#ordergateway)
-* [orderHelper](kosu.md#orderhelper)
-* [posterRegistry](kosu.md#posterregistry)
-* [treasury](kosu.md#treasury)
-* [utils](kosu.md#utils)
-* [validatorRegistry](kosu.md#validatorregistry)
-* [version](kosu.md#version)
-* [voting](kosu.md#voting)
-* [web3](kosu.md#web3)
-* [web3Wrapper](kosu.md#web3wrapper)
+-   [Signature](kosu.md#signature)
+-   [eventEmitter](kosu.md#eventemitter)
+-   [kosuToken](kosu.md#kosutoken)
+-   [orderGateway](kosu.md#ordergateway)
+-   [orderHelper](kosu.md#orderhelper)
+-   [posterRegistry](kosu.md#posterregistry)
+-   [treasury](kosu.md#treasury)
+-   [utils](kosu.md#utils)
+-   [validatorRegistry](kosu.md#validatorregistry)
+-   [version](kosu.md#version)
+-   [voting](kosu.md#voting)
+-   [web3](kosu.md#web3)
+-   [web3Wrapper](kosu.md#web3wrapper)
 
 ## Constructors
 
-###  constructor
+### constructor
 
-\+ **new Kosu**(`options`: `KosuOptions`): *[Kosu](kosu.md)*
+\+ **new Kosu**(`options`: `KosuOptions`): _[Kosu](kosu.md)_
 
-*Defined in [packages/kosu.js/src/index.ts:32](url)*
+_Defined in [packages/kosu.js/src/index.ts:32](url)_
 
 **Parameters:**
 
-Name | Type | Default value |
------- | ------ | ------ |
-`options` | `KosuOptions` |  { provider: "https://ropsten.infura.io" } |
+| Name      | Type          | Default value                             |
+| --------- | ------------- | ----------------------------------------- |
+| `options` | `KosuOptions` | { provider: "https://ropsten.infura.io" } |
 
-**Returns:** *[Kosu](kosu.md)*
+**Returns:** _[Kosu](kosu.md)_
 
-___
+---
 
 ## Properties
 
-###  Signature
+### Signature
 
-● **Signature**: *any*
+● **Signature**: _any_
 
-*Defined in [packages/kosu.js/src/index.ts:31](url)*
+_Defined in [packages/kosu.js/src/index.ts:31](url)_
 
-___
+---
 
-###  eventEmitter
+### eventEmitter
 
-● **eventEmitter**: *[EventEmitter](eventemitter.md)*
+● **eventEmitter**: _[EventEmitter](eventemitter.md)_
 
-*Defined in [packages/kosu.js/src/index.ts:29](url)*
+_Defined in [packages/kosu.js/src/index.ts:29](url)_
 
-___
+---
 
-###  kosuToken
+### kosuToken
 
-● **kosuToken**: *[KosuToken](kosutoken.md)*
+● **kosuToken**: _[KosuToken](kosutoken.md)_
 
-*Defined in [packages/kosu.js/src/index.ts:24](url)*
+_Defined in [packages/kosu.js/src/index.ts:24](url)_
 
-___
+---
 
-###  orderGateway
+### orderGateway
 
-● **orderGateway**: *[OrderGateway](ordergateway.md)*
+● **orderGateway**: _[OrderGateway](ordergateway.md)_
 
-*Defined in [packages/kosu.js/src/index.ts:22](url)*
+_Defined in [packages/kosu.js/src/index.ts:22](url)_
 
-___
+---
 
-###  orderHelper
+### orderHelper
 
-● **orderHelper**: *[OrderHelper](orderhelper.md)*
+● **orderHelper**: _[OrderHelper](orderhelper.md)_
 
-*Defined in [packages/kosu.js/src/index.ts:23](url)*
+_Defined in [packages/kosu.js/src/index.ts:23](url)_
 
-___
+---
 
-###  posterRegistry
+### posterRegistry
 
-● **posterRegistry**: *[PosterRegistry](posterregistry.md)*
+● **posterRegistry**: _[PosterRegistry](posterregistry.md)_
 
-*Defined in [packages/kosu.js/src/index.ts:27](url)*
+_Defined in [packages/kosu.js/src/index.ts:27](url)_
 
-___
+---
 
-###  treasury
+### treasury
 
-● **treasury**: *[Treasury](treasury.md)*
+● **treasury**: _[Treasury](treasury.md)_
 
-*Defined in [packages/kosu.js/src/index.ts:25](url)*
+_Defined in [packages/kosu.js/src/index.ts:25](url)_
 
-___
+---
 
-###  utils
+### utils
 
-● **utils**: *`KosuUtils`*
+● **utils**: _`KosuUtils`_
 
-*Defined in [packages/kosu.js/src/index.ts:30](url)*
+_Defined in [packages/kosu.js/src/index.ts:30](url)_
 
-___
+---
 
-###  validatorRegistry
+### validatorRegistry
 
-● **validatorRegistry**: *[ValidatorRegistry](validatorregistry.md)*
+● **validatorRegistry**: _[ValidatorRegistry](validatorregistry.md)_
 
-*Defined in [packages/kosu.js/src/index.ts:28](url)*
+_Defined in [packages/kosu.js/src/index.ts:28](url)_
 
-___
+---
 
-###  version
+### version
 
-● **version**: *string*
+● **version**: _string_
 
-*Defined in [packages/kosu.js/src/index.ts:32](url)*
+_Defined in [packages/kosu.js/src/index.ts:32](url)_
 
-___
+---
 
-###  voting
+### voting
 
-● **voting**: *[Voting](voting.md)*
+● **voting**: _[Voting](voting.md)_
 
-*Defined in [packages/kosu.js/src/index.ts:26](url)*
+_Defined in [packages/kosu.js/src/index.ts:26](url)_
 
-___
+---
 
-###  web3
+### web3
 
-● **web3**: *`Web3`*
+● **web3**: _`Web3`_
 
-*Defined in [packages/kosu.js/src/index.ts:20](url)*
+_Defined in [packages/kosu.js/src/index.ts:20](url)_
 
-___
+---
 
-###  web3Wrapper
+### web3Wrapper
 
-● **web3Wrapper**: *`Web3Wrapper`*
+● **web3Wrapper**: _`Web3Wrapper`_
 
-*Defined in [packages/kosu.js/src/index.ts:21](url)*
+_Defined in [packages/kosu.js/src/index.ts:21](url)_
 
-___
+---
