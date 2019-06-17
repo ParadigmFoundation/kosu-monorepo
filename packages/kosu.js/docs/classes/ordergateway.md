@@ -8,183 +8,183 @@ Integration with OrderGateway contract on an Ethereum blockchain.
 
 ## Hierarchy
 
-* **OrderGateway**
+-   **OrderGateway**
 
 ### Index
 
 #### Constructors
 
-* [constructor](ordergateway.md#constructor)
+-   [constructor](ordergateway.md#constructor)
 
 #### Properties
 
-* [address](ordergateway.md#private-address)
-* [contract](ordergateway.md#private-contract)
-* [initializing](ordergateway.md#private-initializing)
-* [web3](ordergateway.md#private-web3)
-* [web3Wrapper](ordergateway.md#private-web3wrapper)
+-   [address](ordergateway.md#private-address)
+-   [contract](ordergateway.md#private-contract)
+-   [initializing](ordergateway.md#private-initializing)
+-   [web3](ordergateway.md#private-web3)
+-   [web3Wrapper](ordergateway.md#private-web3wrapper)
 
 #### Methods
 
-* [amountRemaining](ordergateway.md#amountremaining)
-* [arguments](ordergateway.md#arguments)
-* [init](ordergateway.md#private-init)
-* [isValid](ordergateway.md#isvalid)
-* [participate](ordergateway.md#participate)
+-   [amountRemaining](ordergateway.md#amountremaining)
+-   [arguments](ordergateway.md#arguments)
+-   [init](ordergateway.md#private-init)
+-   [isValid](ordergateway.md#isvalid)
+-   [participate](ordergateway.md#participate)
 
 ## Constructors
 
-###  constructor
+### constructor
 
-\+ **new OrderGateway**(`options`: `KosuOptions`): *[OrderGateway](ordergateway.md)*
+\+ **new OrderGateway**(`options`: `KosuOptions`): _[OrderGateway](ordergateway.md)_
 
-*Defined in [src/OrderGateway.ts:16](url)*
+_Defined in [src/OrderGateway.ts:16](url)_
 
 Create a new OrderGateway instance.
 
 **Parameters:**
 
-Name | Type | Description |
------- | ------ | ------ |
-`options` | `KosuOptions` | instantiation options  |
+| Name      | Type          | Description           |
+| --------- | ------------- | --------------------- |
+| `options` | `KosuOptions` | instantiation options |
 
-**Returns:** *[OrderGateway](ordergateway.md)*
+**Returns:** _[OrderGateway](ordergateway.md)_
 
-___
+---
 
 ## Properties
 
 ### `Private` address
 
-● **address**: *string*
+● **address**: _string_
 
-*Defined in [src/OrderGateway.ts:15](url)*
+_Defined in [src/OrderGateway.ts:15](url)_
 
-___
+---
 
 ### `Private` contract
 
-● **contract**: *[OrderGatewayContract](ordergatewaycontract.md)*
+● **contract**: _[OrderGatewayContract](ordergatewaycontract.md)_
 
-*Defined in [src/OrderGateway.ts:16](url)*
+_Defined in [src/OrderGateway.ts:16](url)_
 
-___
+---
 
 ### `Private` initializing
 
-● **initializing**: *`Promise<void>`*
+● **initializing**: _`Promise<void>`_
 
-*Defined in [src/OrderGateway.ts:13](url)*
+_Defined in [src/OrderGateway.ts:13](url)_
 
-___
+---
 
 ### `Private` web3
 
-● **web3**: *`Web3`*
+● **web3**: _`Web3`_
 
-*Defined in [src/OrderGateway.ts:12](url)*
+_Defined in [src/OrderGateway.ts:12](url)_
 
-___
+---
 
 ### `Private` web3Wrapper
 
-● **web3Wrapper**: *`Web3Wrapper`*
+● **web3Wrapper**: _`Web3Wrapper`_
 
-*Defined in [src/OrderGateway.ts:14](url)*
+_Defined in [src/OrderGateway.ts:14](url)_
 
-___
+---
 
 ## Methods
 
-###  amountRemaining
+### amountRemaining
 
-▸ **amountRemaining**(`order`: `Order`): *`Promise<BigNumber>`*
+▸ **amountRemaining**(`order`: `Order`): _`Promise<BigNumber>`_
 
-*Defined in [src/OrderGateway.ts:98](url)*
+_Defined in [src/OrderGateway.ts:98](url)_
 
 Checks amount of partial exchange tokens remaining
 
 **Parameters:**
 
-Name | Type | Description |
------- | ------ | ------ |
-`order` | `Order` | Kosu order to validate  |
+| Name    | Type    | Description            |
+| ------- | ------- | ---------------------- |
+| `order` | `Order` | Kosu order to validate |
 
-**Returns:** *`Promise<BigNumber>`*
+**Returns:** _`Promise<BigNumber>`_
 
-___
+---
 
-###  arguments
+### arguments
 
-▸ **arguments**(`subContract`: string): *`Promise<any>`*
+▸ **arguments**(`subContract`: string): _`Promise<any>`_
 
-*Defined in [src/OrderGateway.ts:75](url)*
+_Defined in [src/OrderGateway.ts:75](url)_
 
 Read maker arguments
 
 **Parameters:**
 
-Name | Type | Description |
------- | ------ | ------ |
-`subContract` | string | Address of deployed contract implementation  |
+| Name          | Type   | Description                                 |
+| ------------- | ------ | ------------------------------------------- |
+| `subContract` | string | Address of deployed contract implementation |
 
-**Returns:** *`Promise<any>`*
+**Returns:** _`Promise<any>`_
 
-___
+---
 
 ### `Private` init
 
-▸ **init**(`options`: `KosuOptions`): *`Promise<void>`*
+▸ **init**(`options`: `KosuOptions`): _`Promise<void>`_
 
-*Defined in [src/OrderGateway.ts:36](url)*
+_Defined in [src/OrderGateway.ts:36](url)_
 
 Asyncronously initializes the instance after construction
 
 **Parameters:**
 
-Name | Type | Description |
------- | ------ | ------ |
-`options` | `KosuOptions` | instantiation options |
+| Name      | Type          | Description           |
+| --------- | ------------- | --------------------- |
+| `options` | `KosuOptions` | instantiation options |
 
-**Returns:** *`Promise<void>`*
+**Returns:** _`Promise<void>`_
 
 A promise to await complete instantiation for further calls
 
-___
+---
 
-###  isValid
+### isValid
 
-▸ **isValid**(`order`: `Order`): *`Promise<boolean>`*
+▸ **isValid**(`order`: `Order`): _`Promise<boolean>`_
 
-*Defined in [src/OrderGateway.ts:85](url)*
+_Defined in [src/OrderGateway.ts:85](url)_
 
 Checks validity of order data
 
 **Parameters:**
 
-Name | Type | Description |
------- | ------ | ------ |
-`order` | `Order` | Kosu order to validate  |
+| Name    | Type    | Description            |
+| ------- | ------- | ---------------------- |
+| `order` | `Order` | Kosu order to validate |
 
-**Returns:** *`Promise<boolean>`*
+**Returns:** _`Promise<boolean>`_
 
-___
+---
 
-###  participate
+### participate
 
-▸ **participate**(`order`: `Order`, `taker`: string): *`Promise<any>`*
+▸ **participate**(`order`: `Order`, `taker`: string): _`Promise<any>`_
 
-*Defined in [src/OrderGateway.ts:59](url)*
+_Defined in [src/OrderGateway.ts:59](url)_
 
 Participate in the terms of an order
 
 **Parameters:**
 
-Name | Type | Description |
------- | ------ | ------ |
-`order` | `Order` | A Kosu order |
-`taker` | string | address of the taker  |
+| Name    | Type    | Description          |
+| ------- | ------- | -------------------- |
+| `order` | `Order` | A Kosu order         |
+| `taker` | string  | address of the taker |
 
-**Returns:** *`Promise<any>`*
+**Returns:** _`Promise<any>`_
 
-___
+---
