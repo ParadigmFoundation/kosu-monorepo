@@ -1,4 +1,4 @@
-> ## [@kosu/system-contracts](../README.md)
+> ## [kosu.js](../README.md)
 
 [Globals](../globals.md) / [EventEmitterEvents](eventemitterevents.md) /
 

@@ -1,8 +1,8 @@
-> ## [@kosu/system-contracts](README.md)
+> ## [kosu.js](README.md)
 
 [Globals](globals.md) /
 
-# @kosu/system-contracts
+# kosu.js
 
 ### Index
 

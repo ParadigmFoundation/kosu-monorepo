@@ -11,7 +11,7 @@
         "test:ganache_detached": "docker run --rm -d -p 8545:8545 ${npm_package_config_ganache_image_uri}",
         "build": "tsc",
         "lint": "tslint -p .",
-        "docs": "typedoc --mode file --theme markdown --out ./docs ./src"
+        "docs": "typedoc --mode file --readme ./README.md --name kosu.js --theme markdown --out ./docs --ignoreCompilerErrors ./src"
     },
     "repository": {
         "type": "git",
