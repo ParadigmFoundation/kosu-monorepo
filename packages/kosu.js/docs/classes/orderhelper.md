@@ -6,173 +6,173 @@
 
 ## Hierarchy
 
--   **OrderHelper**
+* **OrderHelper**
 
 ### Index
 
 #### Constructors
 
--   [constructor](orderhelper.md#constructor)
+* [constructor](orderhelper.md#constructor)
 
 #### Properties
 
--   [orderGateway](orderhelper.md#private-ordergateway)
--   [web3](orderhelper.md#private-web3)
+* [orderGateway](orderhelper.md#private-ordergateway)
+* [web3](orderhelper.md#private-web3)
 
 #### Methods
 
--   [makeOrder](orderhelper.md#makeorder)
--   [makerHex](orderhelper.md#makerhex)
--   [prepareForPost](orderhelper.md#prepareforpost)
--   [recoverMaker](orderhelper.md#recovermaker)
--   [recoverPoster](orderhelper.md#recoverposter)
--   [takeOrder](orderhelper.md#takeorder)
+* [makeOrder](orderhelper.md#makeorder)
+* [makerHex](orderhelper.md#makerhex)
+* [prepareForPost](orderhelper.md#prepareforpost)
+* [recoverMaker](orderhelper.md#recovermaker)
+* [recoverPoster](orderhelper.md#recoverposter)
+* [takeOrder](orderhelper.md#takeorder)
 
 ## Constructors
 
-### constructor
+###  constructor
 
-\+ **new OrderHelper**(`web3`: `Web3`, `orderGateway`: [OrderGateway](ordergateway.md)): _[OrderHelper](orderhelper.md)_
+\+ **new OrderHelper**(`web3`: `Web3`, `orderGateway`: [OrderGateway](ordergateway.md)): *[OrderHelper](orderhelper.md)*
 
-_Defined in [src/OrderHelper.ts:9](url)_
+*Defined in [src/OrderHelper.ts:9](url)*
 
 **Parameters:**
 
-| Name           | Type                            |
-| -------------- | ------------------------------- |
-| `web3`         | `Web3`                          |
-| `orderGateway` | [OrderGateway](ordergateway.md) |
+Name | Type |
+------ | ------ |
+`web3` | `Web3` |
+`orderGateway` | [OrderGateway](ordergateway.md) |
 
-**Returns:** _[OrderHelper](orderhelper.md)_
+**Returns:** *[OrderHelper](orderhelper.md)*
 
----
+___
 
 ## Properties
 
 ### `Private` orderGateway
 
-● **orderGateway**: _[OrderGateway](ordergateway.md)_
+● **orderGateway**: *[OrderGateway](ordergateway.md)*
 
-_Defined in [src/OrderHelper.ts:8](url)_
+*Defined in [src/OrderHelper.ts:8](url)*
 
----
+___
 
 ### `Private` web3
 
-● **web3**: _`Web3`_
+● **web3**: *`Web3`*
 
-_Defined in [src/OrderHelper.ts:9](url)_
+*Defined in [src/OrderHelper.ts:9](url)*
 
----
+___
 
 ## Methods
 
-### makeOrder
+###  makeOrder
 
-▸ **makeOrder**(`order`: `Order`): _`Promise<Order>`_
+▸ **makeOrder**(`order`: `Order`): *`Promise<Order>`*
 
-_Defined in [src/OrderHelper.ts:21](url)_
+*Defined in [src/OrderHelper.ts:21](url)*
 
-Make an order by ensuring a required signature is present
+Make an order by ensuring a required signature is  present
 
 **Parameters:**
 
-| Name    | Type    | Description   |
-| ------- | ------- | ------------- |
-| `order` | `Order` | Order to make |
+Name | Type | Description |
+------ | ------ | ------ |
+`order` | `Order` | Order to make  |
 
-**Returns:** _`Promise<Order>`_
+**Returns:** *`Promise<Order>`*
 
----
+___
 
-### makerHex
+###  makerHex
 
-▸ **makerHex**(`order`: `Order`): _`Promise<string>`_
+▸ **makerHex**(`order`: `Order`): *`Promise<string>`*
 
-_Defined in [src/OrderHelper.ts:60](url)_
+*Defined in [src/OrderHelper.ts:60](url)*
 
 Generate the maker hex
 
 **Parameters:**
 
-| Name    | Type    | Description                |
-| ------- | ------- | -------------------------- |
-| `order` | `Order` | Order to get maker hex for |
+Name | Type | Description |
+------ | ------ | ------ |
+`order` | `Order` | Order to get maker hex for  |
 
-**Returns:** _`Promise<string>`_
+**Returns:** *`Promise<string>`*
 
----
+___
 
-### prepareForPost
+###  prepareForPost
 
-▸ **prepareForPost**(`order`: `Order`, `poster`: string): _`Promise<PostableOrder>`_
+▸ **prepareForPost**(`order`: `Order`, `poster`: string): *`Promise<PostableOrder>`*
 
-_Defined in [src/OrderHelper.ts:41](url)_
+*Defined in [src/OrderHelper.ts:41](url)*
 
 Generate a poster signature for OrderStream submission
 
 **Parameters:**
 
-| Name     | Type    | Default value | Description                          |
-| -------- | ------- | ------------- | ------------------------------------ |
-| `order`  | `Order` | -             | Order to prepare                     |
-| `poster` | string  | order.maker   | (Optional) Poster to sign order with |
+Name | Type | Default value | Description |
+------ | ------ | ------ | ------ |
+`order` | `Order` | - | Order to prepare |
+`poster` | string |  order.maker | (Optional) Poster to sign order with  |
 
-**Returns:** _`Promise<PostableOrder>`_
+**Returns:** *`Promise<PostableOrder>`*
 
----
+___
 
-### recoverMaker
+###  recoverMaker
 
-▸ **recoverMaker**(`order`: `Order`): _`Promise<string>`_
+▸ **recoverMaker**(`order`: `Order`): *`Promise<string>`*
 
-_Defined in [src/OrderHelper.ts:70](url)_
+*Defined in [src/OrderHelper.ts:70](url)*
 
 Recover the maker
 
 **Parameters:**
 
-| Name    | Type    | Description                 |
-| ------- | ------- | --------------------------- |
-| `order` | `Order` | Order to recover maker from |
+Name | Type | Description |
+------ | ------ | ------ |
+`order` | `Order` | Order to recover maker from  |
 
-**Returns:** _`Promise<string>`_
+**Returns:** *`Promise<string>`*
 
----
+___
 
-### recoverPoster
+###  recoverPoster
 
-▸ **recoverPoster**(`order`: `PostableOrder`): _`Promise<string>`_
+▸ **recoverPoster**(`order`: `PostableOrder`): *`Promise<string>`*
 
-_Defined in [src/OrderHelper.ts:80](url)_
+*Defined in [src/OrderHelper.ts:80](url)*
 
 Recover the poster
 
 **Parameters:**
 
-| Name    | Type            | Description                  |
-| ------- | --------------- | ---------------------------- |
-| `order` | `PostableOrder` | Order to recover poster from |
+Name | Type | Description |
+------ | ------ | ------ |
+`order` | `PostableOrder` | Order to recover poster from  |
 
-**Returns:** _`Promise<string>`_
+**Returns:** *`Promise<string>`*
 
----
+___
 
-### takeOrder
+###  takeOrder
 
-▸ **takeOrder**(`order`: `TakeableOrder`, `taker`: string): _`Promise<any>`_
+▸ **takeOrder**(`order`: `TakeableOrder`, `taker`: string): *`Promise<any>`*
 
-_Defined in [src/OrderHelper.ts:31](url)_
+*Defined in [src/OrderHelper.ts:31](url)*
 
 Take a prepared order on the ethereum blockchain
 
 **Parameters:**
 
-| Name    | Type            |
-| ------- | --------------- |
-| `order` | `TakeableOrder` |
-| `taker` | string          |
+Name | Type |
+------ | ------ |
+`order` | `TakeableOrder` |
+`taker` | string |
 
-**Returns:** _`Promise<any>`_
+**Returns:** *`Promise<any>`*
 
----
+___
