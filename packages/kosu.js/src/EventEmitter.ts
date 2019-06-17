@@ -59,7 +59,12 @@ export class EventEmitter {
      */
     public async getAddress(): Promise<string> {
         if (!this.address) {
-            this.address = DeployedAddresses[await this.web3Wrapper.getNetworkIdAsync()].EventEmitter;
+            const networkId = await this.web3Wrapper.getNetworkIdAsync();
+            const addresses = DeployedAddresses[networkId];
+            if (!addresses || !addresses.EventEmitter) {
+                throw new Error("No known Kosu deployment for detected networkId.");
+            }
+            this.address = addresses.EventEmitter;
         }
         return this.address;
     }
