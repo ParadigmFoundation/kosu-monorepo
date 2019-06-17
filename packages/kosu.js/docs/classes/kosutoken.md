@@ -118,7 +118,7 @@ ___
 
 ▸ **allowance**(`owner`: string, `spender`: string): *`Promise<BigNumber>`*
 
-*Defined in [src/KosuToken.ts:144](url)*
+*Defined in [src/KosuToken.ts:151](url)*
 
 Reads approved allowance for a given `owner` and `spender` account.
 
@@ -127,9 +127,11 @@ Reads approved allowance for a given `owner` and `spender` account.
 Name | Type | Description |
 ------ | ------ | ------ |
 `owner` | string | Address of source tokens |
-`spender` | string | Address of spender of tokens  |
+`spender` | string | Address of spender of tokens |
 
 **Returns:** *`Promise<BigNumber>`*
+
+The allowance granted to the `spender` in units of wei.
 
 ___
 
@@ -137,7 +139,7 @@ ___
 
 ▸ **approve**(`spender`: string, `value`: `BigNumber`): *`Promise<TransactionReceiptWithDecodedLogs>`*
 
-*Defined in [src/KosuToken.ts:133](url)*
+*Defined in [src/KosuToken.ts:139](url)*
 
 Sets approval for user to transfer tokens on `coinbase`'s behalf.
 
@@ -145,10 +147,12 @@ Sets approval for user to transfer tokens on `coinbase`'s behalf.
 
 Name | Type | Description |
 ------ | ------ | ------ |
-`spender` | string | Address allowed to spend `coinbase`'s tokens |
-`value` | `BigNumber` | The uint value (in wei) to approve `spender` for  |
+`spender` | string | Address allowed to spend `coinbase`'s tokens. |
+`value` | `BigNumber` | The uint value (in wei) to approve `spender` for. |
 
 **Returns:** *`Promise<TransactionReceiptWithDecodedLogs>`*
+
+The transaction receipt after it has been included in a block.
 
 ___
 
@@ -156,7 +160,7 @@ ___
 
 ▸ **balanceOf**(`owner`: string): *`Promise<BigNumber>`*
 
-*Defined in [src/KosuToken.ts:99](url)*
+*Defined in [src/KosuToken.ts:102](url)*
 
 Reads the balance for a user address, returned in wei.
 
@@ -164,9 +168,11 @@ Reads the balance for a user address, returned in wei.
 
 Name | Type | Description |
 ------ | ------ | ------ |
-`owner` | string | The Ethereum address of a token holder  |
+`owner` | string | The Ethereum address of a token holder. |
 
 **Returns:** *`Promise<BigNumber>`*
+
+The `owner`'s KOSU balance in wei.
 
 ___
 
@@ -188,12 +194,14 @@ ___
 
 ▸ **totalSupply**(): *`Promise<BigNumber>`*
 
-*Defined in [src/KosuToken.ts:89](url)*
+*Defined in [src/KosuToken.ts:91](url)*
 
 Reads the total supply of KOSU, resolves to a `BigNumber` of the amount of
 tokens in units of wei.
 
 **Returns:** *`Promise<BigNumber>`*
+
+The total KOSU supply in wei.
 
 ___
 
@@ -201,7 +209,7 @@ ___
 
 ▸ **transfer**(`to`: string, `value`: `BigNumber`): *`Promise<TransactionReceiptWithDecodedLogs>`*
 
-*Defined in [src/KosuToken.ts:110](url)*
+*Defined in [src/KosuToken.ts:114](url)*
 
 Transfers tokens to an address, from the current `coinbase` account.
 
@@ -209,10 +217,12 @@ Transfers tokens to an address, from the current `coinbase` account.
 
 Name | Type | Description |
 ------ | ------ | ------ |
-`to` | string | Ethereum Address of token receiver |
-`value` | `BigNumber` | The uint value of tokens to transfer (in wei)  |
+`to` | string | Ethereum Address of token receiver. |
+`value` | `BigNumber` | The `uint` value of tokens to transfer (in wei). |
 
 **Returns:** *`Promise<TransactionReceiptWithDecodedLogs>`*
+
+The transaction's receipt after inclusion in a block.
 
 ___
 
@@ -220,7 +230,7 @@ ___
 
 ▸ **transferFrom**(`from`: string, `to`: string, `value`: `BigNumber`): *`Promise<TransactionReceiptWithDecodedLogs>`*
 
-*Defined in [src/KosuToken.ts:122](url)*
+*Defined in [src/KosuToken.ts:127](url)*
 
 Transfers token from an address to a destination address.
 
@@ -228,10 +238,12 @@ Transfers token from an address to a destination address.
 
 Name | Type | Description |
 ------ | ------ | ------ |
-`from` | string | Address of token source |
-`to` | string | Address of token destination |
-`value` | `BigNumber` | uint value of tokens to transfer  |
+`from` | string | Address of token source. |
+`to` | string | Address of token destination. |
+`value` | `BigNumber` | The `uint` value of tokens to transfer (in wei). |
 
 **Returns:** *`Promise<TransactionReceiptWithDecodedLogs>`*
+
+The transaction receipt after it has been included in a block.
 
 ___

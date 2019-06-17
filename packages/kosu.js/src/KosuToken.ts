@@ -85,6 +85,8 @@ export class KosuToken {
     /**
      * Reads the total supply of KOSU, resolves to a `BigNumber` of the amount of
      * tokens in units of wei.
+     *
+     * @returns The total KOSU supply in wei.
      */
     public async totalSupply(): Promise<BigNumber> {
         const contract = await this.getContract();
@@ -94,7 +96,8 @@ export class KosuToken {
     /**
      * Reads the balance for a user address, returned in wei.
      *
-     * @param owner The Ethereum address of a token holder
+     * @param owner The Ethereum address of a token holder.
+     * @returns The `owner`'s KOSU balance in wei.
      */
     public async balanceOf(owner: string): Promise<BigNumber> {
         const contract = await this.getContract();
@@ -104,8 +107,9 @@ export class KosuToken {
     /**
      * Transfers tokens to an address, from the current `coinbase` account.
      *
-     * @param to Ethereum Address of token receiver
-     * @param value The uint value of tokens to transfer (in wei)
+     * @param to Ethereum Address of token receiver.
+     * @param value The `uint` value of tokens to transfer (in wei).
+     * @returns The transaction's receipt after inclusion in a block.
      */
     public async transfer(to: string, value: BigNumber): Promise<TransactionReceiptWithDecodedLogs> {
         const contract = await this.getContract();
@@ -115,9 +119,10 @@ export class KosuToken {
     /**
      * Transfers token from an address to a destination address.
      *
-     * @param from Address of token source
-     * @param to Address of token destination
-     * @param value uint value of tokens to transfer
+     * @param from Address of token source.
+     * @param to Address of token destination.
+     * @param value The `uint` value of tokens to transfer (in wei).
+     * @returns The transaction receipt after it has been included in a block.
      */
     public async transferFrom(from: string, to: string, value: BigNumber): Promise<TransactionReceiptWithDecodedLogs> {
         const contract = await this.getContract();
@@ -127,8 +132,9 @@ export class KosuToken {
     /**
      * Sets approval for user to transfer tokens on `coinbase`'s behalf.
      *
-     * @param spender Address allowed to spend `coinbase`'s tokens
-     * @param value The uint value (in wei) to approve `spender` for
+     * @param spender Address allowed to spend `coinbase`'s tokens.
+     * @param value The uint value (in wei) to approve `spender` for.
+     * @returns The transaction receipt after it has been included in a block.
      */
     public async approve(spender: string, value: BigNumber): Promise<TransactionReceiptWithDecodedLogs> {
         const contract = await this.getContract();
@@ -140,6 +146,7 @@ export class KosuToken {
      *
      * @param owner Address of source tokens
      * @param spender Address of spender of tokens
+     * @returns The allowance granted to the `spender` in units of wei.
      */
     public async allowance(owner: string, spender: string): Promise<BigNumber> {
         const contract = await this.getContract();
