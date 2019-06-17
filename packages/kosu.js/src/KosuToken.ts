@@ -19,16 +19,16 @@ export class KosuToken {
     private readonly web3: Web3;
 
     /**
-     * An instance of the lower-level contract wrapper for the Kosu token, auto-
-     * generated from the Solidity source code.
-     */
-    private contract: KosuTokenContract;
-
-    /**
      * An instance of a 0x `Web3Wrapper` used for some RPC calls and for certain
      * methods.
      */
     private readonly web3Wrapper: Web3Wrapper;
+
+    /**
+     * An instance of the lower-level contract wrapper for the Kosu token, auto-
+     * generated from the Solidity source code.
+     */
+    private contract: KosuTokenContract;
 
     /**
      * The current KosuToken deployed address, loaded based on the detected
