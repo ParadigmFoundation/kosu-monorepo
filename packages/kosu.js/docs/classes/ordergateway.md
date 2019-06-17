@@ -121,7 +121,7 @@ methods.
 
 ▸ **amountRemaining**(`order`: `Order`): _`Promise<BigNumber>`_
 
-_Defined in [src/OrderGateway.ts:148](url)_
+_Defined in [src/OrderGateway.ts:146](url)_
 
 Checks amount of partial exchange tokens remaining, depending on the
 implementation of the SubContract specified in the supplied order.
@@ -143,7 +143,7 @@ implementation of the `amountRemaining` method.
 
 ▸ **arguments**(`subContract`: string): _`Promise<any>`_
 
-_Defined in [src/OrderGateway.ts:116](url)_
+_Defined in [src/OrderGateway.ts:114](url)_
 
 Read the required arguments from a deployed SubContract.
 
@@ -183,7 +183,7 @@ A promise to await complete instantiation for further calls
 
 ▸ **isValid**(`order`: `Order`): _`Promise<boolean>`_
 
-_Defined in [src/OrderGateway.ts:132](url)_
+_Defined in [src/OrderGateway.ts:130](url)_
 
 Checks validity of order data according the order's SubContract implementation.
 

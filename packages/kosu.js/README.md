@@ -11,11 +11,13 @@ Kosu.js can be installed into your project through `yarn` or `npm`, and can be p
 ### Install
 
 **Yarn:**
+
 ```
 yarn add @kosu/kosu.js
 ```
 
 **NPM:**
+
 ```
 npm install --save @kosu/kosu.js
 ```
@@ -25,6 +27,7 @@ npm install --save @kosu/kosu.js
 Kosu and its exported classes can be imported directly into TypeScript or JavaScript projects.
 
 **TypeScript:**
+
 ```typescript
 // top-level Kosu class
 import { Kosu } from "@kosu/kosu.js";
@@ -49,6 +52,7 @@ import {
 ```
 
 **JavaScript (CommonJS):**
+
 ```javascript
 const { Kosu } = require("@kosu/kosu.js");
 
@@ -95,4 +99,3 @@ yarn build
 Open-source software, [MIT licensed.](https://github.com/ParadigmFoundation/kosu-monorepo/blob/master/LICENSE)
 
 Copyright (c) 2019 Paradigm Labs, corp.
-
