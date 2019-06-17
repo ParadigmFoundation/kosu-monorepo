@@ -8,158 +8,158 @@
 
 #### Enumerations
 
-* [AuthorizedAddressesEvents](enums/authorizedaddressesevents.md)
-* [EventEmitterEvents](enums/eventemitterevents.md)
-* [KosuTokenEvents](enums/kosutokenevents.md)
+-   [AuthorizedAddressesEvents](enums/authorizedaddressesevents.md)
+-   [EventEmitterEvents](enums/eventemitterevents.md)
+-   [KosuTokenEvents](enums/kosutokenevents.md)
 
 #### Classes
 
-* [AuthorizedAddressesContract](classes/authorizedaddressescontract.md)
-* [EventEmitter](classes/eventemitter.md)
-* [EventEmitterContract](classes/eventemittercontract.md)
-* [Kosu](classes/kosu.md)
-* [KosuToken](classes/kosutoken.md)
-* [KosuTokenContract](classes/kosutokencontract.md)
-* [OrderGateway](classes/ordergateway.md)
-* [OrderGatewayContract](classes/ordergatewaycontract.md)
-* [OrderHelper](classes/orderhelper.md)
-* [PosterRegistry](classes/posterregistry.md)
-* [PosterRegistryContract](classes/posterregistrycontract.md)
-* [PosterRegistryProxyContract](classes/posterregistryproxycontract.md)
-* [Treasury](classes/treasury.md)
-* [TreasuryContract](classes/treasurycontract.md)
-* [ValidatorRegistry](classes/validatorregistry.md)
-* [ValidatorRegistryContract](classes/validatorregistrycontract.md)
-* [Voting](classes/voting.md)
-* [VotingContract](classes/votingcontract.md)
+-   [AuthorizedAddressesContract](classes/authorizedaddressescontract.md)
+-   [EventEmitter](classes/eventemitter.md)
+-   [EventEmitterContract](classes/eventemittercontract.md)
+-   [Kosu](classes/kosu.md)
+-   [KosuToken](classes/kosutoken.md)
+-   [KosuTokenContract](classes/kosutokencontract.md)
+-   [OrderGateway](classes/ordergateway.md)
+-   [OrderGatewayContract](classes/ordergatewaycontract.md)
+-   [OrderHelper](classes/orderhelper.md)
+-   [PosterRegistry](classes/posterregistry.md)
+-   [PosterRegistryContract](classes/posterregistrycontract.md)
+-   [PosterRegistryProxyContract](classes/posterregistryproxycontract.md)
+-   [Treasury](classes/treasury.md)
+-   [TreasuryContract](classes/treasurycontract.md)
+-   [ValidatorRegistry](classes/validatorregistry.md)
+-   [ValidatorRegistryContract](classes/validatorregistrycontract.md)
+-   [Voting](classes/voting.md)
+-   [VotingContract](classes/votingcontract.md)
 
 #### Interfaces
 
-* [AuthorizedAddressesOwnershipTransferredEventArgs](interfaces/authorizedaddressesownershiptransferredeventargs.md)
-* [EventEmitterKosuEventEventArgs](interfaces/eventemitterkosueventeventargs.md)
-* [KosuTokenApprovalEventArgs](interfaces/kosutokenapprovaleventargs.md)
-* [KosuTokenTransferEventArgs](interfaces/kosutokentransfereventargs.md)
+-   [AuthorizedAddressesOwnershipTransferredEventArgs](interfaces/authorizedaddressesownershiptransferredeventargs.md)
+-   [EventEmitterKosuEventEventArgs](interfaces/eventemitterkosueventeventargs.md)
+-   [KosuTokenApprovalEventArgs](interfaces/kosutokenapprovaleventargs.md)
+-   [KosuTokenTransferEventArgs](interfaces/kosutokentransfereventargs.md)
 
 #### Type aliases
 
-* [AuthorizedAddressesEventArgs](globals.md#authorizedaddresseseventargs)
-* [EventEmitterEventArgs](globals.md#eventemittereventargs)
-* [KosuTokenEventArgs](globals.md#kosutokeneventargs)
+-   [AuthorizedAddressesEventArgs](globals.md#authorizedaddresseseventargs)
+-   [EventEmitterEventArgs](globals.md#eventemittereventargs)
+-   [KosuTokenEventArgs](globals.md#kosutokeneventargs)
 
 #### Variables
 
-* [DeployedAddresses](globals.md#const-deployedaddresses)
-* [NULL_ADDRESS](globals.md#const-null_address)
-* [event](globals.md#const-event)
-* [signature](globals.md#const-signature)
-* [version](globals.md#const-version)
+-   [DeployedAddresses](globals.md#const-deployedaddresses)
+-   [NULL_ADDRESS](globals.md#const-null_address)
+-   [event](globals.md#const-event)
+-   [signature](globals.md#const-signature)
+-   [version](globals.md#const-version)
 
 #### Functions
 
-* [_serialize](globals.md#_serialize)
-* [bytes32ToAddressString](globals.md#const-bytes32toaddressstring)
-* [bytes32ToBase64](globals.md#const-bytes32tobase64)
-* [decodeKosuEvents](globals.md#const-decodekosuevents)
-* [eventDecoder](globals.md#const-eventdecoder)
-* [listingStringifier](globals.md#const-listingstringifier)
-* [toBytes32](globals.md#tobytes32)
+-   [\_serialize](globals.md#_serialize)
+-   [bytes32ToAddressString](globals.md#const-bytes32toaddressstring)
+-   [bytes32ToBase64](globals.md#const-bytes32tobase64)
+-   [decodeKosuEvents](globals.md#const-decodekosuevents)
+-   [eventDecoder](globals.md#const-eventdecoder)
+-   [listingStringifier](globals.md#const-listingstringifier)
+-   [toBytes32](globals.md#tobytes32)
 
 #### Object literals
 
-* [KosuEndpoints](globals.md#const-kosuendpoints)
-* [OrderSerializer](globals.md#const-orderserializer)
-* [Signature](globals.md#const-signature)
-* [artifacts](globals.md#const-artifacts)
+-   [KosuEndpoints](globals.md#const-kosuendpoints)
+-   [OrderSerializer](globals.md#const-orderserializer)
+-   [Signature](globals.md#const-signature)
+-   [artifacts](globals.md#const-artifacts)
 
 ## Type aliases
 
-###  AuthorizedAddressesEventArgs
+### AuthorizedAddressesEventArgs
 
-Ƭ **AuthorizedAddressesEventArgs**: *[AuthorizedAddressesOwnershipTransferredEventArgs](interfaces/authorizedaddressesownershiptransferredeventargs.md)*
+Ƭ **AuthorizedAddressesEventArgs**: _[AuthorizedAddressesOwnershipTransferredEventArgs](interfaces/authorizedaddressesownershiptransferredeventargs.md)_
 
 Defined in node_modules/@kosu/system-contracts/generated-wrappers/authorized_addresses.ts:24
 
-___
+---
 
-###  EventEmitterEventArgs
+### EventEmitterEventArgs
 
-Ƭ **EventEmitterEventArgs**: *[EventEmitterKosuEventEventArgs](interfaces/eventemitterkosueventeventargs.md)*
+Ƭ **EventEmitterEventArgs**: _[EventEmitterKosuEventEventArgs](interfaces/eventemitterkosueventeventargs.md)_
 
 Defined in node_modules/@kosu/system-contracts/generated-wrappers/event_emitter.ts:24
 
-___
+---
 
-###  KosuTokenEventArgs
+### KosuTokenEventArgs
 
-Ƭ **KosuTokenEventArgs**: *[KosuTokenTransferEventArgs](interfaces/kosutokentransfereventargs.md) | [KosuTokenApprovalEventArgs](interfaces/kosutokenapprovaleventargs.md)*
+Ƭ **KosuTokenEventArgs**: _[KosuTokenTransferEventArgs](interfaces/kosutokentransfereventargs.md) | [KosuTokenApprovalEventArgs](interfaces/kosutokenapprovaleventargs.md)_
 
 Defined in node_modules/@kosu/system-contracts/generated-wrappers/kosu_token.ts:24
 
-___
+---
 
 ## Variables
 
 ### `Const` DeployedAddresses
 
-● **DeployedAddresses**: *object* =  deployedAddresses
+● **DeployedAddresses**: _object_ = deployedAddresses
 
 Defined in node_modules/@kosu/system-contracts/src/index.ts:3
 
 #### Type declaration:
 
-* ### **3**: *object*
+-   ### **3**: _object_
 
-  * **AuthorizedAddresses**: *string* = "0x773f0872e803df8be6039c63a77d52022906bd06"
+    -   **AuthorizedAddresses**: _string_ = "0x773f0872e803df8be6039c63a77d52022906bd06"
 
-  * **EventEmitter**: *string* = "0x90acff67b832afdfd7938a0bc1192dc08f6c742e"
+    -   **EventEmitter**: _string_ = "0x90acff67b832afdfd7938a0bc1192dc08f6c742e"
 
-  * **KosuToken**: *string* = "0x800f612a35f5c2ee8de26ff9983cb74ba6c929a4"
+    -   **KosuToken**: _string_ = "0x800f612a35f5c2ee8de26ff9983cb74ba6c929a4"
 
-  * **OrderGateway**: *string* = "0x10772c057491d2f11f6ed3b116d7dc3cc8135e24"
+    -   **OrderGateway**: _string_ = "0x10772c057491d2f11f6ed3b116d7dc3cc8135e24"
 
-  * **PosterRegistry**: *string* = "0xc21dbbef83ffd0f3c337a6666c7663f8e1b77798"
+    -   **PosterRegistry**: _string_ = "0xc21dbbef83ffd0f3c337a6666c7663f8e1b77798"
 
-  * **PosterRegistryProxy**: *string* = "0x8c581ed507a7c843026cf04ca213542b77a4a397"
+    -   **PosterRegistryProxy**: _string_ = "0x8c581ed507a7c843026cf04ca213542b77a4a397"
 
-  * **Treasury**: *string* = "0xf7377157c181ca45944924444cc8ec48322602dc"
+    -   **Treasury**: _string_ = "0xf7377157c181ca45944924444cc8ec48322602dc"
 
-  * **ValidatorRegistry**: *string* = "0xff74dda760854c3639c6f728aa4179b8b000f322"
+    -   **ValidatorRegistry**: _string_ = "0xff74dda760854c3639c6f728aa4179b8b000f322"
 
-  * **Voting**: *string* = "0xc0ba1ab8781c234c4b04061bb6411680412cc2ad"
+    -   **Voting**: _string_ = "0xc0ba1ab8781c234c4b04061bb6411680412cc2ad"
 
-* ### **6174**: *object*
+-   ### **6174**: _object_
 
-  * **AuthorizedAddresses**: *string* = "0xe473109cb41c773fd2fe01e83c6e51356f9585d6"
+    -   **AuthorizedAddresses**: _string_ = "0xe473109cb41c773fd2fe01e83c6e51356f9585d6"
 
-  * **EventEmitter**: *string* = "0x2f3afeff0914f33769cdfbf3fcf870c33b26c311"
+    -   **EventEmitter**: _string_ = "0x2f3afeff0914f33769cdfbf3fcf870c33b26c311"
 
-  * **KosuToken**: *string* = "0xcc868306d6188b2b12757a7c3926042b4d3c4e29"
+    -   **KosuToken**: _string_ = "0xcc868306d6188b2b12757a7c3926042b4d3c4e29"
 
-  * **OrderGateway**: *string* = "0xb8fda6341f80cbae987ab5cd00dce502097e3152"
+    -   **OrderGateway**: _string_ = "0xb8fda6341f80cbae987ab5cd00dce502097e3152"
 
-  * **PosterRegistry**: *string* = "0x7e6534b8205713246e91a14b462d2dbcac3ede17"
+    -   **PosterRegistry**: _string_ = "0x7e6534b8205713246e91a14b462d2dbcac3ede17"
 
-  * **PosterRegistryProxy**: *string* = "0x301bb008f2a8a3cae9918743fe43428551392773"
+    -   **PosterRegistryProxy**: _string_ = "0x301bb008f2a8a3cae9918743fe43428551392773"
 
-  * **Treasury**: *string* = "0x46572f9082dd2429c2c138fa9483a67d4f29d423"
+    -   **Treasury**: _string_ = "0x46572f9082dd2429c2c138fa9483a67d4f29d423"
 
-  * **ValidatorRegistry**: *string* = "0x0265e7d1b094787cb13174e18a1cefc41279a6c9"
+    -   **ValidatorRegistry**: _string_ = "0x0265e7d1b094787cb13174e18a1cefc41279a6c9"
 
-  * **Voting**: *string* = "0x5d60c93d8b48682cd387c8be7e9461b67ecfbea1"
+    -   **Voting**: _string_ = "0x5d60c93d8b48682cd387c8be7e9461b67ecfbea1"
 
-___
+---
 
 ### `Const` NULL_ADDRESS
 
-● **NULL_ADDRESS**: *string* = "0x0000000000000000000000000000000000000000"
+● **NULL_ADDRESS**: _string_ = "0x0000000000000000000000000000000000000000"
 
-*Defined in [src/utils.ts:12](url)*
+_Defined in [src/utils.ts:12](url)_
 
-___
+---
 
 ### `Const` event
 
-● **event**: *object* =  EventEmitter.compilerOutput.abi.filter(entry => entry.type === "event")[0] as {
+● **event**: _object_ = EventEmitter.compilerOutput.abi.filter(entry => entry.type === "event")[0] as {
 name: string;
 type: string;
 inputs: Array<{ name: string; type: string }>;
@@ -169,423 +169,423 @@ Defined in node_modules/@kosu/system-contracts/src/eventDecoder.ts:6
 
 #### Type declaration:
 
-* **inputs**: *`Array<object>`*
+-   **inputs**: _`Array<object>`_
 
-* **name**: *string*
+-   **name**: _string_
 
-* **type**: *string*
+-   **type**: _string_
 
-___
+---
 
 ### `Const` signature
 
-● **signature**: *string* =  soliditySha3(`${event.name}(${event.inputs.map(input => input.type).join(",")})`)
+● **signature**: _string_ = soliditySha3(`${event.name}(${event.inputs.map(input => input.type).join(",")})`)
 
 Defined in node_modules/@kosu/system-contracts/src/eventDecoder.ts:15
 
-___
+---
 
 ### `Const` version
 
-● **version**: *any* =  process.env.npm_package_version || require("../package.json").version
+● **version**: _any_ = process.env.npm_package_version || require("../package.json").version
 
-*Defined in [src/index.ts:17](url)*
+_Defined in [src/index.ts:17](url)_
 
-___
+---
 
 ## Functions
 
-###  _serialize
+### \_serialize
 
-▸ **_serialize**(`_arguments`: any, `values`: any): *string*
+▸ **\_serialize**(`_arguments`: any, `values`: any): _string_
 
-*Defined in [src/OrderSerializer.ts:8](url)*
+_Defined in [src/OrderSerializer.ts:8](url)_
 
 **Parameters:**
 
-Name | Type |
------- | ------ |
-`_arguments` | any |
-`values` | any |
+| Name         | Type |
+| ------------ | ---- |
+| `_arguments` | any  |
+| `values`     | any  |
 
-**Returns:** *string*
+**Returns:** _string_
 
-___
+---
 
 ### `Const` bytes32ToAddressString
 
-▸ **bytes32ToAddressString**(`val`: string): *string*
+▸ **bytes32ToAddressString**(`val`: string): _string_
 
 Defined in node_modules/@kosu/system-contracts/src/eventDecoder.ts:17
 
 **Parameters:**
 
-Name | Type |
------- | ------ |
-`val` | string |
+| Name  | Type   |
+| ----- | ------ |
+| `val` | string |
 
-**Returns:** *string*
+**Returns:** _string_
 
-___
+---
 
 ### `Const` bytes32ToBase64
 
-▸ **bytes32ToBase64**(`val`: string): *string*
+▸ **bytes32ToBase64**(`val`: string): _string_
 
 Defined in node_modules/@kosu/system-contracts/src/eventDecoder.ts:21
 
 **Parameters:**
 
-Name | Type |
------- | ------ |
-`val` | string |
+| Name  | Type   |
+| ----- | ------ |
+| `val` | string |
 
-**Returns:** *string*
+**Returns:** _string_
 
-___
+---
 
 ### `Const` decodeKosuEvents
 
-▸ **decodeKosuEvents**(`logs`: any): *any*
+▸ **decodeKosuEvents**(`logs`: any): _any_
 
 Defined in node_modules/@kosu/system-contracts/src/eventDecoder.ts:101
 
 **Parameters:**
 
-Name | Type |
------- | ------ |
-`logs` | any |
+| Name   | Type |
+| ------ | ---- |
+| `logs` | any  |
 
-**Returns:** *any*
+**Returns:** _any_
 
-___
+---
 
 ### `Const` eventDecoder
 
-▸ **eventDecoder**(`eventReturnValues`: any): *any*
+▸ **eventDecoder**(`eventReturnValues`: any): _any_
 
 Defined in node_modules/@kosu/system-contracts/src/eventDecoder.ts:25
 
 **Parameters:**
 
-Name | Type |
------- | ------ |
-`eventReturnValues` | any |
+| Name                | Type |
+| ------------------- | ---- |
+| `eventReturnValues` | any  |
 
-**Returns:** *any*
+**Returns:** _any_
 
-___
+---
 
 ### `Const` listingStringifier
 
-▸ **listingStringifier**(`listing`: `Listing`): *`PrettyListing`*
+▸ **listingStringifier**(`listing`: `Listing`): _`PrettyListing`_
 
 Defined in node_modules/@kosu/system-contracts/src/listingStringifier.ts:1
 
 **Parameters:**
 
-Name | Type |
------- | ------ |
-`listing` | `Listing` |
+| Name      | Type      |
+| --------- | --------- |
+| `listing` | `Listing` |
 
-**Returns:** *`PrettyListing`*
+**Returns:** _`PrettyListing`_
 
-___
+---
 
-###  toBytes32
+### toBytes32
 
-▸ **toBytes32**(`value`: string): *string*
+▸ **toBytes32**(`value`: string): _string_
 
-*Defined in [src/utils.ts:8](url)*
+_Defined in [src/utils.ts:8](url)_
 
 Convert an arbitrary string to a `bytes32` version.
 
 **Parameters:**
 
-Name | Type | Description |
------- | ------ | ------ |
-`value` | string | String value to be converted into bytes32 representation.  |
+| Name    | Type   | Description                                               |
+| ------- | ------ | --------------------------------------------------------- |
+| `value` | string | String value to be converted into bytes32 representation. |
 
-**Returns:** *string*
+**Returns:** _string_
 
-___
+---
 
 ## Object literals
 
 ### `Const` KosuEndpoints
 
-### ■ **KosuEndpoints**: *object*
+### ■ **KosuEndpoints**: _object_
 
-*Defined in [src/EventEmitter.ts:7](url)*
+_Defined in [src/EventEmitter.ts:7](url)_
 
-■ **1**: *object*
+■ **1**: _object_
 
-*Defined in [src/EventEmitter.ts:8](url)*
+_Defined in [src/EventEmitter.ts:8](url)_
 
-* **http**: *string* =  `https://ethnet.zaidan.io/mainnet`
+-   **http**: _string_ = `https://ethnet.zaidan.io/mainnet`
 
-* **ws**: *string* =  `wss://ethnet.zaidan.io/ws/mainnet`
+-   **ws**: _string_ = `wss://ethnet.zaidan.io/ws/mainnet`
 
-■ **3**: *object*
+■ **3**: _object_
 
-*Defined in [src/EventEmitter.ts:12](url)*
+_Defined in [src/EventEmitter.ts:12](url)_
 
-* **http**: *string* =  `https://ethnet.zaidan.io/ropsten`
+-   **http**: _string_ = `https://ethnet.zaidan.io/ropsten`
 
-* **ws**: *string* =  `wss://ethnet.zaidan.io/ws/ropsten`
+-   **ws**: _string_ = `wss://ethnet.zaidan.io/ws/ropsten`
 
-■ **42**: *object*
+■ **42**: _object_
 
-*Defined in [src/EventEmitter.ts:16](url)*
+_Defined in [src/EventEmitter.ts:16](url)_
 
-* **http**: *string* =  `https://ethnet.zaidan.io/kovan`
+-   **http**: _string_ = `https://ethnet.zaidan.io/kovan`
 
-* **ws**: *string* =  `wss://ethnet.zaidan.io/ws/kovan`
+-   **ws**: _string_ = `wss://ethnet.zaidan.io/ws/kovan`
 
-___
+---
 
 ### `Const` OrderSerializer
 
-### ■ **OrderSerializer**: *object*
+### ■ **OrderSerializer**: _object_
 
-*Defined in [src/OrderSerializer.ts:42](url)*
+_Defined in [src/OrderSerializer.ts:42](url)_
 
 could add to utils (or create order-utils pacakge)
 
-###  makerHex
+### makerHex
 
-▸ **makerHex**(`order`: `Order`, `_arguments`: any): *string*
+▸ **makerHex**(`order`: `Order`, `_arguments`: any): _string_
 
-*Defined in [src/OrderSerializer.ts:84](url)*
+_Defined in [src/OrderSerializer.ts:84](url)_
 
 Generate the maker hex from order
 
 **Parameters:**
 
-Name | Type | Description |
------- | ------ | ------ |
-`order` | `Order` | to generate hex from |
-`_arguments` | any | Argument json defined in the subContract  |
+| Name         | Type    | Description                              |
+| ------------ | ------- | ---------------------------------------- |
+| `order`      | `Order` | to generate hex from                     |
+| `_arguments` | any     | Argument json defined in the subContract |
 
-**Returns:** *string*
+**Returns:** _string_
 
-###  posterSignatureHex
+### posterSignatureHex
 
-▸ **posterSignatureHex**(`order`: `Order`, `_arguments`: any): *string*
+▸ **posterSignatureHex**(`order`: `Order`, `_arguments`: any): _string_
 
-*Defined in [src/OrderSerializer.ts:64](url)*
+_Defined in [src/OrderSerializer.ts:64](url)_
 
 Generates hex to be used for the poster signing process
 
 **Parameters:**
 
-Name | Type | Description |
------- | ------ | ------ |
-`order` | `Order` | Order to get data for |
-`_arguments` | any | Argument json defined in the subContract  |
+| Name         | Type    | Description                              |
+| ------------ | ------- | ---------------------------------------- |
+| `order`      | `Order` | Order to get data for                    |
+| `_arguments` | any     | Argument json defined in the subContract |
 
-**Returns:** *string*
+**Returns:** _string_
 
-###  recoverMaker
+### recoverMaker
 
-▸ **recoverMaker**(`order`: `Order`, `_arguments`: any[]): *string*
+▸ **recoverMaker**(`order`: `Order`, `_arguments`: any[]): _string_
 
-*Defined in [src/OrderSerializer.ts:105](url)*
+_Defined in [src/OrderSerializer.ts:105](url)_
 
 Recovers the maker from the signed information
 
 **Parameters:**
 
-Name | Type | Description |
------- | ------ | ------ |
-`order` | `Order` | to recover address from |
-`_arguments` | any[] | Argument json defined in the subContract  |
+| Name         | Type    | Description                              |
+| ------------ | ------- | ---------------------------------------- |
+| `order`      | `Order` | to recover address from                  |
+| `_arguments` | any[]   | Argument json defined in the subContract |
 
-**Returns:** *string*
+**Returns:** _string_
 
-###  recoverPoster
+### recoverPoster
 
-▸ **recoverPoster**(`order`: `PostableOrder`, `_arguments`: any[]): *string*
+▸ **recoverPoster**(`order`: `PostableOrder`, `_arguments`: any[]): _string_
 
-*Defined in [src/OrderSerializer.ts:74](url)*
+_Defined in [src/OrderSerializer.ts:74](url)_
 
 Recovers the poster from the poster signature
 
 **Parameters:**
 
-Name | Type | Description |
------- | ------ | ------ |
-`order` | `PostableOrder` | Order to recover address that signed |
-`_arguments` | any[] | Argument json defined in the subContract  |
+| Name         | Type            | Description                              |
+| ------------ | --------------- | ---------------------------------------- |
+| `order`      | `PostableOrder` | Order to recover address that signed     |
+| `_arguments` | any[]           | Argument json defined in the subContract |
 
-**Returns:** *string*
+**Returns:** _string_
 
-###  serialize
+### serialize
 
-▸ **serialize**(`_arguments`: any, `order`: `Order`): *string*
+▸ **serialize**(`_arguments`: any, `order`: `Order`): _string_
 
-*Defined in [src/OrderSerializer.ts:49](url)*
+_Defined in [src/OrderSerializer.ts:49](url)_
 
 Serializes the data into bytes
 
 **Parameters:**
 
-Name | Type | Description |
------- | ------ | ------ |
-`_arguments` | any | Argument json defined in the subContract |
-`order` | `Order` | Order to serialize  |
+| Name         | Type    | Description                              |
+| ------------ | ------- | ---------------------------------------- |
+| `_arguments` | any     | Argument json defined in the subContract |
+| `order`      | `Order` | Order to serialize                       |
 
-**Returns:** *string*
+**Returns:** _string_
 
-___
+---
 
 ### `Const` Signature
 
-### ■ **Signature**: *object*
+### ■ **Signature**: _object_
 
-*Defined in [src/Signature.ts:7](url)*
+_Defined in [src/Signature.ts:7](url)_
 
-###  generate
+### generate
 
-▸ **generate**(`web3`: `Web3`, `messageHex`: string, `signer`: string): *`Promise<string>`*
+▸ **generate**(`web3`: `Web3`, `messageHex`: string, `signer`: string): _`Promise<string>`_
 
-*Defined in [src/Signature.ts:16](url)*
+_Defined in [src/Signature.ts:16](url)_
 
 Generates a signature for a message hex using calls to a provider though web3
 
 **Parameters:**
 
-Name | Type | Description |
------- | ------ | ------ |
-`web3` | `Web3` | Web3 configured to desired provider |
-`messageHex` | string | Hex representation of the message |
-`signer` | string | Address to sign the message |
+| Name         | Type   | Description                         |
+| ------------ | ------ | ----------------------------------- |
+| `web3`       | `Web3` | Web3 configured to desired provider |
+| `messageHex` | string | Hex representation of the message   |
+| `signer`     | string | Address to sign the message         |
 
-**Returns:** *`Promise<string>`*
+**Returns:** _`Promise<string>`_
 
 A vrs signature
 
-###  recoverAddress
+### recoverAddress
 
-▸ **recoverAddress**(`messageHex`: any, `signature`: string): *string*
+▸ **recoverAddress**(`messageHex`: any, `signature`: string): _string_
 
-*Defined in [src/Signature.ts:38](url)*
+_Defined in [src/Signature.ts:38](url)_
 
 Recovers address from a message hex and signature
 
 **Parameters:**
 
-Name | Type | Description |
------- | ------ | ------ |
-`messageHex` | any | Hex representation of the signed message |
-`signature` | string | VRS signature  |
+| Name         | Type   | Description                              |
+| ------------ | ------ | ---------------------------------------- |
+| `messageHex` | any    | Hex representation of the signed message |
+| `signature`  | string | VRS signature                            |
 
-**Returns:** *string*
+**Returns:** _string_
 
-###  sign
+### sign
 
-▸ **sign**(`web3`: `Web3`, `messageHex`: string, `signer`: string): *`Promise<string>`*
+▸ **sign**(`web3`: `Web3`, `messageHex`: string, `signer`: string): _`Promise<string>`_
 
-*Defined in [src/Signature.ts:56](url)*
+_Defined in [src/Signature.ts:56](url)_
 
 Sign hex with provided address
 
 **Parameters:**
 
-Name | Type | Description |
------- | ------ | ------ |
-`web3` | `Web3` | Provider which executes the signature. |
-`messageHex` | string | Hex to be singed |
-`signer` | string | Address to sign with.  |
+| Name         | Type   | Description                            |
+| ------------ | ------ | -------------------------------------- |
+| `web3`       | `Web3` | Provider which executes the signature. |
+| `messageHex` | string | Hex to be singed                       |
+| `signer`     | string | Address to sign with.                  |
 
-**Returns:** *`Promise<string>`*
+**Returns:** _`Promise<string>`_
 
-###  validate
+### validate
 
-▸ **validate**(`messageHex`: string, `signature`: string, `signer`: string): *boolean*
+▸ **validate**(`messageHex`: string, `signature`: string, `signer`: string): _boolean_
 
-*Defined in [src/Signature.ts:28](url)*
+_Defined in [src/Signature.ts:28](url)_
 
 Validates the signature of a messageHex is from the provided signer
 
 **Parameters:**
 
-Name | Type | Description |
------- | ------ | ------ |
-`messageHex` | string | signed message hex |
-`signature` | string | signature from message hex |
-`signer` | string | signer who may have signed the message |
+| Name         | Type   | Description                            |
+| ------------ | ------ | -------------------------------------- |
+| `messageHex` | string | signed message hex                     |
+| `signature`  | string | signature from message hex             |
+| `signer`     | string | signer who may have signed the message |
 
-**Returns:** *boolean*
+**Returns:** _boolean_
 
 boolean representing if the signer in fact generated the signature with this message
 
-___
+---
 
 ### `Const` artifacts
 
-### ■ **artifacts**: *object*
+### ■ **artifacts**: _object_
 
 Defined in node_modules/@kosu/system-contracts/src/artifacts.ts:18
 
-###  AuthorizedAddresses
+### AuthorizedAddresses
 
-● **AuthorizedAddresses**: *`ContractArtifact`* =  AuthorizedAddresses as ContractArtifact
+● **AuthorizedAddresses**: _`ContractArtifact`_ = AuthorizedAddresses as ContractArtifact
 
 Defined in node_modules/@kosu/system-contracts/src/artifacts.ts:19
 
-###  BasicTradeSubContract
+### BasicTradeSubContract
 
-● **BasicTradeSubContract**: *`ContractArtifact`* =  BasicTradeSubContract as ContractArtifact
+● **BasicTradeSubContract**: _`ContractArtifact`_ = BasicTradeSubContract as ContractArtifact
 
 Defined in node_modules/@kosu/system-contracts/src/artifacts.ts:28
 
-###  EventEmitter
+### EventEmitter
 
-● **EventEmitter**: *`ContractArtifact`* =  EventEmitter as ContractArtifact
+● **EventEmitter**: _`ContractArtifact`_ = EventEmitter as ContractArtifact
 
 Defined in node_modules/@kosu/system-contracts/src/artifacts.ts:20
 
-###  KosuToken
+### KosuToken
 
-● **KosuToken**: *`ContractArtifact`* =  KosuToken as ContractArtifact
+● **KosuToken**: _`ContractArtifact`_ = KosuToken as ContractArtifact
 
 Defined in node_modules/@kosu/system-contracts/src/artifacts.ts:23
 
-###  OrderGateway
+### OrderGateway
 
-● **OrderGateway**: *`ContractArtifact`* =  OrderGateway as ContractArtifact
+● **OrderGateway**: _`ContractArtifact`_ = OrderGateway as ContractArtifact
 
 Defined in node_modules/@kosu/system-contracts/src/artifacts.ts:21
 
-###  PosterRegistry
+### PosterRegistry
 
-● **PosterRegistry**: *`ContractArtifact`* =  PosterRegistry as ContractArtifact
+● **PosterRegistry**: _`ContractArtifact`_ = PosterRegistry as ContractArtifact
 
 Defined in node_modules/@kosu/system-contracts/src/artifacts.ts:24
 
-###  PosterRegistryProxy
+### PosterRegistryProxy
 
-● **PosterRegistryProxy**: *`ContractArtifact`* =  PosterRegistryProxy as ContractArtifact
+● **PosterRegistryProxy**: _`ContractArtifact`_ = PosterRegistryProxy as ContractArtifact
 
 Defined in node_modules/@kosu/system-contracts/src/artifacts.ts:22
 
-###  Treasury
+### Treasury
 
-● **Treasury**: *`ContractArtifact`* =  Treasury as ContractArtifact
+● **Treasury**: _`ContractArtifact`_ = Treasury as ContractArtifact
 
 Defined in node_modules/@kosu/system-contracts/src/artifacts.ts:25
 
-###  ValidatorRegistry
+### ValidatorRegistry
 
-● **ValidatorRegistry**: *`ContractArtifact`* =  ValidatorRegistry as ContractArtifact
+● **ValidatorRegistry**: _`ContractArtifact`_ = ValidatorRegistry as ContractArtifact
 
 Defined in node_modules/@kosu/system-contracts/src/artifacts.ts:26
 
-###  Voting
+### Voting
 
-● **Voting**: *`ContractArtifact`* =  Voting as ContractArtifact
+● **Voting**: _`ContractArtifact`_ = Voting as ContractArtifact
 
 Defined in node_modules/@kosu/system-contracts/src/artifacts.ts:27
 
-___
+---

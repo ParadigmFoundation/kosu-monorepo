@@ -6,481 +6,481 @@
 
 ## Hierarchy
 
-* `BaseContract`
+-   `BaseContract`
 
-  * **EventEmitterContract**
+    -   **EventEmitterContract**
 
 ### Index
 
 #### Constructors
 
-* [constructor](eventemittercontract.md#constructor)
+-   [constructor](eventemittercontract.md#constructor)
 
 #### Properties
 
-* [_abiEncoderByFunctionSignature](eventemittercontract.md#protected-_abiencoderbyfunctionsignature)
-* [_web3Wrapper](eventemittercontract.md#protected-_web3wrapper)
-* [abi](eventemittercontract.md#abi)
-* [address](eventemittercontract.md#address)
-* [constructorArgs](eventemittercontract.md#constructorargs)
-* [contractName](eventemittercontract.md#contractname)
-* [txReceipt](eventemittercontract.md#optional-txreceipt)
+-   [\_abiEncoderByFunctionSignature](eventemittercontract.md#protected-_abiencoderbyfunctionsignature)
+-   [\_web3Wrapper](eventemittercontract.md#protected-_web3wrapper)
+-   [abi](eventemittercontract.md#abi)
+-   [address](eventemittercontract.md#address)
+-   [constructorArgs](eventemittercontract.md#constructorargs)
+-   [contractName](eventemittercontract.md#contractname)
+-   [txReceipt](eventemittercontract.md#optional-txreceipt)
 
 #### Methods
 
-* [_lookupAbi](eventemittercontract.md#protected-_lookupabi)
-* [_lookupAbiEncoder](eventemittercontract.md#protected-_lookupabiencoder)
-* [_strictEncodeArguments](eventemittercontract.md#protected-_strictencodearguments)
-* [_applyDefaultsToTxDataAsync](eventemittercontract.md#static-protected-_applydefaultstotxdataasync)
-* [_bigNumberToString](eventemittercontract.md#static-protected-_bignumbertostring)
-* [_formatABIDataItemList](eventemittercontract.md#static-protected-_formatabidataitemlist)
-* [_lookupConstructorAbi](eventemittercontract.md#static-protected-_lookupconstructorabi)
-* [_lowercaseAddress](eventemittercontract.md#static-protected-_lowercaseaddress)
-* [_throwIfRevertWithReasonCallResult](eventemittercontract.md#static-protected-_throwifrevertwithreasoncallresult)
-* [deployAsync](eventemittercontract.md#static-deployasync)
-* [deployFrom0xArtifactAsync](eventemittercontract.md#static-deployfrom0xartifactasync)
-* [strictArgumentEncodingCheck](eventemittercontract.md#static-strictargumentencodingcheck)
+-   [\_lookupAbi](eventemittercontract.md#protected-_lookupabi)
+-   [\_lookupAbiEncoder](eventemittercontract.md#protected-_lookupabiencoder)
+-   [\_strictEncodeArguments](eventemittercontract.md#protected-_strictencodearguments)
+-   [\_applyDefaultsToTxDataAsync](eventemittercontract.md#static-protected-_applydefaultstotxdataasync)
+-   [\_bigNumberToString](eventemittercontract.md#static-protected-_bignumbertostring)
+-   [\_formatABIDataItemList](eventemittercontract.md#static-protected-_formatabidataitemlist)
+-   [\_lookupConstructorAbi](eventemittercontract.md#static-protected-_lookupconstructorabi)
+-   [\_lowercaseAddress](eventemittercontract.md#static-protected-_lowercaseaddress)
+-   [\_throwIfRevertWithReasonCallResult](eventemittercontract.md#static-protected-_throwifrevertwithreasoncallresult)
+-   [deployAsync](eventemittercontract.md#static-deployasync)
+-   [deployFrom0xArtifactAsync](eventemittercontract.md#static-deployfrom0xartifactasync)
+-   [strictArgumentEncodingCheck](eventemittercontract.md#static-strictargumentencodingcheck)
 
 #### Object literals
 
-* [emitEvent](eventemittercontract.md#emitevent)
+-   [emitEvent](eventemittercontract.md#emitevent)
 
 ## Constructors
 
-###  constructor
+### constructor
 
-\+ **new EventEmitterContract**(`abi`: `ContractAbi`, `address`: string, `supportedProvider`: `SupportedProvider`, `txDefaults?`: `Partial<TxData>`): *[EventEmitterContract](eventemittercontract.md)*
+\+ **new EventEmitterContract**(`abi`: `ContractAbi`, `address`: string, `supportedProvider`: `SupportedProvider`, `txDefaults?`: `Partial<TxData>`): _[EventEmitterContract](eventemittercontract.md)_
 
-*Overrides void*
+_Overrides void_
 
 Defined in node_modules/@kosu/system-contracts/generated-wrappers/event_emitter.ts:219
 
 **Parameters:**
 
-Name | Type |
------- | ------ |
-`abi` | `ContractAbi` |
-`address` | string |
-`supportedProvider` | `SupportedProvider` |
-`txDefaults?` | `Partial<TxData>` |
+| Name                | Type                |
+| ------------------- | ------------------- |
+| `abi`               | `ContractAbi`       |
+| `address`           | string              |
+| `supportedProvider` | `SupportedProvider` |
+| `txDefaults?`       | `Partial<TxData>`   |
 
-**Returns:** *[EventEmitterContract](eventemittercontract.md)*
+**Returns:** _[EventEmitterContract](eventemittercontract.md)_
 
-___
+---
 
 ## Properties
 
-### `Protected` _abiEncoderByFunctionSignature
+### `Protected` \_abiEncoderByFunctionSignature
 
-● **_abiEncoderByFunctionSignature**: *`AbiEncoderByFunctionSignature`*
+● **\_abiEncoderByFunctionSignature**: _`AbiEncoderByFunctionSignature`_
 
-*Inherited from void*
+_Inherited from void_
 
 Defined in /Users/hen/GitHub/km/node_modules/@0x/base-contract/lib/src/index.d.ts:20
 
-___
+---
 
-### `Protected` _web3Wrapper
+### `Protected` \_web3Wrapper
 
-● **_web3Wrapper**: *`Web3Wrapper`*
+● **\_web3Wrapper**: _`Web3Wrapper`_
 
-*Inherited from void*
+_Inherited from void_
 
 Defined in /Users/hen/GitHub/km/node_modules/@0x/base-contract/lib/src/index.d.ts:21
 
-___
+---
 
-###  abi
+### abi
 
-● **abi**: *`ContractAbi`*
+● **abi**: _`ContractAbi`_
 
-*Inherited from void*
+_Inherited from void_
 
 Defined in /Users/hen/GitHub/km/node_modules/@0x/base-contract/lib/src/index.d.ts:22
 
-___
+---
 
-###  address
+### address
 
-● **address**: *string*
+● **address**: _string_
 
-*Inherited from void*
+_Inherited from void_
 
 Defined in /Users/hen/GitHub/km/node_modules/@0x/base-contract/lib/src/index.d.ts:23
 
-___
+---
 
-###  constructorArgs
+### constructorArgs
 
-● **constructorArgs**: *any[]*
+● **constructorArgs**: _any[]_
 
-*Inherited from void*
+_Inherited from void_
 
 Defined in /Users/hen/GitHub/km/node_modules/@0x/base-contract/lib/src/index.d.ts:25
 
-___
+---
 
-###  contractName
+### contractName
 
-● **contractName**: *string*
+● **contractName**: _string_
 
-*Inherited from void*
+_Inherited from void_
 
 Defined in /Users/hen/GitHub/km/node_modules/@0x/base-contract/lib/src/index.d.ts:24
 
-___
+---
 
 ### `Optional` txReceipt
 
-● **txReceipt**? : *`TransactionReceiptWithDecodedLogs`*
+● **txReceipt**? : _`TransactionReceiptWithDecodedLogs`_
 
 Defined in node_modules/@kosu/system-contracts/generated-wrappers/event_emitter.ts:42
 
-___
+---
 
 ## Methods
 
-### `Protected` _lookupAbi
+### `Protected` \_lookupAbi
 
-▸ **_lookupAbi**(`functionSignature`: string): *`MethodAbi`*
+▸ **\_lookupAbi**(`functionSignature`: string): _`MethodAbi`_
 
-*Inherited from void*
+_Inherited from void_
 
 Defined in /Users/hen/GitHub/km/node_modules/@0x/base-contract/lib/src/index.d.ts:34
 
 **Parameters:**
 
-Name | Type |
------- | ------ |
-`functionSignature` | string |
+| Name                | Type   |
+| ------------------- | ------ |
+| `functionSignature` | string |
 
-**Returns:** *`MethodAbi`*
+**Returns:** _`MethodAbi`_
 
-___
+---
 
-### `Protected` _lookupAbiEncoder
+### `Protected` \_lookupAbiEncoder
 
-▸ **_lookupAbiEncoder**(`functionSignature`: string): *`Method`*
+▸ **\_lookupAbiEncoder**(`functionSignature`: string): _`Method`_
 
-*Inherited from void*
+_Inherited from void_
 
 Defined in /Users/hen/GitHub/km/node_modules/@0x/base-contract/lib/src/index.d.ts:33
 
 **Parameters:**
 
-Name | Type |
------- | ------ |
-`functionSignature` | string |
+| Name                | Type   |
+| ------------------- | ------ |
+| `functionSignature` | string |
 
-**Returns:** *`Method`*
+**Returns:** _`Method`_
 
-___
+---
 
-### `Protected` _strictEncodeArguments
+### `Protected` \_strictEncodeArguments
 
-▸ **_strictEncodeArguments**(`functionSignature`: string, `functionArguments`: any): *string*
+▸ **\_strictEncodeArguments**(`functionSignature`: string, `functionArguments`: any): _string_
 
-*Inherited from void*
+_Inherited from void_
 
 Defined in /Users/hen/GitHub/km/node_modules/@0x/base-contract/lib/src/index.d.ts:35
 
 **Parameters:**
 
-Name | Type |
------- | ------ |
-`functionSignature` | string |
-`functionArguments` | any |
+| Name                | Type   |
+| ------------------- | ------ |
+| `functionSignature` | string |
+| `functionArguments` | any    |
 
-**Returns:** *string*
+**Returns:** _string_
 
-___
+---
 
-### `Static` `Protected` _applyDefaultsToTxDataAsync
+### `Static` `Protected` \_applyDefaultsToTxDataAsync
 
-▸ **_applyDefaultsToTxDataAsync**<**T**>(`txData`: `T`, `txDefaults`: `Partial<TxData>`, `estimateGasAsync?`: function): *`Promise<TxData>`*
+▸ **\_applyDefaultsToTxDataAsync**<**T**>(`txData`: `T`, `txDefaults`: `Partial<TxData>`, `estimateGasAsync?`: function): _`Promise<TxData>`_
 
-*Inherited from void*
+_Inherited from void_
 
 Defined in /Users/hen/GitHub/km/node_modules/@0x/base-contract/lib/src/index.d.ts:30
 
 **Type parameters:**
 
-■` T`: *`Partial<TxData | TxDataPayable>`*
+■`T`: _`Partial<TxData | TxDataPayable>`_
 
 **Parameters:**
 
-■` txData`: *`T`*
+■`txData`: _`T`_
 
-■` txDefaults`: *`Partial<TxData>`*
+■`txDefaults`: _`Partial<TxData>`_
 
-■` estimateGasAsync`: *function*
+■`estimateGasAsync`: _function_
 
-▸ (`txData`: `T`): *`Promise<number>`*
+▸ (`txData`: `T`): _`Promise<number>`_
 
 **Parameters:**
 
-Name | Type |
------- | ------ |
-`txData` | `T` |
+| Name     | Type |
+| -------- | ---- |
+| `txData` | `T`  |
 
-**Returns:** *`Promise<TxData>`*
+**Returns:** _`Promise<TxData>`_
 
-___
+---
 
-### `Static` `Protected` _bigNumberToString
+### `Static` `Protected` \_bigNumberToString
 
-▸ **_bigNumberToString**(`_type`: string, `value`: any): *any*
+▸ **\_bigNumberToString**(`_type`: string, `value`: any): _any_
 
-*Inherited from void*
+_Inherited from void_
 
 Defined in /Users/hen/GitHub/km/node_modules/@0x/base-contract/lib/src/index.d.ts:28
 
 **Parameters:**
 
-Name | Type |
------- | ------ |
-`_type` | string |
-`value` | any |
+| Name    | Type   |
+| ------- | ------ |
+| `_type` | string |
+| `value` | any    |
 
-**Returns:** *any*
+**Returns:** _any_
 
-___
+---
 
-### `Static` `Protected` _formatABIDataItemList
+### `Static` `Protected` \_formatABIDataItemList
 
-▸ **_formatABIDataItemList**(`abis`: `DataItem`[], `values`: any[], `formatter`: function): *any*
+▸ **\_formatABIDataItemList**(`abis`: `DataItem`[], `values`: any[], `formatter`: function): _any_
 
-*Inherited from void*
+_Inherited from void_
 
 Defined in /Users/hen/GitHub/km/node_modules/@0x/base-contract/lib/src/index.d.ts:26
 
 **Parameters:**
 
-■` abis`: *`DataItem`[]*
+■`abis`: _`DataItem`[]_
 
-■` values`: *any[]*
+■`values`: _any[]_
 
-■` formatter`: *function*
+■`formatter`: _function_
 
-▸ (`type`: string, `value`: any): *any*
+▸ (`type`: string, `value`: any): _any_
 
 **Parameters:**
 
-Name | Type |
------- | ------ |
-`type` | string |
-`value` | any |
+| Name    | Type   |
+| ------- | ------ |
+| `type`  | string |
+| `value` | any    |
 
-**Returns:** *any*
+**Returns:** _any_
 
-___
+---
 
-### `Static` `Protected` _lookupConstructorAbi
+### `Static` `Protected` \_lookupConstructorAbi
 
-▸ **_lookupConstructorAbi**(`abi`: `ContractAbi`): *`ConstructorAbi`*
+▸ **\_lookupConstructorAbi**(`abi`: `ContractAbi`): _`ConstructorAbi`_
 
-*Inherited from void*
+_Inherited from void_
 
 Defined in /Users/hen/GitHub/km/node_modules/@0x/base-contract/lib/src/index.d.ts:29
 
 **Parameters:**
 
-Name | Type |
------- | ------ |
-`abi` | `ContractAbi` |
+| Name  | Type          |
+| ----- | ------------- |
+| `abi` | `ContractAbi` |
 
-**Returns:** *`ConstructorAbi`*
+**Returns:** _`ConstructorAbi`_
 
-___
+---
 
-### `Static` `Protected` _lowercaseAddress
+### `Static` `Protected` \_lowercaseAddress
 
-▸ **_lowercaseAddress**(`type`: string, `value`: string): *string*
+▸ **\_lowercaseAddress**(`type`: string, `value`: string): _string_
 
-*Inherited from void*
+_Inherited from void_
 
 Defined in /Users/hen/GitHub/km/node_modules/@0x/base-contract/lib/src/index.d.ts:27
 
 **Parameters:**
 
-Name | Type |
------- | ------ |
-`type` | string |
-`value` | string |
+| Name    | Type   |
+| ------- | ------ |
+| `type`  | string |
+| `value` | string |
 
-**Returns:** *string*
+**Returns:** _string_
 
-___
+---
 
-### `Static` `Protected` _throwIfRevertWithReasonCallResult
+### `Static` `Protected` \_throwIfRevertWithReasonCallResult
 
-▸ **_throwIfRevertWithReasonCallResult**(`rawCallResult`: string): *void*
+▸ **\_throwIfRevertWithReasonCallResult**(`rawCallResult`: string): _void_
 
-*Inherited from void*
+_Inherited from void_
 
 Defined in /Users/hen/GitHub/km/node_modules/@0x/base-contract/lib/src/index.d.ts:31
 
 **Parameters:**
 
-Name | Type |
------- | ------ |
-`rawCallResult` | string |
+| Name            | Type   |
+| --------------- | ------ |
+| `rawCallResult` | string |
 
-**Returns:** *void*
+**Returns:** _void_
 
-___
+---
 
 ### `Static` deployAsync
 
-▸ **deployAsync**(`bytecode`: string, `abi`: `ContractAbi`, `supportedProvider`: `SupportedProvider`, `txDefaults`: `Partial<TxData>`, `auth`: string): *`Promise<EventEmitterContract>`*
+▸ **deployAsync**(`bytecode`: string, `abi`: `ContractAbi`, `supportedProvider`: `SupportedProvider`, `txDefaults`: `Partial<TxData>`, `auth`: string): _`Promise<EventEmitterContract>`_
 
 Defined in node_modules/@kosu/system-contracts/generated-wrappers/event_emitter.ts:184
 
 **Parameters:**
 
-Name | Type |
------- | ------ |
-`bytecode` | string |
-`abi` | `ContractAbi` |
-`supportedProvider` | `SupportedProvider` |
-`txDefaults` | `Partial<TxData>` |
-`auth` | string |
+| Name                | Type                |
+| ------------------- | ------------------- |
+| `bytecode`          | string              |
+| `abi`               | `ContractAbi`       |
+| `supportedProvider` | `SupportedProvider` |
+| `txDefaults`        | `Partial<TxData>`   |
+| `auth`              | string              |
 
-**Returns:** *`Promise<EventEmitterContract>`*
+**Returns:** _`Promise<EventEmitterContract>`_
 
-___
+---
 
 ### `Static` deployFrom0xArtifactAsync
 
-▸ **deployFrom0xArtifactAsync**(`artifact`: `ContractArtifact` | `SimpleContractArtifact`, `supportedProvider`: `SupportedProvider`, `txDefaults`: `Partial<TxData>`, `auth`: string): *`Promise<EventEmitterContract>`*
+▸ **deployFrom0xArtifactAsync**(`artifact`: `ContractArtifact` | `SimpleContractArtifact`, `supportedProvider`: `SupportedProvider`, `txDefaults`: `Partial<TxData>`, `auth`: string): _`Promise<EventEmitterContract>`_
 
 Defined in node_modules/@kosu/system-contracts/generated-wrappers/event_emitter.ts:169
 
 **Parameters:**
 
-Name | Type |
------- | ------ |
-`artifact` | `ContractArtifact` | `SimpleContractArtifact` |
-`supportedProvider` | `SupportedProvider` |
-`txDefaults` | `Partial<TxData>` |
-`auth` | string |
+| Name                | Type                |
+| ------------------- | ------------------- |
+| `artifact`          | `ContractArtifact`  | `SimpleContractArtifact` |
+| `supportedProvider` | `SupportedProvider` |
+| `txDefaults`        | `Partial<TxData>`   |
+| `auth`              | string              |
 
-**Returns:** *`Promise<EventEmitterContract>`*
+**Returns:** _`Promise<EventEmitterContract>`_
 
-___
+---
 
 ### `Static` strictArgumentEncodingCheck
 
-▸ **strictArgumentEncodingCheck**(`inputAbi`: `DataItem`[], `args`: any[]): *string*
+▸ **strictArgumentEncodingCheck**(`inputAbi`: `DataItem`[], `args`: any[]): _string_
 
-*Inherited from void*
+_Inherited from void_
 
 Defined in /Users/hen/GitHub/km/node_modules/@0x/base-contract/lib/src/index.d.ts:32
 
 **Parameters:**
 
-Name | Type |
------- | ------ |
-`inputAbi` | `DataItem`[] |
-`args` | any[] |
+| Name       | Type         |
+| ---------- | ------------ |
+| `inputAbi` | `DataItem`[] |
+| `args`     | any[]        |
 
-**Returns:** *string*
+**Returns:** _string_
 
-___
+---
 
 ## Object literals
 
-###  emitEvent
+### emitEvent
 
-### ■ **emitEvent**: *object*
+### ■ **emitEvent**: _object_
 
 Defined in node_modules/@kosu/system-contracts/generated-wrappers/event_emitter.ts:43
 
-###  awaitTransactionSuccessAsync
+### awaitTransactionSuccessAsync
 
-▸ **awaitTransactionSuccessAsync**(`eventType`: string, `data`: string[], `stringData`: string, `txData?`: `Partial<TxData>` | number, `pollingIntervalMs?`: number, `timeoutMs?`: number): *`PromiseWithTransactionHash<TransactionReceiptWithDecodedLogs>`*
+▸ **awaitTransactionSuccessAsync**(`eventType`: string, `data`: string[], `stringData`: string, `txData?`: `Partial<TxData>` | number, `pollingIntervalMs?`: number, `timeoutMs?`: number): _`PromiseWithTransactionHash<TransactionReceiptWithDecodedLogs>`_
 
 Defined in node_modules/@kosu/system-contracts/generated-wrappers/event_emitter.ts:72
 
 **Parameters:**
 
-Name | Type |
------- | ------ |
-`eventType` | string |
-`data` | string[] |
-`stringData` | string |
-`txData?` | `Partial<TxData>` | number |
-`pollingIntervalMs?` | number |
-`timeoutMs?` | number |
+| Name                 | Type              |
+| -------------------- | ----------------- |
+| `eventType`          | string            |
+| `data`               | string[]          |
+| `stringData`         | string            |
+| `txData?`            | `Partial<TxData>` | number |
+| `pollingIntervalMs?` | number            |
+| `timeoutMs?`         | number            |
 
-**Returns:** *`PromiseWithTransactionHash<TransactionReceiptWithDecodedLogs>`*
+**Returns:** _`PromiseWithTransactionHash<TransactionReceiptWithDecodedLogs>`_
 
-###  callAsync
+### callAsync
 
-▸ **callAsync**(`eventType`: string, `data`: string[], `stringData`: string, `callData`: `Partial<CallData>`, `defaultBlock?`: `BlockParam`): *`Promise<void>`*
+▸ **callAsync**(`eventType`: string, `data`: string[], `stringData`: string, `callData`: `Partial<CallData>`, `defaultBlock?`: `BlockParam`): _`Promise<void>`_
 
 Defined in node_modules/@kosu/system-contracts/generated-wrappers/event_emitter.ts:138
 
 **Parameters:**
 
-Name | Type | Default value |
------- | ------ | ------ |
-`eventType` | string | - |
-`data` | string[] | - |
-`stringData` | string | - |
-`callData` | `Partial<CallData>` |  {} |
-`defaultBlock?` | `BlockParam` | - |
+| Name            | Type                | Default value |
+| --------------- | ------------------- | ------------- |
+| `eventType`     | string              | -             |
+| `data`          | string[]            | -             |
+| `stringData`    | string              | -             |
+| `callData`      | `Partial<CallData>` | {}            |
+| `defaultBlock?` | `BlockParam`        | -             |
 
-**Returns:** *`Promise<void>`*
+**Returns:** _`Promise<void>`_
 
-###  estimateGasAsync
+### estimateGasAsync
 
-▸ **estimateGasAsync**(`eventType`: string, `data`: string[], `stringData`: string, `txData`: `Partial<TxData>`): *`Promise<number>`*
+▸ **estimateGasAsync**(`eventType`: string, `data`: string[], `stringData`: string, `txData`: `Partial<TxData>`): _`Promise<number>`_
 
 Defined in node_modules/@kosu/system-contracts/generated-wrappers/event_emitter.ts:104
 
 **Parameters:**
 
-Name | Type | Default value |
------- | ------ | ------ |
-`eventType` | string | - |
-`data` | string[] | - |
-`stringData` | string | - |
-`txData` | `Partial<TxData>` |  {} |
+| Name         | Type              | Default value |
+| ------------ | ----------------- | ------------- |
+| `eventType`  | string            | -             |
+| `data`       | string[]          | -             |
+| `stringData` | string            | -             |
+| `txData`     | `Partial<TxData>` | {}            |
 
-**Returns:** *`Promise<number>`*
+**Returns:** _`Promise<number>`_
 
-###  getABIEncodedTransactionData
+### getABIEncodedTransactionData
 
-▸ **getABIEncodedTransactionData**(`eventType`: string, `data`: string[], `stringData`: string): *string*
+▸ **getABIEncodedTransactionData**(`eventType`: string, `data`: string[], `stringData`: string): _string_
 
 Defined in node_modules/@kosu/system-contracts/generated-wrappers/event_emitter.ts:126
 
 **Parameters:**
 
-Name | Type |
------- | ------ |
-`eventType` | string |
-`data` | string[] |
-`stringData` | string |
+| Name         | Type     |
+| ------------ | -------- |
+| `eventType`  | string   |
+| `data`       | string[] |
+| `stringData` | string   |
 
-**Returns:** *string*
+**Returns:** _string_
 
-###  sendTransactionAsync
+### sendTransactionAsync
 
-▸ **sendTransactionAsync**(`eventType`: string, `data`: string[], `stringData`: string, `txData`: `Partial<TxData>`): *`Promise<string>`*
+▸ **sendTransactionAsync**(`eventType`: string, `data`: string[], `stringData`: string, `txData`: `Partial<TxData>`): _`Promise<string>`_
 
 Defined in node_modules/@kosu/system-contracts/generated-wrappers/event_emitter.ts:44
 
 **Parameters:**
 
-Name | Type | Default value |
------- | ------ | ------ |
-`eventType` | string | - |
-`data` | string[] | - |
-`stringData` | string | - |
-`txData` | `Partial<TxData>` |  {} |
+| Name         | Type              | Default value |
+| ------------ | ----------------- | ------------- |
+| `eventType`  | string            | -             |
+| `data`       | string[]          | -             |
+| `stringData` | string            | -             |
+| `txData`     | `Partial<TxData>` | {}            |
 
-**Returns:** *`Promise<string>`*
+**Returns:** _`Promise<string>`_
 
-___
+---
