@@ -4,175 +4,198 @@
 
 # Class: PosterRegistry
 
-Integration with PosterRegistry contract on an Ethereum blockchain.
+Interact with the Kosu PosterRegistry contract on the Ethereum blockchain.
+
+Instances of the `PosterRegistry` class allow users to interact with the
+deployed contract to bond and un-bond tokens (for access to the Kosu network)
+and to view their balance, as well as the cumulative lockup.
 
 ## Hierarchy
 
-* **PosterRegistry**
+-   **PosterRegistry**
 
 ### Index
 
 #### Constructors
 
-* [constructor](posterregistry.md#constructor)
+-   [constructor](posterregistry.md#constructor)
 
 #### Properties
 
-* [address](posterregistry.md#private-address)
-* [contract](posterregistry.md#private-contract)
-* [treasury](posterregistry.md#private-treasury)
-* [web3](posterregistry.md#private-web3)
-* [web3Wrapper](posterregistry.md#private-web3wrapper)
+-   [address](posterregistry.md#private-address)
+-   [contract](posterregistry.md#private-contract)
+-   [treasury](posterregistry.md#private-treasury)
+-   [web3](posterregistry.md#private-web3)
+-   [web3Wrapper](posterregistry.md#private-web3wrapper)
 
 #### Methods
 
-* [getContract](posterregistry.md#private-getcontract)
-* [registerTokens](posterregistry.md#registertokens)
-* [releaseTokens](posterregistry.md#releasetokens)
-* [tokensContributed](posterregistry.md#tokenscontributed)
-* [tokensRegisteredFor](posterregistry.md#tokensregisteredfor)
+-   [getContract](posterregistry.md#private-getcontract)
+-   [registerTokens](posterregistry.md#registertokens)
+-   [releaseTokens](posterregistry.md#releasetokens)
+-   [tokensContributed](posterregistry.md#tokenscontributed)
+-   [tokensRegisteredFor](posterregistry.md#tokensregisteredfor)
 
 ## Constructors
 
-###  constructor
+### constructor
 
-\+ **new PosterRegistry**(`options`: `KosuOptions`, `treasury`: [Treasury](treasury.md)): *[PosterRegistry](posterregistry.md)*
+\+ **new PosterRegistry**(`options`: `KosuOptions`, `treasury`: [Treasury](treasury.md)): _[PosterRegistry](posterregistry.md)_
 
-*Defined in [src/PosterRegistry.ts:17](url)*
+_Defined in [src/PosterRegistry.ts:41](url)_
 
 Create a new PosterRegistry instance.
 
 **Parameters:**
 
-Name | Type | Description |
------- | ------ | ------ |
-`options` | `KosuOptions` | instantiation options |
-`treasury` | [Treasury](treasury.md) | treasury integration instance  |
+| Name       | Type                    | Description                                |
+| ---------- | ----------------------- | ------------------------------------------ |
+| `options`  | `KosuOptions`           | Instantiation options (see `KosuOptions`). |
+| `treasury` | [Treasury](treasury.md) | Treasury integration instance.             |
 
-**Returns:** *[PosterRegistry](posterregistry.md)*
+**Returns:** _[PosterRegistry](posterregistry.md)_
 
-___
+---
 
 ## Properties
 
 ### `Private` address
 
-● **address**: *string*
+● **address**: _string_
 
-*Defined in [src/PosterRegistry.ts:17](url)*
+_Defined in [src/PosterRegistry.ts:41](url)_
 
-___
+The address of the deployed PosterRegistry proxy contract.
+
+---
 
 ### `Private` contract
 
-● **contract**: *[PosterRegistryProxyContract](posterregistryproxycontract.md)*
+● **contract**: _[PosterRegistryProxyContract](posterregistryproxycontract.md)_
 
-*Defined in [src/PosterRegistry.ts:15](url)*
+_Defined in [src/PosterRegistry.ts:36](url)_
 
-___
+A lower-level, auto-generated contract wrapper for the PosterRegistry
+proxy contract. Generated from solidity source code.
+
+---
 
 ### `Private` treasury
 
-● **treasury**: *[Treasury](treasury.md)*
+● **treasury**: _[Treasury](treasury.md)_
 
-*Defined in [src/PosterRegistry.ts:14](url)*
+_Defined in [src/PosterRegistry.ts:30](url)_
 
-___
+An instantiated Treasury contract wrapper.
+
+---
 
 ### `Private` web3
 
-● **web3**: *`Web3`*
+● **web3**: _`Web3`_
 
-*Defined in [src/PosterRegistry.ts:13](url)*
+_Defined in [src/PosterRegistry.ts:20](url)_
 
-___
+An instance of `web3` used to interact with the Ethereum blockchain.
+
+---
 
 ### `Private` web3Wrapper
 
-● **web3Wrapper**: *`Web3Wrapper`*
+● **web3Wrapper**: _`Web3Wrapper`_
 
-*Defined in [src/PosterRegistry.ts:16](url)*
+_Defined in [src/PosterRegistry.ts:25](url)_
 
-___
+The `web3Wrapper` instance with the contract's ABI loaded.
+
+---
 
 ## Methods
 
 ### `Private` getContract
 
-▸ **getContract**(): *`Promise<PosterRegistryProxyContract>`*
+▸ **getContract**(): _`Promise<PosterRegistryProxyContract>`_
 
-*Defined in [src/PosterRegistry.ts:37](url)*
+_Defined in [src/PosterRegistry.ts:61](url)_
 
-Asynchronously initializes the contract instance or returns it from cache
+Asynchronously initializes the contract instance or returns it from cache.
 
-**Returns:** *`Promise<PosterRegistryProxyContract>`*
+**Returns:** _`Promise<PosterRegistryProxyContract>`_
 
-The contract
+The contract wrapper instance.
 
-___
+---
 
-###  registerTokens
+### registerTokens
 
-▸ **registerTokens**(`amount`: `BigNumber`): *`Promise<TransactionReceiptWithDecodedLogs>`*
+▸ **registerTokens**(`amount`: `BigNumber`): _`Promise<TransactionReceiptWithDecodedLogs>`_
 
-*Defined in [src/PosterRegistry.ts:82](url)*
+_Defined in [src/PosterRegistry.ts:110](url)_
 
-Registers tokens
-
-**Parameters:**
-
-Name | Type | Description |
------- | ------ | ------ |
-`amount` | `BigNumber` | uint value of tokens to register  |
-
-**Returns:** *`Promise<TransactionReceiptWithDecodedLogs>`*
-
-___
-
-###  releaseTokens
-
-▸ **releaseTokens**(`amount`: `BigNumber`): *`Promise<TransactionReceiptWithDecodedLogs>`*
-
-*Defined in [src/PosterRegistry.ts:112](url)*
-
-Releases tokens
+Register tokens into the PosterRegistry contract by bonding KOSU tokens.
 
 **Parameters:**
 
-Name | Type | Description |
------- | ------ | ------ |
-`amount` | `BigNumber` | uint values of tokens to release  |
+| Name     | Type        | Description                                    |
+| -------- | ----------- | ---------------------------------------------- |
+| `amount` | `BigNumber` | The uint value of tokens to register (in wei). |
 
-**Returns:** *`Promise<TransactionReceiptWithDecodedLogs>`*
+**Returns:** _`Promise<TransactionReceiptWithDecodedLogs>`_
 
-___
+A transaction receipt from the mined `register` transaction.
 
-###  tokensContributed
+---
 
-▸ **tokensContributed**(): *`Promise<BigNumber>`*
+### releaseTokens
 
-*Defined in [src/PosterRegistry.ts:62](url)*
+▸ **releaseTokens**(`amount`: `BigNumber`): _`Promise<TransactionReceiptWithDecodedLogs>`_
 
-Reads total tokens contributed to registry
+_Defined in [src/PosterRegistry.ts:141](url)_
 
-**Returns:** *`Promise<BigNumber>`*
-
-___
-
-###  tokensRegisteredFor
-
-▸ **tokensRegisteredFor**(`address`: string): *`Promise<BigNumber>`*
-
-*Defined in [src/PosterRegistry.ts:72](url)*
-
-Reads number of tokens registered for address
+Release tokens from the PosterRegistry for the `coinbase` address (un-bond).
 
 **Parameters:**
 
-Name | Type | Description |
------- | ------ | ------ |
-`address` | string | Address of registered user  |
+| Name     | Type        | Description                                                     |
+| -------- | ----------- | --------------------------------------------------------------- |
+| `amount` | `BigNumber` | The uint value of tokens to release from the registry (in wei). |
 
-**Returns:** *`Promise<BigNumber>`*
+**Returns:** _`Promise<TransactionReceiptWithDecodedLogs>`_
 
-___
+A transaction receipt from the mined `register` transaction.
+
+---
+
+### tokensContributed
+
+▸ **tokensContributed**(): _`Promise<BigNumber>`_
+
+_Defined in [src/PosterRegistry.ts:88](url)_
+
+Reads total KOSU tokens contributed to registry.
+
+**Returns:** _`Promise<BigNumber>`_
+
+The total pool of locked KOSU tokens in units of wei.
+
+---
+
+### tokensRegisteredFor
+
+▸ **tokensRegisteredFor**(`address`: string): _`Promise<BigNumber>`_
+
+_Defined in [src/PosterRegistry.ts:99](url)_
+
+Reads number of tokens registered for a given address.
+
+**Parameters:**
+
+| Name      | Type   | Description                                     |
+| --------- | ------ | ----------------------------------------------- |
+| `address` | string | Address of user to query the bonded balance of. |
+
+**Returns:** _`Promise<BigNumber>`_
+
+The number of tokens bonded by the supplied user's address in wei.
+
+---

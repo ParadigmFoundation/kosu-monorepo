@@ -8,553 +8,553 @@ Integration with ValidatorRegistry contract on an Ethereum blockchain.
 
 ## Hierarchy
 
-* **ValidatorRegistry**
+-   **ValidatorRegistry**
 
 ### Index
 
 #### Constructors
 
-* [constructor](validatorregistry.md#constructor)
+-   [constructor](validatorregistry.md#constructor)
 
 #### Properties
 
-* [address](validatorregistry.md#private-address)
-* [coinbase](validatorregistry.md#private-coinbase)
-* [contract](validatorregistry.md#private-contract)
-* [treasury](validatorregistry.md#private-treasury)
-* [web3](validatorregistry.md#private-web3)
-* [web3Wrapper](validatorregistry.md#private-web3wrapper)
+-   [address](validatorregistry.md#private-address)
+-   [coinbase](validatorregistry.md#private-coinbase)
+-   [contract](validatorregistry.md#private-contract)
+-   [treasury](validatorregistry.md#private-treasury)
+-   [web3](validatorregistry.md#private-web3)
+-   [web3Wrapper](validatorregistry.md#private-web3wrapper)
 
 #### Methods
 
-* [applicationPeriod](validatorregistry.md#applicationperiod)
-* [challengeListing](validatorregistry.md#challengelisting)
-* [challengePeriod](validatorregistry.md#challengeperiod)
-* [claimRewards](validatorregistry.md#claimrewards)
-* [claimWinnings](validatorregistry.md#claimwinnings)
-* [commitPeriod](validatorregistry.md#commitperiod)
-* [confirmListing](validatorregistry.md#confirmlisting)
-* [convertPubKey](validatorregistry.md#convertpubkey)
-* [exitPeriod](validatorregistry.md#exitperiod)
-* [finalizeExit](validatorregistry.md#finalizeexit)
-* [getAllChallenges](validatorregistry.md#getallchallenges)
-* [getAllListings](validatorregistry.md#getalllistings)
-* [getChallenge](validatorregistry.md#getchallenge)
-* [getChallenges](validatorregistry.md#getchallenges)
-* [getContract](validatorregistry.md#private-getcontract)
-* [getListing](validatorregistry.md#getlisting)
-* [getListings](validatorregistry.md#getlistings)
-* [hexToBase64](validatorregistry.md#hextobase64)
-* [initExit](validatorregistry.md#initexit)
-* [kosuToken](validatorregistry.md#kosutoken)
-* [listingKeys](validatorregistry.md#listingkeys)
-* [maxRewardRate](validatorregistry.md#maxrewardrate)
-* [minimumBalance](validatorregistry.md#minimumbalance)
-* [registerListing](validatorregistry.md#registerlisting)
-* [resolveChallenge](validatorregistry.md#resolvechallenge)
-* [rewardPeriod](validatorregistry.md#rewardperiod)
-* [stakeholderCut](validatorregistry.md#stakeholdercut)
-* [voting](validatorregistry.md#voting)
+-   [applicationPeriod](validatorregistry.md#applicationperiod)
+-   [challengeListing](validatorregistry.md#challengelisting)
+-   [challengePeriod](validatorregistry.md#challengeperiod)
+-   [claimRewards](validatorregistry.md#claimrewards)
+-   [claimWinnings](validatorregistry.md#claimwinnings)
+-   [commitPeriod](validatorregistry.md#commitperiod)
+-   [confirmListing](validatorregistry.md#confirmlisting)
+-   [convertPubKey](validatorregistry.md#convertpubkey)
+-   [exitPeriod](validatorregistry.md#exitperiod)
+-   [finalizeExit](validatorregistry.md#finalizeexit)
+-   [getAllChallenges](validatorregistry.md#getallchallenges)
+-   [getAllListings](validatorregistry.md#getalllistings)
+-   [getChallenge](validatorregistry.md#getchallenge)
+-   [getChallenges](validatorregistry.md#getchallenges)
+-   [getContract](validatorregistry.md#private-getcontract)
+-   [getListing](validatorregistry.md#getlisting)
+-   [getListings](validatorregistry.md#getlistings)
+-   [hexToBase64](validatorregistry.md#hextobase64)
+-   [initExit](validatorregistry.md#initexit)
+-   [kosuToken](validatorregistry.md#kosutoken)
+-   [listingKeys](validatorregistry.md#listingkeys)
+-   [maxRewardRate](validatorregistry.md#maxrewardrate)
+-   [minimumBalance](validatorregistry.md#minimumbalance)
+-   [registerListing](validatorregistry.md#registerlisting)
+-   [resolveChallenge](validatorregistry.md#resolvechallenge)
+-   [rewardPeriod](validatorregistry.md#rewardperiod)
+-   [stakeholderCut](validatorregistry.md#stakeholdercut)
+-   [voting](validatorregistry.md#voting)
 
 ## Constructors
 
-###  constructor
+### constructor
 
-\+ **new ValidatorRegistry**(`options`: `KosuOptions`, `treasury`: [Treasury](treasury.md)): *[ValidatorRegistry](validatorregistry.md)*
+\+ **new ValidatorRegistry**(`options`: `KosuOptions`, `treasury`: [Treasury](treasury.md)): _[ValidatorRegistry](validatorregistry.md)_
 
-*Defined in [src/ValidatorRegistry.ts:18](url)*
+_Defined in [src/ValidatorRegistry.ts:18](url)_
 
 Create a new ValidatorRegistry instance.
 
 **Parameters:**
 
-Name | Type | Description |
------- | ------ | ------ |
-`options` | `KosuOptions` | instantiation options |
-`treasury` | [Treasury](treasury.md) | treasury integration instance  |
+| Name       | Type                    | Description                   |
+| ---------- | ----------------------- | ----------------------------- |
+| `options`  | `KosuOptions`           | instantiation options         |
+| `treasury` | [Treasury](treasury.md) | treasury integration instance |
 
-**Returns:** *[ValidatorRegistry](validatorregistry.md)*
+**Returns:** _[ValidatorRegistry](validatorregistry.md)_
 
-___
+---
 
 ## Properties
 
 ### `Private` address
 
-● **address**: *string*
+● **address**: _string_
 
-*Defined in [src/ValidatorRegistry.ts:18](url)*
+_Defined in [src/ValidatorRegistry.ts:18](url)_
 
-___
+---
 
 ### `Private` coinbase
 
-● **coinbase**: *string*
+● **coinbase**: _string_
 
-*Defined in [src/ValidatorRegistry.ts:16](url)*
+_Defined in [src/ValidatorRegistry.ts:16](url)_
 
-___
+---
 
 ### `Private` contract
 
-● **contract**: *[ValidatorRegistryContract](validatorregistrycontract.md)*
+● **contract**: _[ValidatorRegistryContract](validatorregistrycontract.md)_
 
-*Defined in [src/ValidatorRegistry.ts:15](url)*
+_Defined in [src/ValidatorRegistry.ts:15](url)_
 
-___
+---
 
 ### `Private` treasury
 
-● **treasury**: *[Treasury](treasury.md)*
+● **treasury**: _[Treasury](treasury.md)_
 
-*Defined in [src/ValidatorRegistry.ts:14](url)*
+_Defined in [src/ValidatorRegistry.ts:14](url)_
 
-___
+---
 
 ### `Private` web3
 
-● **web3**: *`Web3`*
+● **web3**: _`Web3`_
 
-*Defined in [src/ValidatorRegistry.ts:13](url)*
+_Defined in [src/ValidatorRegistry.ts:13](url)_
 
-___
+---
 
 ### `Private` web3Wrapper
 
-● **web3Wrapper**: *`Web3Wrapper`*
+● **web3Wrapper**: _`Web3Wrapper`_
 
-*Defined in [src/ValidatorRegistry.ts:17](url)*
+_Defined in [src/ValidatorRegistry.ts:17](url)_
 
-___
+---
 
 ## Methods
 
-###  applicationPeriod
+### applicationPeriod
 
-▸ **applicationPeriod**(): *`Promise<BigNumber>`*
+▸ **applicationPeriod**(): _`Promise<BigNumber>`_
 
-*Defined in [src/ValidatorRegistry.ts:63](url)*
+_Defined in [src/ValidatorRegistry.ts:63](url)_
 
 Reads the application period
 
-**Returns:** *`Promise<BigNumber>`*
+**Returns:** _`Promise<BigNumber>`_
 
-___
+---
 
-###  challengeListing
+### challengeListing
 
-▸ **challengeListing**(`_pubKey`: string, `_details`: string): *`Promise<TransactionReceiptWithDecodedLogs>`*
+▸ **challengeListing**(`_pubKey`: string, `_details`: string): _`Promise<TransactionReceiptWithDecodedLogs>`_
 
-*Defined in [src/ValidatorRegistry.ts:250](url)*
+_Defined in [src/ValidatorRegistry.ts:250](url)_
 
 Starts a challenge of a listing
 
 **Parameters:**
 
-Name | Type | Description |
------- | ------ | ------ |
-`_pubKey` | string | hex encoded tendermint public key |
-`_details` | string | String value (often a url) to support listing claim  |
+| Name       | Type   | Description                                         |
+| ---------- | ------ | --------------------------------------------------- |
+| `_pubKey`  | string | hex encoded tendermint public key                   |
+| `_details` | string | String value (often a url) to support listing claim |
 
-**Returns:** *`Promise<TransactionReceiptWithDecodedLogs>`*
+**Returns:** _`Promise<TransactionReceiptWithDecodedLogs>`_
 
-___
+---
 
-###  challengePeriod
+### challengePeriod
 
-▸ **challengePeriod**(): *`Promise<BigNumber>`*
+▸ **challengePeriod**(): _`Promise<BigNumber>`_
 
-*Defined in [src/ValidatorRegistry.ts:79](url)*
+_Defined in [src/ValidatorRegistry.ts:79](url)_
 
 Reads the challenge period
 
-**Returns:** *`Promise<BigNumber>`*
+**Returns:** _`Promise<BigNumber>`_
 
-___
+---
 
-###  claimRewards
+### claimRewards
 
-▸ **claimRewards**(`_pubKey`: string): *`Promise<TransactionReceiptWithDecodedLogs>`*
+▸ **claimRewards**(`_pubKey`: string): _`Promise<TransactionReceiptWithDecodedLogs>`_
 
-*Defined in [src/ValidatorRegistry.ts:279](url)*
+_Defined in [src/ValidatorRegistry.ts:279](url)_
 
 Claims the rewards of a generating/burning listing
 
 **Parameters:**
 
-Name | Type | Description |
------- | ------ | ------ |
-`_pubKey` | string | hex encoded tendermint public key  |
+| Name      | Type   | Description                       |
+| --------- | ------ | --------------------------------- |
+| `_pubKey` | string | hex encoded tendermint public key |
 
-**Returns:** *`Promise<TransactionReceiptWithDecodedLogs>`*
+**Returns:** _`Promise<TransactionReceiptWithDecodedLogs>`_
 
-___
+---
 
-###  claimWinnings
+### claimWinnings
 
-▸ **claimWinnings**(`challengeId`: `BigNumber`): *`Promise<TransactionReceiptWithDecodedLogs>`*
+▸ **claimWinnings**(`challengeId`: `BigNumber`): _`Promise<TransactionReceiptWithDecodedLogs>`_
 
-*Defined in [src/ValidatorRegistry.ts:309](url)*
+_Defined in [src/ValidatorRegistry.ts:309](url)_
 
 Claims winnings from complete challenge
 
 **Parameters:**
 
-Name | Type | Description |
------- | ------ | ------ |
-`challengeId` | `BigNumber` | id of challenge coinbase has contributed a winning vote to  |
+| Name          | Type        | Description                                                |
+| ------------- | ----------- | ---------------------------------------------------------- |
+| `challengeId` | `BigNumber` | id of challenge coinbase has contributed a winning vote to |
 
-**Returns:** *`Promise<TransactionReceiptWithDecodedLogs>`*
+**Returns:** _`Promise<TransactionReceiptWithDecodedLogs>`_
 
-___
+---
 
-###  commitPeriod
+### commitPeriod
 
-▸ **commitPeriod**(): *`Promise<BigNumber>`*
+▸ **commitPeriod**(): _`Promise<BigNumber>`_
 
-*Defined in [src/ValidatorRegistry.ts:71](url)*
+_Defined in [src/ValidatorRegistry.ts:71](url)_
 
 Reads the commit period
 
-**Returns:** *`Promise<BigNumber>`*
+**Returns:** _`Promise<BigNumber>`_
 
-___
+---
 
-###  confirmListing
+### confirmListing
 
-▸ **confirmListing**(`_pubKey`: string): *`Promise<TransactionReceiptWithDecodedLogs>`*
+▸ **confirmListing**(`_pubKey`: string): _`Promise<TransactionReceiptWithDecodedLogs>`_
 
-*Defined in [src/ValidatorRegistry.ts:239](url)*
+_Defined in [src/ValidatorRegistry.ts:239](url)_
 
 Confirms listing after application period
 
 **Parameters:**
 
-Name | Type | Description |
------- | ------ | ------ |
-`_pubKey` | string | hex encoded tendermint public key  |
+| Name      | Type   | Description                       |
+| --------- | ------ | --------------------------------- |
+| `_pubKey` | string | hex encoded tendermint public key |
 
-**Returns:** *`Promise<TransactionReceiptWithDecodedLogs>`*
+**Returns:** _`Promise<TransactionReceiptWithDecodedLogs>`_
 
-___
+---
 
-###  convertPubKey
+### convertPubKey
 
-▸ **convertPubKey**(`_pubKey`: string): *string*
+▸ **convertPubKey**(`_pubKey`: string): _string_
 
-*Defined in [src/ValidatorRegistry.ts:320](url)*
+_Defined in [src/ValidatorRegistry.ts:320](url)_
 
 Converts public key to hex if input is not currently in hex
 
 **Parameters:**
 
-Name | Type | Description |
------- | ------ | ------ |
-`_pubKey` | string | . |
+| Name      | Type   | Description |
+| --------- | ------ | ----------- |
+| `_pubKey` | string | .           |
 
-**Returns:** *string*
+**Returns:** _string_
 
 hex encoded tendermint public key
 
-___
+---
 
-###  exitPeriod
+### exitPeriod
 
-▸ **exitPeriod**(): *`Promise<BigNumber>`*
+▸ **exitPeriod**(): _`Promise<BigNumber>`_
 
-*Defined in [src/ValidatorRegistry.ts:87](url)*
+_Defined in [src/ValidatorRegistry.ts:87](url)_
 
 Reads the exit period
 
-**Returns:** *`Promise<BigNumber>`*
+**Returns:** _`Promise<BigNumber>`_
 
-___
+---
 
-###  finalizeExit
+### finalizeExit
 
-▸ **finalizeExit**(`_pubKey`: string): *`Promise<TransactionReceiptWithDecodedLogs>`*
+▸ **finalizeExit**(`_pubKey`: string): _`Promise<TransactionReceiptWithDecodedLogs>`_
 
-*Defined in [src/ValidatorRegistry.ts:299](url)*
+_Defined in [src/ValidatorRegistry.ts:299](url)_
 
 Finalizes the exit of a listing
 
 **Parameters:**
 
-Name | Type | Description |
------- | ------ | ------ |
-`_pubKey` | string | hex encoded tendermint public key  |
+| Name      | Type   | Description                       |
+| --------- | ------ | --------------------------------- |
+| `_pubKey` | string | hex encoded tendermint public key |
 
-**Returns:** *`Promise<TransactionReceiptWithDecodedLogs>`*
+**Returns:** _`Promise<TransactionReceiptWithDecodedLogs>`_
 
-___
+---
 
-###  getAllChallenges
+### getAllChallenges
 
-▸ **getAllChallenges**(): *`Promise<Challenge[]>`*
+▸ **getAllChallenges**(): _`Promise<Challenge[]>`_
 
-*Defined in [src/ValidatorRegistry.ts:198](url)*
+_Defined in [src/ValidatorRegistry.ts:198](url)_
 
 Reads all challenges
 
-**Returns:** *`Promise<Challenge[]>`*
+**Returns:** _`Promise<Challenge[]>`_
 
-___
+---
 
-###  getAllListings
+### getAllListings
 
-▸ **getAllListings**(): *`Promise<Listing[]>`*
+▸ **getAllListings**(): _`Promise<Listing[]>`_
 
-*Defined in [src/ValidatorRegistry.ts:161](url)*
+_Defined in [src/ValidatorRegistry.ts:161](url)_
 
 Reads the registered listings
 
-**Returns:** *`Promise<Listing[]>`*
+**Returns:** _`Promise<Listing[]>`_
 
-___
+---
 
-###  getChallenge
+### getChallenge
 
-▸ **getChallenge**(`challengeId`: `BigNumber`): *`Promise<Challenge>`*
+▸ **getChallenge**(`challengeId`: `BigNumber`): _`Promise<Challenge>`_
 
-*Defined in [src/ValidatorRegistry.ts:179](url)*
+_Defined in [src/ValidatorRegistry.ts:179](url)_
 
 Reads the challenge by challengeId
 
 **Parameters:**
 
-Name | Type | Description |
------- | ------ | ------ |
-`challengeId` | `BigNumber` | hex encoded tendermint public key  |
+| Name          | Type        | Description                       |
+| ------------- | ----------- | --------------------------------- |
+| `challengeId` | `BigNumber` | hex encoded tendermint public key |
 
-**Returns:** *`Promise<Challenge>`*
+**Returns:** _`Promise<Challenge>`_
 
-___
+---
 
-###  getChallenges
+### getChallenges
 
-▸ **getChallenges**(`challengeIds`: `BigNumber`[]): *`Promise<Challenge[]>`*
+▸ **getChallenges**(`challengeIds`: `BigNumber`[]): _`Promise<Challenge[]>`_
 
-*Defined in [src/ValidatorRegistry.ts:189](url)*
+_Defined in [src/ValidatorRegistry.ts:189](url)_
 
 Reads the challenges by challengeIds
 
 **Parameters:**
 
-Name | Type | Description |
------- | ------ | ------ |
-`challengeIds` | `BigNumber`[] | hex encoded tendermint public key  |
+| Name           | Type          | Description                       |
+| -------------- | ------------- | --------------------------------- |
+| `challengeIds` | `BigNumber`[] | hex encoded tendermint public key |
 
-**Returns:** *`Promise<Challenge[]>`*
+**Returns:** _`Promise<Challenge[]>`_
 
-___
+---
 
 ### `Private` getContract
 
-▸ **getContract**(): *`Promise<ValidatorRegistryContract>`*
+▸ **getContract**(): _`Promise<ValidatorRegistryContract>`_
 
-*Defined in [src/ValidatorRegistry.ts:38](url)*
+_Defined in [src/ValidatorRegistry.ts:38](url)_
 
 Asynchronously initializes the contract instance or returns it from cache
 
-**Returns:** *`Promise<ValidatorRegistryContract>`*
+**Returns:** _`Promise<ValidatorRegistryContract>`_
 
 The contract
 
-___
+---
 
-###  getListing
+### getListing
 
-▸ **getListing**(`_pubKey`: string): *`Promise<Listing>`*
+▸ **getListing**(`_pubKey`: string): _`Promise<Listing>`_
 
-*Defined in [src/ValidatorRegistry.ts:145](url)*
+_Defined in [src/ValidatorRegistry.ts:145](url)_
 
 Reads the listing for public key
 
 **Parameters:**
 
-Name | Type | Description |
------- | ------ | ------ |
-`_pubKey` | string | hex encoded tendermint public key  |
+| Name      | Type   | Description                       |
+| --------- | ------ | --------------------------------- |
+| `_pubKey` | string | hex encoded tendermint public key |
 
-**Returns:** *`Promise<Listing>`*
+**Returns:** _`Promise<Listing>`_
 
-___
+---
 
-###  getListings
+### getListings
 
-▸ **getListings**(`_pubKeys`: string[]): *`Promise<Listing[]>`*
+▸ **getListings**(`_pubKeys`: string[]): _`Promise<Listing[]>`_
 
-*Defined in [src/ValidatorRegistry.ts:153](url)*
+_Defined in [src/ValidatorRegistry.ts:153](url)_
 
 Reads the requested listings
 
 **Parameters:**
 
-Name | Type |
------- | ------ |
-`_pubKeys` | string[] |
+| Name       | Type     |
+| ---------- | -------- |
+| `_pubKeys` | string[] |
 
-**Returns:** *`Promise<Listing[]>`*
+**Returns:** _`Promise<Listing[]>`_
 
-___
+---
 
-###  hexToBase64
+### hexToBase64
 
-▸ **hexToBase64**(`_pubKey`: string): *string*
+▸ **hexToBase64**(`_pubKey`: string): _string_
 
-*Defined in [src/ValidatorRegistry.ts:344](url)*
+_Defined in [src/ValidatorRegistry.ts:344](url)_
 
 Converts hex encoded public key back to tendermint base64
 
 **Parameters:**
 
-Name | Type | Description |
------- | ------ | ------ |
-`_pubKey` | string | hex encoded tendermint public key |
+| Name      | Type   | Description                       |
+| --------- | ------ | --------------------------------- |
+| `_pubKey` | string | hex encoded tendermint public key |
 
-**Returns:** *string*
+**Returns:** _string_
 
 Base64 tendermint public key
 
-___
+---
 
-###  initExit
+### initExit
 
-▸ **initExit**(`_pubKey`: string): *`Promise<TransactionReceiptWithDecodedLogs>`*
+▸ **initExit**(`_pubKey`: string): _`Promise<TransactionReceiptWithDecodedLogs>`_
 
-*Defined in [src/ValidatorRegistry.ts:289](url)*
+_Defined in [src/ValidatorRegistry.ts:289](url)_
 
 Initializes an exit of a listing from the registry
 
 **Parameters:**
 
-Name | Type | Description |
------- | ------ | ------ |
-`_pubKey` | string | hex encoded tendermint public key  |
+| Name      | Type   | Description                       |
+| --------- | ------ | --------------------------------- |
+| `_pubKey` | string | hex encoded tendermint public key |
 
-**Returns:** *`Promise<TransactionReceiptWithDecodedLogs>`*
+**Returns:** _`Promise<TransactionReceiptWithDecodedLogs>`_
 
-___
+---
 
-###  kosuToken
+### kosuToken
 
-▸ **kosuToken**(): *`Promise<string>`*
+▸ **kosuToken**(): _`Promise<string>`_
 
-*Defined in [src/ValidatorRegistry.ts:127](url)*
+_Defined in [src/ValidatorRegistry.ts:127](url)_
 
 Reads the kosuToken address
 
-**Returns:** *`Promise<string>`*
+**Returns:** _`Promise<string>`_
 
-___
+---
 
-###  listingKeys
+### listingKeys
 
-▸ **listingKeys**(): *`Promise<string[]>`*
+▸ **listingKeys**(): _`Promise<string[]>`_
 
-*Defined in [src/ValidatorRegistry.ts:135](url)*
+_Defined in [src/ValidatorRegistry.ts:135](url)_
 
 Reads the current listing keys
 
-**Returns:** *`Promise<string[]>`*
+**Returns:** _`Promise<string[]>`_
 
-___
+---
 
-###  maxRewardRate
+### maxRewardRate
 
-▸ **maxRewardRate**(): *`Promise<BigNumber>`*
+▸ **maxRewardRate**(): _`Promise<BigNumber>`_
 
-*Defined in [src/ValidatorRegistry.ts:169](url)*
+_Defined in [src/ValidatorRegistry.ts:169](url)_
 
 Reads the max reward rate
 
-**Returns:** *`Promise<BigNumber>`*
+**Returns:** _`Promise<BigNumber>`_
 
-___
+---
 
-###  minimumBalance
+### minimumBalance
 
-▸ **minimumBalance**(): *`Promise<BigNumber>`*
+▸ **minimumBalance**(): _`Promise<BigNumber>`_
 
-*Defined in [src/ValidatorRegistry.ts:103](url)*
+_Defined in [src/ValidatorRegistry.ts:103](url)_
 
 Reads the minimum balance
 
-**Returns:** *`Promise<BigNumber>`*
+**Returns:** _`Promise<BigNumber>`_
 
-___
+---
 
-###  registerListing
+### registerListing
 
-▸ **registerListing**(`_pubKey`: string, `_tokensToStake`: `BigNumber`, `_rewardRate`: `BigNumber`, `_details`: string): *`Promise<TransactionReceiptWithDecodedLogs>`*
+▸ **registerListing**(`_pubKey`: string, `_tokensToStake`: `BigNumber`, `_rewardRate`: `BigNumber`, `_details`: string): _`Promise<TransactionReceiptWithDecodedLogs>`_
 
-*Defined in [src/ValidatorRegistry.ts:211](url)*
+_Defined in [src/ValidatorRegistry.ts:211](url)_
 
 Register a new listing
 
 **Parameters:**
 
-Name | Type | Description |
------- | ------ | ------ |
-`_pubKey` | string | hex encoded tendermint public key |
-`_tokensToStake` | `BigNumber` | uint number of tokens to stake ( must be greater than minimum balance) |
-`_rewardRate` | `BigNumber` | int value of tokens to earn, burn or neither per reward period |
-`_details` | string | String value (often a url) to support listing claim  |
+| Name             | Type        | Description                                                            |
+| ---------------- | ----------- | ---------------------------------------------------------------------- |
+| `_pubKey`        | string      | hex encoded tendermint public key                                      |
+| `_tokensToStake` | `BigNumber` | uint number of tokens to stake ( must be greater than minimum balance) |
+| `_rewardRate`    | `BigNumber` | int value of tokens to earn, burn or neither per reward period         |
+| `_details`       | string      | String value (often a url) to support listing claim                    |
 
-**Returns:** *`Promise<TransactionReceiptWithDecodedLogs>`*
+**Returns:** _`Promise<TransactionReceiptWithDecodedLogs>`_
 
-___
+---
 
-###  resolveChallenge
+### resolveChallenge
 
-▸ **resolveChallenge**(`_pubKey`: string): *`Promise<TransactionReceiptWithDecodedLogs>`*
+▸ **resolveChallenge**(`_pubKey`: string): _`Promise<TransactionReceiptWithDecodedLogs>`_
 
-*Defined in [src/ValidatorRegistry.ts:269](url)*
+_Defined in [src/ValidatorRegistry.ts:269](url)_
 
 Resolves challenge of a listing
 
 **Parameters:**
 
-Name | Type | Description |
------- | ------ | ------ |
-`_pubKey` | string | hex encoded tendermint public key  |
+| Name      | Type   | Description                       |
+| --------- | ------ | --------------------------------- |
+| `_pubKey` | string | hex encoded tendermint public key |
 
-**Returns:** *`Promise<TransactionReceiptWithDecodedLogs>`*
+**Returns:** _`Promise<TransactionReceiptWithDecodedLogs>`_
 
-___
+---
 
-###  rewardPeriod
+### rewardPeriod
 
-▸ **rewardPeriod**(): *`Promise<BigNumber>`*
+▸ **rewardPeriod**(): _`Promise<BigNumber>`_
 
-*Defined in [src/ValidatorRegistry.ts:95](url)*
+_Defined in [src/ValidatorRegistry.ts:95](url)_
 
 Reads the reward period
 
-**Returns:** *`Promise<BigNumber>`*
+**Returns:** _`Promise<BigNumber>`_
 
-___
+---
 
-###  stakeholderCut
+### stakeholderCut
 
-▸ **stakeholderCut**(): *`Promise<BigNumber>`*
+▸ **stakeholderCut**(): _`Promise<BigNumber>`_
 
-*Defined in [src/ValidatorRegistry.ts:111](url)*
+_Defined in [src/ValidatorRegistry.ts:111](url)_
 
 Reads the stakeholder cut
 
-**Returns:** *`Promise<BigNumber>`*
+**Returns:** _`Promise<BigNumber>`_
 
-___
+---
 
-###  voting
+### voting
 
-▸ **voting**(): *`Promise<string>`*
+▸ **voting**(): _`Promise<string>`_
 
-*Defined in [src/ValidatorRegistry.ts:119](url)*
+_Defined in [src/ValidatorRegistry.ts:119](url)_
 
 Reads the Voting contract address
 
-**Returns:** *`Promise<string>`*
+**Returns:** _`Promise<string>`_
 
-___
+---

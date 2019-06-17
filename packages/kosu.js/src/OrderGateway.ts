@@ -98,11 +98,9 @@ export class OrderGateway {
         const participateBytes = OrderSerializer.serialize(args, order);
 
         // execute tx
-        const txId = await this.contract.participate.sendTransactionAsync(
-            order.subContract,
-            participateBytes,
-            { from: taker },
-        );
+        const txId = await this.contract.participate.sendTransactionAsync(order.subContract, participateBytes, {
+            from: taker,
+        });
         const receipt = await this.web3Wrapper.awaitTransactionSuccessAsync(txId);
         return receipt;
     }

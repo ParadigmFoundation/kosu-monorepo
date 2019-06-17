@@ -6,44 +6,44 @@
 
 ## Hierarchy
 
-* `DecodedLogArgs`
+-   `DecodedLogArgs`
 
-  * **KosuTokenTransferEventArgs**
+    -   **KosuTokenTransferEventArgs**
 
 ## Indexable
 
-● \[■&#x60; argName&#x60;: *string*\]: `ContractEventArg`
+● \[■&#x60; argName&#x60;: _string_\]: `ContractEventArg`
 
 ### Index
 
 #### Properties
 
-* [from](kosutokentransfereventargs.md#from)
-* [to](kosutokentransfereventargs.md#to)
-* [value](kosutokentransfereventargs.md#value)
+-   [from](kosutokentransfereventargs.md#from)
+-   [to](kosutokentransfereventargs.md#to)
+-   [value](kosutokentransfereventargs.md#value)
 
 ## Properties
 
-###  from
+### from
 
-● **from**: *string*
+● **from**: _string_
 
 Defined in node_modules/@kosu/system-contracts/generated-wrappers/kosu_token.ts:34
 
-___
+---
 
-###  to
+### to
 
-● **to**: *string*
+● **to**: _string_
 
 Defined in node_modules/@kosu/system-contracts/generated-wrappers/kosu_token.ts:35
 
-___
+---
 
-###  value
+### value
 
-● **value**: *`BigNumber`*
+● **value**: _`BigNumber`_
 
 Defined in node_modules/@kosu/system-contracts/generated-wrappers/kosu_token.ts:36
 
-___
+---

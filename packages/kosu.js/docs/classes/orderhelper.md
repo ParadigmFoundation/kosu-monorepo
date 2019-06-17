@@ -4,175 +4,200 @@
 
 # Class: OrderHelper
 
+The `OrderHelper` provides methods for interacting with maker orders, such as
+participating in trades (as a taker), signing maker order's for execution and
+for submission to the Kosu relay network.
+
+Requires a configured `web3` provider that allows signatures and the execution
+of transactions.
+
 ## Hierarchy
 
-* **OrderHelper**
+-   **OrderHelper**
 
 ### Index
 
 #### Constructors
 
-* [constructor](orderhelper.md#constructor)
+-   [constructor](orderhelper.md#constructor)
 
 #### Properties
 
-* [orderGateway](orderhelper.md#private-ordergateway)
-* [web3](orderhelper.md#private-web3)
+-   [orderGateway](orderhelper.md#private-ordergateway)
+-   [web3](orderhelper.md#private-web3)
 
 #### Methods
 
-* [makeOrder](orderhelper.md#makeorder)
-* [makerHex](orderhelper.md#makerhex)
-* [prepareForPost](orderhelper.md#prepareforpost)
-* [recoverMaker](orderhelper.md#recovermaker)
-* [recoverPoster](orderhelper.md#recoverposter)
-* [takeOrder](orderhelper.md#takeorder)
+-   [makeOrder](orderhelper.md#makeorder)
+-   [makerHex](orderhelper.md#makerhex)
+-   [prepareForPost](orderhelper.md#prepareforpost)
+-   [recoverMaker](orderhelper.md#recovermaker)
+-   [recoverPoster](orderhelper.md#recoverposter)
+-   [takeOrder](orderhelper.md#takeorder)
 
 ## Constructors
 
-###  constructor
+### constructor
 
-\+ **new OrderHelper**(`web3`: `Web3`, `orderGateway`: [OrderGateway](ordergateway.md)): *[OrderHelper](orderhelper.md)*
+\+ **new OrderHelper**(`web3`: `Web3`, `orderGateway`: [OrderGateway](ordergateway.md)): _[OrderHelper](orderhelper.md)_
 
-*Defined in [src/OrderHelper.ts:9](url)*
+_Defined in [src/OrderHelper.ts:24](url)_
+
+Create a new `OrderHelper` instance (requires a provider via supplied `web3`
+instance).
 
 **Parameters:**
 
-Name | Type |
------- | ------ |
-`web3` | `Web3` |
-`orderGateway` | [OrderGateway](ordergateway.md) |
+| Name           | Type                            | Description                                         |
+| -------------- | ------------------------------- | --------------------------------------------------- |
+| `web3`         | `Web3`                          | An instance of `Web3` with an active node provider. |
+| `orderGateway` | [OrderGateway](ordergateway.md) | An instantiated `OrderGateway` wrapper.             |
 
-**Returns:** *[OrderHelper](orderhelper.md)*
+**Returns:** _[OrderHelper](orderhelper.md)_
 
-___
+---
 
 ## Properties
 
 ### `Private` orderGateway
 
-● **orderGateway**: *[OrderGateway](ordergateway.md)*
+● **orderGateway**: _[OrderGateway](ordergateway.md)_
 
-*Defined in [src/OrderHelper.ts:8](url)*
+_Defined in [src/OrderHelper.ts:24](url)_
 
-___
+Instance of the `OrderGateway` wrapper.
+
+---
 
 ### `Private` web3
 
-● **web3**: *`Web3`*
+● **web3**: _`Web3`_
 
-*Defined in [src/OrderHelper.ts:9](url)*
+_Defined in [src/OrderHelper.ts:19](url)_
 
-___
+An instance of `web3` used to interact with the Ethereum blockchain.
+
+---
 
 ## Methods
 
-###  makeOrder
+### makeOrder
 
-▸ **makeOrder**(`order`: `Order`): *`Promise<Order>`*
+▸ **makeOrder**(`order`: `Order`): _`Promise<Order>`_
 
-*Defined in [src/OrderHelper.ts:21](url)*
+_Defined in [src/OrderHelper.ts:44](url)_
 
-Make an order by ensuring a required signature is  present
-
-**Parameters:**
-
-Name | Type | Description |
------- | ------ | ------ |
-`order` | `Order` | Order to make  |
-
-**Returns:** *`Promise<Order>`*
-
-___
-
-###  makerHex
-
-▸ **makerHex**(`order`: `Order`): *`Promise<string>`*
-
-*Defined in [src/OrderHelper.ts:60](url)*
-
-Generate the maker hex
+Sign and complete a maker order (requires a pre-configured Order object).
 
 **Parameters:**
 
-Name | Type | Description |
------- | ------ | ------ |
-`order` | `Order` | Order to get maker hex for  |
+| Name    | Type    | Description               |
+| ------- | ------- | ------------------------- |
+| `order` | `Order` | Order to sign as a maker. |
 
-**Returns:** *`Promise<string>`*
+**Returns:** _`Promise<Order>`_
 
-___
+The supplied maker order with an appended `makerSignature`.
 
-###  prepareForPost
+---
 
-▸ **prepareForPost**(`order`: `Order`, `poster`: string): *`Promise<PostableOrder>`*
+### makerHex
 
-*Defined in [src/OrderHelper.ts:41](url)*
+▸ **makerHex**(`order`: `Order`): _`Promise<string>`_
 
-Generate a poster signature for OrderStream submission
+_Defined in [src/OrderHelper.ts:92](url)_
 
-**Parameters:**
-
-Name | Type | Default value | Description |
------- | ------ | ------ | ------ |
-`order` | `Order` | - | Order to prepare |
-`poster` | string |  order.maker | (Optional) Poster to sign order with  |
-
-**Returns:** *`Promise<PostableOrder>`*
-
-___
-
-###  recoverMaker
-
-▸ **recoverMaker**(`order`: `Order`): *`Promise<string>`*
-
-*Defined in [src/OrderHelper.ts:70](url)*
-
-Recover the maker
+Generate the maker hex (serialized `makerValues`).
 
 **Parameters:**
 
-Name | Type | Description |
------- | ------ | ------ |
-`order` | `Order` | Order to recover maker from  |
+| Name    | Type    | Description                |
+| ------- | ------- | -------------------------- |
+| `order` | `Order` | Order to get maker hex for |
 
-**Returns:** *`Promise<string>`*
+**Returns:** _`Promise<string>`_
 
-___
+---
 
-###  recoverPoster
+### prepareForPost
 
-▸ **recoverPoster**(`order`: `PostableOrder`): *`Promise<string>`*
+▸ **prepareForPost**(`order`: `Order`, `poster`: string): _`Promise<PostableOrder>`_
 
-*Defined in [src/OrderHelper.ts:80](url)*
+_Defined in [src/OrderHelper.ts:73](url)_
 
-Recover the poster
-
-**Parameters:**
-
-Name | Type | Description |
------- | ------ | ------ |
-`order` | `PostableOrder` | Order to recover poster from  |
-
-**Returns:** *`Promise<string>`*
-
-___
-
-###  takeOrder
-
-▸ **takeOrder**(`order`: `TakeableOrder`, `taker`: string): *`Promise<any>`*
-
-*Defined in [src/OrderHelper.ts:31](url)*
-
-Take a prepared order on the ethereum blockchain
+Sign and order as a poster and append the poster signature to an order
+prior to submission to the Kosu relay network.
 
 **Parameters:**
 
-Name | Type |
------- | ------ |
-`order` | `TakeableOrder` |
-`taker` | string |
+| Name     | Type    | Default value | Description                                                       |
+| -------- | ------- | ------------- | ----------------------------------------------------------------- |
+| `order`  | `Order` | -             | Order to prepare (by appending a poster signature).               |
+| `poster` | string  | order.maker   | Poster address to sign order with, defaults to the order's maker. |
 
-**Returns:** *`Promise<any>`*
+**Returns:** _`Promise<PostableOrder>`_
 
-___
+The maker order now signed and prepared for post with an appended `posterSignature`.
+
+---
+
+### recoverMaker
+
+▸ **recoverMaker**(`order`: `Order`): _`Promise<string>`_
+
+_Defined in [src/OrderHelper.ts:102](url)_
+
+Recover the maker address from a signed order.
+
+**Parameters:**
+
+| Name    | Type    | Description                                   |
+| ------- | ------- | --------------------------------------------- |
+| `order` | `Order` | A signed order to recover maker address from. |
+
+**Returns:** _`Promise<string>`_
+
+---
+
+### recoverPoster
+
+▸ **recoverPoster**(`order`: `PostableOrder`): _`Promise<string>`_
+
+_Defined in [src/OrderHelper.ts:113](url)_
+
+Recover the poster address from a maker order that has been signed from a
+poster.
+
+**Parameters:**
+
+| Name    | Type            | Description                                                |
+| ------- | --------------- | ---------------------------------------------------------- |
+| `order` | `PostableOrder` | Order to recover poster from (must be signed by a poster). |
+
+**Returns:** _`Promise<string>`_
+
+---
+
+### takeOrder
+
+▸ **takeOrder**(`order`: `TakeableOrder`, `taker`: string): _`Promise<any>`_
+
+_Defined in [src/OrderHelper.ts:61](url)_
+
+Take a signed maker order on the Ethereum blockchain via the order's
+specified SubContract, from the supplied taker address (should be available
+via configured `web` provider).
+
+**Parameters:**
+
+| Name    | Type            | Description                                                                 |
+| ------- | --------------- | --------------------------------------------------------------------------- |
+| `order` | `TakeableOrder` | A signed and fillable maker order object.                                   |
+| `taker` | string          | The Ethereum address of the taker (must be available to sign via provider). |
+
+**Returns:** _`Promise<any>`_
+
+The value defined by the order's SubContract implementation, usually `true`
+for successfully filled orders, and `false` for failed fills.
+
+---
