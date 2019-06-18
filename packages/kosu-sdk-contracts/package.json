@@ -3,6 +3,7 @@
     "version": "0.1.0",
     "description": "Kosu SubContract building utilities.",
     "license": "MIT",
+    "private": false,
     "repository": {
         "type": "git",
         "url": "https://github.com/ParadigmFoundation/kosu-monorepo/blob/master/packages/kosu-sdk-contracts"
