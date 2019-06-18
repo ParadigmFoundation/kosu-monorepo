@@ -51,9 +51,11 @@ steps:
  # GENERATE DOCS
  # =============
 
-- name: "gcr.io/cloud-builders/yarn"
+- name: node:10.15.1
+  entrypoint: yarn
   args: ["install"]
-- name: "gcr.io/cloud-builders/yarn"
+- name: node:10.15.1
+  entrypoint: yarn
   args: ["docs"]
 
 # =============
