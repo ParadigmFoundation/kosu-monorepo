@@ -6,790 +6,790 @@
 
 ## Hierarchy
 
-* `BaseContract`
+-   `BaseContract`
 
-  * **AuthorizedAddressesContract**
+    -   **AuthorizedAddressesContract**
 
 ### Index
 
 #### Constructors
 
-* [constructor](authorizedaddressescontract.md#constructor)
+-   [constructor](authorizedaddressescontract.md#constructor)
 
 #### Properties
 
-* [_abiEncoderByFunctionSignature](authorizedaddressescontract.md#protected-_abiencoderbyfunctionsignature)
-* [_web3Wrapper](authorizedaddressescontract.md#protected-_web3wrapper)
-* [abi](authorizedaddressescontract.md#abi)
-* [address](authorizedaddressescontract.md#address)
-* [constructorArgs](authorizedaddressescontract.md#constructorargs)
-* [contractName](authorizedaddressescontract.md#contractname)
-* [txReceipt](authorizedaddressescontract.md#optional-txreceipt)
+-   [\_abiEncoderByFunctionSignature](authorizedaddressescontract.md#protected-_abiencoderbyfunctionsignature)
+-   [\_web3Wrapper](authorizedaddressescontract.md#protected-_web3wrapper)
+-   [abi](authorizedaddressescontract.md#abi)
+-   [address](authorizedaddressescontract.md#address)
+-   [constructorArgs](authorizedaddressescontract.md#constructorargs)
+-   [contractName](authorizedaddressescontract.md#contractname)
+-   [txReceipt](authorizedaddressescontract.md#optional-txreceipt)
 
 #### Methods
 
-* [_lookupAbi](authorizedaddressescontract.md#protected-_lookupabi)
-* [_lookupAbiEncoder](authorizedaddressescontract.md#protected-_lookupabiencoder)
-* [_strictEncodeArguments](authorizedaddressescontract.md#protected-_strictencodearguments)
-* [_applyDefaultsToTxDataAsync](authorizedaddressescontract.md#static-protected-_applydefaultstotxdataasync)
-* [_bigNumberToString](authorizedaddressescontract.md#static-protected-_bignumbertostring)
-* [_formatABIDataItemList](authorizedaddressescontract.md#static-protected-_formatabidataitemlist)
-* [_lookupConstructorAbi](authorizedaddressescontract.md#static-protected-_lookupconstructorabi)
-* [_lowercaseAddress](authorizedaddressescontract.md#static-protected-_lowercaseaddress)
-* [_throwIfRevertWithReasonCallResult](authorizedaddressescontract.md#static-protected-_throwifrevertwithreasoncallresult)
-* [deployAsync](authorizedaddressescontract.md#static-deployasync)
-* [deployFrom0xArtifactAsync](authorizedaddressescontract.md#static-deployfrom0xartifactasync)
-* [strictArgumentEncodingCheck](authorizedaddressescontract.md#static-strictargumentencodingcheck)
+-   [\_lookupAbi](authorizedaddressescontract.md#protected-_lookupabi)
+-   [\_lookupAbiEncoder](authorizedaddressescontract.md#protected-_lookupabiencoder)
+-   [\_strictEncodeArguments](authorizedaddressescontract.md#protected-_strictencodearguments)
+-   [\_applyDefaultsToTxDataAsync](authorizedaddressescontract.md#static-protected-_applydefaultstotxdataasync)
+-   [\_bigNumberToString](authorizedaddressescontract.md#static-protected-_bignumbertostring)
+-   [\_formatABIDataItemList](authorizedaddressescontract.md#static-protected-_formatabidataitemlist)
+-   [\_lookupConstructorAbi](authorizedaddressescontract.md#static-protected-_lookupconstructorabi)
+-   [\_lowercaseAddress](authorizedaddressescontract.md#static-protected-_lowercaseaddress)
+-   [\_throwIfRevertWithReasonCallResult](authorizedaddressescontract.md#static-protected-_throwifrevertwithreasoncallresult)
+-   [deployAsync](authorizedaddressescontract.md#static-deployasync)
+-   [deployFrom0xArtifactAsync](authorizedaddressescontract.md#static-deployfrom0xartifactasync)
+-   [strictArgumentEncodingCheck](authorizedaddressescontract.md#static-strictargumentencodingcheck)
 
 #### Object literals
 
-* [authorizeAddress](authorizedaddressescontract.md#authorizeaddress)
-* [isAddressAuthorized](authorizedaddressescontract.md#isaddressauthorized)
-* [isOwner](authorizedaddressescontract.md#isowner)
-* [owner](authorizedaddressescontract.md#owner)
-* [renounceOwnership](authorizedaddressescontract.md#renounceownership)
-* [transferOwnership](authorizedaddressescontract.md#transferownership)
-* [unauthorizeAddress](authorizedaddressescontract.md#unauthorizeaddress)
+-   [authorizeAddress](authorizedaddressescontract.md#authorizeaddress)
+-   [isAddressAuthorized](authorizedaddressescontract.md#isaddressauthorized)
+-   [isOwner](authorizedaddressescontract.md#isowner)
+-   [owner](authorizedaddressescontract.md#owner)
+-   [renounceOwnership](authorizedaddressescontract.md#renounceownership)
+-   [transferOwnership](authorizedaddressescontract.md#transferownership)
+-   [unauthorizeAddress](authorizedaddressescontract.md#unauthorizeaddress)
 
 ## Constructors
 
-###  constructor
+### constructor
 
-\+ **new AuthorizedAddressesContract**(`abi`: `ContractAbi`, `address`: string, `supportedProvider`: `SupportedProvider`, `txDefaults?`: `Partial<TxData>`): *[AuthorizedAddressesContract](authorizedaddressescontract.md)*
+\+ **new AuthorizedAddressesContract**(`abi`: `ContractAbi`, `address`: string, `supportedProvider`: `SupportedProvider`, `txDefaults?`: `Partial<TxData>`): _[AuthorizedAddressesContract](authorizedaddressescontract.md)_
 
-*Overrides void*
+_Overrides void_
 
 Defined in generated-wrappers/authorized_addresses.ts:570
 
 **Parameters:**
 
-Name | Type |
------- | ------ |
-`abi` | `ContractAbi` |
-`address` | string |
-`supportedProvider` | `SupportedProvider` |
-`txDefaults?` | `Partial<TxData>` |
+| Name                | Type                |
+| ------------------- | ------------------- |
+| `abi`               | `ContractAbi`       |
+| `address`           | string              |
+| `supportedProvider` | `SupportedProvider` |
+| `txDefaults?`       | `Partial<TxData>`   |
 
-**Returns:** *[AuthorizedAddressesContract](authorizedaddressescontract.md)*
+**Returns:** _[AuthorizedAddressesContract](authorizedaddressescontract.md)_
 
-___
+---
 
 ## Properties
 
-### `Protected` _abiEncoderByFunctionSignature
+### `Protected` \_abiEncoderByFunctionSignature
 
-● **_abiEncoderByFunctionSignature**: *`AbiEncoderByFunctionSignature`*
+● **\_abiEncoderByFunctionSignature**: _`AbiEncoderByFunctionSignature`_
 
-*Inherited from void*
+_Inherited from void_
 
 Defined in /Users/hen/GitHub/km/node_modules/@0x/base-contract/lib/src/index.d.ts:20
 
-___
+---
 
-### `Protected` _web3Wrapper
+### `Protected` \_web3Wrapper
 
-● **_web3Wrapper**: *`Web3Wrapper`*
+● **\_web3Wrapper**: _`Web3Wrapper`_
 
-*Inherited from void*
+_Inherited from void_
 
 Defined in /Users/hen/GitHub/km/node_modules/@0x/base-contract/lib/src/index.d.ts:21
 
-___
+---
 
-###  abi
+### abi
 
-● **abi**: *`ContractAbi`*
+● **abi**: _`ContractAbi`_
 
-*Inherited from void*
+_Inherited from void_
 
 Defined in /Users/hen/GitHub/km/node_modules/@0x/base-contract/lib/src/index.d.ts:22
 
-___
+---
 
-###  address
+### address
 
-● **address**: *string*
+● **address**: _string_
 
-*Inherited from void*
+_Inherited from void_
 
 Defined in /Users/hen/GitHub/km/node_modules/@0x/base-contract/lib/src/index.d.ts:23
 
-___
+---
 
-###  constructorArgs
+### constructorArgs
 
-● **constructorArgs**: *any[]*
+● **constructorArgs**: _any[]_
 
-*Inherited from void*
+_Inherited from void_
 
 Defined in /Users/hen/GitHub/km/node_modules/@0x/base-contract/lib/src/index.d.ts:25
 
-___
+---
 
-###  contractName
+### contractName
 
-● **contractName**: *string*
+● **contractName**: _string_
 
-*Inherited from void*
+_Inherited from void_
 
 Defined in /Users/hen/GitHub/km/node_modules/@0x/base-contract/lib/src/index.d.ts:24
 
-___
+---
 
 ### `Optional` txReceipt
 
-● **txReceipt**? : *`TransactionReceiptWithDecodedLogs`*
+● **txReceipt**? : _`TransactionReceiptWithDecodedLogs`_
 
 Defined in generated-wrappers/authorized_addresses.ts:41
 
-___
+---
 
 ## Methods
 
-### `Protected` _lookupAbi
+### `Protected` \_lookupAbi
 
-▸ **_lookupAbi**(`functionSignature`: string): *`MethodAbi`*
+▸ **\_lookupAbi**(`functionSignature`: string): _`MethodAbi`_
 
-*Inherited from void*
+_Inherited from void_
 
 Defined in /Users/hen/GitHub/km/node_modules/@0x/base-contract/lib/src/index.d.ts:34
 
 **Parameters:**
 
-Name | Type |
------- | ------ |
-`functionSignature` | string |
+| Name                | Type   |
+| ------------------- | ------ |
+| `functionSignature` | string |
 
-**Returns:** *`MethodAbi`*
+**Returns:** _`MethodAbi`_
 
-___
+---
 
-### `Protected` _lookupAbiEncoder
+### `Protected` \_lookupAbiEncoder
 
-▸ **_lookupAbiEncoder**(`functionSignature`: string): *`Method`*
+▸ **\_lookupAbiEncoder**(`functionSignature`: string): _`Method`_
 
-*Inherited from void*
+_Inherited from void_
 
 Defined in /Users/hen/GitHub/km/node_modules/@0x/base-contract/lib/src/index.d.ts:33
 
 **Parameters:**
 
-Name | Type |
------- | ------ |
-`functionSignature` | string |
+| Name                | Type   |
+| ------------------- | ------ |
+| `functionSignature` | string |
 
-**Returns:** *`Method`*
+**Returns:** _`Method`_
 
-___
+---
 
-### `Protected` _strictEncodeArguments
+### `Protected` \_strictEncodeArguments
 
-▸ **_strictEncodeArguments**(`functionSignature`: string, `functionArguments`: any): *string*
+▸ **\_strictEncodeArguments**(`functionSignature`: string, `functionArguments`: any): _string_
 
-*Inherited from void*
+_Inherited from void_
 
 Defined in /Users/hen/GitHub/km/node_modules/@0x/base-contract/lib/src/index.d.ts:35
 
 **Parameters:**
 
-Name | Type |
------- | ------ |
-`functionSignature` | string |
-`functionArguments` | any |
+| Name                | Type   |
+| ------------------- | ------ |
+| `functionSignature` | string |
+| `functionArguments` | any    |
 
-**Returns:** *string*
+**Returns:** _string_
 
-___
+---
 
-### `Static` `Protected` _applyDefaultsToTxDataAsync
+### `Static` `Protected` \_applyDefaultsToTxDataAsync
 
-▸ **_applyDefaultsToTxDataAsync**<**T**>(`txData`: `T`, `txDefaults`: `Partial<TxData>`, `estimateGasAsync?`: function): *`Promise<TxData>`*
+▸ **\_applyDefaultsToTxDataAsync**<**T**>(`txData`: `T`, `txDefaults`: `Partial<TxData>`, `estimateGasAsync?`: function): _`Promise<TxData>`_
 
-*Inherited from void*
+_Inherited from void_
 
 Defined in /Users/hen/GitHub/km/node_modules/@0x/base-contract/lib/src/index.d.ts:30
 
 **Type parameters:**
 
-■` T`: *`Partial<TxData | TxDataPayable>`*
+■`T`: _`Partial<TxData | TxDataPayable>`_
 
 **Parameters:**
 
-■` txData`: *`T`*
+■`txData`: _`T`_
 
-■` txDefaults`: *`Partial<TxData>`*
+■`txDefaults`: _`Partial<TxData>`_
 
-■` estimateGasAsync`: *function*
+■`estimateGasAsync`: _function_
 
-▸ (`txData`: `T`): *`Promise<number>`*
+▸ (`txData`: `T`): _`Promise<number>`_
 
 **Parameters:**
 
-Name | Type |
------- | ------ |
-`txData` | `T` |
+| Name     | Type |
+| -------- | ---- |
+| `txData` | `T`  |
 
-**Returns:** *`Promise<TxData>`*
+**Returns:** _`Promise<TxData>`_
 
-___
+---
 
-### `Static` `Protected` _bigNumberToString
+### `Static` `Protected` \_bigNumberToString
 
-▸ **_bigNumberToString**(`_type`: string, `value`: any): *any*
+▸ **\_bigNumberToString**(`_type`: string, `value`: any): _any_
 
-*Inherited from void*
+_Inherited from void_
 
 Defined in /Users/hen/GitHub/km/node_modules/@0x/base-contract/lib/src/index.d.ts:28
 
 **Parameters:**
 
-Name | Type |
------- | ------ |
-`_type` | string |
-`value` | any |
+| Name    | Type   |
+| ------- | ------ |
+| `_type` | string |
+| `value` | any    |
 
-**Returns:** *any*
+**Returns:** _any_
 
-___
+---
 
-### `Static` `Protected` _formatABIDataItemList
+### `Static` `Protected` \_formatABIDataItemList
 
-▸ **_formatABIDataItemList**(`abis`: `DataItem`[], `values`: any[], `formatter`: function): *any*
+▸ **\_formatABIDataItemList**(`abis`: `DataItem`[], `values`: any[], `formatter`: function): _any_
 
-*Inherited from void*
+_Inherited from void_
 
 Defined in /Users/hen/GitHub/km/node_modules/@0x/base-contract/lib/src/index.d.ts:26
 
 **Parameters:**
 
-■` abis`: *`DataItem`[]*
+■`abis`: _`DataItem`[]_
 
-■` values`: *any[]*
+■`values`: _any[]_
 
-■` formatter`: *function*
+■`formatter`: _function_
 
-▸ (`type`: string, `value`: any): *any*
+▸ (`type`: string, `value`: any): _any_
 
 **Parameters:**
 
-Name | Type |
------- | ------ |
-`type` | string |
-`value` | any |
+| Name    | Type   |
+| ------- | ------ |
+| `type`  | string |
+| `value` | any    |
 
-**Returns:** *any*
+**Returns:** _any_
 
-___
+---
 
-### `Static` `Protected` _lookupConstructorAbi
+### `Static` `Protected` \_lookupConstructorAbi
 
-▸ **_lookupConstructorAbi**(`abi`: `ContractAbi`): *`ConstructorAbi`*
+▸ **\_lookupConstructorAbi**(`abi`: `ContractAbi`): _`ConstructorAbi`_
 
-*Inherited from void*
+_Inherited from void_
 
 Defined in /Users/hen/GitHub/km/node_modules/@0x/base-contract/lib/src/index.d.ts:29
 
 **Parameters:**
 
-Name | Type |
------- | ------ |
-`abi` | `ContractAbi` |
+| Name  | Type          |
+| ----- | ------------- |
+| `abi` | `ContractAbi` |
 
-**Returns:** *`ConstructorAbi`*
+**Returns:** _`ConstructorAbi`_
 
-___
+---
 
-### `Static` `Protected` _lowercaseAddress
+### `Static` `Protected` \_lowercaseAddress
 
-▸ **_lowercaseAddress**(`type`: string, `value`: string): *string*
+▸ **\_lowercaseAddress**(`type`: string, `value`: string): _string_
 
-*Inherited from void*
+_Inherited from void_
 
 Defined in /Users/hen/GitHub/km/node_modules/@0x/base-contract/lib/src/index.d.ts:27
 
 **Parameters:**
 
-Name | Type |
------- | ------ |
-`type` | string |
-`value` | string |
+| Name    | Type   |
+| ------- | ------ |
+| `type`  | string |
+| `value` | string |
 
-**Returns:** *string*
+**Returns:** _string_
 
-___
+---
 
-### `Static` `Protected` _throwIfRevertWithReasonCallResult
+### `Static` `Protected` \_throwIfRevertWithReasonCallResult
 
-▸ **_throwIfRevertWithReasonCallResult**(`rawCallResult`: string): *void*
+▸ **\_throwIfRevertWithReasonCallResult**(`rawCallResult`: string): _void_
 
-*Inherited from void*
+_Inherited from void_
 
 Defined in /Users/hen/GitHub/km/node_modules/@0x/base-contract/lib/src/index.d.ts:31
 
 **Parameters:**
 
-Name | Type |
------- | ------ |
-`rawCallResult` | string |
+| Name            | Type   |
+| --------------- | ------ |
+| `rawCallResult` | string |
 
-**Returns:** *void*
+**Returns:** _void_
 
-___
+---
 
 ### `Static` deployAsync
 
-▸ **deployAsync**(`bytecode`: string, `abi`: `ContractAbi`, `supportedProvider`: `SupportedProvider`, `txDefaults`: `Partial<TxData>`): *`Promise<AuthorizedAddressesContract>`*
+▸ **deployAsync**(`bytecode`: string, `abi`: `ContractAbi`, `supportedProvider`: `SupportedProvider`, `txDefaults`: `Partial<TxData>`): _`Promise<AuthorizedAddressesContract>`_
 
 Defined in generated-wrappers/authorized_addresses.ts:540
 
 **Parameters:**
 
-Name | Type |
------- | ------ |
-`bytecode` | string |
-`abi` | `ContractAbi` |
-`supportedProvider` | `SupportedProvider` |
-`txDefaults` | `Partial<TxData>` |
+| Name                | Type                |
+| ------------------- | ------------------- |
+| `bytecode`          | string              |
+| `abi`               | `ContractAbi`       |
+| `supportedProvider` | `SupportedProvider` |
+| `txDefaults`        | `Partial<TxData>`   |
 
-**Returns:** *`Promise<AuthorizedAddressesContract>`*
+**Returns:** _`Promise<AuthorizedAddressesContract>`_
 
-___
+---
 
 ### `Static` deployFrom0xArtifactAsync
 
-▸ **deployFrom0xArtifactAsync**(`artifact`: `ContractArtifact` | `SimpleContractArtifact`, `supportedProvider`: `SupportedProvider`, `txDefaults`: `Partial<TxData>`): *`Promise<AuthorizedAddressesContract>`*
+▸ **deployFrom0xArtifactAsync**(`artifact`: `ContractArtifact` | `SimpleContractArtifact`, `supportedProvider`: `SupportedProvider`, `txDefaults`: `Partial<TxData>`): _`Promise<AuthorizedAddressesContract>`_
 
 Defined in generated-wrappers/authorized_addresses.ts:527
 
 **Parameters:**
 
-Name | Type |
------- | ------ |
-`artifact` | `ContractArtifact` | `SimpleContractArtifact` |
-`supportedProvider` | `SupportedProvider` |
-`txDefaults` | `Partial<TxData>` |
+| Name                | Type                |
+| ------------------- | ------------------- |
+| `artifact`          | `ContractArtifact`  | `SimpleContractArtifact` |
+| `supportedProvider` | `SupportedProvider` |
+| `txDefaults`        | `Partial<TxData>`   |
 
-**Returns:** *`Promise<AuthorizedAddressesContract>`*
+**Returns:** _`Promise<AuthorizedAddressesContract>`_
 
-___
+---
 
 ### `Static` strictArgumentEncodingCheck
 
-▸ **strictArgumentEncodingCheck**(`inputAbi`: `DataItem`[], `args`: any[]): *string*
+▸ **strictArgumentEncodingCheck**(`inputAbi`: `DataItem`[], `args`: any[]): _string_
 
-*Inherited from void*
+_Inherited from void_
 
 Defined in /Users/hen/GitHub/km/node_modules/@0x/base-contract/lib/src/index.d.ts:32
 
 **Parameters:**
 
-Name | Type |
------- | ------ |
-`inputAbi` | `DataItem`[] |
-`args` | any[] |
+| Name       | Type         |
+| ---------- | ------------ |
+| `inputAbi` | `DataItem`[] |
+| `args`     | any[]        |
 
-**Returns:** *string*
+**Returns:** _string_
 
-___
+---
 
 ## Object literals
 
-###  authorizeAddress
+### authorizeAddress
 
-### ■ **authorizeAddress**: *object*
+### ■ **authorizeAddress**: _object_
 
 Defined in generated-wrappers/authorized_addresses.ts:42
 
-###  awaitTransactionSuccessAsync
+### awaitTransactionSuccessAsync
 
-▸ **awaitTransactionSuccessAsync**(`a`: string, `txData?`: `Partial<TxData>` | number, `pollingIntervalMs?`: number, `timeoutMs?`: number): *`PromiseWithTransactionHash<TransactionReceiptWithDecodedLogs>`*
+▸ **awaitTransactionSuccessAsync**(`a`: string, `txData?`: `Partial<TxData>` | number, `pollingIntervalMs?`: number, `timeoutMs?`: number): _`PromiseWithTransactionHash<TransactionReceiptWithDecodedLogs>`_
 
 Defined in generated-wrappers/authorized_addresses.ts:65
 
 **Parameters:**
 
-Name | Type |
------- | ------ |
-`a` | string |
-`txData?` | `Partial<TxData>` | number |
-`pollingIntervalMs?` | number |
-`timeoutMs?` | number |
+| Name                 | Type              |
+| -------------------- | ----------------- |
+| `a`                  | string            |
+| `txData?`            | `Partial<TxData>` | number |
+| `pollingIntervalMs?` | number            |
+| `timeoutMs?`         | number            |
 
-**Returns:** *`PromiseWithTransactionHash<TransactionReceiptWithDecodedLogs>`*
+**Returns:** _`PromiseWithTransactionHash<TransactionReceiptWithDecodedLogs>`_
 
-###  callAsync
+### callAsync
 
-▸ **callAsync**(`a`: string, `callData`: `Partial<CallData>`, `defaultBlock?`: `BlockParam`): *`Promise<void>`*
+▸ **callAsync**(`a`: string, `callData`: `Partial<CallData>`, `defaultBlock?`: `BlockParam`): _`Promise<void>`_
 
 Defined in generated-wrappers/authorized_addresses.ts:119
 
 **Parameters:**
 
-Name | Type | Default value |
------- | ------ | ------ |
-`a` | string | - |
-`callData` | `Partial<CallData>` |  {} |
-`defaultBlock?` | `BlockParam` | - |
+| Name            | Type                | Default value |
+| --------------- | ------------------- | ------------- |
+| `a`             | string              | -             |
+| `callData`      | `Partial<CallData>` | {}            |
+| `defaultBlock?` | `BlockParam`        | -             |
 
-**Returns:** *`Promise<void>`*
+**Returns:** _`Promise<void>`_
 
-###  estimateGasAsync
+### estimateGasAsync
 
-▸ **estimateGasAsync**(`a`: string, `txData`: `Partial<TxData>`): *`Promise<number>`*
+▸ **estimateGasAsync**(`a`: string, `txData`: `Partial<TxData>`): _`Promise<number>`_
 
 Defined in generated-wrappers/authorized_addresses.ts:93
 
 **Parameters:**
 
-Name | Type | Default value |
------- | ------ | ------ |
-`a` | string | - |
-`txData` | `Partial<TxData>` |  {} |
+| Name     | Type              | Default value |
+| -------- | ----------------- | ------------- |
+| `a`      | string            | -             |
+| `txData` | `Partial<TxData>` | {}            |
 
-**Returns:** *`Promise<number>`*
+**Returns:** _`Promise<number>`_
 
-###  getABIEncodedTransactionData
+### getABIEncodedTransactionData
 
-▸ **getABIEncodedTransactionData**(`a`: string): *string*
+▸ **getABIEncodedTransactionData**(`a`: string): _string_
 
 Defined in generated-wrappers/authorized_addresses.ts:111
 
 **Parameters:**
 
-Name | Type |
------- | ------ |
-`a` | string |
+| Name | Type   |
+| ---- | ------ |
+| `a`  | string |
 
-**Returns:** *string*
+**Returns:** _string_
 
-###  sendTransactionAsync
+### sendTransactionAsync
 
-▸ **sendTransactionAsync**(`a`: string, `txData`: `Partial<TxData>`): *`Promise<string>`*
+▸ **sendTransactionAsync**(`a`: string, `txData`: `Partial<TxData>`): _`Promise<string>`_
 
 Defined in generated-wrappers/authorized_addresses.ts:43
 
 **Parameters:**
 
-Name | Type | Default value |
------- | ------ | ------ |
-`a` | string | - |
-`txData` | `Partial<TxData>` |  {} |
+| Name     | Type              | Default value |
+| -------- | ----------------- | ------------- |
+| `a`      | string            | -             |
+| `txData` | `Partial<TxData>` | {}            |
 
-**Returns:** *`Promise<string>`*
+**Returns:** _`Promise<string>`_
 
-___
+---
 
-###  isAddressAuthorized
+### isAddressAuthorized
 
-### ■ **isAddressAuthorized**: *object*
+### ■ **isAddressAuthorized**: _object_
 
 Defined in generated-wrappers/authorized_addresses.ts:395
 
-###  callAsync
+### callAsync
 
-▸ **callAsync**(`a`: string, `callData`: `Partial<CallData>`, `defaultBlock?`: `BlockParam`): *`Promise<boolean>`*
+▸ **callAsync**(`a`: string, `callData`: `Partial<CallData>`, `defaultBlock?`: `BlockParam`): _`Promise<boolean>`_
 
 Defined in generated-wrappers/authorized_addresses.ts:396
 
 **Parameters:**
 
-Name | Type | Default value |
------- | ------ | ------ |
-`a` | string | - |
-`callData` | `Partial<CallData>` |  {} |
-`defaultBlock?` | `BlockParam` | - |
+| Name            | Type                | Default value |
+| --------------- | ------------------- | ------------- |
+| `a`             | string              | -             |
+| `callData`      | `Partial<CallData>` | {}            |
+| `defaultBlock?` | `BlockParam`        | -             |
 
-**Returns:** *`Promise<boolean>`*
+**Returns:** _`Promise<boolean>`_
 
-___
+---
 
-###  isOwner
+### isOwner
 
-### ■ **isOwner**: *object*
+### ■ **isOwner**: _object_
 
 Defined in generated-wrappers/authorized_addresses.ts:265
 
-###  callAsync
+### callAsync
 
-▸ **callAsync**(`callData`: `Partial<CallData>`, `defaultBlock?`: `BlockParam`): *`Promise<boolean>`*
+▸ **callAsync**(`callData`: `Partial<CallData>`, `defaultBlock?`: `BlockParam`): _`Promise<boolean>`_
 
 Defined in generated-wrappers/authorized_addresses.ts:266
 
 **Parameters:**
 
-Name | Type | Default value |
------- | ------ | ------ |
-`callData` | `Partial<CallData>` |  {} |
-`defaultBlock?` | `BlockParam` | - |
+| Name            | Type                | Default value |
+| --------------- | ------------------- | ------------- |
+| `callData`      | `Partial<CallData>` | {}            |
+| `defaultBlock?` | `BlockParam`        | -             |
 
-**Returns:** *`Promise<boolean>`*
+**Returns:** _`Promise<boolean>`_
 
-___
+---
 
-###  owner
+### owner
 
-### ■ **owner**: *object*
+### ■ **owner**: _object_
 
 Defined in generated-wrappers/authorized_addresses.ts:239
 
-###  callAsync
+### callAsync
 
-▸ **callAsync**(`callData`: `Partial<CallData>`, `defaultBlock?`: `BlockParam`): *`Promise<string>`*
+▸ **callAsync**(`callData`: `Partial<CallData>`, `defaultBlock?`: `BlockParam`): _`Promise<string>`_
 
 Defined in generated-wrappers/authorized_addresses.ts:240
 
 **Parameters:**
 
-Name | Type | Default value |
------- | ------ | ------ |
-`callData` | `Partial<CallData>` |  {} |
-`defaultBlock?` | `BlockParam` | - |
+| Name            | Type                | Default value |
+| --------------- | ------------------- | ------------- |
+| `callData`      | `Partial<CallData>` | {}            |
+| `defaultBlock?` | `BlockParam`        | -             |
 
-**Returns:** *`Promise<string>`*
+**Returns:** _`Promise<string>`_
 
-___
+---
 
-###  renounceOwnership
+### renounceOwnership
 
-### ■ **renounceOwnership**: *object*
+### ■ **renounceOwnership**: _object_
 
 Defined in generated-wrappers/authorized_addresses.ts:146
 
-###  awaitTransactionSuccessAsync
+### awaitTransactionSuccessAsync
 
-▸ **awaitTransactionSuccessAsync**(`txData?`: `Partial<TxData>` | number, `pollingIntervalMs?`: number, `timeoutMs?`: number): *`PromiseWithTransactionHash<TransactionReceiptWithDecodedLogs>`*
+▸ **awaitTransactionSuccessAsync**(`txData?`: `Partial<TxData>` | number, `pollingIntervalMs?`: number, `timeoutMs?`: number): _`PromiseWithTransactionHash<TransactionReceiptWithDecodedLogs>`_
 
 Defined in generated-wrappers/authorized_addresses.ts:166
 
 **Parameters:**
 
-Name | Type |
------- | ------ |
-`txData?` | `Partial<TxData>` | number |
-`pollingIntervalMs?` | number |
-`timeoutMs?` | number |
+| Name                 | Type              |
+| -------------------- | ----------------- |
+| `txData?`            | `Partial<TxData>` | number |
+| `pollingIntervalMs?` | number            |
+| `timeoutMs?`         | number            |
 
-**Returns:** *`PromiseWithTransactionHash<TransactionReceiptWithDecodedLogs>`*
+**Returns:** _`PromiseWithTransactionHash<TransactionReceiptWithDecodedLogs>`_
 
-###  callAsync
+### callAsync
 
-▸ **callAsync**(`callData`: `Partial<CallData>`, `defaultBlock?`: `BlockParam`): *`Promise<void>`*
+▸ **callAsync**(`callData`: `Partial<CallData>`, `defaultBlock?`: `BlockParam`): _`Promise<void>`_
 
 Defined in generated-wrappers/authorized_addresses.ts:214
 
 **Parameters:**
 
-Name | Type | Default value |
------- | ------ | ------ |
-`callData` | `Partial<CallData>` |  {} |
-`defaultBlock?` | `BlockParam` | - |
+| Name            | Type                | Default value |
+| --------------- | ------------------- | ------------- |
+| `callData`      | `Partial<CallData>` | {}            |
+| `defaultBlock?` | `BlockParam`        | -             |
 
-**Returns:** *`Promise<void>`*
+**Returns:** _`Promise<void>`_
 
-###  estimateGasAsync
+### estimateGasAsync
 
-▸ **estimateGasAsync**(`txData`: `Partial<TxData>`): *`Promise<number>`*
+▸ **estimateGasAsync**(`txData`: `Partial<TxData>`): _`Promise<number>`_
 
 Defined in generated-wrappers/authorized_addresses.ts:192
 
 **Parameters:**
 
-Name | Type | Default value |
------- | ------ | ------ |
-`txData` | `Partial<TxData>` |  {} |
+| Name     | Type              | Default value |
+| -------- | ----------------- | ------------- |
+| `txData` | `Partial<TxData>` | {}            |
 
-**Returns:** *`Promise<number>`*
+**Returns:** _`Promise<number>`_
 
-###  getABIEncodedTransactionData
+### getABIEncodedTransactionData
 
-▸ **getABIEncodedTransactionData**(): *string*
+▸ **getABIEncodedTransactionData**(): _string_
 
 Defined in generated-wrappers/authorized_addresses.ts:208
 
-**Returns:** *string*
+**Returns:** _string_
 
-###  sendTransactionAsync
+### sendTransactionAsync
 
-▸ **sendTransactionAsync**(`txData`: `Partial<TxData>`): *`Promise<string>`*
+▸ **sendTransactionAsync**(`txData`: `Partial<TxData>`): _`Promise<string>`_
 
 Defined in generated-wrappers/authorized_addresses.ts:147
 
 **Parameters:**
 
-Name | Type | Default value |
------- | ------ | ------ |
-`txData` | `Partial<TxData>` |  {} |
+| Name     | Type              | Default value |
+| -------- | ----------------- | ------------- |
+| `txData` | `Partial<TxData>` | {}            |
 
-**Returns:** *`Promise<string>`*
+**Returns:** _`Promise<string>`_
 
-___
+---
 
-###  transferOwnership
+### transferOwnership
 
-### ■ **transferOwnership**: *object*
+### ■ **transferOwnership**: _object_
 
 Defined in generated-wrappers/authorized_addresses.ts:423
 
-###  awaitTransactionSuccessAsync
+### awaitTransactionSuccessAsync
 
-▸ **awaitTransactionSuccessAsync**(`newOwner`: string, `txData?`: `Partial<TxData>` | number, `pollingIntervalMs?`: number, `timeoutMs?`: number): *`PromiseWithTransactionHash<TransactionReceiptWithDecodedLogs>`*
+▸ **awaitTransactionSuccessAsync**(`newOwner`: string, `txData?`: `Partial<TxData>` | number, `pollingIntervalMs?`: number, `timeoutMs?`: number): _`PromiseWithTransactionHash<TransactionReceiptWithDecodedLogs>`_
 
 Defined in generated-wrappers/authorized_addresses.ts:446
 
 **Parameters:**
 
-Name | Type |
------- | ------ |
-`newOwner` | string |
-`txData?` | `Partial<TxData>` | number |
-`pollingIntervalMs?` | number |
-`timeoutMs?` | number |
+| Name                 | Type              |
+| -------------------- | ----------------- |
+| `newOwner`           | string            |
+| `txData?`            | `Partial<TxData>` | number |
+| `pollingIntervalMs?` | number            |
+| `timeoutMs?`         | number            |
 
-**Returns:** *`PromiseWithTransactionHash<TransactionReceiptWithDecodedLogs>`*
+**Returns:** _`PromiseWithTransactionHash<TransactionReceiptWithDecodedLogs>`_
 
-###  callAsync
+### callAsync
 
-▸ **callAsync**(`newOwner`: string, `callData`: `Partial<CallData>`, `defaultBlock?`: `BlockParam`): *`Promise<void>`*
+▸ **callAsync**(`newOwner`: string, `callData`: `Partial<CallData>`, `defaultBlock?`: `BlockParam`): _`Promise<void>`_
 
 Defined in generated-wrappers/authorized_addresses.ts:500
 
 **Parameters:**
 
-Name | Type | Default value |
------- | ------ | ------ |
-`newOwner` | string | - |
-`callData` | `Partial<CallData>` |  {} |
-`defaultBlock?` | `BlockParam` | - |
+| Name            | Type                | Default value |
+| --------------- | ------------------- | ------------- |
+| `newOwner`      | string              | -             |
+| `callData`      | `Partial<CallData>` | {}            |
+| `defaultBlock?` | `BlockParam`        | -             |
 
-**Returns:** *`Promise<void>`*
+**Returns:** _`Promise<void>`_
 
-###  estimateGasAsync
+### estimateGasAsync
 
-▸ **estimateGasAsync**(`newOwner`: string, `txData`: `Partial<TxData>`): *`Promise<number>`*
+▸ **estimateGasAsync**(`newOwner`: string, `txData`: `Partial<TxData>`): _`Promise<number>`_
 
 Defined in generated-wrappers/authorized_addresses.ts:474
 
 **Parameters:**
 
-Name | Type | Default value |
------- | ------ | ------ |
-`newOwner` | string | - |
-`txData` | `Partial<TxData>` |  {} |
+| Name       | Type              | Default value |
+| ---------- | ----------------- | ------------- |
+| `newOwner` | string            | -             |
+| `txData`   | `Partial<TxData>` | {}            |
 
-**Returns:** *`Promise<number>`*
+**Returns:** _`Promise<number>`_
 
-###  getABIEncodedTransactionData
+### getABIEncodedTransactionData
 
-▸ **getABIEncodedTransactionData**(`newOwner`: string): *string*
+▸ **getABIEncodedTransactionData**(`newOwner`: string): _string_
 
 Defined in generated-wrappers/authorized_addresses.ts:492
 
 **Parameters:**
 
-Name | Type |
------- | ------ |
-`newOwner` | string |
+| Name       | Type   |
+| ---------- | ------ |
+| `newOwner` | string |
 
-**Returns:** *string*
+**Returns:** _string_
 
-###  sendTransactionAsync
+### sendTransactionAsync
 
-▸ **sendTransactionAsync**(`newOwner`: string, `txData`: `Partial<TxData>`): *`Promise<string>`*
+▸ **sendTransactionAsync**(`newOwner`: string, `txData`: `Partial<TxData>`): _`Promise<string>`_
 
 Defined in generated-wrappers/authorized_addresses.ts:424
 
 **Parameters:**
 
-Name | Type | Default value |
------- | ------ | ------ |
-`newOwner` | string | - |
-`txData` | `Partial<TxData>` |  {} |
+| Name       | Type              | Default value |
+| ---------- | ----------------- | ------------- |
+| `newOwner` | string            | -             |
+| `txData`   | `Partial<TxData>` | {}            |
 
-**Returns:** *`Promise<string>`*
+**Returns:** _`Promise<string>`_
 
-___
+---
 
-###  unauthorizeAddress
+### unauthorizeAddress
 
-### ■ **unauthorizeAddress**: *object*
+### ■ **unauthorizeAddress**: _object_
 
 Defined in generated-wrappers/authorized_addresses.ts:291
 
-###  awaitTransactionSuccessAsync
+### awaitTransactionSuccessAsync
 
-▸ **awaitTransactionSuccessAsync**(`a`: string, `txData?`: `Partial<TxData>` | number, `pollingIntervalMs?`: number, `timeoutMs?`: number): *`PromiseWithTransactionHash<TransactionReceiptWithDecodedLogs>`*
+▸ **awaitTransactionSuccessAsync**(`a`: string, `txData?`: `Partial<TxData>` | number, `pollingIntervalMs?`: number, `timeoutMs?`: number): _`PromiseWithTransactionHash<TransactionReceiptWithDecodedLogs>`_
 
 Defined in generated-wrappers/authorized_addresses.ts:314
 
 **Parameters:**
 
-Name | Type |
------- | ------ |
-`a` | string |
-`txData?` | `Partial<TxData>` | number |
-`pollingIntervalMs?` | number |
-`timeoutMs?` | number |
+| Name                 | Type              |
+| -------------------- | ----------------- |
+| `a`                  | string            |
+| `txData?`            | `Partial<TxData>` | number |
+| `pollingIntervalMs?` | number            |
+| `timeoutMs?`         | number            |
 
-**Returns:** *`PromiseWithTransactionHash<TransactionReceiptWithDecodedLogs>`*
+**Returns:** _`PromiseWithTransactionHash<TransactionReceiptWithDecodedLogs>`_
 
-###  callAsync
+### callAsync
 
-▸ **callAsync**(`a`: string, `callData`: `Partial<CallData>`, `defaultBlock?`: `BlockParam`): *`Promise<void>`*
+▸ **callAsync**(`a`: string, `callData`: `Partial<CallData>`, `defaultBlock?`: `BlockParam`): _`Promise<void>`_
 
 Defined in generated-wrappers/authorized_addresses.ts:368
 
 **Parameters:**
 
-Name | Type | Default value |
------- | ------ | ------ |
-`a` | string | - |
-`callData` | `Partial<CallData>` |  {} |
-`defaultBlock?` | `BlockParam` | - |
+| Name            | Type                | Default value |
+| --------------- | ------------------- | ------------- |
+| `a`             | string              | -             |
+| `callData`      | `Partial<CallData>` | {}            |
+| `defaultBlock?` | `BlockParam`        | -             |
 
-**Returns:** *`Promise<void>`*
+**Returns:** _`Promise<void>`_
 
-###  estimateGasAsync
+### estimateGasAsync
 
-▸ **estimateGasAsync**(`a`: string, `txData`: `Partial<TxData>`): *`Promise<number>`*
+▸ **estimateGasAsync**(`a`: string, `txData`: `Partial<TxData>`): _`Promise<number>`_
 
 Defined in generated-wrappers/authorized_addresses.ts:342
 
 **Parameters:**
 
-Name | Type | Default value |
------- | ------ | ------ |
-`a` | string | - |
-`txData` | `Partial<TxData>` |  {} |
+| Name     | Type              | Default value |
+| -------- | ----------------- | ------------- |
+| `a`      | string            | -             |
+| `txData` | `Partial<TxData>` | {}            |
 
-**Returns:** *`Promise<number>`*
+**Returns:** _`Promise<number>`_
 
-###  getABIEncodedTransactionData
+### getABIEncodedTransactionData
 
-▸ **getABIEncodedTransactionData**(`a`: string): *string*
+▸ **getABIEncodedTransactionData**(`a`: string): _string_
 
 Defined in generated-wrappers/authorized_addresses.ts:360
 
 **Parameters:**
 
-Name | Type |
------- | ------ |
-`a` | string |
+| Name | Type   |
+| ---- | ------ |
+| `a`  | string |
 
-**Returns:** *string*
+**Returns:** _string_
 
-###  sendTransactionAsync
+### sendTransactionAsync
 
-▸ **sendTransactionAsync**(`a`: string, `txData`: `Partial<TxData>`): *`Promise<string>`*
+▸ **sendTransactionAsync**(`a`: string, `txData`: `Partial<TxData>`): _`Promise<string>`_
 
 Defined in generated-wrappers/authorized_addresses.ts:292
 
 **Parameters:**
 
-Name | Type | Default value |
------- | ------ | ------ |
-`a` | string | - |
-`txData` | `Partial<TxData>` |  {} |
+| Name     | Type              | Default value |
+| -------- | ----------------- | ------------- |
+| `a`      | string            | -             |
+| `txData` | `Partial<TxData>` | {}            |
 
-**Returns:** *`Promise<string>`*
+**Returns:** _`Promise<string>`_
 
-___
+---
