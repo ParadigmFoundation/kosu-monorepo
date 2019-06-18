@@ -21,7 +21,7 @@ describe("OrderGateway", () => {
         const values = [];
         const args = await contracts.orderGateway.arguments
             .callAsync(contracts.subContract.address)
-            .then(raw => JSON.parse(raw));
+            .then(rawJson => JSON.parse(rawJson));
         args.maker.forEach(argument => {
             if (argument.name.includes("signature")) {
                 return;
