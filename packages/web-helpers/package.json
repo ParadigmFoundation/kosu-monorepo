@@ -6,12 +6,12 @@
     "homepage": "https://portal.kosu.io/",
     "description": "Simple web interfaces for interacting with the Kosu contract system and network.",
     "scripts": {
-        "build": "webpack",
+        "compile:assets": "webpack",
         "develop": "webpack-dev-server",
-        "deploy": "yarn build && gsutil -m rsync -d ./public gs://portal.kosu.io"
+        "deploy": "yarn compile:assets && gsutil -m rsync -d ./public gs://portal.kosu.io"
     },
     "dependencies": {
-        "@kosu/kosu.js": "0.1.0-alpha.1",
+        "@kosu/kosu.js": "0.1.1",
         "uuid": "^3.3.2"
     },
     "devDependencies": {
