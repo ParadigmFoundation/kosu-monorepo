@@ -19,24 +19,62 @@ const KosuEndpoints = {
     },
 };
 
+/**
+ * The `EventEmitter` class simplifies interaction with the Kosu `EventEmitter`
+ * contract. It provides methods to access historical decoded event logs, and
+ * to subscribe to future events.
+ */
 export class EventEmitter {
+    /**
+     * The `web3Wrapper` instance with the contract's ABI loaded.
+     */
     private readonly web3Wrapper: Web3Wrapper;
+
+    /**
+     * The address of the deployed `EventEmitter` contract for the current Ethereum
+     * network.
+     */
     private address: string;
+
+    /**
+     * A separate `web3Wrapper` instance that can be configured with the Kosu
+     * development proof-of-authority network for testing purposes.
+     */
     private kosuWeb3Wrapper: Web3Wrapper;
 
+    /**
+     * Create a new `EventEmitter` instance.
+     *
+     * @param options Options object with `web3Wrapper` and optional `eventEmitterAddress`.
+     */
     constructor(options: KosuOptions) {
         this.web3Wrapper = options.web3Wrapper;
         this.address = options.eventEmitterAddress;
     }
 
+    /**
+     * Return the address of the configured deployed contract. If not already cached,
+     * will return the deployed address for the detected network ID (if available).
+     */
     public async getAddress(): Promise<string> {
         if (!this.address) {
-            this.address = DeployedAddresses[await this.web3Wrapper.getNetworkIdAsync()].EventEmitter;
+            const networkId = await this.web3Wrapper.getNetworkIdAsync();
+            const addresses = DeployedAddresses[networkId];
+            if (!addresses || !addresses.EventEmitter) {
+                throw new Error("No known Kosu deployment for detected networkId.");
+            }
+            this.address = addresses.EventEmitter;
         }
-
         return this.address;
     }
 
+    /**
+     * Get all past decoded logs from the Kosu `EventEmitter` contract, with the
+     * oldest event at position 0.
+     *
+     * @param config Configure logs query (see `options` for `web3wrapper.getLogsAsync`)
+     * @returns An array of event logs with decoded arguments from the EventEmitter.
+     */
     public async getPastDecodedLogs(
         config: FilterObject,
     ): Promise<Array<LogWithDecodedKosuArgs<DecodedLogArgs, DecodedKosuLogArgs>>> {
@@ -55,6 +93,12 @@ export class EventEmitter {
             });
     }
 
+    /**
+     * @todo document better (and confirm)
+     *
+     * @param start The first block to process events with the `callback` for.
+     * @param callback A callback function to be called on an array of each new event log.
+     */
     public getFutureDecodedLogs(
         start: number,
         callback: (a: Array<LogWithDecodedKosuArgs<DecodedLogArgs, DecodedKosuLogArgs>>) => void,
@@ -72,6 +116,12 @@ export class EventEmitter {
         }, 1000);
     }
 
+    /**
+     * Load all historical even logs from the Kosu EventEmitter contract that is
+     * deployed on the Kosu private test-network.
+     *
+     * @param config Filter object for querying past logs (see `web3Wrapper.getLogsAsync`).
+     */
     private async getPastLogsFromKosuEndpoint(config: FilterObject): Promise<any[]> {
         const chainId = await this.web3Wrapper.getNetworkIdAsync();
         if (!this.kosuWeb3Wrapper) {

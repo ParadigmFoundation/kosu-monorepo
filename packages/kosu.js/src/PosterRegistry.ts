@@ -7,20 +7,44 @@ import Web3 from "web3";
 import { Treasury } from "./Treasury";
 
 /**
- * Integration with PosterRegistry contract on an Ethereum blockchain.
+ * Interact with the Kosu PosterRegistry contract on the Ethereum blockchain.
+ *
+ * Instances of the `PosterRegistry` class allow users to interact with the
+ * deployed contract to bond and un-bond tokens (for access to the Kosu network)
+ * and to view their balance, as well as the cumulative lockup.
  */
 export class PosterRegistry {
+    /**
+     * An instance of `web3` used to interact with the Ethereum blockchain.
+     */
     private readonly web3: Web3;
-    private readonly treasury: Treasury;
-    private contract: PosterRegistryProxyContract;
+
+    /**
+     * The `web3Wrapper` instance with the contract's ABI loaded.
+     */
     private readonly web3Wrapper: Web3Wrapper;
+
+    /**
+     * An instantiated Treasury contract wrapper.
+     */
+    private readonly treasury: Treasury;
+
+    /**
+     * A lower-level, auto-generated contract wrapper for the PosterRegistry
+     * proxy contract. Generated from solidity source code.
+     */
+    private contract: PosterRegistryProxyContract;
+
+    /**
+     * The address of the deployed PosterRegistry proxy contract.
+     */
     private address: string;
 
     /**
      * Create a new PosterRegistry instance.
      *
-     * @param options instantiation options
-     * @param treasury treasury integration instance
+     * @param options Instantiation options (see `KosuOptions`).
+     * @param treasury Treasury integration instance.
      */
     constructor(options: KosuOptions, treasury: Treasury) {
         this.web3 = options.web3;
@@ -30,9 +54,9 @@ export class PosterRegistry {
     }
 
     /**
-     * Asynchronously initializes the contract instance or returns it from cache
+     * Asynchronously initializes the contract instance or returns it from cache.
      *
-     * @returns The contract
+     * @returns The contract wrapper instance.
      */
     private async getContract(): Promise<PosterRegistryProxyContract> {
         if (!this.contract) {
@@ -57,7 +81,9 @@ export class PosterRegistry {
     }
 
     /**
-     * Reads total tokens contributed to registry
+     * Reads total KOSU tokens contributed to registry.
+     *
+     * @returns The total pool of locked KOSU tokens in units of wei.
      */
     public async tokensContributed(): Promise<BigNumber> {
         const contract = await this.getContract();
@@ -65,9 +91,10 @@ export class PosterRegistry {
     }
 
     /**
-     * Reads number of tokens registered for address
+     * Reads number of tokens registered for a given address.
      *
-     * @param address Address of registered user
+     * @param address Address of user to query the bonded balance of.
+     * @returns The number of tokens bonded by the supplied user's address in wei.
      */
     public async tokensRegisteredFor(address: string): Promise<BigNumber> {
         const contract = await this.getContract();
@@ -75,9 +102,10 @@ export class PosterRegistry {
     }
 
     /**
-     * Registers tokens
+     * Register tokens into the PosterRegistry contract by bonding KOSU tokens.
      *
-     * @param amount uint value of tokens to register
+     * @param amount The uint value of tokens to register (in wei).
+     * @returns A transaction receipt from the mined `register` transaction.
      */
     public async registerTokens(amount: BigNumber): Promise<TransactionReceiptWithDecodedLogs> {
         const contract = await this.getContract();
@@ -105,9 +133,10 @@ export class PosterRegistry {
     }
 
     /**
-     * Releases tokens
+     * Release tokens from the PosterRegistry for the `coinbase` address (un-bond).
      *
-     * @param amount uint values of tokens to release
+     * @param amount The uint value of tokens to release from the registry (in wei).
+     * @returns A transaction receipt from the mined `register` transaction.
      */
     public async releaseTokens(amount: BigNumber): Promise<TransactionReceiptWithDecodedLogs> {
         const contract = await this.getContract();

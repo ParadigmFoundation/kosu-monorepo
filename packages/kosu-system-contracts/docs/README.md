@@ -1,3 +1,7 @@
+> ## [kosu-system-contracts](README.md)
+
+[Globals](globals.md) /
+
 # Kosu System Contracts
 
 This repository contains the contract system that implements the Kosu protocol, in conjunction with `go-kosu`.
