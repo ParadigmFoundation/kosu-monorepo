@@ -1,17 +1,21 @@
 {
     "name": "@kosu/subcontract-sdk",
-    "version": "0.1.0-alpha.1",
+    "version": "0.1.0",
+    "description": "Kosu SubContract building utilities.",
     "license": "MIT",
     "repository": {
         "type": "git",
-        "url": "https://github.com/ParadigmFoundation/kosu-monorepo.git"
+        "url": "https://github.com/ParadigmFoundation/kosu-monorepo/blob/master/packages/kosu-sdk-contracts"
     },
     "bugs": {
         "url": "https://github.com/ParadigmFoundation/kosu-monorepo/issues"
     },
-    "description": "Kosu SubContract building utilities.",
-    "scripts": {},
     "dependencies": {
         "openzeppelin-solidity": "2.1.2"
-    }
+    },
+    "files": [
+        "contracts/BytesDecoder.sol",
+        "contracts/SignatureVerification.sol",
+        "contracts/SubContract.sol"
+    ]
 }
