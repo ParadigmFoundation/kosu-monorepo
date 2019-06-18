@@ -17,5 +17,8 @@
         "contracts/BytesDecoder.sol",
         "contracts/SignatureVerification.sol",
         "contracts/SubContract.sol"
-    ]
+    ],
+    "publishConfig": {
+        "access": "public"
+    }
 }
