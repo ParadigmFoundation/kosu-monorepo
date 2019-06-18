@@ -5,7 +5,7 @@ import Web3 from "web3";
 import Web3ProviderEngine from "web3-provider-engine";
 import yargs from "yargs";
 
-import { artifacts, DeployedAddresses, KosuTokenContract } from "../src";
+import { artifacts, DeployedAddresses, KosuTokenContract } from "..";
 
 const args = yargs
     .option("rpc-url", {

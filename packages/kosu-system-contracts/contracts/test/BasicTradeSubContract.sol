@@ -24,19 +24,6 @@ contract BasicTradeSubContract is SubContract {
         _arguments = args;
     }
 
-    function test(bytes memory test) public returns (bool){
-        address signer = test.getAddress(0);
-        address signerToken = test.getAddress(20);
-        uint signerTokenCount = test.getUint(40);
-        address buyerToken = test.getAddress(72);
-        uint buyerTokenCount = test.getUint(92);
-        bytes memory signature = test.getSignature(124);
-
-        bytes32 hash = getOrderHash(test);
-
-        return SignatureVerification.verifySignature(signer, hash, signature);
-    }
-
     function arguments() external view returns (string memory) {
         return _arguments;
     }
