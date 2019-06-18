@@ -1,0 +1,8 @@
+{
+    "name": "kosu.js",
+    "mode": "file",
+    "readme": "./README.md",
+    "theme": "markdown",
+    "out": "./docs",
+    "ignoreCompilerErrors": true
+}
