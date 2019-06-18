@@ -80,10 +80,10 @@ images: [
 artifacts: 
   objects:
     location: "gs://kosu-docs/kosu.js"
-    paths: ["packages/kosu.js/docs/*"]
+    paths: ["packages/kosu.js/docs/**/*.*"]
   objects:
     location: "gs://kosu-docs/kosu-system-contracts"
-    paths: ["packages/kosu-system-contracts/docs/*"]
+    paths: ["packages/kosu-system-contracts/docs/**/*.*"]
 
 # ======
 # CONFIG
