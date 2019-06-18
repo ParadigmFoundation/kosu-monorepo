@@ -1,6 +1,6 @@
 {
     "name": "@kosu/system-contracts",
-    "version": "0.1.0",
+    "version": "0.1.1",
     "description": "Kosu protocol core contracts in Solidity.",
     "license": "MIT",
     "repository": {
@@ -76,5 +76,12 @@
     },
     "publishConfig": {
         "access": "public"
-    }
+    },
+    "files": [
+        "dist/",
+        "contracts/",
+        "compiler.json",
+        "tsconfig.json",
+        "tslint.json"
+    ]
 }
