@@ -8,14 +8,14 @@
 
 #### Enumeration members
 
--   [OwnershipTransferred](authorizedaddressesevents.md#ownershiptransferred)
+* [OwnershipTransferred](authorizedaddressesevents.md#ownershiptransferred)
 
 ## Enumeration members
 
-### OwnershipTransferred
+###  OwnershipTransferred
 
 ● **OwnershipTransferred**: = "OwnershipTransferred"
 
 Defined in generated-wrappers/authorized_addresses.ts:28
 
----
+___
