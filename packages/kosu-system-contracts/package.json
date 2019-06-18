@@ -42,7 +42,7 @@
         "@0x/subproviders": "^4.1.0",
         "@0x/utils": "^4.3.1",
         "@0x/web3-wrapper": "^6.0.5",
-        "@kosu/subcontract-sdk": "0.1.0",
+        "@kosu/subcontract-sdk": "0.1.1",
         "@kosu/tsc-config": "^0.1.0",
         "@kosu/tslint-config": "^0.0.4",
         "bitcore-lib": "0.16",
