@@ -4,19 +4,13 @@
 
 ---
 
-This monorepo contains the packages that make up the reference implementation of the Kosu protocol, alongside supporting packages.
-
-_This README is under construction._
+This monorepo contains the packages that implement the Kosu protocol, alongside supporting packages and developer tooling.
 
 ## Packages
 
-### Client packages
-
-| Package                           | Version                                                          | Description                                                                       |
-| :-------------------------------- | :--------------------------------------------------------------- | :-------------------------------------------------------------------------------- |
-| [`kosu-core`](./packages/go-kosu) | ![version](https://img.shields.io/badge/version-0.0.0-green.svg) | The reference implementation of the Kosu network in Go, built on Tendermint Core. |
-
 ### Contract packages
+
+Smart-contract packages (Solidity) including the core Kosu system contracts and SubContract SDK.
 
 | Package &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;            | Version                                                        | Description                                                            |
 | :----------------------------------------------------------- | :------------------------------------------------------------- | :--------------------------------------------------------------------- |
@@ -25,19 +19,27 @@ _This README is under construction._
 
 ### Library packages
 
-| Package &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; | Version                                                       | Description                                                                   |
-| :------------------------------------------------ | :------------------------------------------------------------ | :---------------------------------------------------------------------------- |
-| [`@kosu/kosu.js`](./packages/kosu.js)             | ![version](https://img.shields.io/badge/npm-v0.1.0-green.svg) | TypeScript library for interacting with the Kosu network and contract system. |
+Client/server libraries for interacting with the Kosu network and contract system.
 
-### Utility packages
+| Package &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; | Version                                                | Description                                                                   |
+| :------------------------------------------------ | :----------------------------------------------------- | :---------------------------------------------------------------------------- |
+| [`@kosu/kosu.js`](./packages/kosu.js)             | ![npm](https://img.shields.io/npm/v/@kosu/kosu.js.svg) | TypeScript library for interacting with the Kosu network and contract system. |
 
-| Package &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; | Version                                                       | Description                                                                                |
-| :------------------------------------------------ | :------------------------------------------------------------ | :----------------------------------------------------------------------------------------- |
-| [`@kosu/dev-images`](./packages/dev-images)       | ![version](https://img.shields.io/badge/npm-v0.0.1-green.svg) | Development docker images and supporting scripts for Kosu packages.                        |
-| [`@kosu/tslint-config`](./packages/tslint-config) | ![version](https://img.shields.io/badge/npm-v0.0.2-green.svg) | TypeScript linter base configuration for Kosu TypeScript projects.                         |
-| [`@kosu/tsc-config`](./packages/tsc-config)       | ![version](https://img.shields.io/badge/npm-v0.0.1-green.svg) | TypeScript compiler base configuration for Kosu TypeScript projects.                       |
-| [`@kosu/web-helpers`](./packages/web-helpers)     | ![version](https://img.shields.io/badge/npm-v0.1.1-green.svg) | Simple web (browser) interfaces for interacting with the Kosu network and contract system. |
+### Client packages
+
+| Package                           | Version                                                          | Description                                                                       |
+| :-------------------------------- | :--------------------------------------------------------------- | :-------------------------------------------------------------------------------- |
+| [`kosu-core`](./packages/go-kosu) | ![version](https://img.shields.io/badge/version-0.0.0-green.svg) | The reference implementation of the Kosu network in Go, built on Tendermint Core. |
+
+### Utility/development packages
+
+| Package &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; | Version                                                      | Description                                                          |
+| :------------------------------------------------ | :----------------------------------------------------------- | :------------------------------------------------------------------- |
+| [`@kosu/dev-images`](./packages/dev-images)       | ![npm](https://img.shields.io/npm/v/@kosu/dev-images.svg)    | Development docker images and supporting scripts for Kosu packages.  |
+| [`@kosu/tslint-config`](./packages/tslint-config) | ![npm](https://img.shields.io/npm/v/@kosu/tslint-config.svg) | TypeScript linter base configuration for Kosu TypeScript projects.   |
+| [`@kosu/tsc-config`](./packages/tsc-config)       | ![npm](https://img.shields.io/npm/v/@kosu/tsc-config.svg)    | TypeScript compiler base configuration for Kosu TypeScript projects. |
+| [`@kosu/web-helpers`](./packages/web-helpers)     | ![npm](https://img.shields.io/npm/v/@kosu/web-helpers.svg)   | Simple web interface for interacting with the Kosu contract system.  |
 
 # License
 
-Kosu is being developed as open source, public domain software (CC0). No rights reserved.
+Kosu is being developed as free open-source software under an [MIT license.](./LICENSE)
