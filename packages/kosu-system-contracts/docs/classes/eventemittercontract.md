@@ -6,260 +6,260 @@
 
 ## Hierarchy
 
-* `BaseContract`
+-   `BaseContract`
 
-  * **EventEmitterContract**
+    -   **EventEmitterContract**
 
 ### Index
 
 #### Constructors
 
-* [constructor](eventemittercontract.md#constructor)
+-   [constructor](eventemittercontract.md#constructor)
 
 #### Properties
 
-* [abi](eventemittercontract.md#abi)
-* [address](eventemittercontract.md#address)
-* [constructorArgs](eventemittercontract.md#constructorargs)
-* [contractName](eventemittercontract.md#contractname)
-* [txReceipt](eventemittercontract.md#optional-txreceipt)
+-   [abi](eventemittercontract.md#abi)
+-   [address](eventemittercontract.md#address)
+-   [constructorArgs](eventemittercontract.md#constructorargs)
+-   [contractName](eventemittercontract.md#contractname)
+-   [txReceipt](eventemittercontract.md#optional-txreceipt)
 
 #### Methods
 
-* [deployAsync](eventemittercontract.md#static-deployasync)
-* [deployFrom0xArtifactAsync](eventemittercontract.md#static-deployfrom0xartifactasync)
-* [strictArgumentEncodingCheck](eventemittercontract.md#static-strictargumentencodingcheck)
+-   [deployAsync](eventemittercontract.md#static-deployasync)
+-   [deployFrom0xArtifactAsync](eventemittercontract.md#static-deployfrom0xartifactasync)
+-   [strictArgumentEncodingCheck](eventemittercontract.md#static-strictargumentencodingcheck)
 
 #### Object literals
 
-* [emitEvent](eventemittercontract.md#emitevent)
+-   [emitEvent](eventemittercontract.md#emitevent)
 
 ## Constructors
 
-###  constructor
+### constructor
 
-\+ **new EventEmitterContract**(`abi`: `ContractAbi`, `address`: string, `supportedProvider`: `SupportedProvider`, `txDefaults?`: `Partial<TxData>`): *[EventEmitterContract](eventemittercontract.md)*
+\+ **new EventEmitterContract**(`abi`: `ContractAbi`, `address`: string, `supportedProvider`: `SupportedProvider`, `txDefaults?`: `Partial<TxData>`): _[EventEmitterContract](eventemittercontract.md)_
 
-*Overrides void*
+_Overrides void_
 
 Defined in generated-wrappers/event_emitter.ts:219
 
 **Parameters:**
 
-Name | Type |
------- | ------ |
-`abi` | `ContractAbi` |
-`address` | string |
-`supportedProvider` | `SupportedProvider` |
-`txDefaults?` | `Partial<TxData>` |
+| Name                | Type                |
+| ------------------- | ------------------- |
+| `abi`               | `ContractAbi`       |
+| `address`           | string              |
+| `supportedProvider` | `SupportedProvider` |
+| `txDefaults?`       | `Partial<TxData>`   |
 
-**Returns:** *[EventEmitterContract](eventemittercontract.md)*
+**Returns:** _[EventEmitterContract](eventemittercontract.md)_
 
-___
+---
 
 ## Properties
 
-###  abi
+### abi
 
-● **abi**: *`ContractAbi`*
+● **abi**: _`ContractAbi`_
 
-*Inherited from void*
+_Inherited from void_
 
 Defined in /Users/hen/GitHub/km/node_modules/@0x/base-contract/lib/src/index.d.ts:22
 
-___
+---
 
-###  address
+### address
 
-● **address**: *string*
+● **address**: _string_
 
-*Inherited from void*
+_Inherited from void_
 
 Defined in /Users/hen/GitHub/km/node_modules/@0x/base-contract/lib/src/index.d.ts:23
 
-___
+---
 
-###  constructorArgs
+### constructorArgs
 
-● **constructorArgs**: *any[]*
+● **constructorArgs**: _any[]_
 
-*Inherited from void*
+_Inherited from void_
 
 Defined in /Users/hen/GitHub/km/node_modules/@0x/base-contract/lib/src/index.d.ts:25
 
-___
+---
 
-###  contractName
+### contractName
 
-● **contractName**: *string*
+● **contractName**: _string_
 
-*Inherited from void*
+_Inherited from void_
 
 Defined in /Users/hen/GitHub/km/node_modules/@0x/base-contract/lib/src/index.d.ts:24
 
-___
+---
 
 ### `Optional` txReceipt
 
-● **txReceipt**? : *`TransactionReceiptWithDecodedLogs`*
+● **txReceipt**? : _`TransactionReceiptWithDecodedLogs`_
 
 Defined in generated-wrappers/event_emitter.ts:42
 
-___
+---
 
 ## Methods
 
 ### `Static` deployAsync
 
-▸ **deployAsync**(`bytecode`: string, `abi`: `ContractAbi`, `supportedProvider`: `SupportedProvider`, `txDefaults`: `Partial<TxData>`, `auth`: string): *`Promise<EventEmitterContract>`*
+▸ **deployAsync**(`bytecode`: string, `abi`: `ContractAbi`, `supportedProvider`: `SupportedProvider`, `txDefaults`: `Partial<TxData>`, `auth`: string): _`Promise<EventEmitterContract>`_
 
 Defined in generated-wrappers/event_emitter.ts:184
 
 **Parameters:**
 
-Name | Type |
------- | ------ |
-`bytecode` | string |
-`abi` | `ContractAbi` |
-`supportedProvider` | `SupportedProvider` |
-`txDefaults` | `Partial<TxData>` |
-`auth` | string |
+| Name                | Type                |
+| ------------------- | ------------------- |
+| `bytecode`          | string              |
+| `abi`               | `ContractAbi`       |
+| `supportedProvider` | `SupportedProvider` |
+| `txDefaults`        | `Partial<TxData>`   |
+| `auth`              | string              |
 
-**Returns:** *`Promise<EventEmitterContract>`*
+**Returns:** _`Promise<EventEmitterContract>`_
 
-___
+---
 
 ### `Static` deployFrom0xArtifactAsync
 
-▸ **deployFrom0xArtifactAsync**(`artifact`: `ContractArtifact` | `SimpleContractArtifact`, `supportedProvider`: `SupportedProvider`, `txDefaults`: `Partial<TxData>`, `auth`: string): *`Promise<EventEmitterContract>`*
+▸ **deployFrom0xArtifactAsync**(`artifact`: `ContractArtifact` | `SimpleContractArtifact`, `supportedProvider`: `SupportedProvider`, `txDefaults`: `Partial<TxData>`, `auth`: string): _`Promise<EventEmitterContract>`_
 
 Defined in generated-wrappers/event_emitter.ts:169
 
 **Parameters:**
 
-Name | Type |
------- | ------ |
-`artifact` | `ContractArtifact` | `SimpleContractArtifact` |
-`supportedProvider` | `SupportedProvider` |
-`txDefaults` | `Partial<TxData>` |
-`auth` | string |
+| Name                | Type                |
+| ------------------- | ------------------- |
+| `artifact`          | `ContractArtifact`  | `SimpleContractArtifact` |
+| `supportedProvider` | `SupportedProvider` |
+| `txDefaults`        | `Partial<TxData>`   |
+| `auth`              | string              |
 
-**Returns:** *`Promise<EventEmitterContract>`*
+**Returns:** _`Promise<EventEmitterContract>`_
 
-___
+---
 
 ### `Static` strictArgumentEncodingCheck
 
-▸ **strictArgumentEncodingCheck**(`inputAbi`: `DataItem`[], `args`: any[]): *string*
+▸ **strictArgumentEncodingCheck**(`inputAbi`: `DataItem`[], `args`: any[]): _string_
 
-*Inherited from void*
+_Inherited from void_
 
 Defined in /Users/hen/GitHub/km/node_modules/@0x/base-contract/lib/src/index.d.ts:32
 
 **Parameters:**
 
-Name | Type |
------- | ------ |
-`inputAbi` | `DataItem`[] |
-`args` | any[] |
+| Name       | Type         |
+| ---------- | ------------ |
+| `inputAbi` | `DataItem`[] |
+| `args`     | any[]        |
 
-**Returns:** *string*
+**Returns:** _string_
 
-___
+---
 
 ## Object literals
 
-###  emitEvent
+### emitEvent
 
-### ■ **emitEvent**: *object*
+### ■ **emitEvent**: _object_
 
 Defined in generated-wrappers/event_emitter.ts:43
 
-###  awaitTransactionSuccessAsync
+### awaitTransactionSuccessAsync
 
-▸ **awaitTransactionSuccessAsync**(`eventType`: string, `data`: string[], `stringData`: string, `txData?`: `Partial<TxData>` | number, `pollingIntervalMs?`: number, `timeoutMs?`: number): *`PromiseWithTransactionHash<TransactionReceiptWithDecodedLogs>`*
+▸ **awaitTransactionSuccessAsync**(`eventType`: string, `data`: string[], `stringData`: string, `txData?`: `Partial<TxData>` | number, `pollingIntervalMs?`: number, `timeoutMs?`: number): _`PromiseWithTransactionHash<TransactionReceiptWithDecodedLogs>`_
 
 Defined in generated-wrappers/event_emitter.ts:72
 
 **Parameters:**
 
-Name | Type |
------- | ------ |
-`eventType` | string |
-`data` | string[] |
-`stringData` | string |
-`txData?` | `Partial<TxData>` | number |
-`pollingIntervalMs?` | number |
-`timeoutMs?` | number |
+| Name                 | Type              |
+| -------------------- | ----------------- |
+| `eventType`          | string            |
+| `data`               | string[]          |
+| `stringData`         | string            |
+| `txData?`            | `Partial<TxData>` | number |
+| `pollingIntervalMs?` | number            |
+| `timeoutMs?`         | number            |
 
-**Returns:** *`PromiseWithTransactionHash<TransactionReceiptWithDecodedLogs>`*
+**Returns:** _`PromiseWithTransactionHash<TransactionReceiptWithDecodedLogs>`_
 
-###  callAsync
+### callAsync
 
-▸ **callAsync**(`eventType`: string, `data`: string[], `stringData`: string, `callData`: `Partial<CallData>`, `defaultBlock?`: `BlockParam`): *`Promise<void>`*
+▸ **callAsync**(`eventType`: string, `data`: string[], `stringData`: string, `callData`: `Partial<CallData>`, `defaultBlock?`: `BlockParam`): _`Promise<void>`_
 
 Defined in generated-wrappers/event_emitter.ts:138
 
 **Parameters:**
 
-Name | Type | Default value |
------- | ------ | ------ |
-`eventType` | string | - |
-`data` | string[] | - |
-`stringData` | string | - |
-`callData` | `Partial<CallData>` |  {} |
-`defaultBlock?` | `BlockParam` | - |
+| Name            | Type                | Default value |
+| --------------- | ------------------- | ------------- |
+| `eventType`     | string              | -             |
+| `data`          | string[]            | -             |
+| `stringData`    | string              | -             |
+| `callData`      | `Partial<CallData>` | {}            |
+| `defaultBlock?` | `BlockParam`        | -             |
 
-**Returns:** *`Promise<void>`*
+**Returns:** _`Promise<void>`_
 
-###  estimateGasAsync
+### estimateGasAsync
 
-▸ **estimateGasAsync**(`eventType`: string, `data`: string[], `stringData`: string, `txData`: `Partial<TxData>`): *`Promise<number>`*
+▸ **estimateGasAsync**(`eventType`: string, `data`: string[], `stringData`: string, `txData`: `Partial<TxData>`): _`Promise<number>`_
 
 Defined in generated-wrappers/event_emitter.ts:104
 
 **Parameters:**
 
-Name | Type | Default value |
------- | ------ | ------ |
-`eventType` | string | - |
-`data` | string[] | - |
-`stringData` | string | - |
-`txData` | `Partial<TxData>` |  {} |
+| Name         | Type              | Default value |
+| ------------ | ----------------- | ------------- |
+| `eventType`  | string            | -             |
+| `data`       | string[]          | -             |
+| `stringData` | string            | -             |
+| `txData`     | `Partial<TxData>` | {}            |
 
-**Returns:** *`Promise<number>`*
+**Returns:** _`Promise<number>`_
 
-###  getABIEncodedTransactionData
+### getABIEncodedTransactionData
 
-▸ **getABIEncodedTransactionData**(`eventType`: string, `data`: string[], `stringData`: string): *string*
+▸ **getABIEncodedTransactionData**(`eventType`: string, `data`: string[], `stringData`: string): _string_
 
 Defined in generated-wrappers/event_emitter.ts:126
 
 **Parameters:**
 
-Name | Type |
------- | ------ |
-`eventType` | string |
-`data` | string[] |
-`stringData` | string |
+| Name         | Type     |
+| ------------ | -------- |
+| `eventType`  | string   |
+| `data`       | string[] |
+| `stringData` | string   |
 
-**Returns:** *string*
+**Returns:** _string_
 
-###  sendTransactionAsync
+### sendTransactionAsync
 
-▸ **sendTransactionAsync**(`eventType`: string, `data`: string[], `stringData`: string, `txData`: `Partial<TxData>`): *`Promise<string>`*
+▸ **sendTransactionAsync**(`eventType`: string, `data`: string[], `stringData`: string, `txData`: `Partial<TxData>`): _`Promise<string>`_
 
 Defined in generated-wrappers/event_emitter.ts:44
 
 **Parameters:**
 
-Name | Type | Default value |
------- | ------ | ------ |
-`eventType` | string | - |
-`data` | string[] | - |
-`stringData` | string | - |
-`txData` | `Partial<TxData>` |  {} |
+| Name         | Type              | Default value |
+| ------------ | ----------------- | ------------- |
+| `eventType`  | string            | -             |
+| `data`       | string[]          | -             |
+| `stringData` | string            | -             |
+| `txData`     | `Partial<TxData>` | {}            |
 
-**Returns:** *`Promise<string>`*
+**Returns:** _`Promise<string>`_
 
-___
+---

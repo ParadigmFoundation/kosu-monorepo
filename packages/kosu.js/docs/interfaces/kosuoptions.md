@@ -6,119 +6,119 @@
 
 ## Hierarchy
 
-* **KosuOptions**
+-   **KosuOptions**
 
 ### Index
 
 #### Properties
 
-* [eventEmitterAddress](kosuoptions.md#optional-eventemitteraddress)
-* [kosuTokenAddress](kosuoptions.md#optional-kosutokenaddress)
-* [networkId](kosuoptions.md#optional-networkid)
-* [orderGatewayAddress](kosuoptions.md#optional-ordergatewayaddress)
-* [orderStreamURL](kosuoptions.md#optional-orderstreamurl)
-* [posterRegistryProxyAddress](kosuoptions.md#optional-posterregistryproxyaddress)
-* [provider](kosuoptions.md#optional-provider)
-* [treasuryAddress](kosuoptions.md#optional-treasuryaddress)
-* [validatorRegistryAddress](kosuoptions.md#optional-validatorregistryaddress)
-* [votingAddress](kosuoptions.md#optional-votingaddress)
-* [web3](kosuoptions.md#optional-web3)
-* [web3Wrapper](kosuoptions.md#optional-web3wrapper)
+-   [eventEmitterAddress](kosuoptions.md#optional-eventemitteraddress)
+-   [kosuTokenAddress](kosuoptions.md#optional-kosutokenaddress)
+-   [networkId](kosuoptions.md#optional-networkid)
+-   [orderGatewayAddress](kosuoptions.md#optional-ordergatewayaddress)
+-   [orderStreamURL](kosuoptions.md#optional-orderstreamurl)
+-   [posterRegistryProxyAddress](kosuoptions.md#optional-posterregistryproxyaddress)
+-   [provider](kosuoptions.md#optional-provider)
+-   [treasuryAddress](kosuoptions.md#optional-treasuryaddress)
+-   [validatorRegistryAddress](kosuoptions.md#optional-validatorregistryaddress)
+-   [votingAddress](kosuoptions.md#optional-votingaddress)
+-   [web3](kosuoptions.md#optional-web3)
+-   [web3Wrapper](kosuoptions.md#optional-web3wrapper)
 
 ## Properties
 
 ### `Optional` eventEmitterAddress
 
-● **eventEmitterAddress**? : *string*
+● **eventEmitterAddress**? : _string_
 
-*Defined in [types.d.ts:10](url)*
+_Defined in [types.d.ts:10](url)_
 
-___
+---
 
 ### `Optional` kosuTokenAddress
 
-● **kosuTokenAddress**? : *string*
+● **kosuTokenAddress**? : _string_
 
-*Defined in [types.d.ts:9](url)*
+_Defined in [types.d.ts:9](url)_
 
-___
+---
 
 ### `Optional` networkId
 
-● **networkId**? : *number | string*
+● **networkId**? : _number | string_
 
-*Defined in [types.d.ts:3](url)*
+_Defined in [types.d.ts:3](url)_
 
-___
+---
 
 ### `Optional` orderGatewayAddress
 
-● **orderGatewayAddress**? : *string*
+● **orderGatewayAddress**? : _string_
 
-*Defined in [types.d.ts:11](url)*
+_Defined in [types.d.ts:11](url)_
 
-___
+---
 
 ### `Optional` orderStreamURL
 
-● **orderStreamURL**? : *string*
+● **orderStreamURL**? : _string_
 
-*Defined in [types.d.ts:6](url)*
+_Defined in [types.d.ts:6](url)_
 
-___
+---
 
 ### `Optional` posterRegistryProxyAddress
 
-● **posterRegistryProxyAddress**? : *string*
+● **posterRegistryProxyAddress**? : _string_
 
-*Defined in [types.d.ts:12](url)*
+_Defined in [types.d.ts:12](url)_
 
-___
+---
 
 ### `Optional` provider
 
-● **provider**? : *[provider](kosuoptions.md#optional-provider)*
+● **provider**? : _[provider](kosuoptions.md#optional-provider)_
 
-*Defined in [types.d.ts:2](url)*
+_Defined in [types.d.ts:2](url)_
 
-___
+---
 
 ### `Optional` treasuryAddress
 
-● **treasuryAddress**? : *string*
+● **treasuryAddress**? : _string_
 
-*Defined in [types.d.ts:8](url)*
+_Defined in [types.d.ts:8](url)_
 
-___
+---
 
 ### `Optional` validatorRegistryAddress
 
-● **validatorRegistryAddress**? : *string*
+● **validatorRegistryAddress**? : _string_
 
-*Defined in [types.d.ts:13](url)*
+_Defined in [types.d.ts:13](url)_
 
-___
+---
 
 ### `Optional` votingAddress
 
-● **votingAddress**? : *string*
+● **votingAddress**? : _string_
 
-*Defined in [types.d.ts:7](url)*
+_Defined in [types.d.ts:7](url)_
 
-___
+---
 
 ### `Optional` web3
 
-● **web3**? : *`Web3`*
+● **web3**? : _`Web3`_
 
-*Defined in [types.d.ts:4](url)*
+_Defined in [types.d.ts:4](url)_
 
-___
+---
 
 ### `Optional` web3Wrapper
 
-● **web3Wrapper**? : *`Web3Wrapper`*
+● **web3Wrapper**? : _`Web3Wrapper`_
 
-*Defined in [types.d.ts:5](url)*
+_Defined in [types.d.ts:5](url)_
 
-___
+---

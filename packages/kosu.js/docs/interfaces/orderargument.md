@@ -6,29 +6,29 @@
 
 ## Hierarchy
 
-* **OrderArgument**
+-   **OrderArgument**
 
 ### Index
 
 #### Properties
 
-* [datatype](orderargument.md#datatype)
-* [name](orderargument.md#name)
+-   [datatype](orderargument.md#datatype)
+-   [name](orderargument.md#name)
 
 ## Properties
 
-###  datatype
+### datatype
 
-● **datatype**: *string*
+● **datatype**: _string_
 
-*Defined in [types.d.ts:37](url)*
+_Defined in [types.d.ts:37](url)_
 
-___
+---
 
-###  name
+### name
 
-● **name**: *string*
+● **name**: _string_
 
-*Defined in [types.d.ts:36](url)*
+_Defined in [types.d.ts:36](url)_
 
-___
+---

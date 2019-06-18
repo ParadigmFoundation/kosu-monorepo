@@ -6,42 +6,42 @@
 
 ## Hierarchy
 
-* **KosuUtils**
+-   **KosuUtils**
 
 ### Index
 
 #### Properties
 
-* [NULL_ADDRESS](kosuutils.md#null_address)
+-   [NULL_ADDRESS](kosuutils.md#null_address)
 
 #### Methods
 
-* [toBytes32](kosuutils.md#tobytes32)
+-   [toBytes32](kosuutils.md#tobytes32)
 
 ## Properties
 
-###  NULL_ADDRESS
+### NULL_ADDRESS
 
-● **NULL_ADDRESS**: *string*
+● **NULL_ADDRESS**: _string_
 
-*Defined in [types.d.ts:42](url)*
+_Defined in [types.d.ts:42](url)_
 
-___
+---
 
 ## Methods
 
-###  toBytes32
+### toBytes32
 
-▸ **toBytes32**(`value`: string): *number | string | `BN`*
+▸ **toBytes32**(`value`: string): _number | string | `BN`_
 
-*Defined in [types.d.ts:41](url)*
+_Defined in [types.d.ts:41](url)_
 
 **Parameters:**
 
-Name | Type |
------- | ------ |
-`value` | string |
+| Name    | Type   |
+| ------- | ------ |
+| `value` | string |
 
-**Returns:** *number | string | `BN`*
+**Returns:** _number | string | `BN`_
 
-___
+---

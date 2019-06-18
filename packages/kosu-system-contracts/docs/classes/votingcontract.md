@@ -6,574 +6,574 @@
 
 ## Hierarchy
 
-* `BaseContract`
+-   `BaseContract`
 
-  * **VotingContract**
+    -   **VotingContract**
 
 ### Index
 
 #### Constructors
 
-* [constructor](votingcontract.md#constructor)
+-   [constructor](votingcontract.md#constructor)
 
 #### Properties
 
-* [abi](votingcontract.md#abi)
-* [address](votingcontract.md#address)
-* [constructorArgs](votingcontract.md#constructorargs)
-* [contractName](votingcontract.md#contractname)
-* [txReceipt](votingcontract.md#optional-txreceipt)
+-   [abi](votingcontract.md#abi)
+-   [address](votingcontract.md#address)
+-   [constructorArgs](votingcontract.md#constructorargs)
+-   [contractName](votingcontract.md#contractname)
+-   [txReceipt](votingcontract.md#optional-txreceipt)
 
 #### Methods
 
-* [deployAsync](votingcontract.md#static-deployasync)
-* [deployFrom0xArtifactAsync](votingcontract.md#static-deployfrom0xartifactasync)
-* [strictArgumentEncodingCheck](votingcontract.md#static-strictargumentencodingcheck)
+-   [deployAsync](votingcontract.md#static-deployasync)
+-   [deployFrom0xArtifactAsync](votingcontract.md#static-deployfrom0xartifactasync)
+-   [strictArgumentEncodingCheck](votingcontract.md#static-strictargumentencodingcheck)
 
 #### Object literals
 
-* [commitVote](votingcontract.md#commitvote)
-* [createPoll](votingcontract.md#createpoll)
-* [nextPollId](votingcontract.md#nextpollid)
-* [revealVote](votingcontract.md#revealvote)
-* [totalRevealedTokens](votingcontract.md#totalrevealedtokens)
-* [totalWinningTokens](votingcontract.md#totalwinningtokens)
-* [userWinningTokens](votingcontract.md#userwinningtokens)
-* [winningOption](votingcontract.md#winningoption)
+-   [commitVote](votingcontract.md#commitvote)
+-   [createPoll](votingcontract.md#createpoll)
+-   [nextPollId](votingcontract.md#nextpollid)
+-   [revealVote](votingcontract.md#revealvote)
+-   [totalRevealedTokens](votingcontract.md#totalrevealedtokens)
+-   [totalWinningTokens](votingcontract.md#totalwinningtokens)
+-   [userWinningTokens](votingcontract.md#userwinningtokens)
+-   [winningOption](votingcontract.md#winningoption)
 
 ## Constructors
 
-###  constructor
+### constructor
 
-\+ **new VotingContract**(`abi`: `ContractAbi`, `address`: string, `supportedProvider`: `SupportedProvider`, `txDefaults?`: `Partial<TxData>`): *[VotingContract](votingcontract.md)*
+\+ **new VotingContract**(`abi`: `ContractAbi`, `address`: string, `supportedProvider`: `SupportedProvider`, `txDefaults?`: `Partial<TxData>`): _[VotingContract](votingcontract.md)_
 
-*Overrides void*
+_Overrides void_
 
 Defined in generated-wrappers/voting.ts:594
 
 **Parameters:**
 
-Name | Type |
------- | ------ |
-`abi` | `ContractAbi` |
-`address` | string |
-`supportedProvider` | `SupportedProvider` |
-`txDefaults?` | `Partial<TxData>` |
+| Name                | Type                |
+| ------------------- | ------------------- |
+| `abi`               | `ContractAbi`       |
+| `address`           | string              |
+| `supportedProvider` | `SupportedProvider` |
+| `txDefaults?`       | `Partial<TxData>`   |
 
-**Returns:** *[VotingContract](votingcontract.md)*
+**Returns:** _[VotingContract](votingcontract.md)_
 
-___
+---
 
 ## Properties
 
-###  abi
+### abi
 
-● **abi**: *`ContractAbi`*
+● **abi**: _`ContractAbi`_
 
-*Inherited from void*
+_Inherited from void_
 
 Defined in /Users/hen/GitHub/km/node_modules/@0x/base-contract/lib/src/index.d.ts:22
 
-___
+---
 
-###  address
+### address
 
-● **address**: *string*
+● **address**: _string_
 
-*Inherited from void*
+_Inherited from void_
 
 Defined in /Users/hen/GitHub/km/node_modules/@0x/base-contract/lib/src/index.d.ts:23
 
-___
+---
 
-###  constructorArgs
+### constructorArgs
 
-● **constructorArgs**: *any[]*
+● **constructorArgs**: _any[]_
 
-*Inherited from void*
+_Inherited from void_
 
 Defined in /Users/hen/GitHub/km/node_modules/@0x/base-contract/lib/src/index.d.ts:25
 
-___
+---
 
-###  contractName
+### contractName
 
-● **contractName**: *string*
+● **contractName**: _string_
 
-*Inherited from void*
+_Inherited from void_
 
 Defined in /Users/hen/GitHub/km/node_modules/@0x/base-contract/lib/src/index.d.ts:24
 
-___
+---
 
 ### `Optional` txReceipt
 
-● **txReceipt**? : *`TransactionReceiptWithDecodedLogs`*
+● **txReceipt**? : _`TransactionReceiptWithDecodedLogs`_
 
 Defined in generated-wrappers/voting.ts:29
 
-___
+---
 
 ## Methods
 
 ### `Static` deployAsync
 
-▸ **deployAsync**(`bytecode`: string, `abi`: `ContractAbi`, `supportedProvider`: `SupportedProvider`, `txDefaults`: `Partial<TxData>`, `treasuryAddress`: string, `_emitterAddress`: string): *`Promise<VotingContract>`*
+▸ **deployAsync**(`bytecode`: string, `abi`: `ContractAbi`, `supportedProvider`: `SupportedProvider`, `txDefaults`: `Partial<TxData>`, `treasuryAddress`: string, `_emitterAddress`: string): _`Promise<VotingContract>`_
 
 Defined in generated-wrappers/voting.ts:554
 
 **Parameters:**
 
-Name | Type |
------- | ------ |
-`bytecode` | string |
-`abi` | `ContractAbi` |
-`supportedProvider` | `SupportedProvider` |
-`txDefaults` | `Partial<TxData>` |
-`treasuryAddress` | string |
-`_emitterAddress` | string |
+| Name                | Type                |
+| ------------------- | ------------------- |
+| `bytecode`          | string              |
+| `abi`               | `ContractAbi`       |
+| `supportedProvider` | `SupportedProvider` |
+| `txDefaults`        | `Partial<TxData>`   |
+| `treasuryAddress`   | string              |
+| `_emitterAddress`   | string              |
 
-**Returns:** *`Promise<VotingContract>`*
+**Returns:** _`Promise<VotingContract>`_
 
-___
+---
 
 ### `Static` deployFrom0xArtifactAsync
 
-▸ **deployFrom0xArtifactAsync**(`artifact`: `ContractArtifact` | `SimpleContractArtifact`, `supportedProvider`: `SupportedProvider`, `txDefaults`: `Partial<TxData>`, `treasuryAddress`: string, `_emitterAddress`: string): *`Promise<VotingContract>`*
+▸ **deployFrom0xArtifactAsync**(`artifact`: `ContractArtifact` | `SimpleContractArtifact`, `supportedProvider`: `SupportedProvider`, `txDefaults`: `Partial<TxData>`, `treasuryAddress`: string, `_emitterAddress`: string): _`Promise<VotingContract>`_
 
 Defined in generated-wrappers/voting.ts:537
 
 **Parameters:**
 
-Name | Type |
------- | ------ |
-`artifact` | `ContractArtifact` | `SimpleContractArtifact` |
-`supportedProvider` | `SupportedProvider` |
-`txDefaults` | `Partial<TxData>` |
-`treasuryAddress` | string |
-`_emitterAddress` | string |
+| Name                | Type                |
+| ------------------- | ------------------- |
+| `artifact`          | `ContractArtifact`  | `SimpleContractArtifact` |
+| `supportedProvider` | `SupportedProvider` |
+| `txDefaults`        | `Partial<TxData>`   |
+| `treasuryAddress`   | string              |
+| `_emitterAddress`   | string              |
 
-**Returns:** *`Promise<VotingContract>`*
+**Returns:** _`Promise<VotingContract>`_
 
-___
+---
 
 ### `Static` strictArgumentEncodingCheck
 
-▸ **strictArgumentEncodingCheck**(`inputAbi`: `DataItem`[], `args`: any[]): *string*
+▸ **strictArgumentEncodingCheck**(`inputAbi`: `DataItem`[], `args`: any[]): _string_
 
-*Inherited from void*
+_Inherited from void_
 
 Defined in /Users/hen/GitHub/km/node_modules/@0x/base-contract/lib/src/index.d.ts:32
 
 **Parameters:**
 
-Name | Type |
------- | ------ |
-`inputAbi` | `DataItem`[] |
-`args` | any[] |
+| Name       | Type         |
+| ---------- | ------------ |
+| `inputAbi` | `DataItem`[] |
+| `args`     | any[]        |
 
-**Returns:** *string*
+**Returns:** _string_
 
-___
+---
 
 ## Object literals
 
-###  commitVote
+### commitVote
 
-### ■ **commitVote**: *object*
+### ■ **commitVote**: _object_
 
 Defined in generated-wrappers/voting.ts:411
 
-###  awaitTransactionSuccessAsync
+### awaitTransactionSuccessAsync
 
-▸ **awaitTransactionSuccessAsync**(`_pollId`: `BigNumber`, `_vote`: string, `_tokensToCommit`: `BigNumber`, `txData?`: `Partial<TxData>` | number, `pollingIntervalMs?`: number, `timeoutMs?`: number): *`PromiseWithTransactionHash<TransactionReceiptWithDecodedLogs>`*
+▸ **awaitTransactionSuccessAsync**(`_pollId`: `BigNumber`, `_vote`: string, `_tokensToCommit`: `BigNumber`, `txData?`: `Partial<TxData>` | number, `pollingIntervalMs?`: number, `timeoutMs?`: number): _`PromiseWithTransactionHash<TransactionReceiptWithDecodedLogs>`_
 
 Defined in generated-wrappers/voting.ts:440
 
 **Parameters:**
 
-Name | Type |
------- | ------ |
-`_pollId` | `BigNumber` |
-`_vote` | string |
-`_tokensToCommit` | `BigNumber` |
-`txData?` | `Partial<TxData>` | number |
-`pollingIntervalMs?` | number |
-`timeoutMs?` | number |
+| Name                 | Type              |
+| -------------------- | ----------------- |
+| `_pollId`            | `BigNumber`       |
+| `_vote`              | string            |
+| `_tokensToCommit`    | `BigNumber`       |
+| `txData?`            | `Partial<TxData>` | number |
+| `pollingIntervalMs?` | number            |
+| `timeoutMs?`         | number            |
 
-**Returns:** *`PromiseWithTransactionHash<TransactionReceiptWithDecodedLogs>`*
+**Returns:** _`PromiseWithTransactionHash<TransactionReceiptWithDecodedLogs>`_
 
-###  callAsync
+### callAsync
 
-▸ **callAsync**(`_pollId`: `BigNumber`, `_vote`: string, `_tokensToCommit`: `BigNumber`, `callData`: `Partial<CallData>`, `defaultBlock?`: `BlockParam`): *`Promise<void>`*
+▸ **callAsync**(`_pollId`: `BigNumber`, `_vote`: string, `_tokensToCommit`: `BigNumber`, `callData`: `Partial<CallData>`, `defaultBlock?`: `BlockParam`): _`Promise<void>`_
 
 Defined in generated-wrappers/voting.ts:506
 
 **Parameters:**
 
-Name | Type | Default value |
------- | ------ | ------ |
-`_pollId` | `BigNumber` | - |
-`_vote` | string | - |
-`_tokensToCommit` | `BigNumber` | - |
-`callData` | `Partial<CallData>` |  {} |
-`defaultBlock?` | `BlockParam` | - |
+| Name              | Type                | Default value |
+| ----------------- | ------------------- | ------------- |
+| `_pollId`         | `BigNumber`         | -             |
+| `_vote`           | string              | -             |
+| `_tokensToCommit` | `BigNumber`         | -             |
+| `callData`        | `Partial<CallData>` | {}            |
+| `defaultBlock?`   | `BlockParam`        | -             |
 
-**Returns:** *`Promise<void>`*
+**Returns:** _`Promise<void>`_
 
-###  estimateGasAsync
+### estimateGasAsync
 
-▸ **estimateGasAsync**(`_pollId`: `BigNumber`, `_vote`: string, `_tokensToCommit`: `BigNumber`, `txData`: `Partial<TxData>`): *`Promise<number>`*
+▸ **estimateGasAsync**(`_pollId`: `BigNumber`, `_vote`: string, `_tokensToCommit`: `BigNumber`, `txData`: `Partial<TxData>`): _`Promise<number>`_
 
 Defined in generated-wrappers/voting.ts:472
 
 **Parameters:**
 
-Name | Type | Default value |
------- | ------ | ------ |
-`_pollId` | `BigNumber` | - |
-`_vote` | string | - |
-`_tokensToCommit` | `BigNumber` | - |
-`txData` | `Partial<TxData>` |  {} |
+| Name              | Type              | Default value |
+| ----------------- | ----------------- | ------------- |
+| `_pollId`         | `BigNumber`       | -             |
+| `_vote`           | string            | -             |
+| `_tokensToCommit` | `BigNumber`       | -             |
+| `txData`          | `Partial<TxData>` | {}            |
 
-**Returns:** *`Promise<number>`*
+**Returns:** _`Promise<number>`_
 
-###  getABIEncodedTransactionData
+### getABIEncodedTransactionData
 
-▸ **getABIEncodedTransactionData**(`_pollId`: `BigNumber`, `_vote`: string, `_tokensToCommit`: `BigNumber`): *string*
+▸ **getABIEncodedTransactionData**(`_pollId`: `BigNumber`, `_vote`: string, `_tokensToCommit`: `BigNumber`): _string_
 
 Defined in generated-wrappers/voting.ts:494
 
 **Parameters:**
 
-Name | Type |
------- | ------ |
-`_pollId` | `BigNumber` |
-`_vote` | string |
-`_tokensToCommit` | `BigNumber` |
+| Name              | Type        |
+| ----------------- | ----------- |
+| `_pollId`         | `BigNumber` |
+| `_vote`           | string      |
+| `_tokensToCommit` | `BigNumber` |
 
-**Returns:** *string*
+**Returns:** _string_
 
-###  sendTransactionAsync
+### sendTransactionAsync
 
-▸ **sendTransactionAsync**(`_pollId`: `BigNumber`, `_vote`: string, `_tokensToCommit`: `BigNumber`, `txData`: `Partial<TxData>`): *`Promise<string>`*
+▸ **sendTransactionAsync**(`_pollId`: `BigNumber`, `_vote`: string, `_tokensToCommit`: `BigNumber`, `txData`: `Partial<TxData>`): _`Promise<string>`_
 
 Defined in generated-wrappers/voting.ts:412
 
 **Parameters:**
 
-Name | Type | Default value |
------- | ------ | ------ |
-`_pollId` | `BigNumber` | - |
-`_vote` | string | - |
-`_tokensToCommit` | `BigNumber` | - |
-`txData` | `Partial<TxData>` |  {} |
+| Name              | Type              | Default value |
+| ----------------- | ----------------- | ------------- |
+| `_pollId`         | `BigNumber`       | -             |
+| `_vote`           | string            | -             |
+| `_tokensToCommit` | `BigNumber`       | -             |
+| `txData`          | `Partial<TxData>` | {}            |
 
-**Returns:** *`Promise<string>`*
+**Returns:** _`Promise<string>`_
 
-___
+---
 
-###  createPoll
+### createPoll
 
-### ■ **createPoll**: *object*
+### ■ **createPoll**: _object_
 
 Defined in generated-wrappers/voting.ts:266
 
-###  awaitTransactionSuccessAsync
+### awaitTransactionSuccessAsync
 
-▸ **awaitTransactionSuccessAsync**(`_commitEndBlock`: `BigNumber`, `_revealEndBlock`: `BigNumber`, `txData?`: `Partial<TxData>` | number, `pollingIntervalMs?`: number, `timeoutMs?`: number): *`PromiseWithTransactionHash<TransactionReceiptWithDecodedLogs>`*
+▸ **awaitTransactionSuccessAsync**(`_commitEndBlock`: `BigNumber`, `_revealEndBlock`: `BigNumber`, `txData?`: `Partial<TxData>` | number, `pollingIntervalMs?`: number, `timeoutMs?`: number): _`PromiseWithTransactionHash<TransactionReceiptWithDecodedLogs>`_
 
 Defined in generated-wrappers/voting.ts:292
 
 **Parameters:**
 
-Name | Type |
------- | ------ |
-`_commitEndBlock` | `BigNumber` |
-`_revealEndBlock` | `BigNumber` |
-`txData?` | `Partial<TxData>` | number |
-`pollingIntervalMs?` | number |
-`timeoutMs?` | number |
+| Name                 | Type              |
+| -------------------- | ----------------- |
+| `_commitEndBlock`    | `BigNumber`       |
+| `_revealEndBlock`    | `BigNumber`       |
+| `txData?`            | `Partial<TxData>` | number |
+| `pollingIntervalMs?` | number            |
+| `timeoutMs?`         | number            |
 
-**Returns:** *`PromiseWithTransactionHash<TransactionReceiptWithDecodedLogs>`*
+**Returns:** _`PromiseWithTransactionHash<TransactionReceiptWithDecodedLogs>`_
 
-###  callAsync
+### callAsync
 
-▸ **callAsync**(`_commitEndBlock`: `BigNumber`, `_revealEndBlock`: `BigNumber`, `callData`: `Partial<CallData>`, `defaultBlock?`: `BlockParam`): *`Promise<BigNumber>`*
+▸ **callAsync**(`_commitEndBlock`: `BigNumber`, `_revealEndBlock`: `BigNumber`, `callData`: `Partial<CallData>`, `defaultBlock?`: `BlockParam`): _`Promise<BigNumber>`_
 
 Defined in generated-wrappers/voting.ts:352
 
 **Parameters:**
 
-Name | Type | Default value |
------- | ------ | ------ |
-`_commitEndBlock` | `BigNumber` | - |
-`_revealEndBlock` | `BigNumber` | - |
-`callData` | `Partial<CallData>` |  {} |
-`defaultBlock?` | `BlockParam` | - |
+| Name              | Type                | Default value |
+| ----------------- | ------------------- | ------------- |
+| `_commitEndBlock` | `BigNumber`         | -             |
+| `_revealEndBlock` | `BigNumber`         | -             |
+| `callData`        | `Partial<CallData>` | {}            |
+| `defaultBlock?`   | `BlockParam`        | -             |
 
-**Returns:** *`Promise<BigNumber>`*
+**Returns:** _`Promise<BigNumber>`_
 
-###  estimateGasAsync
+### estimateGasAsync
 
-▸ **estimateGasAsync**(`_commitEndBlock`: `BigNumber`, `_revealEndBlock`: `BigNumber`, `txData`: `Partial<TxData>`): *`Promise<number>`*
+▸ **estimateGasAsync**(`_commitEndBlock`: `BigNumber`, `_revealEndBlock`: `BigNumber`, `txData`: `Partial<TxData>`): _`Promise<number>`_
 
 Defined in generated-wrappers/voting.ts:322
 
 **Parameters:**
 
-Name | Type | Default value |
------- | ------ | ------ |
-`_commitEndBlock` | `BigNumber` | - |
-`_revealEndBlock` | `BigNumber` | - |
-`txData` | `Partial<TxData>` |  {} |
+| Name              | Type              | Default value |
+| ----------------- | ----------------- | ------------- |
+| `_commitEndBlock` | `BigNumber`       | -             |
+| `_revealEndBlock` | `BigNumber`       | -             |
+| `txData`          | `Partial<TxData>` | {}            |
 
-**Returns:** *`Promise<number>`*
+**Returns:** _`Promise<number>`_
 
-###  getABIEncodedTransactionData
+### getABIEncodedTransactionData
 
-▸ **getABIEncodedTransactionData**(`_commitEndBlock`: `BigNumber`, `_revealEndBlock`: `BigNumber`): *string*
+▸ **getABIEncodedTransactionData**(`_commitEndBlock`: `BigNumber`, `_revealEndBlock`: `BigNumber`): _string_
 
 Defined in generated-wrappers/voting.ts:342
 
 **Parameters:**
 
-Name | Type |
------- | ------ |
-`_commitEndBlock` | `BigNumber` |
-`_revealEndBlock` | `BigNumber` |
+| Name              | Type        |
+| ----------------- | ----------- |
+| `_commitEndBlock` | `BigNumber` |
+| `_revealEndBlock` | `BigNumber` |
 
-**Returns:** *string*
+**Returns:** _string_
 
-###  sendTransactionAsync
+### sendTransactionAsync
 
-▸ **sendTransactionAsync**(`_commitEndBlock`: `BigNumber`, `_revealEndBlock`: `BigNumber`, `txData`: `Partial<TxData>`): *`Promise<string>`*
+▸ **sendTransactionAsync**(`_commitEndBlock`: `BigNumber`, `_revealEndBlock`: `BigNumber`, `txData`: `Partial<TxData>`): _`Promise<string>`_
 
 Defined in generated-wrappers/voting.ts:267
 
 **Parameters:**
 
-Name | Type | Default value |
------- | ------ | ------ |
-`_commitEndBlock` | `BigNumber` | - |
-`_revealEndBlock` | `BigNumber` | - |
-`txData` | `Partial<TxData>` |  {} |
+| Name              | Type              | Default value |
+| ----------------- | ----------------- | ------------- |
+| `_commitEndBlock` | `BigNumber`       | -             |
+| `_revealEndBlock` | `BigNumber`       | -             |
+| `txData`          | `Partial<TxData>` | {}            |
 
-**Returns:** *`Promise<string>`*
+**Returns:** _`Promise<string>`_
 
-___
+---
 
-###  nextPollId
+### nextPollId
 
-### ■ **nextPollId**: *object*
+### ■ **nextPollId**: _object_
 
 Defined in generated-wrappers/voting.ts:86
 
-###  callAsync
+### callAsync
 
-▸ **callAsync**(`callData`: `Partial<CallData>`, `defaultBlock?`: `BlockParam`): *`Promise<BigNumber>`*
+▸ **callAsync**(`callData`: `Partial<CallData>`, `defaultBlock?`: `BlockParam`): _`Promise<BigNumber>`_
 
 Defined in generated-wrappers/voting.ts:87
 
 **Parameters:**
 
-Name | Type | Default value |
------- | ------ | ------ |
-`callData` | `Partial<CallData>` |  {} |
-`defaultBlock?` | `BlockParam` | - |
+| Name            | Type                | Default value |
+| --------------- | ------------------- | ------------- |
+| `callData`      | `Partial<CallData>` | {}            |
+| `defaultBlock?` | `BlockParam`        | -             |
 
-**Returns:** *`Promise<BigNumber>`*
+**Returns:** _`Promise<BigNumber>`_
 
-___
+---
 
-###  revealVote
+### revealVote
 
-### ■ **revealVote**: *object*
+### ■ **revealVote**: _object_
 
 Defined in generated-wrappers/voting.ts:140
 
-###  awaitTransactionSuccessAsync
+### awaitTransactionSuccessAsync
 
-▸ **awaitTransactionSuccessAsync**(`_pollId`: `BigNumber`, `_voteOption`: `BigNumber`, `_voteSalt`: `BigNumber`, `txData?`: `Partial<TxData>` | number, `pollingIntervalMs?`: number, `timeoutMs?`: number): *`PromiseWithTransactionHash<TransactionReceiptWithDecodedLogs>`*
+▸ **awaitTransactionSuccessAsync**(`_pollId`: `BigNumber`, `_voteOption`: `BigNumber`, `_voteSalt`: `BigNumber`, `txData?`: `Partial<TxData>` | number, `pollingIntervalMs?`: number, `timeoutMs?`: number): _`PromiseWithTransactionHash<TransactionReceiptWithDecodedLogs>`_
 
 Defined in generated-wrappers/voting.ts:169
 
 **Parameters:**
 
-Name | Type |
------- | ------ |
-`_pollId` | `BigNumber` |
-`_voteOption` | `BigNumber` |
-`_voteSalt` | `BigNumber` |
-`txData?` | `Partial<TxData>` | number |
-`pollingIntervalMs?` | number |
-`timeoutMs?` | number |
+| Name                 | Type              |
+| -------------------- | ----------------- |
+| `_pollId`            | `BigNumber`       |
+| `_voteOption`        | `BigNumber`       |
+| `_voteSalt`          | `BigNumber`       |
+| `txData?`            | `Partial<TxData>` | number |
+| `pollingIntervalMs?` | number            |
+| `timeoutMs?`         | number            |
 
-**Returns:** *`PromiseWithTransactionHash<TransactionReceiptWithDecodedLogs>`*
+**Returns:** _`PromiseWithTransactionHash<TransactionReceiptWithDecodedLogs>`_
 
-###  callAsync
+### callAsync
 
-▸ **callAsync**(`_pollId`: `BigNumber`, `_voteOption`: `BigNumber`, `_voteSalt`: `BigNumber`, `callData`: `Partial<CallData>`, `defaultBlock?`: `BlockParam`): *`Promise<void>`*
+▸ **callAsync**(`_pollId`: `BigNumber`, `_voteOption`: `BigNumber`, `_voteSalt`: `BigNumber`, `callData`: `Partial<CallData>`, `defaultBlock?`: `BlockParam`): _`Promise<void>`_
 
 Defined in generated-wrappers/voting.ts:235
 
 **Parameters:**
 
-Name | Type | Default value |
------- | ------ | ------ |
-`_pollId` | `BigNumber` | - |
-`_voteOption` | `BigNumber` | - |
-`_voteSalt` | `BigNumber` | - |
-`callData` | `Partial<CallData>` |  {} |
-`defaultBlock?` | `BlockParam` | - |
+| Name            | Type                | Default value |
+| --------------- | ------------------- | ------------- |
+| `_pollId`       | `BigNumber`         | -             |
+| `_voteOption`   | `BigNumber`         | -             |
+| `_voteSalt`     | `BigNumber`         | -             |
+| `callData`      | `Partial<CallData>` | {}            |
+| `defaultBlock?` | `BlockParam`        | -             |
 
-**Returns:** *`Promise<void>`*
+**Returns:** _`Promise<void>`_
 
-###  estimateGasAsync
+### estimateGasAsync
 
-▸ **estimateGasAsync**(`_pollId`: `BigNumber`, `_voteOption`: `BigNumber`, `_voteSalt`: `BigNumber`, `txData`: `Partial<TxData>`): *`Promise<number>`*
+▸ **estimateGasAsync**(`_pollId`: `BigNumber`, `_voteOption`: `BigNumber`, `_voteSalt`: `BigNumber`, `txData`: `Partial<TxData>`): _`Promise<number>`_
 
 Defined in generated-wrappers/voting.ts:201
 
 **Parameters:**
 
-Name | Type | Default value |
------- | ------ | ------ |
-`_pollId` | `BigNumber` | - |
-`_voteOption` | `BigNumber` | - |
-`_voteSalt` | `BigNumber` | - |
-`txData` | `Partial<TxData>` |  {} |
+| Name          | Type              | Default value |
+| ------------- | ----------------- | ------------- |
+| `_pollId`     | `BigNumber`       | -             |
+| `_voteOption` | `BigNumber`       | -             |
+| `_voteSalt`   | `BigNumber`       | -             |
+| `txData`      | `Partial<TxData>` | {}            |
 
-**Returns:** *`Promise<number>`*
+**Returns:** _`Promise<number>`_
 
-###  getABIEncodedTransactionData
+### getABIEncodedTransactionData
 
-▸ **getABIEncodedTransactionData**(`_pollId`: `BigNumber`, `_voteOption`: `BigNumber`, `_voteSalt`: `BigNumber`): *string*
+▸ **getABIEncodedTransactionData**(`_pollId`: `BigNumber`, `_voteOption`: `BigNumber`, `_voteSalt`: `BigNumber`): _string_
 
 Defined in generated-wrappers/voting.ts:223
 
 **Parameters:**
 
-Name | Type |
------- | ------ |
-`_pollId` | `BigNumber` |
-`_voteOption` | `BigNumber` |
-`_voteSalt` | `BigNumber` |
+| Name          | Type        |
+| ------------- | ----------- |
+| `_pollId`     | `BigNumber` |
+| `_voteOption` | `BigNumber` |
+| `_voteSalt`   | `BigNumber` |
 
-**Returns:** *string*
+**Returns:** _string_
 
-###  sendTransactionAsync
+### sendTransactionAsync
 
-▸ **sendTransactionAsync**(`_pollId`: `BigNumber`, `_voteOption`: `BigNumber`, `_voteSalt`: `BigNumber`, `txData`: `Partial<TxData>`): *`Promise<string>`*
+▸ **sendTransactionAsync**(`_pollId`: `BigNumber`, `_voteOption`: `BigNumber`, `_voteSalt`: `BigNumber`, `txData`: `Partial<TxData>`): _`Promise<string>`_
 
 Defined in generated-wrappers/voting.ts:141
 
 **Parameters:**
 
-Name | Type | Default value |
------- | ------ | ------ |
-`_pollId` | `BigNumber` | - |
-`_voteOption` | `BigNumber` | - |
-`_voteSalt` | `BigNumber` | - |
-`txData` | `Partial<TxData>` |  {} |
+| Name          | Type              | Default value |
+| ------------- | ----------------- | ------------- |
+| `_pollId`     | `BigNumber`       | -             |
+| `_voteOption` | `BigNumber`       | -             |
+| `_voteSalt`   | `BigNumber`       | -             |
+| `txData`      | `Partial<TxData>` | {}            |
 
-**Returns:** *`Promise<string>`*
+**Returns:** _`Promise<string>`_
 
-___
+---
 
-###  totalRevealedTokens
+### totalRevealedTokens
 
-### ■ **totalRevealedTokens**: *object*
+### ■ **totalRevealedTokens**: _object_
 
 Defined in generated-wrappers/voting.ts:112
 
-###  callAsync
+### callAsync
 
-▸ **callAsync**(`_pollId`: `BigNumber`, `callData`: `Partial<CallData>`, `defaultBlock?`: `BlockParam`): *`Promise<BigNumber>`*
+▸ **callAsync**(`_pollId`: `BigNumber`, `callData`: `Partial<CallData>`, `defaultBlock?`: `BlockParam`): _`Promise<BigNumber>`_
 
 Defined in generated-wrappers/voting.ts:113
 
 **Parameters:**
 
-Name | Type | Default value |
------- | ------ | ------ |
-`_pollId` | `BigNumber` | - |
-`callData` | `Partial<CallData>` |  {} |
-`defaultBlock?` | `BlockParam` | - |
+| Name            | Type                | Default value |
+| --------------- | ------------------- | ------------- |
+| `_pollId`       | `BigNumber`         | -             |
+| `callData`      | `Partial<CallData>` | {}            |
+| `defaultBlock?` | `BlockParam`        | -             |
 
-**Returns:** *`Promise<BigNumber>`*
+**Returns:** _`Promise<BigNumber>`_
 
-___
+---
 
-###  totalWinningTokens
+### totalWinningTokens
 
-### ■ **totalWinningTokens**: *object*
+### ■ **totalWinningTokens**: _object_
 
 Defined in generated-wrappers/voting.ts:58
 
-###  callAsync
+### callAsync
 
-▸ **callAsync**(`_pollId`: `BigNumber`, `callData`: `Partial<CallData>`, `defaultBlock?`: `BlockParam`): *`Promise<BigNumber>`*
+▸ **callAsync**(`_pollId`: `BigNumber`, `callData`: `Partial<CallData>`, `defaultBlock?`: `BlockParam`): _`Promise<BigNumber>`_
 
 Defined in generated-wrappers/voting.ts:59
 
 **Parameters:**
 
-Name | Type | Default value |
------- | ------ | ------ |
-`_pollId` | `BigNumber` | - |
-`callData` | `Partial<CallData>` |  {} |
-`defaultBlock?` | `BlockParam` | - |
+| Name            | Type                | Default value |
+| --------------- | ------------------- | ------------- |
+| `_pollId`       | `BigNumber`         | -             |
+| `callData`      | `Partial<CallData>` | {}            |
+| `defaultBlock?` | `BlockParam`        | -             |
 
-**Returns:** *`Promise<BigNumber>`*
+**Returns:** _`Promise<BigNumber>`_
 
-___
+---
 
-###  userWinningTokens
+### userWinningTokens
 
-### ■ **userWinningTokens**: *object*
+### ■ **userWinningTokens**: _object_
 
 Defined in generated-wrappers/voting.ts:381
 
-###  callAsync
+### callAsync
 
-▸ **callAsync**(`_pollId`: `BigNumber`, `_user`: string, `callData`: `Partial<CallData>`, `defaultBlock?`: `BlockParam`): *`Promise<BigNumber>`*
+▸ **callAsync**(`_pollId`: `BigNumber`, `_user`: string, `callData`: `Partial<CallData>`, `defaultBlock?`: `BlockParam`): _`Promise<BigNumber>`_
 
 Defined in generated-wrappers/voting.ts:382
 
 **Parameters:**
 
-Name | Type | Default value |
------- | ------ | ------ |
-`_pollId` | `BigNumber` | - |
-`_user` | string | - |
-`callData` | `Partial<CallData>` |  {} |
-`defaultBlock?` | `BlockParam` | - |
+| Name            | Type                | Default value |
+| --------------- | ------------------- | ------------- |
+| `_pollId`       | `BigNumber`         | -             |
+| `_user`         | string              | -             |
+| `callData`      | `Partial<CallData>` | {}            |
+| `defaultBlock?` | `BlockParam`        | -             |
 
-**Returns:** *`Promise<BigNumber>`*
+**Returns:** _`Promise<BigNumber>`_
 
-___
+---
 
-###  winningOption
+### winningOption
 
-### ■ **winningOption**: *object*
+### ■ **winningOption**: _object_
 
 Defined in generated-wrappers/voting.ts:30
 
-###  callAsync
+### callAsync
 
-▸ **callAsync**(`_pollId`: `BigNumber`, `callData`: `Partial<CallData>`, `defaultBlock?`: `BlockParam`): *`Promise<BigNumber>`*
+▸ **callAsync**(`_pollId`: `BigNumber`, `callData`: `Partial<CallData>`, `defaultBlock?`: `BlockParam`): _`Promise<BigNumber>`_
 
 Defined in generated-wrappers/voting.ts:31
 
 **Parameters:**
 
-Name | Type | Default value |
------- | ------ | ------ |
-`_pollId` | `BigNumber` | - |
-`callData` | `Partial<CallData>` |  {} |
-`defaultBlock?` | `BlockParam` | - |
+| Name            | Type                | Default value |
+| --------------- | ------------------- | ------------- |
+| `_pollId`       | `BigNumber`         | -             |
+| `callData`      | `Partial<CallData>` | {}            |
+| `defaultBlock?` | `BlockParam`        | -             |
 
-**Returns:** *`Promise<BigNumber>`*
+**Returns:** _`Promise<BigNumber>`_
 
-___
+---

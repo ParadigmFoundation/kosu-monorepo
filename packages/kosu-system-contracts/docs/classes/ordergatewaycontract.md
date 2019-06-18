@@ -6,330 +6,330 @@
 
 ## Hierarchy
 
-* `BaseContract`
+-   `BaseContract`
 
-  * **OrderGatewayContract**
+    -   **OrderGatewayContract**
 
 ### Index
 
 #### Constructors
 
-* [constructor](ordergatewaycontract.md#constructor)
+-   [constructor](ordergatewaycontract.md#constructor)
 
 #### Properties
 
-* [abi](ordergatewaycontract.md#abi)
-* [address](ordergatewaycontract.md#address)
-* [constructorArgs](ordergatewaycontract.md#constructorargs)
-* [contractName](ordergatewaycontract.md#contractname)
-* [txReceipt](ordergatewaycontract.md#optional-txreceipt)
+-   [abi](ordergatewaycontract.md#abi)
+-   [address](ordergatewaycontract.md#address)
+-   [constructorArgs](ordergatewaycontract.md#constructorargs)
+-   [contractName](ordergatewaycontract.md#contractname)
+-   [txReceipt](ordergatewaycontract.md#optional-txreceipt)
 
 #### Methods
 
-* [deployAsync](ordergatewaycontract.md#static-deployasync)
-* [deployFrom0xArtifactAsync](ordergatewaycontract.md#static-deployfrom0xartifactasync)
-* [strictArgumentEncodingCheck](ordergatewaycontract.md#static-strictargumentencodingcheck)
+-   [deployAsync](ordergatewaycontract.md#static-deployasync)
+-   [deployFrom0xArtifactAsync](ordergatewaycontract.md#static-deployfrom0xartifactasync)
+-   [strictArgumentEncodingCheck](ordergatewaycontract.md#static-strictargumentencodingcheck)
 
 #### Object literals
 
-* [amountRemaining](ordergatewaycontract.md#amountremaining)
-* [arguments](ordergatewaycontract.md#arguments)
-* [isValid](ordergatewaycontract.md#isvalid)
-* [participate](ordergatewaycontract.md#participate)
+-   [amountRemaining](ordergatewaycontract.md#amountremaining)
+-   [arguments](ordergatewaycontract.md#arguments)
+-   [isValid](ordergatewaycontract.md#isvalid)
+-   [participate](ordergatewaycontract.md#participate)
 
 ## Constructors
 
-###  constructor
+### constructor
 
-\+ **new OrderGatewayContract**(`abi`: `ContractAbi`, `address`: string, `supportedProvider`: `SupportedProvider`, `txDefaults?`: `Partial<TxData>`): *[OrderGatewayContract](ordergatewaycontract.md)*
+\+ **new OrderGatewayContract**(`abi`: `ContractAbi`, `address`: string, `supportedProvider`: `SupportedProvider`, `txDefaults?`: `Partial<TxData>`): _[OrderGatewayContract](ordergatewaycontract.md)_
 
-*Overrides void*
+_Overrides void_
 
 Defined in generated-wrappers/order_gateway.ts:276
 
 **Parameters:**
 
-Name | Type |
------- | ------ |
-`abi` | `ContractAbi` |
-`address` | string |
-`supportedProvider` | `SupportedProvider` |
-`txDefaults?` | `Partial<TxData>` |
+| Name                | Type                |
+| ------------------- | ------------------- |
+| `abi`               | `ContractAbi`       |
+| `address`           | string              |
+| `supportedProvider` | `SupportedProvider` |
+| `txDefaults?`       | `Partial<TxData>`   |
 
-**Returns:** *[OrderGatewayContract](ordergatewaycontract.md)*
+**Returns:** _[OrderGatewayContract](ordergatewaycontract.md)_
 
-___
+---
 
 ## Properties
 
-###  abi
+### abi
 
-● **abi**: *`ContractAbi`*
+● **abi**: _`ContractAbi`_
 
-*Inherited from void*
+_Inherited from void_
 
 Defined in /Users/hen/GitHub/km/node_modules/@0x/base-contract/lib/src/index.d.ts:22
 
-___
+---
 
-###  address
+### address
 
-● **address**: *string*
+● **address**: _string_
 
-*Inherited from void*
+_Inherited from void_
 
 Defined in /Users/hen/GitHub/km/node_modules/@0x/base-contract/lib/src/index.d.ts:23
 
-___
+---
 
-###  constructorArgs
+### constructorArgs
 
-● **constructorArgs**: *any[]*
+● **constructorArgs**: _any[]_
 
-*Inherited from void*
+_Inherited from void_
 
 Defined in /Users/hen/GitHub/km/node_modules/@0x/base-contract/lib/src/index.d.ts:25
 
-___
+---
 
-###  contractName
+### contractName
 
-● **contractName**: *string*
+● **contractName**: _string_
 
-*Inherited from void*
+_Inherited from void_
 
 Defined in /Users/hen/GitHub/km/node_modules/@0x/base-contract/lib/src/index.d.ts:24
 
-___
+---
 
 ### `Optional` txReceipt
 
-● **txReceipt**? : *`TransactionReceiptWithDecodedLogs`*
+● **txReceipt**? : _`TransactionReceiptWithDecodedLogs`_
 
 Defined in generated-wrappers/order_gateway.ts:29
 
-___
+---
 
 ## Methods
 
 ### `Static` deployAsync
 
-▸ **deployAsync**(`bytecode`: string, `abi`: `ContractAbi`, `supportedProvider`: `SupportedProvider`, `txDefaults`: `Partial<TxData>`): *`Promise<OrderGatewayContract>`*
+▸ **deployAsync**(`bytecode`: string, `abi`: `ContractAbi`, `supportedProvider`: `SupportedProvider`, `txDefaults`: `Partial<TxData>`): _`Promise<OrderGatewayContract>`_
 
 Defined in generated-wrappers/order_gateway.ts:246
 
 **Parameters:**
 
-Name | Type |
------- | ------ |
-`bytecode` | string |
-`abi` | `ContractAbi` |
-`supportedProvider` | `SupportedProvider` |
-`txDefaults` | `Partial<TxData>` |
+| Name                | Type                |
+| ------------------- | ------------------- |
+| `bytecode`          | string              |
+| `abi`               | `ContractAbi`       |
+| `supportedProvider` | `SupportedProvider` |
+| `txDefaults`        | `Partial<TxData>`   |
 
-**Returns:** *`Promise<OrderGatewayContract>`*
+**Returns:** _`Promise<OrderGatewayContract>`_
 
-___
+---
 
 ### `Static` deployFrom0xArtifactAsync
 
-▸ **deployFrom0xArtifactAsync**(`artifact`: `ContractArtifact` | `SimpleContractArtifact`, `supportedProvider`: `SupportedProvider`, `txDefaults`: `Partial<TxData>`): *`Promise<OrderGatewayContract>`*
+▸ **deployFrom0xArtifactAsync**(`artifact`: `ContractArtifact` | `SimpleContractArtifact`, `supportedProvider`: `SupportedProvider`, `txDefaults`: `Partial<TxData>`): _`Promise<OrderGatewayContract>`_
 
 Defined in generated-wrappers/order_gateway.ts:233
 
 **Parameters:**
 
-Name | Type |
------- | ------ |
-`artifact` | `ContractArtifact` | `SimpleContractArtifact` |
-`supportedProvider` | `SupportedProvider` |
-`txDefaults` | `Partial<TxData>` |
+| Name                | Type                |
+| ------------------- | ------------------- |
+| `artifact`          | `ContractArtifact`  | `SimpleContractArtifact` |
+| `supportedProvider` | `SupportedProvider` |
+| `txDefaults`        | `Partial<TxData>`   |
 
-**Returns:** *`Promise<OrderGatewayContract>`*
+**Returns:** _`Promise<OrderGatewayContract>`_
 
-___
+---
 
 ### `Static` strictArgumentEncodingCheck
 
-▸ **strictArgumentEncodingCheck**(`inputAbi`: `DataItem`[], `args`: any[]): *string*
+▸ **strictArgumentEncodingCheck**(`inputAbi`: `DataItem`[], `args`: any[]): _string_
 
-*Inherited from void*
+_Inherited from void_
 
 Defined in /Users/hen/GitHub/km/node_modules/@0x/base-contract/lib/src/index.d.ts:32
 
 **Parameters:**
 
-Name | Type |
------- | ------ |
-`inputAbi` | `DataItem`[] |
-`args` | any[] |
+| Name       | Type         |
+| ---------- | ------------ |
+| `inputAbi` | `DataItem`[] |
+| `args`     | any[]        |
 
-**Returns:** *string*
+**Returns:** _string_
 
-___
+---
 
 ## Object literals
 
-###  amountRemaining
+### amountRemaining
 
-### ■ **amountRemaining**: *object*
+### ■ **amountRemaining**: _object_
 
 Defined in generated-wrappers/order_gateway.ts:173
 
-###  callAsync
+### callAsync
 
-▸ **callAsync**(`subContract`: string, `data`: string, `callData`: `Partial<CallData>`, `defaultBlock?`: `BlockParam`): *`Promise<BigNumber>`*
+▸ **callAsync**(`subContract`: string, `data`: string, `callData`: `Partial<CallData>`, `defaultBlock?`: `BlockParam`): _`Promise<BigNumber>`_
 
 Defined in generated-wrappers/order_gateway.ts:174
 
 **Parameters:**
 
-Name | Type | Default value |
------- | ------ | ------ |
-`subContract` | string | - |
-`data` | string | - |
-`callData` | `Partial<CallData>` |  {} |
-`defaultBlock?` | `BlockParam` | - |
+| Name            | Type                | Default value |
+| --------------- | ------------------- | ------------- |
+| `subContract`   | string              | -             |
+| `data`          | string              | -             |
+| `callData`      | `Partial<CallData>` | {}            |
+| `defaultBlock?` | `BlockParam`        | -             |
 
-**Returns:** *`Promise<BigNumber>`*
+**Returns:** _`Promise<BigNumber>`_
 
-___
+---
 
-###  arguments
+### arguments
 
-### ■ **arguments**: *object*
+### ■ **arguments**: _object_
 
 Defined in generated-wrappers/order_gateway.ts:145
 
-###  callAsync
+### callAsync
 
-▸ **callAsync**(`subContract`: string, `callData`: `Partial<CallData>`, `defaultBlock?`: `BlockParam`): *`Promise<string>`*
+▸ **callAsync**(`subContract`: string, `callData`: `Partial<CallData>`, `defaultBlock?`: `BlockParam`): _`Promise<string>`_
 
 Defined in generated-wrappers/order_gateway.ts:146
 
 **Parameters:**
 
-Name | Type | Default value |
------- | ------ | ------ |
-`subContract` | string | - |
-`callData` | `Partial<CallData>` |  {} |
-`defaultBlock?` | `BlockParam` | - |
+| Name            | Type                | Default value |
+| --------------- | ------------------- | ------------- |
+| `subContract`   | string              | -             |
+| `callData`      | `Partial<CallData>` | {}            |
+| `defaultBlock?` | `BlockParam`        | -             |
 
-**Returns:** *`Promise<string>`*
+**Returns:** _`Promise<string>`_
 
-___
+---
 
-###  isValid
+### isValid
 
-### ■ **isValid**: *object*
+### ■ **isValid**: _object_
 
 Defined in generated-wrappers/order_gateway.ts:203
 
-###  callAsync
+### callAsync
 
-▸ **callAsync**(`subContract`: string, `data`: string, `callData`: `Partial<CallData>`, `defaultBlock?`: `BlockParam`): *`Promise<boolean>`*
+▸ **callAsync**(`subContract`: string, `data`: string, `callData`: `Partial<CallData>`, `defaultBlock?`: `BlockParam`): _`Promise<boolean>`_
 
 Defined in generated-wrappers/order_gateway.ts:204
 
 **Parameters:**
 
-Name | Type | Default value |
------- | ------ | ------ |
-`subContract` | string | - |
-`data` | string | - |
-`callData` | `Partial<CallData>` |  {} |
-`defaultBlock?` | `BlockParam` | - |
+| Name            | Type                | Default value |
+| --------------- | ------------------- | ------------- |
+| `subContract`   | string              | -             |
+| `data`          | string              | -             |
+| `callData`      | `Partial<CallData>` | {}            |
+| `defaultBlock?` | `BlockParam`        | -             |
 
-**Returns:** *`Promise<boolean>`*
+**Returns:** _`Promise<boolean>`_
 
-___
+---
 
-###  participate
+### participate
 
-### ■ **participate**: *object*
+### ■ **participate**: _object_
 
 Defined in generated-wrappers/order_gateway.ts:30
 
-###  awaitTransactionSuccessAsync
+### awaitTransactionSuccessAsync
 
-▸ **awaitTransactionSuccessAsync**(`subContract`: string, `data`: string, `txData?`: `Partial<TxData>` | number, `pollingIntervalMs?`: number, `timeoutMs?`: number): *`PromiseWithTransactionHash<TransactionReceiptWithDecodedLogs>`*
+▸ **awaitTransactionSuccessAsync**(`subContract`: string, `data`: string, `txData?`: `Partial<TxData>` | number, `pollingIntervalMs?`: number, `timeoutMs?`: number): _`PromiseWithTransactionHash<TransactionReceiptWithDecodedLogs>`_
 
 Defined in generated-wrappers/order_gateway.ts:56
 
 **Parameters:**
 
-Name | Type |
------- | ------ |
-`subContract` | string |
-`data` | string |
-`txData?` | `Partial<TxData>` | number |
-`pollingIntervalMs?` | number |
-`timeoutMs?` | number |
+| Name                 | Type              |
+| -------------------- | ----------------- |
+| `subContract`        | string            |
+| `data`               | string            |
+| `txData?`            | `Partial<TxData>` | number |
+| `pollingIntervalMs?` | number            |
+| `timeoutMs?`         | number            |
 
-**Returns:** *`PromiseWithTransactionHash<TransactionReceiptWithDecodedLogs>`*
+**Returns:** _`PromiseWithTransactionHash<TransactionReceiptWithDecodedLogs>`_
 
-###  callAsync
+### callAsync
 
-▸ **callAsync**(`subContract`: string, `data`: string, `callData`: `Partial<CallData>`, `defaultBlock?`: `BlockParam`): *`Promise<boolean>`*
+▸ **callAsync**(`subContract`: string, `data`: string, `callData`: `Partial<CallData>`, `defaultBlock?`: `BlockParam`): _`Promise<boolean>`_
 
 Defined in generated-wrappers/order_gateway.ts:116
 
 **Parameters:**
 
-Name | Type | Default value |
------- | ------ | ------ |
-`subContract` | string | - |
-`data` | string | - |
-`callData` | `Partial<CallData>` |  {} |
-`defaultBlock?` | `BlockParam` | - |
+| Name            | Type                | Default value |
+| --------------- | ------------------- | ------------- |
+| `subContract`   | string              | -             |
+| `data`          | string              | -             |
+| `callData`      | `Partial<CallData>` | {}            |
+| `defaultBlock?` | `BlockParam`        | -             |
 
-**Returns:** *`Promise<boolean>`*
+**Returns:** _`Promise<boolean>`_
 
-###  estimateGasAsync
+### estimateGasAsync
 
-▸ **estimateGasAsync**(`subContract`: string, `data`: string, `txData`: `Partial<TxData>`): *`Promise<number>`*
+▸ **estimateGasAsync**(`subContract`: string, `data`: string, `txData`: `Partial<TxData>`): _`Promise<number>`_
 
 Defined in generated-wrappers/order_gateway.ts:86
 
 **Parameters:**
 
-Name | Type | Default value |
------- | ------ | ------ |
-`subContract` | string | - |
-`data` | string | - |
-`txData` | `Partial<TxData>` |  {} |
+| Name          | Type              | Default value |
+| ------------- | ----------------- | ------------- |
+| `subContract` | string            | -             |
+| `data`        | string            | -             |
+| `txData`      | `Partial<TxData>` | {}            |
 
-**Returns:** *`Promise<number>`*
+**Returns:** _`Promise<number>`_
 
-###  getABIEncodedTransactionData
+### getABIEncodedTransactionData
 
-▸ **getABIEncodedTransactionData**(`subContract`: string, `data`: string): *string*
+▸ **getABIEncodedTransactionData**(`subContract`: string, `data`: string): _string_
 
 Defined in generated-wrappers/order_gateway.ts:106
 
 **Parameters:**
 
-Name | Type |
------- | ------ |
-`subContract` | string |
-`data` | string |
+| Name          | Type   |
+| ------------- | ------ |
+| `subContract` | string |
+| `data`        | string |
 
-**Returns:** *string*
+**Returns:** _string_
 
-###  sendTransactionAsync
+### sendTransactionAsync
 
-▸ **sendTransactionAsync**(`subContract`: string, `data`: string, `txData`: `Partial<TxData>`): *`Promise<string>`*
+▸ **sendTransactionAsync**(`subContract`: string, `data`: string, `txData`: `Partial<TxData>`): _`Promise<string>`_
 
 Defined in generated-wrappers/order_gateway.ts:31
 
 **Parameters:**
 
-Name | Type | Default value |
------- | ------ | ------ |
-`subContract` | string | - |
-`data` | string | - |
-`txData` | `Partial<TxData>` |  {} |
+| Name          | Type              | Default value |
+| ------------- | ----------------- | ------------- |
+| `subContract` | string            | -             |
+| `data`        | string            | -             |
+| `txData`      | `Partial<TxData>` | {}            |
 
-**Returns:** *`Promise<string>`*
+**Returns:** _`Promise<string>`_
 
-___
+---
