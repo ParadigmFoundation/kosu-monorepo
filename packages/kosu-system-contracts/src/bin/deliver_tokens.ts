@@ -40,7 +40,9 @@ if (args["test-mnemonic"] || !mnemonic) {
     const addresses = ["0xAA554D0c5ff879387Fc234dE5D22EC02983baA27", "0x8b366a3d4e46aC5406F12766Ad33E6482Ce4F081"];
     addresses.push.apply(addresses, await web3.eth.getAccounts());
 
+    const transactions = [];
     for (const account of addresses) {
-        await kosuToken.transfer.awaitTransactionSuccessAsync(account, aLot, { from });
+        transactions.push(kosuToken.transfer.awaitTransactionSuccessAsync(account, aLot, { from }));
     }
+    await Promise.all(transactions);
 })().catch(err => console.log(err));
