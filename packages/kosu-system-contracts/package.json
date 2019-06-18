@@ -1,11 +1,11 @@
 {
     "name": "@kosu/system-contracts",
-    "version": "0.1.0-alpha.5",
+    "version": "0.1.1",
     "description": "Kosu protocol core contracts in Solidity.",
     "license": "MIT",
     "repository": {
         "type": "git",
-        "url": "https://github.com/ParadigmFoundation/kosu-monorepo.git"
+        "url": "https://github.com/ParadigmFoundation/kosu-monorepo/blob/master/packages/kosu-system-contracts"
     },
     "main": "dist/src/index.js",
     "types": "src",
@@ -13,9 +13,9 @@
         "url": "https://github.com/ParadigmFoundation/kosu-monorepo/issues"
     },
     "scripts": {
-        "test": "ts-mocha -p test/tsconfig.json test/* --timeout 4000",
-        "contracts:test:ci": "ts-mocha -p test/tsconfig.json test/* --timeout 200000 -b -- geth",
-        "coverage": "yarn test -- --timeout 10000 -- runCoverage && istanbul report html && open coverage/index.html",
+        "test": "ts-mocha -p test/tsconfig.json test/* --timeout 4000 --slow 2000",
+        "contracts:test:ci": "ts-mocha -p test/tsconfig.json test/* --slow 2000 --timeout 200000 -b -- geth",
+        "coverage": "ts-mocha -p test/tsconfig.json test/* --slow 2000 --timeout 100000 -- runCoverage && istanbul report html && open coverage/index.html",
         "build": "run-s compile:solidity generate_contract_wrappers compile:typescript",
         "compile:solidity": "sol-compiler",
         "compile:typescript": "tsc",
@@ -23,13 +23,14 @@
         "truffle:clean": "shx rm -rf build/contracts",
         "contracts:clean": "shx rm -rf  generated-artifacts generated-wrappers",
         "deploy": "yarn deploy:ropsten",
-        "deploy:ropsten": "ts-node -T src/migrate.ts --rpc-url=https://ethnet.zaidan.io/ropsten && ts-node --files bin/deliver_tokens.ts --rpc-url=https://ethnet.zaidan.io/ropsten && yarn prettier:deployedAddresses",
-        "deploy:kosu": "ts-node -T src/migrate.ts --test-mnemonic --rpc-url=https://ethnet.zaidan.io/kosu && ts-node --files bin/deliver_tokens.ts --test-mnemonic --rpc-url=https://ethnet.zaidan.io/kosu && yarn prettier:deployedAddresses",
-        "deploy:kosu:ci": "ts-node -T src/migrate.ts --test-mnemonic --rpc-url=${WEB3_URI} && ts-node --files bin/deliver_tokens.ts --test-mnemonic --rpc-url=${WEB3_URI} && yarn prettier:deployedAddresses",
+        "deploy:ropsten": "ts-node -T src/bin/migrate.ts --rpc-url=https://ethnet.zaidan.io/ropsten && ts-node --files src/bin/deliver_tokens.ts --rpc-url=https://ethnet.zaidan.io/ropsten &&yarn prettier:deployedAddresses",
+        "deploy:kosu": "ts-node -T src/bin/migrate.ts --test-mnemonic --rpc-url=https://ethnet.zaidan.io/kosu && ts-node --files src/bin/deliver_tokens.ts --test-mnemonic --rpc-url=https://ethnet.zaidan.io/kosu && yarn prettier:deployedAddresses",
+        "deploy:kosu:ci": "ts-node -T src/bin/migrate.ts --test-mnemonic --rpc-url=${WEB3_URI} && ts-node --files src/bin/deliver_tokens.ts --test-mnemonic --rpc-url=${WEB3_URI} && yarn prettier:deployedAddresses",
         "prettier:deployedAddresses": "prettier --write src/deployedAddresses.json --config ../../.prettierrc",
         "ganache_rpc": "docker run --rm -p 8545:8545 ${npm_package_config_kosu_ganache_image}",
         "ganache_rpc:detached": "docker run --rm -d -p 8545:8545 ${npm_package_config_kosu_ganache_image}",
-        "generate_contract_wrappers": "abi-gen --abis  ${npm_package_config_abis} --template ./abi-gen-templates/contract.handlebars --partials './abi-gen-templates/partials/**/*.handlebars' --output generated-wrappers --backend ethers"
+        "generate_contract_wrappers": "abi-gen --abis  ${npm_package_config_abis} --template ./abi-gen-templates/contract.handlebars --partials './abi-gen-templates/partials/**/*.handlebars' --output generated-wrappers --backend ethers",
+        "docs": "typedoc ./src"
     },
     "config": {
         "kosu_ganache_image": "gcr.io/kosu-io/kosu-ganache",
@@ -42,7 +43,7 @@
         "@0x/subproviders": "^4.1.0",
         "@0x/utils": "^4.3.1",
         "@0x/web3-wrapper": "^6.0.5",
-        "@kosu/subcontract-sdk": "0.1.0-alpha.1",
+        "@kosu/subcontract-sdk": "0.1.1",
         "@kosu/tsc-config": "^0.1.0",
         "@kosu/tslint-config": "^0.0.4",
         "bitcore-lib": "0.16",
@@ -69,6 +70,8 @@
         "@types/mocha": "^5.2.6",
         "chai": "^4.2.0",
         "chai-as-promised": "^7.1.1",
+        "ethereumjs-abi": "^0.6.7",
+        "ethereumjs-util": "^6.1.0",
         "istanbul": "^0.4.5",
         "truffle-hdwallet-provider": "^1.0.6",
         "typescript": "^3.4.5",
@@ -76,5 +79,12 @@
     },
     "publishConfig": {
         "access": "public"
-    }
+    },
+    "files": [
+        "dist/",
+        "contracts/",
+        "compiler.json",
+        "tsconfig.json",
+        "tslint.json"
+    ]
 }

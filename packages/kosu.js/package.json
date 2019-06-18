@@ -1,6 +1,6 @@
 {
     "name": "@kosu/kosu.js",
-    "version": "0.1.0-alpha.7",
+    "version": "0.1.1",
     "description": "JavaScript module for connecting with Kosu.",
     "main": "dist/index.js",
     "license": "MIT",
@@ -10,7 +10,8 @@
         "test:ganache": "docker run --rm -p 8545:8545 ${npm_package_config_ganache_image_uri}",
         "test:ganache_detached": "docker run --rm -d -p 8545:8545 ${npm_package_config_ganache_image_uri}",
         "build": "tsc",
-        "lint": "tslint -p ."
+        "lint": "tslint -p .",
+        "docs": "typedoc ./src"
     },
     "repository": {
         "type": "git",
@@ -26,7 +27,7 @@
         "@0x/utils": "^4.3.1",
         "@0x/web3-wrapper": "^6.0.5",
         "@babel/core": "^7.4.4",
-        "@kosu/system-contracts": "^0.1.0-alpha.5",
+        "@kosu/system-contracts": "^0.1.1",
         "@kosu/tsc-config": "^0.1.0",
         "@kosu/tslint-config": "^0.0.4",
         "ethereum-protocol": "^1.0.1",
@@ -56,12 +57,15 @@
         "ts-mocha": "^6.0.0",
         "ts-node": "^8.1.0",
         "tslint": "^5.16.0",
+        "typedoc": "^0.14.2",
+        "typedoc-plugin-markdown": "^2.0.1",
         "typescript": "^3.4.5"
     },
     "publishConfig": {
         "access": "public"
     },
     "files": [
-        "dist/*"
+        "dist/",
+        "README.md"
     ]
 }

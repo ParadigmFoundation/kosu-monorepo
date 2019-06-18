@@ -1,0 +1,9 @@
+{
+    "mode": "file",
+    "readme": "./README.md",
+    "name": "kosu-system-contracts",
+    "theme": "markdown",
+    "out": "./docs",
+    "ignoreCompilerErrors": true,
+    "excludeProtected": true
+}

@@ -1,4 +1,11 @@
+# Kosu monorepo CD config for GCP cloud-build (last updated 18 June 19)
+
 steps:
+
+ # ===============
+ # BUILD CI IMAGES
+ # ===============
+
 # Pull images to build from cache
 - name: 'gcr.io/cloud-builders/docker'
   entrypoint: 'bash'
@@ -40,6 +47,21 @@ steps:
     "./packages/kosu-geth"
   ]
 
+ # =============
+ # GENERATE DOCS
+ # =============
+
+- name: node:10.15.1
+  entrypoint: yarn
+  args: ["install"]
+- name: node:10.15.1
+  entrypoint: yarn
+  args: ["docs"]
+
+# =============
+# DOCKER IMAGES
+# =============
+
 images: [
   # go-kosu ci image
   "gcr.io/kosu-io/go-kosu-ci:$SHORT_SHA", "gcr.io/kosu-io/go-kosu-ci:latest",
@@ -50,3 +72,22 @@ images: [
   # kosu-geth poa test image
   "gcr.io/kosu-io/kosu-geth:$SHORT_SHA", "gcr.io/kosu-io/kosu-geth:latest",
 ]
+
+# =========
+# SAVE DOCS
+# =========
+
+artifacts: 
+  objects:
+    location: "gs://kosu-docs/kosu.js"
+    paths: ["packages/kosu.js/docs/**/*.*"]
+  objects:
+    location: "gs://kosu-docs/kosu-system-contracts"
+    paths: ["packages/kosu-system-contracts/docs/**/*.*"]
+
+# ======
+# CONFIG
+# ======
+
+options: 
+ machineType: "N1_HIGHCPU_8"

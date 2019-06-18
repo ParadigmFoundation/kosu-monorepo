@@ -9,8 +9,8 @@ import Web3ProviderEngine from "web3-provider-engine";
 import { BN, toWei } from "web3-utils";
 import yargs from "yargs";
 
-import * as deployedAddresses from "./deployedAddresses.json";
-import { migrations } from "./migrations";
+import * as deployedAddresses from "../deployedAddresses.json";
+import { migrations } from "../migrations";
 
 const args = yargs
     .option("rpc-url", {

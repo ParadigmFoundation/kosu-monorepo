@@ -1,42 +1,105 @@
----
-title: Overview
----
+> ## [kosu.js](README.md)
 
-# KosuConnect
+[Globals](globals.md) /
 
-KosuConnect is the primary library for interacting with the Kosu protocol and settlement platform. It is currently only available in JavaScript. KosuConnect provides a convenient way to interface with the Kosu OrderStream and the Kosu OrderGateway.
+# Kosu.js
 
-Jump into KosuConnect by following one of the links below:
+A TypeScript/JavaScript library for interacting with the Kosu contract system and order relay network.
 
--   [Quick start](./getting-started.md)
--   [Full API reference](./reference.md)
--   [Usage examples](./usage.md)
--   [Source code (on GitHub)](https://github.com/ParadigmFoundation/) <!-- TODO fix link -->
+**View [the documentation here.](https://github.com/ParadigmFoundation/kosu-monorepo/blob/master/packages/kosu.js/docs/)**
 
-## Current features
+## Installation
 
-KosuConnect provides client and server-side utilities for the following actions (all of which can be configured for local and remote OrderStream nodes):
+Kosu.js can be installed into your project through `yarn` or `npm`, and can be passed through `webpack` or `browserify` for usage in the browser.
 
--   Constructing and signing maker orders
--   Signing orders as a poster (for OrderStream submission)
--   Submitting orders to the OrderStream via RPC
--   Subscribing to the OrderStream to parse/process orders
+### Install
 
-## Proposed features
+**Yarn:**
 
-In the future, the library (or related tooling) may be extended to support:
+```
+yarn add @kosu/kosu.js
+```
 
--   Locking tokens to gain write access to the OrderStream
--   Auditing nodes and validators on the network
--   Submitting applications for validators
--   Voting on validator applications
+**NPM:**
 
-Until then, the above actions must be taken programmatically through libraries such as `web3`, or interacting with the Kosu contract system's interfaces manually on services like [Etherscan](https://etherscan.io)
+```
+npm install --save @kosu/kosu.js
+```
 
-## Issues and proposals
+### Import
 
-KosuConnect is under active development, and at this point should not be considered stable. If you find a bug, inconsistency, or vulnerability please open an issue.
+Kosu and its exported classes can be imported directly into TypeScript or JavaScript projects.
 
-If you encounter errors setting up or running setting up KosuConnect, feel free to reach out on our [chat server.](https://chat.paradigm.market/)
+**TypeScript (and ES6+):**
 
-KosuConnect is open source software, and we encourage the suggestion of improvements and enhancements to the protocol. If you have a suggestion or specification, please submit a Paradigm Improvement Proposal (PIP) <!-- TODO Is this still valid? --> or open a pull request.
+```typescript
+// top-level Kosu class
+import { Kosu } from "@kosu/kosu.js";
+
+// directly access exported classes/utilities
+import {
+// contract wrapper classes
+KosuToken,
+OrderGateway,
+PosterRegistry,
+Treasury,
+ValidatorRegistry,
+Voting,
+
+// utils/classes and constants
+OrderSerializer,
+OrderHelper,
+Signature,
+toBytes32
+NULL_ADDRESS,
+} from "@kosu/kosu.js";
+```
+
+**JavaScript (CommonJS):**
+
+```javascript
+const { Kosu } = require("@kosu/kosu.js");
+
+const {
+KosuToken,
+OrderGateway,
+PosterRegistry,
+Treasury,
+ValidatorRegistry,
+Voting,
+
+OrderSerializer,
+OrderHelper,
+Signature,
+toBytes32
+NULL_ADDRESS,
+} = require("@kosu/kosu.js");
+```
+
+## Development
+
+```
+@todo: add contribution guidelines summary and link
+```
+
+### Linting
+
+The TypeScript source can be linted with:
+
+```
+yarn lint
+```
+
+### Building
+
+Build the TypeScript source to distributable JavaScript (CommonJS) as well as source mappings and typing files with:
+
+```
+yarn build
+```
+
+## License
+
+Open-source software, [MIT licensed.](https://github.com/ParadigmFoundation/kosu-monorepo/blob/master/LICENSE)
+
+Copyright (c) 2019 Paradigm Labs, corp.
