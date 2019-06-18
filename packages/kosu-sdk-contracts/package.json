@@ -1,6 +1,6 @@
 {
     "name": "@kosu/subcontract-sdk",
-    "version": "0.1.0",
+    "version": "0.1.1",
     "description": "Kosu SubContract building utilities.",
     "license": "MIT",
     "private": false,
