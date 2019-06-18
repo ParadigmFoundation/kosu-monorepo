@@ -8,251 +8,251 @@ Integration with Voting contract on an Ethereum blockchain.
 
 ## Hierarchy
 
--   **Voting**
+* **Voting**
 
 ### Index
 
 #### Constructors
 
--   [constructor](voting.md#constructor)
+* [constructor](voting.md#constructor)
 
 #### Properties
 
--   [address](voting.md#private-address)
--   [coinbase](voting.md#private-coinbase)
--   [contract](voting.md#private-contract)
--   [treasury](voting.md#private-treasury)
--   [web3](voting.md#private-web3)
--   [web3Wrapper](voting.md#private-web3wrapper)
+* [address](voting.md#private-address)
+* [coinbase](voting.md#private-coinbase)
+* [contract](voting.md#private-contract)
+* [treasury](voting.md#private-treasury)
+* [web3](voting.md#private-web3)
+* [web3Wrapper](voting.md#private-web3wrapper)
 
 #### Methods
 
--   [commitVote](voting.md#commitvote)
--   [encodeVote](voting.md#encodevote)
--   [getContract](voting.md#private-getcontract)
--   [revealVote](voting.md#revealvote)
--   [totalRevealedTokens](voting.md#totalrevealedtokens)
--   [totalWinningTokens](voting.md#totalwinningtokens)
--   [userWinningTokens](voting.md#userwinningtokens)
--   [winningOption](voting.md#winningoption)
+* [commitVote](voting.md#commitvote)
+* [encodeVote](voting.md#encodevote)
+* [getContract](voting.md#private-getcontract)
+* [revealVote](voting.md#revealvote)
+* [totalRevealedTokens](voting.md#totalrevealedtokens)
+* [totalWinningTokens](voting.md#totalwinningtokens)
+* [userWinningTokens](voting.md#userwinningtokens)
+* [winningOption](voting.md#winningoption)
 
 ## Constructors
 
-### constructor
+###  constructor
 
-\+ **new Voting**(`options`: `KosuOptions`, `treasury`: [Treasury](treasury.md)): _[Voting](voting.md)_
+\+ **new Voting**(`options`: `KosuOptions`, `treasury`: [Treasury](treasury.md)): *[Voting](voting.md)*
 
-_Defined in [src/Voting.ts:18](url)_
+*Defined in [src/Voting.ts:18](url)*
 
 Create a new Voting instance.
 
 **Parameters:**
 
-| Name       | Type                    | Description                   |
-| ---------- | ----------------------- | ----------------------------- |
-| `options`  | `KosuOptions`           | instantiation options         |
-| `treasury` | [Treasury](treasury.md) | treasury integration instance |
+Name | Type | Description |
+------ | ------ | ------ |
+`options` | `KosuOptions` | instantiation options |
+`treasury` | [Treasury](treasury.md) | treasury integration instance  |
 
-**Returns:** _[Voting](voting.md)_
+**Returns:** *[Voting](voting.md)*
 
----
+___
 
 ## Properties
 
 ### `Private` address
 
-● **address**: _string_
+● **address**: *string*
 
-_Defined in [src/Voting.ts:16](url)_
+*Defined in [src/Voting.ts:16](url)*
 
----
+___
 
 ### `Private` coinbase
 
-● **coinbase**: _string_
+● **coinbase**: *string*
 
-_Defined in [src/Voting.ts:18](url)_
+*Defined in [src/Voting.ts:18](url)*
 
----
+___
 
 ### `Private` contract
 
-● **contract**: _any_
+● **contract**: *any*
 
-_Defined in [src/Voting.ts:17](url)_
+*Defined in [src/Voting.ts:17](url)*
 
----
+___
 
 ### `Private` treasury
 
-● **treasury**: _[Treasury](treasury.md)_
+● **treasury**: *[Treasury](treasury.md)*
 
-_Defined in [src/Voting.ts:14](url)_
+*Defined in [src/Voting.ts:14](url)*
 
----
+___
 
 ### `Private` web3
 
-● **web3**: _`Web3`_
+● **web3**: *`Web3`*
 
-_Defined in [src/Voting.ts:13](url)_
+*Defined in [src/Voting.ts:13](url)*
 
----
+___
 
 ### `Private` web3Wrapper
 
-● **web3Wrapper**: _`Web3Wrapper`_
+● **web3Wrapper**: *`Web3Wrapper`*
 
-_Defined in [src/Voting.ts:15](url)_
+*Defined in [src/Voting.ts:15](url)*
 
----
+___
 
 ## Methods
 
-### commitVote
+###  commitVote
 
-▸ **commitVote**(`_pollId`: `BigNumber`, `_vote`: string, `_tokensToCommit`: `BigNumber`): _`Promise<TransactionReceiptWithDecodedLogs>`_
+▸ **commitVote**(`_pollId`: `BigNumber`, `_vote`: string, `_tokensToCommit`: `BigNumber`): *`Promise<TransactionReceiptWithDecodedLogs>`*
 
-_Defined in [src/Voting.ts:67](url)_
+*Defined in [src/Voting.ts:67](url)*
 
 Commits vote to voting contract
 
 **Parameters:**
 
-| Name              | Type        | Description                                  |
-| ----------------- | ----------- | -------------------------------------------- |
-| `_pollId`         | `BigNumber` | uint poll index                              |
-| `_vote`           | string      | encoded vote option                          |
-| `_tokensToCommit` | `BigNumber` | uint number of tokens to be commited to vote |
+Name | Type | Description |
+------ | ------ | ------ |
+`_pollId` | `BigNumber` | uint poll index |
+`_vote` | string | encoded vote option |
+`_tokensToCommit` | `BigNumber` | uint number of tokens to be commited to vote  |
 
-**Returns:** _`Promise<TransactionReceiptWithDecodedLogs>`_
+**Returns:** *`Promise<TransactionReceiptWithDecodedLogs>`*
 
----
+___
 
-### encodeVote
+###  encodeVote
 
-▸ **encodeVote**(`_voteOption`: string, `_voteSalt`: string): _string_
+▸ **encodeVote**(`_voteOption`: string, `_voteSalt`: string): *string*
 
-_Defined in [src/Voting.ts:150](url)_
+*Defined in [src/Voting.ts:150](url)*
 
 Encodes a vote by hashing the option and salt
 
 **Parameters:**
 
-| Name          | Type   | Description |
-| ------------- | ------ | ----------- |
-| `_voteOption` | string | .           |
-| `_voteSalt`   | string | .           |
+Name | Type | Description |
+------ | ------ | ------ |
+`_voteOption` | string | . |
+`_voteSalt` | string | .  |
 
-**Returns:** _string_
+**Returns:** *string*
 
 Encoded vote
 
----
+___
 
 ### `Private` getContract
 
-▸ **getContract**(): _`Promise<VotingContract>`_
+▸ **getContract**(): *`Promise<VotingContract>`*
 
-_Defined in [src/Voting.ts:38](url)_
+*Defined in [src/Voting.ts:38](url)*
 
 Asynchronously initializes the contract instance or returns it from cache
 
-**Returns:** _`Promise<VotingContract>`_
+**Returns:** *`Promise<VotingContract>`*
 
 The contract
 
----
+___
 
-### revealVote
+###  revealVote
 
-▸ **revealVote**(`_pollId`: `BigNumber`, `_voteOption`: `BigNumber`, `_voteSalt`: `BigNumber`): _`Promise<TransactionReceiptWithDecodedLogs>`_
+▸ **revealVote**(`_pollId`: `BigNumber`, `_voteOption`: `BigNumber`, `_voteSalt`: `BigNumber`): *`Promise<TransactionReceiptWithDecodedLogs>`*
 
-_Defined in [src/Voting.ts:92](url)_
+*Defined in [src/Voting.ts:92](url)*
 
 Reveals vote on voting contract
 
 **Parameters:**
 
-| Name          | Type        | Description                          |
-| ------------- | ----------- | ------------------------------------ |
-| `_pollId`     | `BigNumber` | uint poll index                      |
-| `_voteOption` | `BigNumber` | uint representation of vote position |
-| `_voteSalt`   | `BigNumber` | uint salt used to encode vote option |
+Name | Type | Description |
+------ | ------ | ------ |
+`_pollId` | `BigNumber` | uint poll index |
+`_voteOption` | `BigNumber` | uint representation of vote position |
+`_voteSalt` | `BigNumber` | uint salt used to encode vote option  |
 
-**Returns:** _`Promise<TransactionReceiptWithDecodedLogs>`_
+**Returns:** *`Promise<TransactionReceiptWithDecodedLogs>`*
 
----
+___
 
-### totalRevealedTokens
+###  totalRevealedTokens
 
-▸ **totalRevealedTokens**(`_pollId`: `BigNumber`): _`Promise<BigNumber>`_
+▸ **totalRevealedTokens**(`_pollId`: `BigNumber`): *`Promise<BigNumber>`*
 
-_Defined in [src/Voting.ts:126](url)_
-
-Reads the total winning tokens for poll
-
-**Parameters:**
-
-| Name      | Type        | Description     |
-| --------- | ----------- | --------------- |
-| `_pollId` | `BigNumber` | uint poll index |
-
-**Returns:** _`Promise<BigNumber>`_
-
----
-
-### totalWinningTokens
-
-▸ **totalWinningTokens**(`_pollId`: `BigNumber`): _`Promise<BigNumber>`_
-
-_Defined in [src/Voting.ts:116](url)_
+*Defined in [src/Voting.ts:126](url)*
 
 Reads the total winning tokens for poll
 
 **Parameters:**
 
-| Name      | Type        | Description     |
-| --------- | ----------- | --------------- |
-| `_pollId` | `BigNumber` | uint poll index |
+Name | Type | Description |
+------ | ------ | ------ |
+`_pollId` | `BigNumber` | uint poll index  |
 
-**Returns:** _`Promise<BigNumber>`_
+**Returns:** *`Promise<BigNumber>`*
 
----
+___
 
-### userWinningTokens
+###  totalWinningTokens
 
-▸ **userWinningTokens**(`_pollId`: `BigNumber`, `_userAddress`: string): _`Promise<BigNumber>`_
+▸ **totalWinningTokens**(`_pollId`: `BigNumber`): *`Promise<BigNumber>`*
 
-_Defined in [src/Voting.ts:137](url)_
+*Defined in [src/Voting.ts:116](url)*
+
+Reads the total winning tokens for poll
+
+**Parameters:**
+
+Name | Type | Description |
+------ | ------ | ------ |
+`_pollId` | `BigNumber` | uint poll index  |
+
+**Returns:** *`Promise<BigNumber>`*
+
+___
+
+###  userWinningTokens
+
+▸ **userWinningTokens**(`_pollId`: `BigNumber`, `_userAddress`: string): *`Promise<BigNumber>`*
+
+*Defined in [src/Voting.ts:137](url)*
 
 Reads users winning tokens committed for poll
 
 **Parameters:**
 
-| Name           | Type        | Default value | Description                                   |
-| -------------- | ----------- | ------------- | --------------------------------------------- |
-| `_pollId`      | `BigNumber` | -             | uint poll index                               |
-| `_userAddress` | string      | this.coinbase | address of user whose winning contribution is |
+Name | Type | Default value | Description |
+------ | ------ | ------ | ------ |
+`_pollId` | `BigNumber` | - | uint poll index |
+`_userAddress` | string |  this.coinbase | address of user whose winning contribution is  |
 
-**Returns:** _`Promise<BigNumber>`_
+**Returns:** *`Promise<BigNumber>`*
 
----
+___
 
-### winningOption
+###  winningOption
 
-▸ **winningOption**(`_pollId`: `BigNumber`): _`Promise<BigNumber>`_
+▸ **winningOption**(`_pollId`: `BigNumber`): *`Promise<BigNumber>`*
 
-_Defined in [src/Voting.ts:106](url)_
+*Defined in [src/Voting.ts:106](url)*
 
 Reads the winning option for poll
 
 **Parameters:**
 
-| Name      | Type        | Description     |
-| --------- | ----------- | --------------- |
-| `_pollId` | `BigNumber` | uint poll index |
+Name | Type | Description |
+------ | ------ | ------ |
+`_pollId` | `BigNumber` | uint poll index  |
 
-**Returns:** _`Promise<BigNumber>`_
+**Returns:** *`Promise<BigNumber>`*
 
----
+___

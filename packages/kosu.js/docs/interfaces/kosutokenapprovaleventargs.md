@@ -6,44 +6,44 @@
 
 ## Hierarchy
 
--   `DecodedLogArgs`
+* `DecodedLogArgs`
 
-    -   **KosuTokenApprovalEventArgs**
+  * **KosuTokenApprovalEventArgs**
 
 ## Indexable
 
-● \[■&#x60; argName&#x60;: _string_\]: `ContractEventArg`
+● \[■&#x60; argName&#x60;: *string*\]: `ContractEventArg`
 
 ### Index
 
 #### Properties
 
--   [owner](kosutokenapprovaleventargs.md#owner)
--   [spender](kosutokenapprovaleventargs.md#spender)
--   [value](kosutokenapprovaleventargs.md#value)
+* [owner](kosutokenapprovaleventargs.md#owner)
+* [spender](kosutokenapprovaleventargs.md#spender)
+* [value](kosutokenapprovaleventargs.md#value)
 
 ## Properties
 
-### owner
+###  owner
 
-● **owner**: _string_
+● **owner**: *string*
 
 Defined in node_modules/@kosu/system-contracts/generated-wrappers/kosu_token.ts:40
 
----
+___
 
-### spender
+###  spender
 
-● **spender**: _string_
+● **spender**: *string*
 
 Defined in node_modules/@kosu/system-contracts/generated-wrappers/kosu_token.ts:41
 
----
+___
 
-### value
+###  value
 
-● **value**: _`BigNumber`_
+● **value**: *`BigNumber`*
 
 Defined in node_modules/@kosu/system-contracts/generated-wrappers/kosu_token.ts:42
 
----
+___

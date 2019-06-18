@@ -30,7 +30,7 @@ npm install --save @kosu/kosu.js
 
 Kosu and its exported classes can be imported directly into TypeScript or JavaScript projects.
 
-**TypeScript:**
+**TypeScript (and ES6+):**
 
 ```typescript
 // top-level Kosu class
