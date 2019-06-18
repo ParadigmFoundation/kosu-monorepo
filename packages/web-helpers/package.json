@@ -6,7 +6,7 @@
     "homepage": "https://portal.kosu.io/",
     "description": "Simple web interfaces for interacting with the Kosu contract system and network.",
     "scripts": {
-        "build": "webpack",
+        "compile:assets": "webpack",
         "develop": "webpack-dev-server",
         "deploy": "yarn build && gsutil -m rsync -d ./public gs://portal.kosu.io"
     },

@@ -14,7 +14,7 @@ Add `gov-portal-helper` to your project via `npm` or `yarn`.
 yarn add @kosu/gov-portal-helper
 
 # install with npm
-yarn add @kosu/gov-portal-helper
+npm i @kosu/gov-portal-helper
 ```
 
 ## Typedefs

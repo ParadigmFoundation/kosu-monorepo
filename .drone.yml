@@ -1,4 +1,4 @@
-# kosu-monorepo CI configuration file (last updated 05 June 2019)
+# kosu-monorepo DroneCI configuration file (last updated 18 June 2019)
 
 kind: pipeline
 name: tests
