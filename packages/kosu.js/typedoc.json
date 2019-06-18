@@ -4,5 +4,7 @@
     "readme": "./README.md",
     "theme": "markdown",
     "out": "./docs",
-    "ignoreCompilerErrors": true
+    "excludeExternals": true,
+    "ignoreCompilerErrors": true,
+    "includeDeclarations": true
 }
