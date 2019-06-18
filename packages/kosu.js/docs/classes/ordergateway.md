@@ -17,191 +17,191 @@ specified SubContract during serialization and signature generation.
 
 ## Hierarchy
 
--   **OrderGateway**
+* **OrderGateway**
 
 ### Index
 
 #### Constructors
 
--   [constructor](ordergateway.md#constructor)
+* [constructor](ordergateway.md#constructor)
 
 #### Properties
 
--   [address](ordergateway.md#private-address)
--   [contract](ordergateway.md#private-contract)
--   [initializing](ordergateway.md#private-initializing)
--   [web3](ordergateway.md#private-web3)
--   [web3Wrapper](ordergateway.md#private-web3wrapper)
+* [address](ordergateway.md#private-address)
+* [contract](ordergateway.md#private-contract)
+* [initializing](ordergateway.md#private-initializing)
+* [web3](ordergateway.md#private-web3)
+* [web3Wrapper](ordergateway.md#private-web3wrapper)
 
 #### Methods
 
--   [amountRemaining](ordergateway.md#amountremaining)
--   [arguments](ordergateway.md#arguments)
--   [init](ordergateway.md#private-init)
--   [isValid](ordergateway.md#isvalid)
--   [participate](ordergateway.md#participate)
+* [amountRemaining](ordergateway.md#amountremaining)
+* [arguments](ordergateway.md#arguments)
+* [init](ordergateway.md#private-init)
+* [isValid](ordergateway.md#isvalid)
+* [participate](ordergateway.md#participate)
 
 ## Constructors
 
-### constructor
+###  constructor
 
-\+ **new OrderGateway**(`options`: `KosuOptions`): _[OrderGateway](ordergateway.md)_
+\+ **new OrderGateway**(`options`: [KosuOptions](../interfaces/kosuoptions.md)): *[OrderGateway](ordergateway.md)*
 
-_Defined in [src/OrderGateway.ts:46](url)_
+*Defined in [OrderGateway.ts:46](url)*
 
 Create a new OrderGateway instance.
 
 **Parameters:**
 
-| Name      | Type          | Description                                |
-| --------- | ------------- | ------------------------------------------ |
-| `options` | `KosuOptions` | Instantiation options (see `KosuOptions`). |
+Name | Type | Description |
+------ | ------ | ------ |
+`options` | [KosuOptions](../interfaces/kosuoptions.md) | Instantiation options (see `KosuOptions`).  |
 
-**Returns:** _[OrderGateway](ordergateway.md)_
+**Returns:** *[OrderGateway](ordergateway.md)*
 
----
+___
 
 ## Properties
 
 ### `Private` address
 
-● **address**: _string_
+● **address**: *string*
 
-_Defined in [src/OrderGateway.ts:40](url)_
+*Defined in [OrderGateway.ts:40](url)*
 
 The address of the deployed OrderGateway contract for the detected network.
 
----
+___
 
 ### `Private` contract
 
-● **contract**: _[OrderGatewayContract](ordergatewaycontract.md)_
+● **contract**: *`OrderGatewayContract`*
 
-_Defined in [src/OrderGateway.ts:46](url)_
+*Defined in [OrderGateway.ts:46](url)*
 
 An instance of the lower-level contract wrapper for the Kosu OrderGateway,
 auto-generated from the Solidity source code.
 
----
+___
 
 ### `Private` initializing
 
-● **initializing**: _`Promise<void>`_
+● **initializing**: *`Promise<void>`*
 
-_Defined in [src/OrderGateway.ts:35](url)_
+*Defined in [OrderGateway.ts:35](url)*
 
 A promise that resolves when initialization has completed successfully.
 
----
+___
 
 ### `Private` web3
 
-● **web3**: _`Web3`_
+● **web3**: *`Web3`*
 
-_Defined in [src/OrderGateway.ts:24](url)_
+*Defined in [OrderGateway.ts:24](url)*
 
 An instance of `web3` used to interact with the Ethereum blockchain.
 
----
+___
 
 ### `Private` web3Wrapper
 
-● **web3Wrapper**: _`Web3Wrapper`_
+● **web3Wrapper**: *`Web3Wrapper`*
 
-_Defined in [src/OrderGateway.ts:30](url)_
+*Defined in [OrderGateway.ts:30](url)*
 
 An instance of a 0x `Web3Wrapper` used for some RPC calls and for certain
 methods.
 
----
+___
 
 ## Methods
 
-### amountRemaining
+###  amountRemaining
 
-▸ **amountRemaining**(`order`: `Order`): _`Promise<BigNumber>`_
+▸ **amountRemaining**(`order`: [Order](../interfaces/order.md)): *`Promise<BigNumber>`*
 
-_Defined in [src/OrderGateway.ts:146](url)_
+*Defined in [OrderGateway.ts:146](url)*
 
 Checks amount of partial exchange tokens remaining, depending on the
 implementation of the SubContract specified in the supplied order.
 
 **Parameters:**
 
-| Name    | Type    | Description                                   |
-| ------- | ------- | --------------------------------------------- |
-| `order` | `Order` | The Kosu order to check amount remaining for. |
+Name | Type | Description |
+------ | ------ | ------ |
+`order` | [Order](../interfaces/order.md) | The Kosu order to check amount remaining for. |
 
-**Returns:** _`Promise<BigNumber>`_
+**Returns:** *`Promise<BigNumber>`*
 
 A `BigNumber` representing the number returned by the SubContract's
 implementation of the `amountRemaining` method.
 
----
+___
 
-### arguments
+###  arguments
 
-▸ **arguments**(`subContract`: string): _`Promise<any>`_
+▸ **arguments**(`subContract`: string): *`Promise<any>`*
 
-_Defined in [src/OrderGateway.ts:114](url)_
+*Defined in [OrderGateway.ts:114](url)*
 
 Read the required arguments from a deployed SubContract.
 
 **Parameters:**
 
-| Name          | Type   | Description                                 |
-| ------------- | ------ | ------------------------------------------- |
-| `subContract` | string | Address of deployed contract implementation |
+Name | Type | Description |
+------ | ------ | ------ |
+`subContract` | string | Address of deployed contract implementation |
 
-**Returns:** _`Promise<any>`_
+**Returns:** *`Promise<any>`*
 
 The JSON array that defines the arguments for the SubContract.
 
----
+___
 
 ### `Private` init
 
-▸ **init**(`options`: `KosuOptions`): _`Promise<void>`_
+▸ **init**(`options`: [KosuOptions](../interfaces/kosuoptions.md)): *`Promise<void>`*
 
-_Defined in [src/OrderGateway.ts:66](url)_
+*Defined in [OrderGateway.ts:66](url)*
 
 Asynchronously initializes the instance after construction.
 
 **Parameters:**
 
-| Name      | Type          | Description                                     |
-| --------- | ------------- | ----------------------------------------------- |
-| `options` | `KosuOptions` | Instantiation options (see `KosuOptions` type). |
+Name | Type | Description |
+------ | ------ | ------ |
+`options` | [KosuOptions](../interfaces/kosuoptions.md) | Instantiation options (see `KosuOptions` type). |
 
-**Returns:** _`Promise<void>`_
+**Returns:** *`Promise<void>`*
 
 A promise to await complete instantiation for further calls
 
----
+___
 
-### isValid
+###  isValid
 
-▸ **isValid**(`order`: `Order`): _`Promise<boolean>`_
+▸ **isValid**(`order`: [Order](../interfaces/order.md)): *`Promise<boolean>`*
 
-_Defined in [src/OrderGateway.ts:130](url)_
+*Defined in [OrderGateway.ts:130](url)*
 
 Checks validity of order data according the order's SubContract implementation.
 
 **Parameters:**
 
-| Name    | Type    | Description                                              |
-| ------- | ------- | -------------------------------------------------------- |
-| `order` | `Order` | Kosu order to validate against `isValid` implementation. |
+Name | Type | Description |
+------ | ------ | ------ |
+`order` | [Order](../interfaces/order.md) | Kosu order to validate against `isValid` implementation.  |
 
-**Returns:** _`Promise<boolean>`_
+**Returns:** *`Promise<boolean>`*
 
----
+___
 
-### participate
+###  participate
 
-▸ **participate**(`order`: `Order`, `taker`: string): _`Promise<any>`_
+▸ **participate**(`order`: [Order](../interfaces/order.md), `taker`: string): *`Promise<any>`*
 
-_Defined in [src/OrderGateway.ts:93](url)_
+*Defined in [OrderGateway.ts:93](url)*
 
 Participate in a trade as a taker (or on behalf of one), by submitting the
 maker order, and the Ethereum address of the taker. The fill transaction
@@ -210,13 +210,13 @@ SubContract settlement logic.
 
 **Parameters:**
 
-| Name    | Type    | Description                                                               |
-| ------- | ------- | ------------------------------------------------------------------------- |
-| `order` | `Order` | A signed Kosu maker order object with a valid `subContract`.              |
-| `taker` | string  | The Ethereum address of the taker (should be available through provider). |
+Name | Type | Description |
+------ | ------ | ------ |
+`order` | [Order](../interfaces/order.md) | A signed Kosu maker order object with a valid `subContract`. |
+`taker` | string | The Ethereum address of the taker (should be available through provider). |
 
-**Returns:** _`Promise<any>`_
+**Returns:** *`Promise<any>`*
 
 The boolean value indicating the status of the trade; `true` if the interaction was successful.
 
----
+___

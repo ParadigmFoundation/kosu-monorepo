@@ -15,130 +15,129 @@ constructor must include the Treasury's ABI (from the compiled Solidity source).
 
 ## Hierarchy
 
--   **Treasury**
+* **Treasury**
 
 ### Index
 
 #### Constructors
 
--   [constructor](treasury.md#constructor)
+* [constructor](treasury.md#constructor)
 
 #### Properties
 
--   [address](treasury.md#private-address)
--   [coinbase](treasury.md#private-coinbase)
--   [contract](treasury.md#private-contract)
--   [kosuToken](treasury.md#kosutoken)
--   [web3](treasury.md#private-web3)
--   [web3Wrapper](treasury.md#private-web3wrapper)
+* [address](treasury.md#private-address)
+* [coinbase](treasury.md#private-coinbase)
+* [contract](treasury.md#private-contract)
+* [kosuToken](treasury.md#kosutoken)
+* [web3](treasury.md#private-web3)
+* [web3Wrapper](treasury.md#private-web3wrapper)
 
 #### Methods
 
--   [approveTreasury](treasury.md#approvetreasury)
--   [currentBalance](treasury.md#currentbalance)
--   [deposit](treasury.md#deposit)
--   [getContract](treasury.md#private-getcontract)
--   [systemBalance](treasury.md#systembalance)
--   [treasuryAllowance](treasury.md#treasuryallowance)
--   [withdraw](treasury.md#withdraw)
+* [approveTreasury](treasury.md#approvetreasury)
+* [currentBalance](treasury.md#currentbalance)
+* [deposit](treasury.md#deposit)
+* [getContract](treasury.md#private-getcontract)
+* [systemBalance](treasury.md#systembalance)
+* [treasuryAllowance](treasury.md#treasuryallowance)
+* [withdraw](treasury.md#withdraw)
 
 ## Constructors
 
-### constructor
+###  constructor
 
-\+ **new Treasury**(`options`: `KosuOptions`, `kosuToken`: [KosuToken](kosutoken.md)): _[Treasury](treasury.md)_
+\+ **new Treasury**(`options`: [KosuOptions](../interfaces/kosuoptions.md), `kosuToken`: [KosuToken](kosutoken.md)): *[Treasury](treasury.md)*
 
-_Defined in [src/Treasury.ts:49](url)_
+*Defined in [Treasury.ts:49](url)*
 
 Creates a new Treasury instance.
 
 **Parameters:**
 
-| Name        | Type                      | Description                                   |
-| ----------- | ------------------------- | --------------------------------------------- |
-| `options`   | `KosuOptions`             | Initialization options (see `KosuOptions`).   |
-| `kosuToken` | [KosuToken](kosutoken.md) | Configured/instantiated `KosuToken` instance. |
+Name | Type | Description |
+------ | ------ | ------ |
+`options` | [KosuOptions](../interfaces/kosuoptions.md) | Initialization options (see `KosuOptions`). |
+`kosuToken` | [KosuToken](kosutoken.md) | Configured/instantiated `KosuToken` instance.  |
 
-**Returns:** _[Treasury](treasury.md)_
+**Returns:** *[Treasury](treasury.md)*
 
----
+___
 
 ## Properties
 
 ### `Private` address
 
-● **address**: _string_
+● **address**: *string*
 
-_Defined in [src/Treasury.ts:44](url)_
+*Defined in [Treasury.ts:44](url)*
 
 They deployed Treasury's address for the detected networkID.
 
----
+___
 
 ### `Private` coinbase
 
-● **coinbase**: _string_
+● **coinbase**: *string*
 
-_Defined in [src/Treasury.ts:49](url)_
+*Defined in [Treasury.ts:49](url)*
 
 The user's coinbase address (if available via supplied provider).
 
----
+___
 
 ### `Private` contract
 
-● **contract**: _[TreasuryContract](treasurycontract.md)_
+● **contract**: *`TreasuryContract`*
 
-_Defined in [src/Treasury.ts:39](url)_
+*Defined in [Treasury.ts:39](url)*
 
 A lower-level, auto-generated contract wrapper for the Treasury contract,
 generated from solidity source code.
 
----
+___
 
-### kosuToken
+###  kosuToken
 
-● **kosuToken**: _[KosuToken](kosutoken.md)_
+● **kosuToken**: *[KosuToken](kosutoken.md)*
 
-_Defined in [src/Treasury.ts:33](url)_
+*Defined in [Treasury.ts:33](url)*
 
 An instance of the `KosuToken` class to communicate with the KOSU ERC-20 token.
 
----
+___
 
 ### `Private` web3
 
-● **web3**: _`Web3`_
+● **web3**: *`Web3`*
 
-_Defined in [src/Treasury.ts:23](url)_
+*Defined in [Treasury.ts:23](url)*
 
 An instance of `web3` used to interact with the Ethereum blockchain.
 
----
+___
 
 ### `Private` web3Wrapper
 
-● **web3Wrapper**: _`Web3Wrapper`_
+● **web3Wrapper**: *`Web3Wrapper`*
 
-_Defined in [src/Treasury.ts:28](url)_
+*Defined in [Treasury.ts:28](url)*
 
 The `web3Wrapper` instance with the contract's ABI loaded.
 
----
+___
 
 ## Methods
 
-### approveTreasury
+###  approveTreasury
 
-▸ **approveTreasury**(`value`: `BigNumber`): _`Promise<TransactionReceiptWithDecodedLogs>`_
+▸ **approveTreasury**(`value`: `BigNumber`): *`Promise<TransactionReceiptWithDecodedLogs>`*
 
-_Defined in [src/Treasury.ts:215](url)_
+*Defined in [Treasury.ts:215](url)*
 
 Approve the treasury to transfer KOSU on behalf of the user's `coinbase`
 account.
 
-**`example`**
-
+**`example`** 
 ```typescript
 // approve the treasury for 1,000,000 KOSU
 
@@ -148,26 +147,25 @@ const receipt = await treasury.approveTreasury(value);
 
 **Parameters:**
 
-| Name    | Type        | Description                                              |
-| ------- | ----------- | -------------------------------------------------------- |
-| `value` | `BigNumber` | The amount of KOSU (in wei) to approve the treasury for. |
+Name | Type | Description |
+------ | ------ | ------ |
+`value` | `BigNumber` | The amount of KOSU (in wei) to approve the treasury for. |
 
-**Returns:** _`Promise<TransactionReceiptWithDecodedLogs>`_
+**Returns:** *`Promise<TransactionReceiptWithDecodedLogs>`*
 
 The decoded transaction receipt, after the TX has been mined.
 
----
+___
 
-### currentBalance
+###  currentBalance
 
-▸ **currentBalance**(`address`: string): _`Promise<BigNumber>`_
+▸ **currentBalance**(`address`: string): *`Promise<BigNumber>`*
 
-_Defined in [src/Treasury.ts:177](url)_
+*Defined in [Treasury.ts:177](url)*
 
 Read the available (current) treasury balance for a provided `address`.
 
-**`example`**
-
+**`example`** 
 ```typescript
 // view current balance of address
 
@@ -180,26 +178,25 @@ const balance = web3.utils.fromWei(balanceWei);
 
 **Parameters:**
 
-| Name      | Type   | Description                                       |
-| --------- | ------ | ------------------------------------------------- |
-| `address` | string | The Ethereum address to check current balance of. |
+Name | Type | Description |
+------ | ------ | ------ |
+`address` | string | The Ethereum address to check current balance of. |
 
-**Returns:** _`Promise<BigNumber>`_
+**Returns:** *`Promise<BigNumber>`*
 
 The user's current treasury balance (in wei).
 
----
+___
 
-### deposit
+###  deposit
 
-▸ **deposit**(`value`: `BigNumber`): _`Promise<TransactionReceiptWithDecodedLogs>`_
+▸ **deposit**(`value`: `BigNumber`): *`Promise<TransactionReceiptWithDecodedLogs>`*
 
-_Defined in [src/Treasury.ts:104](url)_
+*Defined in [Treasury.ts:104](url)*
 
 Deposit tokens in the treasury, from the detected `coinbase` account.
 
-**`example`**
-
+**`example`** 
 ```typescript
 // deposit 10 KOSU
 
@@ -209,40 +206,39 @@ const receipt = await treasury.deposit(value);
 
 **Parameters:**
 
-| Name    | Type        | Description                                 |
-| ------- | ----------- | ------------------------------------------- |
-| `value` | `BigNumber` | The uint value of tokens to deposit in wei. |
+Name | Type | Description |
+------ | ------ | ------ |
+`value` | `BigNumber` | The uint value of tokens to deposit in wei. |
 
-**Returns:** _`Promise<TransactionReceiptWithDecodedLogs>`_
+**Returns:** *`Promise<TransactionReceiptWithDecodedLogs>`*
 
 The decoded transaction receipt, after the TX has been included in a block.
 
----
+___
 
 ### `Private` getContract
 
-▸ **getContract**(): _`Promise<TreasuryContract>`_
+▸ **getContract**(): *`Promise<TreasuryContract>`*
 
-_Defined in [src/Treasury.ts:69](url)_
+*Defined in [Treasury.ts:69](url)*
 
 Asynchronously initializes the contract instance, or returns it from cache.
 
-**Returns:** _`Promise<TreasuryContract>`_
+**Returns:** *`Promise<TreasuryContract>`*
 
 The lower-level contract wrapper instance.
 
----
+___
 
-### systemBalance
+###  systemBalance
 
-▸ **systemBalance**(`address`: string): _`Promise<BigNumber>`_
+▸ **systemBalance**(`address`: string): *`Promise<BigNumber>`*
 
-_Defined in [src/Treasury.ts:156](url)_
+*Defined in [Treasury.ts:156](url)*
 
 Read the total system balance of KOSU for a provided `address` string.
 
-**`example`**
-
+**`example`** 
 ```typescript
 // view system balance of address
 
@@ -255,26 +251,25 @@ const balance = web3.utils.fromWei(balanceWei);
 
 **Parameters:**
 
-| Name      | Type   | Description                                       |
-| --------- | ------ | ------------------------------------------------- |
-| `address` | string | The Ethereum address to check system balance for. |
+Name | Type | Description |
+------ | ------ | ------ |
+`address` | string | The Ethereum address to check system balance for. |
 
-**Returns:** _`Promise<BigNumber>`_
+**Returns:** *`Promise<BigNumber>`*
 
 The user's total KOSU system balance, in wei.
 
----
+___
 
-### treasuryAllowance
+###  treasuryAllowance
 
-▸ **treasuryAllowance**(): _`Promise<BigNumber>`_
+▸ **treasuryAllowance**(): *`Promise<BigNumber>`*
 
-_Defined in [src/Treasury.ts:196](url)_
+*Defined in [Treasury.ts:196](url)*
 
 View the current treasury allowance for the detected `coinbase` account.
 
-**`example`**
-
+**`example`** 
 ```typescript
 // view current allowance for the treasury
 
@@ -284,22 +279,21 @@ const allowanceWei = await treasury.treasuryAllowance();
 const allowance = web3.utils.fromWei(allowanceWei);
 ```
 
-**Returns:** _`Promise<BigNumber>`_
+**Returns:** *`Promise<BigNumber>`*
 
 The current KOSU approval for the Treasury for the current user, in wei.
 
----
+___
 
-### withdraw
+###  withdraw
 
-▸ **withdraw**(`value`: `BigNumber`): _`Promise<TransactionReceiptWithDecodedLogs>`_
+▸ **withdraw**(`value`: `BigNumber`): *`Promise<TransactionReceiptWithDecodedLogs>`*
 
-_Defined in [src/Treasury.ts:135](url)_
+*Defined in [Treasury.ts:135](url)*
 
 Withdraw tokens from treasury to the detected `coinbase` account.
 
-**`example`**
-
+**`example`** 
 ```typescript
 // withdraw 10 KOSU
 
@@ -309,12 +303,12 @@ const receipt = await treasury.withdraw(value);
 
 **Parameters:**
 
-| Name    | Type        | Description                                  |
-| ------- | ----------- | -------------------------------------------- |
-| `value` | `BigNumber` | The uint value of tokens to withdraw in wei. |
+Name | Type | Description |
+------ | ------ | ------ |
+`value` | `BigNumber` | The uint value of tokens to withdraw in wei. |
 
-**Returns:** _`Promise<TransactionReceiptWithDecodedLogs>`_
+**Returns:** *`Promise<TransactionReceiptWithDecodedLogs>`*
 
 The decoded transaction receipt, after the TX is mined in a block.
 
----
+___
