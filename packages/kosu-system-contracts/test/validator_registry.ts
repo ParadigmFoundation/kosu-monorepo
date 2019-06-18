@@ -1406,26 +1406,22 @@ describe("ValidatorRegistry", async () => {
                 });
             });
 
-            it("should reward the user after a reward block", async () => {
+            it("should reward the user after a reward block and multiples of reward blocks", async () => {
                 await skipRewardPeriods();
-                const startingBalance = await kosuToken.balanceOf.callAsync(accounts[1]);
+                const startingBalance1 = await kosuToken.balanceOf.callAsync(accounts[1]);
                 await validatorRegistry.claimRewards.awaitTransactionSuccessAsync(tendermintPublicKey);
-                const endingBalance = await kosuToken.balanceOf.callAsync(accounts[1]);
-                endingBalance
-                    .minus(startingBalance)
+                const endingBalance1 = await kosuToken.balanceOf.callAsync(accounts[1]);
+                endingBalance1
+                    .minus(startingBalance1)
                     .toString()
                     .should.eq(reward.toString());
 
-                await exitListing(tendermintPublicKey, accounts[1]);
-            });
-
-            it("should reward users for all reward blocks passed", async () => {
                 await skipRewardPeriods(undefined, 10);
-                const startingBalance = await kosuToken.balanceOf.callAsync(accounts[1]);
+                const startingBalance2 = await kosuToken.balanceOf.callAsync(accounts[1]);
                 await validatorRegistry.claimRewards.awaitTransactionSuccessAsync(tendermintPublicKey);
-                const endingBalance = await kosuToken.balanceOf.callAsync(accounts[1]);
-                endingBalance
-                    .minus(startingBalance)
+                const endingBalance2 = await kosuToken.balanceOf.callAsync(accounts[1]);
+                endingBalance2
+                    .minus(startingBalance2)
                     .toString()
                     .should.eq(reward.times(new BigNumber("10")).toString());
 

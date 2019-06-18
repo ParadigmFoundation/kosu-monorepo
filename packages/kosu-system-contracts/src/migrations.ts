@@ -53,7 +53,7 @@ export async function migrations(
                 _commitPeriod: 4,
                 _challengePeriod: 8,
                 _exitPeriod: 2,
-                _rewardPeriod: 2,
+                _rewardPeriod: 4,
             },
         };
 
