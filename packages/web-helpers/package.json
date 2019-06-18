@@ -1,7 +1,7 @@
 {
     "name": "@kosu/web-helpers",
     "version": "0.1.0",
-    "private": true,
+    "private": false,
     "license": "MIT",
     "homepage": "https://portal.kosu.io/",
     "description": "Simple web interfaces for interacting with the Kosu contract system and network.",
@@ -25,5 +25,8 @@
     },
     "bugs": {
         "url": "https://github.com/ParadigmFoundation/kosu-monorepo/issues"
+    },
+    "publishConfig": {
+        "access": "public"
     }
 }
