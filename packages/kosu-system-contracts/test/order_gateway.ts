@@ -19,7 +19,9 @@ describe("OrderGateway", () => {
 
         const datatypes = [];
         const values = [];
-        const args = await contracts.orderGateway.arguments.callAsync(contracts.subContract.address).then(raw => JSON.parse(raw));
+        const args = await contracts.orderGateway.arguments
+            .callAsync(contracts.subContract.address)
+            .then(raw => JSON.parse(raw));
         args.maker.forEach(argument => {
             if (argument.name.includes("signature")) {
                 return;
@@ -49,8 +51,14 @@ describe("OrderGateway", () => {
             toTwosComplement(order.signerTokenCount).substr(2);
 
         await contracts.orderGateway.isValid.callAsync(contracts.subContract.address, hex).should.eventually.eq(true);
-        await contracts.orderGateway.amountRemaining.callAsync(contracts.subContract.address, hex).then(x => x.toString()).should.eventually.eq(order.signerTokenCount.toString());
-        await contracts.kosuToken.approve.awaitTransactionSuccessAsync(contracts.subContract.address, testValues.maxUint);
+        await contracts.orderGateway.amountRemaining
+            .callAsync(contracts.subContract.address, hex)
+            .then(x => x.toString())
+            .should.eventually.eq(order.signerTokenCount.toString());
+        await contracts.kosuToken.approve.awaitTransactionSuccessAsync(
+            contracts.subContract.address,
+            testValues.maxUint,
+        );
         const { logs } = await web3Wrapper.awaitTransactionSuccessAsync(
             await contracts.orderGateway.participate.sendTransactionAsync(contracts.subContract.address, hex),
         );

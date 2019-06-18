@@ -212,7 +212,6 @@ describe("ValidatorRegistry", async () => {
     });
 
     describe("listingKeys", () => {
-
         it("should return a list of listing keys", async () => {
             const validators = await validatorRegistry.listingKeys.callAsync();
             // Keys are hex bytes32 padding these addresses to match the bytes32 output
@@ -871,10 +870,8 @@ describe("ValidatorRegistry", async () => {
             ).should.be.fulfilled;
             await skipApplicationPeriod(result1.blockNumber);
 
-            const initialCurrentBalance = await treasury.currentBalance
-                .callAsync(accounts[1]);
-            const initialSystemBalance = await treasury.systemBalance
-                .callAsync(accounts[1]);
+            const initialCurrentBalance = await treasury.currentBalance.callAsync(accounts[1]);
+            const initialSystemBalance = await treasury.systemBalance.callAsync(accounts[1]);
 
             const result2 = await validatorRegistry.challengeListing.awaitTransactionSuccessAsync(
                 tendermintPublicKey,
@@ -882,13 +879,17 @@ describe("ValidatorRegistry", async () => {
                 { from: accounts[1] },
             ).should.eventually.be.fulfilled;
 
-            const finalCurrentBalance = await treasury.currentBalance
-                .callAsync(accounts[1]);
-            const finalSystemBalance = await treasury.systemBalance
-                .callAsync(accounts[1]);
+            const finalCurrentBalance = await treasury.currentBalance.callAsync(accounts[1]);
+            const finalSystemBalance = await treasury.systemBalance.callAsync(accounts[1]);
 
-            finalSystemBalance.minus(initialSystemBalance).eq(0).should.eq(true);
-            initialCurrentBalance.minus(finalCurrentBalance).eq(testValues.fiveEther).should.eq(true);
+            finalSystemBalance
+                .minus(initialSystemBalance)
+                .eq(0)
+                .should.eq(true);
+            initialCurrentBalance
+                .minus(finalCurrentBalance)
+                .eq(testValues.fiveEther)
+                .should.eq(true);
 
             await finishChallenge(tendermintPublicKey, result2.blockNumber);
             await exitListing();
@@ -1655,19 +1656,22 @@ describe("ValidatorRegistry", async () => {
                     from: accounts[1],
                 });
 
-                const initialSystemBalance = await treasury.systemBalance
-                    .callAsync(accounts[1]);
+                const initialSystemBalance = await treasury.systemBalance.callAsync(accounts[1]);
 
                 await skipRewardPeriods();
                 await validatorRegistry.claimRewards.awaitTransactionSuccessAsync(tendermintPublicKey);
 
-                const finalCurrentBalance = await treasury.currentBalance
-                    .callAsync(accounts[1]);
-                const finalSystemBalance = await treasury.systemBalance
-                    .callAsync(accounts[1]);
+                const finalCurrentBalance = await treasury.currentBalance.callAsync(accounts[1]);
+                const finalSystemBalance = await treasury.systemBalance.callAsync(accounts[1]);
 
-                initialSystemBalance.minus(finalSystemBalance).eq(reward.multipliedBy(-1)).should.eq(true);
-                finalCurrentBalance.minus(reward).eq(minimumBalance).should.eq(true);
+                initialSystemBalance
+                    .minus(finalSystemBalance)
+                    .eq(reward.multipliedBy(-1))
+                    .should.eq(true);
+                finalCurrentBalance
+                    .minus(reward)
+                    .eq(minimumBalance)
+                    .should.eq(true);
                 await clearTreasury(accounts[1]);
             });
 
@@ -1694,8 +1698,13 @@ describe("ValidatorRegistry", async () => {
                 const postRegisterCurrentBalance = await treasury.currentBalance.callAsync(accounts[1]);
                 const postRegisterSystemBalance = await treasury.systemBalance.callAsync(accounts[1]);
 
-                preRegisterCurrentBalance.minus(postRegisterCurrentBalance).eq(minimumBalance).should.eq(true, "Stake correctly claimed");
-                preRegisterSystemBalance.eq(postRegisterSystemBalance).should.eq(true, "System balance should be the same");
+                preRegisterCurrentBalance
+                    .minus(postRegisterCurrentBalance)
+                    .eq(minimumBalance)
+                    .should.eq(true, "Stake correctly claimed");
+                preRegisterSystemBalance
+                    .eq(postRegisterSystemBalance)
+                    .should.eq(true, "System balance should be the same");
 
                 await skipApplicationPeriod(blockNumber);
                 await validatorRegistry.confirmListing.awaitTransactionSuccessAsync(tendermintPublicKey, {
@@ -1705,8 +1714,14 @@ describe("ValidatorRegistry", async () => {
                 const postConfirmCurrentBalance = await treasury.currentBalance.callAsync(accounts[1]);
                 const postConfirmSystemBalance = await treasury.systemBalance.callAsync(accounts[1]);
 
-                preRegisterCurrentBalance.minus(postConfirmCurrentBalance).eq(testValues.sixEther).should.eq(true, "Confirmation burn failure");
-                preRegisterSystemBalance.minus(postConfirmSystemBalance).eq(testValues.fiveEther).should.eq(true, "Burned the first time");
+                preRegisterCurrentBalance
+                    .minus(postConfirmCurrentBalance)
+                    .eq(testValues.sixEther)
+                    .should.eq(true, "Confirmation burn failure");
+                preRegisterSystemBalance
+                    .minus(postConfirmSystemBalance)
+                    .eq(testValues.fiveEther)
+                    .should.eq(true, "Burned the first time");
 
                 await skipRewardPeriods();
                 await validatorRegistry.claimRewards.awaitTransactionSuccessAsync(tendermintPublicKey);
@@ -1714,8 +1729,14 @@ describe("ValidatorRegistry", async () => {
                 const postClaimCurrentBalance = await treasury.currentBalance.callAsync(accounts[1]);
                 const postClaimSystemBalance = await treasury.systemBalance.callAsync(accounts[1]);
 
-                preRegisterCurrentBalance.minus(postClaimCurrentBalance).eq(testValues.sixEther).should.eq(true, "Burned all the test tokens - Current");
-                preRegisterSystemBalance.minus(postClaimSystemBalance).eq(testValues.sixEther).should.eq(true, "Burned all the test tokens - System");
+                preRegisterCurrentBalance
+                    .minus(postClaimCurrentBalance)
+                    .eq(testValues.sixEther)
+                    .should.eq(true, "Burned all the test tokens - Current");
+                preRegisterSystemBalance
+                    .minus(postClaimSystemBalance)
+                    .eq(testValues.sixEther)
+                    .should.eq(true, "Burned all the test tokens - System");
 
                 await clearTreasury(accounts[1]);
             });

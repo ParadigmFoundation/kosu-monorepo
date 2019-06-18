@@ -13,7 +13,7 @@ import { toTwosComplement, toWei } from "web3-utils";
 
 import { artifacts } from "../src";
 import { migrations } from "../src/migrations";
-import {BasicTradeSubContractContract} from "../generated-wrappers/basic_trade_sub_contract";
+import { BasicTradeSubContractContract } from "../generated-wrappers/basic_trade_sub_contract";
 
 const useGeth = process.argv.includes("geth");
 const runCoverage = process.argv.includes("runCoverage");
@@ -36,7 +36,13 @@ before(async () => {
             coverageSubprovider = new CoverageSubprovider(
                 artifactAdapter,
                 "0xc521f483f607eb5ea4d6b2dfdbd540134753a865",
-                { ignoreFilesGlobs: ["**/node_modules/openzeppelin-solidity/**", "**/node_modules/@kosu/subcontract-sdk/contracts/SubContract.sol", "**/IPosterRegistry.sol"] },
+                {
+                    ignoreFilesGlobs: [
+                        "**/node_modules/openzeppelin-solidity/**",
+                        "**/node_modules/@kosu/subcontract-sdk/contracts/SubContract.sol",
+                        "**/IPosterRegistry.sol",
+                    ],
+                },
             );
             provider.addProvider(coverageSubprovider);
         }
@@ -68,13 +74,13 @@ before(async () => {
         gasPrice: toWei("5", "gwei"),
     };
 
-    const contracts = await migrations(provider, txDefaults, { noLogs: true }) as TestContracts;
+    const contracts = (await migrations(provider, txDefaults, { noLogs: true })) as TestContracts;
     contracts.subContract = await BasicTradeSubContractContract.deployFrom0xArtifactAsync(
-            artifacts.BasicTradeSubContract,
-            web3.currentProvider,
-            txDefaults,
-            JSON.stringify(argumentsJson),
-        );
+        artifacts.BasicTradeSubContract,
+        web3.currentProvider,
+        txDefaults,
+        JSON.stringify(argumentsJson),
+    );
     const accounts = await web3.eth.getAccounts().then(a => a.map(v => v.toLowerCase()));
 
     const testValues: TestValues = {
@@ -105,7 +111,9 @@ before(async () => {
                     // );
                 }
                 transactions.push(
-                    contracts.treasury.withdraw.awaitTransactionSuccessAsync(/*systemBalance*/currentBalance, { from: address }),
+                    contracts.treasury.withdraw.awaitTransactionSuccessAsync(/*systemBalance*/ currentBalance, {
+                        from: address,
+                    }),
                 );
                 await Promise.all(transactions);
             }
