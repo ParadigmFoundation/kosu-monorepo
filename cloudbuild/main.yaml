@@ -87,11 +87,11 @@ steps:
   ]
 
 - name: "gcr.io/kosu-io/node-ci:latest"
-  entrypoint: yarn
+  entrypoint: "yarn"
   args: [
     "lerna", 
-    'run', 
-    '--scope=kosu-docs', 
+    "run", 
+    "--scope=kosu-docs", 
     "compile",
   ]
 
@@ -99,7 +99,8 @@ steps:
 - name: gcr.io/cloud-builders/gsutil
   args: [
     "-m", "rsync", "-r", "-c", "-d",
-    "./docs/.vuepress/dist", "gs://docs.kosu.io"
+    "./docs/.vuepress/dist", "gs://docs.kosu.io",
+  ]
 
 options: 
  machineType: "N1_HIGHCPU_8"
