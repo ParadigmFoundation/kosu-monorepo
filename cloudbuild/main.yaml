@@ -1,0 +1,68 @@
+# Main CD config (build and publish documentation and binaries)
+
+steps:
+
+# =================
+# INSTALL AND BUILD
+# =================
+
+- name: node:10.15.1
+  entrypoint: yarn
+  args: ["install"]
+
+- name: node:10.15.1
+  entrypoint: yarn
+  args: ["build"]
+
+# ==========
+# BUILD DOCS
+# ==========
+
+- name: node:10.15.1
+  entrypoint: yarn
+  args: ["docs"]
+
+# ============
+# PUBLISH DOCS
+# ============
+
+- name: "gcr.io/cloud-builders/gsutil"
+  args: [
+    "-m", 
+    "rsync", 
+    "-r", "-c", "-d", 
+    "./packages/kosu.js/docs",
+    "gs://kosu-docs/kosu.js"
+  ]
+
+- name: "gcr.io/cloud-builders/gsutil"
+  args: [
+    "-m", 
+    "rsync", 
+    "-r", "-c", "-d", 
+    "./packages/kosu-system-contracts/docs",
+    "gs://kosu-docs/kosu-system-contracts"
+  ]
+
+# ================
+# PUBLISH BINARIES
+# ================
+
+- name: "gcr.io/cloud-builders/gsutil"
+  args: [
+    "-m",
+    "cp", 
+    "./packages/go-kosu/kosud",
+    "gs://kosu-binaries/go-kosu/",
+  ]
+
+- name: "gcr.io/cloud-builders/gsutil"
+  args: [
+    "-m",
+    "cp", 
+    "./packages/go-kosu/kosu-cli",
+    "gs://kosu-binaries/go-kosu/",
+  ]
+
+options: 
+ machineType: "N1_HIGHCPU_8"
