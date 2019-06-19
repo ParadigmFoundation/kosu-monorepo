@@ -2,9 +2,9 @@
 
 steps:
 
- # ===============
- # BUILD CI IMAGES
- # ===============
+# ===============
+# BUILD CI IMAGES
+# ===============
 
 # Pull images to build from cache
 - name: 'gcr.io/cloud-builders/docker'
@@ -47,16 +47,39 @@ steps:
     "./packages/kosu-geth"
   ]
 
- # =============
- # GENERATE DOCS
- # =============
+# =============
+# GENERATE DOCS
+# =============
 
 - name: node:10.15.1
   entrypoint: yarn
   args: ["install"]
+
 - name: node:10.15.1
   entrypoint: yarn
   args: ["docs"]
+
+# ===========
+# UPLOAD DOCS
+# ===========
+
+- name: "gcr.io/cloud-builders/gsutil"
+  args: [
+    "-m", 
+    "rsync", 
+    "-r", "-c", "-d", 
+    "./packages/kosu.js/docs/",
+    "gs://kosu-docs/kosu.js/"
+  ]
+
+- name: "gcr.io/cloud-builders/gsutil"
+  args: [
+    "-m", 
+    "rsync", 
+    "-r", "-c", "-d", 
+    "./packages/kosu-system-contracts/docs/",
+    "gs://kosu-docs/kosu-system-contracts/"
+  ]
 
 # =============
 # DOCKER IMAGES
@@ -72,18 +95,6 @@ images: [
   # kosu-geth poa test image
   "gcr.io/kosu-io/kosu-geth:$SHORT_SHA", "gcr.io/kosu-io/kosu-geth:latest",
 ]
-
-# =========
-# SAVE DOCS
-# =========
-
-artifacts: 
-  objects:
-    location: "gs://kosu-docs/kosu.js"
-    paths: ["packages/kosu.js/docs/**/*.*"]
-  objects:
-    location: "gs://kosu-docs/kosu-system-contracts"
-    paths: ["packages/kosu-system-contracts/docs/**/*.*"]
 
 # ======
 # CONFIG
