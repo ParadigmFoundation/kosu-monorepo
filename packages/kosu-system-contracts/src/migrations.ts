@@ -1,4 +1,5 @@
 import { Web3Wrapper } from "@0x/web3-wrapper";
+import { ContractArtifact } from "ethereum-types";
 import Web3ProviderEngine from "web3-provider-engine";
 import { BN, toWei } from "web3-utils";
 
@@ -14,7 +15,6 @@ import {
     ValidatorRegistryContract,
     VotingContract,
 } from "./index";
-import { ContractArtifact } from "ethereum-types";
 
 /**
  * Migrate contracts to the chain represented by the configured provider.
