@@ -54,6 +54,7 @@ steps:
 - name: node:10.15.1
   entrypoint: yarn
   args: ["install"]
+
 - name: node:10.15.1
   entrypoint: yarn
   args: ["docs"]
@@ -73,16 +74,17 @@ images: [
   "gcr.io/kosu-io/kosu-geth:$SHORT_SHA", "gcr.io/kosu-io/kosu-geth:latest",
 ]
 
-# =========
-# SAVE DOCS
-# =========
+# ====================
+# SAVE DOCS & BINARIES
+# ====================
 
 artifacts: 
   objects:
-    location: "gs://kosu-docs/kosu.js"
+    location: "gs://kosu-docs/kosu.js/"
     paths: ["packages/kosu.js/docs/**/*.*"]
+  
   objects:
-    location: "gs://kosu-docs/kosu-system-contracts"
+    location: "gs://kosu-docs/kosu-system-contracts/"
     paths: ["packages/kosu-system-contracts/docs/**/*.*"]
 
 # ======
