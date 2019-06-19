@@ -6,110 +6,110 @@
 
 ## Hierarchy
 
-* [Order](order.md)
+-   [Order](order.md)
 
-  * **PostableOrder**
+    -   **PostableOrder**
 
 ### Index
 
 #### Properties
 
-* [arguments](postableorder.md#optional-arguments)
-* [id](postableorder.md#id)
-* [maker](postableorder.md#maker)
-* [makerSignature](postableorder.md#optional-makersignature)
-* [makerValues](postableorder.md#makervalues)
-* [poster](postableorder.md#poster)
-* [posterSignature](postableorder.md#postersignature)
-* [subContract](postableorder.md#subcontract)
-* [takerValues](postableorder.md#optional-takervalues)
+-   [arguments](postableorder.md#optional-arguments)
+-   [id](postableorder.md#id)
+-   [maker](postableorder.md#maker)
+-   [makerSignature](postableorder.md#optional-makersignature)
+-   [makerValues](postableorder.md#makervalues)
+-   [poster](postableorder.md#poster)
+-   [posterSignature](postableorder.md#postersignature)
+-   [subContract](postableorder.md#subcontract)
+-   [takerValues](postableorder.md#optional-takervalues)
 
 ## Properties
 
 ### `Optional` arguments
 
-● **arguments**? : *any*
+● **arguments**? : _any_
 
-*Inherited from [Order](order.md).[arguments](order.md#optional-arguments)*
+_Inherited from [Order](order.md).[arguments](order.md#optional-arguments)_
 
 Defined in types.d.ts:22
 
-___
+---
 
-###  id
+### id
 
-● **id**: *any*
+● **id**: _any_
 
-*Inherited from [Order](order.md).[id](order.md#id)*
+_Inherited from [Order](order.md).[id](order.md#id)_
 
 Defined in types.d.ts:23
 
-___
+---
 
-###  maker
+### maker
 
-● **maker**: *string*
+● **maker**: _string_
 
-*Inherited from [Order](order.md).[maker](order.md#maker)*
+_Inherited from [Order](order.md).[maker](order.md#maker)_
 
 Defined in types.d.ts:18
 
-___
+---
 
 ### `Optional` makerSignature
 
-● **makerSignature**? : *any*
+● **makerSignature**? : _any_
 
-*Inherited from [Order](order.md).[makerSignature](order.md#optional-makersignature)*
+_Inherited from [Order](order.md).[makerSignature](order.md#optional-makersignature)_
 
 Defined in types.d.ts:21
 
-___
+---
 
-###  makerValues
+### makerValues
 
-● **makerValues**: *any*
+● **makerValues**: _any_
 
-*Inherited from [Order](order.md).[makerValues](order.md#makervalues)*
+_Inherited from [Order](order.md).[makerValues](order.md#makervalues)_
 
 Defined in types.d.ts:19
 
-___
+---
 
-###  poster
+### poster
 
-● **poster**: *string*
+● **poster**: _string_
 
-*Inherited from [Order](order.md).[poster](order.md#poster)*
+_Inherited from [Order](order.md).[poster](order.md#poster)_
 
 Defined in types.d.ts:24
 
-___
+---
 
-###  posterSignature
+### posterSignature
 
-● **posterSignature**: *string*
+● **posterSignature**: _string_
 
 Defined in types.d.ts:28
 
-___
+---
 
-###  subContract
+### subContract
 
-● **subContract**: *string*
+● **subContract**: _string_
 
-*Inherited from [Order](order.md).[subContract](order.md#subcontract)*
+_Inherited from [Order](order.md).[subContract](order.md#subcontract)_
 
 Defined in types.d.ts:17
 
-___
+---
 
 ### `Optional` takerValues
 
-● **takerValues**? : *any*
+● **takerValues**? : _any_
 
-*Inherited from [Order](order.md).[takerValues](order.md#optional-takervalues)*
+_Inherited from [Order](order.md).[takerValues](order.md#optional-takervalues)_
 
 Defined in types.d.ts:20
 
-___
+---

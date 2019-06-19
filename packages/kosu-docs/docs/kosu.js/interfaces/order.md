@@ -6,87 +6,87 @@
 
 ## Hierarchy
 
-* **Order**
+-   **Order**
 
-  * [PostableOrder](postableorder.md)
+    -   [PostableOrder](postableorder.md)
 
-  * [TakeableOrder](takeableorder.md)
+    -   [TakeableOrder](takeableorder.md)
 
 ### Index
 
 #### Properties
 
-* [arguments](order.md#optional-arguments)
-* [id](order.md#id)
-* [maker](order.md#maker)
-* [makerSignature](order.md#optional-makersignature)
-* [makerValues](order.md#makervalues)
-* [poster](order.md#poster)
-* [subContract](order.md#subcontract)
-* [takerValues](order.md#optional-takervalues)
+-   [arguments](order.md#optional-arguments)
+-   [id](order.md#id)
+-   [maker](order.md#maker)
+-   [makerSignature](order.md#optional-makersignature)
+-   [makerValues](order.md#makervalues)
+-   [poster](order.md#poster)
+-   [subContract](order.md#subcontract)
+-   [takerValues](order.md#optional-takervalues)
 
 ## Properties
 
 ### `Optional` arguments
 
-● **arguments**? : *any*
+● **arguments**? : _any_
 
 Defined in types.d.ts:22
 
-___
+---
 
-###  id
+### id
 
-● **id**: *any*
+● **id**: _any_
 
 Defined in types.d.ts:23
 
-___
+---
 
-###  maker
+### maker
 
-● **maker**: *string*
+● **maker**: _string_
 
 Defined in types.d.ts:18
 
-___
+---
 
 ### `Optional` makerSignature
 
-● **makerSignature**? : *any*
+● **makerSignature**? : _any_
 
 Defined in types.d.ts:21
 
-___
+---
 
-###  makerValues
+### makerValues
 
-● **makerValues**: *any*
+● **makerValues**: _any_
 
 Defined in types.d.ts:19
 
-___
+---
 
-###  poster
+### poster
 
-● **poster**: *string*
+● **poster**: _string_
 
 Defined in types.d.ts:24
 
-___
+---
 
-###  subContract
+### subContract
 
-● **subContract**: *string*
+● **subContract**: _string_
 
 Defined in types.d.ts:17
 
-___
+---
 
 ### `Optional` takerValues
 
-● **takerValues**? : *any*
+● **takerValues**? : _any_
 
 Defined in types.d.ts:20
 
-___
+---

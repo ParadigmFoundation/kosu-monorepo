@@ -1,4 +1,5 @@
 # Kosu documentation site
+
 Documentation for the Kosu protocol. Includes libraries, contract system, and client implementation.
 
 Built as a VuePress static documentation portal, using a custom theme.
@@ -8,9 +9,10 @@ Built as a VuePress static documentation portal, using a custom theme.
 ### Requirements
 
 To develop and work with this package, the following is required:
-- Node (`^8`)
-- Yarn (`^1.15`)
-- gsutil (`^4.30`)
+
+-   Node (`^8`)
+-   Yarn (`^1.15`)
+-   gsutil (`^4.30`)
 
 ### Install
 
@@ -45,7 +47,7 @@ To start a live-updating development server with the current local config:
 
 ```bash
 # start server on http://localhost:8080
-yarn dev 
+yarn dev
 ```
 
 ### Production build

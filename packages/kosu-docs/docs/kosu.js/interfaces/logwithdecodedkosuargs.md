@@ -6,46 +6,46 @@
 
 ## Type parameters
 
-■` A`
+■`A`
 
-■` B`
+■`B`
 
 ## Hierarchy
 
-* any
+-   any
 
-  * **LogWithDecodedKosuArgs**
+    -   **LogWithDecodedKosuArgs**
 
 ### Index
 
 #### Properties
 
-* [args](logwithdecodedkosuargs.md#args)
-* [decodedArgs](logwithdecodedkosuargs.md#decodedargs)
-* [event](logwithdecodedkosuargs.md#event)
+-   [args](logwithdecodedkosuargs.md#args)
+-   [decodedArgs](logwithdecodedkosuargs.md#decodedargs)
+-   [event](logwithdecodedkosuargs.md#event)
 
 ## Properties
 
-###  args
+### args
 
-● **args**: *`A`*
+● **args**: _`A`_
 
 Defined in types.d.ts:56
 
-___
+---
 
-###  decodedArgs
+### decodedArgs
 
-● **decodedArgs**: *`B`*
+● **decodedArgs**: _`B`_
 
 Defined in types.d.ts:57
 
-___
+---
 
-###  event
+### event
 
-● **event**: *string*
+● **event**: _string_
 
 Defined in types.d.ts:55
 
-___
+---
