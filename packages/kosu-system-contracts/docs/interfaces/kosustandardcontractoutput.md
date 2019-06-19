@@ -6,38 +6,38 @@
 
 ## Hierarchy
 
-* **KosuStandardContractOutput**
+-   **KosuStandardContractOutput**
 
 ### Index
 
 #### Properties
 
-* [abi](kosustandardcontractoutput.md#abi)
-* [devdoc](kosustandardcontractoutput.md#optional-devdoc)
-* [evm](kosustandardcontractoutput.md#evm)
+-   [abi](kosustandardcontractoutput.md#abi)
+-   [devdoc](kosustandardcontractoutput.md#optional-devdoc)
+-   [evm](kosustandardcontractoutput.md#evm)
 
 ## Properties
 
-###  abi
+### abi
 
-● **abi**: *`ContractAbi`*
+● **abi**: _`ContractAbi`_
 
-*Defined in [src/artifacts.ts:54](url)*
+_Defined in [src/artifacts.ts:54](url)_
 
-___
+---
 
 ### `Optional` devdoc
 
-● **devdoc**? : *[KosuDevDocOutput](kosudevdocoutput.md)*
+● **devdoc**? : _[KosuDevDocOutput](kosudevdocoutput.md)_
 
-*Defined in [src/artifacts.ts:56](url)*
+_Defined in [src/artifacts.ts:56](url)_
 
-___
+---
 
-###  evm
+### evm
 
-● **evm**: *`EvmOutput`*
+● **evm**: _`EvmOutput`_
 
-*Defined in [src/artifacts.ts:55](url)*
+_Defined in [src/artifacts.ts:55](url)_
 
-___
+---

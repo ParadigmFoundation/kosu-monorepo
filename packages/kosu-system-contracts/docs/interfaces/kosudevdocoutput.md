@@ -6,48 +6,48 @@
 
 ## Hierarchy
 
-* **KosuDevDocOutput**
+-   **KosuDevDocOutput**
 
 ### Index
 
 #### Properties
 
-* [author](kosudevdocoutput.md#optional-author)
-* [methods](kosudevdocoutput.md#optional-methods)
-* [title](kosudevdocoutput.md#optional-title)
+-   [author](kosudevdocoutput.md#optional-author)
+-   [methods](kosudevdocoutput.md#optional-methods)
+-   [title](kosudevdocoutput.md#optional-title)
 
 ## Properties
 
 ### `Optional` author
 
-● **author**? : *string*
+● **author**? : _string_
 
-*Defined in [src/artifacts.ts:61](url)*
+_Defined in [src/artifacts.ts:61](url)_
 
-___
+---
 
 ### `Optional` methods
 
-● **methods**? : *object*
+● **methods**? : _object_
 
-*Defined in [src/artifacts.ts:62](url)*
+_Defined in [src/artifacts.ts:62](url)_
 
 #### Type declaration:
 
-● \[■&#x60; signature&#x60;: *string*\]: object
+● \[■&#x60; signature&#x60;: _string_\]: object
 
-* **details**? : *string*
+-   **details**? : _string_
 
-* **params**(): *object*
+-   **params**(): _object_
 
-* **return**? : *string*
+-   **return**? : _string_
 
-___
+---
 
 ### `Optional` title
 
-● **title**? : *string*
+● **title**? : _string_
 
-*Defined in [src/artifacts.ts:60](url)*
+_Defined in [src/artifacts.ts:60](url)_
 
-___
+---

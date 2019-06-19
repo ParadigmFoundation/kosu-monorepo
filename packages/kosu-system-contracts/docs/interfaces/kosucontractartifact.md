@@ -6,105 +6,105 @@
 
 ## Hierarchy
 
-* [KosuContractVersionData](kosucontractversiondata.md)
+-   [KosuContractVersionData](kosucontractversiondata.md)
 
-  * **KosuContractArtifact**
+    -   **KosuContractArtifact**
 
 ### Index
 
 #### Properties
 
-* [compiler](kosucontractartifact.md#compiler)
-* [compilerOutput](kosucontractartifact.md#compileroutput)
-* [contractName](kosucontractartifact.md#contractname)
-* [networks](kosucontractartifact.md#networks)
-* [schemaVersion](kosucontractartifact.md#schemaversion)
-* [sourceCodes](kosucontractartifact.md#sourcecodes)
-* [sourceTreeHashHex](kosucontractartifact.md#sourcetreehashhex)
-* [sources](kosucontractartifact.md#sources)
+-   [compiler](kosucontractartifact.md#compiler)
+-   [compilerOutput](kosucontractartifact.md#compileroutput)
+-   [contractName](kosucontractartifact.md#contractname)
+-   [networks](kosucontractartifact.md#networks)
+-   [schemaVersion](kosucontractartifact.md#schemaversion)
+-   [sourceCodes](kosucontractartifact.md#sourcecodes)
+-   [sourceTreeHashHex](kosucontractartifact.md#sourcetreehashhex)
+-   [sources](kosucontractartifact.md#sources)
 
 ## Properties
 
-###  compiler
+### compiler
 
-● **compiler**: *`CompilerOpts`*
+● **compiler**: _`CompilerOpts`_
 
-*Inherited from [KosuContractVersionData](kosucontractversiondata.md).[compiler](kosucontractversiondata.md#compiler)*
+_Inherited from [KosuContractVersionData](kosucontractversiondata.md).[compiler](kosucontractversiondata.md#compiler)_
 
-*Defined in [src/artifacts.ts:40](url)*
+_Defined in [src/artifacts.ts:40](url)_
 
-___
+---
 
-###  compilerOutput
+### compilerOutput
 
-● **compilerOutput**: *[KosuStandardContractOutput](kosustandardcontractoutput.md)*
+● **compilerOutput**: _[KosuStandardContractOutput](kosustandardcontractoutput.md)_
 
-*Inherited from [KosuContractVersionData](kosucontractversiondata.md).[compilerOutput](kosucontractversiondata.md#compileroutput)*
+_Inherited from [KosuContractVersionData](kosucontractversiondata.md).[compilerOutput](kosucontractversiondata.md#compileroutput)_
 
-*Defined in [src/artifacts.ts:50](url)*
+_Defined in [src/artifacts.ts:50](url)_
 
-___
+---
 
-###  contractName
+### contractName
 
-● **contractName**: *string*
+● **contractName**: _string_
 
-*Defined in [src/artifacts.ts:35](url)*
+_Defined in [src/artifacts.ts:35](url)_
 
-___
+---
 
-###  networks
+### networks
 
-● **networks**: *`ContractNetworks`*
+● **networks**: _`ContractNetworks`_
 
-*Defined in [src/artifacts.ts:36](url)*
+_Defined in [src/artifacts.ts:36](url)_
 
-___
+---
 
-###  schemaVersion
+### schemaVersion
 
-● **schemaVersion**: *string*
+● **schemaVersion**: _string_
 
-*Defined in [src/artifacts.ts:34](url)*
+_Defined in [src/artifacts.ts:34](url)_
 
-___
+---
 
-###  sourceCodes
+### sourceCodes
 
-● **sourceCodes**: *object*
+● **sourceCodes**: _object_
 
-*Inherited from [KosuContractVersionData](kosucontractversiondata.md).[sourceCodes](kosucontractversiondata.md#sourcecodes)*
+_Inherited from [KosuContractVersionData](kosucontractversiondata.md).[sourceCodes](kosucontractversiondata.md#sourcecodes)_
 
-*Defined in [src/artifacts.ts:46](url)*
-
-#### Type declaration:
-
-● \[■&#x60; sourceName&#x60;: *string*\]: string
-
-___
-
-###  sourceTreeHashHex
-
-● **sourceTreeHashHex**: *string*
-
-*Inherited from [KosuContractVersionData](kosucontractversiondata.md).[sourceTreeHashHex](kosucontractversiondata.md#sourcetreehashhex)*
-
-*Defined in [src/artifacts.ts:49](url)*
-
-___
-
-###  sources
-
-● **sources**: *object*
-
-*Inherited from [KosuContractVersionData](kosucontractversiondata.md).[sources](kosucontractversiondata.md#sources)*
-
-*Defined in [src/artifacts.ts:41](url)*
+_Defined in [src/artifacts.ts:46](url)_
 
 #### Type declaration:
 
-● \[■&#x60; sourceName&#x60;: *string*\]: object
+● \[■&#x60; sourceName&#x60;: _string_\]: string
 
-* **id**: *number*
+---
 
-___
+### sourceTreeHashHex
+
+● **sourceTreeHashHex**: _string_
+
+_Inherited from [KosuContractVersionData](kosucontractversiondata.md).[sourceTreeHashHex](kosucontractversiondata.md#sourcetreehashhex)_
+
+_Defined in [src/artifacts.ts:49](url)_
+
+---
+
+### sources
+
+● **sources**: _object_
+
+_Inherited from [KosuContractVersionData](kosucontractversiondata.md).[sources](kosucontractversiondata.md#sources)_
+
+_Defined in [src/artifacts.ts:41](url)_
+
+#### Type declaration:
+
+● \[■&#x60; sourceName&#x60;: _string_\]: object
+
+-   **id**: _number_
+
+---

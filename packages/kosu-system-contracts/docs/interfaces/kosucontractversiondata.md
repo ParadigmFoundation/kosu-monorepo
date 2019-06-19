@@ -6,68 +6,68 @@
 
 ## Hierarchy
 
-* **KosuContractVersionData**
+-   **KosuContractVersionData**
 
-  * [KosuContractArtifact](kosucontractartifact.md)
+    -   [KosuContractArtifact](kosucontractartifact.md)
 
 ### Index
 
 #### Properties
 
-* [compiler](kosucontractversiondata.md#compiler)
-* [compilerOutput](kosucontractversiondata.md#compileroutput)
-* [sourceCodes](kosucontractversiondata.md#sourcecodes)
-* [sourceTreeHashHex](kosucontractversiondata.md#sourcetreehashhex)
-* [sources](kosucontractversiondata.md#sources)
+-   [compiler](kosucontractversiondata.md#compiler)
+-   [compilerOutput](kosucontractversiondata.md#compileroutput)
+-   [sourceCodes](kosucontractversiondata.md#sourcecodes)
+-   [sourceTreeHashHex](kosucontractversiondata.md#sourcetreehashhex)
+-   [sources](kosucontractversiondata.md#sources)
 
 ## Properties
 
-###  compiler
+### compiler
 
-● **compiler**: *`CompilerOpts`*
+● **compiler**: _`CompilerOpts`_
 
-*Defined in [src/artifacts.ts:40](url)*
+_Defined in [src/artifacts.ts:40](url)_
 
-___
+---
 
-###  compilerOutput
+### compilerOutput
 
-● **compilerOutput**: *[KosuStandardContractOutput](kosustandardcontractoutput.md)*
+● **compilerOutput**: _[KosuStandardContractOutput](kosustandardcontractoutput.md)_
 
-*Defined in [src/artifacts.ts:50](url)*
+_Defined in [src/artifacts.ts:50](url)_
 
-___
+---
 
-###  sourceCodes
+### sourceCodes
 
-● **sourceCodes**: *object*
+● **sourceCodes**: _object_
 
-*Defined in [src/artifacts.ts:46](url)*
-
-#### Type declaration:
-
-● \[■&#x60; sourceName&#x60;: *string*\]: string
-
-___
-
-###  sourceTreeHashHex
-
-● **sourceTreeHashHex**: *string*
-
-*Defined in [src/artifacts.ts:49](url)*
-
-___
-
-###  sources
-
-● **sources**: *object*
-
-*Defined in [src/artifacts.ts:41](url)*
+_Defined in [src/artifacts.ts:46](url)_
 
 #### Type declaration:
 
-● \[■&#x60; sourceName&#x60;: *string*\]: object
+● \[■&#x60; sourceName&#x60;: _string_\]: string
 
-* **id**: *number*
+---
 
-___
+### sourceTreeHashHex
+
+● **sourceTreeHashHex**: _string_
+
+_Defined in [src/artifacts.ts:49](url)_
+
+---
+
+### sources
+
+● **sources**: _object_
+
+_Defined in [src/artifacts.ts:41](url)_
+
+#### Type declaration:
+
+● \[■&#x60; sourceName&#x60;: _string_\]: object
+
+-   **id**: _number_
+
+---
