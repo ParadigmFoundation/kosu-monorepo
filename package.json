@@ -34,7 +34,8 @@
             "packages/web-helpers",
             "packages/create-portal-helper",
             "packages/gov-portal-helper",
-            "packages/go-kosu"
+            "packages/go-kosu",
+            "packages/kosu-docs"
         ],
         "nohoist": [
             "packages/go-kosu"
