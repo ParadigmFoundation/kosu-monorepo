@@ -6,41 +6,6 @@
 
 ### Index
 
-#### Enumerations
-
--   [AuthorizedAddressesEvents](enums/authorizedaddressesevents.md)
--   [EventEmitterEvents](enums/eventemitterevents.md)
--   [KosuTokenEvents](enums/kosutokenevents.md)
-
-#### Classes
-
--   [AuthorizedAddressesContract](classes/authorizedaddressescontract.md)
--   [EventEmitterContract](classes/eventemittercontract.md)
--   [KosuTokenContract](classes/kosutokencontract.md)
--   [OrderGatewayContract](classes/ordergatewaycontract.md)
--   [PosterRegistryContract](classes/posterregistrycontract.md)
--   [PosterRegistryProxyContract](classes/posterregistryproxycontract.md)
--   [TreasuryContract](classes/treasurycontract.md)
--   [ValidatorRegistryContract](classes/validatorregistrycontract.md)
--   [VotingContract](classes/votingcontract.md)
-
-#### Interfaces
-
--   [AuthorizedAddressesOwnershipTransferredEventArgs](interfaces/authorizedaddressesownershiptransferredeventargs.md)
--   [EventEmitterKosuEventEventArgs](interfaces/eventemitterkosueventeventargs.md)
--   [KosuContractArtifact](interfaces/kosucontractartifact.md)
--   [KosuContractVersionData](interfaces/kosucontractversiondata.md)
--   [KosuDevDocOutput](interfaces/kosudevdocoutput.md)
--   [KosuStandardContractOutput](interfaces/kosustandardcontractoutput.md)
--   [KosuTokenApprovalEventArgs](interfaces/kosutokenapprovaleventargs.md)
--   [KosuTokenTransferEventArgs](interfaces/kosutokentransfereventargs.md)
-
-#### Type aliases
-
--   [AuthorizedAddressesEventArgs](globals.md#authorizedaddresseseventargs)
--   [EventEmitterEventArgs](globals.md#eventemittereventargs)
--   [KosuTokenEventArgs](globals.md#kosutokeneventargs)
-
 #### Variables
 
 -   [DeployedAddresses](globals.md#const-deployedaddresses)
@@ -62,39 +27,13 @@
 
 -   [artifacts](globals.md#const-artifacts)
 
-## Type aliases
-
-### AuthorizedAddressesEventArgs
-
-Ƭ **AuthorizedAddressesEventArgs**: _[AuthorizedAddressesOwnershipTransferredEventArgs](interfaces/authorizedaddressesownershiptransferredeventargs.md)_
-
-Defined in generated-wrappers/authorized_addresses.ts:24
-
----
-
-### EventEmitterEventArgs
-
-Ƭ **EventEmitterEventArgs**: _[EventEmitterKosuEventEventArgs](interfaces/eventemitterkosueventeventargs.md)_
-
-Defined in generated-wrappers/event_emitter.ts:24
-
----
-
-### KosuTokenEventArgs
-
-Ƭ **KosuTokenEventArgs**: _[KosuTokenTransferEventArgs](interfaces/kosutokentransfereventargs.md) | [KosuTokenApprovalEventArgs](interfaces/kosutokenapprovaleventargs.md)_
-
-Defined in generated-wrappers/kosu_token.ts:24
-
----
-
 ## Variables
 
 ### `Const` DeployedAddresses
 
 ● **DeployedAddresses**: _object_ = deployedAddresses
 
-_Defined in [src/index.ts:3](url)_
+Defined in index.ts:3
 
 #### Type declaration:
 
@@ -149,9 +88,9 @@ default: "http://localhost:8545",
 })
 .boolean("test-mnemonic").argv
 
-_Defined in [src/bin/deliver_tokens.ts:10](url)_
+Defined in bin/deliver_tokens.ts:10
 
-_Defined in [src/bin/migrate.ts:15](url)_
+Defined in bin/migrate.ts:15
 
 ---
 
@@ -163,7 +102,7 @@ type: string;
 inputs: Array<{ name: string; type: string }>;
 }
 
-_Defined in [src/eventDecoder.ts:6](url)_
+Defined in eventDecoder.ts:6
 
 #### Type declaration:
 
@@ -179,9 +118,9 @@ _Defined in [src/eventDecoder.ts:6](url)_
 
 ● **mnemonic**: _any_ = safeRequire("./mnemonic.json")
 
-_Defined in [src/bin/deliver_tokens.ts:16](url)_
+Defined in bin/deliver_tokens.ts:16
 
-_Defined in [src/bin/migrate.ts:22](url)_
+Defined in bin/migrate.ts:22
 
 ---
 
@@ -189,7 +128,7 @@ _Defined in [src/bin/migrate.ts:22](url)_
 
 ● **signature**: _string_ = soliditySha3(`${event.name}(${event.inputs.map(input => input.type).join(",")})`)
 
-_Defined in [src/eventDecoder.ts:15](url)_
+Defined in eventDecoder.ts:15
 
 ---
 
@@ -199,7 +138,7 @@ _Defined in [src/eventDecoder.ts:15](url)_
 
 ▸ **bytes32ToAddressString**(`val`: string): _string_
 
-_Defined in [src/eventDecoder.ts:17](url)_
+Defined in eventDecoder.ts:17
 
 **Parameters:**
 
@@ -215,7 +154,7 @@ _Defined in [src/eventDecoder.ts:17](url)_
 
 ▸ **bytes32ToBase64**(`val`: string): _string_
 
-_Defined in [src/eventDecoder.ts:21](url)_
+Defined in eventDecoder.ts:21
 
 **Parameters:**
 
@@ -231,7 +170,7 @@ _Defined in [src/eventDecoder.ts:21](url)_
 
 ▸ **decodeKosuEvents**(`logs`: any): _any_
 
-_Defined in [src/eventDecoder.ts:101](url)_
+Defined in eventDecoder.ts:101
 
 **Parameters:**
 
@@ -247,7 +186,7 @@ _Defined in [src/eventDecoder.ts:101](url)_
 
 ▸ **eventDecoder**(`eventReturnValues`: any): _any_
 
-_Defined in [src/eventDecoder.ts:25](url)_
+Defined in eventDecoder.ts:25
 
 **Parameters:**
 
@@ -263,7 +202,7 @@ _Defined in [src/eventDecoder.ts:25](url)_
 
 ▸ **listingStringifier**(`listing`: `Listing`): _`PrettyListing`_
 
-_Defined in [src/listingStringifier.ts:1](url)_
+Defined in listingStringifier.ts:1
 
 **Parameters:**
 
@@ -279,7 +218,7 @@ _Defined in [src/listingStringifier.ts:1](url)_
 
 ▸ **migrations**(`provider`: `Web3ProviderEngine`, `txDefaults`: `__type`, `options`: object): _`Promise<MigratedContracts>`_
 
-_Defined in [src/migrations.ts:22](url)_
+Defined in migrations.ts:21
 
 Migrate contracts to the chain represented by the configured provider.
 
@@ -305,66 +244,66 @@ Migrate contracts to the chain represented by the configured provider.
 
 ### ■ **artifacts**: _object_
 
-_Defined in [src/artifacts.ts:18](url)_
+Defined in artifacts.ts:18
 
 ### AuthorizedAddresses
 
-● **AuthorizedAddresses**: _[KosuContractArtifact](interfaces/kosucontractartifact.md)_ = AuthorizedAddresses as KosuContractArtifact
+● **AuthorizedAddresses**: _`ContractArtifact`_ = AuthorizedAddresses as ContractArtifact
 
-_Defined in [src/artifacts.ts:19](url)_
+Defined in artifacts.ts:19
 
 ### BasicTradeSubContract
 
-● **BasicTradeSubContract**: _[KosuContractArtifact](interfaces/kosucontractartifact.md)_ = BasicTradeSubContract as KosuContractArtifact
+● **BasicTradeSubContract**: _`ContractArtifact`_ = BasicTradeSubContract as ContractArtifact
 
-_Defined in [src/artifacts.ts:28](url)_
+Defined in artifacts.ts:28
 
 ### EventEmitter
 
-● **EventEmitter**: _[KosuContractArtifact](interfaces/kosucontractartifact.md)_ = EventEmitter as KosuContractArtifact
+● **EventEmitter**: _`ContractArtifact`_ = EventEmitter as ContractArtifact
 
-_Defined in [src/artifacts.ts:20](url)_
+Defined in artifacts.ts:20
 
 ### KosuToken
 
-● **KosuToken**: _[KosuContractArtifact](interfaces/kosucontractartifact.md)_ = KosuToken as KosuContractArtifact
+● **KosuToken**: _`ContractArtifact`_ = KosuToken as ContractArtifact
 
-_Defined in [src/artifacts.ts:23](url)_
+Defined in artifacts.ts:23
 
 ### OrderGateway
 
-● **OrderGateway**: _[KosuContractArtifact](interfaces/kosucontractartifact.md)_ = OrderGateway as KosuContractArtifact
+● **OrderGateway**: _`ContractArtifact`_ = OrderGateway as ContractArtifact
 
-_Defined in [src/artifacts.ts:21](url)_
+Defined in artifacts.ts:21
 
 ### PosterRegistry
 
-● **PosterRegistry**: _[KosuContractArtifact](interfaces/kosucontractartifact.md)_ = PosterRegistry as KosuContractArtifact
+● **PosterRegistry**: _`ContractArtifact`_ = PosterRegistry as ContractArtifact
 
-_Defined in [src/artifacts.ts:24](url)_
+Defined in artifacts.ts:24
 
 ### PosterRegistryProxy
 
-● **PosterRegistryProxy**: _[KosuContractArtifact](interfaces/kosucontractartifact.md)_ = PosterRegistryProxy as KosuContractArtifact
+● **PosterRegistryProxy**: _`ContractArtifact`_ = PosterRegistryProxy as ContractArtifact
 
-_Defined in [src/artifacts.ts:22](url)_
+Defined in artifacts.ts:22
 
 ### Treasury
 
-● **Treasury**: _[KosuContractArtifact](interfaces/kosucontractartifact.md)_ = Treasury as KosuContractArtifact
+● **Treasury**: _`ContractArtifact`_ = Treasury as ContractArtifact
 
-_Defined in [src/artifacts.ts:25](url)_
+Defined in artifacts.ts:25
 
 ### ValidatorRegistry
 
-● **ValidatorRegistry**: _[KosuContractArtifact](interfaces/kosucontractartifact.md)_ = ValidatorRegistry as KosuContractArtifact
+● **ValidatorRegistry**: _`ContractArtifact`_ = ValidatorRegistry as ContractArtifact
 
-_Defined in [src/artifacts.ts:26](url)_
+Defined in artifacts.ts:26
 
 ### Voting
 
-● **Voting**: _[KosuContractArtifact](interfaces/kosucontractartifact.md)_ = Voting as KosuContractArtifact
+● **Voting**: _`ContractArtifact`_ = Voting as ContractArtifact
 
-_Defined in [src/artifacts.ts:27](url)_
+Defined in artifacts.ts:27
 
 ---
