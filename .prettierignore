@@ -1,4 +1,4 @@
-/packages/go-kosu/vendor/
+packages/go-kosu/vendor/
 packages/kosu.js/dist/
 packages/kosu-system-contracts/dist/
 packages/kosu-system-contracts/test/dist/
@@ -9,3 +9,4 @@ packages/web-helpers/public/
 packages/gov-portal-helper/dist/
 packages/gov-portal-helper/lib/
 packages/create-portal-helper/lib/
+packages/kosu-docs/docs/.vuepress/dist/
