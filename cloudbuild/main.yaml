@@ -6,11 +6,11 @@ steps:
 # INSTALL AND BUILD
 # =================
 
-- name: node:10.15.1
+- name: gcr.io/kosu-io/node-ci:latest
   entrypoint: yarn
   args: ["install"]
 
-- name: node:10.15.1
+- name: gcr.io/kosu-io/node-ci:latest
   entrypoint: yarn
   args: ["build"]
 
