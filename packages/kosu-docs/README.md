@@ -14,7 +14,7 @@ To develop and work with this package, the following is required:
 
 ### Install
 
-Clone the repository, and install dependencies with yarn:
+Clone the monorepo, and install dependencies with yarn:
 
 ```bash
 yarn install # or just 'yarn'
@@ -26,7 +26,7 @@ This will load the latest documentation as well assuming `gsutil` is installed (
 
 The markdown documentation files are loaded from the `kosu-monorepo` build artifacts via a remote storage bucket.
 
-By default, the latest docs from the master branch are loaded as part of the dependency installation. It can also be triggered manually:
+The most recent docs _should_ be checked into the the `docs/` folder from each documented package, but they can also be loaded from the latest `master` build artfacts.
 
 ```bash
 # via yarn
@@ -35,7 +35,7 @@ yarn load
 # manually
 ./load.sh
 
-# force alternate shell
+# force alternate shell, for some reason
 cat load.sh | sh -
 ```
 
