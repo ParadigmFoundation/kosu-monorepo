@@ -95,7 +95,6 @@ steps:
     "compile",
   ]
 
-- name: 
 - name: gcr.io/cloud-builders/gsutil
   args: [
     "-m", "rsync", "-r", "-c", "-d",
