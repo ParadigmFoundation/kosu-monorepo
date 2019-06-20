@@ -4,6 +4,7 @@ import "@kosu/subcontract-sdk/contracts/SubContract.sol";
 
 /** @title OrderGateway
     @author Freydal
+    @dev Access SubContract implementation's methods to participate in trades and check order status.
 */
 contract OrderGateway {
 
@@ -27,7 +28,7 @@ contract OrderGateway {
         @notice Calls isValid on provided subContract.
         @param subContract Address of contract implementing the SubContract interface.
         @param data Encoded maker values for Order encoded based on the makerArguments.
-        @return Boolean representing the validity of makerData
+        @return Boolean representing the validity of makerData.
     */
     function isValid(address subContract, bytes memory data) public view returns (bool) {
         return SubContract(subContract).isValid(data);
@@ -46,7 +47,7 @@ contract OrderGateway {
     /** @dev Calls arguments on provided subContract.
         @notice Calls arguments on provided subContract.
         @param subContract Address of contract implementing the SubContract interface.
-        @return String encoded JSON representation of subContract maker arguments
+        @return String encoded JSON representation of subContract maker arguments.
     */
     function arguments(address subContract) public view returns (string memory) {
         return SubContract(subContract).arguments();

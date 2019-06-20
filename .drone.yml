@@ -1,4 +1,4 @@
-# Kosu monorepo CI config file (last updated: 19 June 2019)
+# Kosu monorepo CI config file (last updated: 20 June 2019)
 
 kind: pipeline
 name: tests
@@ -102,19 +102,6 @@ services:
 trigger:
     event:
         - pull_request
-
-
-
-
-
-# Excluding the following due to changes not effecting or having tests
-# Google builds these images on every push.  The commit push with these changes will fail until google build completes
-# packages/dev-images/**/*.*
-# packages/kosu-geth/**/*.*
-# Add these above if tests are added for these packages
-# packages/web-helpers/**/*.*
-# packages/create-portal-helper/**/*.*
-# packages/gov-portal-helper/**/*.*
 
 # UNTESTED
 # ---
