@@ -145,6 +145,8 @@ function parseMarkdown(devDoc, methods) {
             {
                 h3: method.name,
             },
+            { p: method.details },
+            { h4: "Signature" },
             {
                 code: {
                     language: "solidity",
@@ -153,7 +155,7 @@ function parseMarkdown(devDoc, methods) {
                         : `function ${method.name}(${getInternalSignature(method.params)})`,
                 },
             },
-            { p: method.details },
+
         );
 
         if (method.params.length > 0) {
@@ -168,11 +170,14 @@ function parseMarkdown(devDoc, methods) {
                     Description: param.desc,
                 });
             }
-            output.push({ table });
+            output.push(
+                { h4: "Parameters:" },
+                { table }
+            );
         }
 
         if (method.return) {
-            output.push({ p: `**Returns:** ${method.return}` });
+            output.push({ h4: "Returns:" }, { p: method.return });
         }
     }
     return output;
