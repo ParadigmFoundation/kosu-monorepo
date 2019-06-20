@@ -1,8 +1,9 @@
 import { BigNumber } from "@0x/utils";
 import { Web3Wrapper } from "@0x/web3-wrapper";
 
-import { TestValues } from "./test_values";
 import { decodeKosuEvents } from "../eventDecoder";
+
+import { TestValues } from "./test_values";
 
 export class TestHelpers {
     public web3Wrapper: Web3Wrapper;
@@ -185,12 +186,12 @@ export class TestHelpers {
         await this.skipTo(target);
     }
 
-    private skipTo = async (endBlock: number): Promise<void> => {
+    private readonly skipTo = async (endBlock: number): Promise<void> => {
         await this.initializing;
         while ((await this.web3Wrapper.getBlockNumberAsync()) < endBlock) {
             await this.skipBlocks(1);
         }
-    };
+    }
 
     public async toStakeholderCut(value: string | number | BigNumber): Promise<string> {
         await this.initializing;
