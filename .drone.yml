@@ -1,4 +1,4 @@
-# Kosu monorepo CI config file (last updated: 18 June 2019)
+# Kosu monorepo CI config file (last updated: 19 June 2019)
 
 kind: pipeline
 name: tests
