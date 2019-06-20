@@ -62,6 +62,7 @@ To build kosu-monorepo from source, the following is required:
 -   Homebrew ('^2.1.6') 
 -   Yarn ('^1.15')
 -   jq ('^1.6') 
+-   golang ('^1.12')
 
 ### Install 
 
