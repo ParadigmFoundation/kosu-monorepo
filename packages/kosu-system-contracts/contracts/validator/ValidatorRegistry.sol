@@ -8,6 +8,7 @@ import "../voting/Voting.sol";
 
 /** @title ValidatorRegistry
     @author Freydal
+    @dev Stores registry of validator listings and provides functionality to curate through proposals and challenges.
 */
 contract ValidatorRegistry {
     using SafeMath for uint;
@@ -20,7 +21,7 @@ contract ValidatorRegistry {
         EXITING
     }
 
-    //Listing structure
+    // Listing structure
     struct Listing {
         Status status;
         uint stakedBalance;
@@ -54,7 +55,7 @@ contract ValidatorRegistry {
     uint public exitPeriod;
     uint public rewardPeriod;
     uint public minimumBalance = 1 ether;
-    uint public stakeholderCut = 30; //Will be used as a percent so must be sub 100
+    uint public stakeholderCut = 30; // Will be used as a percent so must be sub 100
     Treasury public treasury;
     Voting public voting;
     KosuToken public kosuToken;
@@ -84,34 +85,36 @@ contract ValidatorRegistry {
         rewardPeriod = _rewardPeriod;
     }
 
-    /** @dev Expose the list of active listing keys
-        @notice Expose the list of active listing keys
-        @return An array of hex encoded tendermint keys
+    /** @dev Expose the list of active listing keys.
+        @notice Expose the list of active listing keys.
+        @return An array of hex encoded tendermint keys.
     */
     function listingKeys() public view returns (bytes32[] memory) {
         return _listingKeys;
     }
 
-    /** @dev Calculate the maximum KosuToken a validator can generate
-        @notice Calculate the maximum KosuToken a validator can generate
-        @return Maximum KosuToken a validator can generate
+    /** @dev Calculate the maximum KosuToken a validator can generate.
+        @notice Calculate the maximum KosuToken a validator can generate.
+        @return Maximum KosuToken a validator can generate per period.
     */
     function maxRewardRate() public view returns (uint) {
         return (sqrt(_maxGenerationSum));
     }
 
-    /** @dev Expose listing data
-        @notice Expose listing data
+    /** @dev Expose listing data for given public key.
+        @notice Expose listing data for given public key.
         @param pubKey Hex encoded tendermint public key
+        @return The listing structure corresponding to the provided key.
     */
     function getListing(bytes32 pubKey) public view returns (Listing memory) {
         return _listings[pubKey];
 
     }
 
-    /** @dev Expose listings
-        @notice Expose listings
-        @param pubKeys Hex encoded tendermint public keys
+    /** @dev Expose several listings provided multiple public keys.
+        @notice Expose several listings provided multiple public keys.
+        @param pubKeys Hex encoded Tendermint public keys to retreive
+        @return The array of listing structures corresponding to the provided keys.
     */
     function getListings(bytes32[] memory pubKeys) public view returns (Listing[] memory) {
         Listing[] memory listings = new Listing[](pubKeys.length);
@@ -121,8 +124,9 @@ contract ValidatorRegistry {
         return listings;
     }
 
-    /** @dev Expose all listings
-        @notice Expose all listings
+    /** @dev Expose all listings in the registry.
+        @notice Expose all listings in the registry.
+        @return An array of all listings in the registry.
     */
     function getAllListings() public view returns (Listing[] memory) {
         Listing[] memory listings = new Listing[](_listingKeys.length);
@@ -132,9 +136,10 @@ contract ValidatorRegistry {
         return listings;
     }
 
-    /** @dev Expose challenge data
-        @notice Expose challenge data
-        @param challengeId challenge id
+    /** @dev Expose challenge data for a given ID.
+        @notice Expose challenge data for a given ID.
+        @param challengeId The ID to retreive challenge data for
+        @return The challenge indicated by the provided ID.
     */
     function getChallenge(uint challengeId) public view returns (Challenge memory) {
         return _challenges[challengeId];

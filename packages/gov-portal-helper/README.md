@@ -1,21 +1,18 @@
-## `@kosu/gov-portal-helper`
+## Classes
 
-<p><code>Gov</code> is a helper library for interacting with the Kosu validator governance
+<dl>
+<dt><a href="#Gov">Gov</a></dt>
+<dd><p><code>Gov</code> is a helper library for interacting with the Kosu validator governance
 system (primarily the Kosu <code>ValidatorRegistry</code> contract).</p>
 <p>It is designed with the browser in mind, and is intended to be used in front-
 end projects for simplifying interaction with the governance system.</p>
-
-## Installation
-
-Add `gov-portal-helper` to your project via `npm` or `yarn`.
-
-```shell
-# install with yarn
-yarn add @kosu/gov-portal-helper
-
-# install with npm
-npm i @kosu/gov-portal-helper
-```
+<p>Methods may be used to load the current <code>proposals</code>, <code>validators</code>, and
+<code>challenges</code> from the prototype's state, or the <code>gov.ee</code> object (an EventEmitter)
+may be used to detect updates to the state, emitted as <code>gov_update</code> events.</p>
+<p>After a <code>gov_update</code> event, the read methods for <code>proposals</code>, <code>challenges</code>,
+and <code>validators</code> must be called to load the current listings. Alternatively,
+access the objects directly with <code>gov.listings</code>, etc.</p></dd>
+</dl>
 
 ## Typedefs
 

@@ -4,10 +4,11 @@ import "../base/Authorizable.sol";
 
 /** @title EventEmitter
     @author Freydal
+    @dev A shared contract for all Kosu system contracts to trigger event logs through.
 */
 contract EventEmitter is Authorizable {
 
-    //Generic event which can be decoded in Javascript via internal library.
+    /// Generic event which can be decoded in Javascript via internal library.
     event KosuEvent(string eventType, bytes32[] data, string stringData);
 
     /** @dev Event emitter instantiated with Authorizable.
