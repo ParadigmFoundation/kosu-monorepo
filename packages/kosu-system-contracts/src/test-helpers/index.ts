@@ -230,7 +230,7 @@ export class TestHelpers {
     }
 
     public async variablePoll(start: number, end: number): Promise<number> {
-        const base = await this.web3Wrapper.getBlockNumberAsync().then(x => parseInt(x));
+        const base = await this.web3Wrapper.getBlockNumberAsync();
         const creationBlock = base + 1;
         const commitEnd = creationBlock + start;
         const revealEnd = commitEnd + end;
