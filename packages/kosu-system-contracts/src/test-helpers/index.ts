@@ -2,7 +2,7 @@ import { BigNumber } from "@0x/utils";
 import { Web3Wrapper } from "@0x/web3-wrapper";
 
 import { TestValues } from "./test_values";
-import {decodeKosuEvents} from "../eventDecoder";
+import { decodeKosuEvents } from "../eventDecoder";
 
 export class TestHelpers {
     public web3Wrapper: Web3Wrapper;
@@ -190,7 +190,7 @@ export class TestHelpers {
         while ((await this.web3Wrapper.getBlockNumberAsync()) < endBlock) {
             await this.skipBlocks(1);
         }
-    }
+    };
 
     public async toStakeholderCut(value: string | number | BigNumber): Promise<string> {
         await this.initializing;
@@ -201,7 +201,11 @@ export class TestHelpers {
     }
 
     public async prepareTokens(from: string, funds: BigNumber): Promise<void> {
-        await this.migratedContracts.kosuToken.approve.awaitTransactionSuccessAsync(this.migratedContracts.treasury.address, new BigNumber(funds), { from });
+        await this.migratedContracts.kosuToken.approve.awaitTransactionSuccessAsync(
+            this.migratedContracts.treasury.address,
+            new BigNumber(funds),
+            { from },
+        );
         await this.migratedContracts.treasury.deposit.awaitTransactionSuccessAsync(new BigNumber(funds), { from });
     }
 
@@ -229,7 +233,10 @@ export class TestHelpers {
         const creationBlock = base + 1;
         const commitEnd = creationBlock + start;
         const revealEnd = commitEnd + end;
-        const result = await this.migratedContracts.voting.createPoll.awaitTransactionSuccessAsync(commitEnd, revealEnd);
+        const result = await this.migratedContracts.voting.createPoll.awaitTransactionSuccessAsync(
+            commitEnd,
+            revealEnd,
+        );
         const { pollId } = decodeKosuEvents(result.logs)[0];
         return pollId;
     }
