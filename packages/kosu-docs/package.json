@@ -1,7 +1,7 @@
 {
     "name": "@kosu/documentation",
     "version": "0.0.1",
-    "private": true,
+    "private": false,
     "description": "Kosu reference and documentation website.",
     "license": "MIT",
     "scripts": {
@@ -14,5 +14,8 @@
         "vuepress": "^0.14.8",
         "webpack": "^4.29.6",
         "webpack-dev-middleware": "^3.6.0"
+    },
+    "publishConfig": {
+        "access": "private"
     }
 }

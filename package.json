@@ -25,17 +25,7 @@
     },
     "workspaces": {
         "packages": [
-            "packages/kosu.js",
-            "packages/kosu-sdk-contracts",
-            "packages/kosu-system-contracts",
-            "pacakges/tsc-config",
-            "packages/tslint-config",
-            "packages/dev-images",
-            "packages/web-helpers",
-            "packages/create-portal-helper",
-            "packages/gov-portal-helper",
-            "packages/go-kosu",
-            "packages/kosu-docs"
+            "packages/*"
         ],
         "nohoist": [
             "packages/go-kosu"
