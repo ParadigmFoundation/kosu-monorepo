@@ -119,8 +119,7 @@ function parseMarkdown(devDoc, methods) {
     const contents = [];
     for (const method of methods) {
         const name = method.name;
-        const link = signatureToHyperLink(method.signature);
-        contents.push(`[${name}](${link})`);
+        contents.push(`[${name}](#${name})`);
     }
     output.push(
         { h2: "Contents" },
@@ -144,7 +143,7 @@ function parseMarkdown(devDoc, methods) {
 
         output.push(
             {
-                h3: method.signature,
+                h3: method.name,
             },
             {
                 code: {
