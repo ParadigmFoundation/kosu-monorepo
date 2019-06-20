@@ -191,7 +191,7 @@ export class TestHelpers {
         while ((await this.web3Wrapper.getBlockNumberAsync()) < endBlock) {
             await this.skipBlocks(1);
         }
-    }
+    };
 
     public async toStakeholderCut(value: string | number | BigNumber): Promise<string> {
         await this.initializing;
