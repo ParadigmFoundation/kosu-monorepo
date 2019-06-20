@@ -6,6 +6,7 @@ import "../event/EventEmitter.sol";
 
 /** @title PosterRegistry
     @author Freydal
+    @dev Implementation contract for the PosterRegistry, allowing users to bond and un-bond tokens.
 */
 contract PosterRegistry is Authorizable {
     using SafeMath for uint;
@@ -30,32 +31,32 @@ contract PosterRegistry is Authorizable {
 
     /** @dev The number of tokens that have been contributed to the contract
         @notice The number of tokens that have been contributed to the contract
-        @return Total number of tokens contributed
+        @return Total number of tokens contributed.
     */
     function tokensContributed() external view returns (uint) {
         return _tokensContributed;
     }
 
-    /** @dev The token address
-        @notice The token address
-        @return KosuToken address
+    /** @dev The token address.
+        @notice The token address.
+        @return KosuToken address.
     */
     function token() external view returns (address) {
         return address(_kosuToken);
     }
 
-    /** @dev The Treasury address
-        @notice The Treasury address
-        @return Deployed Treasury address
+    /** @dev The Treasury address.
+        @notice The Treasury address.
+        @return Deployed Treasury address.
     */
     function treasury() external view returns (address) {
         return address(_treasury);
     }
 
-    /** @dev Tokens registered for a user
-        @notice Tokens registered for a user
+    /** @dev Tokens registered for a user.
+        @notice Tokens registered for a user.
         @param a Address to get value for
-        @return Tokens registered for address
+        @return Tokens registered for address.
     */
     function tokensRegisteredFor(address a) external view returns (uint) {
         return tokensFor(a);
@@ -74,8 +75,8 @@ contract PosterRegistry is Authorizable {
         emitEvent(msgSender);
     }
 
-    /** @dev Release tokens
-        @notice Release tokens
+    /** @dev Release tokens from the registry.
+        @notice Release tokens from the registry.
         @param msgSender Address that called the proxy
         @param amount Number of tokens to release
     */
@@ -88,7 +89,8 @@ contract PosterRegistry is Authorizable {
         emitEvent(msgSender);
     }
 
-    //Internal
+    // Internal
+
     function emitEvent(address a) internal {
         //Emits an event for the address that made a change and the new current balance.
         bytes32[] memory data = new bytes32[](2);

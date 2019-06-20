@@ -5,6 +5,7 @@ import "../base/Authorizable.sol";
 
 /** @title KosuToken
     @author Freydal
+    @dev KosuToken (KOSU) is an implentation of the ERC-20 interface, supporting mints and burns.
 */
 contract KosuToken is ERC20, Authorizable {
 
@@ -20,7 +21,7 @@ contract KosuToken is ERC20, Authorizable {
 
     /** @dev Burn tokens
         @notice Burn tokens
-        @param amount Number of tokens to destroy.
+        @param amount Number of tokens to destroy
     */
     function burn(uint amount) public isAuthorized {
         _burn(msg.sender, amount);
@@ -28,7 +29,7 @@ contract KosuToken is ERC20, Authorizable {
 
     /** @dev Mint tokens
         @notice Mint tokens
-        @param amount Number of tokens to create.
+        @param amount Number of tokens to create
     */
     function mint(uint amount) public isAuthorized {
         _mint(msg.sender, amount);
@@ -36,7 +37,7 @@ contract KosuToken is ERC20, Authorizable {
 
     /** @dev Mint tokens to specified address
         @notice Mint tokens to specified address
-        @param _address Address to receive tokens.
+        @param _address Address to receive tokens
         @param amount Number of tokens to create.
     */
     function mintTo(address _address, uint amount) public isAuthorized {
