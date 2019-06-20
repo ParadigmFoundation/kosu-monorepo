@@ -53,52 +53,77 @@ Client/server libraries for interacting with the Kosu network and contract syste
 | [`@kosu/tsc-config`](./packages/tsc-config)       | ![npm](https://img.shields.io/npm/v/@kosu/tsc-config.svg)    | TypeScript compiler base configuration for Kosu TypeScript projects. |
 | [`@kosu/web-helpers`](./packages/web-helpers)     | ![npm](https://img.shields.io/npm/v/@kosu/web-helpers.svg)   | Simple web interface for interacting with the Kosu contract system.  |
 
-## Development
+## Contributing
 
-### Requirements
+We strongly encourage all contributions! Read our [contribution guidelines](https://github.com/ParadigmFoundation/management/blob/master/development_guidelines.md) and also feel free to reach out. To report bugs within this package, please create an issue in this repository.
 
-To build kosu-monorepo from source, the following is required:
+## Install Instructions 
 
--   Homebrew ('^2.1.6') 
--   Yarn ('^1.15')
--   jq ('^1.6') 
--   golang ('^1.12')
+### Prerequisites
 
-### Install 
+First, make sure you have the following software installed: 
 
-1. Install ethereum:
+-   [node.js](https://nodejs.org/en/download/) (`v10.0+`)
+-   [yarn](https://yarnpkg.com/lang/en/docs/install/#mac-stable) (`v1.15+`)
+-   [jq](https://stedolan.github.io/jq/download/) (`v1.6+`) 
+-   [golang](https://golang.org/dl/) (`v1.12+`)
+-   [go-ethereum](https://github.com/ethereum/go-ethereum/wiki/Building-Ethereum) (`v1.12+`)
+
+#### Homebrew
+
+MacOS users can install Yarn through the [`Homebrew`](https://brew.sh/) package manager. This will also install Node.js if it is not already installed.
+
+```
+brew install yarn
+```
+
+To install go-ethereum using brew:
 
 ```
 brew tap ethereum/ethereum
-```
-```
 brew install ethereum
 ```
 
-2. Clone the kosu-monorepo
+To install jq using brew:
 
 ```
-git clone git@github.com:paradigmFoundation/kosu-monorepo
+brew install jq
 ```
 
-3. Build from source with yarn:
+### Clone kosu-monorepo
+
+Clone the repository via SSH:
 
 ```
-cd kosu-monorepo
+git clone git@github.com:ParadigmFoundation/kosu-monorepo
 ```
+
+Or via HTTP:
+
+```
+git clone https://github.com/ParadigmFoundation/kosu-monorepo
+```
+
+### Build and Run
+
+Install dependencies:
+
 ```
 yarn
 ```
+
+To build all packages:
+
 ```
 yarn build
 ```
 
 ### Run a validator node
 
+Change the directory to 'packages/go-kosu' and run the command below to launch a validator node on the Ropsten testnet:
+
 ```
 cd packages/go-kosu
-```
-```
 ./kosud --init --web3 wss://ethnet.zaidan.io/ws/ropsten
 ```
 
