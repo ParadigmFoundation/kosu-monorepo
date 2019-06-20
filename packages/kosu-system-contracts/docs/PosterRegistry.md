@@ -30,6 +30,8 @@ Creates a new PosterRegistry
 constructor(_auth, _events, _treasuryAddress)
 ```
 
+### constructor
+
 #### Parameters:
 
 Parameter | Type | Description
@@ -49,6 +51,8 @@ Register tokens.
 function registerTokens(amount address, msgSender uint256)
 ```
 
+### registerTokens
+
 #### Parameters:
 
 Parameter | Type | Description
@@ -66,6 +70,8 @@ Release tokens from the registry.
 ```solidity
 function releaseTokens(amount address, msgSender uint256)
 ```
+
+### releaseTokens
 
 #### Parameters:
 
@@ -85,6 +91,8 @@ The token address.
 function token()
 ```
 
+### token
+
 #### Returns:
 
 
@@ -101,6 +109,8 @@ The number of tokens that have been contributed to the contract
 function tokensContributed()
 ```
 
+### tokensContributed
+
 #### Returns:
 
 
@@ -116,6 +126,8 @@ Tokens registered for a user.
 ```solidity
 function tokensRegisteredFor(a address)
 ```
+
+### tokensRegisteredFor
 
 #### Parameters:
 
@@ -138,6 +150,8 @@ The Treasury address.
 ```solidity
 function treasury()
 ```
+
+### treasury
 
 #### Returns:
 

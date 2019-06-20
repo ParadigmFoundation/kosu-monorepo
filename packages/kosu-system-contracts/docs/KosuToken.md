@@ -35,6 +35,8 @@ Function to check the amount of tokens that an owner allowed to a spender.
 function allowance(owner address, spender address)
 ```
 
+### allowance
+
 #### Parameters:
 
 Parameter | Type | Description
@@ -58,6 +60,8 @@ Approve the passed address to spend the specified amount of tokens on behalf of 
 function approve(spender address, value uint256)
 ```
 
+### approve
+
 #### Parameters:
 
 Parameter | Type | Description
@@ -75,6 +79,8 @@ Gets the balance of the specified address.
 ```solidity
 function balanceOf(owner address)
 ```
+
+### balanceOf
 
 #### Parameters:
 
@@ -98,6 +104,8 @@ Burn tokens
 function burn(amount uint256)
 ```
 
+### burn
+
 #### Parameters:
 
 Parameter | Type | Description
@@ -115,6 +123,8 @@ Deploy a new ERC20 Token
 constructor()
 ```
 
+### constructor
+
 ### decreaseAllowance
 
 
@@ -125,6 +135,8 @@ Decrease the amount of tokens that an owner allowed to a spender. approve should
 ```solidity
 function decreaseAllowance(spender address, subtractedValue uint256)
 ```
+
+### decreaseAllowance
 
 #### Parameters:
 
@@ -144,6 +156,8 @@ Increase the amount of tokens that an owner allowed to a spender. approve should
 function increaseAllowance(addedValue address, spender uint256)
 ```
 
+### increaseAllowance
+
 #### Parameters:
 
 Parameter | Type | Description
@@ -162,6 +176,8 @@ Mint tokens
 function mint(amount uint256)
 ```
 
+### mint
+
 #### Parameters:
 
 Parameter | Type | Description
@@ -178,6 +194,8 @@ Mint tokens to specified address
 ```solidity
 function mintTo(_address address, amount uint256)
 ```
+
+### mintTo
 
 #### Parameters:
 
@@ -197,6 +215,8 @@ Total number of tokens in existence
 function totalSupply()
 ```
 
+### totalSupply
+
 ### transfer
 
 
@@ -207,6 +227,8 @@ Transfer token for a specified address
 ```solidity
 function transfer(to address, value uint256)
 ```
+
+### transfer
 
 #### Parameters:
 
@@ -225,6 +247,8 @@ Transfer tokens from one address to another. Note that while this function emits
 ```solidity
 function transferFrom(from address, to address, value uint256)
 ```
+
+### transferFrom
 
 #### Parameters:
 

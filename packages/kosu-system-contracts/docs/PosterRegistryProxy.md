@@ -31,6 +31,8 @@ Creates a Proxy for a PosterRegistry. Accepts an initial implementation that can
 constructor(auth, implementation)
 ```
 
+### constructor
+
 #### Parameters:
 
 Parameter | Type | Description
@@ -49,6 +51,8 @@ Calls registerTokens on the current registry.
 function registerTokens(amount uint256)
 ```
 
+### registerTokens
+
 #### Parameters:
 
 Parameter | Type | Description
@@ -65,6 +69,8 @@ Calls releaseTokens for the current registry.
 ```solidity
 function releaseTokens(amount uint256)
 ```
+
+### releaseTokens
 
 #### Parameters:
 
@@ -83,6 +89,8 @@ Set a new PosterRegistry implementation if a replacement is deployed.
 function setImplementation(implementation address)
 ```
 
+### setImplementation
+
 #### Parameters:
 
 Parameter | Type | Description
@@ -100,6 +108,8 @@ Reads the current registries token.
 function token()
 ```
 
+### token
+
 #### Returns:
 
 
@@ -116,6 +126,8 @@ Reads the current registries tokensContributed.
 function tokensContributed()
 ```
 
+### tokensContributed
+
 #### Returns:
 
 
@@ -131,6 +143,8 @@ Reads the current registries tokens registered for the supplied address.
 ```solidity
 function tokensRegisteredFor(a address)
 ```
+
+### tokensRegisteredFor
 
 #### Parameters:
 
@@ -153,6 +167,8 @@ Reads the current registries Treasury address.
 ```solidity
 function treasury()
 ```
+
+### treasury
 
 #### Returns:
 

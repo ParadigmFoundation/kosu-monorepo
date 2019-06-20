@@ -37,6 +37,8 @@ Allows contracts to change balance.
 function adjustBalance(account address, amount int256)
 ```
 
+### adjustBalance
+
 #### Parameters:
 
 Parameter | Type | Description
@@ -54,6 +56,8 @@ Allows contracts to be rewarded with new tokens.
 ```solidity
 function award(account address, amount uint256)
 ```
+
+### award
 
 #### Parameters:
 
@@ -73,6 +77,8 @@ Allows contracts to burn tokens.
 function burnFrom(account address, amount uint256)
 ```
 
+### burnFrom
+
 #### Parameters:
 
 Parameter | Type | Description
@@ -90,6 +96,8 @@ Allows contracts to claim tokens.
 ```solidity
 function claimTokens(account address, amount uint256)
 ```
+
+### claimTokens
 
 #### Parameters:
 
@@ -109,6 +117,8 @@ Allows contracts to confiscate tokens the user has lost access to.
 function confiscate(account address, amount uint256)
 ```
 
+### confiscate
+
 #### Parameters:
 
 Parameter | Type | Description
@@ -126,6 +136,8 @@ Creates a new Treasury.
 ```solidity
 constructor(auth, kosuTokenAddress)
 ```
+
+### constructor
 
 #### Parameters:
 
@@ -145,6 +157,8 @@ Allows contracts to deposit.
 function contractDeposit(account address, amount uint256)
 ```
 
+### contractDeposit
+
 #### Parameters:
 
 Parameter | Type | Description
@@ -163,6 +177,8 @@ Allows contracts to withdraw.
 function contractWithdraw(account address, amount uint256)
 ```
 
+### contractWithdraw
+
 #### Parameters:
 
 Parameter | Type | Description
@@ -180,6 +196,8 @@ Reports the balance held within the contract for a user.
 ```solidity
 function currentBalance(account address)
 ```
+
+### currentBalance
 
 #### Parameters:
 
@@ -203,6 +221,8 @@ Deposits tokens into the treasury.
 function deposit(amount uint256)
 ```
 
+### deposit
+
 #### Parameters:
 
 Parameter | Type | Description
@@ -219,6 +239,8 @@ Allows contracts to release tokens.
 ```solidity
 function releaseTokens(account address, amount uint256)
 ```
+
+### releaseTokens
 
 #### Parameters:
 
@@ -237,6 +259,8 @@ Reports the balance within the contract system for a user.
 ```solidity
 function systemBalance(account address)
 ```
+
+### systemBalance
 
 #### Parameters:
 
@@ -260,6 +284,8 @@ Allows contracts to set balance.
 function updateBalance(account address, amount uint256)
 ```
 
+### updateBalance
+
 #### Parameters:
 
 Parameter | Type | Description
@@ -277,6 +303,8 @@ Withdraw tokens from the treasury.
 ```solidity
 function withdraw(amount uint256)
 ```
+
+### withdraw
 
 #### Parameters:
 

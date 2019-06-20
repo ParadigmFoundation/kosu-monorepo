@@ -22,7 +22,6 @@ Common registry of system contract addresses authrorized to access internal meth
 
 ### authorizeAddress
 
-<<<<<<< HEAD
 
 Authorizes the address by setting the mapping value to true.
 
@@ -31,6 +30,8 @@ Authorizes the address by setting the mapping value to true.
 ```solidity
 function authorizeAddress(a address)
 ```
+
+### authorizeAddress
 
 #### Parameters:
 
@@ -49,56 +50,20 @@ Constructor initializes with the creator permission set to true.
 constructor()
 ```
 
-### isAddressAuthorized
-
-=======
-
- - **Signature:**
- - 
-    ```solidity
-    
-    function authorizeAddress(a address)
-    
-    ```
-    
-    
- - **Description:**
- - 
-    Authorizes the address by setting the mapping value to true.
-    
- - **Parameters:**
-     - Parameter | Type | Description
-        --- | --- | ---
-        a | address | Address to authorize
-        
-    
-
 ### constructor
 
+### isAddressAuthorized
 
- - **Signature:**
- - 
-    ```solidity
-    
-    constructor()
-    
-    ```
-    
-    
- - **Description:**
- - 
-    Constructor initializes with the creator permission set to true.
-    
->>>>>>> eaf23b3d8732d3b3bcc500c6c71aad6ec3200335
 
 Verify if address is authorized by reading contract mapping
 
 #### Signature
 
-<<<<<<< HEAD
 ```solidity
 function isAddressAuthorized(a address)
 ```
+
+### isAddressAuthorized
 
 #### Parameters:
 
@@ -122,87 +87,29 @@ Allows the current owner to relinquish control of the contract.
 function renounceOwnership()
 ```
 
-### transferOwnership
-
-=======
-
- - **Signature:**
- - 
-    ```solidity
-    
-    function isAddressAuthorized(a address)
-    
-    ```
-    
-    
- - **Description:**
- - 
-    Verify if address is authorized by reading contract mapping
-    
- - **Parameters:**
-     - Parameter | Type | Description
-        --- | --- | ---
-        a | address | Address to get authorized value.
-        
-    
- - 
-    **Returns:** True if the address is authorized, false otherwise.
-    
-
 ### renounceOwnership
 
+### transferOwnership
 
- - **Signature:**
- - 
-    ```solidity
-    
-    function renounceOwnership()
-    
-    ```
-    
-    
- - **Description:**
- - 
-    Allows the current owner to relinquish control of the contract.
-    
->>>>>>> eaf23b3d8732d3b3bcc500c6c71aad6ec3200335
 
 Allows the current owner to transfer control of the contract to a newOwner.
 
 #### Signature
 
-<<<<<<< HEAD
 ```solidity
 function transferOwnership(newOwner address)
 ```
 
-#### Parameters:
-=======
->>>>>>> eaf23b3d8732d3b3bcc500c6c71aad6ec3200335
+### transferOwnership
 
- - **Signature:**
- - 
-    ```solidity
-    
-    function transferOwnership(newOwner address)
-    
-    ```
-    
-    
- - **Description:**
- - 
-    Allows the current owner to transfer control of the contract to a newOwner.
-    
- - **Parameters:**
-     - Parameter | Type | Description
-        --- | --- | ---
-        newOwner | address | The address to transfer ownership to.
-        
-    
+#### Parameters:
+
+Parameter | Type | Description
+--- | --- | ---
+newOwner | address | The address to transfer ownership to.
 
 ### unauthorizeAddress
 
-<<<<<<< HEAD
 
 Unauthorizes the address by setting the mapping value to false.
 
@@ -212,30 +119,10 @@ Unauthorizes the address by setting the mapping value to false.
 function unauthorizeAddress(a address)
 ```
 
+### unauthorizeAddress
+
 #### Parameters:
 
 Parameter | Type | Description
 --- | --- | ---
 a | address | Address to unauthorize
-=======
-
- - **Signature:**
- - 
-    ```solidity
-    
-    function unauthorizeAddress(a address)
-    
-    ```
-    
-    
- - **Description:**
- - 
-    Unauthorizes the address by setting the mapping value to false.
-    
- - **Parameters:**
-     - Parameter | Type | Description
-        --- | --- | ---
-        a | address | Address to unauthorize
-        
-    
->>>>>>> eaf23b3d8732d3b3bcc500c6c71aad6ec3200335
