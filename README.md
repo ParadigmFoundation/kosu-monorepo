@@ -53,6 +53,79 @@ Client/server libraries for interacting with the Kosu network and contract syste
 | [`@kosu/tsc-config`](./packages/tsc-config)       | ![npm](https://img.shields.io/npm/v/@kosu/tsc-config.svg)    | TypeScript compiler base configuration for Kosu TypeScript projects. |
 | [`@kosu/web-helpers`](./packages/web-helpers)     | ![npm](https://img.shields.io/npm/v/@kosu/web-helpers.svg)   | Simple web interface for interacting with the Kosu contract system.  |
 
+## Development
+
+### Requirements
+
+To build kosu-monorepo from source, the following is required:
+
+-   Homebrew ('^2.1.6') 
+-   Yarn ('^1.15')
+-   jq ('^1.6') 
+
+### Install 
+
+1. Install ethereum:
+
+```
+brew tap ethereum/ethereum
+```
+```
+brew install ethereum
+```
+
+2. In order to install go, open `.bash_profile`
+
+```
+vim .bash_profile
+```
+
+Insert the following lines at the bottom of the file and save:
+
+```
+export GOPATH="${HOME}/.go"
+export GOROOT="$(brew --prefix golang)/libexec"
+export PATH="$PATH:${GOPATH}/bin:${GOROOT}/bin"
+test -d "${GOPATH}" || mkdir "${GOPATH}"
+test -d "${GOPATH}/src/github.com" || mkdir -p "${GOPATH}/src/github.com"
+```
+
+Once the file is saved, run:
+
+```
+source .bash_profile
+```
+```
+brew install go
+```
+
+3. Clone the kosu-monorepo
+
+```
+git clone git@github.com:paradigmFoundation/kosu-monorepo
+```
+
+4. Build from source with yarn:
+
+```
+cd kosu-monorepo
+```
+```
+yarn
+```
+```
+yarn build
+```
+
+### Run a validator node
+
+```
+cd packages/go-kosu
+```
+```
+./kosud --init --web3 wss://ethnet.zaidan.io/ws/ropsten
+```
+
 ## Resources
 
 Development resources (binaries, documentation, and images) are generated with each commit to master after a successful CI build.
