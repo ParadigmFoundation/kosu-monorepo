@@ -91,7 +91,7 @@ steps:
   args: [
     "lerna", 
     "run", 
-    "--scope=kosu-docs", 
+    "--scope @kosu/documentation", 
     "compile",
   ]
 
