@@ -31,15 +31,13 @@ Commit a vote in a poll to be later revealed
 function commitVote(_pollId uint256, _tokensToCommit bytes32, _vote uint256)
 ```
 
-### commitVote
-
 #### Parameters:
 
 Parameter | Type | Description
 --- | --- | ---
-_pollId | uint256 | Poll index to act upon
-_tokensToCommit | bytes32 | Number of tokens to commit to vote
-_vote | uint256 | Hash encoded vote
+`_pollId` | `uint256` | Poll index to act upon
+`_tokensToCommit` | `bytes32` | Number of tokens to commit to vote
+`_vote` | `uint256` | Hash encoded vote
 
 ### constructor
 
@@ -52,14 +50,12 @@ Create a new voting engine
 constructor(_emitterAddress, treasuryAddress)
 ```
 
-### constructor
-
 #### Parameters:
 
 Parameter | Type | Description
 --- | --- | ---
-_emitterAddress | ? | Deployed EventEmitter address
-treasuryAddress | ? | Deployed Treasury address
+`_emitterAddress` | `undefined` | Deployed EventEmitter address
+`treasuryAddress` | `undefined` | Deployed Treasury address
 
 ### createPoll
 
@@ -72,14 +68,12 @@ Create a new poll to accept votes based on the configuration
 function createPoll(_commitEndBlock uint256, _revealEndBlock uint256)
 ```
 
-### createPoll
-
 #### Parameters:
 
 Parameter | Type | Description
 --- | --- | ---
-_commitEndBlock | uint256 | Block number when commit phase ends
-_revealEndBlock | uint256 | Block number when reveal phase ends
+`_commitEndBlock` | `uint256` | Block number when commit phase ends
+`_revealEndBlock` | `uint256` | Block number when reveal phase ends
 
 #### Returns:
 
@@ -97,15 +91,13 @@ Reveal a previously committed vote
 function revealVote(_pollId uint256, _voteOption uint256, _voteSalt uint256)
 ```
 
-### revealVote
-
 #### Parameters:
 
 Parameter | Type | Description
 --- | --- | ---
-_pollId | uint256 | Poll index to act upon
-_voteOption | uint256 | User vote option
-_voteSalt | uint256 | Salt used to in hash to obfuscate vote option
+`_pollId` | `uint256` | Poll index to act upon
+`_voteOption` | `uint256` | User vote option
+`_voteSalt` | `uint256` | Salt used to in hash to obfuscate vote option
 
 ### totalRevealedTokens
 
@@ -118,13 +110,11 @@ Retreive the total number of tokens revealed for a finalized poll.
 function totalRevealedTokens(_pollId uint256)
 ```
 
-### totalRevealedTokens
-
 #### Parameters:
 
 Parameter | Type | Description
 --- | --- | ---
-_pollId | uint256 | Poll index to check total revealed tokens for
+`_pollId` | `uint256` | Poll index to check total revealed tokens for
 
 #### Returns:
 
@@ -142,13 +132,11 @@ Retreive the total number of tokens that voted on the winning side of a finalize
 function totalWinningTokens(_pollId uint256)
 ```
 
-### totalWinningTokens
-
 #### Parameters:
 
 Parameter | Type | Description
 --- | --- | ---
-_pollId | uint256 | Poll index to check winning tokens for
+`_pollId` | `uint256` | Poll index to check winning tokens for
 
 #### Returns:
 
@@ -166,14 +154,12 @@ Retreive the number of tokens committed by a user for the winning option.
 function userWinningTokens(_pollId uint256, _user address)
 ```
 
-### userWinningTokens
-
 #### Parameters:
 
 Parameter | Type | Description
 --- | --- | ---
-_pollId | uint256 | Poll index to check winning tokens for
-_user | address | Address of user to check winning tokens.
+`_pollId` | `uint256` | Poll index to check winning tokens for
+`_user` | `address` | Address of user to check winning tokens.
 
 ### winningOption
 
@@ -186,13 +172,11 @@ Retreive the winning outcome for a finalized poll.
 function winningOption(_pollId uint256)
 ```
 
-### winningOption
-
 #### Parameters:
 
 Parameter | Type | Description
 --- | --- | ---
-_pollId | uint256 | Poll index to check winning option for
+`_pollId` | `uint256` | Poll index to check winning option for
 
 #### Returns:
 

@@ -25,13 +25,11 @@ Event emitter instantiated with Authorizable.
 constructor(auth)
 ```
 
-### constructor
-
 #### Parameters:
 
 Parameter | Type | Description
 --- | --- | ---
-auth | ? | AuthorizedAddresses deployed address.
+`auth` | `undefined` | AuthorizedAddresses deployed address.
 
 ### emitEvent
 
@@ -44,11 +42,9 @@ Emit generic events which can have decoding exposed though javascript library.
 function emitEvent(data string, eventType bytes32[])
 ```
 
-### emitEvent
-
 #### Parameters:
 
 Parameter | Type | Description
 --- | --- | ---
-data | string | Bytes32 encoded data to be emitted from a centralized location.
-eventType | bytes32[] | String name/type of event
+`data` | `string` | Bytes32 encoded data to be emitted from a centralized location.
+`eventType` | `bytes32[]` | String name/type of event

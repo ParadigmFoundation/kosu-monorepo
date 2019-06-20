@@ -28,14 +28,12 @@ Calls amountRemaining on provided subContract.
 function amountRemaining(data address, subContract bytes)
 ```
 
-### amountRemaining
-
 #### Parameters:
 
 Parameter | Type | Description
 --- | --- | ---
-data | address | Encoded maker values for Order encoded based on the makerArguments.
-subContract | bytes | Address of contract implementing the SubContract interface.
+`data` | `address` | Encoded maker values for Order encoded based on the makerArguments.
+`subContract` | `bytes` | Address of contract implementing the SubContract interface.
 
 #### Returns:
 
@@ -53,13 +51,11 @@ Calls arguments on provided subContract.
 function arguments(subContract address)
 ```
 
-### arguments
-
 #### Parameters:
 
 Parameter | Type | Description
 --- | --- | ---
-subContract | address | Address of contract implementing the SubContract interface.
+`subContract` | `address` | Address of contract implementing the SubContract interface.
 
 #### Returns:
 
@@ -77,8 +73,6 @@ Creates a new OrderGateway
 constructor()
 ```
 
-### constructor
-
 ### isValid
 
 
@@ -90,14 +84,12 @@ Calls isValid on provided subContract.
 function isValid(data address, subContract bytes)
 ```
 
-### isValid
-
 #### Parameters:
 
 Parameter | Type | Description
 --- | --- | ---
-data | address | Encoded maker values for Order encoded based on the makerArguments.
-subContract | bytes | Address of contract implementing the SubContract interface.
+`data` | `address` | Encoded maker values for Order encoded based on the makerArguments.
+`subContract` | `bytes` | Address of contract implementing the SubContract interface.
 
 #### Returns:
 
@@ -115,14 +107,12 @@ Calls participate on the provided subContract.
 function participate(data address, subContract bytes)
 ```
 
-### participate
-
 #### Parameters:
 
 Parameter | Type | Description
 --- | --- | ---
-data | address | Encoded maker values for Order encoded based on the arguments.
-subContract | bytes | Address of contract implementing the SubContract interface.
+`data` | `address` | Encoded maker values for Order encoded based on the arguments.
+`subContract` | `bytes` | Address of contract implementing the SubContract interface.
 
 #### Returns:
 

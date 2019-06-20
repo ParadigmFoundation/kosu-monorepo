@@ -35,14 +35,12 @@ Function to check the amount of tokens that an owner allowed to a spender.
 function allowance(owner address, spender address)
 ```
 
-### allowance
-
 #### Parameters:
 
 Parameter | Type | Description
 --- | --- | ---
-owner | address | address The address which owns the funds.
-spender | address | address The address which will spend the funds.
+`owner` | `address` | address The address which owns the funds.
+`spender` | `address` | address The address which will spend the funds.
 
 #### Returns:
 
@@ -60,14 +58,12 @@ Approve the passed address to spend the specified amount of tokens on behalf of 
 function approve(spender address, value uint256)
 ```
 
-### approve
-
 #### Parameters:
 
 Parameter | Type | Description
 --- | --- | ---
-spender | address | The address which will spend the funds.
-value | uint256 | The amount of tokens to be spent.
+`spender` | `address` | The address which will spend the funds.
+`value` | `uint256` | The amount of tokens to be spent.
 
 ### balanceOf
 
@@ -80,13 +76,11 @@ Gets the balance of the specified address.
 function balanceOf(owner address)
 ```
 
-### balanceOf
-
 #### Parameters:
 
 Parameter | Type | Description
 --- | --- | ---
-owner | address | The address to query the balance of.
+`owner` | `address` | The address to query the balance of.
 
 #### Returns:
 
@@ -104,13 +98,11 @@ Burn tokens
 function burn(amount uint256)
 ```
 
-### burn
-
 #### Parameters:
 
 Parameter | Type | Description
 --- | --- | ---
-amount | uint256 | Number of tokens to destroy
+`amount` | `uint256` | Number of tokens to destroy
 
 ### constructor
 
@@ -123,8 +115,6 @@ Deploy a new ERC20 Token
 constructor()
 ```
 
-### constructor
-
 ### decreaseAllowance
 
 
@@ -136,14 +126,12 @@ Decrease the amount of tokens that an owner allowed to a spender. approve should
 function decreaseAllowance(spender address, subtractedValue uint256)
 ```
 
-### decreaseAllowance
-
 #### Parameters:
 
 Parameter | Type | Description
 --- | --- | ---
-spender | address | The address which will spend the funds.
-subtractedValue | uint256 | The amount of tokens to decrease the allowance by.
+`spender` | `address` | The address which will spend the funds.
+`subtractedValue` | `uint256` | The amount of tokens to decrease the allowance by.
 
 ### increaseAllowance
 
@@ -156,14 +144,12 @@ Increase the amount of tokens that an owner allowed to a spender. approve should
 function increaseAllowance(addedValue address, spender uint256)
 ```
 
-### increaseAllowance
-
 #### Parameters:
 
 Parameter | Type | Description
 --- | --- | ---
-addedValue | address | The amount of tokens to increase the allowance by.
-spender | uint256 | The address which will spend the funds.
+`addedValue` | `address` | The amount of tokens to increase the allowance by.
+`spender` | `uint256` | The address which will spend the funds.
 
 ### mint
 
@@ -176,13 +162,11 @@ Mint tokens
 function mint(amount uint256)
 ```
 
-### mint
-
 #### Parameters:
 
 Parameter | Type | Description
 --- | --- | ---
-amount | uint256 | Number of tokens to create
+`amount` | `uint256` | Number of tokens to create
 
 ### mintTo
 
@@ -195,14 +179,12 @@ Mint tokens to specified address
 function mintTo(_address address, amount uint256)
 ```
 
-### mintTo
-
 #### Parameters:
 
 Parameter | Type | Description
 --- | --- | ---
-_address | address | Address to receive tokens
-amount | uint256 | Number of tokens to create.
+`_address` | `address` | Address to receive tokens
+`amount` | `uint256` | Number of tokens to create.
 
 ### totalSupply
 
@@ -215,8 +197,6 @@ Total number of tokens in existence
 function totalSupply()
 ```
 
-### totalSupply
-
 ### transfer
 
 
@@ -228,14 +208,12 @@ Transfer token for a specified address
 function transfer(to address, value uint256)
 ```
 
-### transfer
-
 #### Parameters:
 
 Parameter | Type | Description
 --- | --- | ---
-to | address | The address to transfer to.
-value | uint256 | The amount to be transferred.
+`to` | `address` | The address to transfer to.
+`value` | `uint256` | The amount to be transferred.
 
 ### transferFrom
 
@@ -248,12 +226,10 @@ Transfer tokens from one address to another. Note that while this function emits
 function transferFrom(from address, to address, value uint256)
 ```
 
-### transferFrom
-
 #### Parameters:
 
 Parameter | Type | Description
 --- | --- | ---
-from | address | address The address which you want to send tokens from
-to | address | address The address which you want to transfer to
-value | uint256 | uint256 the amount of tokens to be transferred
+`from` | `address` | address The address which you want to send tokens from
+`to` | `address` | address The address which you want to transfer to
+`value` | `uint256` | uint256 the amount of tokens to be transferred

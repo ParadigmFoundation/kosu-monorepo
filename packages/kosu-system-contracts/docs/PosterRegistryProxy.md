@@ -31,14 +31,12 @@ Creates a Proxy for a PosterRegistry. Accepts an initial implementation that can
 constructor(auth, implementation)
 ```
 
-### constructor
-
 #### Parameters:
 
 Parameter | Type | Description
 --- | --- | ---
-auth | ? | AuthorizedAddresses deployed address.
-implementation | ? | deployed implementation of PosterRegistry.
+`auth` | `undefined` | AuthorizedAddresses deployed address.
+`implementation` | `undefined` | deployed implementation of PosterRegistry.
 
 ### registerTokens
 
@@ -51,13 +49,11 @@ Calls registerTokens on the current registry.
 function registerTokens(amount uint256)
 ```
 
-### registerTokens
-
 #### Parameters:
 
 Parameter | Type | Description
 --- | --- | ---
-amount | uint256 | Desired amount of tokens to register.
+`amount` | `uint256` | Desired amount of tokens to register.
 
 ### releaseTokens
 
@@ -70,13 +66,11 @@ Calls releaseTokens for the current registry.
 function releaseTokens(amount uint256)
 ```
 
-### releaseTokens
-
 #### Parameters:
 
 Parameter | Type | Description
 --- | --- | ---
-amount | uint256 | Desired amount of tokens to release.
+`amount` | `uint256` | Desired amount of tokens to release.
 
 ### setImplementation
 
@@ -89,13 +83,11 @@ Set a new PosterRegistry implementation if a replacement is deployed.
 function setImplementation(implementation address)
 ```
 
-### setImplementation
-
 #### Parameters:
 
 Parameter | Type | Description
 --- | --- | ---
-implementation | address | Deployed address for replacement PosterRegistry implementation.
+`implementation` | `address` | Deployed address for replacement PosterRegistry implementation.
 
 ### token
 
@@ -107,8 +99,6 @@ Reads the current registries token.
 ```solidity
 function token()
 ```
-
-### token
 
 #### Returns:
 
@@ -126,8 +116,6 @@ Reads the current registries tokensContributed.
 function tokensContributed()
 ```
 
-### tokensContributed
-
 #### Returns:
 
 
@@ -144,13 +132,11 @@ Reads the current registries tokens registered for the supplied address.
 function tokensRegisteredFor(a address)
 ```
 
-### tokensRegisteredFor
-
 #### Parameters:
 
 Parameter | Type | Description
 --- | --- | ---
-a | address | Address of user
+`a` | `address` | Address of user
 
 #### Returns:
 
@@ -167,8 +153,6 @@ Reads the current registries Treasury address.
 ```solidity
 function treasury()
 ```
-
-### treasury
 
 #### Returns:
 

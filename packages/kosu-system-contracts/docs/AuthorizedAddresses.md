@@ -31,13 +31,11 @@ Authorizes the address by setting the mapping value to true.
 function authorizeAddress(a address)
 ```
 
-### authorizeAddress
-
 #### Parameters:
 
 Parameter | Type | Description
 --- | --- | ---
-a | address | Address to authorize
+`a` | `address` | Address to authorize
 
 ### constructor
 
@@ -50,8 +48,6 @@ Constructor initializes with the creator permission set to true.
 constructor()
 ```
 
-### constructor
-
 ### isAddressAuthorized
 
 
@@ -63,13 +59,11 @@ Verify if address is authorized by reading contract mapping
 function isAddressAuthorized(a address)
 ```
 
-### isAddressAuthorized
-
 #### Parameters:
 
 Parameter | Type | Description
 --- | --- | ---
-a | address | Address to get authorized value.
+`a` | `address` | Address to get authorized value.
 
 #### Returns:
 
@@ -87,8 +81,6 @@ Allows the current owner to relinquish control of the contract.
 function renounceOwnership()
 ```
 
-### renounceOwnership
-
 ### transferOwnership
 
 
@@ -100,13 +92,11 @@ Allows the current owner to transfer control of the contract to a newOwner.
 function transferOwnership(newOwner address)
 ```
 
-### transferOwnership
-
 #### Parameters:
 
 Parameter | Type | Description
 --- | --- | ---
-newOwner | address | The address to transfer ownership to.
+`newOwner` | `address` | The address to transfer ownership to.
 
 ### unauthorizeAddress
 
@@ -119,10 +109,8 @@ Unauthorizes the address by setting the mapping value to false.
 function unauthorizeAddress(a address)
 ```
 
-### unauthorizeAddress
-
 #### Parameters:
 
 Parameter | Type | Description
 --- | --- | ---
-a | address | Address to unauthorize
+`a` | `address` | Address to unauthorize

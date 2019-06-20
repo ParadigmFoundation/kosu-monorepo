@@ -30,15 +30,13 @@ Creates a new PosterRegistry
 constructor(_auth, _events, _treasuryAddress)
 ```
 
-### constructor
-
 #### Parameters:
 
 Parameter | Type | Description
 --- | --- | ---
-_auth | ? | Deployed AuthorizedAddresses contract address
-_events | ? | Deployed Events contract address
-_treasuryAddress | ? | Deployed Treasury contract address
+`_auth` | `undefined` | Deployed AuthorizedAddresses contract address
+`_events` | `undefined` | Deployed Events contract address
+`_treasuryAddress` | `undefined` | Deployed Treasury contract address
 
 ### registerTokens
 
@@ -51,14 +49,12 @@ Register tokens.
 function registerTokens(amount address, msgSender uint256)
 ```
 
-### registerTokens
-
 #### Parameters:
 
 Parameter | Type | Description
 --- | --- | ---
-amount | address | Number of tokens to register
-msgSender | uint256 | Address that called the proxy
+`amount` | `address` | Number of tokens to register
+`msgSender` | `uint256` | Address that called the proxy
 
 ### releaseTokens
 
@@ -71,14 +67,12 @@ Release tokens from the registry.
 function releaseTokens(amount address, msgSender uint256)
 ```
 
-### releaseTokens
-
 #### Parameters:
 
 Parameter | Type | Description
 --- | --- | ---
-amount | address | Number of tokens to release
-msgSender | uint256 | Address that called the proxy
+`amount` | `address` | Number of tokens to release
+`msgSender` | `uint256` | Address that called the proxy
 
 ### token
 
@@ -90,8 +84,6 @@ The token address.
 ```solidity
 function token()
 ```
-
-### token
 
 #### Returns:
 
@@ -109,8 +101,6 @@ The number of tokens that have been contributed to the contract
 function tokensContributed()
 ```
 
-### tokensContributed
-
 #### Returns:
 
 
@@ -127,13 +117,11 @@ Tokens registered for a user.
 function tokensRegisteredFor(a address)
 ```
 
-### tokensRegisteredFor
-
 #### Parameters:
 
 Parameter | Type | Description
 --- | --- | ---
-a | address | Address to get value for
+`a` | `address` | Address to get value for
 
 #### Returns:
 
@@ -150,8 +138,6 @@ The Treasury address.
 ```solidity
 function treasury()
 ```
-
-### treasury
 
 #### Returns:
 

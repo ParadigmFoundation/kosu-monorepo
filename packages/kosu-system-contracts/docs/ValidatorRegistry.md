@@ -40,14 +40,12 @@ Challenge a registered listing
 function challengeListing(details bytes32, tendermintPublicKey string)
 ```
 
-### challengeListing
-
 #### Parameters:
 
 Parameter | Type | Description
 --- | --- | ---
-details | bytes32 | A string value to represent support for claim (commonly an external link)
-tendermintPublicKey | string | Hex encoded tendermint public key
+`details` | `bytes32` | A string value to represent support for claim (commonly an external link)
+`tendermintPublicKey` | `string` | Hex encoded tendermint public key
 
 ### claimRewards
 
@@ -60,13 +58,11 @@ Claims rewards for a listing
 function claimRewards(pubKey bytes32)
 ```
 
-### claimRewards
-
 #### Parameters:
 
 Parameter | Type | Description
 --- | --- | ---
-pubKey | bytes32 | Public key for the listing to have rewards claimed
+`pubKey` | `bytes32` | Public key for the listing to have rewards claimed
 
 ### claimWinnings
 
@@ -79,13 +75,11 @@ Claims winnings from a challenge
 function claimWinnings(challengeId uint256)
 ```
 
-### claimWinnings
-
 #### Parameters:
 
 Parameter | Type | Description
 --- | --- | ---
-challengeId | uint256 | Challenge id to claim rewards from.
+`challengeId` | `uint256` | Challenge id to claim rewards from.
 
 ### confirmListing
 
@@ -98,13 +92,11 @@ Confirm a listing registration
 function confirmListing(tendermintPublicKey bytes32)
 ```
 
-### confirmListing
-
 #### Parameters:
 
 Parameter | Type | Description
 --- | --- | ---
-tendermintPublicKey | bytes32 | Hex encoded tendermint public key
+`tendermintPublicKey` | `bytes32` | Hex encoded tendermint public key
 
 ### constructor
 
@@ -117,16 +109,14 @@ Create a new ValidatorRegistry implementation
 constructor(_events, _treasuryAddress, _votingAddress, auth)
 ```
 
-### constructor
-
 #### Parameters:
 
 Parameter | Type | Description
 --- | --- | ---
-_events | ? | Deployed EventEmitter address
-_treasuryAddress | ? | Deployed Treasury address
-_votingAddress | ? | Deployed Voting address
-auth | ? | AuthorizedAddresses deployed address
+`_events` | `undefined` | Deployed EventEmitter address
+`_treasuryAddress` | `undefined` | Deployed Treasury address
+`_votingAddress` | `undefined` | Deployed Voting address
+`auth` | `undefined` | AuthorizedAddresses deployed address
 
 ### finalizeExit
 
@@ -139,13 +129,11 @@ Complete a listing exit
 function finalizeExit(tendermintPublicKey bytes32)
 ```
 
-### finalizeExit
-
 #### Parameters:
 
 Parameter | Type | Description
 --- | --- | ---
-tendermintPublicKey | bytes32 | Hex encoded tendermint public key
+`tendermintPublicKey` | `bytes32` | Hex encoded tendermint public key
 
 ### getAllChallenges
 
@@ -158,8 +146,6 @@ Expose all challenges
 function getAllChallenges()
 ```
 
-### getAllChallenges
-
 ### getAllListings
 
 
@@ -170,8 +156,6 @@ Expose all listings in the registry.
 ```solidity
 function getAllListings()
 ```
-
-### getAllListings
 
 #### Returns:
 
@@ -189,13 +173,11 @@ Expose challenge data for a given ID.
 function getChallenge(challengeId uint256)
 ```
 
-### getChallenge
-
 #### Parameters:
 
 Parameter | Type | Description
 --- | --- | ---
-challengeId | uint256 | The ID to retreive challenge data for
+`challengeId` | `uint256` | The ID to retreive challenge data for
 
 #### Returns:
 
@@ -213,13 +195,11 @@ Expose challenge data
 function getChallenges(challengeIds uint256[])
 ```
 
-### getChallenges
-
 #### Parameters:
 
 Parameter | Type | Description
 --- | --- | ---
-challengeIds | uint256[] | challenge id
+`challengeIds` | `uint256[]` | challenge id
 
 ### getListing
 
@@ -232,13 +212,11 @@ Expose listing data for given public key.
 function getListing(pubKey bytes32)
 ```
 
-### getListing
-
 #### Parameters:
 
 Parameter | Type | Description
 --- | --- | ---
-pubKey | bytes32 | Hex encoded tendermint public key
+`pubKey` | `bytes32` | Hex encoded tendermint public key
 
 #### Returns:
 
@@ -256,13 +234,11 @@ Expose several listings provided multiple public keys.
 function getListings(pubKeys bytes32[])
 ```
 
-### getListings
-
 #### Parameters:
 
 Parameter | Type | Description
 --- | --- | ---
-pubKeys | bytes32[] | Hex encoded Tendermint public keys to retreive
+`pubKeys` | `bytes32[]` | Hex encoded Tendermint public keys to retreive
 
 #### Returns:
 
@@ -280,13 +256,11 @@ Initiate a listing exit
 function initExit(tendermintPublicKey bytes32)
 ```
 
-### initExit
-
 #### Parameters:
 
 Parameter | Type | Description
 --- | --- | ---
-tendermintPublicKey | bytes32 | Hex encoded tendermint public key
+`tendermintPublicKey` | `bytes32` | Hex encoded tendermint public key
 
 ### listingKeys
 
@@ -298,8 +272,6 @@ Expose the list of active listing keys.
 ```solidity
 function listingKeys()
 ```
-
-### listingKeys
 
 #### Returns:
 
@@ -317,8 +289,6 @@ Calculate the maximum KosuToken a validator can generate.
 function maxRewardRate()
 ```
 
-### maxRewardRate
-
 #### Returns:
 
 
@@ -335,16 +305,14 @@ Register a listing
 function registerListing(details bytes32, rewardRate uint256, tendermintPublicKey int256, tokensToStake string)
 ```
 
-### registerListing
-
 #### Parameters:
 
 Parameter | Type | Description
 --- | --- | ---
-details | bytes32 | A string value to represent support for claim (commonly an external link)
-rewardRate | uint256 | The rate tokens are minted or destroyed over the active listings reward periods
-tendermintPublicKey | int256 | Hex encoded tendermint public key
-tokensToStake | string | The number of tokes at stake if the order is challenged
+`details` | `bytes32` | A string value to represent support for claim (commonly an external link)
+`rewardRate` | `uint256` | The rate tokens are minted or destroyed over the active listings reward periods
+`tendermintPublicKey` | `int256` | Hex encoded tendermint public key
+`tokensToStake` | `string` | The number of tokes at stake if the order is challenged
 
 ### resolveChallenge
 
@@ -357,10 +325,8 @@ Resolve a challenge
 function resolveChallenge(pubKey bytes32)
 ```
 
-### resolveChallenge
-
 #### Parameters:
 
 Parameter | Type | Description
 --- | --- | ---
-pubKey | bytes32 | Hex encoded tendermint public key
+`pubKey` | `bytes32` | Hex encoded tendermint public key
