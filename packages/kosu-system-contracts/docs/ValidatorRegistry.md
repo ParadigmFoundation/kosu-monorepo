@@ -1,7 +1,7 @@
 # ValidatorRegistry
 
 
-ValidatorRegsitry is a modified token-curated registry that enables curation of validator listings.
+Stores registry of validator listings and provides functionality to curate through proposals and challenges.
 
 ## Contents
 
@@ -31,6 +31,10 @@ ValidatorRegsitry is a modified token-curated registry that enables curation of 
 
 ### challengeListing(bytes32,string)
 
+```solidity
+function challengeListing(details bytes32, tendermintPublicKey string)
+```
+
 
 Challenge a registered listing
 
@@ -41,6 +45,10 @@ tendermintPublicKey | string | Hex encoded tendermint public key
 
 ### claimRewards(bytes32)
 
+```solidity
+function claimRewards(pubKey bytes32)
+```
+
 
 Claims rewards for a listing
 
@@ -49,6 +57,10 @@ Parameter | Type | Description
 pubKey | bytes32 | Public key for the listing to have rewards claimed
 
 ### claimWinnings(uint256)
+
+```solidity
+function claimWinnings(challengeId uint256)
+```
 
 
 Claims winnings from a challenge
@@ -59,6 +71,10 @@ challengeId | uint256 | Challenge id to claim rewards from.
 
 ### confirmListing(bytes32)
 
+```solidity
+function confirmListing(tendermintPublicKey bytes32)
+```
+
 
 Confirm a listing registration
 
@@ -67,6 +83,10 @@ Parameter | Type | Description
 tendermintPublicKey | bytes32 | Hex encoded tendermint public key
 
 ### constructor
+
+```solidity
+constructor(_events, _treasuryAddress, _votingAddress, auth)
+```
 
 
 Create a new ValidatorRegistry implementation
@@ -80,6 +100,10 @@ auth | ? | AuthorizedAddresses deployed address
 
 ### finalizeExit(bytes32)
 
+```solidity
+function finalizeExit(tendermintPublicKey bytes32)
+```
+
 
 Complete a listing exit
 
@@ -89,24 +113,46 @@ tendermintPublicKey | bytes32 | Hex encoded tendermint public key
 
 ### getAllChallenges()
 
+```solidity
+function getAllChallenges()
+```
+
 
 Expose all challenges
 
 ### getAllListings()
 
+```solidity
+function getAllListings()
+```
 
-Expose all listings
+
+Expose all listings in the registry.
+
+
+**Returns:** An array of all listings in the registry.
 
 ### getChallenge(uint256)
 
+```solidity
+function getChallenge(challengeId uint256)
+```
 
-Expose challenge data
+
+Expose challenge data for a given ID.
 
 Parameter | Type | Description
 --- | --- | ---
-challengeId | uint256 | challenge id
+challengeId | uint256 | The ID to retreive challenge data for
+
+
+**Returns:** The challenge indicated by the provided ID.
 
 ### getChallenges(uint256[])
+
+```solidity
+function getChallenges(challengeIds uint256[])
+```
 
 
 Expose challenge data
@@ -117,23 +163,41 @@ challengeIds | uint256[] | challenge id
 
 ### getListing(bytes32)
 
+```solidity
+function getListing(pubKey bytes32)
+```
 
-Expose listing data
+
+Expose listing data for given public key.
 
 Parameter | Type | Description
 --- | --- | ---
 pubKey | bytes32 | Hex encoded tendermint public key
 
+
+**Returns:** The listing structure corresponding to the provided key.
+
 ### getListings(bytes32[])
 
+```solidity
+function getListings(pubKeys bytes32[])
+```
 
-Expose listings
+
+Expose several listings provided multiple public keys.
 
 Parameter | Type | Description
 --- | --- | ---
-pubKeys | bytes32[] | Hex encoded tendermint public keys
+pubKeys | bytes32[] | Hex encoded Tendermint public keys to retreive
+
+
+**Returns:** The array of listing structures corresponding to the provided keys.
 
 ### initExit(bytes32)
+
+```solidity
+function initExit(tendermintPublicKey bytes32)
+```
 
 
 Initiate a listing exit
@@ -144,15 +208,33 @@ tendermintPublicKey | bytes32 | Hex encoded tendermint public key
 
 ### listingKeys()
 
+```solidity
+function listingKeys()
+```
 
-Expose the list of active listing keys
+
+Expose the list of active listing keys.
+
+
+**Returns:** An array of hex encoded tendermint keys.
 
 ### maxRewardRate()
 
+```solidity
+function maxRewardRate()
+```
 
-Calculate the maximum KosuToken a validator can generate
+
+Calculate the maximum KosuToken a validator can generate.
+
+
+**Returns:** Maximum KosuToken a validator can generate per period.
 
 ### registerListing(bytes32,uint256,int256,string)
+
+```solidity
+function registerListing(details bytes32, rewardRate uint256, tendermintPublicKey int256, tokensToStake string)
+```
 
 
 Register a listing
@@ -165,6 +247,10 @@ tendermintPublicKey | int256 | Hex encoded tendermint public key
 tokensToStake | string | The number of tokes at stake if the order is challenged
 
 ### resolveChallenge(bytes32)
+
+```solidity
+function resolveChallenge(pubKey bytes32)
+```
 
 
 Resolve a challenge

@@ -1,7 +1,7 @@
 # AuthorizedAddresses
 
 
-
+Common registry of system contract addresses authrorized to access internal methods.
 
 ## Contents
 
@@ -22,8 +22,12 @@
 
 ### authorizeAddress(address)
 
+```solidity
+function authorizeAddress(a address)
+```
 
-Authorizes the address by setting the mapping value to true
+
+Authorizes the address by setting the mapping value to true.
 
 Parameter | Type | Description
 --- | --- | ---
@@ -31,10 +35,18 @@ a | address | Address to authorize
 
 ### constructor
 
+```solidity
+constructor()
+```
+
 
 Constructor initializes with the creator permission set to true.
 
 ### isAddressAuthorized(address)
+
+```solidity
+function isAddressAuthorized(a address)
+```
 
 
 Verify if address is authorized by reading contract mapping
@@ -43,22 +55,23 @@ Parameter | Type | Description
 --- | --- | ---
 a | address | Address to get authorized value.
 
-### isOwner()
 
-
-?
-
-### owner()
-
-
-?
+**Returns:** True if the address is authorized, false otherwise.
 
 ### renounceOwnership()
+
+```solidity
+function renounceOwnership()
+```
 
 
 Allows the current owner to relinquish control of the contract.
 
 ### transferOwnership(address)
+
+```solidity
+function transferOwnership(newOwner address)
+```
 
 
 Allows the current owner to transfer control of the contract to a newOwner.
@@ -69,8 +82,12 @@ newOwner | address | The address to transfer ownership to.
 
 ### unauthorizeAddress(address)
 
+```solidity
+function unauthorizeAddress(a address)
+```
 
-Unauthorizes the address by setting the mapping value to false
+
+Unauthorizes the address by setting the mapping value to false.
 
 Parameter | Type | Description
 --- | --- | ---
