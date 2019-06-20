@@ -8,28 +8,28 @@ Stores registry of validator listings and provides functionality to curate throu
 
  - [Methods](undefined)
     
-     - [challengeListing](#challengeListingbytes32string)
-     - [claimRewards](#claimRewardsbytes32)
-     - [claimWinnings](#claimWinningsuint256)
-     - [confirmListing](#confirmListingbytes32)
-     - [constructor](#constructo)
-     - [finalizeExit](#finalizeExitbytes32)
+     - [challengeListing](#challengeListing)
+     - [claimRewards](#claimRewards)
+     - [claimWinnings](#claimWinnings)
+     - [confirmListing](#confirmListing)
+     - [constructor](#constructor)
+     - [finalizeExit](#finalizeExit)
      - [getAllChallenges](#getAllChallenges)
      - [getAllListings](#getAllListings)
-     - [getChallenge](#getChallengeuint256)
-     - [getChallenges](#getChallengesuint256)
-     - [getListing](#getListingbytes32)
-     - [getListings](#getListingsbytes32)
-     - [initExit](#initExitbytes32)
+     - [getChallenge](#getChallenge)
+     - [getChallenges](#getChallenges)
+     - [getListing](#getListing)
+     - [getListings](#getListings)
+     - [initExit](#initExit)
      - [listingKeys](#listingKeys)
      - [maxRewardRate](#maxRewardRate)
-     - [registerListing](#registerListingbytes32uint256int256string)
-     - [resolveChallenge](#resolveChallengebytes32)
+     - [registerListing](#registerListing)
+     - [resolveChallenge](#resolveChallenge)
     
 
 ## Methods
 
-### challengeListing(bytes32,string)
+### challengeListing
 
 ```solidity
 function challengeListing(details bytes32, tendermintPublicKey string)
@@ -43,7 +43,7 @@ Parameter | Type | Description
 details | bytes32 | A string value to represent support for claim (commonly an external link)
 tendermintPublicKey | string | Hex encoded tendermint public key
 
-### claimRewards(bytes32)
+### claimRewards
 
 ```solidity
 function claimRewards(pubKey bytes32)
@@ -56,7 +56,7 @@ Parameter | Type | Description
 --- | --- | ---
 pubKey | bytes32 | Public key for the listing to have rewards claimed
 
-### claimWinnings(uint256)
+### claimWinnings
 
 ```solidity
 function claimWinnings(challengeId uint256)
@@ -69,7 +69,7 @@ Parameter | Type | Description
 --- | --- | ---
 challengeId | uint256 | Challenge id to claim rewards from.
 
-### confirmListing(bytes32)
+### confirmListing
 
 ```solidity
 function confirmListing(tendermintPublicKey bytes32)
@@ -98,7 +98,7 @@ _treasuryAddress | ? | Deployed Treasury address
 _votingAddress | ? | Deployed Voting address
 auth | ? | AuthorizedAddresses deployed address
 
-### finalizeExit(bytes32)
+### finalizeExit
 
 ```solidity
 function finalizeExit(tendermintPublicKey bytes32)
@@ -111,7 +111,7 @@ Parameter | Type | Description
 --- | --- | ---
 tendermintPublicKey | bytes32 | Hex encoded tendermint public key
 
-### getAllChallenges()
+### getAllChallenges
 
 ```solidity
 function getAllChallenges()
@@ -120,7 +120,7 @@ function getAllChallenges()
 
 Expose all challenges
 
-### getAllListings()
+### getAllListings
 
 ```solidity
 function getAllListings()
@@ -132,7 +132,7 @@ Expose all listings in the registry.
 
 **Returns:** An array of all listings in the registry.
 
-### getChallenge(uint256)
+### getChallenge
 
 ```solidity
 function getChallenge(challengeId uint256)
@@ -148,7 +148,7 @@ challengeId | uint256 | The ID to retreive challenge data for
 
 **Returns:** The challenge indicated by the provided ID.
 
-### getChallenges(uint256[])
+### getChallenges
 
 ```solidity
 function getChallenges(challengeIds uint256[])
@@ -161,7 +161,7 @@ Parameter | Type | Description
 --- | --- | ---
 challengeIds | uint256[] | challenge id
 
-### getListing(bytes32)
+### getListing
 
 ```solidity
 function getListing(pubKey bytes32)
@@ -177,7 +177,7 @@ pubKey | bytes32 | Hex encoded tendermint public key
 
 **Returns:** The listing structure corresponding to the provided key.
 
-### getListings(bytes32[])
+### getListings
 
 ```solidity
 function getListings(pubKeys bytes32[])
@@ -193,7 +193,7 @@ pubKeys | bytes32[] | Hex encoded Tendermint public keys to retreive
 
 **Returns:** The array of listing structures corresponding to the provided keys.
 
-### initExit(bytes32)
+### initExit
 
 ```solidity
 function initExit(tendermintPublicKey bytes32)
@@ -206,7 +206,7 @@ Parameter | Type | Description
 --- | --- | ---
 tendermintPublicKey | bytes32 | Hex encoded tendermint public key
 
-### listingKeys()
+### listingKeys
 
 ```solidity
 function listingKeys()
@@ -218,7 +218,7 @@ Expose the list of active listing keys.
 
 **Returns:** An array of hex encoded tendermint keys.
 
-### maxRewardRate()
+### maxRewardRate
 
 ```solidity
 function maxRewardRate()
@@ -230,7 +230,7 @@ Calculate the maximum KosuToken a validator can generate.
 
 **Returns:** Maximum KosuToken a validator can generate per period.
 
-### registerListing(bytes32,uint256,int256,string)
+### registerListing
 
 ```solidity
 function registerListing(details bytes32, rewardRate uint256, tendermintPublicKey int256, tokensToStake string)
@@ -246,7 +246,7 @@ rewardRate | uint256 | The rate tokens are minted or destroyed over the active l
 tendermintPublicKey | int256 | Hex encoded tendermint public key
 tokensToStake | string | The number of tokes at stake if the order is challenged
 
-### resolveChallenge(bytes32)
+### resolveChallenge
 
 ```solidity
 function resolveChallenge(pubKey bytes32)

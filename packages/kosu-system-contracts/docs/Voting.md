@@ -8,19 +8,19 @@ Voting manages polls and votes on governance matters within the Kosu system.
 
  - [Methods](undefined)
     
-     - [commitVote](#commitVoteuint256bytes32uint256)
-     - [constructor](#constructo)
-     - [createPoll](#createPolluint256uint256)
-     - [revealVote](#revealVoteuint256uint256uint256)
-     - [totalRevealedTokens](#totalRevealedTokensuint256)
-     - [totalWinningTokens](#totalWinningTokensuint256)
-     - [userWinningTokens](#userWinningTokensuint256address)
-     - [winningOption](#winningOptionuint256)
+     - [commitVote](#commitVote)
+     - [constructor](#constructor)
+     - [createPoll](#createPoll)
+     - [revealVote](#revealVote)
+     - [totalRevealedTokens](#totalRevealedTokens)
+     - [totalWinningTokens](#totalWinningTokens)
+     - [userWinningTokens](#userWinningTokens)
+     - [winningOption](#winningOption)
     
 
 ## Methods
 
-### commitVote(uint256,bytes32,uint256)
+### commitVote
 
 ```solidity
 function commitVote(_pollId uint256, _tokensToCommit bytes32, _vote uint256)
@@ -49,7 +49,7 @@ Parameter | Type | Description
 _emitterAddress | ? | Deployed EventEmitter address
 treasuryAddress | ? | Deployed Treasury address
 
-### createPoll(uint256,uint256)
+### createPoll
 
 ```solidity
 function createPoll(_commitEndBlock uint256, _revealEndBlock uint256)
@@ -66,7 +66,7 @@ _revealEndBlock | uint256 | Block number when reveal phase ends
 
 **Returns:** Poll index number. Will be used as the key for interacting with a vote.
 
-### revealVote(uint256,uint256,uint256)
+### revealVote
 
 ```solidity
 function revealVote(_pollId uint256, _voteOption uint256, _voteSalt uint256)
@@ -81,7 +81,7 @@ _pollId | uint256 | Poll index to act upon
 _voteOption | uint256 | User vote option
 _voteSalt | uint256 | Salt used to in hash to obfuscate vote option
 
-### totalRevealedTokens(uint256)
+### totalRevealedTokens
 
 ```solidity
 function totalRevealedTokens(_pollId uint256)
@@ -97,7 +97,7 @@ _pollId | uint256 | Poll index to check total revealed tokens for
 
 **Returns:** The total number of tokens reveled in the poll.
 
-### totalWinningTokens(uint256)
+### totalWinningTokens
 
 ```solidity
 function totalWinningTokens(_pollId uint256)
@@ -113,7 +113,7 @@ _pollId | uint256 | Poll index to check winning tokens for
 
 **Returns:** The uint number of tokens revealed for the winning option.
 
-### userWinningTokens(uint256,address)
+### userWinningTokens
 
 ```solidity
 function userWinningTokens(_pollId uint256, _user address)
@@ -127,7 +127,7 @@ Parameter | Type | Description
 _pollId | uint256 | Poll index to check winning tokens for
 _user | address | Address of user to check winning tokens.
 
-### winningOption(uint256)
+### winningOption
 
 ```solidity
 function winningOption(_pollId uint256)

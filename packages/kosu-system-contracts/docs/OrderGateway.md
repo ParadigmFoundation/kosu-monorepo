@@ -8,16 +8,16 @@ Access SubContract implementation's methods to participate in trades and check o
 
  - [Methods](undefined)
     
-     - [amountRemaining](#amountRemainingaddressbytes)
-     - [arguments](#argumentsaddress)
-     - [constructor](#constructo)
-     - [isValid](#isValidaddressbytes)
-     - [participate](#participateaddressbytes)
+     - [amountRemaining](#amountRemaining)
+     - [arguments](#arguments)
+     - [constructor](#constructor)
+     - [isValid](#isValid)
+     - [participate](#participate)
     
 
 ## Methods
 
-### amountRemaining(address,bytes)
+### amountRemaining
 
 ```solidity
 function amountRemaining(data address, subContract bytes)
@@ -34,7 +34,7 @@ subContract | bytes | Address of contract implementing the SubContract interface
 
 **Returns:** Quantity of available asset for Order encoded in makerData.
 
-### arguments(address)
+### arguments
 
 ```solidity
 function arguments(subContract address)
@@ -59,7 +59,7 @@ constructor()
 
 Creates a new OrderGateway
 
-### isValid(address,bytes)
+### isValid
 
 ```solidity
 function isValid(data address, subContract bytes)
@@ -76,7 +76,7 @@ subContract | bytes | Address of contract implementing the SubContract interface
 
 **Returns:** Boolean representing the validity of makerData
 
-### participate(address,bytes)
+### participate
 
 ```solidity
 function participate(data address, subContract bytes)

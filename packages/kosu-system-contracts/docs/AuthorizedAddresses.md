@@ -8,19 +8,19 @@ Common registry of system contract addresses authrorized to access internal meth
 
  - [Methods](undefined)
     
-     - [authorizeAddress](#authorizeAddressaddress)
-     - [constructor](#constructo)
-     - [isAddressAuthorized](#isAddressAuthorizedaddress)
+     - [authorizeAddress](#authorizeAddress)
+     - [constructor](#constructor)
+     - [isAddressAuthorized](#isAddressAuthorized)
      - [isOwner](#isOwner)
      - [owner](#owner)
      - [renounceOwnership](#renounceOwnership)
-     - [transferOwnership](#transferOwnershipaddress)
-     - [unauthorizeAddress](#unauthorizeAddressaddress)
+     - [transferOwnership](#transferOwnership)
+     - [unauthorizeAddress](#unauthorizeAddress)
     
 
 ## Methods
 
-### authorizeAddress(address)
+### authorizeAddress
 
 ```solidity
 function authorizeAddress(a address)
@@ -42,7 +42,7 @@ constructor()
 
 Constructor initializes with the creator permission set to true.
 
-### isAddressAuthorized(address)
+### isAddressAuthorized
 
 ```solidity
 function isAddressAuthorized(a address)
@@ -58,7 +58,7 @@ a | address | Address to get authorized value.
 
 **Returns:** True if the address is authorized, false otherwise.
 
-### renounceOwnership()
+### renounceOwnership
 
 ```solidity
 function renounceOwnership()
@@ -67,7 +67,7 @@ function renounceOwnership()
 
 Allows the current owner to relinquish control of the contract.
 
-### transferOwnership(address)
+### transferOwnership
 
 ```solidity
 function transferOwnership(newOwner address)
@@ -80,7 +80,7 @@ Parameter | Type | Description
 --- | --- | ---
 newOwner | address | The address to transfer ownership to.
 
-### unauthorizeAddress(address)
+### unauthorizeAddress
 
 ```solidity
 function unauthorizeAddress(a address)

@@ -8,8 +8,8 @@ A shared contract for all Kosu system contracts to trigger event logs through.
 
  - [Methods](undefined)
     
-     - [constructor](#constructo)
-     - [emitEvent](#emitEventstringbytes32string)
+     - [constructor](#constructor)
+     - [emitEvent](#emitEvent)
     
 
 ## Methods
@@ -27,7 +27,7 @@ Parameter | Type | Description
 --- | --- | ---
 auth | ? | AuthorizedAddresses deployed address.
 
-### emitEvent(string,bytes32[],string)
+### emitEvent
 
 ```solidity
 function emitEvent(data string, eventType bytes32[])
