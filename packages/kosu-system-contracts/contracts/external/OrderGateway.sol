@@ -4,6 +4,7 @@ import "@kosu/subcontract-sdk/contracts/SubContract.sol";
 
 /** @title OrderGateway
     @author Freydal
+    @dev Access SubContract implementation's methods to participate in trades and check order status.
 */
 contract OrderGateway {
 

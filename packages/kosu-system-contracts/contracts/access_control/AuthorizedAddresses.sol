@@ -4,6 +4,7 @@ import "openzeppelin-solidity/contracts/ownership/Ownable.sol";
 
 /** @title AuthorizedAddresses
     @author Freydal
+    @dev Common registry of system contract addresses authrorized to access internal methods.
 */
 contract AuthorizedAddresses is Ownable {
 
@@ -17,7 +18,7 @@ contract AuthorizedAddresses is Ownable {
         authorizedAddresses[owner()] = true;
     }
 
-    /** @dev Authorizes the address by setting the mapping value to true
+    /** @dev Authorizes the address by setting the mapping value to true.
         @notice Authorizes the address by setting the mapping value to true
         @param a Address to authorize
     */
@@ -26,7 +27,7 @@ contract AuthorizedAddresses is Ownable {
         authorizedAddresses[a] = true;
     }
 
-    /** @dev Unauthorizes the address by setting the mapping value to false
+    /** @dev Unauthorizes the address by setting the mapping value to false.
         @notice Unauthorizes the address by setting the mapping value to false
         @param a Address to unauthorize
     */
@@ -38,7 +39,7 @@ contract AuthorizedAddresses is Ownable {
     /** @dev Verify if address is authorized by reading contract mapping
         @notice Verify if address is authorized by reading contract mapping
         @param a Address to get authorized value.
-        @return boolean
+        @return True if the address is authorized, false otherwise.
     */
     function isAddressAuthorized(address a) public view returns (bool) {
         return authorizedAddresses[a];
