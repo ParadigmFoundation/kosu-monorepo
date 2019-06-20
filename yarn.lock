@@ -1928,11 +1928,6 @@
     unique-filename "^1.1.1"
     which "^1.3.1"
 
-"@kosu/tsc-config@^0.1.0":
-  version "0.1.0"
-  resolved "https://registry.yarnpkg.com/@kosu/tsc-config/-/tsc-config-0.1.0.tgz#6af2d7bf6709b309132ec716688662909f1a84d0"
-  integrity sha512-K9lTksoWeevSU/mvWqrH1k+kxuyy9HBhsVeLaaA3GEHF0hHHH2ai8Fwe2jhKlIUCikhvs7wyVcIxjZdj7pWH4w==
-
 "@ledgerhq/devices@^4.62.0":
   version "4.62.0"
   resolved "https://registry.yarnpkg.com/@ledgerhq/devices/-/devices-4.62.0.tgz#1c83938a4e6853a1b8bfee4f0fa937452c127b3e"
