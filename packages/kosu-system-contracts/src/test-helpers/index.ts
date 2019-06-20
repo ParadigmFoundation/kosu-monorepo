@@ -2,6 +2,7 @@ import { BigNumber } from "@0x/utils";
 import { Web3Wrapper } from "@0x/web3-wrapper";
 
 import { TestValues } from "./test_values";
+import {decodeKosuEvents} from "../eventDecoder";
 
 export class TestHelpers {
     public web3Wrapper: Web3Wrapper;
@@ -221,6 +222,16 @@ export class TestHelpers {
                 ),
             );
         }
+    }
+
+    public async variablePoll(start: number, end: number): Promise<number> {
+        const base = await this.web3Wrapper.getBlockNumberAsync().then(x => parseInt(x));
+        const creationBlock = base + 1;
+        const commitEnd = creationBlock + start;
+        const revealEnd = commitEnd + end;
+        const result = await this.migratedContracts.voting.createPoll.awaitTransactionSuccessAsync(commitEnd, revealEnd);
+        const { pollId } = decodeKosuEvents(result.logs)[0];
+        return pollId;
     }
 }
 
