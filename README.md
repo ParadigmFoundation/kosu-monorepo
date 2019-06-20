@@ -127,6 +127,8 @@ cd packages/go-kosu
 ./kosud --init --web3 wss://ethnet.zaidan.io/ws/ropsten
 ```
 
+See the [go-kosu](https://github.com/ParadigmFoundation/kosu-monorepo/tree/master/packages/go-kosu) package for more info about executing transactions, queries, and running the testnet.
+
 ## Resources
 
 Development resources (binaries, documentation, and images) are generated with each commit to master after a successful CI build.
