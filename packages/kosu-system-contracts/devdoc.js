@@ -150,11 +150,12 @@ function parseMarkdown(devDoc, methods) {
             {
                 code: {
                     language: "solidity",
-                    content: method.name === "constructor"
-                        ? `constructor(${getInternalSignature(method.params)})`
-                        : `function ${method.name}(${getInternalSignature(method.params)})`,
+                    content:
+                        method.name === "constructor"
+                            ? `constructor(${getInternalSignature(method.params)})`
+                            : `function ${method.name}(${getInternalSignature(method.params)})`,
                 },
-            }
+            },
         );
 
         if (method.params.length > 0) {
@@ -169,10 +170,7 @@ function parseMarkdown(devDoc, methods) {
                     Description: param.desc,
                 });
             }
-            output.push(
-                { h4: "Parameters:" },
-                { table }
-            );
+            output.push({ h4: "Parameters:" }, { table });
         }
 
         if (method.return) {
@@ -187,7 +185,7 @@ function getInternalSignature(params) {
     let c = 0;
     for (const param of params) {
         if (c++ > 0) {
-            s = s.concat(", ")
+            s = s.concat(", ");
         }
 
         // can't show types if they aren't there (not produced by devdoc)
