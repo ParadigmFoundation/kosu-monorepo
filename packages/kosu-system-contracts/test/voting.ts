@@ -16,7 +16,7 @@ describe("Voting", () => {
     };
 
     const shortPoll = async () => {
-        await prepareTokens(accounts[0], testValues.fiveEther);
+        await prepareTokens(accounts[0], TestValues.fiveEther);
         return variablePoll(1, 1);
     };
 
@@ -31,12 +31,12 @@ describe("Voting", () => {
     };
 
     const twoOnePoll = async () => {
-        await prepareTokens(accounts[0], testValues.fiveEther);
+        await prepareTokens(accounts[0], TestValues.fiveEther);
         return variablePoll(2, 1);
     };
 
     const oneTwoPoll = async () => {
-        await prepareTokens(accounts[0], testValues.fiveEther);
+        await prepareTokens(accounts[0], TestValues.fiveEther);
         return variablePoll(1, 2);
     };
 
@@ -53,13 +53,13 @@ describe("Voting", () => {
         kosuToken = contracts.kosuToken;
         treasury = contracts.treasury;
 
-        await clearTreasury(accounts[0]);
-        await clearTreasury(accounts[1]);
+        await testHelpers.clearTreasury(accounts[0]);
+        await testHelpers.clearTreasury(accounts[1]);
     });
 
     afterEach(async () => {
-        await clearTreasury(accounts[0]);
-        await clearTreasury(accounts[1]);
+        await testHelpers.clearTreasury(accounts[0]);
+        await testHelpers.clearTreasury(accounts[1]);
     });
 
     describe("createPoll", () => {
@@ -95,27 +95,27 @@ describe("Voting", () => {
         });
 
         it("should allow a user to commit a vote", async () => {
-            await voting.commitVote.awaitTransactionSuccessAsync(pollId, secret1, testValues.fiveEther).should
+            await voting.commitVote.awaitTransactionSuccessAsync(pollId, secret1, TestValues.fiveEther).should
                 .eventually.be.fulfilled;
         });
 
         it("should not let a vote to be commited after the commit phase", async () => {
-            await skipBlocks(1);
-            await voting.commitVote.awaitTransactionSuccessAsync(pollId, secret1, testValues.fiveEther).should
+            await testHelpers.skipBlocks(1);
+            await voting.commitVote.awaitTransactionSuccessAsync(pollId, secret1, TestValues.fiveEther).should
                 .eventually.be.rejected;
         });
 
         it("should require tokens to vote", async () => {
-            await voting.commitVote.awaitTransactionSuccessAsync(pollId, secret1, testValues.fiveEther, {
+            await voting.commitVote.awaitTransactionSuccessAsync(pollId, secret1, TestValues.fiveEther, {
                 from: accounts[2],
             }).should.eventually.be.rejected;
         });
 
         it("should not let a voter commit twice", async () => {
             const testPoll = await twoOnePoll();
-            await voting.commitVote.awaitTransactionSuccessAsync(testPoll, secret1, testValues.fiveEther).should
+            await voting.commitVote.awaitTransactionSuccessAsync(testPoll, secret1, TestValues.fiveEther).should
                 .eventually.be.fulfilled;
-            await voting.commitVote.awaitTransactionSuccessAsync(testPoll, secret1, testValues.fiveEther).should
+            await voting.commitVote.awaitTransactionSuccessAsync(testPoll, secret1, TestValues.fiveEther).should
                 .eventually.be.rejected;
         });
     });
@@ -127,33 +127,33 @@ describe("Voting", () => {
         });
 
         it("should allow a user to reveal a vote", async () => {
-            await voting.commitVote.awaitTransactionSuccessAsync(pollId, secret1, testValues.fiveEther).should
+            await voting.commitVote.awaitTransactionSuccessAsync(pollId, secret1, TestValues.fiveEther).should
                 .eventually.be.fulfilled;
             await voting.revealVote.awaitTransactionSuccessAsync(pollId, vote1, salt).should.eventually.be.fulfilled;
         });
 
         it("should not allow a user to reveal without commiting", async () => {
-            await skipBlocks(1);
+            await testHelpers.skipBlocks(1);
 
             await voting.revealVote.awaitTransactionSuccessAsync(pollId, vote1, salt).should.eventually.be.rejected;
         });
 
         it("should not allow a change in salt", async () => {
-            await voting.commitVote.awaitTransactionSuccessAsync(pollId, secret1, testValues.fiveEther).should
+            await voting.commitVote.awaitTransactionSuccessAsync(pollId, secret1, TestValues.fiveEther).should
                 .eventually.be.fulfilled;
             await voting.revealVote.awaitTransactionSuccessAsync(pollId, vote1, new BigNumber("24")).should.eventually
                 .be.rejected;
         });
 
         it("should not allow a change in vote", async () => {
-            await voting.commitVote.awaitTransactionSuccessAsync(pollId, secret1, testValues.fiveEther).should
+            await voting.commitVote.awaitTransactionSuccessAsync(pollId, secret1, TestValues.fiveEther).should
                 .eventually.be.fulfilled;
             await voting.revealVote.awaitTransactionSuccessAsync(pollId, vote2, salt).should.eventually.be.rejected;
         });
 
         it("should not allow a voter to reveal twice", async () => {
             const testPoll = await oneTwoPoll();
-            await voting.commitVote.awaitTransactionSuccessAsync(testPoll, secret1, testValues.fiveEther).should
+            await voting.commitVote.awaitTransactionSuccessAsync(testPoll, secret1, TestValues.fiveEther).should
                 .eventually.be.fulfilled;
             await voting.revealVote.awaitTransactionSuccessAsync(testPoll, vote1, salt).should.eventually.be.fulfilled;
             await voting.revealVote.awaitTransactionSuccessAsync(testPoll, vote1, salt).should.eventually.be.rejected;
@@ -162,10 +162,10 @@ describe("Voting", () => {
         it("should not allow a voter to reveal when the tokens are gone", async () => {
             await treasury.withdraw.awaitTransactionSuccessAsync(await treasury.currentBalance.callAsync(accounts[0]));
             const testPoll = await oneTwoPoll();
-            await voting.commitVote.awaitTransactionSuccessAsync(testPoll, secret1, testValues.fiveEther).should
+            await voting.commitVote.awaitTransactionSuccessAsync(testPoll, secret1, TestValues.fiveEther).should
                 .eventually.be.fulfilled;
 
-            await treasury.withdraw.awaitTransactionSuccessAsync(testValues.oneWei);
+            await treasury.withdraw.awaitTransactionSuccessAsync(TestValues.oneWei);
 
             await voting.revealVote.awaitTransactionSuccessAsync(testPoll, vote1, salt).should.eventually.be.rejected;
         });
@@ -173,20 +173,20 @@ describe("Voting", () => {
 
     describe("winningOption", () => {
         it("should report the correct winningOption", async () => {
-            await kosuToken.transfer.awaitTransactionSuccessAsync(accounts[1], testValues.fiveEther);
-            await prepareTokens(accounts[0], testValues.fiveEther);
-            await prepareTokens(accounts[1], testValues.fiveEther);
+            await kosuToken.transfer.awaitTransactionSuccessAsync(accounts[1], TestValues.fiveEther);
+            await prepareTokens(accounts[0], TestValues.fiveEther);
+            await prepareTokens(accounts[1], TestValues.fiveEther);
             const pollId = await variablePoll(2, 2);
-            await voting.commitVote.awaitTransactionSuccessAsync(pollId, secret1, testValues.oneEther).should.eventually
+            await voting.commitVote.awaitTransactionSuccessAsync(pollId, secret1, TestValues.oneEther).should.eventually
                 .be.fulfilled;
-            await voting.commitVote.awaitTransactionSuccessAsync(pollId, secret2, testValues.fiveEther, {
+            await voting.commitVote.awaitTransactionSuccessAsync(pollId, secret2, TestValues.fiveEther, {
                 from: accounts[1],
             }).should.eventually.be.fulfilled;
             await voting.revealVote.awaitTransactionSuccessAsync(pollId, vote1, salt).should.eventually.be.fulfilled;
             await voting.revealVote.awaitTransactionSuccessAsync(pollId, vote2, salt, { from: accounts[1] }).should
                 .eventually.be.fulfilled;
 
-            await skipBlocks(new BigNumber(1));
+            await testHelpers.skipBlocks(new BigNumber(1));
             await voting.winningOption
                 .callAsync(pollId)
                 .then(x => x.toString())
@@ -194,20 +194,20 @@ describe("Voting", () => {
         });
 
         it("should report the first winning option in a tie", async () => {
-            await kosuToken.transfer.awaitTransactionSuccessAsync(accounts[1], testValues.fiveEther);
-            await prepareTokens(accounts[0], testValues.fiveEther);
-            await prepareTokens(accounts[1], testValues.fiveEther);
+            await kosuToken.transfer.awaitTransactionSuccessAsync(accounts[1], TestValues.fiveEther);
+            await prepareTokens(accounts[0], TestValues.fiveEther);
+            await prepareTokens(accounts[1], TestValues.fiveEther);
             const pollId = await variablePoll(2, 2);
-            await voting.commitVote.awaitTransactionSuccessAsync(pollId, secret1, testValues.fiveEther).should
+            await voting.commitVote.awaitTransactionSuccessAsync(pollId, secret1, TestValues.fiveEther).should
                 .eventually.be.fulfilled;
-            await voting.commitVote.awaitTransactionSuccessAsync(pollId, secret2, testValues.fiveEther, {
+            await voting.commitVote.awaitTransactionSuccessAsync(pollId, secret2, TestValues.fiveEther, {
                 from: accounts[1],
             }).should.eventually.be.fulfilled;
             await voting.revealVote.awaitTransactionSuccessAsync(pollId, vote2, salt, { from: accounts[1] }).should
                 .eventually.be.fulfilled;
             await voting.revealVote.awaitTransactionSuccessAsync(pollId, vote1, salt).should.eventually.be.fulfilled;
 
-            await skipBlocks(new BigNumber(1));
+            await testHelpers.skipBlocks(new BigNumber(1));
             await voting.winningOption
                 .callAsync(pollId)
                 .then(x => x.toString())
@@ -217,43 +217,43 @@ describe("Voting", () => {
 
     describe("totalWinningTokens", () => {
         it("should report the correct number of total tokens contributed", async () => {
-            await kosuToken.transfer.awaitTransactionSuccessAsync(accounts[1], testValues.fiveEther);
-            await prepareTokens(accounts[0], testValues.fiveEther);
-            await prepareTokens(accounts[1], testValues.fiveEther);
+            await kosuToken.transfer.awaitTransactionSuccessAsync(accounts[1], TestValues.fiveEther);
+            await prepareTokens(accounts[0], TestValues.fiveEther);
+            await prepareTokens(accounts[1], TestValues.fiveEther);
             const pollId = await variablePoll(2, 2);
-            await voting.commitVote.awaitTransactionSuccessAsync(pollId, secret1, testValues.oneEther).should.eventually
+            await voting.commitVote.awaitTransactionSuccessAsync(pollId, secret1, TestValues.oneEther).should.eventually
                 .be.fulfilled;
-            await voting.commitVote.awaitTransactionSuccessAsync(pollId, secret1, testValues.fiveEther, {
+            await voting.commitVote.awaitTransactionSuccessAsync(pollId, secret1, TestValues.fiveEther, {
                 from: accounts[1],
             }).should.eventually.be.fulfilled;
             await voting.revealVote.awaitTransactionSuccessAsync(pollId, vote1, salt).should.eventually.be.fulfilled;
             await voting.revealVote.awaitTransactionSuccessAsync(pollId, vote1, salt, { from: accounts[1] }).should
                 .eventually.be.fulfilled;
 
-            await skipBlocks(new BigNumber(1));
+            await testHelpers.skipBlocks(new BigNumber(1));
             await voting.totalWinningTokens
                 .callAsync(pollId)
                 .then(x => x.toString())
-                .should.eventually.eq(testValues.sixEther.toString());
+                .should.eventually.eq(TestValues.sixEther.toString());
         });
     });
 
     describe("userWinningTokens", () => {
         it("should report 0 when not a winning vote", async () => {
-            await kosuToken.transfer.awaitTransactionSuccessAsync(accounts[1], testValues.fiveEther);
-            await prepareTokens(accounts[0], testValues.fiveEther);
-            await prepareTokens(accounts[1], testValues.fiveEther);
+            await kosuToken.transfer.awaitTransactionSuccessAsync(accounts[1], TestValues.fiveEther);
+            await prepareTokens(accounts[0], TestValues.fiveEther);
+            await prepareTokens(accounts[1], TestValues.fiveEther);
             const pollId = await variablePoll(2, 2);
-            await voting.commitVote.awaitTransactionSuccessAsync(pollId, secret1, testValues.oneEther).should.eventually
+            await voting.commitVote.awaitTransactionSuccessAsync(pollId, secret1, TestValues.oneEther).should.eventually
                 .be.fulfilled;
-            await voting.commitVote.awaitTransactionSuccessAsync(pollId, secret2, testValues.fiveEther, {
+            await voting.commitVote.awaitTransactionSuccessAsync(pollId, secret2, TestValues.fiveEther, {
                 from: accounts[1],
             }).should.eventually.be.fulfilled;
             await voting.revealVote.awaitTransactionSuccessAsync(pollId, vote1, salt).should.eventually.be.fulfilled;
             await voting.revealVote.awaitTransactionSuccessAsync(pollId, vote2, salt, { from: accounts[1] }).should
                 .eventually.be.fulfilled;
 
-            await skipBlocks(new BigNumber(1));
+            await testHelpers.skipBlocks(new BigNumber(1));
             await voting.userWinningTokens
                 .callAsync(pollId, accounts[0])
                 .then(x => x.toString())
@@ -261,24 +261,24 @@ describe("Voting", () => {
         });
 
         it("should report the correct number of tokens", async () => {
-            await kosuToken.transfer.awaitTransactionSuccessAsync(accounts[1], testValues.fiveEther);
-            await prepareTokens(accounts[0], testValues.fiveEther);
-            await prepareTokens(accounts[1], testValues.fiveEther);
+            await kosuToken.transfer.awaitTransactionSuccessAsync(accounts[1], TestValues.fiveEther);
+            await prepareTokens(accounts[0], TestValues.fiveEther);
+            await prepareTokens(accounts[1], TestValues.fiveEther);
             const pollId = await variablePoll(2, 2);
-            await voting.commitVote.awaitTransactionSuccessAsync(pollId, secret1, testValues.oneEther).should.eventually
+            await voting.commitVote.awaitTransactionSuccessAsync(pollId, secret1, TestValues.oneEther).should.eventually
                 .be.fulfilled;
-            await voting.commitVote.awaitTransactionSuccessAsync(pollId, secret2, testValues.fiveEther, {
+            await voting.commitVote.awaitTransactionSuccessAsync(pollId, secret2, TestValues.fiveEther, {
                 from: accounts[1],
             }).should.eventually.be.fulfilled;
             await voting.revealVote.awaitTransactionSuccessAsync(pollId, vote1, salt).should.eventually.be.fulfilled;
             await voting.revealVote.awaitTransactionSuccessAsync(pollId, vote2, salt, { from: accounts[1] }).should
                 .eventually.be.fulfilled;
 
-            await skipBlocks(new BigNumber(1));
+            await testHelpers.skipBlocks(new BigNumber(1));
             await voting.userWinningTokens
                 .callAsync(pollId, accounts[1])
                 .then(x => x.toString())
-                .should.eventually.eq(testValues.fiveEther.toString());
+                .should.eventually.eq(TestValues.fiveEther.toString());
         });
     });
 });

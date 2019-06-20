@@ -10,6 +10,10 @@ interface MigratedContracts {
     posterRegistryImpl: PosterRegistryContract;
 }
 
+interface MigratedTestContracts extends MigratedContracts {
+    basicTradeSubContract?: BasicTradeSubContractContract;
+}
+
 interface Listing {
     status: number;
     stakedBalance: BigNumber;
