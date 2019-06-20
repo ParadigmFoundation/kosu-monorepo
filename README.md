@@ -55,7 +55,7 @@ Client/server libraries for interacting with the Kosu network and contract syste
 
 ## Contributing
 
-We strongly encourage all contributions! Read our [contribution guidelines](https://github.com/ParadigmFoundation/management/blob/master/development_guidelines.md) and also feel free to reach out. To report bugs within this package, please create an issue in this repository.
+We strongly encourage all contributions! Read our [contribution guidelines](./ContributionGuidelines) and also feel free to reach out. To report bugs within this package, please create an issue in this repository.
 
 ## Install Instructions 
 
