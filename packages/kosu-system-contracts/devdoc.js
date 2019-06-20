@@ -35,6 +35,7 @@ function main(_path, _output) {
         const methods = parseMethods(devDoc);
         const output = parseMarkdown(devDoc, methods);
 
+        console.log(JSON.stringify(output, null, 2));
         const mdOutputArr = [fileName, json2md(output)];
         outputsArr.push(mdOutputArr);
     }
@@ -141,10 +142,10 @@ function parseMarkdown(devDoc, methods) {
             continue;
         }
 
-        output.push(
-            {
-                h3: method.name,
-            },
+        const contentUl = [];
+        contentUl.push("**Signature:**");
+        contentUl.push({
+            p: // [
             {
                 code: {
                     language: "solidity",
@@ -152,8 +153,15 @@ function parseMarkdown(devDoc, methods) {
                         ? `constructor(${getInternalSignature(method.params)})`
                         : `function ${method.name}(${getInternalSignature(method.params)})`,
                 },
+            }
+            // ],
+        });
+        contentUl.push("**Description:**", { p: method.details });
+
+        output.push(
+            {
+                h3: method.name,
             },
-            { p: method.details },
         );
 
         if (method.params.length > 0) {
@@ -168,12 +176,13 @@ function parseMarkdown(devDoc, methods) {
                     Description: param.desc,
                 });
             }
-            output.push({ table });
+            contentUl.push("**Parameters:**", { ul: [{ table }] });
         }
 
         if (method.return) {
-            output.push({ p: `**Returns:** ${method.return}` });
+            contentUl.push({ p: `**Returns:** ${method.return}` });
         }
+        output.push({ ul: contentUl });
     }
     return output;
 }
