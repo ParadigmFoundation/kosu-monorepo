@@ -18,7 +18,7 @@ steps:
 # BUILD DOCS
 # ==========
 
-- name: node:10.15.1
+- name: gcr.io/kosu-io/node-ci:latest
   entrypoint: yarn
   args: ["docs"]
 
@@ -91,7 +91,7 @@ steps:
   args: [
     "lerna", 
     "run", 
-    "--scope @kosu/documentation", 
+    "--scope", "@kosu/documentation", 
     "compile",
   ]
 
