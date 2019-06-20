@@ -6,6 +6,8 @@
 
 This monorepo contains the packages that implement the Kosu protocol, alongside supporting packages and developer tooling.
 
+## Contents
+
 - [Packages](#packages)
     - [Contract packages](#contract-packages)
     - [Library packages](#library-packages)
