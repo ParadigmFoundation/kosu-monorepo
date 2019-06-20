@@ -5,6 +5,7 @@ import "../base/Authorizable.sol";
 
 /** @title PosterRegistryProxy
     @author Freydal
+    @dev Proxy contract for interacting with the PosterRegisty implementation contract.
 */
 contract PosterRegistryProxy is Authorizable {
 
