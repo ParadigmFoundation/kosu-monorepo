@@ -35,7 +35,6 @@ function main(_path, _output) {
         const methods = parseMethods(devDoc);
         const output = parseMarkdown(devDoc, methods);
 
-        console.log(JSON.stringify(output, null, 2));
         const mdOutputArr = [fileName, json2md(output)];
         outputsArr.push(mdOutputArr);
     }
@@ -157,7 +156,6 @@ function parseMarkdown(devDoc, methods) {
                 },
             }
         );
-        contentUl.push("**Description:**", { p: method.details });
 
         output.push(
             {
@@ -186,7 +184,6 @@ function parseMarkdown(devDoc, methods) {
         if (method.return) {
             output.push({ h4: "Returns:" }, { p: method.return });
         }
-        output.push({ ul: contentUl });
     }
     return output;
 }
@@ -203,12 +200,4 @@ function getInternalSignature(params) {
         s = s.concat(`${param.name}${param.type ? ` ${param.type}` : ""}`);
     }
     return s;
-}
-
-function signatureToHyperLink(signature) {
-    signature = signature.replace(/\(/g, "");
-    signature = signature.replace(/\[/g, "");
-    signature = signature.replace(/\]/g, "");
-    signature = signature.replace(/,/g, "");
-    return `#${signature.slice(0, -1)}`;
 }
