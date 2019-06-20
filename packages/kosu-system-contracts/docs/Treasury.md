@@ -5,19 +5,19 @@ The Kosu Treasury is the central balance management contract with the Kosu syste
 ## Contents
 
 -   [Methods](undefined)
-    -   [adjustBalance](#adjustBalance)
+    -   [adjustBalance](#adjustbalance)
     -   [award](#award)
-    -   [burnFrom](#burnFrom)
-    -   [claimTokens](#claimTokens)
+    -   [burnFrom](#burnfrom)
+    -   [claimTokens](#claimtokens)
     -   [confiscate](#confiscate)
     -   [constructor](#constructor)
-    -   [contractDeposit](#contractDeposit)
-    -   [contractWithdraw](#contractWithdraw)
-    -   [currentBalance](#currentBalance)
+    -   [contractDeposit](#contractdeposit)
+    -   [contractWithdraw](#contractwithdraw)
+    -   [currentBalance](#currentbalance)
     -   [deposit](#deposit)
-    -   [releaseTokens](#releaseTokens)
-    -   [systemBalance](#systemBalance)
-    -   [updateBalance](#updateBalance)
+    -   [releaseTokens](#releasetokens)
+    -   [systemBalance](#systembalance)
+    -   [updateBalance](#updatebalance)
     -   [withdraw](#withdraw)
 
 ## Methods

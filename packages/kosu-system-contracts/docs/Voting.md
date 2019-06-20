@@ -5,14 +5,14 @@ Voting manages polls and votes on governance matters within the Kosu system.
 ## Contents
 
 -   [Methods](undefined)
-    -   [commitVote](#commitVote)
+    -   [commitVote](#commitvote)
     -   [constructor](#constructor)
-    -   [createPoll](#createPoll)
-    -   [revealVote](#revealVote)
-    -   [totalRevealedTokens](#totalRevealedTokens)
-    -   [totalWinningTokens](#totalWinningTokens)
-    -   [userWinningTokens](#userWinningTokens)
-    -   [winningOption](#winningOption)
+    -   [createPoll](#createpoll)
+    -   [revealVote](#revealvote)
+    -   [totalRevealedTokens](#totalrevealedtokens)
+    -   [totalWinningTokens](#totalwinningtokens)
+    -   [userWinningTokens](#userwinningtokens)
+    -   [winningOption](#winningoption)
 
 ## Methods
 
