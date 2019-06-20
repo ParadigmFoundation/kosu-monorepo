@@ -28,6 +28,10 @@
 
 -   [AuthorizedAddressesOwnershipTransferredEventArgs](interfaces/authorizedaddressesownershiptransferredeventargs.md)
 -   [EventEmitterKosuEventEventArgs](interfaces/eventemitterkosueventeventargs.md)
+-   [KosuContractArtifact](interfaces/kosucontractartifact.md)
+-   [KosuContractVersionData](interfaces/kosucontractversiondata.md)
+-   [KosuDevDocOutput](interfaces/kosudevdocoutput.md)
+-   [KosuStandardContractOutput](interfaces/kosustandardcontractoutput.md)
 -   [KosuTokenApprovalEventArgs](interfaces/kosutokenapprovaleventargs.md)
 -   [KosuTokenTransferEventArgs](interfaces/kosutokentransfereventargs.md)
 
@@ -275,7 +279,7 @@ _Defined in [src/listingStringifier.ts:1](url)_
 
 ▸ **migrations**(`provider`: `Web3ProviderEngine`, `txDefaults`: `__type`, `options`: object): _`Promise<MigratedContracts>`_
 
-_Defined in [src/migrations.ts:21](url)_
+_Defined in [src/migrations.ts:22](url)_
 
 Migrate contracts to the chain represented by the configured provider.
 
@@ -305,61 +309,61 @@ _Defined in [src/artifacts.ts:18](url)_
 
 ### AuthorizedAddresses
 
-● **AuthorizedAddresses**: _`ContractArtifact`_ = AuthorizedAddresses as ContractArtifact
+● **AuthorizedAddresses**: _[KosuContractArtifact](interfaces/kosucontractartifact.md)_ = AuthorizedAddresses as KosuContractArtifact
 
 _Defined in [src/artifacts.ts:19](url)_
 
 ### BasicTradeSubContract
 
-● **BasicTradeSubContract**: _`ContractArtifact`_ = BasicTradeSubContract as ContractArtifact
+● **BasicTradeSubContract**: _[KosuContractArtifact](interfaces/kosucontractartifact.md)_ = BasicTradeSubContract as KosuContractArtifact
 
 _Defined in [src/artifacts.ts:28](url)_
 
 ### EventEmitter
 
-● **EventEmitter**: _`ContractArtifact`_ = EventEmitter as ContractArtifact
+● **EventEmitter**: _[KosuContractArtifact](interfaces/kosucontractartifact.md)_ = EventEmitter as KosuContractArtifact
 
 _Defined in [src/artifacts.ts:20](url)_
 
 ### KosuToken
 
-● **KosuToken**: _`ContractArtifact`_ = KosuToken as ContractArtifact
+● **KosuToken**: _[KosuContractArtifact](interfaces/kosucontractartifact.md)_ = KosuToken as KosuContractArtifact
 
 _Defined in [src/artifacts.ts:23](url)_
 
 ### OrderGateway
 
-● **OrderGateway**: _`ContractArtifact`_ = OrderGateway as ContractArtifact
+● **OrderGateway**: _[KosuContractArtifact](interfaces/kosucontractartifact.md)_ = OrderGateway as KosuContractArtifact
 
 _Defined in [src/artifacts.ts:21](url)_
 
 ### PosterRegistry
 
-● **PosterRegistry**: _`ContractArtifact`_ = PosterRegistry as ContractArtifact
+● **PosterRegistry**: _[KosuContractArtifact](interfaces/kosucontractartifact.md)_ = PosterRegistry as KosuContractArtifact
 
 _Defined in [src/artifacts.ts:24](url)_
 
 ### PosterRegistryProxy
 
-● **PosterRegistryProxy**: _`ContractArtifact`_ = PosterRegistryProxy as ContractArtifact
+● **PosterRegistryProxy**: _[KosuContractArtifact](interfaces/kosucontractartifact.md)_ = PosterRegistryProxy as KosuContractArtifact
 
 _Defined in [src/artifacts.ts:22](url)_
 
 ### Treasury
 
-● **Treasury**: _`ContractArtifact`_ = Treasury as ContractArtifact
+● **Treasury**: _[KosuContractArtifact](interfaces/kosucontractartifact.md)_ = Treasury as KosuContractArtifact
 
 _Defined in [src/artifacts.ts:25](url)_
 
 ### ValidatorRegistry
 
-● **ValidatorRegistry**: _`ContractArtifact`_ = ValidatorRegistry as ContractArtifact
+● **ValidatorRegistry**: _[KosuContractArtifact](interfaces/kosucontractartifact.md)_ = ValidatorRegistry as KosuContractArtifact
 
 _Defined in [src/artifacts.ts:26](url)_
 
 ### Voting
 
-● **Voting**: _`ContractArtifact`_ = Voting as ContractArtifact
+● **Voting**: _[KosuContractArtifact](interfaces/kosucontractartifact.md)_ = Voting as KosuContractArtifact
 
 _Defined in [src/artifacts.ts:27](url)_
 

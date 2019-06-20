@@ -19,6 +19,7 @@
             "*": {
                 "*": [
                     "abi",
+                    "devdoc",
                     "evm.bytecode.object",
                     "evm.bytecode.sourceMap",
                     "evm.deployedBytecode.object",

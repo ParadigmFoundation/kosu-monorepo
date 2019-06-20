@@ -1,4 +1,5 @@
 import { Web3Wrapper } from "@0x/web3-wrapper";
+import { ContractArtifact } from "ethereum-types";
 import Web3ProviderEngine from "web3-provider-engine";
 import { BN, toWei } from "web3-utils";
 
@@ -60,43 +61,43 @@ export async function migrations(
         const config = validatorValues[netId] || validatorValues.default;
 
         const orderGateway = await OrderGatewayContract.deployFrom0xArtifactAsync(
-            artifacts.OrderGateway,
+            artifacts.OrderGateway as ContractArtifact,
             provider,
             txDefaults,
         );
         const authorizedAddresses = await AuthorizedAddressesContract.deployFrom0xArtifactAsync(
-            artifacts.AuthorizedAddresses,
+            artifacts.AuthorizedAddresses as ContractArtifact,
             provider,
             txDefaults,
         );
         const eventEmitter = await EventEmitterContract.deployFrom0xArtifactAsync(
-            artifacts.EventEmitter,
+            artifacts.EventEmitter as ContractArtifact,
             provider,
             txDefaults,
             authorizedAddresses.address,
         );
         const kosuToken = await KosuTokenContract.deployFrom0xArtifactAsync(
-            artifacts.KosuToken,
+            artifacts.KosuToken as ContractArtifact,
             provider,
             txDefaults,
             authorizedAddresses.address,
         );
         const treasury = await TreasuryContract.deployFrom0xArtifactAsync(
-            artifacts.Treasury,
+            artifacts.Treasury as ContractArtifact,
             provider,
             txDefaults,
             kosuToken.address,
             authorizedAddresses.address,
         );
         const voting = await VotingContract.deployFrom0xArtifactAsync(
-            artifacts.Voting,
+            artifacts.Voting as ContractArtifact,
             provider,
             txDefaults,
             treasury.address,
             eventEmitter.address,
         );
         const posterRegistryImpl = await PosterRegistryContract.deployFrom0xArtifactAsync(
-            artifacts.PosterRegistry,
+            artifacts.PosterRegistry as ContractArtifact,
             provider,
             txDefaults,
             treasury.address,
@@ -104,14 +105,14 @@ export async function migrations(
             authorizedAddresses.address,
         );
         const posterRegistryProxy = await PosterRegistryProxyContract.deployFrom0xArtifactAsync(
-            artifacts.PosterRegistryProxy,
+            artifacts.PosterRegistryProxy as ContractArtifact,
             provider,
             txDefaults,
             posterRegistryImpl.address,
             authorizedAddresses.address,
         );
         const validatorRegistry = await ValidatorRegistryContract.deployFrom0xArtifactAsync(
-            artifacts.ValidatorRegistry,
+            artifacts.ValidatorRegistry as ContractArtifact,
             provider,
             txDefaults,
             treasury.address,
