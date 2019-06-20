@@ -12,4 +12,4 @@ All contributions to the kosu-monorepo are welcome and greatly appreciated! This
 Before removing the `[WIP]` tag and submitting a PR for review:
 
 -   make sure it passes our linter checks (`yarn lint`) and is properly formatted with `yarn prettier`.
--   
+-   a
