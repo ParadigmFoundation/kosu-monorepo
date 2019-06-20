@@ -74,38 +74,13 @@ brew tap ethereum/ethereum
 brew install ethereum
 ```
 
-2. In order to install go, open `.bash_profile`
-
-```
-vim .bash_profile
-```
-
-Insert the following lines at the bottom of the file and save:
-
-```
-export GOPATH="${HOME}/.go"
-export GOROOT="$(brew --prefix golang)/libexec"
-export PATH="$PATH:${GOPATH}/bin:${GOROOT}/bin"
-test -d "${GOPATH}" || mkdir "${GOPATH}"
-test -d "${GOPATH}/src/github.com" || mkdir -p "${GOPATH}/src/github.com"
-```
-
-Once the file is saved, run:
-
-```
-source .bash_profile
-```
-```
-brew install go
-```
-
-3. Clone the kosu-monorepo
+2. Clone the kosu-monorepo
 
 ```
 git clone git@github.com:paradigmFoundation/kosu-monorepo
 ```
 
-4. Build from source with yarn:
+3. Build from source with yarn:
 
 ```
 cd kosu-monorepo
