@@ -57,15 +57,15 @@ Client/server libraries for interacting with the Kosu network and contract syste
 
 We strongly encourage all contributions! Read our [contribution guidelines](./ContributionGuidelines) and also feel free to reach out. To report bugs within this package, please create an issue in this repository.
 
-## Install Instructions 
+## Install Instructions
 
 ### Prerequisites
 
-First, make sure you have the following software installed: 
+First, make sure you have the following software installed:
 
 -   [node.js](https://nodejs.org/en/download/) (`v10.0+`)
 -   [yarn](https://yarnpkg.com/lang/en/docs/install/#mac-stable) (`v1.15+`)
--   [jq](https://stedolan.github.io/jq/download/) (`v1.6+`) 
+-   [jq](https://stedolan.github.io/jq/download/) (`v1.6+`)
 -   [golang](https://golang.org/dl/) (`v1.12+`)
 -   [go-ethereum](https://github.com/ethereum/go-ethereum/wiki/Building-Ethereum) (`v1.12+`)
 
