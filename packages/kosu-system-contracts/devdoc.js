@@ -157,12 +157,6 @@ function parseMarkdown(devDoc, methods) {
             }
         );
 
-        output.push(
-            {
-                h3: method.name,
-            },
-        );
-
         if (method.params.length > 0) {
             table = {
                 headers: ["Parameter", "Type", "Description"],
@@ -170,8 +164,8 @@ function parseMarkdown(devDoc, methods) {
             };
             for (const param of method.params) {
                 table.rows.push({
-                    Parameter: param.name,
-                    Type: param.type || "?",
+                    Parameter: `\`${param.name}\``,
+                    Type: `\`${param.type}\`` || "?",
                     Description: param.desc,
                 });
             }
