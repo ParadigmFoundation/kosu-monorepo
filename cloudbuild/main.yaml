@@ -99,7 +99,8 @@ steps:
 - name: gcr.io/cloud-builders/gsutil
   args: [
     "-m", "rsync", "-r", "-c", "-d",
-    "./docs/.vuepress/dist", "gs://docs.kosu.io",
+    "./packages/kosu-docs/docs/.vuepress/dist",
+    "gs://docs.kosu.io",
   ]
 
 options: 
