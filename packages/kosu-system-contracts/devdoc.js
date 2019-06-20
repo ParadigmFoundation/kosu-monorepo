@@ -35,6 +35,7 @@ function main(_path, _output) {
         const methods = parseMethods(devDoc);
         const output = parseMarkdown(devDoc, methods);
 
+        console.log(JSON.stringify(output, null, 2));
         const mdOutputArr = [fileName, json2md(output)];
         outputsArr.push(mdOutputArr);
     }
@@ -154,8 +155,14 @@ function parseMarkdown(devDoc, methods) {
                         ? `constructor(${getInternalSignature(method.params)})`
                         : `function ${method.name}(${getInternalSignature(method.params)})`,
                 },
-            },
+            }
+        );
+        contentUl.push("**Description:**", { p: method.details });
 
+        output.push(
+            {
+                h3: method.name,
+            },
         );
 
         if (method.params.length > 0) {
@@ -179,6 +186,7 @@ function parseMarkdown(devDoc, methods) {
         if (method.return) {
             output.push({ h4: "Returns:" }, { p: method.return });
         }
+        output.push({ ul: contentUl });
     }
     return output;
 }
