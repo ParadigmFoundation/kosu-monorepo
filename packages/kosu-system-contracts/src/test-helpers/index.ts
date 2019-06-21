@@ -1,6 +1,6 @@
 import { BigNumber } from "@0x/utils";
-import {SupportedProvider, Web3Wrapper} from "@0x/web3-wrapper";
-import {ContractAbi} from "ethereum-types";
+import { SupportedProvider, Web3Wrapper } from "@0x/web3-wrapper";
+import { ContractAbi } from "ethereum-types";
 
 import { decodeKosuEvents, DeployedAddresses } from "..";
 import * as Artifacts from "../artifacts";
@@ -33,8 +33,9 @@ export class TestHelpers {
             const contracts = {};
 
             Object.keys(DeployedAddresses[config.networkId]).forEach(contractName => {
-                contracts[contractName.charAt(0).toLowerCase() + contractName.slice(1)] =
-                    new Wrappers[`${contractName}Contract`](Artifacts[contractName], this.web3Wrapper.getProvider());
+                contracts[contractName.charAt(0).toLowerCase() + contractName.slice(1)] = new Wrappers[
+                    `${contractName}Contract`
+                ](Artifacts[contractName], this.web3Wrapper.getProvider());
             });
             this.migratedContracts = contracts as MigratedTestContracts;
         }
