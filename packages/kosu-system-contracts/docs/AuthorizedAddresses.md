@@ -5,14 +5,14 @@ Common registry of system contract addresses authrorized to access internal meth
 ## Contents
 
 -   [Methods](undefined)
-    -   [authorizeAddress](#authorizeAddress)
+    -   [authorizeAddress](#authorizeaddress)
     -   [constructor](#constructor)
-    -   [isAddressAuthorized](#isAddressAuthorized)
-    -   [isOwner](#isOwner)
+    -   [isAddressAuthorized](#isaddressauthorized)
+    -   [isOwner](#isowner)
     -   [owner](#owner)
-    -   [renounceOwnership](#renounceOwnership)
-    -   [transferOwnership](#transferOwnership)
-    -   [unauthorizeAddress](#unauthorizeAddress)
+    -   [renounceOwnership](#renounceownership)
+    -   [transferOwnership](#transferownership)
+    -   [unauthorizeAddress](#unauthorizeaddress)
 
 ## Methods
 
