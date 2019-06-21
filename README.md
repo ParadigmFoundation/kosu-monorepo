@@ -13,10 +13,17 @@ This monorepo contains the packages that implement the Kosu protocol, alongside 
     -   [Library packages](#library-packages)
     -   [Client packages](#client-packages)
     -   [Utility/development packages](#utility-development-packages)
--   [Resources](#resources)
-    -   [Documentation](#documentation)
-    -   [Docker images](#docker-images)
-    -   [Binaries](#binaries)
+-   [Install instructions](#install-instructions)
+    -   [Prerequisites](#prerequisites)
+    -   [Homebrew](#homebrew)
+    -   [Clone kosu-monorepo](#clone-kosu-monorepo)
+    -   [Build packages](#build-packages)
+    -   [Run validator node](#run-a-validator-node)
+-   [Documentation](#documentation)
+-   [Docker images](#docker-images)
+-   [Binaries](#binaries)
+-   [Contributing](#contributing)
+-   [Issues](#issues)
 -   [License](#license)
 
 ## Packages
@@ -53,39 +60,151 @@ Client/server libraries for interacting with the Kosu network and contract syste
 | [`@kosu/tsc-config`](./packages/tsc-config)       | ![npm](https://img.shields.io/npm/v/@kosu/tsc-config.svg)    | TypeScript compiler base configuration for Kosu TypeScript projects. |
 | [`@kosu/web-helpers`](./packages/web-helpers)     | ![npm](https://img.shields.io/npm/v/@kosu/web-helpers.svg)   | Simple web interface for interacting with the Kosu contract system.  |
 
-## Resources
+## Install Instructions
 
-Development resources (binaries, documentation, and images) are generated with each commit to master after a successful CI build.
+### Prerequisites
+
+In order to build the full monorepo, the following is required:
+
+-   [Node.js](https://nodejs.org/en/download/) (`^10`)
+-   [Yarn](https://yarnpkg.com/lang/en/docs/install/#mac-stable) (`^1.15`)
+-   [jq](https://stedolan.github.io/jq/download/) (`^1.6`)
+-   [golang](https://golang.org/dl/) (`^1.12`)
+-   [go-ethereum](https://github.com/ethereum/go-ethereum/wiki/Building-Ethereum) (`^1.8`)
+    -   Only the `abigen` binary is required to build the monorepo.
+
+### Homebrew
+
+MacOS users can install most required packages with [`Homebrew`](https://brew.sh/) package manager.
+
+For other operating systems, see the official install instructions for each required package (linked above).
+
+#### Yarn
+
+This will also install Node.js if it is not already installed.
+
+```
+brew install yarn
+```
+
+#### Geth tools
+
+To install the `go-ethereum` suite with `brew`:
+
+```
+brew tap ethereum/ethereum
+brew install ethereum
+```
+
+#### Jq
+
+To install `jq` (JSON parsing binary):
+
+```
+brew install jq
+```
+
+### Clone kosu-monorepo
+
+Clone the repository via SSH:
+
+```
+git clone git@github.com:ParadigmFoundation/kosu-monorepo
+```
+
+Or via HTTP:
+
+```
+git clone https://github.com/ParadigmFoundation/kosu-monorepo
+```
+
+### Build packages
+
+Install dependencies:
+
+```
+yarn
+```
+
+To build all packages:
+
+```
+yarn build
+```
+
+### Run a validator node
+
+After building, `go-kosu` binaries can be found at `packages/go-kosu` for your OS and architecture.
+
+To start a single-node Kosu development network as a validator, and initialize a peg-zone with the Kosu Ropsten contract system:
+
+```
+./kosud --init --web3 wss://ethnet.zaidan.io/ws/ropsten
+```
+
+The command-line interface will also be built (see `kosu-cli help` for all commands).
+
+```
+./kosu-cli query round
+```
+
+See the [`go-kosu`](https://github.com/ParadigmFoundation/kosu-monorepo/tree/master/packages/go-kosu) package for more info about executing transactions, queries, and running a testnet with `docker-compose`.
 
 ## Documentation
 
-Generated documentation is published for the following packages with each commit (`gsutil` required for access):
+Generated documentation is published for the following packages with each commit, and published to [`docs.kosu.io`](https://docs.kosu.io)`:
 
--   `@kosu/kosu.js`: `gs://kosu-docs/kosu.js/`
--   `@kosu/kosu-system-contracts`: `gs://kosu-docs/kosu-system-contracts/`
+-   [`@kosu/kosu.js`](https://docs.kosu.io/kosu.js): TypeScript library for interacting with the Kosu contract system and network.
+-   [`@kosu/system-contracts`](https://docs.kosu.io/kosu-system-contracts): The core Kosu system smart-contracts in Solidity, and TypeScript test suite.
 
 _Documentation is also checked in to each package and viewable on GitHub._
 
-### Docker images
+## Docker images
 
-Various development images used for Kosu CI/CD and development are publicly available on GCR.
+Various development images used for Kosu CI/CD and development are publicly available on GCR (download with `docker pull`), and built from each `master` commit.
 
--   `gcr.io/kosu-io/node-ci:latest`: A custom Node.js (`lts`) image with additional binaries used in building Kosu packages.
--   `gcr.io/kosu-io/go-kosu-ci:latest`: A custom golang (`1.12`) image with Tendermint pre-installed, used as the CI image for `go-kosu`.
--   `gcr.io/kosu-io/kosu-geth:latest`: Geth configured as PoA private network used for a Kosu [private test-network,](https://github.com/ParadigmFoundation/kosu-monorepo/blob/master/packages/kosu-system-contracts/README.md)
+### `kosu-io/node-ci`
 
-### Binaries
+A custom Node.js (`lts`) image with additional binaries used to assist in building/testing Kosu packages. Drop-in replacement for `node:lts` image.
 
-Binaries for `go-kosu` are available (darwin/linux):
+-   **GCR URI:** `gcr.io/kosu-io/node-ci:latest`
 
--   `kosud`: Kosu network reference implementation.
-    -   URL: [`https://storage.googleapis.com/kosu-binaries/go-kosu/kosud`](https://storage.googleapis.com/kosu-binaries/go-kosu/kosud)
+### `kosu-io/go-kosu-ci`
 
-<nbsp>
+A custom golang (`1.12`) image with Tendermint and other binaries pre-installed, used as the CI image for `go-kosu` (Tendermint is compiled into `kosud` and not needed for production builds, but used in testing).
 
--   `kosu-cli`: Command-line interface for `kosud`.
-    -   URL: [`https://storage.googleapis.com/kosu-binaries/go-kosu/kosu-cli`](https://storage.googleapis.com/kosu-binaries/go-kosu/kosu-cli)
+-   **GCR URI:** `gcr.io/kosu-io/go-kosu-ci:latest`
 
-# License
+### `kosu-io/kosu-geth`
+
+Contains `geth` with PoA consensus in a [single-node private network](https://github.com/ParadigmFoundation/kosu-monorepo/blob/master/packages/kosu-geth/) configuration used for testing Kosu [system contracts.](https://github.com/ParadigmFoundation/kosu-monorepo/blob/master/packages/kosu-system-contracts/README.md) Note that contracts are not pre-migrated and must be deployed with [`@kosu/system-contracts`](https://github.com/ParadigmFoundation/kosu-monorepo/blob/master/packages/kosu-system-contracts/) (see scripts).
+
+-   **GCR URI:** `gcr.io/kosu-io/kosu-geth:latest`
+
+## Binaries
+
+Pre-built binaries for `go-kosu` are available (per-commit CD builds are currently Linux/x86_64 only, build locally for other targets):
+
+### `kosud`
+
+Kosu network client reference implementation, built on Tendermint consensus.
+
+-   URL: [`https://storage.googleapis.com/kosu-binaries/go-kosu/kosud`](https://storage.googleapis.com/kosu-binaries/go-kosu/kosud)
+
+### `kosu-cli`
+
+Command-line interface for `kosud`.
+
+-   URL: [`https://storage.googleapis.com/kosu-binaries/go-kosu/kosu-cli`](https://storage.googleapis.com/kosu-binaries/go-kosu/kosu-cli)
+
+## Contributing
+
+We strongly encourage all contributions! Read our [contribution guidelines](./ContributionGuidelines) and feel free to reach out with any questions.
+
+## Issues
+
+To report bugs within a specific Kosu package, please create an issue in this repository (template will auto-populate).
+
+## License
 
 Kosu is being developed as free open-source software under an [MIT license.](./LICENSE)

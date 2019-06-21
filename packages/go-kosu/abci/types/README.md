@@ -16,6 +16,7 @@
     -   [Transaction](#kosu.Transaction)
     -   [TransactionRebalance](#kosu.TransactionRebalance)
     -   [TransactionWitness](#kosu.TransactionWitness)
+    -   [Validator](#kosu.Validator)
 
     -   [TransactionWitness.Subject](#kosu.TransactionWitness.Subject)
 
@@ -55,6 +56,8 @@ ConsensusParams
 
 ### Poster
 
+Poster
+
 | Field       | Type                   | Label | Description |
 | ----------- | ---------------------- | ----- | ----------- |
 | balance     | [BigInt](#kosu.BigInt) |       |             |
@@ -75,6 +78,8 @@ Proof is used to sign a Transaction and produce a SignedTransaction.
 <a name="kosu.RateLimit"></a>
 
 ### RateLimit
+
+RateLimit
 
 | Field   | Type              | Label | Description |
 | ------- | ----------------- | ----- | ----------- |
@@ -144,6 +149,26 @@ This transaction should be originated from the validator nodes.
 | address    | [string](#string)                                              |       | Ethereum address of validator/poster              |
 | public_key | [bytes](#bytes)                                                |       | Tendermint ed25519 key of validator (base64 enc ) |
 | id         | [bytes](#bytes)                                                |       | Hash of event data                                |
+
+<a name="kosu.Validator"></a>
+
+### Validator
+
+Validator
+
+| Field        | Type                   | Label | Description                                       |
+| ------------ | ---------------------- | ----- | ------------------------------------------------- |
+| balance      | [BigInt](#kosu.BigInt) |       | balance in registry contract                      |
+| power        | [int64](#int64)        |       | vote power on tendermint chain                    |
+| publicKey    | [bytes](#bytes)        |       | raw 32 byte public key                            |
+| ethAccount   | [string](#string)      |       |                                                   |
+| firstVote    | [int64](#int64)        |       |                                                   |
+| lastVoted    | [int64](#int64)        |       |                                                   |
+| lastProposed | [int64](#int64)        |       |                                                   |
+| totalVotes   | [int64](#int64)        |       |                                                   |
+| active       | [bool](#bool)          |       | true if voted on last block                       |
+| genesis      | [bool](#bool)          |       | true if val was in genesis.json = 5;              |
+| applied      | [bool](#bool)          |       | true if a) in genesis or b) through endblock = 5; |
 
 <a name="kosu.TransactionWitness.Subject"></a>
 
