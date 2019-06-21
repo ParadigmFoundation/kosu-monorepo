@@ -84,7 +84,7 @@ before(async () => {
         JSON.stringify(argumentsJson),
     );
 
-    const testHelpers = new TestHelpers(web3Wrapper, contracts);
+    const testHelpers = new TestHelpers(web3Wrapper, { migratedContracts: contracts });
 
     Object.assign(global, {
         testHelpers,
