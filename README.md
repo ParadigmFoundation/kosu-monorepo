@@ -13,9 +13,17 @@ This monorepo contains the packages that implement the Kosu protocol, alongside 
     -   [Library packages](#library-packages)
     -   [Client packages](#client-packages)
     -   [Utility/development packages](#utility-development-packages)
+-   [Install instructions](#install-instructions)
+    -   [Prerequisites](#prerequisites)
+    -   [Homebrew](#homebrew)
+    -   [Clone kosu-monorepo](#clone-kosu-monorepo)
+    -   [Build packages](#build-packages)
+    -   [Run validator node](#run-a-validator-node)
 -   [Documentation](#documentation)
 -   [Docker images](#docker-images)
 -   [Binaries](#binaries)
+-   [Contributing](#contributing)
+-   [Issues](#issues)
 -   [License](#license)
 
 ## Packages
@@ -52,10 +60,6 @@ Client/server libraries for interacting with the Kosu network and contract syste
 | [`@kosu/tsc-config`](./packages/tsc-config)       | ![npm](https://img.shields.io/npm/v/@kosu/tsc-config.svg)    | TypeScript compiler base configuration for Kosu TypeScript projects. |
 | [`@kosu/web-helpers`](./packages/web-helpers)     | ![npm](https://img.shields.io/npm/v/@kosu/web-helpers.svg)   | Simple web interface for interacting with the Kosu contract system.  |
 
-## Contributing
-
-We strongly encourage all contributions! Read our [contribution guidelines](./ContributionGuidelines) and also feel free to reach out. To report bugs within this package, please create an issue in this repository.
-
 ## Install Instructions
 
 ### Prerequisites
@@ -78,11 +82,13 @@ For other operating systems, see the official install instructions for each requ
 #### Yarn
 
 This will also install Node.js if it is not already installed.
+
 ```
 brew install yarn
 ```
 
-#### geth tools
+#### Geth tools
+
 To install the `go-ethereum` suite with `brew`:
 
 ```
@@ -90,7 +96,8 @@ brew tap ethereum/ethereum
 brew install ethereum
 ```
 
-#### jq
+#### Jq
+
 To install `jq` (JSON parsing binary):
 
 ```
@@ -141,7 +148,7 @@ The command-line interface will also be built (see `kosu-cli help` for all comma
 ./kosu-cli query round
 ```
 
-See the [go-kosu](https://github.com/ParadigmFoundation/kosu-monorepo/tree/master/packages/go-kosu) package for more info about executing transactions, queries, and running a testnet with `docker-compose`.
+See the [`go-kosu`](https://github.com/ParadigmFoundation/kosu-monorepo/tree/master/packages/go-kosu) package for more info about executing transactions, queries, and running a testnet with `docker-compose`.
 
 ## Documentation
 
@@ -189,6 +196,14 @@ Kosu network client reference implementation, built on Tendermint consensus.
 Command-line interface for `kosud`.
 
 -   URL: [`https://storage.googleapis.com/kosu-binaries/go-kosu/kosu-cli`](https://storage.googleapis.com/kosu-binaries/go-kosu/kosu-cli)
+
+## Contributing
+
+We strongly encourage all contributions! Read our [contribution guidelines](./ContributionGuidelines) and feel free to reach out with any questions.
+
+## Issues
+
+To report bugs within a specific Kosu package, please create an issue in this repository (template will auto-populate).
 
 ## License
 
