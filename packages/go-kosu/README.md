@@ -2,7 +2,7 @@
 
 ## Running
 
-Run the server
+Run the server:
 
 ```
 export KOSU_HOME=./my_node
@@ -10,13 +10,13 @@ tendermint init --home=$KOSU_HOME
 go run ./cmd/kosud/main.go
 ```
 
-Executa a transaction
+Execute a transaction:
 
 ```
 go run ./cmd/kosu-cli/main.go tx rebalance 1 1 11
 ```
 
-Execute queries
+Execute queries:
 
 ```
 $ go run ./cmd/kosu-cli/main.go query round
