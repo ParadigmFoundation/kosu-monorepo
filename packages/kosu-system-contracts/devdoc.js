@@ -119,7 +119,7 @@ function parseMarkdown(devDoc, methods) {
     const contents = [];
     for (const method of methods) {
         const name = method.name;
-        contents.push(`[${name}](#${name})`);
+        contents.push(`[${name}](#${name.toLowerCase()})`);
     }
     output.push(
         { h2: "Contents" },
