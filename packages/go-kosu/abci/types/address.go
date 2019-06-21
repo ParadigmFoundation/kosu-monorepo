@@ -15,21 +15,30 @@ var (
 	ErrAddressLength = errors.New("invalid length for address")
 )
 
-// NewAddressFromString creates a new address, provided a 0x-prefixed hex string
+// NewAddressFromString creates a new Address, provided a 0x-prefixed hex string
 func NewAddressFromString(input string) (address Address, e error) {
 	decoded, err := hex.DecodeString(input[2:])
 	if err != nil {
 		e = ErrAddressDecode
 		return
 	}
+	address, err = NewAddressFromBytes(decoded)
+	if err != nil {
+		e = err
+		return
+	}
+	return
+}
 
-	if len(decoded) != 20 {
+// NewAddressFromBytes creates a new Address, provided raw bytes
+func NewAddressFromBytes(input []byte) (address Address, e error) {
+	if len(input) != 20 {
 		e = ErrAddressLength
 		return
 	}
 
 	for i := 0; i < 20; i++ {
-		address[i] = decoded[i]
+		address[i] = input[i]
 	}
 	return
 }

@@ -2,6 +2,7 @@
 package types
 
 import (
+	"encoding/hex"
 	"testing"
 
 	"github.com/stretchr/testify/require"
@@ -10,27 +11,44 @@ import (
 func TestSignature(t *testing.T) {
 	testCases := []struct {
 		desc      string
+		signer    string
+		hash      string
 		signature string
-		bytes     []byte
 	}{
 		{
-			desc:      "Hex-encoded signature #1",
-			signature: "0xfc860d67b460c013b119c8ab8ae3095dead0b6c7d261f066bae76f3d591e43e87b098d492f8468fe8c22e10b700127d43593d6954ecdb96a5cd5f94df5b2943b00",
-			bytes:     []byte{252, 134, 13, 103, 180, 96, 192, 19, 177, 25, 200, 171, 138, 227, 9, 93, 234, 208, 182, 199, 210, 97, 240, 102, 186, 231, 111, 61, 89, 30, 67, 232, 123, 9, 141, 73, 47, 132, 104, 254, 140, 34, 225, 11, 112, 1, 39, 212, 53, 147, 214, 149, 78, 205, 185, 106, 92, 213, 249, 77, 245, 178, 148, 59, 0},
+			desc:      "Hex-encoded signature #1 (from kosu.js)",
+			signer:    "0xaDec89552A02E7fa64BdCc56a4d1F79fF37f59E2",
+			hash:      "0x4996017b62b11d1598d46e4a57a61db795e53f0f7b69958de455117a9ea623cb",
+			signature: "0x75719eaaf5adb0439d09aa315875f7914fc84ee7132cb9cd0dcf2a33a02f768140e1cb0c1d5e14d6170027620b8714616cae5b54451fae42c983a6dc046d048e01",
 		},
 		{
-			desc:      "Hex-encoded signature #2",
-			signature: "0x87831877e11d00a87508d4ff3c861a85aae2069a94de48e1956ac0f8ac150b1d5bef3d575f391e70110dfccbe40f6ba8c90b3695c6f29bdaf8b1f01c955344f600",
-			bytes:     []byte{135, 131, 24, 119, 225, 29, 0, 168, 117, 8, 212, 255, 60, 134, 26, 133, 170, 226, 6, 154, 148, 222, 72, 225, 149, 106, 192, 248, 172, 21, 11, 29, 91, 239, 61, 87, 95, 57, 30, 112, 17, 13, 252, 203, 228, 15, 107, 168, 201, 11, 54, 149, 198, 242, 155, 218, 248, 177, 240, 28, 149, 83, 68, 246, 0},
+			desc:      "Hex-encoded signature #2 (from kosu.js)",
+			signer:    "0xe66B7f926843BE6A0EA409EbDC41b4cE113E7262",
+			hash:      "0x729ea5b89657ffedf80b7468617a1853de8a6f0e41f22c30a18fe8973cad0972",
+			signature: "0x88f5f4be74f5d8e2e9a5fc214b75c3526244bf6a4ed43d1cac333b9d889c7590271cb594c40b5aea11865d6c86a87775229d372779ebc4f0810cc4d1f989dc6101",
+		},
+		{
+			desc:      "Hex-encoded signature #3 (from kosu.js)",
+			signer:    "0xfb004Bb4E4c9583eD64429e907c1B8213170ff1C",
+			hash:      "0xbb99476c41eefb09277c17034a10ff86a38a67eb184411e5792466f018c964d0",
+			signature: "0x597cb54abf5881460a5447337cbebd61ebad787a13ae60dde6e0342df901061f2d3ef881a6f0a68e578a513df9caf8f02ca712d8a98a275e50d4a716505431e301",
 		},
 	}
 	for _, tC := range testCases {
 		t.Run(tC.desc, func(t *testing.T) {
+			hashBytes, _ := hex.DecodeString(tC.hash[2:])
+			signerBytes, _ := hex.DecodeString(tC.signer[2:])
+			signatureBytes, _ := hex.DecodeString(tC.signature[2:])
+
 			sig, err := NewSignatureFromString(tC.signature)
 			require.NoError(t, err, "Expected no error creating signature")
 
-			require.EqualValues(t, tC.bytes, sig.Bytes(), "Expected bytes to be equal to provided")
+			require.EqualValues(t, signatureBytes, sig.Bytes(), "Expected bytes to be equal to provided")
 			require.EqualValues(t, tC.signature, sig.String(), "Expected input string and signature string to be equal")
+
+			recoveredSigner, err := sig.RecoverSigner(hashBytes)
+			require.NoError(t, err, "Expected no error recovering signer")
+			require.EqualValues(t, signerBytes, recoveredSigner.Bytes(), "Expected recovered signer bytes to match")
 		})
 	}
 }

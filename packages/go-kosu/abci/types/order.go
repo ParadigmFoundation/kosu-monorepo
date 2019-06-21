@@ -17,8 +17,6 @@ var (
 	ErrOrderParse = errors.New("failed to parse JSON order")
 	// ErrOrderSerialize returned when unable to serialize an Order object
 	ErrOrderSerialize = errors.New("failed to serialize order")
-	// ErrOrderParseUint occurs when bad uint values are encoded in JSON
-	ErrOrderParseUint = errors.New("unable to parse uint value")
 )
 
 // Order represents a Kosu order object for use with a SubContract
@@ -68,7 +66,7 @@ func (o *Order) Serialize() (orderBytes []byte, e error) {
 			bigInt := big.NewInt(0)
 			stringVal := o.MakerValues[m.Name].(json.Number).String()
 			if _, ok := bigInt.SetString(stringVal, 10); !ok {
-				e = ErrOrderParseUint
+				e = ErrOrderSerialize
 				return
 			}
 			// pad as a 256 bit integer, as EVM does
@@ -76,10 +74,24 @@ func (o *Order) Serialize() (orderBytes []byte, e error) {
 			orderBytes = append(orderBytes, slice...)
 		case "signature":
 			// strip '0x' prefix
-			slice := []byte(o.MakerValues[m.Name].(string)[2:])
-			orderBytes = append(orderBytes, slice...)
+			bytes, err := hex.DecodeString(o.MakerValues[m.Name].(string)[2:])
+			if err != nil {
+				e = ErrOrderSerialize
+				return
+			}
+			orderBytes = append(orderBytes, bytes...)
 		}
 	}
+	return orderBytes, nil
+}
+
+// RecoverPoster returns the address used to sign the Kosu order as a poster
+func (o *Order) RecoverPoster() (poster Address, e error) {
+	hash, err := o.PosterHex()
+	if err != nil {
+		return poster, err
+	}
+	poster, e = o.PosterSignature.RecoverSigner(hash)
 	return
 }
 
@@ -96,7 +108,7 @@ type Arguments struct {
 
 // Argument defines a maker or taker value with parameter name and data type
 type Argument struct {
-	DataType string `json:"dataType"`
+	DataType string `json:"datatype"`
 	Name     string `json:"name"`
 }
 

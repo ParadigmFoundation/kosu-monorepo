@@ -3,6 +3,9 @@ package types
 import (
 	"encoding/hex"
 	"errors"
+	"strconv"
+
+	"github.com/ethereum/go-ethereum/crypto"
 )
 
 var (
@@ -30,6 +33,31 @@ func NewSignatureFromString(input string) (signature Signature, e error) {
 
 	for i := 0; i < 65; i++ {
 		signature[i] = decoded[i]
+	}
+	return
+}
+
+// RecoverSigner recovers the address that generated the signature, given a hash
+func (s *Signature) RecoverSigner(hash []byte) (signer Address, e error) {
+	messageHash := GenerateEthereumMessageHash(hash)
+
+	recoveredKey, err := crypto.Ecrecover(messageHash, s.Bytes())
+	if err != nil {
+		e = err
+		return
+	}
+
+	uncompressedKey, err := crypto.UnmarshalPubkey(recoveredKey)
+	if err != nil {
+		e = err
+		return
+	}
+
+	signerBytes := crypto.PubkeyToAddress(*uncompressedKey).Bytes()
+	signer, err = NewAddressFromString("0x" + hex.EncodeToString(signerBytes))
+	if err != nil {
+		e = err
+		return
 	}
 	return
 }
@@ -63,4 +91,11 @@ func (s *Signature) UnmarshalJSON(bytes []byte) error {
 		s[i] = encoded[i]
 	}
 	return nil
+}
+
+// GenerateEthereumMessageHash implements eth_sign style personal message hashing (used in ecrecover)
+func GenerateEthereumMessageHash(hash []byte) (msgHash []byte) {
+	prefix := "\u0019Ethereum Signed Message:\n" + strconv.Itoa(len(hash))
+	msgHash = crypto.Keccak256([]byte(prefix), hash)
+	return
 }
