@@ -6,11 +6,11 @@ Implementation contract for the PosterRegistry, allowing users to bond and un-bo
 
 -   [Methods](undefined)
     -   [constructor](#constructor)
-    -   [registerTokens](#registerTokens)
-    -   [releaseTokens](#releaseTokens)
+    -   [registerTokens](#registertokens)
+    -   [releaseTokens](#releasetokens)
     -   [token](#token)
-    -   [tokensContributed](#tokensContributed)
-    -   [tokensRegisteredFor](#tokensRegisteredFor)
+    -   [tokensContributed](#tokenscontributed)
+    -   [tokensRegisteredFor](#tokensregisteredfor)
     -   [treasury](#treasury)
 
 ## Methods
