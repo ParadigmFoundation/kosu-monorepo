@@ -6,6 +6,7 @@ import (
 	"errors"
 	"fmt"
 	"math/big"
+	"strings"
 
 	"github.com/ethereum/go-ethereum/accounts/abi"
 	"github.com/ethereum/go-ethereum/crypto"
@@ -23,8 +24,9 @@ type Order struct {
 
 // NewOrder creates a new Kosu Order object from a JSON string
 func NewOrder(input string) (order *Order, e error) {
-	b := []byte(input)
-	if err := json.Unmarshal(b, &order); err != nil {
+	dec := json.NewDecoder(strings.NewReader(input))
+	dec.UseNumber()
+	if err := dec.Decode(&order); err != nil {
 		e = err
 		return
 	}
@@ -35,7 +37,7 @@ func NewOrder(input string) (order *Order, e error) {
 func (o *Order) PosterHex() (posterHex []byte, e error) {
 	orderBytes, err := o.Serialize()
 	if err != nil {
-		e = errors.New("Failed to serialize order")
+		e = errors.New("failed to serialize order")
 		return
 	}
 
@@ -48,17 +50,24 @@ func (o *Order) Serialize() (orderBytes []byte, e error) {
 	for _, m := range o.Arguments.Maker {
 		switch m.DataType {
 		case "address":
+			// strip '0x' prefix
 			bytes, err := hex.DecodeString(o.MakerValues[m.Name].(string)[2:])
 			if err != nil {
 				return orderBytes, err
 			}
 			orderBytes = append(orderBytes, bytes...)
 		case "uint":
-			bigFloat := big.NewFloat(o.MakerValues[m.Name].(float64))
-			intVal, _ := bigFloat.Int64()
-			slice := abi.U256(big.NewInt(intVal))
+			bigInt := big.NewInt(0)
+			stringVal := o.MakerValues[m.Name].(json.Number).String()
+			if _, ok := bigInt.SetString(stringVal, 10); !ok {
+				e = errors.New("unable to parse uint value")
+				return
+			}
+			// pad as a 256 bit integer, as EVM does
+			slice := abi.U256(bigInt)
 			orderBytes = append(orderBytes, slice...)
 		case "signature":
+			// strip '0x' prefix
 			slice := []byte(o.MakerValues[m.Name].(string)[2:])
 			orderBytes = append(orderBytes, slice...)
 		}
