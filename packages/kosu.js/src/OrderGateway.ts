@@ -6,21 +6,49 @@ import Web3 from "web3";
 import { OrderSerializer } from "./OrderSerializer";
 
 /**
- * Integration with OrderGateway contract on an Ethereum blockchain.
+ * Integration with OrderGateway contract on an Ethereum blockchain.\
  *
- * @todo Refactor contract integration after migration away from truffle
+ * Instances of the `OrderGateway` class are able to communicate with the deployed
+ * OrderGateway contract for the detected network. Can be used to participate in
+ * trades (executing maker orders) or to call methods on deployed `SubContract`
+ * implementations, such as checking the fillable amount remaining for an order,
+ * or checking the validity of a maker order.
+ *
+ * This class is also used to load the required `arguments` for maker order's
+ * specified SubContract during serialization and signature generation.
  */
 export class OrderGateway {
+    /**
+     * An instance of `web3` used to interact with the Ethereum blockchain.
+     */
     private readonly web3: Web3;
-    private readonly initializing: Promise<void>;
+
+    /**
+     * An instance of a 0x `Web3Wrapper` used for some RPC calls and for certain
+     * methods.
+     */
     private readonly web3Wrapper: Web3Wrapper;
+
+    /**
+     * A promise that resolves when initialization has completed successfully.
+     */
+    private readonly initializing: Promise<void>;
+
+    /**
+     * The address of the deployed OrderGateway contract for the detected network.
+     */
     private address: string;
+
+    /**
+     * An instance of the lower-level contract wrapper for the Kosu OrderGateway,
+     * auto-generated from the Solidity source code.
+     */
     private contract: OrderGatewayContract;
 
     /**
      * Create a new OrderGateway instance.
      *
-     * @param options instantiation options
+     * @param options Instantiation options (see `KosuOptions`).
      */
     constructor(options: KosuOptions) {
         this.web3 = options.web3;
@@ -30,9 +58,9 @@ export class OrderGateway {
     }
 
     /**
-     * Asyncronously initializes the instance after construction
+     * Asynchronously initializes the instance after construction.
      *
-     * @param options instantiation options
+     * @param options Instantiation options (see `KosuOptions` type).
      * @returns A promise to await complete instantiation for further calls
      */
     private async init(options: KosuOptions): Promise<void> {
@@ -52,87 +80,73 @@ export class OrderGateway {
     }
 
     /**
-     * Participate in the terms of an order
+     * Participate in a trade as a taker (or on behalf of one), by submitting the
+     * maker order, and the Ethereum address of the taker. The fill transaction
+     * is passed to the deployed OrderGateway contract and to the underlying
+     * SubContract settlement logic.
      *
-     * @param order A Kosu order
-     * @param takerValues Taker values to fulfill the order
-     * @param taker address of the taker
-     * @todo refactor makerData types after possible pending changes
+     * @param order A signed Kosu maker order object with a valid `subContract`.
+     * @param takerValues Taker values to fulfill the maker order.
+     * @param taker The Ethereum address of the taker (should be available through provider).
+     * @returns The boolean value indicating the status of the trade; `true` if the interaction was successful.
      */
-    public async participate(order: Order, takerValues: any[], taker: string): Promise<void> {
+    public async participate(order: Order, taker: string): Promise<any> {
         await this.initializing;
-        const makerArguments = await this.makerArguments(order.subContract);
-        const takerArguments = await this.takerArguments(order.subContract);
-        const makerValuesBytes = OrderSerializer.serializeMaker(makerArguments, order);
-        const takerValuesBytes = OrderSerializer.serializeTaker(takerArguments, takerValues);
-        await this.contract.participate
-            .sendTransactionAsync(order.subContract, order.id || 1, makerValuesBytes, takerValuesBytes, { from: taker })
-            .then(async txHash => this.web3Wrapper.awaitTransactionSuccessAsync(txHash));
+
+        // get arguments and serialize
+        const args = await this.arguments(order.subContract);
+        const participateBytes = OrderSerializer.serialize(args, order);
+
+        // execute tx
+        const txId = await this.contract.participate.sendTransactionAsync(order.subContract, participateBytes, {
+            from: taker,
+        });
+        const receipt = await this.web3Wrapper.awaitTransactionSuccessAsync(txId);
+        return receipt;
     }
 
     /**
-     * @todo deprecate
-     */
-    public async participateEstimateGas(order: Order, takerValues: any[], taker: string): Promise<number> {
-        await this.initializing;
-        const makerArguments = await this.makerArguments(order.subContract);
-        const takerArguments = await this.takerArguments(order.subContract);
-        const makerValuesBytes = OrderSerializer.serializeMaker(makerArguments, order);
-        const takerValuesBytes = OrderSerializer.serializeTaker(takerArguments, takerValues);
-
-        return this.contract.participate.estimateGasAsync(
-            order.subContract,
-            order.id || 1,
-            makerValuesBytes,
-            takerValuesBytes,
-            { from: taker },
-        );
-    }
-
-    /**
-     * Read maker arguments
+     * Read the required arguments from a deployed SubContract.
      *
      * @param subContract Address of deployed contract implementation
+     * @returns The JSON array that defines the arguments for the SubContract.
      */
-    public async makerArguments(subContract: string): Promise<any[]> {
+    public async arguments(subContract: string): Promise<any> {
         await this.initializing;
-        return JSON.parse(await this.contract.makerArguments.callAsync(subContract));
+        let args;
+        try {
+            args = await this.contract.arguments.callAsync(subContract);
+        } catch (error) {
+            throw new Error(`Unable to load arguments from contract: ${error.message}`);
+        }
+        return JSON.parse(args);
     }
 
     /**
-     * Read taker arguments
+     * Checks validity of order data according the order's SubContract implementation.
      *
-     * @param subContract Address of deployed contract implementation
-     */
-    public async takerArguments(subContract: string): Promise<any[]> {
-        await this.initializing;
-        return JSON.parse(await this.contract.takerArguments.callAsync(subContract));
-    }
-
-    /**
-     * Checks validity of order data
-     *
-     * @param order Kosu order to validate
-     * @todo refactor makerData types after possible pending changes
+     * @param order Kosu order to validate against `isValid` implementation.
      */
     public async isValid(order: Order): Promise<boolean> {
         await this.initializing;
-        const makerArguments = await this.makerArguments(order.subContract);
-        const makerValuesBytes = OrderSerializer.serializeMaker(makerArguments, order);
+        const args = await this.arguments(order.subContract);
+        const makerValuesBytes = OrderSerializer.serialize(args, order);
 
         return this.contract.isValid.callAsync(order.subContract, makerValuesBytes);
     }
 
     /**
-     * Checks amount of partial exchange tokens remaining
+     * Checks amount of partial exchange tokens remaining, depending on the
+     * implementation of the SubContract specified in the supplied order.
      *
-     * @param order Kosu order to validate
-     * @todo refactor makerData types after possible pending changes
+     * @param order The Kosu order to check amount remaining for.
+     * @returns A `BigNumber` representing the number returned by the SubContract's
+     * implementation of the `amountRemaining` method.
      */
     public async amountRemaining(order: Order): Promise<BigNumber> {
         await this.initializing;
-        const makerArguments = await this.makerArguments(order.subContract);
-        const makerValuesBytes = OrderSerializer.serializeMaker(makerArguments, order);
+        const args = await this.arguments(order.subContract);
+        const makerValuesBytes = OrderSerializer.serialize(args, order);
 
         return this.contract.amountRemaining.callAsync(order.subContract, makerValuesBytes);
     }

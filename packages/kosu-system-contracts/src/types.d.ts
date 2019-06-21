@@ -1,11 +1,10 @@
 interface MigratedContracts {
-    validatorRegistryProxy: ValidatorRegistryProxyContract;
     orderGateway: OrderGatewayContract;
     eventEmitter: EventEmitterContract;
     treasury: TreasuryContract;
     authorizedAddresses: AuthorizedAddressesContract;
     kosuToken: KosuTokenContract;
-    validatorRegistryImpl: ValidatorRegistryContract;
+    validatorRegistry: ValidatorRegistryContract;
     voting: VotingContract;
     posterRegistryProxy: PosterRegistryProxyContract;
     posterRegistryImpl: PosterRegistryContract;
@@ -23,6 +22,19 @@ interface Listing {
     owner: string;
     currentChallenge: BigNumber;
     details: string;
+}
+
+interface Challenge {
+    listingKey: string;
+    challenger: string;
+    voterTotal: BigNumber;
+    balance: BigNumber;
+    pollId: BigNumber;
+    challengeEnd: BigNumber;
+    finalized: boolean;
+    passed: boolean;
+    details: string;
+    listingSnapshot: Listing;
 }
 
 interface PrettyListing extends Listing {

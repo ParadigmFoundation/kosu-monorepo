@@ -5,6 +5,7 @@ import (
 	"errors"
 	"fmt"
 	"math/big"
+	"sort"
 	"sync"
 	"sync/atomic"
 
@@ -181,30 +182,66 @@ func (s *State) PersistToTree(tree *StateTree) error {
 	}
 	s.deletedPosters = []string{}
 
+	if err := s.persistEvents(tree); err != nil {
+		return err
+	}
+
+	if err := s.persistPosters(tree); err != nil {
+		return err
+	}
+
+	if err := s.persistValidators(tree); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (s *State) persistEvents(tree *StateTree) error {
 	s.eventsLock.RLock()
 	defer s.eventsLock.RUnlock()
-	for block, events := range s.events {
-		for id, event := range events {
-			if err := tree.SetEvent(block, id, event); err != nil {
+
+	keys := []uint64{}
+	for key := range s.events {
+		keys = append(keys, key)
+	}
+	sort.Slice(keys, func(i, j int) bool { return keys[i] < keys[j] })
+
+	for _, key := range keys {
+		for id, event := range s.events[key] {
+			if err := tree.SetEvent(key, id, event); err != nil {
 				return err
 			}
 		}
 	}
+	return nil
+}
 
+func (s *State) persistPosters(tree *StateTree) error {
 	s.postersLock.RLock()
-	for addr, p := range s.posters {
-		if err := tree.SetPoster(addr, p); err != nil {
+	defer s.postersLock.RUnlock()
+
+	keys := []string{}
+	for key := range s.posters {
+		keys = append(keys, key)
+	}
+
+	for _, key := range keys {
+		p := s.posters[key]
+		if err := tree.SetPoster(key, p); err != nil {
 			return nil
 		}
 	}
-	defer s.postersLock.RUnlock()
 
+	return nil
+}
+
+func (s *State) persistValidators(tree *StateTree) error {
 	for addr, v := range s.Validators {
 		if err := tree.SetValidator(addr, v); err != nil {
 			return err
 		}
 	}
-
 	return nil
 }
 

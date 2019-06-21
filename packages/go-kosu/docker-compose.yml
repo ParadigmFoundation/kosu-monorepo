@@ -3,7 +3,9 @@ version: '3'
 services:
   node0:
     container_name: node0
-    build: .
+    build:
+      context: .
+      dockerfile: Dockerfile.compose
     command: ["/go-kosu/kosud", "--home", "/go-kosu/testnet/node0"]
     networks:
       localnet:
@@ -11,7 +13,9 @@ services:
 
   node1:
     container_name: node1
-    build: .
+    build:
+      context: .
+      dockerfile: Dockerfile.compose
     command: ["/go-kosu/kosud", "--home", "/go-kosu/testnet/node1"]
     networks:
       localnet:
@@ -19,7 +23,9 @@ services:
 
   node2:
     container_name: node2
-    build: .
+    build:
+      context: .
+      dockerfile: Dockerfile.compose
     command: ["/go-kosu/kosud", "--home", "/go-kosu/testnet/node2"]
     networks:
       localnet:
@@ -27,7 +33,9 @@ services:
 
   node3:
     container_name: node3
-    build: .
+    build:
+      context: .
+      dockerfile: Dockerfile.compose
     command: ["/go-kosu/kosud", "--home", "/go-kosu/testnet/node3"]
     networks:
       localnet:

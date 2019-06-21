@@ -201,8 +201,9 @@ const activateForms = async () => {
         const pubKey = document.getElementById("validator-public-key-hex").innerText;
         const tokens = toWei(document.getElementById("validator-register-tokens").value);
         const reward = toWei(document.getElementById("validator-register-reward").value);
+        const details = document.getElementById("validator-details").value;
 
-        validatorRegistry.registerListing(pubKey, tokens, reward, "https://paradigm.market").then(async () => {
+        validatorRegistry.registerListing(pubKey, tokens, reward, details).then(async () => {
             resetValues();
             const validatorListingInfo = await validatorRegistry.getListing(pubKey);
 
@@ -369,6 +370,8 @@ const initApp = async provider => {
                 console.log(log);
             });
         });
+
+    kosuJS.eventEmitter.getFutureDecodedLogs(await kosuJS.web3Wrapper.getBlockNumberAsync(), console.log);
     await kosuJS.treasury.getContract();
     resetValues();
     activateForms();

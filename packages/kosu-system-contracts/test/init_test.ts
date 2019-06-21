@@ -9,10 +9,11 @@ import chai from "chai";
 import chaiAsPromised from "chai-as-promised";
 import Web3 from "web3";
 import Web3ProviderEngine from "web3-provider-engine";
-import { toWei } from "web3-utils";
+import { toTwosComplement, toWei } from "web3-utils";
 
 import { artifacts } from "../src";
 import { migrations } from "../src/migrations";
+import { BasicTradeSubContractContract } from "../generated-wrappers/basic_trade_sub_contract";
 
 const useGeth = process.argv.includes("geth");
 const runCoverage = process.argv.includes("runCoverage");
@@ -35,7 +36,13 @@ before(async () => {
             coverageSubprovider = new CoverageSubprovider(
                 artifactAdapter,
                 "0xc521f483f607eb5ea4d6b2dfdbd540134753a865",
-                { ignoreFilesGlobs: ["**/node_modules/**", "**/IValidatorRegistry.sol", "**/IPosterRegistry.sol"] },
+                {
+                    ignoreFilesGlobs: [
+                        "**/node_modules/openzeppelin-solidity/**",
+                        "**/node_modules/@kosu/subcontract-sdk/contracts/SubContract.sol",
+                        "**/IPosterRegistry.sol",
+                    ],
+                },
             );
             provider.addProvider(coverageSubprovider);
         }
@@ -51,6 +58,10 @@ before(async () => {
 
     web3Wrapper.abiDecoder.addABI(artifacts.EventEmitter.compilerOutput.abi, artifacts.EventEmitter.contractName);
     web3Wrapper.abiDecoder.addABI(artifacts.KosuToken.compilerOutput.abi, artifacts.KosuToken.contractName);
+    web3Wrapper.abiDecoder.addABI(
+        artifacts.BasicTradeSubContract.compilerOutput.abi,
+        artifacts.BasicTradeSubContract.contractName,
+    );
 
     // @ts-ignore
     await new BlockchainLifecycle(web3Wrapper).startAsync();
@@ -63,7 +74,13 @@ before(async () => {
         gasPrice: toWei("5", "gwei"),
     };
 
-    const contracts = await migrations(provider, txDefaults, { noLogs: true });
+    const contracts = (await migrations(provider, txDefaults, { noLogs: true })) as TestContracts;
+    contracts.subContract = await BasicTradeSubContractContract.deployFrom0xArtifactAsync(
+        artifacts.BasicTradeSubContract,
+        web3.currentProvider,
+        txDefaults,
+        JSON.stringify(argumentsJson),
+    );
     const accounts = await web3.eth.getAccounts().then(a => a.map(v => v.toLowerCase()));
 
     const testValues: TestValues = {
@@ -86,16 +103,17 @@ before(async () => {
             if (systemBalance.gt(0)) {
                 const currentBalance = await contracts.treasury.currentBalance.callAsync(address);
                 if (systemBalance.gt(currentBalance)) {
-                    transactions.push(
-                        contracts.treasury.releaseTokens
-                            .sendTransactionAsync(address, systemBalance.minus(currentBalance))
-                            .then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash)),
-                    );
+                    // transactions.push(
+                    //     contracts.treasury.releaseTokens.awaitTransactionSuccessAsync(
+                    //         address,
+                    //         systemBalance.minus(currentBalance),
+                    //     ),
+                    // );
                 }
                 transactions.push(
-                    contracts.treasury.withdraw
-                        .sendTransactionAsync(systemBalance, { from: address })
-                        .then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash)),
+                    contracts.treasury.withdraw.awaitTransactionSuccessAsync(/*systemBalance*/ currentBalance, {
+                        from: address,
+                    }),
                 );
                 await Promise.all(transactions);
             }
@@ -105,19 +123,18 @@ before(async () => {
             await contracts.kosuToken.balanceOf.callAsync(address).then(async balance => {
                 if (balance.gt(desiredValue)) {
                     transactions.push(
-                        contracts.kosuToken.transfer
-                            .sendTransactionAsync(accounts[0], balance.minus(desiredValue), {
+                        contracts.kosuToken.transfer.awaitTransactionSuccessAsync(
+                            accounts[0],
+                            balance.minus(desiredValue),
+                            {
                                 from: address,
-                            })
-                            .then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash)).should.eventually.be
-                            .fulfilled,
+                            },
+                        ).should.eventually.be.fulfilled,
                     );
                 } else if (balance.lt(desiredValue)) {
                     transactions.push(
-                        contracts.kosuToken.transfer
-                            .sendTransactionAsync(address, desiredValue.minus(balance))
-                            .then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash)).should.eventually.be
-                            .fulfilled,
+                        contracts.kosuToken.transfer.awaitTransactionSuccessAsync(address, desiredValue.minus(balance))
+                            .should.eventually.be.fulfilled,
                     );
                 }
             });
@@ -146,17 +163,19 @@ before(async () => {
                     await testHelpers.ensureTokenBalance(account, testValues.zero);
                 }
                 transactions.push(
-                    contracts.kosuToken.approve
-                        .sendTransactionAsync(contracts.treasury.address, testValues.zero, {
+                    contracts.kosuToken.approve.awaitTransactionSuccessAsync(
+                        contracts.treasury.address,
+                        testValues.zero,
+                        {
                             from: account,
-                        })
-                        .then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash)),
+                        },
+                    ),
                 );
             }
         },
     };
 
-    Object.assign(global, { ...testHelpers, txDefaults, testValues, contracts, accounts, web3, web3Wrapper });
+    Object.assign(global, { ...testHelpers, txDefaults, testValues, contracts, accounts, web3, web3Wrapper, provider });
 });
 
 after(async () => {
@@ -164,3 +183,17 @@ after(async () => {
         await coverageSubprovider.writeCoverageAsync();
     }
 });
+
+const argumentsJson = {
+    maker: [
+        { datatype: "address", name: "signer" }, // 0
+        { datatype: "address", name: "signerToken" }, // 1
+        { datatype: "uint", name: "signerTokenCount" }, // 2
+        { datatype: "address", name: "buyerToken" }, // 3
+        { datatype: "uint", name: "buyerTokenCount" }, // 4
+        { datatype: "signature", name: "signature", signatureFields: [0, 1, 2, 3, 4] }, // 5
+    ],
+    taker: [
+        { datatype: "uint", name: "tokensToBuy" }, // 6
+    ],
+};

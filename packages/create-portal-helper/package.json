@@ -1,6 +1,6 @@
 {
     "name": "@kosu/create-portal-helper",
-    "version": "0.1.0-alpha.1",
+    "version": "0.1.0",
     "description": "Abstraction library for simplifying web-portal interactions.",
     "main": "index.js",
     "repository": "https://github.com/ParadigmFoundation/kosu-monorepo",
@@ -8,22 +8,34 @@
     "private": false,
     "scripts": {
         "compile:assets": "webpack",
-        "develop": "./scripts/develop.sh",
-        "docs": "jsdoc2md src/index.js > README.md"
+        "develop": "yarn build && webpack-dev-server",
+        "docs": "jsdoc2md --files ./src/index.ts --configure ./jsdoc.json > ./README.md",
+        "build": "tsc"
     },
     "dependencies": {
         "0x.js": "^6.0.9",
         "@0x/subproviders": "^4.0.6",
-        "@kosu/kosu.js": "0.1.0-alpha.1",
+        "@kosu/kosu.js": "^0.1.1",
+        "@kosu/tsc-config": "^0.1.0",
         "web3": "1.0.0-beta.37"
     },
     "devDependencies": {
+        "@babel/cli": "^7.4.4",
         "@babel/core": "^7.4.5",
+        "@babel/plugin-proposal-class-properties": "^7.4.4",
+        "@babel/plugin-proposal-object-rest-spread": "^7.4.4",
         "@babel/preset-env": "^7.4.5",
+        "@babel/preset-typescript": "^7.3.3",
         "babel-loader": "^8.0.6",
+        "jsdoc-babel": "^0.5.0",
         "jsdoc-to-markdown": "^5.0.0",
+        "typescript": "^3.5.1",
         "webpack": "^4.32.2"
     },
+    "files": [
+        "lib/*",
+        "lib/config/*"
+    ],
     "publishConfig": {
         "access": "public"
     }

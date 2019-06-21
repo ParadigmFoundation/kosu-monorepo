@@ -11,5 +11,4 @@ export * from "../generated-wrappers/poster_registry";
 export * from "../generated-wrappers/poster_registry_proxy";
 export * from "../generated-wrappers/treasury";
 export * from "../generated-wrappers/validator_registry";
-export * from "../generated-wrappers/validator_registry_proxy";
 export * from "../generated-wrappers/voting";

@@ -7,23 +7,52 @@ import Web3 from "web3";
 import { KosuToken } from "./KosuToken";
 
 /**
- * Integration with Treasury contract on an Ethereum blockchain.
+ * Interact with the deployed Kosu Treasury contract.
  *
- * @todo Refactor contract integration after migration away from truffle
+ * Instances of the `Treasury` class provide methods to interact with deployed
+ * Kosu Treasury contracts for functionality such as deposits/withdrawals and
+ * allowance management.
+ *
+ * If instantiated outside the `Kosu` class, the `web3Wrapper` provided to the
+ * constructor must include the Treasury's ABI (from the compiled Solidity source).
  */
 export class Treasury {
-    public readonly kosuToken: KosuToken;
-
+    /**
+     * An instance of `web3` used to interact with the Ethereum blockchain.
+     */
     private readonly web3: Web3;
-    private address: string;
-    private contract: TreasuryContract;
+
+    /**
+     * The `web3Wrapper` instance with the contract's ABI loaded.
+     */
     private readonly web3Wrapper: Web3Wrapper;
 
     /**
-     * Creates a new Treasury instance
+     * An instance of the `KosuToken` class to communicate with the KOSU ERC-20 token.
+     */
+    public readonly kosuToken: KosuToken;
+
+    /**
+     * A lower-level, auto-generated contract wrapper for the Treasury contract,
+     * generated from solidity source code.
+     */
+    private contract: TreasuryContract;
+
+    /**
+     * They deployed Treasury's address for the detected networkID.
+     */
+    private address: string;
+
+    /**
+     * The user's coinbase address (if available via supplied provider).
+     */
+    private coinbase: string;
+
+    /**
+     * Creates a new Treasury instance.
      *
-     * @param options initialization options
-     * @param kosuToken KosuToken instance
+     * @param options Initialization options (see `KosuOptions`).
+     * @param kosuToken Configured/instantiated `KosuToken` instance.
      */
     constructor(options: KosuOptions, kosuToken: KosuToken) {
         this.web3 = options.web3;
@@ -33,14 +62,14 @@ export class Treasury {
     }
 
     /**
-     * Asynchronously initializes the contract instance or returns it from cache
+     * Asynchronously initializes the contract instance, or returns it from cache.
      *
-     * @returns The contract
+     * @returns The lower-level contract wrapper instance.
      */
     private async getContract(): Promise<TreasuryContract> {
         if (!this.contract) {
             const networkId = await this.web3Wrapper.getNetworkIdAsync();
-            const coinbase = await this.web3.eth.getCoinbase().catch(() => undefined);
+            this.coinbase = await this.web3.eth.getCoinbase().catch(() => undefined);
 
             if (!this.address) {
                 this.address = DeployedAddresses[networkId].Treasury;
@@ -53,16 +82,24 @@ export class Treasury {
                 artifacts.Treasury.compilerOutput.abi,
                 this.address,
                 this.web3Wrapper.getProvider(),
-                { from: coinbase },
+                { from: this.coinbase },
             );
         }
         return this.contract;
     }
 
     /**
-     * Deposit tokens in the treasury
+     * Deposit tokens in the treasury, from the detected `coinbase` account.
      *
-     * @param value uint value of tokens to deposit
+     * @param value The uint value of tokens to deposit in wei.
+     * @returns The decoded transaction receipt, after the TX has been included in a block.
+     * @example
+     * ```typescript
+     * // deposit 10 KOSU
+     *
+     * const value = new BigNumber(web3.utils.toWei("10"));
+     * const receipt = await treasury.deposit(value);
+     * ```
      */
     public async deposit(value: BigNumber): Promise<TransactionReceiptWithDecodedLogs> {
         const contract = await this.getContract();
@@ -79,27 +116,42 @@ export class Treasury {
             await this.kosuToken.approve(this.address, value);
         }
 
-        return contract.deposit
-            .sendTransactionAsync(value)
-            .then(txHash => this.web3Wrapper.awaitTransactionSuccessAsync(txHash));
+        return contract.deposit.awaitTransactionSuccessAsync(value);
     }
 
     /**
-     * Withdraw tokens from treasury
+     * Withdraw tokens from treasury to the detected `coinbase` account.
      *
-     * @param value uint value of tokens to withdraw
+     * @param value The uint value of tokens to withdraw in wei.
+     * @returns The decoded transaction receipt, after the TX is mined in a block.
+     * @example
+     * ```typescript
+     * // withdraw 10 KOSU
+     *
+     * const value = new BigNumber(web3.utils.toWei("10"));
+     * const receipt = await treasury.withdraw(value);
+     * ```
      */
     public async withdraw(value: BigNumber): Promise<TransactionReceiptWithDecodedLogs> {
         const contract = await this.getContract();
-        return contract.withdraw
-            .sendTransactionAsync(value)
-            .then(txHash => this.web3Wrapper.awaitTransactionSuccessAsync(txHash));
+        return contract.withdraw.awaitTransactionSuccessAsync(value);
     }
 
     /**
-     * Read addresses system balance
+     * Read the total system balance of KOSU for a provided `address` string.
      *
-     * @param address Ethereum address
+     * @param address The Ethereum address to check system balance for.
+     * @returns The user's total KOSU system balance, in wei.
+     * @example
+     * ```typescript
+     * // view system balance of address
+     *
+     * const address = "0x91c987bf62D25945dB517BDAa840A6c661374402";
+     * const balanceWei = await treasury.systemBalance(address);
+     *
+     * // convert to ether from wei
+     * const balance = web3.utils.fromWei(balanceWei);
+     * ```
      */
     public async systemBalance(address: string): Promise<BigNumber> {
         const contract = await this.getContract();
@@ -107,12 +159,61 @@ export class Treasury {
     }
 
     /**
-     * Read addresses system balance
+     * Read the available (current) treasury balance for a provided `address`.
      *
-     * @param address Ethereum address
+     * @param address The Ethereum address to check current balance of.
+     * @returns The user's current treasury balance (in wei).
+     * @example
+     * ```typescript
+     * // view current balance of address
+     *
+     * const address = "0x91c987bf62D25945dB517BDAa840A6c661374402";
+     * const balanceWei = await treasury.currentBalance(address);
+     *
+     * // convert to ether from wei
+     * const balance = web3.utils.fromWei(balanceWei);
+     * ```
      */
     public async currentBalance(address: string): Promise<BigNumber> {
         const contract = await this.getContract();
         return contract.currentBalance.callAsync(address);
+    }
+
+    /**
+     * View the current treasury allowance for the detected `coinbase` account.
+     *
+     * @returns The current KOSU approval for the Treasury for the current user, in wei.
+     * @example
+     * ```typescript
+     * // view current allowance for the treasury
+     *
+     * const allowanceWei = await treasury.treasuryAllowance();
+     *
+     * // convert to ether from wei
+     * const allowance = web3.utils.fromWei(allowanceWei);
+     * ```
+     */
+    public async treasuryAllowance(): Promise<BigNumber> {
+        const contract = await this.getContract();
+        return this.kosuToken.allowance(this.coinbase, contract.address);
+    }
+
+    /**
+     * Approve the treasury to transfer KOSU on behalf of the user's `coinbase`
+     * account.
+     *
+     * @param value The amount of KOSU (in wei) to approve the treasury for.
+     * @returns The decoded transaction receipt, after the TX has been mined.
+     * @example
+     * ```typescript
+     * // approve the treasury for 1,000,000 KOSU
+     *
+     * const value = new BigNumber(web3.utils.toWei("1000000"));
+     * const receipt = await treasury.approveTreasury(value);
+     * ```
+     */
+    public async approveTreasury(value: BigNumber): Promise<TransactionReceiptWithDecodedLogs> {
+        const contract = await this.getContract();
+        return this.kosuToken.approve(contract.address, value);
     }
 }

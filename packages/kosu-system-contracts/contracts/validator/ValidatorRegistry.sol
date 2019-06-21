@@ -4,30 +4,66 @@ pragma experimental ABIEncoderV2;
 import "openzeppelin-solidity/contracts/math/SafeMath.sol";
 import "../event/EventEmitter.sol";
 import "../treasury/Treasury.sol";
-import "./IValidatorRegistry.sol";
 import "../voting/Voting.sol";
 
 /** @title ValidatorRegistry
     @author Freydal
+    @dev Stores registry of validator listings and provides functionality to curate through proposals and challenges.
 */
-contract ValidatorRegistry is IValidatorRegistry, Authorizable {
+contract ValidatorRegistry {
     using SafeMath for uint;
 
-    uint private _applicationPeriod;
-    uint private _commitPeriod;
-    uint private _challengePeriod;
-    uint private _exitPeriod;
-    uint private _rewardPeriod;
-    uint private _minimumBalance = 1 ether;
-    uint private _stakeholderCut = 30; //Will be used as a percent so must be sub 100
-    Treasury private _treasury;
-    Voting private _voting;
-    KosuToken private _kosuToken;
+    enum Status {
+        NULL,
+        PENDING,
+        ACCEPTED,
+        CHALLENGED,
+        EXITING
+    }
+
+    // Listing structure
+    struct Listing {
+        Status status;
+        uint stakedBalance;
+        uint applicationBlock;
+        uint confirmationBlock;
+        uint exitBlock;
+        int rewardRate;
+        uint lastRewardBlock;
+        bytes32 tendermintPublicKey;
+        address owner;
+        uint currentChallenge;
+        string details;
+    }
+
+    struct Challenge {
+        bytes32 listingKey;
+        address challenger;
+        uint voterTotal;
+        uint balance;
+        uint pollId;
+        uint challengeEnd;
+        bool finalized;
+        bool passed;
+        string details;
+        Listing listingSnapshot;
+    }
+
+    uint public applicationPeriod;
+    uint public commitPeriod;
+    uint public challengePeriod;
+    uint public exitPeriod;
+    uint public rewardPeriod;
+    uint public minimumBalance = 1 ether;
+    uint public stakeholderCut = 30; // Will be used as a percent so must be sub 100
+    Treasury public treasury;
+    Voting public voting;
+    KosuToken public kosuToken;
     mapping(bytes32 => Listing) private _listings;
     mapping(uint => Challenge) private _challenges;
-    uint private nextChallenge = 1;
-    bytes32[] private _listingKeys;
-    EventEmitter private e;
+    uint public nextChallenge = 1;
+    bytes32[] public _listingKeys;
+    EventEmitter private eventEmitter;
     uint _maxGenerationSum = 2 ether * 2 ether;
 
     /** @dev Create a new ValidatorRegistry implementation
@@ -37,153 +73,123 @@ contract ValidatorRegistry is IValidatorRegistry, Authorizable {
         @param auth AuthorizedAddresses deployed address
         @param _events Deployed EventEmitter address
     */
-    constructor(address _treasuryAddress, address _votingAddress, address auth, address _events, uint applicationPeriod, uint commitPeriod, uint challengePeriod, uint exitPeriod, uint rewardPeriod) Authorizable(auth) public {
-        _treasury = Treasury(_treasuryAddress);
-        _voting = Voting(_votingAddress);
-        _kosuToken = _treasury.kosuToken();
-        e = EventEmitter(_events);
-        _applicationPeriod = applicationPeriod;
-        _commitPeriod = commitPeriod;
-        _challengePeriod = challengePeriod;
-        _exitPeriod = exitPeriod;
-        _rewardPeriod = rewardPeriod;
+    constructor(address _treasuryAddress, address _votingAddress, address auth, address _events, uint _applicationPeriod, uint _commitPeriod, uint _challengePeriod, uint _exitPeriod, uint _rewardPeriod) public {
+        treasury = Treasury(_treasuryAddress);
+        voting = Voting(_votingAddress);
+        kosuToken = treasury.kosuToken();
+        eventEmitter = EventEmitter(_events);
+        applicationPeriod = _applicationPeriod;
+        commitPeriod = _commitPeriod;
+        challengePeriod = _challengePeriod;
+        exitPeriod = _exitPeriod;
+        rewardPeriod = _rewardPeriod;
     }
 
-    /** @dev Expose the configured applicationPeriod
-        @notice Expose the configured applicationPeriod
-        @return Application period length in blocks
-    */
-    function applicationPeriod() public view returns (uint) {
-        return _applicationPeriod;
-    }
-
-    /** @dev Expose the configured commitPeriod
-        @notice Expose the configured commitPeriod
-        @return Commit period length in blocks
-    */
-    function commitPeriod() public view returns (uint) {
-        return _commitPeriod;
-    }
-
-    /** @dev Expose the configured challengePeriod
-        @notice Expose the configured challengePeriod
-        @return Challenge period length in blocks
-    */
-    function challengePeriod() public view returns (uint) {
-        return _challengePeriod;
-    }
-
-    /** @dev Expose the configured exitPeriod
-        @notice Expose the configured exitPeriod
-        @return Exit period length in blocks
-    */
-    function exitPeriod() public view returns (uint) {
-        return _exitPeriod;
-    }
-
-    /** @dev Expose the configured rewardPeriod
-        @notice Expose the configured rewardPeriod
-        @return Reward period length in blocks
-    */
-    function rewardPeriod() public view returns (uint) {
-        return _rewardPeriod;
-    }
-
-    /** @dev Expose the configured minimumBalance
-        @notice Expose the configured minimumBalance
-        @return Minimum token balance to list and challenge
-    */
-    function minimumBalance() public view returns (uint) {
-        return _minimumBalance;
-    }
-
-    /** @dev Expose the configured stakeholderCut
-        @notice Expose the configured stakeholderCut
-        @return Number of tokens the stakeholder gets after a challenge
-    */
-    function stakeholderCut() public view returns (uint) {
-        return _stakeholderCut;
-    }
-
-    /** @dev Expose the configured Voting contract address
-        @notice Expose the configured Voting contract address
-        @return Configured Voting contract address
-    */
-    function voting() public view returns (address) {
-        return address(_voting);
-    }
-
-    /** @dev Expose the list of active listing keys
-        @notice Expose the list of active listing keys
-        @return An array of hex encoded tendermint keys
+    /** @dev Expose the list of active listing keys.
+        @notice Expose the list of active listing keys.
+        @return An array of hex encoded tendermint keys.
     */
     function listingKeys() public view returns (bytes32[] memory) {
         return _listingKeys;
     }
 
-    /** @dev Expose the configured Treasury address
-        @notice Expose the configured Treasury address
-        @return Configured Treasury contract address
-    */
-    function treasury() public view returns (address) {
-        return address(_treasury);
-    }
-
-    /** @dev Expose the configured KosuToken
-        @notice Expose the configured KosuToken
-        @return Configured KosuToken contract address
-    */
-    function kosuToken() public view returns (address) {
-        return address(_kosuToken);
-    }
-
-    /** @dev Calculate the maximum KosuToken a validator can generate
-        @notice Calculate the maximum KosuToken a validator can generate
-        @return Maximum KosuToken a validator can generate
+    /** @dev Calculate the maximum KosuToken a validator can generate.
+        @notice Calculate the maximum KosuToken a validator can generate.
+        @return Maximum KosuToken a validator can generate per period.
     */
     function maxRewardRate() public view returns (uint) {
         return (sqrt(_maxGenerationSum));
     }
 
-    /** @dev Expose listing data
-        @notice Expose listing data
+    /** @dev Expose listing data for given public key.
+        @notice Expose listing data for given public key.
         @param pubKey Hex encoded tendermint public key
+        @return The listing structure corresponding to the provided key.
     */
     function getListing(bytes32 pubKey) public view returns (Listing memory) {
-        //TODO: update output when structure more final
         return _listings[pubKey];
 
     }
 
-    function getListings() public view returns (Listing[] memory) {
+    /** @dev Expose several listings provided multiple public keys.
+        @notice Expose several listings provided multiple public keys.
+        @param pubKeys Hex encoded Tendermint public keys to retreive
+        @return The array of listing structures corresponding to the provided keys.
+    */
+    function getListings(bytes32[] memory pubKeys) public view returns (Listing[] memory) {
+        Listing[] memory listings = new Listing[](pubKeys.length);
+        for (uint i = 0; i < pubKeys.length; i++) {
+            listings[i] = _listings[pubKeys[i]];
+        }
+        return listings;
+    }
+
+    /** @dev Expose all listings in the registry.
+        @notice Expose all listings in the registry.
+        @return An array of all listings in the registry.
+    */
+    function getAllListings() public view returns (Listing[] memory) {
         Listing[] memory listings = new Listing[](_listingKeys.length);
-        for(uint i = 0; i < _listingKeys.length; i++) {
+        for (uint i = 0; i < _listingKeys.length; i++) {
             listings[i] = _listings[_listingKeys[i]];
         }
         return listings;
     }
 
+    /** @dev Expose challenge data for a given ID.
+        @notice Expose challenge data for a given ID.
+        @param challengeId The ID to retreive challenge data for
+        @return The challenge indicated by the provided ID.
+    */
+    function getChallenge(uint challengeId) public view returns (Challenge memory) {
+        return _challenges[challengeId];
+
+    }
+
+    /** @dev Expose challenge data
+        @notice Expose challenge data
+        @param challengeIds challenge id
+    */
+    function getChallenges(uint[] memory challengeIds) public view returns (Challenge[] memory) {
+        Challenge[] memory challenges = new Challenge[](challengeIds.length);
+        for (uint i = 0; i < challengeIds.length; i++) {
+            challenges[i] = _challenges[challengeIds[i]];
+        }
+        return challenges;
+    }
+
+    /** @dev Expose all challenges
+        @notice Expose all challenges
+    */
+    function getAllChallenges() public view returns (Challenge[] memory) {
+        uint challengeCount = nextChallenge - 1;
+        Challenge[] memory challenges = new Challenge[](challengeCount);
+        for (uint i = 0; i < challengeCount; i++) {
+            challenges[i] = _challenges[i+1];
+        }
+        return challenges;
+    }
+
     /** @dev Register a listing
         @notice Register a listing
-        @param msgSender msg.sender from the proxy call
         @param tendermintPublicKey Hex encoded tendermint public key
         @param tokensToStake The number of tokes at stake if the order is challenged
         @param rewardRate The rate tokens are minted or destroyed over the active listings reward periods
         @param details A string value to represent support for claim (commonly an external link)
     */
-    function registerListing(address msgSender, bytes32 tendermintPublicKey, uint tokensToStake, int rewardRate, string calldata details) external isAuthorized {
+    function registerListing(bytes32 tendermintPublicKey, uint tokensToStake, int rewardRate, string calldata details) external {
         //tokensToStake must be greater than or equal to _minimumBalance
-        require(tokensToStake >= _minimumBalance);
+        require(tokensToStake >= minimumBalance);
 
         //Claim tokens from the treasury
-        _treasury.claimTokens(msgSender, tokensToStake);
+        treasury.claimTokens(msg.sender, tokensToStake);
 
         //Load listing
         Listing storage listing = _listings[tendermintPublicKey];
 
         //Must not overwrite an existing listing
         require(listing.status == Status.NULL);
-        if(rewardRate > 0) {
+        if (rewardRate > 0) {
             require(uint(rewardRate) <= maxRewardRate());
         }
 
@@ -192,7 +198,7 @@ contract ValidatorRegistry is IValidatorRegistry, Authorizable {
         listing.stakedBalance = tokensToStake;
         listing.applicationBlock = block.number;
         listing.tendermintPublicKey = tendermintPublicKey;
-        listing.owner = msgSender;
+        listing.owner = msg.sender;
         listing.rewardRate = rewardRate;
         listing.details = details;
 
@@ -205,41 +211,46 @@ contract ValidatorRegistry is IValidatorRegistry, Authorizable {
 
     /** @dev Challenge a registered listing
         @notice Challenge a registered listing
-        @param msgSender msg.sender from the proxy call
         @param tendermintPublicKey Hex encoded tendermint public key
         @param details A string value to represent support for claim (commonly an external link)
     */
-    function challengeListing(address msgSender, bytes32 tendermintPublicKey, string memory details) public isAuthorized {
+    function challengeListing(bytes32 tendermintPublicKey, string memory details) public {
         //Load listing
         Listing storage listing = _listings[tendermintPublicKey];
 
         //Challenge pending and accepted listings.  -- More valid status may be added.
         require(listing.status == Status.PENDING || listing.status == Status.ACCEPTED || listing.status == Status.EXITING);
 
-        //TODO When min balance becomes variable touch and remove if below balance;
-
         //Ensure earns and burns are up to date  return if a touch and remove was executed
         processRewards(listing);
-        if(listing.status == Status.NULL) return;
+        if (listing.status == Status.NULL) return;
+
+        if (listing.stakedBalance < minimumBalance) {
+            touchAndRemoveListing(listing);
+            return;
+        }
+
+        //Create challenge
+        Challenge storage challenge = _challenges[nextChallenge];
+
+        //Pull tokens out of the treasury
+        treasury.claimTokens(msg.sender, listing.stakedBalance);
+
+        //Initialize challenge.
+        challenge.balance = listing.stakedBalance;
+        challenge.challenger = msg.sender;
+        challenge.listingKey = listing.tendermintPublicKey;
+        challenge.challengeEnd = block.number + challengePeriod;
+        challenge.pollId = voting.createPoll(block.number + commitPeriod, block.number + challengePeriod);
+        challenge.details = details;
+        challenge.listingSnapshot = listing;
 
         //Update the listing
         listing.status = Status.CHALLENGED;
         listing.currentChallenge = nextChallenge;
 
-        //Create challenge
-        Challenge storage challenge = _challenges[nextChallenge];
+        //Increment challengeId
         nextChallenge++;
-
-        //Pull tokens out of the treasury
-        _treasury.claimTokens(msgSender, listing.stakedBalance);
-
-        //Initialize challenge.
-        challenge.balance = listing.stakedBalance;
-        challenge.challenger = msgSender;
-        challenge.listingKey = listing.tendermintPublicKey;
-        challenge.challengeEnd = block.number + _challengePeriod;
-        challenge.pollId = _voting.createPoll(block.number + _commitPeriod, block.number + _challengePeriod);
-        challenge.details = details;
 
         //Emit challenged event
         emitValidatorChallenged(listing.tendermintPublicKey, listing.owner, challenge.challenger, listing.currentChallenge, challenge.pollId, challenge.details);
@@ -260,27 +271,27 @@ contract ValidatorRegistry is IValidatorRegistry, Authorizable {
         require(!challenge.finalized);
         require(challenge.balance == listing.stakedBalance);
 
-        uint winningOption = _voting.winningOption(challenge.pollId);
+        uint winningOption = voting.winningOption(challenge.pollId);
 
         //calculate the holders cut
-        uint holderCut = listing.stakedBalance.mul(_stakeholderCut).div(100);
+        uint holderCut = listing.stakedBalance.mul(stakeholderCut).div(100);
         challenge.voterTotal = listing.stakedBalance.sub(holderCut);
 
-        if(winningOption == 1) {
+        if (winningOption == 1) {
             challenge.passed = true;
             challenge.finalized = true;
 
             //Challenger won listing owner looses the tokens
-            _treasury.confiscate(listing.owner, listing.stakedBalance);
+            treasury.confiscate(listing.owner, listing.stakedBalance);
 
             //Approve and release tokens to treasury for successful challenger
             //Challenger receives his tokens back and cut of the listing balance.  Tokens available for distribution will be tracked in the challenge.balance
             uint challengerTotalWinnings = challenge.balance.add(holderCut);
-            _kosuToken.approve(address(_treasury), challengerTotalWinnings);
+            kosuToken.approve(address(treasury), challengerTotalWinnings);
 
             // Release challenge stake, award new tokens then remove the award from the remaining reward.
-            _treasury.releaseTokens(challenge.challenger, challenge.balance);
-            _treasury.award(challenge.challenger, holderCut);
+            treasury.releaseTokens(challenge.challenger, challenge.balance);
+            treasury.award(challenge.challenger, holderCut);
             challenge.balance = challenge.balance.sub(holderCut);
 
             //Emit event removing power
@@ -291,35 +302,37 @@ contract ValidatorRegistry is IValidatorRegistry, Authorizable {
             challenge.passed = false;
             challenge.finalized = true;
 
-            if (_voting.totalWinningTokens(challenge.pollId) == 0) {
+            if (voting.totalWinningTokens(challenge.pollId) == 0) {
                 holderCut = challenge.balance;
                 challenge.voterTotal = 0;
             }
 
             //Challenger lost and has lost the tokens.
-            _treasury.confiscate(challenge.challenger, listing.stakedBalance);
+            treasury.confiscate(challenge.challenger, listing.stakedBalance);
 
             //Approve and release tokens to treasury for the listing holder Remaning tokens
             challenge.balance = challenge.balance.sub(holderCut);
-            _kosuToken.approve(address(_treasury), holderCut);
-            _treasury.award(listing.owner, holderCut);
+            kosuToken.approve(address(treasury), holderCut);
+            treasury.award(listing.owner, holderCut);
 
             //Handle status transitions
-            if(listing.exitBlock > 0) { //Exiting challenge exit is completed
+            if (listing.exitBlock > 0) {//Exiting challenge exit is completed
                 //listing was exiting and got challenged.  The listing will be removed by surviving the challenge.
 
                 //Approve and release tokens to treasury
-                _kosuToken.approve(address(_treasury), listing.stakedBalance);
-                _treasury.releaseTokens(listing.owner, listing.stakedBalance);
+                kosuToken.approve(address(treasury), listing.stakedBalance);
+                treasury.releaseTokens(listing.owner, listing.stakedBalance);
 
                 //Clear listing data and remove from tracking array
                 removeListing(listing);
-            } else if(listing.confirmationBlock > 0) { //Confirmed challenge is returned to accepted
+            } else if (listing.confirmationBlock > 0) {//Confirmed challenge is returned to accepted
                 listing.status = Status.ACCEPTED;
                 listing.currentChallenge = 0;
-            } else { //Pending challege returned to pending
+                emitValidatorChallengeResolved(listing);
+            } else {//Pending challege returned to pending
                 listing.status = Status.PENDING;
                 listing.currentChallenge = 0;
+                emitValidatorChallengeResolved(listing);
             }
 
             //ensure the ending state is correct
@@ -331,14 +344,14 @@ contract ValidatorRegistry is IValidatorRegistry, Authorizable {
         @notice Claims winnings from a challenge
         @param challengeId Challenge id to claim rewards from.
     */
-    function claimWinnings(address msgSender, uint challengeId) public isAuthorized {
+    function claimWinnings(uint challengeId) public {
         Challenge storage challenge = _challenges[challengeId];
 
         //Must be after challenge period
         require(block.number > challenge.challengeEnd);
 
         //Finalize the challenge
-        if(!challenge.finalized) {
+        if (!challenge.finalized) {
             resolveChallenge(challenge.listingKey);
         }
 
@@ -346,14 +359,14 @@ contract ValidatorRegistry is IValidatorRegistry, Authorizable {
         require(challenge.finalized);
 
         //Get vote info
-        uint winningTokens = _voting.userWinningTokens(challenge.pollId, msgSender);
-        uint totalWinningTokens = _voting.totalWinningTokens(challenge.pollId);
+        uint winningTokens = voting.userWinningTokens(challenge.pollId, msg.sender);
+        uint totalWinningTokens = voting.totalWinningTokens(challenge.pollId);
 
         //Approve and release tokens to treasury for the listing holder Remaning tokens
         uint voterCut = challenge.voterTotal.mul(winningTokens).div(totalWinningTokens);
         challenge.balance = challenge.balance.sub(voterCut);
-        _kosuToken.approve(address(_treasury), voterCut);
-        _treasury.award(msgSender, voterCut);
+        kosuToken.approve(address(treasury), voterCut);
+        treasury.award(msg.sender, voterCut);
     }
 
     /** @dev Claims rewards for a listing
@@ -370,24 +383,23 @@ contract ValidatorRegistry is IValidatorRegistry, Authorizable {
 
     /** @dev Confirm a listing registration
         @notice Confirm a listing registration
-        @param msgSender msg.sender from the proxy call
         @param tendermintPublicKey Hex encoded tendermint public key
     */
-    function confirmListing(address msgSender, bytes32 tendermintPublicKey) public isAuthorized {
+    function confirmListing(bytes32 tendermintPublicKey) public {
         //Load listing
         Listing storage listing = _listings[tendermintPublicKey];
 
         //Must be called by owner after application period
-        require(listing.owner == msgSender);
-        require(listing.status == Status.PENDING && listing.applicationBlock.add(_applicationPeriod) <= block.number);
+        require(listing.owner == msg.sender);
+        require(listing.status == Status.PENDING && listing.applicationBlock.add(applicationPeriod) <= block.number);
 
         //Listing is now accepted
         listing.status = Status.ACCEPTED;
         listing.confirmationBlock = block.number;
-        if(listing.rewardRate < 0) {
-            listing.lastRewardBlock = block.number - _rewardPeriod;
+        if (listing.rewardRate < 0) {
+            listing.lastRewardBlock = block.number - rewardPeriod;
         } else {
-            if(listing.rewardRate > 0) {
+            if (listing.rewardRate > 0) {
                 uint rewardRate = uint(listing.rewardRate);
                 _maxGenerationSum = _maxGenerationSum.add(rewardRate.mul(rewardRate));
             }
@@ -396,27 +408,29 @@ contract ValidatorRegistry is IValidatorRegistry, Authorizable {
         }
         processRewards(listing);
 
-        //Emit update event
-        emitValidatorRegistryUpdate(listing.tendermintPublicKey, listing.owner, listing.stakedBalance);
+        if (listing.status != Status.NULL) {
+            //Emit update event if listing wasn't removed
+            emitValidatorConfirmed(listing);
+            emitValidatorRegistryUpdate(listing.tendermintPublicKey, listing.owner, listing.stakedBalance);
+        }
     }
 
     /** @dev Initiate a listing exit
         @notice Initiate a listing exit
-        @param msgSender msg.sender from the proxy call
         @param tendermintPublicKey Hex encoded tendermint public key
     */
-    function initExit(address msgSender, bytes32 tendermintPublicKey) public isAuthorized {
+    function initExit(bytes32 tendermintPublicKey) public {
         //Load the listing
         Listing storage listing = _listings[tendermintPublicKey];
 
         //Listing owner must call this method
-        require(listing.owner == msgSender);
+        require(listing.owner == msg.sender);
 
         //Exit immediately if the listing is still in pending status.
-        if(listing.status == Status.PENDING) {
+        if (listing.status == Status.PENDING) {
             //Approve and release tokens to treasury
-            _kosuToken.approve(address(_treasury), listing.stakedBalance);
-            _treasury.releaseTokens(msgSender, listing.stakedBalance);
+            kosuToken.approve(address(treasury), listing.stakedBalance);
+            treasury.releaseTokens(msg.sender, listing.stakedBalance);
 
             //Clear listing data and remove from tracking array
             removeListing(listing);
@@ -428,7 +442,7 @@ contract ValidatorRegistry is IValidatorRegistry, Authorizable {
         require(listing.status == Status.ACCEPTED);
 
         listing.status = Status.EXITING;
-        listing.exitBlock = block.number + _exitPeriod;
+        listing.exitBlock = block.number + exitPeriod;
 
         //Emit event
         emitValidatorRegistryUpdate(listing.tendermintPublicKey, listing.owner, 0);
@@ -436,23 +450,22 @@ contract ValidatorRegistry is IValidatorRegistry, Authorizable {
 
     /** @dev Complete a listing exit
         @notice Complete a listing exit
-        @param msgSender msg.sender from the proxy call
         @param tendermintPublicKey Hex encoded tendermint public key
     */
-    function finalizeExit(address msgSender, bytes32 tendermintPublicKey) public isAuthorized {
+    function finalizeExit(bytes32 tendermintPublicKey) public {
         //Load the listing
         Listing storage listing = _listings[tendermintPublicKey];
 
         //Listing owner must call this method
-        require(listing.owner == msgSender);
+        require(listing.owner == msg.sender);
 
         //The listing must be exiting and past the exit block challenge interrupts this process
         require(listing.status == Status.EXITING);
         require(listing.exitBlock <= block.number);
 
         //Approve and release tokens to treasury
-        _kosuToken.approve(address(_treasury), listing.stakedBalance);
-        _treasury.releaseTokens(msgSender, listing.stakedBalance);
+        kosuToken.approve(address(treasury), listing.stakedBalance);
+        treasury.releaseTokens(msg.sender, listing.stakedBalance);
 
         //Clear listing data and remove from tracking array
         removeListing(listing);
@@ -460,44 +473,44 @@ contract ValidatorRegistry is IValidatorRegistry, Authorizable {
 
     //INTERNAL
     function hasRewardPending(Listing storage l) internal view returns (bool) {
-        return (l.status == Status.ACCEPTED && l.rewardRate != 0 && l.lastRewardBlock + _rewardPeriod <= block.number);
+        return (l.status == Status.ACCEPTED && l.rewardRate != 0 && l.lastRewardBlock + rewardPeriod <= block.number);
     }
 
     function processRewards(Listing storage l) internal {
-        if(hasRewardPending(l)) {
-            uint rewardPeriods = block.number.sub(l.lastRewardBlock).div(_rewardPeriod);
-            if(l.rewardRate > 0) {
-                _kosuToken.mintTo(l.owner, uint(l.rewardRate).mul(rewardPeriods));
+        if (hasRewardPending(l)) {
+            uint rewardPeriods = block.number.sub(l.lastRewardBlock).div(rewardPeriod);
+            if (l.rewardRate > 0) {
+                kosuToken.mintTo(l.owner, uint(l.rewardRate).mul(rewardPeriods));
             } else {
                 //Tokens to pay up
-                uint tokensToBurn = uint(l.rewardRate * -1).mul(rewardPeriods);
+                uint tokensToBurn = uint(l.rewardRate * - 1).mul(rewardPeriods);
 
                 //Tokens remaining in the treasury
-                uint userTreasuryBalance = _treasury.currentBalance(l.owner);
+                uint userTreasuryBalance = treasury.currentBalance(l.owner);
 
-                if(userTreasuryBalance < tokensToBurn) {
+                if (userTreasuryBalance < tokensToBurn) {
                     uint tokensRemaining = tokensToBurn.sub(userTreasuryBalance);
-                    if(tokensRemaining >= l.stakedBalance) {  //If more tokens are needed than the listing's staked balance take them all.
+                    if (tokensRemaining >= l.stakedBalance) {//If more tokens are needed than the listing's staked balance take them all.
                         tokensRemaining = l.stakedBalance;
                         l.stakedBalance = 0;
-                    } else { //Take additional tokens from the stakedBalance before the touch and remove.
+                    } else {//Take additional tokens from the stakedBalance before the touch and remove.
                         l.stakedBalance = l.stakedBalance.sub(tokensRemaining);
                     }
 
                     //Approve and release tokens to treasury to be burned by user
-                    _kosuToken.approve(address(_treasury), tokensRemaining);
-                    _treasury.releaseTokens(l.owner, tokensRemaining);
+                    kosuToken.approve(address(treasury), tokensRemaining);
+                    treasury.releaseTokens(l.owner, tokensRemaining);
 
                     //Burn all the remaining tokens in treasury and burn into the listing stake.
                     uint totalTokensToBurn = userTreasuryBalance.add(tokensRemaining);
-                    _treasury.burnFrom(l.owner, totalTokensToBurn);
+                    treasury.burnFrom(l.owner, totalTokensToBurn);
 
                     touchAndRemoveListing(l);
                 } else {
-                _treasury.burnFrom(l.owner, tokensToBurn);
+                    treasury.burnFrom(l.owner, tokensToBurn);
                 }
             }
-            l.lastRewardBlock = l.lastRewardBlock.add(_rewardPeriod.mul(rewardPeriods));
+            l.lastRewardBlock = l.lastRewardBlock.add(rewardPeriod.mul(rewardPeriods));
         }
     }
 
@@ -507,8 +520,8 @@ contract ValidatorRegistry is IValidatorRegistry, Authorizable {
         emitValidatorRegistryUpdate(l.tendermintPublicKey, l.owner, 0);
 
         //Approve and release tokens to treasury
-        _kosuToken.approve(address(_treasury), l.stakedBalance);
-        _treasury.releaseTokens(l.owner, l.stakedBalance);
+        kosuToken.approve(address(treasury), l.stakedBalance);
+        treasury.releaseTokens(l.owner, l.stakedBalance);
 
         //Clear listing data and remove from tracking array
         removeListing(l);
@@ -535,10 +548,14 @@ contract ValidatorRegistry is IValidatorRegistry, Authorizable {
     }
 
     function removeListing(Listing storage l) internal {
-        if(l.rewardRate > 0) {
+        if (l.rewardRate > 0 && l.confirmationBlock > 0) {
             uint rewardRate = uint(l.rewardRate);
             _maxGenerationSum = _maxGenerationSum.sub(rewardRate.mul(rewardRate));
         }
+
+        bytes32[] memory data = new bytes32[](1);
+        data[0] = l.tendermintPublicKey;
+        eventEmitter.emitEvent("ValidatorRemoved", data, "");
 
         removeListingKey(l.tendermintPublicKey);
         delete _listings[l.tendermintPublicKey];
@@ -549,7 +566,7 @@ contract ValidatorRegistry is IValidatorRegistry, Authorizable {
         data[0] = tendermintPublicKey;
         data[1] = bytes32(uint(owner));
         data[2] = bytes32(stake);
-        e.emitEvent("ValidatorRegistryUpdate", data, "");
+        eventEmitter.emitEvent("ValidatorRegistryUpdate", data, "");
     }
 
     function emitValidatorRegistered(uint applicationBlock, bytes32 tendermintPublicKey, address owner, int rewardRate, string storage details) internal {
@@ -558,14 +575,20 @@ contract ValidatorRegistry is IValidatorRegistry, Authorizable {
         data[1] = bytes32(applicationBlock);
         data[2] = bytes32(uint(owner));
         data[3] = bytes32(rewardRate);
-        e.emitEvent("ValidatorRegistered", data, details);
+        eventEmitter.emitEvent("ValidatorRegistered", data, details);
+    }
+
+    function emitValidatorConfirmed(Listing storage l) internal {
+        bytes32[] memory data = new bytes32[](1);
+        data[0] = l.tendermintPublicKey;
+        eventEmitter.emitEvent("ValidatorConfirmed", data, "");
     }
 
     function emitValidatorTouchedAndRemoved(Listing storage l) internal {
         bytes32[] memory data = new bytes32[](4);
         data[0] = l.tendermintPublicKey;
         data[2] = bytes32(uint(l.owner));
-        e.emitEvent("ValidatorTouchedAndRemoved", data, "");
+        eventEmitter.emitEvent("ValidatorTouchedAndRemoved", data, "");
     }
 
     function emitValidatorChallenged(bytes32 tendermintPublicKey, address owner, address challenger, uint challengeId, uint pollId, string storage details) internal {
@@ -575,6 +598,12 @@ contract ValidatorRegistry is IValidatorRegistry, Authorizable {
         data[2] = bytes32(uint(challenger));
         data[3] = bytes32(challengeId);
         data[4] = bytes32(pollId);
-        e.emitEvent("ValidatorChallenged", data, details);
+        eventEmitter.emitEvent("ValidatorChallenged", data, details);
+    }
+
+    function emitValidatorChallengeResolved(Listing storage l) internal {
+        bytes32[] memory data = new bytes32[](1);
+        data[0] = l.tendermintPublicKey;
+        eventEmitter.emitEvent("ValidatorChallengeResolved", data, "");
     }
 }

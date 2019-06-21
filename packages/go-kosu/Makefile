@@ -10,11 +10,13 @@ GOLINT = golangci-lint run --enable-all \
 		--exclude-use-default=false \
 		--deadline=10m
 
-vendors:
-	go mod vendor
+build:
+	go build -o kosud ./cmd/kosud
+	go build -o kosu-cli ./cmd/kosu-cli
 
-testnet: vendors
-	docker-compose up
+testnet: build
+	docker-compose rm -f
+	docker-compose up --build
 
 test-fast:
 	$(GOTEST) -failfast

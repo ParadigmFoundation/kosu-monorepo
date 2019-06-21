@@ -19,6 +19,7 @@
             "*": {
                 "*": [
                     "abi",
+                    "devdoc",
                     "evm.bytecode.object",
                     "evm.bytecode.sourceMap",
                     "evm.deployedBytecode.object",
@@ -32,11 +33,11 @@
         "event/EventEmitter.sol",
         "external/OrderGateway.sol",
         "external/PosterRegistryProxy.sol",
-        "external/ValidatorRegistryProxy.sol",
         "lib/KosuToken.sol",
         "poster/PosterRegistry.sol",
         "treasury/Treasury.sol",
         "validator/ValidatorRegistry.sol",
-        "voting/Voting.sol"
+        "voting/Voting.sol",
+        "test/BasicTradeSubContract.sol"
     ]
 }

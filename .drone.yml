@@ -1,75 +1,113 @@
-# Kosu-monorepo CI configuration file (last updated 24 May 2019)
-# Version v0.1.0-alpha.1
+# Kosu monorepo CI config file (last updated: 20 June 2019)
 
 kind: pipeline
-name: node-tests
+name: tests
 
 steps:
-  - name: npm-projects
+  - name: build-project
     image: gcr.io/kosu-io/node-ci:latest
     pull: always
     environment:
       WEB3_URI: http://kosu-geth:8545
     commands:
       - yarn
-      - yarn prettier:ci
-      - yarn lint
-      - yarn build
-      - yarn test:ci
+      - yarn setup:ci
+      - cd packages/kosu-system-contracts
+      - yarn deploy:kosu:ci
+    when:
+      changeset:
+        includes:
+          [
+            .drone.yml,
+            package.json,
+            tsconfig.json,
+            packages/go-kosu/**/*.*,
+            packages/kosu-sdk-contracts/**/*.*,
+            packages/kosu-system-contracts/**/*.*,
+            packages/kosu.js/**/*.*,
+            packages/tslint-config/**/*.*,
+            packages/tsc-config/**/*.*,
+          ]
 
-services:
-  - name: kosu-geth
-    image: gcr.io/kosu-io/kosu-geth:latest
+  - name: npm-tests
+    image: gcr.io/kosu-io/node-ci:latest
     pull: always
-    ports:
-      - 8545
+    environment:
+      WEB3_URI: http://kosu-geth:8545
+    commands:
+      - yarn test:ci
+    depends_on:
+      - build-project
+    when:
+      changeset:
+        includes:
+          [
+            .drone.yml,
+            packages/kosu-sdk-contracts/**/*.*,
+            packages/kosu-system-contracts/**/*.*,
+            packages/kosu.js/**/*.*,
+            packages/tslint-config/**/*.*,
+            packages/tsc-config/**/*.*,
+          ]
 
-# Pull request trigger is not correctly causing build to start on fresh pull request.
-trigger:
-  event:
-   - pull_request
-  changeset:
-    includes: [
-      .drone.yml,
-      packages/kosu.js/**/*.*,
-      packages/dev-images/**/*.*,
-      packages/kosu-sdk-contracts/**/*.*,
-      packages/kosu-system-contracts/**/*.*,
-      packages/web-helpers/**/*.*,
-      packages/kosu-geth/**/*.*,
-      packages/tslint-config/**/*.*,
-      packages/tsc-config/**/*.*
-    ]
+  - name: solidity-tests
+    image: gcr.io/kosu-io/node-ci:latest
+    pull: always
+    environment:
+      WEB3_URI: http://kosu-geth:8545
+    commands:
+      - yarn contracts:test:ci
+    depends_on:
+      - build-project
+    when:
+      changeset:
+        includes:
+          [
+            .drone.yml,
+            packages/kosu-sdk-contracts/**/*.*,
+            packages/kosu-system-contracts/**/*.*,
+            packages/tslint-config/**/*.*,
+            packages/tsc-config/**/*.*,
+            tsconfig.json,
+          ]
 
----
-kind: pipeline
-name: golang-tests
-
-steps:
   - name: go-kosu
     image: gcr.io/kosu-io/go-kosu-ci:latest
     pull: always
     environment:
-      ETHEREUM_TEST_ADDRESS: wss://ethnet.zaidan.io/ws/ropsten
+      ETHEREUM_TEST_ADDRESS: wss://kosu-geth:8546
     commands:
-    - cd packages/go-kosu
-    - make ci
+      - cd packages/go-kosu
+      - make ci
+    depends_on:
+      - build-project
+    when:
+      changeset:
+        includes:
+          [
+            .drone.yml,
+            packages/go-kosu/**/*.*,
+            packages/kosu-sdk-contracts/**/*.*,
+            packages/kosu-system-contracts/**/*.*,
+          ]
+
+services:
+    - name: kosu-geth
+      image: gcr.io/kosu-io/kosu-geth:latest
+      pull: always
+      ports:
+          - 8545
+          - 8546
 
 trigger:
-  event:
-    - pull_request
-  changeset:
-    includes: [
-      .drone.yml,
-      packages/go-kosu/**/*.*,
-      packages/kosu-system-contracts/**/*.*
-    ]
+    event:
+        - pull_request
 
 # UNTESTED
 # ---
 # kind: pipeline
 # name: go-kosu-release
-#  
+#
 # release:
 #     image: golang:1.12
 #     secrets: [github_token]

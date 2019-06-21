@@ -2,15 +2,14 @@ const { OrderGateway } = require("../src/OrderGateway");
 const DeployedAddresses = require("@kosu/system-contracts").DeployedAddresses;
 
 describe("OrderGateway", () => {
-    let orderGateway;
+    let orderGateway, maker, taker, order;
 
     before(async () => {
         orderGateway = kosu.orderGateway;
 
         maker = accounts[7].toLowerCase();
         taker = accounts[8].toLowerCase();
-        let makerArguments = await orderGateway.makerArguments(subContract);
-        let takerArguments = await orderGateway.takerArguments(subContract);
+        let args = await orderGateway.arguments(subContract);
 
         await tka.approve(subContract, MAX_UINT, maker);
         await tkb.approve(subContract, MAX_UINT, taker);
@@ -24,12 +23,18 @@ describe("OrderGateway", () => {
             buyerTokenCount: 1000,
         };
 
-        order = { subContract, maker: maker, makerArguments, takerArguments, makerValues };
+        order = { subContract, maker: maker, arguments: args, makerValues };
         await kosu.orderHelper.makeOrder(order);
     });
 
     describe("participate()", () => {
-        it("should participate in a fully constructed Order.");
+        it("should participate in a fully constructed Order.", async () => {
+            order.takerValues = { tokensToBuy: 500 };
+            await orderGateway.participate(order, taker);
+
+            await tka.balanceOf(taker).should.eventually.eq("500");
+            await tkb.balanceOf(maker).should.eventually.eq("500");
+        });
     });
 
     /*  describe('events', () => {
@@ -48,20 +53,11 @@ describe("OrderGateway", () => {
     });
   });*/
 
-    describe("makerArguments()", () => {
-        it("should get the makerArguments of a SubContract", async () => {
-            const makerArguments = await orderGateway.makerArguments(subContract);
+    describe("arguments()", () => {
+        it("should get the arguments of a SubContract", async () => {
+            const args = await orderGateway.arguments(subContract);
             assert.doesNotThrow(() => {
-                JSON.stringify(makerArguments);
-            });
-        });
-    });
-
-    describe("takerArguments()", () => {
-        it("should get the takerArguments of a SubContract", async () => {
-            const takerArguments = await orderGateway.takerArguments(subContract);
-            assert.doesNotThrow(() => {
-                JSON.stringify(takerArguments);
+                JSON.stringify(args);
             });
         });
     });

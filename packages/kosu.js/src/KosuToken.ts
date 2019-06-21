@@ -5,20 +5,49 @@ import { TransactionReceiptWithDecodedLogs } from "ethereum-protocol";
 import Web3 from "web3";
 
 /**
- * Integration with KosuToken contract on an Ethereum blockchain.
+ * The `KosuToken` class is a wrapper for the Kosu ERC-20 token contract, and
+ * provides all necessary methods for interacting with the contract on any
+ * Ethereum network for which the contract has been deployed.
  *
- * @todo Refactor contract integration after migration away from truffle
+ * If instantiated outside the `Kosu` class, an instance of `web3` and of the
+ * `web3Wrapper` must be supplied in the options object.
  */
 export class KosuToken {
+    /**
+     * An instance of `web3` used to interact with the Ethereum blockchain.
+     */
     private readonly web3: Web3;
-    private contract: KosuTokenContract;
+
+    /**
+     * An instance of a 0x `Web3Wrapper` used for some RPC calls and for certain
+     * methods.
+     */
     private readonly web3Wrapper: Web3Wrapper;
+
+    /**
+     * An instance of the lower-level contract wrapper for the Kosu token, auto-
+     * generated from the Solidity source code.
+     */
+    private contract: KosuTokenContract;
+
+    /**
+     * The current KosuToken deployed address, loaded based on the detected
+     * `networkId` from a mapping of known deployed addresses.
+     */
     private address: string;
 
     /**
-     * Creates a new KosuToken instance
+     * Creates a new KosuToken instance, supplied with an options object.
      *
-     * @param options initialization options
+     * The KosuToken address _may_ be passed in as `options.kosuTokenAddress`, but
+     * can also be loaded during each method call from the known deployed addresses.
+     *
+     * @param options initialization options object (incl. `web3` and `web3wrapper`)
+     * @example
+     * ```typescript
+     * const options = { web3: new Web3(window.ethereum), web3Wrapper };
+     * const kosuToken = new KosuToken(options);
+     * ```
      */
     constructor(options: KosuOptions) {
         this.web3 = options.web3;
@@ -27,9 +56,9 @@ export class KosuToken {
     }
 
     /**
-     * Asynchronously initializes the contract instance or returns it from cache
+     * Asynchronously initializes the contract instance or returns it from cache.
      *
-     * @returns The contract
+     * @returns The low-level KosuToken contract wrapper instance.
      */
     private async getContract(): Promise<KosuTokenContract> {
         if (!this.contract) {
@@ -54,7 +83,10 @@ export class KosuToken {
     }
 
     /**
-     * Reads the total supply
+     * Reads the total supply of KOSU, resolves to a `BigNumber` of the amount of
+     * tokens in units of wei.
+     *
+     * @returns The total KOSU supply in wei.
      */
     public async totalSupply(): Promise<BigNumber> {
         const contract = await this.getContract();
@@ -62,9 +94,10 @@ export class KosuToken {
     }
 
     /**
-     * Reads the balance for a user address
+     * Reads the balance for a user address, returned in wei.
      *
-     * @param owner Address of token holder
+     * @param owner The Ethereum address of a token holder.
+     * @returns The `owner`'s KOSU balance in wei.
      */
     public async balanceOf(owner: string): Promise<BigNumber> {
         const contract = await this.getContract();
@@ -72,50 +105,48 @@ export class KosuToken {
     }
 
     /**
-     * Transfers tokens to a user
+     * Transfers tokens to an address, from the current `coinbase` account.
      *
-     * @param to Address of token receiver
-     * @param value uint value of tokens to transfer
+     * @param to Ethereum Address of token receiver.
+     * @param value The `uint` value of tokens to transfer (in wei).
+     * @returns The transaction's receipt after inclusion in a block.
      */
     public async transfer(to: string, value: BigNumber): Promise<TransactionReceiptWithDecodedLogs> {
         const contract = await this.getContract();
-        return contract.transfer
-            .sendTransactionAsync(to, value)
-            .then(txHash => this.web3Wrapper.awaitTransactionSuccessAsync(txHash));
+        return contract.transfer.awaitTransactionSuccessAsync(to, value);
     }
 
     /**
-     * Transfers token from an address to a destination address
+     * Transfers token from an address to a destination address.
      *
-     * @param from Address of token source
-     * @param to Address of token destination
-     * @param value uint value of tokens to transfer
+     * @param from Address of token source.
+     * @param to Address of token destination.
+     * @param value The `uint` value of tokens to transfer (in wei).
+     * @returns The transaction receipt after it has been included in a block.
      */
     public async transferFrom(from: string, to: string, value: BigNumber): Promise<TransactionReceiptWithDecodedLogs> {
         const contract = await this.getContract();
-        return contract.transferFrom
-            .sendTransactionAsync(from, to, value)
-            .then(txHash => this.web3Wrapper.awaitTransactionSuccessAsync(txHash));
+        return contract.transferFrom.awaitTransactionSuccessAsync(from, to, value);
     }
 
     /**
-     * Sets approval for user to transfer tokens on coinbase's behalf
+     * Sets approval for user to transfer tokens on `coinbase`'s behalf.
      *
-     * @param spender Address allowed to spend coinbase's tokens
-     * @param value uint value of tokens to transfer
+     * @param spender Address allowed to spend `coinbase`'s tokens.
+     * @param value The uint value (in wei) to approve `spender` for.
+     * @returns The transaction receipt after it has been included in a block.
      */
     public async approve(spender: string, value: BigNumber): Promise<TransactionReceiptWithDecodedLogs> {
         const contract = await this.getContract();
-        return contract.approve
-            .sendTransactionAsync(spender, value)
-            .then(txHash => this.web3Wrapper.awaitTransactionSuccessAsync(txHash));
+        return contract.approve.awaitTransactionSuccessAsync(spender, value);
     }
 
     /**
-     * Reads approved allowance for user pair
+     * Reads approved allowance for a given `owner` and `spender` account.
      *
      * @param owner Address of source tokens
      * @param spender Address of spender of tokens
+     * @returns The allowance granted to the `spender` in units of wei.
      */
     public async allowance(owner: string, spender: string): Promise<BigNumber> {
         const contract = await this.getContract();

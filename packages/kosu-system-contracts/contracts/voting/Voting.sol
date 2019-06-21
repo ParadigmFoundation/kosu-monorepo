@@ -6,6 +6,7 @@ import "openzeppelin-solidity/contracts/math/SafeMath.sol";
 
 /** @title Voting
     @author Freydal
+    @dev Voting manages polls and votes on governance matters within the Kosu system.
 */
 contract Voting {
     using SafeMath for uint;
@@ -22,6 +23,7 @@ contract Voting {
         uint revealEndBlock;
         uint currentLeadingOption;
         uint leadingTokens;
+        uint totalRevealedTokens;
         mapping(uint => uint) voteValues;
         mapping(address => bool) didCommit;
         mapping(address => bool) didReveal;
@@ -32,7 +34,7 @@ contract Voting {
         bytes32 hiddenVote;
         uint tokensCommitted;
         uint salt;
-        uint voteOption; //TODO: what do we want Vote to be as far as datat type  bool vs uint;
+        uint voteOption;
     }
 
     /** @dev Create a new voting engine
@@ -52,27 +54,28 @@ contract Voting {
         @return Poll index number. Will be used as the key for interacting with a vote.
     */
     function createPoll(uint _commitEndBlock, uint _revealEndBlock) public returns (uint) {
-        //Reveal end after commit
+        // Reveal end after commit
         require(_commitEndBlock < _revealEndBlock);
 
-        //Set poll data
+        // Set poll data
         Poll storage p = polls[nextPollId];
         p.id = nextPollId;
         p.creator = msg.sender;
         p.commitEndBlock = _commitEndBlock;
         p.revealEndBlock = _revealEndBlock;
 
-        //Increase next poll index
+        // Increase next poll index
         nextPollId++;
 
-        //Format data and emit event
-        bytes32[] memory data = new bytes32[](2);
+        // Format data and emit event
+        bytes32[] memory data = new bytes32[](4);
         data[0] = bytes32(uint(p.creator));
         data[1] = bytes32(p.id);
-        //TODO: emit commit end and reveal end
+        data[2] = bytes32(_commitEndBlock);
+        data[3] = bytes32(_revealEndBlock);
         emitter.emitEvent('PollCreated', data, "");
 
-        //Return the poll id
+        // Return the poll id
         return p.id;
     }
 
@@ -118,17 +121,18 @@ contract Voting {
         require(!p.didReveal[msg.sender]);
         require(treasury.systemBalance(msg.sender) >= v.tokensCommitted);
 
-        //Calculate and compare the commited vote
+        // Calculate and compare the commited vote
         bytes32 exposedVote = keccak256(abi.encodePacked(_voteOption, _voteSalt));
         require(v.hiddenVote == exposedVote);
 
-        //Store info from a valid revealed vote. Remove the pending vote.
+        // Store info from a valid revealed vote. Remove the pending vote.
         v.salt = _voteSalt;
         v.voteOption = _voteOption;
         p.didReveal[msg.sender] = true;
         p.voteValues[_voteOption] = p.voteValues[_voteOption].add(v.tokensCommitted);
+        p.totalRevealedTokens = p.totalRevealedTokens.add(v.tokensCommitted);
 
-        //Update winner and tracking
+        // Update winner and tracking
         if(p.currentLeadingOption != _voteOption && p.voteValues[_voteOption] > p.leadingTokens) {
             p.currentLeadingOption = _voteOption;
         }
@@ -136,18 +140,40 @@ contract Voting {
         p.leadingTokens = p.voteValues[p.currentLeadingOption];
     }
 
+    /** @dev Retreive the winning outcome for a finalized poll.
+        @param _pollId Poll index to check winning option for
+        @return The uint value of the winning outcome
+    */
     function winningOption(uint _pollId) public view returns (uint) {
         Poll memory p = polls[_pollId];
         require(p.revealEndBlock < block.number);
         return p.currentLeadingOption;
     }
 
+    /** @dev Retreive the total number of tokens that voted on the winning side of a finalized poll.
+        @param _pollId Poll index to check winning tokens for
+        @return The uint number of tokens revealed for the winning option.
+    */
     function totalWinningTokens(uint _pollId) public view returns (uint) {
         Poll memory p = polls[_pollId];
         require(p.revealEndBlock < block.number);
         return p.leadingTokens;
     }
 
+    /** @dev Retreive the total number of tokens revealed for a finalized poll.
+        @param _pollId Poll index to check total revealed tokens for
+        @return The total number of tokens reveled in the poll.
+    */
+    function totalRevealedTokens(uint _pollId) public view returns (uint) {
+        Poll memory p = polls[_pollId];
+        require(p.revealEndBlock < block.number);
+        return p.totalRevealedTokens;
+    }
+
+    /** @dev Retreive the number of tokens committed by a user for the winning option.
+        @param _pollId Poll index to check winning tokens for
+        @param _user Address of user to check winning tokens.
+    */
     function userWinningTokens(uint _pollId, address _user) public view returns (uint tokens) {
         Poll memory p = polls[_pollId];
         require(p.revealEndBlock < block.number);
@@ -159,7 +185,4 @@ contract Voting {
 
         return tokens;
     }
-
-    //INTERNAL
-
 }

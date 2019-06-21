@@ -4,7 +4,8 @@ import "../base/Authorizable.sol";
 import "../lib/KosuToken.sol";
 
 /** @title Treasury
-    @author Freydal
+    @author Freydal\
+    @dev The Kosu Treasury is the central balance management contract with the Kosu system.
 */
 contract Treasury is Authorizable {
     using SafeMath for uint;
@@ -13,8 +14,8 @@ contract Treasury is Authorizable {
     mapping(address => uint) private currentBalances;
     mapping(address => uint) private systemBalances;
 
-    /** @dev Creates a new Treasury
-        @notice Creates a new Treasury
+    /** @dev Creates a new Treasury.
+        @notice Creates a new Treasury.
         @param kosuTokenAddress The deployed KosuToken contract address
         @param auth AuthorizedAddresses deployed address.
     */
@@ -22,16 +23,16 @@ contract Treasury is Authorizable {
         kosuToken = KosuToken(kosuTokenAddress);
     }
 
-    /** @dev Deposits tokens into the treasury
-        @notice Deposits tokens into the treasury
+    /** @dev Deposits tokens into the treasury.
+        @notice Deposits tokens into the treasury.
         @param amount Number of tokens to deposit
     */
     function deposit(uint amount) public {
         _deposit(msg.sender, amount);
     }
 
-    /** @dev Allows contracts to deposit
-        @notice Allows contracts to deposit
+    /** @dev Allows contracts to deposit.
+        @notice Allows contracts to deposit.
         @param account User to deposit tokens for
         @param amount Number of tokens to deposit
     */
@@ -39,16 +40,16 @@ contract Treasury is Authorizable {
         _deposit(account, amount);
     }
 
-    /** @dev Withdraw tokens from the treasury
-        @notice Withdraw tokens from the treasury
+    /** @dev Withdraw tokens from the treasury.
+        @notice Withdraw tokens from the treasury.
         @param amount Number of tokens to withdraw
     */
     function withdraw(uint amount) public {
         _withdraw(msg.sender, amount);
     }
 
-    /** @dev Allows contracts to withdraw
-        @notice Allows contracts to withdraw
+    /** @dev Allows contracts to withdraw.
+        @notice Allows contracts to withdraw.
         @param account User to withdraw tokens for
         @param amount Number of tokens to withdraw
     */
@@ -56,8 +57,8 @@ contract Treasury is Authorizable {
         _withdraw(account, amount);
     }
 
-    /** @dev Allows contracts to claim tokens
-        @notice Allows contracts to claim tokens
+    /** @dev Allows contracts to claim tokens.
+        @notice Allows contracts to claim tokens.
         @param account User to claim tokens from
         @param amount Number of tokens to claim
     */
@@ -72,8 +73,8 @@ contract Treasury is Authorizable {
         setCurrentBalance(account, getCurrentBalance(account).sub(amount));
     }
 
-    /** @dev Allows contracts to release tokens
-        @notice Allows contracts to release tokens
+    /** @dev Allows contracts to release tokens.
+        @notice Allows contracts to release tokens.
         @param account User to release tokens to
         @param amount Number of tokens to release
     */
@@ -83,8 +84,8 @@ contract Treasury is Authorizable {
         setCurrentBalance(account, getCurrentBalance(account).add(amount));
     }
 
-    /** @dev Allows contracts to confiscate tokens the user has lost access to
-        @notice Allows contracts to confiscate tokens the user has lost access to
+    /** @dev Allows contracts to confiscate tokens the user has lost access to.
+        @notice Allows contracts to confiscate tokens the user has lost access to.
         @param account User to confiscate tokens from
         @param amount Number of tokens to confiscate
     */
@@ -95,8 +96,8 @@ contract Treasury is Authorizable {
         require(getSystemBalance(account) >= getCurrentBalance(account));
     }
 
-    /** @dev Allows contracts to be rewarded with new tokens
-        @notice Allows contracts to be rewarded with new tokens
+    /** @dev Allows contracts to be rewarded with new tokens.
+        @notice Allows contracts to be rewarded with new tokens.
         @param account User to award tokens to
         @param amount Number of tokens to award
     */
@@ -109,8 +110,8 @@ contract Treasury is Authorizable {
         setSystemBalance(account, getSystemBalance(account).add(amount));
     }
 
-    /** @dev Allows contracts to set balance
-        @notice Allows contracts to set balance
+    /** @dev Allows contracts to set balance.
+        @notice Allows contracts to set balance.
         @param account User to modify tokens for
         @param amount Number of tokens to set to current balance
     */
@@ -126,8 +127,8 @@ contract Treasury is Authorizable {
         }
     }
 
-    /** @dev Allows contracts to change balance
-        @notice Allows contracts to change balance
+    /** @dev Allows contracts to change balance.
+        @notice Allows contracts to change balance.
         @param account User to modify tokens for
         @param amount Change to token balance
     */
@@ -140,6 +141,11 @@ contract Treasury is Authorizable {
         }
     }
 
+    /** @dev Allows contracts to burn tokens.
+        @notice Allows contracts to burn tokens.
+        @param account User to modify tokens for by burning
+        @param amount Number of tokens to burn
+    */
     function burnFrom(address account, uint amount) isAuthorized public {
         require(getCurrentBalance(account) >= amount);
         kosuToken.burn(amount);
@@ -148,25 +154,26 @@ contract Treasury is Authorizable {
     }
 
 
-/** @dev Reports the balance within the contract system for a user
-    @notice Reports the balance within the contract system for a user
-    @param account Account to report balance on
-    @return The number of tokens within the total contract system
-*/
+    /** @dev Reports the balance within the contract system for a user.
+        @notice Reports the balance within the contract system for a user.
+        @param account Account to report balance on
+        @return The number of tokens within the total contract system.
+    */
     function systemBalance(address account) public view returns (uint)  {
         return getSystemBalance(account);
     }
 
-    /** @dev Reports the balance held within the contract for a user
-        @notice Reports the balance held within the contract for a user
+    /** @dev Reports the balance held within the contract for a user.
+        @notice Reports the balance held within the contract for a user.
         @param account Account to report balance on
-        @return Number of tokens this contract holds for the user
+        @return Number of tokens this contract holds for the user.
     */
     function currentBalance(address account) public view returns (uint)  {
         return getCurrentBalance(account);
     }
 
-//  INTERNAL
+    // INTERNAL
+
     function _deposit(address account, uint amount) internal {
         //Pulls token from the user and increases both internal ans system balances by the value.
         require(kosuToken.transferFrom(account, address(this), amount));

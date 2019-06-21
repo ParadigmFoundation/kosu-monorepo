@@ -10,38 +10,43 @@ interface KosuOptions {
     eventEmitterAddress?: string;
     orderGatewayAddress?: string;
     posterRegistryProxyAddress?: string;
-    validatorRegistryProxyAddress?: string;
+    validatorRegistryAddress?: string;
 }
 
 interface Order {
     subContract: string;
     maker: string;
     makerValues: any;
-    makerSignature: any;
-    makerArguments?: any;
-    takerArguments?: any;
+    takerValues?: any;
+    makerSignature?: any;
+    arguments?: any;
     id: any;
     poster: string;
 }
 
 interface PostableOrder extends Order {
-    posterSignature: { v: any; s: any; r: any };
+    posterSignature: string;
+}
+
+interface TakeableOrder extends Order {
+    takerValues: any;
 }
 
 interface OrderArgument {
     name: string;
-    dataType: string;
-}
-
-interface SignatureVRS {
-    v: number;
-    r: Buffer | Uint8Array;
-    s: Buffer | Uint8Array;
+    datatype: string;
 }
 
 interface KosuUtils {
     toBytes32(value: string): number | string | BN;
     NULL_ADDRESS: string;
+}
+
+interface Signature {
+    generate(web3: Web3, messageHex: string, signer: string): Promise<string>;
+    validate(messageHex: string, signature: string, signer: string): boolean;
+    recoverAddress(messageHex: any, signature: string): string;
+    sign(web3: Web3, messageHex: string, signer: string): Promise<string>;
 }
 
 interface DecodedKosuLogArgs {}

@@ -1,0 +1,14 @@
+{
+    "extends": "@kosu/tsc-config",
+    "compilerOptions": {
+        "allowSyntheticDefaultImports": true,
+        "esModuleInterop": true,
+        "outDir": "lib",
+        "rootDir": "src",
+        "resolveJsonModule": true,
+        "moduleResolution": "node",
+        "typeRoots": ["node_modules/@types"],
+        "removeComments": false
+    },
+    "include": ["./src/index.ts"]
+}

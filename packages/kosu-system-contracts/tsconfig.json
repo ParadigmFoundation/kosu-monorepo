@@ -1,5 +1,5 @@
 {
-    "extends": "../../tsconfig.json",
+    "extends": "@kosu/tsc-config",
     "compilerOptions": {
         "outDir": "dist",
         "rootDir": ".",
@@ -18,7 +18,6 @@
         "generated-artifacts/PosterRegistryProxy.json",
         "generated-artifacts/Treasury.json",
         "generated-artifacts/ValidatorRegistry.json",
-        "generated-artifacts/ValidatorRegistryProxy.json",
         "generated-artifacts/Voting.json"
     ]
 }

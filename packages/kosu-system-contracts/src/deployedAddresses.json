@@ -1,26 +1,24 @@
 {
     "3": {
-        "OrderGateway": "0x22b85faf0c6be74b2f44590c393554e6bff22e6f",
-        "AuthorizedAddresses": "0x61ed2126ea42097198e3765bd4a222266cf504a2",
-        "EventEmitter": "0x454bebf74fce619bf4ed11cd6fc595f069cc1a84",
-        "KosuToken": "0xa58c4175a386d332b6f41b7caa3e56aef6a1e41a",
-        "Treasury": "0x9271b8f0dd8ee60ec4a81089a72e88e5ece571e2",
-        "Voting": "0x9c35e3d660e0627753b0b09a6327f63512980acd",
-        "PosterRegistry": "0xa4fd2746500152314d765b5b15398ad8e9346419",
-        "PosterRegistryProxy": "0x3fc6db6ae1fbce3a35f8bf72dd62fb2052451c46",
-        "ValidatorRegistry": "0xb7b9f786f8372d13522c2f34da705e2ffdaa2896",
-        "ValidatorRegistryProxy": "0xd18f733f67178b532a7991e3516d35048c870e51"
+        "OrderGateway": "0x10772c057491d2f11f6ed3b116d7dc3cc8135e24",
+        "AuthorizedAddresses": "0x773f0872e803df8be6039c63a77d52022906bd06",
+        "EventEmitter": "0x90acff67b832afdfd7938a0bc1192dc08f6c742e",
+        "KosuToken": "0x800f612a35f5c2ee8de26ff9983cb74ba6c929a4",
+        "Treasury": "0xf7377157c181ca45944924444cc8ec48322602dc",
+        "Voting": "0xc0ba1ab8781c234c4b04061bb6411680412cc2ad",
+        "PosterRegistry": "0xc21dbbef83ffd0f3c337a6666c7663f8e1b77798",
+        "PosterRegistryProxy": "0x8c581ed507a7c843026cf04ca213542b77a4a397",
+        "ValidatorRegistry": "0xff74dda760854c3639c6f728aa4179b8b000f322"
     },
     "6174": {
-        "OrderGateway": "0xb7b9f786f8372d13522c2f34da705e2ffdaa2896",
-        "AuthorizedAddresses": "0xd18f733f67178b532a7991e3516d35048c870e51",
-        "EventEmitter": "0x933c2170698154c00f6c0953834cb36805eb9c32",
-        "KosuToken": "0xee5def840aa3b624d61fd42ef0cef282b83fa733",
-        "Treasury": "0xfc831136b5ca6f6aa47a019c0ec93a9b62dd14e8",
-        "Voting": "0x2bd1d17893ebe1200832535341306af34ba6b077",
-        "PosterRegistry": "0x3ff3ebd528a8da1e7576bba463baffd77dcf9b2d",
-        "PosterRegistryProxy": "0x17373026a42ab869b46abf04021b81cc92541b06",
-        "ValidatorRegistry": "0x0e8ab7eb2caa4a73122b076a035acab567138061",
-        "ValidatorRegistryProxy": "0xbc5a52d2f315ef2797d9236b532232ac03b78223"
+        "OrderGateway": "0xb8fda6341f80cbae987ab5cd00dce502097e3152",
+        "AuthorizedAddresses": "0xe473109cb41c773fd2fe01e83c6e51356f9585d6",
+        "EventEmitter": "0x2f3afeff0914f33769cdfbf3fcf870c33b26c311",
+        "KosuToken": "0xcc868306d6188b2b12757a7c3926042b4d3c4e29",
+        "Treasury": "0x46572f9082dd2429c2c138fa9483a67d4f29d423",
+        "Voting": "0x5d60c93d8b48682cd387c8be7e9461b67ecfbea1",
+        "PosterRegistry": "0x7e6534b8205713246e91a14b462d2dbcac3ede17",
+        "PosterRegistryProxy": "0x301bb008f2a8a3cae9918743fe43428551392773",
+        "ValidatorRegistry": "0x0265e7d1b094787cb13174e18a1cefc41279a6c9"
     }
 }
