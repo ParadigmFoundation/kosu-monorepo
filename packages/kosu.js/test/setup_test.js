@@ -47,7 +47,7 @@ before(async () => {
         .toString();
 
     const config = {
-        provider: web3.currentProvider,
+        provider,
         networkId: await web3.eth.net.getId(),
     };
 

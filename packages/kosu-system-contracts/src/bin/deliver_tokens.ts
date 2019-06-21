@@ -1,5 +1,6 @@
 import { MnemonicWalletSubprovider, RPCSubprovider } from "@0x/subproviders";
 import { BigNumber, providerUtils } from "@0x/utils";
+import { Web3Wrapper } from "@0x/web3-wrapper";
 import safeRequire from "safe-node-require";
 import Web3 from "web3";
 import Web3ProviderEngine from "web3-provider-engine";
@@ -27,7 +28,9 @@ if (args["test-mnemonic"] || !mnemonic) {
     }
     provider.addProvider(rpcSubprovider);
     providerUtils.startProviderEngine(provider);
-    const web3 = new Web3(provider);
+    const web3 = new Web3(args["rpc-url"]);
+    const web3Wrapper = new Web3Wrapper(provider);
+
     const networkId = await web3.eth.net.getId();
 
     const kosuToken = new KosuTokenContract(
@@ -36,7 +39,7 @@ if (args["test-mnemonic"] || !mnemonic) {
         provider,
     );
     const aLot = new BigNumber(web3.utils.toWei("100000"));
-    const from = await web3.eth.getCoinbase();
+    const from = (await web3Wrapper.getAvailableAddressesAsync())[0];
     const addresses = ["0xAA554D0c5ff879387Fc234dE5D22EC02983baA27", "0x8b366a3d4e46aC5406F12766Ad33E6482Ce4F081"];
     addresses.push.apply(addresses, await web3.eth.getAccounts());
 
