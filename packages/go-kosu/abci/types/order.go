@@ -2,11 +2,14 @@ package types
 
 import (
 	"encoding/json"
+	"fmt"
 )
 
-type makerValues interface{}
-
 type Values map[string]interface{}
+
+func (v *Values) String() (values string) {
+	return "< ... >"
+}
 
 type Order struct {
 	Maker           Address   `json:"maker"`
@@ -18,9 +21,14 @@ type Order struct {
 }
 
 func (o *Order) String() (order string) {
-	return o.Maker.String()
+	return fmt.Sprintf("<%v>", o.MakerValues)
 }
 
+func (o *Order) PosterHex() (hex [32]byte, e error) {
+	return
+}
+
+// NewOrder creates a new Kosu Order object from a JSON string
 func NewOrder(input string) (order *Order, e error) {
 	b := []byte(input)
 	if err := json.Unmarshal(b, &order); err != nil {
