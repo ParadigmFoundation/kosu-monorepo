@@ -12,7 +12,7 @@ const { Kosu } = require("../src");
 const BigNumber = require("@0x/utils").BigNumber;
 
 const tokenHelper = require("./helpers/tokenHelper.js");
-const kosuContractHelper = require("./helpers/kosuContractHelper");
+const kosuSubContractHelper = require("./helpers/kosuSubContractHelper");
 
 chai.use(CAP);
 
@@ -28,13 +28,13 @@ before(async () => {
         const rpcSubprovider = new RPCSubprovider(process.env.WEB3_URI);
         provider.addProvider(rpcSubprovider);
     } else {
-        const ganacheSubprovider = new GanacheSubprovider({});
+        const ganacheSubprovider = new GanacheSubprovider({ network_id: 6174 });
         provider.addProvider(ganacheSubprovider);
     }
 
     providerUtils.startProviderEngine(provider);
 
-    const web3Wrapper = new Web3Wrapper(provider);
+    global.web3Wrapper = new Web3Wrapper(provider);
     const networkId = await web3Wrapper.getNetworkIdAsync();
     await new BlockchainLifecycle(web3Wrapper).startAsync();
 
@@ -51,10 +51,15 @@ before(async () => {
         networkId: await web3.eth.net.getId(),
     };
 
-    if (networkId !== 6174) {
+    global.basicTradeSubContract = await kosuSubContractHelper(provider, {
+        from: accounts[0].toLowerCase(),
+        gas: "4500000",
+    });
+    if (!useGeth) {
         const migratedContracts = await migrations(provider, { from: accounts[0].toLowerCase(), gas: "4500000" });
-
+        migratedContracts.basicTradeSubContract = basicTradeSubContract;
         Object.assign(config, {
+            eventEmitterAddress: migratedContracts.eventEmitter.address,
             posterRegistryProxyAddress: migratedContracts.posterRegistryProxy.address,
             kosuTokenAddress: migratedContracts.kosuToken.address,
             orderGatewayAddress: migratedContracts.orderGateway.address,
@@ -65,14 +70,16 @@ before(async () => {
 
     global.kosu = new Kosu(config);
 
-    await kosuContractHelper(provider, { from: accounts[0].toLowerCase(), gas: "4500000" });
     await tokenHelper();
+
 });
 
-it("should connect to web3", () => {
-    assert.equal(accounts.length, 10, "There should be 10 ETH accounts.");
-});
+describe("config", () => {
+    it("should connect to web3", () => {
+        assert.equal(accounts.length, 10, "There should be 10 ETH accounts.");
+    });
 
-it("should have the version set", () => {
-    assert.equal(require("../package").version, kosu.version);
+    it("should have the version set", () => {
+        assert.equal(require("../package").version, kosu.version);
+    });
 });

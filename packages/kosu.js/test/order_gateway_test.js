@@ -2,9 +2,10 @@ const { OrderGateway } = require("../src/OrderGateway");
 const DeployedAddresses = require("@kosu/system-contracts").DeployedAddresses;
 
 describe("OrderGateway", () => {
-    let orderGateway, maker, taker, order;
+    let orderGateway, maker, taker, order, subContract;
 
     before(async () => {
+        subContract = basicTradeSubContract.address;
         orderGateway = kosu.orderGateway;
 
         maker = accounts[7].toLowerCase();
