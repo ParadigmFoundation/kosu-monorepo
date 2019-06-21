@@ -7,6 +7,7 @@ const providerUtils = require("@0x/utils").providerUtils;
 const GanacheSubprovider = require("@0x/subproviders").GanacheSubprovider;
 const RPCSubprovider = require("@0x/subproviders").RPCSubprovider;
 const migrations = require("@kosu/system-contracts/dist/src/migrations").migrations;
+const Helpers = require("@kosu/system-contracts/src/test-helpers");
 const BlockchainLifecycle = require("@0x/dev-utils").BlockchainLifecycle;
 const { Kosu } = require("../src");
 const BigNumber = require("@0x/utils").BigNumber;
@@ -35,7 +36,6 @@ before(async () => {
     providerUtils.startProviderEngine(provider);
 
     global.web3Wrapper = new Web3Wrapper(provider);
-    const networkId = await web3Wrapper.getNetworkIdAsync();
     await new BlockchainLifecycle(web3Wrapper).startAsync();
 
     global.web3 = new Web3(provider);
@@ -66,12 +66,26 @@ before(async () => {
             votingAddress: migratedContracts.voting.address,
             treasuryAddress: migratedContracts.treasury.address,
         });
+        global.testHelpers = new Helpers.TestHelpers(web3Wrapper, { migratedContracts });
+    } else {
+        global.testHelpers = new Helpers.TestHelpers(web3Wrapper, config);
     }
 
     global.kosu = new Kosu(config);
 
+    const nullProvider = new Web3ProviderEngine();
+    const nullGanacheSubprovider = new GanacheSubprovider({});
+    nullProvider.addProvider(nullGanacheSubprovider);
+    providerUtils.startProviderEngine(nullProvider);
+    global.nullWeb3Wrapper = new Web3Wrapper(nullProvider);
+
     await tokenHelper();
 
+    global.TestValues = Helpers.TestValues;
+    // global.testHelpers = new Helpers.TestHelpers(web3Wrapper, )
+
+    await kosu.treasury.deposit(TestValues.fiveHundredEther);
+    await kosu.posterRegistry.registerTokens(TestValues.fiveEther);
 });
 
 describe("config", () => {
