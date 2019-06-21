@@ -3,7 +3,7 @@ import { SupportedProvider, Web3Wrapper } from "@0x/web3-wrapper";
 import { ContractAbi } from "ethereum-types";
 
 import { decodeKosuEvents, DeployedAddresses } from "..";
-import * as Artifacts from "../artifacts";
+import { artifacts }from "../artifacts";
 import * as Wrappers from "../wrappers";
 
 import { TestValues } from "./test_values";
@@ -27,7 +27,8 @@ export class TestHelpers {
         if (config.migratedContracts) {
             this.migratedContracts = config.migratedContracts;
         } else if (config.networkId) {
-            if (!DeployedAddresses[config.networkId]) {
+            const addresses = DeployedAddresses[config.networkId];
+            if (!addresses) {
                 throw new Error(`TestHelpers can't find addresses for ${config.networkId}`);
             }
             const contracts = {};
@@ -35,7 +36,7 @@ export class TestHelpers {
             Object.keys(DeployedAddresses[config.networkId]).forEach(contractName => {
                 contracts[contractName.charAt(0).toLowerCase() + contractName.slice(1)] = new Wrappers[
                     `${contractName}Contract`
-                ](Artifacts[contractName], this.web3Wrapper.getProvider());
+                ](artifacts[contractName].compilerOutput.abi, addresses[contractName], this.web3Wrapper.getProvider(), {});
             });
             this.migratedContracts = contracts as MigratedTestContracts;
         }
