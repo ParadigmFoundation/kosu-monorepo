@@ -1,4 +1,4 @@
-packages/go-kosu
+packages/go-kosu/vendor/
 packages/kosu.js/dist/
 packages/kosu-system-contracts/dist/
 packages/kosu-system-contracts/test/dist/
