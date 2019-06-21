@@ -24,10 +24,16 @@ func (s *Suite) TestWitnessTx() {
 		ctx, cancel := context.WithCancel(context.Background())
 		defer cancel()
 
-		ch, err := s.client.Subscribe(ctx, "tm.event = 'Tx'")
+		ch, closer, err := s.client.Subscribe(ctx, "tm.event = 'Tx'")
 		So(err, ShouldBeNil)
+		defer closer()
 
-		Convey("And a Witness Tx", func() {
+		Convey("Broadcasting a Witness Tx with enough confirmations", func() {
+			// we make required confirmations 0, so that any will be enough
+			s.app.Store().SetConsensusParams(types.ConsensusParams{
+				ConfirmationThreshold: 0,
+			})
+
 			BroadcastTxSync(t, s.client, tx)
 
 			Convey("Querying Poster by Tx.Address should be found after N confirmations", func() {
@@ -51,11 +57,10 @@ func (s *Suite) TestWitnessTx() {
 		})
 
 		Convey("Broadcasting a Witness Tx without required confirmations", func() {
-			s.state.UpdateConfirmationThreshold(100)
 			BroadcastTxSync(t, s.client, tx)
 
 			Convey("Querying Poster by Tx.Address should NOT be found after N confirmations", func() {
-				<-ch
+				//	<-ch
 
 				p, err := s.client.QueryPoster(tx.Address)
 				So(err, ShouldNotBeNil)
@@ -73,6 +78,10 @@ func (s *Suite) TestWitnessRebalance() {
 				EndsAt:   20,
 			},
 		}
+
+		s.app.Store().SetConsensusParams(types.ConsensusParams{
+			PeriodLength: uint32(tx.RoundInfo.EndsAt - tx.RoundInfo.StartsAt),
+		})
 
 		ctx, cancel := context.WithCancel(context.Background())
 		defer cancel()
@@ -94,8 +103,10 @@ func (s *Suite) TestWitnessRebalance() {
 			}
 
 			// Wait until the next block is minted
-			sub, err := s.client.Subscribe(ctx, "tm.event = 'NewBlock'")
+			sub, closer, err := s.client.Subscribe(ctx, "tm.event = 'NewBlock'")
 			So(err, ShouldBeNil)
+			defer closer()
+
 			<-sub
 
 			Convey("It should update the local witness state", func() {

@@ -12,7 +12,6 @@ import (
 	"github.com/tendermint/tendermint/libs/log"
 
 	"go-kosu/abci"
-	"go-kosu/store"
 	"go-kosu/witness"
 )
 
@@ -60,7 +59,7 @@ func run(cfg *Config, key []byte) error {
 		return err
 	}
 
-	app := abci.NewApp(store.NewState(), db, cfg.Home)
+	app := abci.NewApp(db, cfg.Home)
 	srv, err := abci.StartInProcessServer(app)
 	if err != nil {
 		return err
