@@ -63,6 +63,16 @@ type Poster struct {
 	Limit   uint64
 }
 
+// Validator .
+type Validator types.Validator
+
+// NewValidator returns a new Validator
+func NewValidator() *Validator {
+	return &Validator{
+		Balance: types.NewBigIntFromInt(0),
+	}
+}
+
 // ConsensusParams are the parameters required for validators within a network to reach consensus on valid transactions.
 type ConsensusParams struct {
 	FinalityThreshold     uint32
@@ -86,6 +96,9 @@ type State struct {
 	deletedPosters []string
 	postersLock    sync.RWMutex
 
+	// validators
+	Validators map[string]*Validator
+
 	// lastEvent stores the height of the Ethereum blockchain at which the last event was applied in-state.
 	LastEvent uint64
 
@@ -104,6 +117,7 @@ func NewState() *State {
 
 		posters:        make(map[string]*Poster),
 		deletedPosters: []string{},
+		Validators:     make(map[string]*Validator),
 		events:         make(map[uint64]WitnessEvents),
 	}
 }
@@ -147,6 +161,11 @@ func (s *State) UpdateFromTree(tree *StateTree) error {
 	})
 	s.postersLock.Unlock()
 
+	// Load Validators
+	tree.IterateValidators(func(addr string, v *Validator) {
+		s.Validators[addr] = v
+	})
+
 	return nil
 }
 
@@ -168,6 +187,10 @@ func (s *State) PersistToTree(tree *StateTree) error {
 	}
 
 	if err := s.persistPosters(tree); err != nil {
+		return err
+	}
+
+	if err := s.persistValidators(tree); err != nil {
 		return err
 	}
 
@@ -207,6 +230,16 @@ func (s *State) persistPosters(tree *StateTree) error {
 		p := s.posters[key]
 		if err := tree.SetPoster(key, p); err != nil {
 			return nil
+		}
+	}
+
+	return nil
+}
+
+func (s *State) persistValidators(tree *StateTree) error {
+	for addr, v := range s.Validators {
+		if err := tree.SetValidator(addr, v); err != nil {
+			return err
 		}
 	}
 	return nil
@@ -338,6 +371,10 @@ func (s *State) IterateWitnessEventsForBlock(block uint64, fn func(id []byte, ev
 // UpdateConfirmationThreshold sets a confirmation threshold as n*(2/3).
 // This threshold is used to apply certain transactions.
 func (s *State) UpdateConfirmationThreshold(n uint32) {
+	if n == 0 {
+		return
+	}
+
 	if n > 1 {
 		n = 2 * (n / 3)
 	}

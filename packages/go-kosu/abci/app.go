@@ -4,6 +4,7 @@ import (
 	"encoding/hex"
 	"errors"
 	"fmt"
+	"math"
 	"regexp"
 
 	abci "github.com/tendermint/tendermint/abci/types"
@@ -98,8 +99,76 @@ func (app *App) InitChain(req abci.RequestInitChain) abci.ResponseInitChain {
 
 // BeginBlock .
 func (app *App) BeginBlock(req abci.RequestBeginBlock) abci.ResponseBeginBlock {
-	_ = req.LastCommitInfo.Votes
+	currHeight := req.Header.Height
+	proposer := hex.EncodeToString(req.Header.ProposerAddress)
+
+	for _, vote := range req.LastCommitInfo.Votes {
+		nodeID := hex.EncodeToString(vote.Validator.Address)
+
+		v := app.state.Validators[nodeID]
+		if v == nil {
+			v = store.NewValidator()
+			app.state.Validators[nodeID] = v
+		}
+
+		v.Active = vote.SignedLastBlock
+		v.Power = vote.Validator.Power
+
+		if vote.SignedLastBlock {
+			v.TotalVotes++
+			v.LastVoted = (currHeight - 1)
+		}
+
+		// record if they are proposer this round
+		if proposer == nodeID {
+			v.LastProposed = currHeight
+		}
+
+		// update (or skip) first vote
+		if v.FirstVote == 0 {
+			v.FirstVote = currHeight
+		}
+	}
+
+	for _, v := range app.state.Validators {
+		v.Active = (v.LastVoted+1 == currHeight)
+	}
+
+	// update confirmation threshold based on number of active validators
+	// confirmation threshold is >=2/3 active validators, unless there is
+	// only one active validator, in which case it MUST be 1 in order for
+	// state.balances to remain accurate.
+	votes := len(req.LastCommitInfo.Votes)
+	app.state.UpdateConfirmationThreshold(uint32(votes))
+
 	return abci.ResponseBeginBlock{}
+}
+
+// EndBlock .
+func (app *App) EndBlock(req abci.RequestEndBlock) abci.ResponseEndBlock {
+	updates := []abci.ValidatorUpdate{}
+
+	for addr, v := range app.state.Validators {
+		if v.Active {
+			continue
+		}
+
+		key, err := hex.DecodeString(addr)
+		if err != nil {
+			app.log.Error("EndBlock: DecodeString", "err", err)
+			continue
+		}
+
+		balance := v.Balance.BigInt().Uint64()
+		power := math.Round(float64(balance) / math.Pow(10, 18))
+
+		update := abci.Ed25519ValidatorUpdate(key, int64(power))
+		updates = append(updates, update)
+	}
+
+	return abci.ResponseEndBlock{
+		ValidatorUpdates: updates,
+	}
 }
 
 // CheckTx .
@@ -154,9 +223,4 @@ func (app *App) DeliverTx(req []byte) abci.ResponseDeliverTx {
 	}
 
 	return abci.ResponseDeliverTx{Code: 1, Info: "Unknown Transaction type"}
-}
-
-// EndBlock .
-func (app *App) EndBlock(req abci.RequestEndBlock) abci.ResponseEndBlock {
-	return abci.ResponseEndBlock{}
 }
