@@ -25,3 +25,15 @@ func (app *App) deliverWitnessTx(tx *types.TransactionWitness) abci.ResponseDeli
 	}
 	return abci.ResponseDeliverTx{}
 }
+
+func (app *App) pushTransactionWitness(tx *types.TransactionWitness) error {
+	if app.store.LastEvent() > tx.Block {
+		return errors.New("transaction is older than the recorded state")
+	}
+
+	if tx.Amount == nil {
+		tx.Amount = types.NewBigIntFromInt(0)
+	}
+
+	return nil
+}

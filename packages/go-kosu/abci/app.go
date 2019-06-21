@@ -25,6 +25,7 @@ type App struct {
 	abci.BaseApplication
 	Config *cfg.Config
 
+	store *store.Store
 	state *store.State
 	tree  *store.StateTree
 
@@ -47,6 +48,7 @@ func NewApp(state *store.State, db db.DB, homedir string) *App {
 
 	tree := store.NewStateTree(db, new(store.GobCodec))
 	app := &App{
+		store:    store.NewStore(db, new(store.ProtoCodec)),
 		state:    state,
 		tree:     tree,
 		Config:   config,

@@ -1,7 +1,9 @@
 package store
 
 import (
+	"fmt"
 	"go-kosu/abci/types"
+	"math/big"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -116,35 +118,49 @@ func TestPushTransactionWitness(t *testing.T) {
 }
 
 func TestPersistAndUpdate(t *testing.T) {
-	db := db.NewMemDB()
-	tree := NewStateTree(db, new(GobCodec))
+	db1 := db.NewMemDB()
+	t1 := NewStateTree(db1, new(GobCodec))
 	s1 := NewState()
 
+	// Add data to the state
 	s1.LastEvent = 100
 	s1.RoundInfo = RoundInfo{Number: 1}
 	s1.ConsensusParams.FinalityThreshold = 99
-	s1.events = map[uint64]WitnessEvents{
-		10: {
-			"id1": &WitnessEvent{Address: "0xff"},
-			"id2": &WitnessEvent{Address: "0xff"},
-		},
-		20: {
-			"id1": &WitnessEvent{Address: "0xff"},
-			"id2": &WitnessEvent{Address: "0xff"},
-		},
+	for i := 0; i < 1003; i++ {
+		s1.posters[fmt.Sprintf("0x%d", i)] = &Poster{Balance: big.NewInt(int64(i)), Limit: uint64(i)}
+		s1.events[uint64(i)] = WitnessEvents{
+			"id1": &WitnessEvent{Address: "0xff"}, "id2": &WitnessEvent{Address: "0xff"},
+		}
 	}
 
 	requireNoErrors(t,
-		s1.PersistToTree(tree),
-		tree.Commit(),
+		s1.PersistToTree(t1),
+		t1.Commit(),
 	)
 
+	db2 := db.NewMemDB()
+	t2 := NewStateTree(db2, new(GobCodec))
 	s2 := NewState()
-	require.NotEqual(t, s1, s2)
 
-	err := s2.UpdateFromTree(tree)
+	err := s2.UpdateFromTree(t1)
 	require.NoError(t, err)
 	assert.Equal(t, s1, s2)
+
+	requireNoErrors(t,
+		s2.PersistToTree(t2),
+		t2.Commit(),
+	)
+
+	for i := 0; i < 10; i++ {
+		requireNoErrors(t, t1.Commit(), t2.Commit())
+		require.Equal(t, t1.CommitInfo, t2.CommitInfo)
+
+		s1.UpdateFromTree(t1)
+		s2.UpdateFromTree(t2)
+
+		require.Equal(t, s1, s2)
+
+	}
 }
 
 func requireNoErrors(t *testing.T, errs ...error) {

@@ -201,15 +201,24 @@ func (s *State) persistEvents(tree *StateTree) error {
 	s.eventsLock.RLock()
 	defer s.eventsLock.RUnlock()
 
-	keys := []uint64{}
-	for key := range s.events {
-		keys = append(keys, key)
+	blocks := []uint64{}
+	for block := range s.events {
+		blocks = append(blocks, block)
 	}
-	sort.Slice(keys, func(i, j int) bool { return keys[i] < keys[j] })
+	sort.Slice(blocks, func(i, j int) bool { return blocks[i] < blocks[j] })
 
-	for _, key := range keys {
-		for id, event := range s.events[key] {
-			if err := tree.SetEvent(key, id, event); err != nil {
+	for _, block := range blocks {
+		events := s.events[block]
+
+		ids := []string{}
+		for id := range events {
+			ids = append(ids, id)
+		}
+		sort.Strings(ids)
+
+		for _, id := range ids {
+			event := events[id]
+			if err := tree.SetEvent(block, id, event); err != nil {
 				return err
 			}
 		}
@@ -225,6 +234,7 @@ func (s *State) persistPosters(tree *StateTree) error {
 	for key := range s.posters {
 		keys = append(keys, key)
 	}
+	sort.Strings(keys)
 
 	for _, key := range keys {
 		p := s.posters[key]

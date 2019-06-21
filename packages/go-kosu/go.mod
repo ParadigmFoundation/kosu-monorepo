@@ -8,12 +8,13 @@ require (
 	github.com/aristanetworks/goarista v0.0.0-20190409235741-55bc7be9dd31 // indirect
 	github.com/btcsuite/btcd v0.0.0-20190427004231-96897255fd17 // indirect
 	github.com/cespare/cp v1.1.1 // indirect
+	github.com/cosmos/cosmos-sdk v0.35.0
 	github.com/deckarep/golang-set v1.7.1 // indirect
 	github.com/edsrzf/mmap-go v1.0.0 // indirect
 	github.com/ethereum/go-ethereum v1.8.27
 	github.com/fjl/memsize v0.0.0-20180929194037-2a09253e352a // indirect
 	github.com/fortytw2/leaktest v1.3.0 // indirect
-	github.com/go-kit/kit v0.8.0
+	github.com/go-kit/kit v0.8.0 // indirect
 	github.com/go-logfmt/logfmt v0.4.0 // indirect
 	github.com/go-stack/stack v1.8.0 // indirect
 	github.com/gogo/protobuf v1.2.1
