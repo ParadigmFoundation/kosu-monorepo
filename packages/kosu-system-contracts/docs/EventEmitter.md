@@ -6,7 +6,7 @@ A shared contract for all Kosu system contracts to trigger event logs through.
 
 -   [Methods](undefined)
     -   [constructor](#constructor)
-    -   [emitEvent](#emitEvent)
+    -   [emitEvent](#emitevent)
 
 ## Methods
 
