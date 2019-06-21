@@ -19,6 +19,7 @@ const (
 	ConsensusParamsKey = "/kosu/state/consensus_params"
 	EventsKey          = "/kosu/state/events"
 	PostersKey         = "/kosu/state/posters"
+	ValidatorsKey      = "/kosu/state/validators"
 )
 
 // CommitInfo is the tree commit info.
@@ -197,6 +198,32 @@ func (s *StateTree) IteratePosters(fn func(addr string, p *Poster)) {
 		}
 
 		fn(addr, &p)
+		return false
+	})
+}
+
+func (s *StateTree) validatorKey(addr string) string {
+	return fmt.Sprintf("%s/%s", ValidatorsKey, addr)
+}
+
+// SetValidator sets a validator into the tree
+func (s *StateTree) SetValidator(addr string, v *Validator) error {
+	return s.Set(s.validatorKey(addr), v)
+}
+
+// IterateValidators iterates over all the validators present in the tree
+func (s *StateTree) IterateValidators(fn func(addr string, v *Validator)) {
+	start := []byte(ValidatorsKey)
+	end := append(start, 0xff)
+	s.tree.IterateRange(start, end, true, func(key, val []byte) bool {
+		addr := strings.TrimPrefix(string(key), ValidatorsKey+"/")
+
+		var v Validator
+		if err := s.codec.Decode(val, &v); err != nil {
+			return false
+		}
+
+		fn(addr, &v)
 		return false
 	})
 }

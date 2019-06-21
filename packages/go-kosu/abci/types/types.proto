@@ -37,15 +37,38 @@ message ConsensusParams {
   uint32 ConfirmationThreshold = 5;
 }
 
+/**
+ * Poster
+ */
 message Poster {
   BigInt balance = 1;
   uint64 orderLimit = 2;
   uint64 streamLimit = 3;
 }
 
+/**
+ * RateLimit
+ */
 message RateLimit {
   string address = 1;
   uint64 limit = 2;
+}
+
+/**
+ * Validator
+ */
+message Validator {
+    BigInt balance = 1; // balance in registry contract
+    int64 power = 2; // vote power on tendermint chain
+    bytes publicKey = 3; // raw 32 byte public key 
+    string ethAccount = 4;
+    int64 firstVote = 5;
+    int64 lastVoted = 6;
+    int64 lastProposed = 7;
+    int64 totalVotes = 8;
+    bool active = 9; // true if voted on last block
+    bool genesis = 10; // true if val was in genesis.json = 5;
+    bool applied = 11;// true if a) in genesis or b) through endblock = 5;
 }
 
 /**

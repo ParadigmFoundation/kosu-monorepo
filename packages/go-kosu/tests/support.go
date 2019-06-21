@@ -5,12 +5,11 @@ import (
 	"os"
 	"testing"
 
-	"github.com/smartystreets/goconvey/convey"
 	. "github.com/smartystreets/goconvey/convey" //nolint
 	"github.com/stretchr/testify/require"
 
 	"github.com/tendermint/tendermint/libs/db"
-	tmlog "github.com/tendermint/tendermint/libs/log"
+	"github.com/tendermint/tendermint/libs/log"
 	rpctypes "github.com/tendermint/tendermint/rpc/core/types"
 
 	"go-kosu/abci"
@@ -19,7 +18,7 @@ import (
 
 // GivenABCIServer a ABCI Server inside a Convey block
 func GivenABCIServer(t *testing.T, suite *Suite, fn func(*testing.T)) {
-	convey.Convey("Given an ABCI Server", t, func() {
+	Convey("Given an ABCI Server", t, func() {
 		suite.state = store.NewState()
 
 		app, closer := startServer(t, db.NewMemDB(), suite.state)
@@ -38,7 +37,7 @@ func startServer(t *testing.T, db db.DB, state *store.State) (*abci.App, func())
 	dir, err := ioutil.TempDir("/tmp", "/go-kosu-go-tests_")
 	require.NoError(t, err)
 
-	err = abci.InitTendermintWithLogger(dir, tmlog.NewNopLogger())
+	err = abci.InitTendermintWithLogger(dir, log.NewNopLogger())
 	require.NoError(t, err)
 
 	// Initialize the server
