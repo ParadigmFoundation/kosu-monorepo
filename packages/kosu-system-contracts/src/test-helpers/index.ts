@@ -1,7 +1,10 @@
 import { BigNumber } from "@0x/utils";
-import { Web3Wrapper } from "@0x/web3-wrapper";
+import {SupportedProvider, Web3Wrapper} from "@0x/web3-wrapper";
+import {ContractAbi} from "ethereum-types";
 
-import { decodeKosuEvents } from "../eventDecoder";
+import { decodeKosuEvents, DeployedAddresses } from "..";
+import * as Artifacts from "../artifacts";
+import * as Wrappers from "../wrappers";
 
 import { TestValues } from "./test_values";
 
@@ -19,9 +22,22 @@ export class TestHelpers {
     private rewardPeriod: BigNumber;
     private readonly initializing: Promise<void>;
 
-    constructor(web3Wrapper: Web3Wrapper, migratedContracts: MigratedTestContracts) {
+    constructor(web3Wrapper: Web3Wrapper, config: { migratedContracts?: MigratedTestContracts; networkId?: number }) {
         this.web3Wrapper = web3Wrapper;
-        this.migratedContracts = migratedContracts;
+        if (config.migratedContracts) {
+            this.migratedContracts = config.migratedContracts;
+        } else if (config.networkId) {
+            if (!DeployedAddresses[config.networkId]) {
+                throw new Error(`TestHelpers can't find addresses for ${config.networkId}`);
+            }
+            const contracts = {};
+
+            Object.keys(DeployedAddresses[config.networkId]).forEach(contractName => {
+                contracts[contractName.charAt(0).toLowerCase() + contractName.slice(1)] =
+                    new Wrappers[`${contractName}Contract`](Artifacts[contractName], this.web3Wrapper.getProvider());
+            });
+            this.migratedContracts = contracts as MigratedTestContracts;
+        }
         this.initializing = this.init();
     }
 
