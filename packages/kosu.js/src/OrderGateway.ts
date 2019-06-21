@@ -71,11 +71,15 @@ export class OrderGateway {
             this.address = DeployedAddresses[networkId].OrderGateway;
         }
         if (!this.address) {
+            /* istanbul ignore next */
             throw new Error("Invalid network for OrderGateway");
         }
 
         this.contract = new OrderGatewayContract(abi, this.address, this.web3.currentProvider, {
-            from: await this.web3.eth.getCoinbase().catch(() => undefined),
+            from: await this.web3.eth.getCoinbase().catch(
+                /* istanbul ignore next */
+                () => undefined,
+            ),
         });
     }
 

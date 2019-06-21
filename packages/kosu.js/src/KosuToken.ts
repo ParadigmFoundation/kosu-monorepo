@@ -63,12 +63,17 @@ export class KosuToken {
     private async getContract(): Promise<KosuTokenContract> {
         if (!this.contract) {
             const networkId = await this.web3Wrapper.getNetworkIdAsync();
-            const coinbase = await this.web3.eth.getCoinbase().catch(() => undefined);
+            const coinbase = await this.web3.eth.getCoinbase().catch(
+                /* istanbul ignore next */
+                () => undefined,
+            );
 
             if (!this.address) {
+                /* istanbul ignore next */
                 this.address = DeployedAddresses[networkId].KosuToken;
             }
             if (!this.address) {
+                /* istanbul ignore next */
                 throw new Error("Invalid network for KosuToken");
             }
 
