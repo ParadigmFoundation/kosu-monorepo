@@ -40,9 +40,14 @@ if (args["test-mnemonic"] || !mnemonic) {
     const addresses = ["0xAA554D0c5ff879387Fc234dE5D22EC02983baA27", "0x8b366a3d4e46aC5406F12766Ad33E6482Ce4F081"];
     addresses.push.apply(addresses, await web3.eth.getAccounts());
 
-    const transactions = [];
     for (const account of addresses) {
-        transactions.push(kosuToken.transfer.awaitTransactionSuccessAsync(account, aLot, { from }));
+        await kosuToken.transfer.awaitTransactionSuccessAsync(account, aLot, { from, gas: 4500000 })
+            .then(
+                () => console.log(`Transferred ${aLot.toString()} tokens to ${account}.`), reason => {
+                    console.log(`Failed to send tokens to ${account} due to:`);
+                    console.log(reason);
+                    return Promise.reject();
+                },
+            )
     }
-    await Promise.all(transactions);
 })().catch(err => console.log(err));
