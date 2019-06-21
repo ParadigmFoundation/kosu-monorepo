@@ -41,9 +41,10 @@ if (args["test-mnemonic"] || !mnemonic) {
     addresses.push.apply(addresses, await web3.eth.getAccounts());
 
     for (const account of addresses) {
+        /* tslint:disable */
         await kosuToken.transfer.awaitTransactionSuccessAsync(account, aLot, { from, gas: 4500000 }).then(
             () => console.log(`Transferred ${aLot.toString()} tokens to ${account}.`),
-            reason => {
+            async reason => {
                 console.log(`Failed to send tokens to ${account} due to:`);
                 console.log(reason);
                 return Promise.reject();
