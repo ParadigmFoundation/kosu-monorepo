@@ -7,16 +7,16 @@ KosuToken (KOSU) is an implentation of the ERC-20 interface, supporting mints an
 -   [Methods](undefined)
     -   [allowance](#allowance)
     -   [approve](#approve)
-    -   [balanceOf](#balanceOf)
+    -   [balanceOf](#balanceof)
     -   [burn](#burn)
     -   [constructor](#constructor)
-    -   [decreaseAllowance](#decreaseAllowance)
-    -   [increaseAllowance](#increaseAllowance)
+    -   [decreaseAllowance](#decreaseallowance)
+    -   [increaseAllowance](#increaseallowance)
     -   [mint](#mint)
-    -   [mintTo](#mintTo)
-    -   [totalSupply](#totalSupply)
+    -   [mintTo](#mintto)
+    -   [totalSupply](#totalsupply)
     -   [transfer](#transfer)
-    -   [transferFrom](#transferFrom)
+    -   [transferFrom](#transferfrom)
 
 ## Methods
 
