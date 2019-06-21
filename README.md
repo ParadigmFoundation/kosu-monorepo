@@ -199,7 +199,7 @@ Command-line interface for `kosud`.
 
 ## Contributing
 
-We strongly encourage all contributions! Read our [contribution guidelines](./ContributionGuidelines) and feel free to reach out with any questions.
+We strongly encourage all contributions! Read our [contribution guidelines](./CONTRIBUTING.md) and feel free to reach out with any questions.
 
 ## Issues
 
