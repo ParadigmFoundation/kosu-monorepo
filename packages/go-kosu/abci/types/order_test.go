@@ -1,3 +1,4 @@
+// nolint:lll
 package types
 
 import (
@@ -16,7 +17,7 @@ var testCases = []struct {
 	hashBytes []byte
 }{
 	{
-		desc:      "Mocker order #1",
+		desc:      "Mock order #1",
 		order:     `{"subContract":"0x0000000000000000000000000000000000000000","arguments":{"maker":[{"datatype":"address","name":"acc"},{"datatype":"uint","name":"num"}]},"makerValues":{"acc":"0xba71358156bbf446A9Ec3126b818fe8fA1Dcd580","num":4},"posterSignature":"0xafbb347be9abed3004d002eeafa7cac1eb9924b53627e0bc94068f0f304cef1806a9e0ce2187228baf2b06926caab3e130b22d5781878a08f2bc4b75e6db20b301"}`,
 		hex:       "0xba71358156bbf446A9Ec3126b818fe8fA1Dcd5800000000000000000000000000000000000000000000000000000000000000004",
 		hash:      "0xa5d262bb0c7d17f8f4b3d0fd12fc9845ee390b0f95a965a62a1a67b7db04e2be",

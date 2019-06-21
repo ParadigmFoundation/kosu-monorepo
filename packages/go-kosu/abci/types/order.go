@@ -12,6 +12,15 @@ import (
 	"github.com/ethereum/go-ethereum/crypto"
 )
 
+var (
+	// ErrOrderParse returned when bad JSON orders are provided to constructor
+	ErrOrderParse = errors.New("failed to parse JSON order")
+	// ErrOrderSerialize returned when unable to serialize an Order object
+	ErrOrderSerialize = errors.New("failed to serialize order")
+	// ErrOrderParseUint occurs when bad uint values are encoded in JSON
+	ErrOrderParseUint = errors.New("unable to parse uint value")
+)
+
 // Order represents a Kosu order object for use with a SubContract
 type Order struct {
 	Maker           Address   `json:"maker"`
@@ -27,7 +36,7 @@ func NewOrder(input string) (order *Order, e error) {
 	dec := json.NewDecoder(strings.NewReader(input))
 	dec.UseNumber()
 	if err := dec.Decode(&order); err != nil {
-		e = err
+		e = ErrOrderParse
 		return
 	}
 	return
@@ -37,10 +46,9 @@ func NewOrder(input string) (order *Order, e error) {
 func (o *Order) PosterHex() (posterHex []byte, e error) {
 	orderBytes, err := o.Serialize()
 	if err != nil {
-		e = errors.New("failed to serialize order")
+		e = ErrOrderSerialize
 		return
 	}
-
 	posterHex = crypto.Keccak256(orderBytes)
 	return
 }
@@ -60,7 +68,7 @@ func (o *Order) Serialize() (orderBytes []byte, e error) {
 			bigInt := big.NewInt(0)
 			stringVal := o.MakerValues[m.Name].(json.Number).String()
 			if _, ok := bigInt.SetString(stringVal, 10); !ok {
-				e = errors.New("unable to parse uint value")
+				e = ErrOrderParseUint
 				return
 			}
 			// pad as a 256 bit integer, as EVM does
@@ -77,7 +85,7 @@ func (o *Order) Serialize() (orderBytes []byte, e error) {
 
 // String implements Stringer to represent Order as a string
 func (o *Order) String() (order string) {
-	return fmt.Sprintf("<%v>", "@todo")
+	return fmt.Sprintf("Order{%v}", "@todo")
 }
 
 // Arguments defines the data types required for maker and taker values
@@ -92,4 +100,5 @@ type Argument struct {
 	Name     string `json:"name"`
 }
 
+// Values represents an un-typed key-value map for the maker/taker values
 type Values map[string]interface{}
