@@ -6,12 +6,12 @@ Proxy contract for interacting with the PosterRegisty implementation contract.
 
 -   [Methods](undefined)
     -   [constructor](#constructor)
-    -   [registerTokens](#registerTokens)
-    -   [releaseTokens](#releaseTokens)
-    -   [setImplementation](#setImplementation)
+    -   [registerTokens](#registertokens)
+    -   [releaseTokens](#releasetokens)
+    -   [setImplementation](#setimplementation)
     -   [token](#token)
-    -   [tokensContributed](#tokensContributed)
-    -   [tokensRegisteredFor](#tokensRegisteredFor)
+    -   [tokensContributed](#tokenscontributed)
+    -   [tokensRegisteredFor](#tokensregisteredfor)
     -   [treasury](#treasury)
 
 ## Methods

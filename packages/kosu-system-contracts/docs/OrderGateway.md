@@ -5,10 +5,10 @@ Access SubContract implementation's methods to participate in trades and check o
 ## Contents
 
 -   [Methods](undefined)
-    -   [amountRemaining](#amountRemaining)
+    -   [amountRemaining](#amountremaining)
     -   [arguments](#arguments)
     -   [constructor](#constructor)
-    -   [isValid](#isValid)
+    -   [isValid](#isvalid)
     -   [participate](#participate)
 
 ## Methods
