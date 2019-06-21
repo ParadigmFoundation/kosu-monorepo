@@ -28,6 +28,12 @@ describe("OrderGateway", () => {
         await kosu.orderHelper.makeOrder(order);
     });
 
+    describe("isValid", () => {
+        it("should return true for a valid order", async () => {
+            await orderGateway.isValid(order).should.eventually.equal(true);
+        });
+    });
+
     describe("participate()", () => {
         it("should participate in a fully constructed Order.", async () => {
             order.takerValues = { tokensToBuy: 500 };
@@ -35,6 +41,14 @@ describe("OrderGateway", () => {
 
             await tka.balanceOf(taker).should.eventually.eq("500");
             await tkb.balanceOf(maker).should.eventually.eq("500");
+        });
+    });
+
+    describe("amountRemaining", () => {
+        it("should return true for a valid order", async () => {
+            await orderGateway.amountRemaining(order).then(val => {
+                val.eq(500).should.be.true;
+            });
         });
     });
 
@@ -60,6 +74,12 @@ describe("OrderGateway", () => {
             assert.doesNotThrow(() => {
                 JSON.stringify(args);
             });
+        });
+
+        it("should throw an error on invalid subContract", async () => {
+            await orderGateway
+                .arguments(accounts[0])
+                .should.eventually.be.rejectedWith("Unable to load arguments from contract");
         });
     });
 
