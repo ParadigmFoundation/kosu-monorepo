@@ -83,9 +83,6 @@ before(async () => {
 
     global.TestValues = Helpers.TestValues;
     // global.testHelpers = new Helpers.TestHelpers(web3Wrapper, )
-
-    await kosu.treasury.deposit(TestValues.fiveHundredEther);
-    await kosu.posterRegistry.registerTokens(TestValues.fiveEther);
 });
 
 describe("config", () => {

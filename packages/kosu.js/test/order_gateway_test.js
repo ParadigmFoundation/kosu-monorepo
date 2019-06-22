@@ -52,22 +52,6 @@ describe("OrderGateway", () => {
         });
     });
 
-    /*  describe('events', () => {
-    it('should call callback', (done) => {
-      const takerValues = {
-        tokensToBuy: 100
-      };
-
-      orderGateway.oneEvent((error, event) => {
-        event.returnValues.id.should.eq('test');
-        done()
-      });
-
-      order.id = 'test';
-      order.take(taker, takerValues);
-    });
-  });*/
-
     describe("arguments()", () => {
         it("should get the arguments of a SubContract", async () => {
             const args = await orderGateway.arguments(subContract);

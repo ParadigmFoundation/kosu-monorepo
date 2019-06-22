@@ -23,13 +23,16 @@ describe("EventEmitter", () => {
     describe("getPastDecodedLogs", () => {
         it("should return decoded logs", async () => {
             const fromBlock = (await web3Wrapper.getBlockNumberAsync()) + 1;
-            await kosu.posterRegistry.releaseTokens(1).catch(e => {
+            await kosu.posterRegistry.registerTokens(TestValues.oneWei).catch(e => {
                 clearInterval(interval);
                 throw e;
             });
             const logs = await kosu.eventEmitter.getPastDecodedLogs({ fromBlock });
             logs.length.should.eq(1);
             logs[0].decodedArgs.eventType.should.eq("PosterRegistryUpdate");
+
+            await kosu.posterRegistry.releaseTokens(TestValues.oneWei);
+            await kosu.treasury.withdraw(TestValues.oneWei);
         });
     });
 
@@ -47,10 +50,13 @@ describe("EventEmitter", () => {
                     callback,
                 );
 
-                await kosu.posterRegistry.releaseTokens(1).catch(e => {
+                await kosu.posterRegistry.registerTokens(TestValues.oneWei).catch(e => {
                     clearInterval(interval);
                     throw e;
                 });
+
+                await kosu.posterRegistry.releaseTokens(TestValues.oneWei);
+                await kosu.treasury.withdraw(TestValues.oneWei);
             })
                 .then(() => {
                     clearInterval(interval);
