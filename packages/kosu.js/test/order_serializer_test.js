@@ -1,5 +1,5 @@
 const NULL_ADDRESS = require("../src/utils").NULL_ADDRESS;
-const { OrderSerializer } = require("../src/OrderSerializer")
+const { OrderSerializer } = require("../src/OrderSerializer");
 
 describe("OrderSerializer", () => {
     let maker, taker, order, orderGateway;
@@ -30,14 +30,14 @@ describe("OrderSerializer", () => {
             tokensToBuy: 100,
         };
         order.takerValues = takerValues;
-        await orderHelper.makeOrder(order)
+        await orderHelper.makeOrder(order);
     });
 
     it("should generate the same poster hex with and without takerArguments", async () => {
         const hexWithTakerArgs = OrderSerializer.posterSignatureHex(order, order.arguments);
-        order.takerValues.should.not.be.undefined
-        delete order.takerValues
-        const hexWithoutTakerArgs = OrderSerializer.posterSignatureHex(order, order.arguments)
-        hexWithTakerArgs.should.eq(hexWithoutTakerArgs)
+        order.takerValues.should.not.be.undefined;
+        delete order.takerValues;
+        const hexWithoutTakerArgs = OrderSerializer.posterSignatureHex(order, order.arguments);
+        hexWithTakerArgs.should.eq(hexWithoutTakerArgs);
     });
 });
