@@ -121,125 +121,126 @@ function parseMethods(devDoc, abi) {
         }
         return methods;
     }
+}
 
-    function parseMarkdown(devDoc, methods) {
-        const output = [];
+function parseMarkdown(devDoc, methods) {
+    const output = [];
 
-        if (!devDoc.title) {
-            return;
+    if (!devDoc.title) {
+        return;
+    }
+
+    // Title and description
+    output.push({ h1: devDoc.title }, { p: devDoc.details });
+
+    // Table of contents
+    const contents = [];
+    for (const method of methods) {
+        const name = method.name;
+        contents.push(`[${name}](#${name.toLowerCase()})`);
+    }
+    output.push(
+        { h2: "Contents" },
+        {
+            ul: [
+                { link: { title: "Methods", url: "#methods" } },
+                {
+                    ul: contents,
+                },
+            ],
+        },
+    );
+
+    // Methods
+    output.push({ h2: "Methods" });
+    for (const method of methods) {
+        // skip undocumented methods
+        if (!method.details) {
+            continue;
         }
 
-        // Title and description
-        output.push({ h1: devDoc.title }, { p: devDoc.details });
-
-        // Table of contents
-        const contents = [];
-        for (const method of methods) {
-            const name = method.name;
-            contents.push(`[${name}](#${name.toLowerCase()})`);
-        }
         output.push(
-            { h2: "Contents" },
             {
-                ul: [
-                    { link: { title: "Methods", url: "#methods" } },
-                    {
-                        ul: contents,
-                    },
-                ],
+                h3: method.name,
+            },
+            { p: method.details },
+            { h4: "Signature" },
+            {
+                code: {
+                    language: "solidity",
+                    content: method.signature,
+                },
             },
         );
 
-        // Methods
-        output.push({ h2: "Methods" });
-        for (const method of methods) {
-            // skip undocumented methods
-            if (!method.details) {
-                continue;
+        if (method.params.length > 0) {
+            table = {
+                headers: ["Parameter", "Type", "Description"],
+                rows: [],
+            };
+            for (const param of method.params) {
+                table.rows.push({
+                    Parameter: `\`${param.name}\``,
+                    Type: `\`${param.type}\`` || "?",
+                    Description: param.desc,
+                });
             }
-
-            output.push(
-                {
-                    h3: method.name,
-                },
-                { p: method.details },
-                { h4: "Signature" },
-                {
-                    code: {
-                        language: "solidity",
-                        content: method.signature,
-                    },
-                },
-            );
-
-            if (method.params.length > 0) {
-                table = {
-                    headers: ["Parameter", "Type", "Description"],
-                    rows: [],
-                };
-                for (const param of method.params) {
-                    table.rows.push({
-                        Parameter: `\`${param.name}\``,
-                        Type: `\`${param.type}\`` || "?",
-                        Description: param.desc,
-                    });
-                }
-                output.push({ h4: "Parameters:" }, { table });
-            }
-
-            if (method.return) {
-                output.push({ h4: "Returns:" }, { p: method.return });
-            }
+            output.push({ h4: "Parameters:" }, { table });
         }
-        return output;
+
+        if (method.return) {
+            output.push({ h4: "Returns:" }, { p: method.return });
+        }
     }
+    return output;
+}
 
-    function getSignatureFromABI(abiDef) {
-        let c = 0;
-        let s;
-        if (!abiDef) {
-            return "nup";
+function getSignatureFromABI(abiDef) {
+    let c = 0;
+    let s;
+    if (!abiDef) {
+        return "nup";
+    }
+    if (abiDef.type === "function") {
+        s = "function ".concat(abiDef.name, "(");
+    } else if (abiDef.type === "constructor") {
+        s = "constructor(";
+    }
+    for (const input of abiDef.inputs) {
+        if (c > 0) {
+            s = s.concat(", ");
         }
-        if (abiDef.type === "function") {
-            s = "function ".concat(abiDef.name, "(");
-        } else if (abiDef.type === "constructor") {
-            s = "constructor(";
-        }
-        for (const input of abiDef.inputs) {
-            if (c > 0) {
+        s = s.concat(input.name, " ", input.type);
+        c++;
+    }
+    s = s.concat(") public");
+    if (abiDef.stateMutability === "view") {
+        s = s.concat(" view");
+    }
+    if (abiDef.outputs && abiDef.outputs.length !== 0) {
+        let i = 0;
+        s = s.concat(" (");
+        for (const returnVal of abiDef.outputs) {
+            if (i > 0) {
                 s = s.concat(", ");
             }
-            s = s.concat(input.name, " ", input.type);
-            c++;
+            s = s.concat(returnVal.type);
         }
-        s = s.concat(") public");
-        if (abiDef.stateMutability === "view") {
-            s = s.concat(" view");
-        }
-        if (abiDef.outputs && abiDef.outputs.length !== 0) {
-            let i = 0;
-            s = s.concat(" (");
-            for (const returnVal of abiDef.outputs) {
-                if (i > 0) {
-                    s = s.concat(", ");
-                }
-                s = s.concat(returnVal.type);
-            }
-            s = s.concat(")");
-        }
-        return s;
+        s = s.concat(")");
     }
+    return s;
+}
 
-    function getInternalSignature(params) {
-        let s = "";
-        let c = 0;
-        for (const param of params) {
-            if (c++ > 0) {
-                s = s.concat(", ");
-            }
-
-            // can't show types if they aren't there (not produced by devdoc)
-            s = s.concat(`${param.name}${param.type ? ` ${param.type}` : ""}`);
+function getInternalSignature(params) {
+    let s = "";
+    let c = 0;
+    for (const param of params) {
+        if (c++ > 0) {
+            s = s.concat(", ");
         }
-        return s;
+
+        // can't show types if they aren't there (not produced by devdoc)
+        s = s.concat(`${param.name}${param.type ? ` ${param.type}` : ""}`);
     }
+    return s;
+}
