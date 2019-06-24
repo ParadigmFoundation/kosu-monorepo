@@ -36,9 +36,14 @@ func TestSignature(t *testing.T) {
 	}
 	for _, tC := range testCases {
 		t.Run(tC.desc, func(t *testing.T) {
-			hashBytes, _ := hex.DecodeString(tC.hash[2:])
-			signerBytes, _ := hex.DecodeString(tC.signer[2:])
-			signatureBytes, _ := hex.DecodeString(tC.signature[2:])
+			hashBytes, err := hex.DecodeString(tC.hash[2:])
+			require.NoError(t, err, "Expected no error decoding hash hex string")
+
+			signerBytes, err := hex.DecodeString(tC.signer[2:])
+			require.NoError(t, err, "Expected no error decoding signer hex string")
+
+			signatureBytes, err := hex.DecodeString(tC.signature[2:])
+			require.NoError(t, err, "Expected no error decoding signature hex string")
 
 			sig, err := NewSignatureFromString(tC.signature)
 			require.NoError(t, err, "Expected no error creating signature")
@@ -46,6 +51,7 @@ func TestSignature(t *testing.T) {
 			require.EqualValues(t, signatureBytes, sig.Bytes(), "Expected bytes to be equal to provided")
 			require.EqualValues(t, tC.signature, sig.String(), "Expected input string and signature string to be equal")
 
+			// recover signature with known message hash
 			recoveredSigner, err := sig.RecoverSigner(hashBytes)
 			require.NoError(t, err, "Expected no error recovering signer")
 			require.EqualValues(t, signerBytes, recoveredSigner.Bytes(), "Expected recovered signer bytes to match")
