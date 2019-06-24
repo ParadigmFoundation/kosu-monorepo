@@ -39,7 +39,7 @@ func NewSignatureFromString(input string) (signature Signature, e error) {
 
 // RecoverSigner recovers the address that generated the signature, given a hash
 func (s *Signature) RecoverSigner(hash []byte) (signer Address, e error) {
-	messageHash := GenerateEthereumMessageHash(hash)
+	messageHash := hashEthereumMessage(hash)
 
 	recoveredKey, err := crypto.Ecrecover(messageHash, s.Bytes())
 	if err != nil {
@@ -93,8 +93,8 @@ func (s *Signature) UnmarshalJSON(bytes []byte) error {
 	return nil
 }
 
-// GenerateEthereumMessageHash implements eth_sign style personal message hashing (used in ecrecover)
-func GenerateEthereumMessageHash(hash []byte) (msgHash []byte) {
+// hashEthereumMessage implements eth_sign style personal message hashing (used in ecrecover)
+func hashEthereumMessage(hash []byte) (msgHash []byte) {
 	prefix := "\u0019Ethereum Signed Message:\n" + strconv.Itoa(len(hash))
 	msgHash = crypto.Keccak256([]byte(prefix), hash)
 	return
