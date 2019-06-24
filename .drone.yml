@@ -4,6 +4,14 @@ kind: pipeline
 name: tests
 
 steps:
+  - name: lint-project
+    image: gcr.io/kosu-io/node-ci:latest
+    pull: always
+    environment:
+      WEB3_URI: http://kosu-geth:8545
+    commands:
+      - yarn prettier:ci
+
   - name: build-project
     image: gcr.io/kosu-io/node-ci:latest
     pull: always
