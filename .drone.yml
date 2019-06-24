@@ -3,7 +3,16 @@
 kind: pipeline
 name: tests
 
+clone:
+  disable: true
+
 steps:
+  - name: clone
+    image: gcr.io/kosu-io/node-ci:master-test
+    commands:
+      - cp /drone/src .
+      - git checkout $DRONE_COMMIT
+
   - name: lint-project
     image: gcr.io/kosu-io/node-ci:latest
     pull: always
@@ -13,7 +22,7 @@ steps:
       - yarn prettier:ci
 
   - name: build-project
-    image: gcr.io/kosu-io/node-ci:master-test
+    image: gcr.io/kosu-io/node-ci:latest
     pull: always
     environment:
       WEB3_URI: http://kosu-geth:8545
