@@ -29,7 +29,7 @@ steps:
     "-t", "gcr.io/kosu-io/node-ci:$SHORT_SHA",
     "-t", "gcr.io/kosu-io/node-ci:latest",
     "-f", "./packages/dev-images/ci/node.Dockerfile",
-    "./packages/dev-images"
+    "."
   ]
 
 # build and tag kosu-geth
