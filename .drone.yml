@@ -10,9 +10,6 @@ steps:
   - name: clone
     image: gcr.io/kosu-io/node-ci:master-test
     commands:
-      - pwd
-      - ls -lrth
-      - cp -r /drone/src .
       - git checkout $DRONE_COMMIT
 
   - name: lint-project
