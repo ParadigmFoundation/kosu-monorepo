@@ -189,7 +189,12 @@ function parseMarkdown(devDoc, methods) {
 
 function getSignatureFromABI(abiDef) {
     let c = 0;
-    let s = "function ".concat(abiDef.name, "(");
+    let s;
+    if (abiDef.type === "function") {
+        s = "function ".concat(abiDef.name, "(");
+    } else if (abiDev.type === "constructor") {
+        s = "constructor ("
+    }
     for (const input of abiDef.inputs) {
         if (c > 0) {
             s = s.concat(", ");
