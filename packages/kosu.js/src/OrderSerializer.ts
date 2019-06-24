@@ -62,7 +62,11 @@ export const OrderSerializer = {
      * @param _arguments Argument json defined in the subContract
      */
     posterSignatureHex(order: Order, _arguments: any): string {
-        return bufferToHex(solSHA3(["bytes"], [toBuffer(OrderSerializer.serialize(_arguments, order))]));
+        // @ts-ignore
+        const hashOrder: Order = {};
+        Object.assign(hashOrder, order);
+        delete hashOrder.takerValues;
+        return bufferToHex(solSHA3(["bytes"], [toBuffer(OrderSerializer.serialize(_arguments, hashOrder))]));
     },
 
     /**
