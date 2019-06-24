@@ -99,140 +99,147 @@ function parseMethods(devDoc, abi) {
                 }
             } else if (abiDef.type === "constructor" && name === "constructor") {
                 signature = getSignatureFromABI(abiDef);
+                for (let i = 0; i < abiDef.inputs.length; i++) {
+                    const input = abiDef.inputs[i];
+                    params.push({
+                        name: input.name,
+                        type: paramTypes[i],
+                        desc: rawParams[input.name],
+                    });
+                }
             }
+
+            // add method
+            const method = {
+                name,
+                signature,
+                details: rawMethod.details,
+                return: rawMethod.return,
+                params,
+            };
+            methods.push(method);
+        }
+        return methods;
+    }
+
+    function parseMarkdown(devDoc, methods) {
+        const output = [];
+
+        if (!devDoc.title) {
+            return;
         }
 
-        // add method
-        const method = {
-            name,
-            signature,
-            details: rawMethod.details,
-            return: rawMethod.return,
-            params,
-        };
-        methods.push(method);
-    }
-    return methods;
-}
+        // Title and description
+        output.push({ h1: devDoc.title }, { p: devDoc.details });
 
-function parseMarkdown(devDoc, methods) {
-    const output = [];
-
-    if (!devDoc.title) {
-        return;
-    }
-
-    // Title and description
-    output.push({ h1: devDoc.title }, { p: devDoc.details });
-
-    // Table of contents
-    const contents = [];
-    for (const method of methods) {
-        const name = method.name;
-        contents.push(`[${name}](#${name.toLowerCase()})`);
-    }
-    output.push(
-        { h2: "Contents" },
-        {
-            ul: [
-                { link: { title: "Methods", url: "#methods" } },
-                {
-                    ul: contents,
-                },
-            ],
-        },
-    );
-
-    // Methods
-    output.push({ h2: "Methods" });
-    for (const method of methods) {
-        // skip undocumented methods
-        if (!method.details) {
-            continue;
+        // Table of contents
+        const contents = [];
+        for (const method of methods) {
+            const name = method.name;
+            contents.push(`[${name}](#${name.toLowerCase()})`);
         }
-
         output.push(
+            { h2: "Contents" },
             {
-                h3: method.name,
-            },
-            { p: method.details },
-            { h4: "Signature" },
-            {
-                code: {
-                    language: "solidity",
-                    content: method.signature,
-                },
+                ul: [
+                    { link: { title: "Methods", url: "#methods" } },
+                    {
+                        ul: contents,
+                    },
+                ],
             },
         );
 
-        if (method.params.length > 0) {
-            table = {
-                headers: ["Parameter", "Type", "Description"],
-                rows: [],
-            };
-            for (const param of method.params) {
-                table.rows.push({
-                    Parameter: `\`${param.name}\``,
-                    Type: `\`${param.type}\`` || "?",
-                    Description: param.desc,
-                });
+        // Methods
+        output.push({ h2: "Methods" });
+        for (const method of methods) {
+            // skip undocumented methods
+            if (!method.details) {
+                continue;
             }
-            output.push({ h4: "Parameters:" }, { table });
-        }
 
-        if (method.return) {
-            output.push({ h4: "Returns:" }, { p: method.return });
-        }
-    }
-    return output;
-}
+            output.push(
+                {
+                    h3: method.name,
+                },
+                { p: method.details },
+                { h4: "Signature" },
+                {
+                    code: {
+                        language: "solidity",
+                        content: method.signature,
+                    },
+                },
+            );
 
-function getSignatureFromABI(abiDef) {
-    let c = 0;
-    let s;
-    if (!abiDef) {
-        return "nup";
-    }
-    if (abiDef.type === "function") {
-        s = "function ".concat(abiDef.name, "(");
-    } else if (abiDef.type === "constructor") {
-        s = "constructor(";
-    }
-    for (const input of abiDef.inputs) {
-        if (c > 0) {
-            s = s.concat(", ");
+            if (method.params.length > 0) {
+                table = {
+                    headers: ["Parameter", "Type", "Description"],
+                    rows: [],
+                };
+                for (const param of method.params) {
+                    table.rows.push({
+                        Parameter: `\`${param.name}\``,
+                        Type: `\`${param.type}\`` || "?",
+                        Description: param.desc,
+                    });
+                }
+                output.push({ h4: "Parameters:" }, { table });
+            }
+
+            if (method.return) {
+                output.push({ h4: "Returns:" }, { p: method.return });
+            }
         }
-        s = s.concat(input.name, " ", input.type);
-        c++;
+        return output;
     }
-    s = s.concat(") public");
-    if (abiDef.stateMutability === "view") {
-        s = s.concat(" view");
-    }
-    if (abiDef.outputs && abiDef.outputs.length !== 0) {
-        let i = 0;
-        s = s.concat(" (");
-        for (const returnVal of abiDef.outputs) {
-            if (i > 0) {
+
+    function getSignatureFromABI(abiDef) {
+        let c = 0;
+        let s;
+        if (!abiDef) {
+            return "nup";
+        }
+        if (abiDef.type === "function") {
+            s = "function ".concat(abiDef.name, "(");
+        } else if (abiDef.type === "constructor") {
+            s = "constructor(";
+        }
+        for (const input of abiDef.inputs) {
+            if (c > 0) {
                 s = s.concat(", ");
             }
-            s = s.concat(returnVal.type);
+            s = s.concat(input.name, " ", input.type);
+            c++;
         }
-        s = s.concat(")");
-    }
-    return s;
-}
-
-function getInternalSignature(params) {
-    let s = "";
-    let c = 0;
-    for (const param of params) {
-        if (c++ > 0) {
-            s = s.concat(", ");
+        s = s.concat(") public");
+        if (abiDef.stateMutability === "view") {
+            s = s.concat(" view");
         }
-
-        // can't show types if they aren't there (not produced by devdoc)
-        s = s.concat(`${param.name}${param.type ? ` ${param.type}` : ""}`);
+        if (abiDef.outputs && abiDef.outputs.length !== 0) {
+            let i = 0;
+            s = s.concat(" (");
+            for (const returnVal of abiDef.outputs) {
+                if (i > 0) {
+                    s = s.concat(", ");
+                }
+                s = s.concat(returnVal.type);
+            }
+            s = s.concat(")");
+        }
+        return s;
     }
-    return s;
-}
+
+    function getInternalSignature(params) {
+        let s = "";
+        let c = 0;
+        for (const param of params) {
+            if (c++ > 0) {
+                s = s.concat(", ");
+            }
+
+            // can't show types if they aren't there (not produced by devdoc)
+            s = s.concat(`${param.name}${param.type ? ` ${param.type}` : ""}`);
+        }
+        return s;
+    }
