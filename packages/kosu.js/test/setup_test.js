@@ -7,12 +7,13 @@ const providerUtils = require("@0x/utils").providerUtils;
 const GanacheSubprovider = require("@0x/subproviders").GanacheSubprovider;
 const RPCSubprovider = require("@0x/subproviders").RPCSubprovider;
 const migrations = require("@kosu/system-contracts/dist/src/migrations").migrations;
+const Helpers = require("@kosu/system-contracts/src/test-helpers");
 const BlockchainLifecycle = require("@0x/dev-utils").BlockchainLifecycle;
 const { Kosu } = require("../src");
 const BigNumber = require("@0x/utils").BigNumber;
 
 const tokenHelper = require("./helpers/tokenHelper.js");
-const kosuContractHelper = require("./helpers/kosuContractHelper");
+const kosuSubContractHelper = require("./helpers/kosuSubContractHelper");
 
 chai.use(CAP);
 
@@ -28,14 +29,16 @@ before(async () => {
         const rpcSubprovider = new RPCSubprovider(process.env.WEB3_URI);
         provider.addProvider(rpcSubprovider);
     } else {
-        const ganacheSubprovider = new GanacheSubprovider({});
+        const ganacheSubprovider = new GanacheSubprovider({
+            network_id: 6174,
+            mnemonic: process.env.npm_package_config_test_mnemonic,
+        });
         provider.addProvider(ganacheSubprovider);
     }
 
     providerUtils.startProviderEngine(provider);
 
-    const web3Wrapper = new Web3Wrapper(provider);
-    const networkId = await web3Wrapper.getNetworkIdAsync();
+    global.web3Wrapper = new Web3Wrapper(provider);
     await new BlockchainLifecycle(web3Wrapper).startAsync();
 
     global.web3 = new Web3(provider);
@@ -47,32 +50,40 @@ before(async () => {
         .toString();
 
     const config = {
-        provider: web3.currentProvider,
+        provider,
         networkId: await web3.eth.net.getId(),
+        from: accounts[0].toLowerCase(),
     };
 
-    if (networkId !== 6174) {
-        const migratedContracts = await migrations(provider, { from: accounts[0].toLowerCase(), gas: "4500000" });
-
-        Object.assign(config, {
-            posterRegistryProxyAddress: migratedContracts.posterRegistryProxy.address,
-            kosuTokenAddress: migratedContracts.kosuToken.address,
-            orderGatewayAddress: migratedContracts.orderGateway.address,
-            votingAddress: migratedContracts.voting.address,
-            treasuryAddress: migratedContracts.treasury.address,
-        });
+    if (!useGeth) {
+        await migrations(provider, { from: accounts[0].toLowerCase(), gas: "4500000" });
     }
+    global.basicTradeSubContract = await kosuSubContractHelper(provider, {
+        from: accounts[0].toLowerCase(),
+        gas: "4500000",
+    });
+    global.testHelpers = new Helpers.TestHelpers(web3Wrapper, config);
 
     global.kosu = new Kosu(config);
 
-    await kosuContractHelper(provider, { from: accounts[0].toLowerCase(), gas: "4500000" });
+    const nullProvider = new Web3ProviderEngine();
+    const nullGanacheSubprovider = new GanacheSubprovider({});
+    nullProvider.addProvider(nullGanacheSubprovider);
+    providerUtils.startProviderEngine(nullProvider);
+    global.nullWeb3Wrapper = new Web3Wrapper(nullProvider);
+
     await tokenHelper();
+
+    global.TestValues = Helpers.TestValues;
+    // global.testHelpers = new Helpers.TestHelpers(web3Wrapper, )
 });
 
-it("should connect to web3", () => {
-    assert.equal(accounts.length, 10, "There should be 10 ETH accounts.");
-});
+describe("config", () => {
+    it("should connect to web3", () => {
+        assert.equal(accounts.length, 10, "There should be 10 ETH accounts.");
+    });
 
-it("should have the version set", () => {
-    assert.equal(require("../package").version, kosu.version);
+    it("should have the version set", () => {
+        assert.equal(require("../package").version, kosu.version);
+    });
 });

@@ -96,7 +96,7 @@ export async function migrations(
             treasury.address,
             eventEmitter.address,
         );
-        const posterRegistryImpl = await PosterRegistryContract.deployFrom0xArtifactAsync(
+        const posterRegistry = await PosterRegistryContract.deployFrom0xArtifactAsync(
             artifacts.PosterRegistry as ContractArtifact,
             provider,
             txDefaults,
@@ -108,7 +108,7 @@ export async function migrations(
             artifacts.PosterRegistryProxy as ContractArtifact,
             provider,
             txDefaults,
-            posterRegistryImpl.address,
+            posterRegistry.address,
             authorizedAddresses.address,
         );
         const validatorRegistry = await ValidatorRegistryContract.deployFrom0xArtifactAsync(
@@ -140,9 +140,9 @@ export async function migrations(
                 },
             },
             {
-                hash: await authorizedAddresses.authorizeAddress.sendTransactionAsync(posterRegistryImpl.address),
+                hash: await authorizedAddresses.authorizeAddress.sendTransactionAsync(posterRegistry.address),
                 success: () => {
-                    console.log(`Authorized address: ${posterRegistryImpl.address}`);
+                    console.log(`Authorized address: ${posterRegistry.address}`);
                 },
             },
             {
@@ -184,7 +184,7 @@ export async function migrations(
             kosuToken,
             treasury,
             voting,
-            posterRegistryImpl,
+            posterRegistry,
             posterRegistryProxy,
             validatorRegistry,
         };

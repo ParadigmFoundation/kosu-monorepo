@@ -4,11 +4,10 @@ const BasicTradeSubContractArtifact = require("@kosu/system-contracts/generated-
 const BasicTradeSubContractConfig = require("./BasicTradeSubContractConfig.json");
 
 module.exports = async (provider, options) => {
-    const basicTradeSubContract = await BasicTradeSubContract.deployFrom0xArtifactAsync(
+    return BasicTradeSubContract.deployFrom0xArtifactAsync(
         BasicTradeSubContractArtifact,
         provider,
         options,
         JSON.stringify(BasicTradeSubContractConfig),
     );
-    global.subContract = basicTradeSubContract.address;
 };
