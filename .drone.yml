@@ -10,6 +10,7 @@ steps:
   - name: clone
     image: gcr.io/kosu-io/node-ci:master-test
     commands:
+      - git fetch
       - git checkout $DRONE_COMMIT
 
   - name: lint-project
