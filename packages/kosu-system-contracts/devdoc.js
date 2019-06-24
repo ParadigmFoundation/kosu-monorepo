@@ -99,6 +99,8 @@ function parseMethods(devDoc, abi) {
                         desc: rawParams[input.name],
                     });
                 }
+            } else if (abiDef.type === "constructor") {
+                signature = getSignatureFromABI(thisAbiDef);
             }
         }
 
@@ -190,10 +192,13 @@ function parseMarkdown(devDoc, methods) {
 function getSignatureFromABI(abiDef) {
     let c = 0;
     let s;
+    if (!abiDef) {
+        return;
+    }
     if (abiDef.type === "function") {
         s = "function ".concat(abiDef.name, "(");
     } else if (abiDev.type === "constructor") {
-        s = "constructor ("
+        s = "constructor (";
     }
     for (const input of abiDef.inputs) {
         if (c > 0) {
