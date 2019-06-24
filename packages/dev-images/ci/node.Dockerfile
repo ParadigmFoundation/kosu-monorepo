@@ -23,4 +23,9 @@ RUN rm -rf go-ethereum
 
 RUN yarn global add npm npx ganache-cli typescript prettier
 
+ADD . /drone/src
+WORKDIR /drone/src
+RUN yarn
+RUN yarn build
+
 CMD [ "node" ]
