@@ -1,73 +1,73 @@
 # PosterRegistry
 
+
 Implementation contract for the PosterRegistry, allowing users to bond and un-bond tokens.
 
 ## Contents
 
--   [Methods](undefined)
-    -   [constructor](#constructor)
-    -   [registerTokens](#registertokens)
-    -   [releaseTokens](#releasetokens)
-    -   [token](#token)
-    -   [tokensContributed](#tokenscontributed)
-    -   [tokensRegisteredFor](#tokensregisteredfor)
-    -   [treasury](#treasury)
+
+ - [Methods](undefined)
+    
+     - [constructor](#constructor)
+     - [registerTokens](#registertokens)
+     - [releaseTokens](#releasetokens)
+     - [token](#token)
+     - [tokensContributed](#tokenscontributed)
+     - [tokensRegisteredFor](#tokensregisteredfor)
+     - [treasury](#treasury)
+    
 
 ## Methods
 
 ### constructor
+
 
 Creates a new PosterRegistry
 
 #### Signature
 
 ```solidity
-constructor(_auth, _events, _treasuryAddress)
+constructor()
 ```
 
-#### Parameters:
-
-| Parameter          | Type        | Description                                   |
-| ------------------ | ----------- | --------------------------------------------- |
-| `_auth`            | `undefined` | Deployed AuthorizedAddresses contract address |
-| `_events`          | `undefined` | Deployed Events contract address              |
-| `_treasuryAddress` | `undefined` | Deployed Treasury contract address            |
-
 ### registerTokens
+
 
 Register tokens.
 
 #### Signature
 
 ```solidity
-function registerTokens(amount address, msgSender uint256)
+function registerTokens(msgSender address, amount uint256)
 ```
 
 #### Parameters:
 
-| Parameter   | Type      | Description                   |
-| ----------- | --------- | ----------------------------- |
-| `amount`    | `address` | Number of tokens to register  |
-| `msgSender` | `uint256` | Address that called the proxy |
+Parameter | Type | Description
+--- | --- | ---
+`msgSender` | `address` | Address that called the proxy
+`amount` | `uint256` | Number of tokens to register
 
 ### releaseTokens
+
 
 Release tokens from the registry.
 
 #### Signature
 
 ```solidity
-function releaseTokens(amount address, msgSender uint256)
+function releaseTokens(msgSender address, amount uint256)
 ```
 
 #### Parameters:
 
-| Parameter   | Type      | Description                   |
-| ----------- | --------- | ----------------------------- |
-| `amount`    | `address` | Number of tokens to release   |
-| `msgSender` | `uint256` | Address that called the proxy |
+Parameter | Type | Description
+--- | --- | ---
+`msgSender` | `address` | Address that called the proxy
+`amount` | `uint256` | Number of tokens to release
 
 ### token
+
 
 The token address.
 
@@ -79,9 +79,11 @@ function token()
 
 #### Returns:
 
+
 KosuToken address.
 
 ### tokensContributed
+
 
 The number of tokens that have been contributed to the contract
 
@@ -93,9 +95,11 @@ function tokensContributed()
 
 #### Returns:
 
+
 Total number of tokens contributed.
 
 ### tokensRegisteredFor
+
 
 Tokens registered for a user.
 
@@ -107,15 +111,17 @@ function tokensRegisteredFor(a address)
 
 #### Parameters:
 
-| Parameter | Type      | Description              |
-| --------- | --------- | ------------------------ |
-| `a`       | `address` | Address to get value for |
+Parameter | Type | Description
+--- | --- | ---
+`a` | `address` | Address to get value for
 
 #### Returns:
+
 
 Tokens registered for address.
 
 ### treasury
+
 
 The Treasury address.
 
@@ -126,5 +132,6 @@ function treasury()
 ```
 
 #### Returns:
+
 
 Deployed Treasury address.
