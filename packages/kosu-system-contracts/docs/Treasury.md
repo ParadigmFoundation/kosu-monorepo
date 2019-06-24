@@ -29,7 +29,7 @@ Allows contracts to change balance.
 #### Signature
 
 ```solidity
-function adjustBalance(account address, amount int256)
+function adjustBalance(account address, amount int256) public
 ```
 
 #### Parameters:
@@ -46,7 +46,7 @@ Allows contracts to be rewarded with new tokens.
 #### Signature
 
 ```solidity
-function award(account address, amount uint256)
+function award(account address, amount uint256) public
 ```
 
 #### Parameters:
@@ -63,7 +63,7 @@ Allows contracts to burn tokens.
 #### Signature
 
 ```solidity
-function burnFrom(account address, amount uint256)
+function burnFrom(account address, amount uint256) public
 ```
 
 #### Parameters:
@@ -80,7 +80,7 @@ Allows contracts to claim tokens.
 #### Signature
 
 ```solidity
-function claimTokens(account address, amount uint256)
+function claimTokens(account address, amount uint256) public
 ```
 
 #### Parameters:
@@ -97,7 +97,7 @@ Allows contracts to confiscate tokens the user has lost access to.
 #### Signature
 
 ```solidity
-function confiscate(account address, amount uint256)
+function confiscate(account address, amount uint256) public
 ```
 
 #### Parameters:
@@ -114,15 +114,8 @@ Creates a new Treasury.
 #### Signature
 
 ```solidity
-constructor(auth, kosuTokenAddress)
+constructor(kosuTokenAddress address, auth address) public
 ```
-
-#### Parameters:
-
-| Parameter          | Type        | Description                             |
-| ------------------ | ----------- | --------------------------------------- |
-| `auth`             | `undefined` | AuthorizedAddresses deployed address.   |
-| `kosuTokenAddress` | `undefined` | The deployed KosuToken contract address |
 
 ### contractDeposit
 
@@ -131,7 +124,7 @@ Allows contracts to deposit.
 #### Signature
 
 ```solidity
-function contractDeposit(account address, amount uint256)
+function contractDeposit(account address, amount uint256) public
 ```
 
 #### Parameters:
@@ -148,7 +141,7 @@ Allows contracts to withdraw.
 #### Signature
 
 ```solidity
-function contractWithdraw(account address, amount uint256)
+function contractWithdraw(account address, amount uint256) public
 ```
 
 #### Parameters:
@@ -165,7 +158,7 @@ Reports the balance held within the contract for a user.
 #### Signature
 
 ```solidity
-function currentBalance(account address)
+function currentBalance(account address) public view (uint256)
 ```
 
 #### Parameters:
@@ -185,7 +178,7 @@ Deposits tokens into the treasury.
 #### Signature
 
 ```solidity
-function deposit(amount uint256)
+function deposit(amount uint256) public
 ```
 
 #### Parameters:
@@ -201,7 +194,7 @@ Allows contracts to release tokens.
 #### Signature
 
 ```solidity
-function releaseTokens(account address, amount uint256)
+function releaseTokens(account address, amount uint256) public
 ```
 
 #### Parameters:
@@ -218,7 +211,7 @@ Reports the balance within the contract system for a user.
 #### Signature
 
 ```solidity
-function systemBalance(account address)
+function systemBalance(account address) public view (uint256)
 ```
 
 #### Parameters:
@@ -238,7 +231,7 @@ Allows contracts to set balance.
 #### Signature
 
 ```solidity
-function updateBalance(account address, amount uint256)
+function updateBalance(account address, amount uint256) public
 ```
 
 #### Parameters:
@@ -255,7 +248,7 @@ Withdraw tokens from the treasury.
 #### Signature
 
 ```solidity
-function withdraw(amount uint256)
+function withdraw(amount uint256) public
 ```
 
 #### Parameters:

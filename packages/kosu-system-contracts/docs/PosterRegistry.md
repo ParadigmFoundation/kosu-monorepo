@@ -22,16 +22,8 @@ Creates a new PosterRegistry
 #### Signature
 
 ```solidity
-constructor(_auth, _events, _treasuryAddress)
+constructor(_treasuryAddress address, _events address, _auth address) public
 ```
-
-#### Parameters:
-
-| Parameter          | Type        | Description                                   |
-| ------------------ | ----------- | --------------------------------------------- |
-| `_auth`            | `undefined` | Deployed AuthorizedAddresses contract address |
-| `_events`          | `undefined` | Deployed Events contract address              |
-| `_treasuryAddress` | `undefined` | Deployed Treasury contract address            |
 
 ### registerTokens
 
@@ -40,15 +32,15 @@ Register tokens.
 #### Signature
 
 ```solidity
-function registerTokens(amount address, msgSender uint256)
+function registerTokens(msgSender address, amount uint256) public
 ```
 
 #### Parameters:
 
 | Parameter   | Type      | Description                   |
 | ----------- | --------- | ----------------------------- |
-| `amount`    | `address` | Number of tokens to register  |
-| `msgSender` | `uint256` | Address that called the proxy |
+| `msgSender` | `address` | Address that called the proxy |
+| `amount`    | `uint256` | Number of tokens to register  |
 
 ### releaseTokens
 
@@ -57,15 +49,15 @@ Release tokens from the registry.
 #### Signature
 
 ```solidity
-function releaseTokens(amount address, msgSender uint256)
+function releaseTokens(msgSender address, amount uint256) public
 ```
 
 #### Parameters:
 
 | Parameter   | Type      | Description                   |
 | ----------- | --------- | ----------------------------- |
-| `amount`    | `address` | Number of tokens to release   |
-| `msgSender` | `uint256` | Address that called the proxy |
+| `msgSender` | `address` | Address that called the proxy |
+| `amount`    | `uint256` | Number of tokens to release   |
 
 ### token
 
@@ -74,7 +66,7 @@ The token address.
 #### Signature
 
 ```solidity
-function token()
+function token() public view (address)
 ```
 
 #### Returns:
@@ -88,7 +80,7 @@ The number of tokens that have been contributed to the contract
 #### Signature
 
 ```solidity
-function tokensContributed()
+function tokensContributed() public view (uint256)
 ```
 
 #### Returns:
@@ -102,7 +94,7 @@ Tokens registered for a user.
 #### Signature
 
 ```solidity
-function tokensRegisteredFor(a address)
+function tokensRegisteredFor(a address) public view (uint256)
 ```
 
 #### Parameters:
@@ -122,7 +114,7 @@ The Treasury address.
 #### Signature
 
 ```solidity
-function treasury()
+function treasury() public view (address)
 ```
 
 #### Returns:

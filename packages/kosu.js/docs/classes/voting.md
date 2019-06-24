@@ -113,7 +113,7 @@ _Defined in [Voting.ts:15](url)_
 
 ▸ **commitVote**(`_pollId`: `BigNumber`, `_vote`: string, `_tokensToCommit`: `BigNumber`): _`Promise<TransactionReceiptWithDecodedLogs>`_
 
-_Defined in [Voting.ts:67](url)_
+_Defined in [Voting.ts:72](url)_
 
 Commits vote to voting contract
 
@@ -133,7 +133,7 @@ Commits vote to voting contract
 
 ▸ **encodeVote**(`_voteOption`: string, `_voteSalt`: string): _string_
 
-_Defined in [Voting.ts:150](url)_
+_Defined in [Voting.ts:155](url)_
 
 Encodes a vote by hashing the option and salt
 
@@ -168,7 +168,7 @@ The contract
 
 ▸ **revealVote**(`_pollId`: `BigNumber`, `_voteOption`: `BigNumber`, `_voteSalt`: `BigNumber`): _`Promise<TransactionReceiptWithDecodedLogs>`_
 
-_Defined in [Voting.ts:92](url)_
+_Defined in [Voting.ts:97](url)_
 
 Reveals vote on voting contract
 
@@ -188,7 +188,7 @@ Reveals vote on voting contract
 
 ▸ **totalRevealedTokens**(`_pollId`: `BigNumber`): _`Promise<BigNumber>`_
 
-_Defined in [Voting.ts:126](url)_
+_Defined in [Voting.ts:131](url)_
 
 Reads the total winning tokens for poll
 
@@ -206,7 +206,7 @@ Reads the total winning tokens for poll
 
 ▸ **totalWinningTokens**(`_pollId`: `BigNumber`): _`Promise<BigNumber>`_
 
-_Defined in [Voting.ts:116](url)_
+_Defined in [Voting.ts:121](url)_
 
 Reads the total winning tokens for poll
 
@@ -224,7 +224,7 @@ Reads the total winning tokens for poll
 
 ▸ **userWinningTokens**(`_pollId`: `BigNumber`, `_userAddress`: string): _`Promise<BigNumber>`_
 
-_Defined in [Voting.ts:137](url)_
+_Defined in [Voting.ts:142](url)_
 
 Reads users winning tokens committed for poll
 
@@ -243,7 +243,7 @@ Reads users winning tokens committed for poll
 
 ▸ **winningOption**(`_pollId`: `BigNumber`): _`Promise<BigNumber>`_
 
-_Defined in [Voting.ts:106](url)_
+_Defined in [Voting.ts:111](url)_
 
 Reads the winning option for poll
 

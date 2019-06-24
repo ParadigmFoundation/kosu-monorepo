@@ -121,7 +121,7 @@ methods.
 
 ▸ **amountRemaining**(`order`: [Order](../interfaces/order.md)): _`Promise<BigNumber>`_
 
-_Defined in [OrderGateway.ts:146](url)_
+_Defined in [OrderGateway.ts:151](url)_
 
 Checks amount of partial exchange tokens remaining, depending on the
 implementation of the SubContract specified in the supplied order.
@@ -143,7 +143,7 @@ implementation of the `amountRemaining` method.
 
 ▸ **arguments**(`subContract`: string): _`Promise<any>`_
 
-_Defined in [OrderGateway.ts:114](url)_
+_Defined in [OrderGateway.ts:118](url)_
 
 Read the required arguments from a deployed SubContract.
 
@@ -183,7 +183,7 @@ A promise to await complete instantiation for further calls
 
 ▸ **isValid**(`order`: [Order](../interfaces/order.md)): _`Promise<boolean>`_
 
-_Defined in [OrderGateway.ts:130](url)_
+_Defined in [OrderGateway.ts:135](url)_
 
 Checks validity of order data according the order's SubContract implementation.
 
@@ -201,7 +201,7 @@ Checks validity of order data according the order's SubContract implementation.
 
 ▸ **participate**(`order`: [Order](../interfaces/order.md), `taker`: string): _`Promise<any>`_
 
-_Defined in [OrderGateway.ts:93](url)_
+_Defined in [OrderGateway.ts:97](url)_
 
 Participate in a trade as a taker (or on behalf of one), by submitting the
 maker order, and the Ethereum address of the taker. The fill transaction

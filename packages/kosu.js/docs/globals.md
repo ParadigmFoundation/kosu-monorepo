@@ -132,6 +132,14 @@ _Defined in [EventEmitter.ts:16](url)_
 
 -   **ws**: _string_ = `wss://ethnet.zaidan.io/ws/kovan`
 
+■ **6174**: _object_
+
+_Defined in [EventEmitter.ts:20](url)_
+
+-   **http**: _string_ = `https://ethnet.zaidan.io/kosu`
+
+-   **ws**: _string_ = `wss://ethnet.zaidan.io/ws/kosu`
+
 ---
 
 ### `Const` OrderSerializer
@@ -146,7 +154,7 @@ could add to utils (or create order-utils pacakge)
 
 ▸ **makerHex**(`order`: [Order](interfaces/order.md), `_arguments`: any): _string_
 
-_Defined in [OrderSerializer.ts:84](url)_
+_Defined in [OrderSerializer.ts:88](url)_
 
 Generate the maker hex from order
 
@@ -180,7 +188,7 @@ Generates hex to be used for the poster signing process
 
 ▸ **recoverMaker**(`order`: [Order](interfaces/order.md), `_arguments`: any[]): _string_
 
-_Defined in [OrderSerializer.ts:105](url)_
+_Defined in [OrderSerializer.ts:109](url)_
 
 Recovers the maker from the signed information
 
@@ -197,7 +205,7 @@ Recovers the maker from the signed information
 
 ▸ **recoverPoster**(`order`: [PostableOrder](interfaces/postableorder.md), `_arguments`: any[]): _string_
 
-_Defined in [OrderSerializer.ts:74](url)_
+_Defined in [OrderSerializer.ts:78](url)_
 
 Recovers the poster from the poster signature
 

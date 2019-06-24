@@ -23,7 +23,7 @@ Commit a vote in a poll to be later revealed
 #### Signature
 
 ```solidity
-function commitVote(_pollId uint256, _tokensToCommit bytes32, _vote uint256)
+function commitVote(_pollId uint256, _vote bytes32, _tokensToCommit uint256) public
 ```
 
 #### Parameters:
@@ -31,8 +31,8 @@ function commitVote(_pollId uint256, _tokensToCommit bytes32, _vote uint256)
 | Parameter         | Type      | Description                        |
 | ----------------- | --------- | ---------------------------------- |
 | `_pollId`         | `uint256` | Poll index to act upon             |
-| `_tokensToCommit` | `bytes32` | Number of tokens to commit to vote |
-| `_vote`           | `uint256` | Hash encoded vote                  |
+| `_vote`           | `bytes32` | Hash encoded vote                  |
+| `_tokensToCommit` | `uint256` | Number of tokens to commit to vote |
 
 ### constructor
 
@@ -41,15 +41,8 @@ Create a new voting engine
 #### Signature
 
 ```solidity
-constructor(_emitterAddress, treasuryAddress)
+constructor(treasuryAddress address, _emitterAddress address) public
 ```
-
-#### Parameters:
-
-| Parameter         | Type        | Description                   |
-| ----------------- | ----------- | ----------------------------- |
-| `_emitterAddress` | `undefined` | Deployed EventEmitter address |
-| `treasuryAddress` | `undefined` | Deployed Treasury address     |
 
 ### createPoll
 
@@ -58,7 +51,7 @@ Create a new poll to accept votes based on the configuration
 #### Signature
 
 ```solidity
-function createPoll(_commitEndBlock uint256, _revealEndBlock uint256)
+function createPoll(_commitEndBlock uint256, _revealEndBlock uint256) public (uint256)
 ```
 
 #### Parameters:
@@ -79,7 +72,7 @@ Reveal a previously committed vote
 #### Signature
 
 ```solidity
-function revealVote(_pollId uint256, _voteOption uint256, _voteSalt uint256)
+function revealVote(_pollId uint256, _voteOption uint256, _voteSalt uint256) public
 ```
 
 #### Parameters:
@@ -97,7 +90,7 @@ Retreive the total number of tokens revealed for a finalized poll.
 #### Signature
 
 ```solidity
-function totalRevealedTokens(_pollId uint256)
+function totalRevealedTokens(_pollId uint256) public view (uint256)
 ```
 
 #### Parameters:
@@ -117,7 +110,7 @@ Retreive the total number of tokens that voted on the winning side of a finalize
 #### Signature
 
 ```solidity
-function totalWinningTokens(_pollId uint256)
+function totalWinningTokens(_pollId uint256) public view (uint256)
 ```
 
 #### Parameters:
@@ -137,7 +130,7 @@ Retreive the number of tokens committed by a user for the winning option.
 #### Signature
 
 ```solidity
-function userWinningTokens(_pollId uint256, _user address)
+function userWinningTokens(_pollId uint256, _user address) public view (uint256)
 ```
 
 #### Parameters:
@@ -154,7 +147,7 @@ Retreive the winning outcome for a finalized poll.
 #### Signature
 
 ```solidity
-function winningOption(_pollId uint256)
+function winningOption(_pollId uint256) public view (uint256)
 ```
 
 #### Parameters:

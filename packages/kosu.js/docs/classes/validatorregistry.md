@@ -133,7 +133,7 @@ _Defined in [ValidatorRegistry.ts:17](url)_
 
 ▸ **applicationPeriod**(): _`Promise<BigNumber>`_
 
-_Defined in [ValidatorRegistry.ts:63](url)_
+_Defined in [ValidatorRegistry.ts:67](url)_
 
 Reads the application period
 
@@ -145,7 +145,7 @@ Reads the application period
 
 ▸ **challengeListing**(`_pubKey`: string, `_details`: string): _`Promise<TransactionReceiptWithDecodedLogs>`_
 
-_Defined in [ValidatorRegistry.ts:250](url)_
+_Defined in [ValidatorRegistry.ts:254](url)_
 
 Starts a challenge of a listing
 
@@ -164,7 +164,7 @@ Starts a challenge of a listing
 
 ▸ **challengePeriod**(): _`Promise<BigNumber>`_
 
-_Defined in [ValidatorRegistry.ts:79](url)_
+_Defined in [ValidatorRegistry.ts:83](url)_
 
 Reads the challenge period
 
@@ -176,7 +176,7 @@ Reads the challenge period
 
 ▸ **claimRewards**(`_pubKey`: string): _`Promise<TransactionReceiptWithDecodedLogs>`_
 
-_Defined in [ValidatorRegistry.ts:279](url)_
+_Defined in [ValidatorRegistry.ts:283](url)_
 
 Claims the rewards of a generating/burning listing
 
@@ -194,7 +194,7 @@ Claims the rewards of a generating/burning listing
 
 ▸ **claimWinnings**(`challengeId`: `BigNumber`): _`Promise<TransactionReceiptWithDecodedLogs>`_
 
-_Defined in [ValidatorRegistry.ts:309](url)_
+_Defined in [ValidatorRegistry.ts:313](url)_
 
 Claims winnings from complete challenge
 
@@ -212,7 +212,7 @@ Claims winnings from complete challenge
 
 ▸ **commitPeriod**(): _`Promise<BigNumber>`_
 
-_Defined in [ValidatorRegistry.ts:71](url)_
+_Defined in [ValidatorRegistry.ts:75](url)_
 
 Reads the commit period
 
@@ -224,7 +224,7 @@ Reads the commit period
 
 ▸ **confirmListing**(`_pubKey`: string): _`Promise<TransactionReceiptWithDecodedLogs>`_
 
-_Defined in [ValidatorRegistry.ts:239](url)_
+_Defined in [ValidatorRegistry.ts:243](url)_
 
 Confirms listing after application period
 
@@ -242,7 +242,7 @@ Confirms listing after application period
 
 ▸ **convertPubKey**(`_pubKey`: string): _string_
 
-_Defined in [ValidatorRegistry.ts:320](url)_
+_Defined in [ValidatorRegistry.ts:324](url)_
 
 Converts public key to hex if input is not currently in hex
 
@@ -262,7 +262,7 @@ hex encoded tendermint public key
 
 ▸ **exitPeriod**(): _`Promise<BigNumber>`_
 
-_Defined in [ValidatorRegistry.ts:87](url)_
+_Defined in [ValidatorRegistry.ts:91](url)_
 
 Reads the exit period
 
@@ -274,7 +274,7 @@ Reads the exit period
 
 ▸ **finalizeExit**(`_pubKey`: string): _`Promise<TransactionReceiptWithDecodedLogs>`_
 
-_Defined in [ValidatorRegistry.ts:299](url)_
+_Defined in [ValidatorRegistry.ts:303](url)_
 
 Finalizes the exit of a listing
 
@@ -292,7 +292,7 @@ Finalizes the exit of a listing
 
 ▸ **getAllChallenges**(): _`Promise<Challenge[]>`_
 
-_Defined in [ValidatorRegistry.ts:198](url)_
+_Defined in [ValidatorRegistry.ts:202](url)_
 
 Reads all challenges
 
@@ -304,7 +304,7 @@ Reads all challenges
 
 ▸ **getAllListings**(): _`Promise<Listing[]>`_
 
-_Defined in [ValidatorRegistry.ts:161](url)_
+_Defined in [ValidatorRegistry.ts:165](url)_
 
 Reads the registered listings
 
@@ -316,7 +316,7 @@ Reads the registered listings
 
 ▸ **getChallenge**(`challengeId`: `BigNumber`): _`Promise<Challenge>`_
 
-_Defined in [ValidatorRegistry.ts:179](url)_
+_Defined in [ValidatorRegistry.ts:183](url)_
 
 Reads the challenge by challengeId
 
@@ -334,7 +334,7 @@ Reads the challenge by challengeId
 
 ▸ **getChallenges**(`challengeIds`: `BigNumber`[]): _`Promise<Challenge[]>`_
 
-_Defined in [ValidatorRegistry.ts:189](url)_
+_Defined in [ValidatorRegistry.ts:193](url)_
 
 Reads the challenges by challengeIds
 
@@ -366,7 +366,7 @@ The contract
 
 ▸ **getListing**(`_pubKey`: string): _`Promise<Listing>`_
 
-_Defined in [ValidatorRegistry.ts:145](url)_
+_Defined in [ValidatorRegistry.ts:149](url)_
 
 Reads the listing for public key
 
@@ -384,7 +384,7 @@ Reads the listing for public key
 
 ▸ **getListings**(`_pubKeys`: string[]): _`Promise<Listing[]>`_
 
-_Defined in [ValidatorRegistry.ts:153](url)_
+_Defined in [ValidatorRegistry.ts:157](url)_
 
 Reads the requested listings
 
@@ -402,7 +402,7 @@ Reads the requested listings
 
 ▸ **hexToBase64**(`_pubKey`: string): _string_
 
-_Defined in [ValidatorRegistry.ts:344](url)_
+_Defined in [ValidatorRegistry.ts:348](url)_
 
 Converts hex encoded public key back to tendermint base64
 
@@ -422,7 +422,7 @@ Base64 tendermint public key
 
 ▸ **initExit**(`_pubKey`: string): _`Promise<TransactionReceiptWithDecodedLogs>`_
 
-_Defined in [ValidatorRegistry.ts:289](url)_
+_Defined in [ValidatorRegistry.ts:293](url)_
 
 Initializes an exit of a listing from the registry
 
@@ -440,7 +440,7 @@ Initializes an exit of a listing from the registry
 
 ▸ **kosuToken**(): _`Promise<string>`_
 
-_Defined in [ValidatorRegistry.ts:127](url)_
+_Defined in [ValidatorRegistry.ts:131](url)_
 
 Reads the kosuToken address
 
@@ -452,7 +452,7 @@ Reads the kosuToken address
 
 ▸ **listingKeys**(): _`Promise<string[]>`_
 
-_Defined in [ValidatorRegistry.ts:135](url)_
+_Defined in [ValidatorRegistry.ts:139](url)_
 
 Reads the current listing keys
 
@@ -464,7 +464,7 @@ Reads the current listing keys
 
 ▸ **maxRewardRate**(): _`Promise<BigNumber>`_
 
-_Defined in [ValidatorRegistry.ts:169](url)_
+_Defined in [ValidatorRegistry.ts:173](url)_
 
 Reads the max reward rate
 
@@ -476,7 +476,7 @@ Reads the max reward rate
 
 ▸ **minimumBalance**(): _`Promise<BigNumber>`_
 
-_Defined in [ValidatorRegistry.ts:103](url)_
+_Defined in [ValidatorRegistry.ts:107](url)_
 
 Reads the minimum balance
 
@@ -488,7 +488,7 @@ Reads the minimum balance
 
 ▸ **registerListing**(`_pubKey`: string, `_tokensToStake`: `BigNumber`, `_rewardRate`: `BigNumber`, `_details`: string): _`Promise<TransactionReceiptWithDecodedLogs>`_
 
-_Defined in [ValidatorRegistry.ts:211](url)_
+_Defined in [ValidatorRegistry.ts:215](url)_
 
 Register a new listing
 
@@ -509,7 +509,7 @@ Register a new listing
 
 ▸ **resolveChallenge**(`_pubKey`: string): _`Promise<TransactionReceiptWithDecodedLogs>`_
 
-_Defined in [ValidatorRegistry.ts:269](url)_
+_Defined in [ValidatorRegistry.ts:273](url)_
 
 Resolves challenge of a listing
 
@@ -527,7 +527,7 @@ Resolves challenge of a listing
 
 ▸ **rewardPeriod**(): _`Promise<BigNumber>`_
 
-_Defined in [ValidatorRegistry.ts:95](url)_
+_Defined in [ValidatorRegistry.ts:99](url)_
 
 Reads the reward period
 
@@ -539,7 +539,7 @@ Reads the reward period
 
 ▸ **stakeholderCut**(): _`Promise<BigNumber>`_
 
-_Defined in [ValidatorRegistry.ts:111](url)_
+_Defined in [ValidatorRegistry.ts:115](url)_
 
 Reads the stakeholder cut
 
@@ -551,7 +551,7 @@ Reads the stakeholder cut
 
 ▸ **voting**(): _`Promise<string>`_
 
-_Defined in [ValidatorRegistry.ts:119](url)_
+_Defined in [ValidatorRegistry.ts:123](url)_
 
 Reads the Voting contract address
 

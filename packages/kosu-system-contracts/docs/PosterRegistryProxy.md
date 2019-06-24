@@ -23,15 +23,8 @@ Creates a Proxy for a PosterRegistry. Accepts an initial implementation that can
 #### Signature
 
 ```solidity
-constructor(auth, implementation)
+constructor(implementation address, auth address) public
 ```
-
-#### Parameters:
-
-| Parameter        | Type        | Description                                |
-| ---------------- | ----------- | ------------------------------------------ |
-| `auth`           | `undefined` | AuthorizedAddresses deployed address.      |
-| `implementation` | `undefined` | deployed implementation of PosterRegistry. |
 
 ### registerTokens
 
@@ -40,7 +33,7 @@ Calls registerTokens on the current registry.
 #### Signature
 
 ```solidity
-function registerTokens(amount uint256)
+function registerTokens(amount uint256) public
 ```
 
 #### Parameters:
@@ -56,7 +49,7 @@ Calls releaseTokens for the current registry.
 #### Signature
 
 ```solidity
-function releaseTokens(amount uint256)
+function releaseTokens(amount uint256) public
 ```
 
 #### Parameters:
@@ -72,7 +65,7 @@ Set a new PosterRegistry implementation if a replacement is deployed.
 #### Signature
 
 ```solidity
-function setImplementation(implementation address)
+function setImplementation(implementation address) public
 ```
 
 #### Parameters:
@@ -88,7 +81,7 @@ Reads the current registries token.
 #### Signature
 
 ```solidity
-function token()
+function token() public view (address)
 ```
 
 #### Returns:
@@ -102,7 +95,7 @@ Reads the current registries tokensContributed.
 #### Signature
 
 ```solidity
-function tokensContributed()
+function tokensContributed() public view (uint256)
 ```
 
 #### Returns:
@@ -116,7 +109,7 @@ Reads the current registries tokens registered for the supplied address.
 #### Signature
 
 ```solidity
-function tokensRegisteredFor(a address)
+function tokensRegisteredFor(a address) public view (uint256)
 ```
 
 #### Parameters:
@@ -136,7 +129,7 @@ Reads the current registries Treasury address.
 #### Signature
 
 ```solidity
-function treasury()
+function treasury() public view (address)
 ```
 
 #### Returns:

@@ -119,7 +119,7 @@ methods.
 
 ▸ **allowance**(`owner`: string, `spender`: string): _`Promise<BigNumber>`_
 
-_Defined in [KosuToken.ts:151](url)_
+_Defined in [KosuToken.ts:156](url)_
 
 Reads approved allowance for a given `owner` and `spender` account.
 
@@ -140,7 +140,7 @@ The allowance granted to the `spender` in units of wei.
 
 ▸ **approve**(`spender`: string, `value`: `BigNumber`): _`Promise<TransactionReceiptWithDecodedLogs>`_
 
-_Defined in [KosuToken.ts:139](url)_
+_Defined in [KosuToken.ts:144](url)_
 
 Sets approval for user to transfer tokens on `coinbase`'s behalf.
 
@@ -161,7 +161,7 @@ The transaction receipt after it has been included in a block.
 
 ▸ **balanceOf**(`owner`: string): _`Promise<BigNumber>`_
 
-_Defined in [KosuToken.ts:102](url)_
+_Defined in [KosuToken.ts:107](url)_
 
 Reads the balance for a user address, returned in wei.
 
@@ -195,7 +195,7 @@ The low-level KosuToken contract wrapper instance.
 
 ▸ **totalSupply**(): _`Promise<BigNumber>`_
 
-_Defined in [KosuToken.ts:91](url)_
+_Defined in [KosuToken.ts:96](url)_
 
 Reads the total supply of KOSU, resolves to a `BigNumber` of the amount of
 tokens in units of wei.
@@ -210,7 +210,7 @@ The total KOSU supply in wei.
 
 ▸ **transfer**(`to`: string, `value`: `BigNumber`): _`Promise<TransactionReceiptWithDecodedLogs>`_
 
-_Defined in [KosuToken.ts:114](url)_
+_Defined in [KosuToken.ts:119](url)_
 
 Transfers tokens to an address, from the current `coinbase` account.
 
@@ -231,7 +231,7 @@ The transaction's receipt after inclusion in a block.
 
 ▸ **transferFrom**(`from`: string, `to`: string, `value`: `BigNumber`): _`Promise<TransactionReceiptWithDecodedLogs>`_
 
-_Defined in [KosuToken.ts:127](url)_
+_Defined in [KosuToken.ts:132](url)_
 
 Transfers token from an address to a destination address.
 
