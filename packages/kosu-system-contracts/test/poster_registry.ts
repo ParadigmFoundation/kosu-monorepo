@@ -25,7 +25,7 @@ describe("PosterRegistry", () => {
 
     before(() => {
         posterRegistryProxy = contracts.posterRegistryProxy;
-        posterRegistry = contracts.posterRegistryImpl;
+        posterRegistry = contracts.posterRegistry;
         token = contracts.kosuToken;
         treasury = contracts.treasury;
         auth = contracts.authorizedAddresses;

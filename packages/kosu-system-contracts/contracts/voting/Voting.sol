@@ -93,7 +93,7 @@ contract Voting {
         //Ensure commit phase hasn't ended, the user has not committed and has adequate balance in the treasury
         require(block.number <= p.commitEndBlock);
         require(!p.didCommit[msg.sender]);
-        require(treasury.systemBalance(msg.sender) >= 1 ether);
+        require(treasury.systemBalance(msg.sender) >= _tokensToCommit);
         require(_tokensToCommit > 0);
 
         //Set the tokens committed hidden vote data

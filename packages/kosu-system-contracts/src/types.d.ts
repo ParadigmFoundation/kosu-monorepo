@@ -7,7 +7,11 @@ interface MigratedContracts {
     validatorRegistry: ValidatorRegistryContract;
     voting: VotingContract;
     posterRegistryProxy: PosterRegistryProxyContract;
-    posterRegistryImpl: PosterRegistryContract;
+    posterRegistry: PosterRegistryContract;
+}
+
+interface MigratedTestContracts extends MigratedContracts {
+    basicTradeSubContract?: BasicTradeSubContractContract;
 }
 
 interface Listing {

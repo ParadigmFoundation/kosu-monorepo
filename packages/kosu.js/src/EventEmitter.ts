@@ -17,6 +17,10 @@ const KosuEndpoints = {
         http: `https://ethnet.zaidan.io/kovan`,
         ws: `wss://ethnet.zaidan.io/ws/kovan`,
     },
+    6174: {
+        http: `https://ethnet.zaidan.io/kosu`,
+        ws: `wss://ethnet.zaidan.io/ws/kosu`,
+    },
 };
 
 /**
@@ -81,13 +85,16 @@ export class EventEmitter {
         Object.assign(config, { address: await this.getAddress() });
         return this.web3Wrapper
             .getLogsAsync(config)
-            .catch(async err => {
-                if (err.message.includes("more than 1000 results")) {
-                    return this.getPastLogsFromKosuEndpoint(config);
-                } else {
-                    throw err;
-                }
-            })
+            .catch(
+                /* istanbul ignore next */
+                async err => {
+                    if (err.message.includes("more than 1000 results")) {
+                        return this.getPastLogsFromKosuEndpoint(config);
+                    } else {
+                        throw err;
+                    }
+                },
+            )
             .then((logs: LogEntry[]) => {
                 return this._decodeLogs(logs);
             });
@@ -122,6 +129,7 @@ export class EventEmitter {
      *
      * @param config Filter object for querying past logs (see `web3Wrapper.getLogsAsync`).
      */
+    /* istanbul ignore next */
     private async getPastLogsFromKosuEndpoint(config: FilterObject): Promise<any[]> {
         const chainId = await this.web3Wrapper.getNetworkIdAsync();
         if (!this.kosuWeb3Wrapper) {
