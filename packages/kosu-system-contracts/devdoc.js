@@ -86,21 +86,19 @@ function parseMethods(devDoc, abi) {
         const paramTypes = sigSplit[1] ? sigSplit[1].slice(0, -1).split(",") : [];
 
         let signature;
-        let thisAbiDef;
         for (const abiDef of abi) {
             if (abiDef.type === "function" && abiDef.name === name) {
-                thisAbiDef = abiDef;
-                signature = getSignatureFromABI(thisAbiDef);
-                for (let i = 0; i < thisAbiDef.inputs.length; i++) {
-                    const input = thisAbiDef.inputs[i];
+                signature = getSignatureFromABI(abiDef);
+                for (let i = 0; i < abiDef.inputs.length; i++) {
+                    const input = abiDef.inputs[i];
                     params.push({
                         name: input.name,
                         type: paramTypes[i],
                         desc: rawParams[input.name],
                     });
                 }
-            } else if (abiDef.type === "constructor") {
-                signature = getSignatureFromABI(thisAbiDef);
+            } else if (abiDef.type === "constructor" && name === "constructor") {
+                signature = getSignatureFromABI(abiDef);
             }
         }
 
@@ -193,12 +191,12 @@ function getSignatureFromABI(abiDef) {
     let c = 0;
     let s;
     if (!abiDef) {
-        return;
+        return "nup";
     }
     if (abiDef.type === "function") {
         s = "function ".concat(abiDef.name, "(");
-    } else if (abiDev.type === "constructor") {
-        s = "constructor (";
+    } else if (abiDef.type === "constructor") {
+        s = "constructor(";
     }
     for (const input of abiDef.inputs) {
         if (c > 0) {
@@ -211,7 +209,7 @@ function getSignatureFromABI(abiDef) {
     if (abiDef.stateMutability === "view") {
         s = s.concat(" view");
     }
-    if (abiDef.outputs.length !== 0) {
+    if (abiDef.outputs && abiDef.outputs.length !== 0) {
         let i = 0;
         s = s.concat(" (");
         for (const returnVal of abiDef.outputs) {
