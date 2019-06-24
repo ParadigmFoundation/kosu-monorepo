@@ -22,7 +22,10 @@ export class TestHelpers {
     private rewardPeriod: BigNumber;
     private readonly initializing: Promise<void>;
 
-    constructor(web3Wrapper: Web3Wrapper, config: { migratedContracts?: MigratedTestContracts; networkId?: number }) {
+    constructor(
+        web3Wrapper: Web3Wrapper,
+        config: { from?: string; migratedContracts?: MigratedTestContracts; networkId?: number },
+    ) {
         this.web3Wrapper = web3Wrapper;
         if (config.migratedContracts) {
             this.migratedContracts = config.migratedContracts;
@@ -31,17 +34,17 @@ export class TestHelpers {
             if (!addresses) {
                 throw new Error(`TestHelpers can't find addresses for ${config.networkId}`);
             }
+            if (!config.from) {
+                throw new Error("Will need a configured from to initialize contracts");
+            }
             const contracts = {};
 
             Object.keys(DeployedAddresses[config.networkId]).forEach(contractName => {
                 contracts[contractName.charAt(0).toLowerCase() + contractName.slice(1)] = new Wrappers[
                     `${contractName}Contract`
-                ](
-                    artifacts[contractName].compilerOutput.abi,
-                    addresses[contractName],
-                    this.web3Wrapper.getProvider(),
-                    {},
-                );
+                ](artifacts[contractName].compilerOutput.abi, addresses[contractName], this.web3Wrapper.getProvider(), {
+                    from: config.from,
+                });
             });
             this.migratedContracts = contracts as MigratedTestContracts;
         }
