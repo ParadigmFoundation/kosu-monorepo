@@ -22,6 +22,8 @@ steps:
       WEB3_URI: http://kosu-geth:8545
     commands:
       - yarn prettier:ci
+    depends_on:
+      - clone
 
   - name: build-project
     image: gcr.io/kosu-io/node-ci:latest
@@ -33,6 +35,8 @@ steps:
       - yarn setup:ci
       - cd packages/kosu-system-contracts
       - yarn deploy:kosu:ci
+    depends_on:
+      - clone
     when:
       changeset:
         includes:
