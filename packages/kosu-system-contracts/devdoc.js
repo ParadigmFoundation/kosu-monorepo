@@ -21,7 +21,7 @@ function main(_path, _output) {
         let devDoc, abi;
         try {
             devDoc = artifact.compilerOutput.devdoc;
-            abi = artifact.compilerOutput.abi
+            abi = artifact.compilerOutput.abi;
         } catch (error) {
             throw new Error(`[devdocs] Incompatible contract artifacts in supplied directory.`);
         }
@@ -109,7 +109,7 @@ function parseMethods(devDoc, abi) {
             details: rawMethod.details,
             return: rawMethod.return,
             params,
-        }
+        };
         methods.push(method);
     }
     return methods;
@@ -197,23 +197,23 @@ function getSignatureFromABI(abiDef) {
         if (c > 0) {
             s = s.concat(", ");
         }
-        s = s.concat(input.name, " ", input.type)
+        s = s.concat(input.name, " ", input.type);
         c++;
     }
-    s = s.concat(") public")
+    s = s.concat(") public");
     if (abiDef.stateMutability === "view") {
         s = s.concat(" view");
     }
     if (abiDef.outputs.length !== 0) {
         let i = 0;
-        s = s.concat(" (")
+        s = s.concat(" (");
         for (const returnVal of abiDef.outputs) {
             if (i > 0) {
                 s = s.concat(", ");
             }
-            s = s.concat(returnVal.type)
+            s = s.concat(returnVal.type);
         }
-        s = s.concat(")")
+        s = s.concat(")");
     }
     return s;
 }
