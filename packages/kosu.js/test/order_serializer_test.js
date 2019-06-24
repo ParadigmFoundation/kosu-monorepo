@@ -39,6 +39,5 @@ describe("OrderSerializer", () => {
         delete order.takerValues;
         const hexWithoutTakerArgs = OrderSerializer.posterSignatureHex(order, order.arguments);
         hexWithTakerArgs.should.eq(hexWithoutTakerArgs);
-        true.should.be.false;
     });
 });
