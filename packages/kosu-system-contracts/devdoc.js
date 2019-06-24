@@ -160,10 +160,7 @@ function parseMarkdown(devDoc, methods) {
             {
                 code: {
                     language: "solidity",
-                    content:
-                        method.name === "constructor"
-                            ? `constructor(${getInternalSignature(method.params)})`
-                            : `function ${method.name}(${getInternalSignature(method.params)})`,
+                    content: method.signature,
                 },
             },
         );
