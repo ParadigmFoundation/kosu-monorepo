@@ -163,9 +163,15 @@ _Documentation is also checked in to each package and viewable on GitHub._
 
 Various development images used for Kosu CI/CD and development are publicly available on GCR (download with `docker pull`), and built from each `master` commit.
 
-### `kosu-io/node-ci`
+### `kosu-io/node-lts`
 
 A custom Node.js (`lts`) image with additional binaries used to assist in building/testing Kosu packages. Drop-in replacement for `node:lts` image.
+
+-   **GCR URI:** `gcr.io/kosu-io/node-lts:latest`
+
+### `kosu-io/node-ci`
+
+A custom Node.js (`lts`) image with additional binaries used to assist in building/testing Kosu packages, as well as the full `kosu-monorepo` source and dependency tree pre-installed. Used in the Kosu continuous integration suite. Technically a drop-in replacement for the `node:lts` image, but large due to pre-installed source and dependencies. Use `kosu-io/node-lts` instead if working with the monorepo.
 
 -   **GCR URI:** `gcr.io/kosu-io/node-ci:latest`
 
