@@ -8,6 +8,7 @@ export const TestValues = {
     oneHundredWei: new BigNumber("100"),
     halfEther: new BigNumber(toWei("0.5")),
     oneEther: new BigNumber(toWei("1")),
+    twoEther: new BigNumber(toWei("2")),
     fiveEther: new BigNumber(toWei("5")),
     sixEther: new BigNumber(toWei("6")),
     oneHundredEther: new BigNumber(toWei("100")),
