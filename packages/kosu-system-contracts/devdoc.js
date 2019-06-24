@@ -18,9 +18,10 @@ function main(_path, _output) {
         const contents = fs.readFileSync(path.resolve(_path, fileName), { encoding: "utf8" });
         const artifact = JSON.parse(contents);
 
-        let devDoc;
+        let devDoc, abi;
         try {
             devDoc = artifact.compilerOutput.devdoc;
+            abi = artifact.compilerOutput.abi
         } catch (error) {
             throw new Error(`[devdocs] Incompatible contract artifacts in supplied directory.`);
         }
@@ -32,7 +33,7 @@ function main(_path, _output) {
         }
 
         // create custom data structure from devdoc compiler output, and convert to json2md input
-        const methods = parseMethods(devDoc);
+        const methods = parseMethods(devDoc, abi);
         const output = parseMarkdown(devDoc, methods);
 
         const mdOutputArr = [fileName, json2md(output)];
@@ -67,15 +68,15 @@ function log(message, level = 1) {
     }
 }
 
-function parseMethods(devDoc) {
+function parseMethods(devDoc, abi) {
     const methods = [];
     const methodSignatures = Object.keys(devDoc.methods);
 
     // process each method
-    for (const signature of methodSignatures) {
-        const rawMethod = devDoc.methods[signature];
+    for (const sig of methodSignatures) {
+        const rawMethod = devDoc.methods[sig];
 
-        const sigSplit = signature.split("(");
+        const sigSplit = sig.split("(");
         const name = sigSplit[0];
 
         // parse params
@@ -84,23 +85,32 @@ function parseMethods(devDoc) {
         const paramNames = rawParams ? Object.keys(rawParams) : [];
         const paramTypes = sigSplit[1] ? sigSplit[1].slice(0, -1).split(",") : [];
 
-        for (let i = 0; i < paramNames.length; i++) {
-            const paramName = paramNames[i];
-            params.push({
-                name: paramNames[i],
-                type: paramTypes[i],
-                desc: rawParams[paramName],
-            });
+        let signature;
+        let thisAbiDef;
+        for (const abiDef of abi) {
+            if (abiDef.type === "function" && abiDef.name === name) {
+                thisAbiDef = abiDef;
+                signature = getSignatureFromABI(thisAbiDef);
+                for (let i = 0; i < thisAbiDef.inputs.length; i++) {
+                    const input = thisAbiDef.inputs[i];
+                    params.push({
+                        name: input.name,
+                        type: paramTypes[i],
+                        desc: rawParams[input.name],
+                    });
+                }
+            }
         }
 
         // add method
-        methods.push({
+        const method = {
             name,
             signature,
             details: rawMethod.details,
             return: rawMethod.return,
             params,
-        });
+        }
+        methods.push(method);
     }
     return methods;
 }
@@ -178,6 +188,34 @@ function parseMarkdown(devDoc, methods) {
         }
     }
     return output;
+}
+
+function getSignatureFromABI(abiDef) {
+    let c = 0;
+    let s = "function ".concat(abiDef.name, "(");
+    for (const input of abiDef.inputs) {
+        if (c > 0) {
+            s = s.concat(", ");
+        }
+        s = s.concat(input.name, " ", input.type)
+        c++;
+    }
+    s = s.concat(") public")
+    if (abiDef.stateMutability === "view") {
+        s = s.concat(" view");
+    }
+    if (abiDef.outputs.length !== 0) {
+        let i = 0;
+        s = s.concat(" (")
+        for (const returnVal of abiDef.outputs) {
+            if (i > 0) {
+                s = s.concat(", ");
+            }
+            s = s.concat(returnVal.type)
+        }
+        s = s.concat(")")
+    }
+    return s;
 }
 
 function getInternalSignature(params) {
