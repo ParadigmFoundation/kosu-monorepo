@@ -22,7 +22,7 @@ Creates a new PosterRegistry
 #### Signature
 
 ```solidity
-constructor()
+undefined
 ```
 
 ### registerTokens
@@ -32,7 +32,7 @@ Register tokens.
 #### Signature
 
 ```solidity
-function registerTokens(msgSender address, amount uint256)
+function registerTokens(msgSender address, amount uint256) public
 ```
 
 #### Parameters:
@@ -49,7 +49,7 @@ Release tokens from the registry.
 #### Signature
 
 ```solidity
-function releaseTokens(msgSender address, amount uint256)
+function releaseTokens(msgSender address, amount uint256) public
 ```
 
 #### Parameters:
@@ -66,7 +66,7 @@ The token address.
 #### Signature
 
 ```solidity
-function token()
+function token() public view (address)
 ```
 
 #### Returns:
@@ -80,7 +80,7 @@ The number of tokens that have been contributed to the contract
 #### Signature
 
 ```solidity
-function tokensContributed()
+function tokensContributed() public view (uint256)
 ```
 
 #### Returns:
@@ -94,7 +94,7 @@ Tokens registered for a user.
 #### Signature
 
 ```solidity
-function tokensRegisteredFor(a address)
+function tokensRegisteredFor(a address) public view (uint256)
 ```
 
 #### Parameters:
@@ -114,7 +114,7 @@ The Treasury address.
 #### Signature
 
 ```solidity
-function treasury()
+function treasury() public view (address)
 ```
 
 #### Returns:

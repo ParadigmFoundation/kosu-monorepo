@@ -20,7 +20,7 @@ Calls amountRemaining on provided subContract.
 #### Signature
 
 ```solidity
-function amountRemaining(subContract address, data bytes)
+function amountRemaining(subContract address, data bytes) public view (uint256)
 ```
 
 #### Parameters:
@@ -41,7 +41,7 @@ Calls arguments on provided subContract.
 #### Signature
 
 ```solidity
-function arguments(subContract address)
+function arguments(subContract address) public view (string)
 ```
 
 #### Parameters:
@@ -61,7 +61,7 @@ Creates a new OrderGateway
 #### Signature
 
 ```solidity
-constructor()
+undefined
 ```
 
 ### isValid
@@ -71,7 +71,7 @@ Calls isValid on provided subContract.
 #### Signature
 
 ```solidity
-function isValid(subContract address, data bytes)
+function isValid(subContract address, data bytes) public view (bool)
 ```
 
 #### Parameters:
@@ -92,7 +92,7 @@ Calls participate on the provided subContract.
 #### Signature
 
 ```solidity
-function participate(subContract address, data bytes)
+function participate(subContract address, data bytes) public (bool)
 ```
 
 #### Parameters:

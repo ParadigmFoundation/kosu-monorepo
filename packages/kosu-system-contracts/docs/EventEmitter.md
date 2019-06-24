@@ -17,7 +17,7 @@ Event emitter instantiated with Authorizable.
 #### Signature
 
 ```solidity
-constructor()
+undefined
 ```
 
 ### emitEvent
@@ -27,7 +27,7 @@ Emit generic events which can have decoding exposed though javascript library.
 #### Signature
 
 ```solidity
-function emitEvent(eventType string, data bytes32[], stringData string)
+function emitEvent(eventType string, data bytes32[], stringData string) public
 ```
 
 #### Parameters:

@@ -32,7 +32,7 @@ Challenge a registered listing
 #### Signature
 
 ```solidity
-function challengeListing(tendermintPublicKey bytes32, details string)
+function challengeListing(tendermintPublicKey bytes32, details string) public
 ```
 
 #### Parameters:
@@ -49,7 +49,7 @@ Claims rewards for a listing
 #### Signature
 
 ```solidity
-function claimRewards(pubKey bytes32)
+function claimRewards(pubKey bytes32) public
 ```
 
 #### Parameters:
@@ -65,7 +65,7 @@ Claims winnings from a challenge
 #### Signature
 
 ```solidity
-function claimWinnings(challengeId uint256)
+function claimWinnings(challengeId uint256) public
 ```
 
 #### Parameters:
@@ -81,7 +81,7 @@ Confirm a listing registration
 #### Signature
 
 ```solidity
-function confirmListing(tendermintPublicKey bytes32)
+function confirmListing(tendermintPublicKey bytes32) public
 ```
 
 #### Parameters:
@@ -97,7 +97,7 @@ Create a new ValidatorRegistry implementation
 #### Signature
 
 ```solidity
-constructor()
+undefined
 ```
 
 ### finalizeExit
@@ -107,7 +107,7 @@ Complete a listing exit
 #### Signature
 
 ```solidity
-function finalizeExit(tendermintPublicKey bytes32)
+function finalizeExit(tendermintPublicKey bytes32) public
 ```
 
 #### Parameters:
@@ -123,7 +123,7 @@ Expose all challenges
 #### Signature
 
 ```solidity
-function getAllChallenges()
+function getAllChallenges() public view (tuple[])
 ```
 
 ### getAllListings
@@ -133,7 +133,7 @@ Expose all listings in the registry.
 #### Signature
 
 ```solidity
-function getAllListings()
+function getAllListings() public view (tuple[])
 ```
 
 #### Returns:
@@ -147,7 +147,7 @@ Expose challenge data for a given ID.
 #### Signature
 
 ```solidity
-function getChallenge(challengeId uint256)
+function getChallenge(challengeId uint256) public view (tuple)
 ```
 
 #### Parameters:
@@ -167,7 +167,7 @@ Expose challenge data
 #### Signature
 
 ```solidity
-function getChallenges(challengeIds uint256[])
+function getChallenges(challengeIds uint256[]) public view (tuple[])
 ```
 
 #### Parameters:
@@ -183,7 +183,7 @@ Expose listing data for given public key.
 #### Signature
 
 ```solidity
-function getListing(pubKey bytes32)
+function getListing(pubKey bytes32) public view (tuple)
 ```
 
 #### Parameters:
@@ -203,7 +203,7 @@ Expose several listings provided multiple public keys.
 #### Signature
 
 ```solidity
-function getListings(pubKeys bytes32[])
+function getListings(pubKeys bytes32[]) public view (tuple[])
 ```
 
 #### Parameters:
@@ -223,7 +223,7 @@ Initiate a listing exit
 #### Signature
 
 ```solidity
-function initExit(tendermintPublicKey bytes32)
+function initExit(tendermintPublicKey bytes32) public
 ```
 
 #### Parameters:
@@ -239,7 +239,7 @@ Expose the list of active listing keys.
 #### Signature
 
 ```solidity
-function listingKeys()
+function listingKeys() public view (bytes32[])
 ```
 
 #### Returns:
@@ -253,7 +253,7 @@ Calculate the maximum KosuToken a validator can generate.
 #### Signature
 
 ```solidity
-function maxRewardRate()
+function maxRewardRate() public view (uint256)
 ```
 
 #### Returns:
@@ -267,7 +267,7 @@ Register a listing
 #### Signature
 
 ```solidity
-function registerListing(tendermintPublicKey bytes32, tokensToStake uint256, rewardRate int256, details string)
+function registerListing(tendermintPublicKey bytes32, tokensToStake uint256, rewardRate int256, details string) public
 ```
 
 #### Parameters:
@@ -286,7 +286,7 @@ Resolve a challenge
 #### Signature
 
 ```solidity
-function resolveChallenge(pubKey bytes32)
+function resolveChallenge(pubKey bytes32) public
 ```
 
 #### Parameters:

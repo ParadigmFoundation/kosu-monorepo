@@ -23,7 +23,7 @@ Authorizes the address by setting the mapping value to true.
 #### Signature
 
 ```solidity
-function authorizeAddress(a address)
+function authorizeAddress(a address) public
 ```
 
 #### Parameters:
@@ -39,7 +39,7 @@ Constructor initializes with the creator permission set to true.
 #### Signature
 
 ```solidity
-constructor()
+undefined
 ```
 
 ### isAddressAuthorized
@@ -49,7 +49,7 @@ Verify if address is authorized by reading contract mapping
 #### Signature
 
 ```solidity
-function isAddressAuthorized(a address)
+function isAddressAuthorized(a address) public view (bool)
 ```
 
 #### Parameters:
@@ -69,7 +69,7 @@ Allows the current owner to relinquish control of the contract.
 #### Signature
 
 ```solidity
-function renounceOwnership()
+function renounceOwnership() public
 ```
 
 ### transferOwnership
@@ -79,7 +79,7 @@ Allows the current owner to transfer control of the contract to a newOwner.
 #### Signature
 
 ```solidity
-function transferOwnership(newOwner address)
+function transferOwnership(newOwner address) public
 ```
 
 #### Parameters:
@@ -95,7 +95,7 @@ Unauthorizes the address by setting the mapping value to false.
 #### Signature
 
 ```solidity
-function unauthorizeAddress(a address)
+function unauthorizeAddress(a address) public
 ```
 
 #### Parameters:
