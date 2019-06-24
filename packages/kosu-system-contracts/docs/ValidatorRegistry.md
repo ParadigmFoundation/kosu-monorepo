@@ -11,15 +11,11 @@ Stores registry of validator listings and provides functionality to curate throu
     -   [confirmListing](#confirmlisting)
     -   [constructor](#constructor)
     -   [finalizeExit](#finalizeexit)
-    -   [getAllChallenges](#getallchallenges)
-    -   [getAllListings](#getalllistings)
     -   [getChallenge](#getchallenge)
     -   [getChallenges](#getchallenges)
     -   [getListing](#getlisting)
     -   [getListings](#getlistings)
     -   [initExit](#initexit)
-    -   [listingKeys](#listingkeys)
-    -   [maxRewardRate](#maxrewardrate)
     -   [registerListing](#registerlisting)
     -   [resolveChallenge](#resolvechallenge)
 
@@ -100,6 +96,20 @@ Create a new ValidatorRegistry implementation
 constructor(_treasuryAddress address, _votingAddress address, auth address, _events address, _applicationPeriod uint256, _commitPeriod uint256, _challengePeriod uint256, _exitPeriod uint256, _rewardPeriod uint256) public
 ```
 
+#### Parameters:
+
+| Parameter            | Type      | Description                                                                |
+| -------------------- | --------- | -------------------------------------------------------------------------- |
+| `_treasuryAddress`   | `address` | Deployed Treasury address                                                  |
+| `_votingAddress`     | `address` | Deployed Voting address                                                    |
+| `auth`               | `address` | AuthorizedAddresses deployed address                                       |
+| `_events`            | `address` | Deployed EventEmitter address                                              |
+| `_applicationPeriod` | `uint256` | Initial application period (in blocks) for pending listings                |
+| `_commitPeriod`      | `uint256` | Number of blocks after challenge initiated in which votes can be committed |
+| `_challengePeriod`   | `uint256` | Number of blocks a challenge lasts before being finalized                  |
+| `_exitPeriod`        | `uint256` | Number of blocks exiting listings must wait before claiming stake          |
+| `_rewardPeriod`      | `uint256` | The frequency (in blocks) with which validator rewards may be issued       |
+
 ### finalizeExit
 
 Complete a listing exit
@@ -115,30 +125,6 @@ function finalizeExit(tendermintPublicKey bytes32) public
 | Parameter             | Type      | Description                       |
 | --------------------- | --------- | --------------------------------- |
 | `tendermintPublicKey` | `bytes32` | Hex encoded tendermint public key |
-
-### getAllChallenges
-
-Expose all challenges
-
-#### Signature
-
-```solidity
-function getAllChallenges() public view (tuple[])
-```
-
-### getAllListings
-
-Expose all listings in the registry.
-
-#### Signature
-
-```solidity
-function getAllListings() public view (tuple[])
-```
-
-#### Returns:
-
-An array of all listings in the registry.
 
 ### getChallenge
 
@@ -231,34 +217,6 @@ function initExit(tendermintPublicKey bytes32) public
 | Parameter             | Type      | Description                       |
 | --------------------- | --------- | --------------------------------- |
 | `tendermintPublicKey` | `bytes32` | Hex encoded tendermint public key |
-
-### listingKeys
-
-Expose the list of active listing keys.
-
-#### Signature
-
-```solidity
-function listingKeys() public view (bytes32[])
-```
-
-#### Returns:
-
-An array of hex encoded tendermint keys.
-
-### maxRewardRate
-
-Calculate the maximum KosuToken a validator can generate.
-
-#### Signature
-
-```solidity
-function maxRewardRate() public view (uint256)
-```
-
-#### Returns:
-
-Maximum KosuToken a validator can generate per period.
 
 ### registerListing
 

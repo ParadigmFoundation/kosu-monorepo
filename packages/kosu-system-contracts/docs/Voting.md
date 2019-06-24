@@ -44,6 +44,13 @@ Create a new voting engine
 constructor(treasuryAddress address, _emitterAddress address) public
 ```
 
+#### Parameters:
+
+| Parameter         | Type      | Description                   |
+| ----------------- | --------- | ----------------------------- |
+| `treasuryAddress` | `address` | Deployed Treasury address     |
+| `_emitterAddress` | `address` | Deployed EventEmitter address |
+
 ### createPoll
 
 Create a new poll to accept votes based on the configuration

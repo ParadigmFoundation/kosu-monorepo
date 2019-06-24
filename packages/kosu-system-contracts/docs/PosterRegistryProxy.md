@@ -9,10 +9,7 @@ Proxy contract for interacting with the PosterRegisty implementation contract.
     -   [registerTokens](#registertokens)
     -   [releaseTokens](#releasetokens)
     -   [setImplementation](#setimplementation)
-    -   [token](#token)
-    -   [tokensContributed](#tokenscontributed)
     -   [tokensRegisteredFor](#tokensregisteredfor)
-    -   [treasury](#treasury)
 
 ## Methods
 
@@ -25,6 +22,13 @@ Creates a Proxy for a PosterRegistry. Accepts an initial implementation that can
 ```solidity
 constructor(implementation address, auth address) public
 ```
+
+#### Parameters:
+
+| Parameter        | Type      | Description                                |
+| ---------------- | --------- | ------------------------------------------ |
+| `implementation` | `address` | deployed implementation of PosterRegistry. |
+| `auth`           | `address` | AuthorizedAddresses deployed address.      |
 
 ### registerTokens
 
@@ -74,34 +78,6 @@ function setImplementation(implementation address) public
 | ---------------- | --------- | --------------------------------------------------------------- |
 | `implementation` | `address` | Deployed address for replacement PosterRegistry implementation. |
 
-### token
-
-Reads the current registries token.
-
-#### Signature
-
-```solidity
-function token() public view (address)
-```
-
-#### Returns:
-
-Address of configured ERC20 token.
-
-### tokensContributed
-
-Reads the current registries tokensContributed.
-
-#### Signature
-
-```solidity
-function tokensContributed() public view (uint256)
-```
-
-#### Returns:
-
-Total number of tokens contributed the the current registry.
-
 ### tokensRegisteredFor
 
 Reads the current registries tokens registered for the supplied address.
@@ -121,17 +97,3 @@ function tokensRegisteredFor(a address) public view (uint256)
 #### Returns:
 
 The current number of tokens contributed by the address.
-
-### treasury
-
-Reads the current registries Treasury address.
-
-#### Signature
-
-```solidity
-function treasury() public view (address)
-```
-
-#### Returns:
-
-Address of configured treasury.

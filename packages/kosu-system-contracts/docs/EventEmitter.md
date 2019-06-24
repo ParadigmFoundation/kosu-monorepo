@@ -20,6 +20,12 @@ Event emitter instantiated with Authorizable.
 constructor(auth address) public
 ```
 
+#### Parameters:
+
+| Parameter | Type      | Description                           |
+| --------- | --------- | ------------------------------------- |
+| `auth`    | `address` | AuthorizedAddresses deployed address. |
+
 ### emitEvent
 
 Emit generic events which can have decoding exposed though javascript library.

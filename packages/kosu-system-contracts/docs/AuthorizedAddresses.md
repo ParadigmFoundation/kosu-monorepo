@@ -6,11 +6,7 @@ Common registry of system contract addresses authrorized to access internal meth
 
 -   [Methods](undefined)
     -   [authorizeAddress](#authorizeaddress)
-    -   [constructor](#constructor)
     -   [isAddressAuthorized](#isaddressauthorized)
-    -   [isOwner](#isowner)
-    -   [owner](#owner)
-    -   [renounceOwnership](#renounceownership)
     -   [transferOwnership](#transferownership)
     -   [unauthorizeAddress](#unauthorizeaddress)
 
@@ -32,16 +28,6 @@ function authorizeAddress(a address) public
 | --------- | --------- | -------------------- |
 | `a`       | `address` | Address to authorize |
 
-### constructor
-
-Constructor initializes with the creator permission set to true.
-
-#### Signature
-
-```solidity
-constructor() public
-```
-
 ### isAddressAuthorized
 
 Verify if address is authorized by reading contract mapping
@@ -61,16 +47,6 @@ function isAddressAuthorized(a address) public view (bool)
 #### Returns:
 
 True if the address is authorized, false otherwise.
-
-### renounceOwnership
-
-Allows the current owner to relinquish control of the contract.
-
-#### Signature
-
-```solidity
-function renounceOwnership() public
-```
 
 ### transferOwnership
 

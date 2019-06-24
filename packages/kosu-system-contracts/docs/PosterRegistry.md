@@ -8,10 +8,7 @@ Implementation contract for the PosterRegistry, allowing users to bond and un-bo
     -   [constructor](#constructor)
     -   [registerTokens](#registertokens)
     -   [releaseTokens](#releasetokens)
-    -   [token](#token)
-    -   [tokensContributed](#tokenscontributed)
     -   [tokensRegisteredFor](#tokensregisteredfor)
-    -   [treasury](#treasury)
 
 ## Methods
 
@@ -24,6 +21,14 @@ Creates a new PosterRegistry
 ```solidity
 constructor(_treasuryAddress address, _events address, _auth address) public
 ```
+
+#### Parameters:
+
+| Parameter          | Type      | Description                                   |
+| ------------------ | --------- | --------------------------------------------- |
+| `_treasuryAddress` | `address` | Deployed Treasury contract address            |
+| `_events`          | `address` | Deployed Events contract address              |
+| `_auth`            | `address` | Deployed AuthorizedAddresses contract address |
 
 ### registerTokens
 
@@ -59,34 +64,6 @@ function releaseTokens(msgSender address, amount uint256) public
 | `msgSender` | `address` | Address that called the proxy |
 | `amount`    | `uint256` | Number of tokens to release   |
 
-### token
-
-The token address.
-
-#### Signature
-
-```solidity
-function token() public view (address)
-```
-
-#### Returns:
-
-KosuToken address.
-
-### tokensContributed
-
-The number of tokens that have been contributed to the contract
-
-#### Signature
-
-```solidity
-function tokensContributed() public view (uint256)
-```
-
-#### Returns:
-
-Total number of tokens contributed.
-
 ### tokensRegisteredFor
 
 Tokens registered for a user.
@@ -106,17 +83,3 @@ function tokensRegisteredFor(a address) public view (uint256)
 #### Returns:
 
 Tokens registered for address.
-
-### treasury
-
-The Treasury address.
-
-#### Signature
-
-```solidity
-function treasury() public view (address)
-```
-
-#### Returns:
-
-Deployed Treasury address.

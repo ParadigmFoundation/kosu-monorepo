@@ -7,7 +7,6 @@ Access SubContract implementation's methods to participate in trades and check o
 -   [Methods](undefined)
     -   [amountRemaining](#amountremaining)
     -   [arguments](#arguments)
-    -   [constructor](#constructor)
     -   [isValid](#isvalid)
     -   [participate](#participate)
 
@@ -53,16 +52,6 @@ function arguments(subContract address) public view (string)
 #### Returns:
 
 String encoded JSON representation of subContract maker arguments.
-
-### constructor
-
-Creates a new OrderGateway
-
-#### Signature
-
-```solidity
-constructor() public
-```
 
 ### isValid
 

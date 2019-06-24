@@ -82,6 +82,9 @@ function parseMethods(devDoc, abi) {
         // parse params
         const params = [];
         const rawParams = rawMethod.params;
+        if (!rawParams) {
+            continue;
+        }
         const paramNames = rawParams ? Object.keys(rawParams) : [];
         const paramTypes = sigSplit[1] ? sigSplit[1].slice(0, -1).split(",") : [];
 
@@ -93,12 +96,20 @@ function parseMethods(devDoc, abi) {
                     const input = abiDef.inputs[i];
                     params.push({
                         name: input.name,
-                        type: paramTypes[i],
+                        type: input.type,
                         desc: rawParams[input.name],
                     });
                 }
             } else if (abiDef.type === "constructor" && name === "constructor") {
                 signature = getSignatureFromABI(abiDef);
+                for (let i = 0; i < abiDef.inputs.length; i++) {
+                    const input = abiDef.inputs[i];
+                    params.push({
+                        name: input.name,
+                        type: input.type,
+                        desc: rawParams[input.name],
+                    });
+                }
             }
         }
 

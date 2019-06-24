@@ -117,6 +117,13 @@ Creates a new Treasury.
 constructor(kosuTokenAddress address, auth address) public
 ```
 
+#### Parameters:
+
+| Parameter          | Type      | Description                             |
+| ------------------ | --------- | --------------------------------------- |
+| `kosuTokenAddress` | `address` | The deployed KosuToken contract address |
+| `auth`             | `address` | AuthorizedAddresses deployed address.   |
+
 ### contractDeposit
 
 Allows contracts to deposit.

@@ -9,12 +9,10 @@ KosuToken (KOSU) is an implentation of the ERC-20 interface, supporting mints an
     -   [approve](#approve)
     -   [balanceOf](#balanceof)
     -   [burn](#burn)
-    -   [constructor](#constructor)
     -   [decreaseAllowance](#decreaseallowance)
     -   [increaseAllowance](#increaseallowance)
     -   [mint](#mint)
     -   [mintTo](#mintto)
-    -   [totalSupply](#totalsupply)
     -   [transfer](#transfer)
     -   [transferFrom](#transferfrom)
 
@@ -94,16 +92,6 @@ function burn(amount uint256) public
 | --------- | --------- | --------------------------- |
 | `amount`  | `uint256` | Number of tokens to destroy |
 
-### constructor
-
-Deploy a new ERC20 Token
-
-#### Signature
-
-```solidity
-constructor(_auth address) public
-```
-
 ### decreaseAllowance
 
 Decrease the amount of tokens that an owner allowed to a spender. approve should be called when allowed\_[_spender] == 0. To decrement allowed value is better to use this function to avoid 2 calls (and wait until the first transaction is mined) From MonolithDAO Token.sol Emits an Approval event.
@@ -170,16 +158,6 @@ function mintTo(_address address, amount uint256) public
 | ---------- | --------- | --------------------------- |
 | `_address` | `address` | Address to receive tokens   |
 | `amount`   | `uint256` | Number of tokens to create. |
-
-### totalSupply
-
-Total number of tokens in existence
-
-#### Signature
-
-```solidity
-function totalSupply() public view (uint256)
-```
 
 ### transfer
 
