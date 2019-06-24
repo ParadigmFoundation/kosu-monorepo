@@ -6,12 +6,54 @@ Access SubContract implementation's methods to participate in trades and check o
 
 -   [Methods](undefined)
     -   [amountRemaining](#amountremaining)
-    -   [arguments](#arguments)
-    -   [constructor](#constructor)
-    -   [isValid](#isvalid)
-    -   [participate](#participate)
+    -   [amountRemaining](#amountremaining)
+    -   [amountRemaining](#amountremaining)
+    -   [amountRemaining](#amountremaining)
+    -   [amountRemaining](#amountremaining)
 
 ## Methods
+
+### amountRemaining
+
+Calls amountRemaining on provided subContract.
+
+#### Signature
+
+```solidity
+undefined
+```
+
+#### Parameters:
+
+| Parameter     | Type      | Description                                                         |
+| ------------- | --------- | ------------------------------------------------------------------- |
+| `subContract` | `address` | Address of contract implementing the SubContract interface.         |
+| `data`        | `bytes`   | Encoded maker values for Order encoded based on the makerArguments. |
+
+#### Returns:
+
+Quantity of available asset for Order encoded in makerData.
+
+### amountRemaining
+
+Calls amountRemaining on provided subContract.
+
+#### Signature
+
+```solidity
+undefined
+```
+
+#### Parameters:
+
+| Parameter     | Type      | Description                                                         |
+| ------------- | --------- | ------------------------------------------------------------------- |
+| `subContract` | `address` | Address of contract implementing the SubContract interface.         |
+| `data`        | `bytes`   | Encoded maker values for Order encoded based on the makerArguments. |
+
+#### Returns:
+
+Quantity of available asset for Order encoded in makerData.
 
 ### amountRemaining
 
@@ -34,44 +76,14 @@ function amountRemaining(subContract address, data bytes) public view (uint256)
 
 Quantity of available asset for Order encoded in makerData.
 
-### arguments
+### amountRemaining
 
-Calls arguments on provided subContract.
-
-#### Signature
-
-```solidity
-function arguments(subContract address) public view (string)
-```
-
-#### Parameters:
-
-| Parameter     | Type      | Description                                                 |
-| ------------- | --------- | ----------------------------------------------------------- |
-| `subContract` | `address` | Address of contract implementing the SubContract interface. |
-
-#### Returns:
-
-String encoded JSON representation of subContract maker arguments.
-
-### constructor
-
-Creates a new OrderGateway
+Calls amountRemaining on provided subContract.
 
 #### Signature
 
 ```solidity
-constructor() public
-```
-
-### isValid
-
-Calls isValid on provided subContract.
-
-#### Signature
-
-```solidity
-function isValid(subContract address, data bytes) public view (bool)
+function amountRemaining(subContract address, data bytes) public view (uint256)
 ```
 
 #### Parameters:
@@ -83,25 +95,25 @@ function isValid(subContract address, data bytes) public view (bool)
 
 #### Returns:
 
-Boolean representing the validity of makerData.
+Quantity of available asset for Order encoded in makerData.
 
-### participate
+### amountRemaining
 
-Calls participate on the provided subContract.
+Calls amountRemaining on provided subContract.
 
 #### Signature
 
 ```solidity
-function participate(subContract address, data bytes) public (bool)
+function amountRemaining(subContract address, data bytes) public view (uint256)
 ```
 
 #### Parameters:
 
-| Parameter     | Type      | Description                                                    |
-| ------------- | --------- | -------------------------------------------------------------- |
-| `subContract` | `address` | Address of contract implementing the SubContract interface.    |
-| `data`        | `bytes`   | Encoded maker values for Order encoded based on the arguments. |
+| Parameter     | Type      | Description                                                         |
+| ------------- | --------- | ------------------------------------------------------------------- |
+| `subContract` | `address` | Address of contract implementing the SubContract interface.         |
+| `data`        | `bytes`   | Encoded maker values for Order encoded based on the makerArguments. |
 
 #### Returns:
 
-Boolean representing success of transaction.
+Quantity of available asset for Order encoded in makerData.

@@ -6,15 +6,134 @@ Proxy contract for interacting with the PosterRegisty implementation contract.
 
 -   [Methods](undefined)
     -   [constructor](#constructor)
-    -   [registerTokens](#registertokens)
-    -   [releaseTokens](#releasetokens)
-    -   [setImplementation](#setimplementation)
-    -   [token](#token)
-    -   [tokensContributed](#tokenscontributed)
-    -   [tokensRegisteredFor](#tokensregisteredfor)
-    -   [treasury](#treasury)
+    -   [constructor](#constructor)
+    -   [constructor](#constructor)
+    -   [constructor](#constructor)
+    -   [constructor](#constructor)
+    -   [constructor](#constructor)
+    -   [constructor](#constructor)
+    -   [constructor](#constructor)
 
 ## Methods
+
+### constructor
+
+Creates a Proxy for a PosterRegistry. Accepts an initial implementation that can be overwritten if a replacement is deployed.
+
+#### Signature
+
+```solidity
+undefined
+```
+
+#### Parameters:
+
+| Parameter        | Type        | Description                                |
+| ---------------- | ----------- | ------------------------------------------ |
+| `implementation` | `undefined` | deployed implementation of PosterRegistry. |
+| `auth`           | `undefined` | AuthorizedAddresses deployed address.      |
+
+### constructor
+
+Creates a Proxy for a PosterRegistry. Accepts an initial implementation that can be overwritten if a replacement is deployed.
+
+#### Signature
+
+```solidity
+undefined
+```
+
+#### Parameters:
+
+| Parameter        | Type        | Description                                |
+| ---------------- | ----------- | ------------------------------------------ |
+| `implementation` | `undefined` | deployed implementation of PosterRegistry. |
+| `auth`           | `undefined` | AuthorizedAddresses deployed address.      |
+
+### constructor
+
+Creates a Proxy for a PosterRegistry. Accepts an initial implementation that can be overwritten if a replacement is deployed.
+
+#### Signature
+
+```solidity
+undefined
+```
+
+#### Parameters:
+
+| Parameter        | Type        | Description                                |
+| ---------------- | ----------- | ------------------------------------------ |
+| `implementation` | `undefined` | deployed implementation of PosterRegistry. |
+| `auth`           | `undefined` | AuthorizedAddresses deployed address.      |
+
+### constructor
+
+Creates a Proxy for a PosterRegistry. Accepts an initial implementation that can be overwritten if a replacement is deployed.
+
+#### Signature
+
+```solidity
+undefined
+```
+
+#### Parameters:
+
+| Parameter        | Type        | Description                                |
+| ---------------- | ----------- | ------------------------------------------ |
+| `implementation` | `undefined` | deployed implementation of PosterRegistry. |
+| `auth`           | `undefined` | AuthorizedAddresses deployed address.      |
+
+### constructor
+
+Creates a Proxy for a PosterRegistry. Accepts an initial implementation that can be overwritten if a replacement is deployed.
+
+#### Signature
+
+```solidity
+undefined
+```
+
+#### Parameters:
+
+| Parameter        | Type        | Description                                |
+| ---------------- | ----------- | ------------------------------------------ |
+| `implementation` | `undefined` | deployed implementation of PosterRegistry. |
+| `auth`           | `undefined` | AuthorizedAddresses deployed address.      |
+
+### constructor
+
+Creates a Proxy for a PosterRegistry. Accepts an initial implementation that can be overwritten if a replacement is deployed.
+
+#### Signature
+
+```solidity
+undefined
+```
+
+#### Parameters:
+
+| Parameter        | Type        | Description                                |
+| ---------------- | ----------- | ------------------------------------------ |
+| `implementation` | `undefined` | deployed implementation of PosterRegistry. |
+| `auth`           | `undefined` | AuthorizedAddresses deployed address.      |
+
+### constructor
+
+Creates a Proxy for a PosterRegistry. Accepts an initial implementation that can be overwritten if a replacement is deployed.
+
+#### Signature
+
+```solidity
+undefined
+```
+
+#### Parameters:
+
+| Parameter        | Type        | Description                                |
+| ---------------- | ----------- | ------------------------------------------ |
+| `implementation` | `undefined` | deployed implementation of PosterRegistry. |
+| `auth`           | `undefined` | AuthorizedAddresses deployed address.      |
 
 ### constructor
 
@@ -26,112 +145,9 @@ Creates a Proxy for a PosterRegistry. Accepts an initial implementation that can
 constructor(implementation address, auth address) public
 ```
 
-### registerTokens
-
-Calls registerTokens on the current registry.
-
-#### Signature
-
-```solidity
-function registerTokens(amount uint256) public
-```
-
 #### Parameters:
 
-| Parameter | Type      | Description                           |
-| --------- | --------- | ------------------------------------- |
-| `amount`  | `uint256` | Desired amount of tokens to register. |
-
-### releaseTokens
-
-Calls releaseTokens for the current registry.
-
-#### Signature
-
-```solidity
-function releaseTokens(amount uint256) public
-```
-
-#### Parameters:
-
-| Parameter | Type      | Description                          |
-| --------- | --------- | ------------------------------------ |
-| `amount`  | `uint256` | Desired amount of tokens to release. |
-
-### setImplementation
-
-Set a new PosterRegistry implementation if a replacement is deployed.
-
-#### Signature
-
-```solidity
-function setImplementation(implementation address) public
-```
-
-#### Parameters:
-
-| Parameter        | Type      | Description                                                     |
-| ---------------- | --------- | --------------------------------------------------------------- |
-| `implementation` | `address` | Deployed address for replacement PosterRegistry implementation. |
-
-### token
-
-Reads the current registries token.
-
-#### Signature
-
-```solidity
-function token() public view (address)
-```
-
-#### Returns:
-
-Address of configured ERC20 token.
-
-### tokensContributed
-
-Reads the current registries tokensContributed.
-
-#### Signature
-
-```solidity
-function tokensContributed() public view (uint256)
-```
-
-#### Returns:
-
-Total number of tokens contributed the the current registry.
-
-### tokensRegisteredFor
-
-Reads the current registries tokens registered for the supplied address.
-
-#### Signature
-
-```solidity
-function tokensRegisteredFor(a address) public view (uint256)
-```
-
-#### Parameters:
-
-| Parameter | Type      | Description     |
-| --------- | --------- | --------------- |
-| `a`       | `address` | Address of user |
-
-#### Returns:
-
-The current number of tokens contributed by the address.
-
-### treasury
-
-Reads the current registries Treasury address.
-
-#### Signature
-
-```solidity
-function treasury() public view (address)
-```
-
-#### Returns:
-
-Address of configured treasury.
+| Parameter        | Type        | Description                                |
+| ---------------- | ----------- | ------------------------------------------ |
+| `implementation` | `undefined` | deployed implementation of PosterRegistry. |
+| `auth`           | `undefined` | AuthorizedAddresses deployed address.      |

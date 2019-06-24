@@ -6,9 +6,26 @@ A shared contract for all Kosu system contracts to trigger event logs through.
 
 -   [Methods](undefined)
     -   [constructor](#constructor)
-    -   [emitEvent](#emitevent)
+    -   [constructor](#constructor)
+    -   [constructor](#constructor)
 
 ## Methods
+
+### constructor
+
+Event emitter instantiated with Authorizable.
+
+#### Signature
+
+```solidity
+undefined
+```
+
+#### Parameters:
+
+| Parameter | Type        | Description                           |
+| --------- | ----------- | ------------------------------------- |
+| `auth`    | `undefined` | AuthorizedAddresses deployed address. |
 
 ### constructor
 
@@ -20,20 +37,24 @@ Event emitter instantiated with Authorizable.
 constructor(auth address) public
 ```
 
-### emitEvent
+#### Parameters:
 
-Emit generic events which can have decoding exposed though javascript library.
+| Parameter | Type        | Description                           |
+| --------- | ----------- | ------------------------------------- |
+| `auth`    | `undefined` | AuthorizedAddresses deployed address. |
+
+### constructor
+
+Event emitter instantiated with Authorizable.
 
 #### Signature
 
 ```solidity
-function emitEvent(eventType string, data bytes32[], stringData string) public
+constructor(auth address) public
 ```
 
 #### Parameters:
 
-| Parameter    | Type        | Description                                                    |
-| ------------ | ----------- | -------------------------------------------------------------- |
-| `eventType`  | `string`    | String name/type of event                                      |
-| `data`       | `bytes32[]` | Bytes32 encoded data to be emitted from a centralized location |
-| `stringData` | `string`    | String containing optional additonal information               |
+| Parameter | Type        | Description                           |
+| --------- | ----------- | ------------------------------------- |
+| `auth`    | `undefined` | AuthorizedAddresses deployed address. |
