@@ -29,7 +29,10 @@ before(async () => {
         const rpcSubprovider = new RPCSubprovider(process.env.WEB3_URI);
         provider.addProvider(rpcSubprovider);
     } else {
-        const ganacheSubprovider = new GanacheSubprovider({ network_id: 6174 });
+        const ganacheSubprovider = new GanacheSubprovider({
+            network_id: 6174,
+            mnemonic: process.env.npm_package_config_test_mnemonic,
+        });
         provider.addProvider(ganacheSubprovider);
     }
 
@@ -49,27 +52,17 @@ before(async () => {
     const config = {
         provider,
         networkId: await web3.eth.net.getId(),
+        from: accounts[0].toLowerCase(),
     };
 
+    if (!useGeth) {
+        await migrations(provider, { from: accounts[0].toLowerCase(), gas: "4500000" });
+    }
     global.basicTradeSubContract = await kosuSubContractHelper(provider, {
         from: accounts[0].toLowerCase(),
         gas: "4500000",
     });
-    if (!useGeth) {
-        const migratedContracts = await migrations(provider, { from: accounts[0].toLowerCase(), gas: "4500000" });
-        migratedContracts.basicTradeSubContract = basicTradeSubContract;
-        Object.assign(config, {
-            eventEmitterAddress: migratedContracts.eventEmitter.address,
-            posterRegistryProxyAddress: migratedContracts.posterRegistryProxy.address,
-            kosuTokenAddress: migratedContracts.kosuToken.address,
-            orderGatewayAddress: migratedContracts.orderGateway.address,
-            votingAddress: migratedContracts.voting.address,
-            treasuryAddress: migratedContracts.treasury.address,
-        });
-        global.testHelpers = new Helpers.TestHelpers(web3Wrapper, { migratedContracts });
-    } else {
-        global.testHelpers = new Helpers.TestHelpers(web3Wrapper, config);
-    }
+    global.testHelpers = new Helpers.TestHelpers(web3Wrapper, config);
 
     global.kosu = new Kosu(config);
 
