@@ -5,6 +5,7 @@ describe("OrderSerializer", () => {
     let maker, taker, order, orderGateway;
 
     before(async () => {
+        subContract = basicTradeSubContract.address;
         orderGateway = kosu.orderGateway;
         orderHelper = kosu.orderHelper;
 

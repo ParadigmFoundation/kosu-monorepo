@@ -38,12 +38,16 @@ export class ValidatorRegistry {
     private async getContract(): Promise<ValidatorRegistryContract> {
         if (!this.contract) {
             const networkId = await this.web3Wrapper.getNetworkIdAsync();
-            this.coinbase = await this.web3.eth.getCoinbase().catch(() => undefined);
+            this.coinbase = await this.web3.eth.getCoinbase().catch(
+                /* istanbul ignore next */
+                () => undefined,
+            );
 
             if (!this.address) {
                 this.address = DeployedAddresses[networkId].ValidatorRegistry;
             }
             if (!this.address) {
+                /* istanbul ignore next */
                 throw new Error("Invalid network for ValidatorRegistry");
             }
 
