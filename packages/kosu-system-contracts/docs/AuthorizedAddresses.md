@@ -6,14 +6,9 @@ Common registry of system contract addresses authrorized to access internal meth
 
 -   [Methods](undefined)
     -   [authorizeAddress](#authorizeaddress)
-    -   [authorizeAddress](#authorizeaddress)
-    -   [authorizeAddress](#authorizeaddress)
-    -   [authorizeAddress](#authorizeaddress)
-    -   [authorizeAddress](#authorizeaddress)
-    -   [authorizeAddress](#authorizeaddress)
-    -   [authorizeAddress](#authorizeaddress)
-    -   [authorizeAddress](#authorizeaddress)
-    -   [authorizeAddress](#authorizeaddress)
+    -   [isAddressAuthorized](#isaddressauthorized)
+    -   [transferOwnership](#transferownership)
+    -   [unauthorizeAddress](#unauthorizeaddress)
 
 ## Methods
 
@@ -33,130 +28,54 @@ function authorizeAddress(a address) public
 | --------- | --------- | -------------------- |
 | `a`       | `address` | Address to authorize |
 
-### authorizeAddress
+### isAddressAuthorized
 
-Authorizes the address by setting the mapping value to true.
-
-#### Signature
-
-```solidity
-function authorizeAddress(a address) public
-```
-
-#### Parameters:
-
-| Parameter | Type      | Description          |
-| --------- | --------- | -------------------- |
-| `a`       | `address` | Address to authorize |
-
-### authorizeAddress
-
-Authorizes the address by setting the mapping value to true.
+Verify if address is authorized by reading contract mapping
 
 #### Signature
 
 ```solidity
-function authorizeAddress(a address) public
+function isAddressAuthorized(a address) public view (bool)
 ```
 
 #### Parameters:
 
-| Parameter | Type      | Description          |
-| --------- | --------- | -------------------- |
-| `a`       | `address` | Address to authorize |
+| Parameter | Type      | Description                      |
+| --------- | --------- | -------------------------------- |
+| `a`       | `address` | Address to get authorized value. |
 
-### authorizeAddress
+#### Returns:
 
-Authorizes the address by setting the mapping value to true.
+True if the address is authorized, false otherwise.
+
+### transferOwnership
+
+Allows the current owner to transfer control of the contract to a newOwner.
 
 #### Signature
 
 ```solidity
-function authorizeAddress(a address) public
+function transferOwnership(newOwner address) public
 ```
 
 #### Parameters:
 
-| Parameter | Type      | Description          |
-| --------- | --------- | -------------------- |
-| `a`       | `address` | Address to authorize |
+| Parameter  | Type      | Description                           |
+| ---------- | --------- | ------------------------------------- |
+| `newOwner` | `address` | The address to transfer ownership to. |
 
-### authorizeAddress
+### unauthorizeAddress
 
-Authorizes the address by setting the mapping value to true.
+Unauthorizes the address by setting the mapping value to false.
 
 #### Signature
 
 ```solidity
-function authorizeAddress(a address) public
+function unauthorizeAddress(a address) public
 ```
 
 #### Parameters:
 
-| Parameter | Type      | Description          |
-| --------- | --------- | -------------------- |
-| `a`       | `address` | Address to authorize |
-
-### authorizeAddress
-
-Authorizes the address by setting the mapping value to true.
-
-#### Signature
-
-```solidity
-function authorizeAddress(a address) public
-```
-
-#### Parameters:
-
-| Parameter | Type      | Description          |
-| --------- | --------- | -------------------- |
-| `a`       | `address` | Address to authorize |
-
-### authorizeAddress
-
-Authorizes the address by setting the mapping value to true.
-
-#### Signature
-
-```solidity
-function authorizeAddress(a address) public
-```
-
-#### Parameters:
-
-| Parameter | Type      | Description          |
-| --------- | --------- | -------------------- |
-| `a`       | `address` | Address to authorize |
-
-### authorizeAddress
-
-Authorizes the address by setting the mapping value to true.
-
-#### Signature
-
-```solidity
-function authorizeAddress(a address) public
-```
-
-#### Parameters:
-
-| Parameter | Type      | Description          |
-| --------- | --------- | -------------------- |
-| `a`       | `address` | Address to authorize |
-
-### authorizeAddress
-
-Authorizes the address by setting the mapping value to true.
-
-#### Signature
-
-```solidity
-function authorizeAddress(a address) public
-```
-
-#### Parameters:
-
-| Parameter | Type      | Description          |
-| --------- | --------- | -------------------- |
-| `a`       | `address` | Address to authorize |
+| Parameter | Type      | Description            |
+| --------- | --------- | ---------------------- |
+| `a`       | `address` | Address to unauthorize |

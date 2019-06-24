@@ -21,7 +21,7 @@
 
 ● **datatype**: _string_
 
-_Defined in [types.d.ts:37](https://github.com/ParadigmFoundation/kosu-monorepo/blob/27596fd/packages/kosu.js/src/types.d.ts#L37)_
+_Defined in [types.d.ts:37](https://github.com/ParadigmFoundation/kosu-monorepo/blob/4c58673/packages/kosu.js/src/types.d.ts#L37)_
 
 ---
 
@@ -29,6 +29,6 @@ _Defined in [types.d.ts:37](https://github.com/ParadigmFoundation/kosu-monorepo/
 
 ● **name**: _string_
 
-_Defined in [types.d.ts:36](https://github.com/ParadigmFoundation/kosu-monorepo/blob/27596fd/packages/kosu.js/src/types.d.ts#L36)_
+_Defined in [types.d.ts:36](https://github.com/ParadigmFoundation/kosu-monorepo/blob/4c58673/packages/kosu.js/src/types.d.ts#L36)_
 
 ---

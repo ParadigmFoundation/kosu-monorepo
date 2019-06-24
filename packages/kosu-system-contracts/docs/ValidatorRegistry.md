@@ -6,34 +6,18 @@ Stores registry of validator listings and provides functionality to curate throu
 
 -   [Methods](undefined)
     -   [challengeListing](#challengelisting)
-    -   [challengeListing](#challengelisting)
-    -   [challengeListing](#challengelisting)
-    -   [challengeListing](#challengelisting)
-    -   [challengeListing](#challengelisting)
-    -   [challengeListing](#challengelisting)
-    -   [challengeListing](#challengelisting)
-    -   [challengeListing](#challengelisting)
-    -   [challengeListing](#challengelisting)
-    -   [challengeListing](#challengelisting)
-    -   [challengeListing](#challengelisting)
-    -   [challengeListing](#challengelisting)
-    -   [challengeListing](#challengelisting)
-    -   [challengeListing](#challengelisting)
-    -   [challengeListing](#challengelisting)
-    -   [challengeListing](#challengelisting)
-    -   [challengeListing](#challengelisting)
-    -   [challengeListing](#challengelisting)
-    -   [challengeListing](#challengelisting)
-    -   [challengeListing](#challengelisting)
-    -   [challengeListing](#challengelisting)
-    -   [challengeListing](#challengelisting)
-    -   [challengeListing](#challengelisting)
-    -   [challengeListing](#challengelisting)
-    -   [challengeListing](#challengelisting)
-    -   [challengeListing](#challengelisting)
-    -   [challengeListing](#challengelisting)
-    -   [challengeListing](#challengelisting)
-    -   [challengeListing](#challengelisting)
+    -   [claimRewards](#claimrewards)
+    -   [claimWinnings](#claimwinnings)
+    -   [confirmListing](#confirmlisting)
+    -   [constructor](#constructor)
+    -   [finalizeExit](#finalizeexit)
+    -   [getChallenge](#getchallenge)
+    -   [getChallenges](#getchallenges)
+    -   [getListing](#getlisting)
+    -   [getListings](#getlistings)
+    -   [initExit](#initexit)
+    -   [registerListing](#registerlisting)
+    -   [resolveChallenge](#resolvechallenge)
 
 ## Methods
 
@@ -44,261 +28,6 @@ Challenge a registered listing
 #### Signature
 
 ```solidity
-undefined
-```
-
-#### Parameters:
-
-| Parameter             | Type      | Description                                                               |
-| --------------------- | --------- | ------------------------------------------------------------------------- |
-| `tendermintPublicKey` | `bytes32` | Hex encoded tendermint public key                                         |
-| `details`             | `string`  | A string value to represent support for claim (commonly an external link) |
-
-### challengeListing
-
-Challenge a registered listing
-
-#### Signature
-
-```solidity
-undefined
-```
-
-#### Parameters:
-
-| Parameter             | Type      | Description                                                               |
-| --------------------- | --------- | ------------------------------------------------------------------------- |
-| `tendermintPublicKey` | `bytes32` | Hex encoded tendermint public key                                         |
-| `details`             | `string`  | A string value to represent support for claim (commonly an external link) |
-
-### challengeListing
-
-Challenge a registered listing
-
-#### Signature
-
-```solidity
-undefined
-```
-
-#### Parameters:
-
-| Parameter             | Type      | Description                                                               |
-| --------------------- | --------- | ------------------------------------------------------------------------- |
-| `tendermintPublicKey` | `bytes32` | Hex encoded tendermint public key                                         |
-| `details`             | `string`  | A string value to represent support for claim (commonly an external link) |
-
-### challengeListing
-
-Challenge a registered listing
-
-#### Signature
-
-```solidity
-undefined
-```
-
-#### Parameters:
-
-| Parameter             | Type      | Description                                                               |
-| --------------------- | --------- | ------------------------------------------------------------------------- |
-| `tendermintPublicKey` | `bytes32` | Hex encoded tendermint public key                                         |
-| `details`             | `string`  | A string value to represent support for claim (commonly an external link) |
-
-### challengeListing
-
-Challenge a registered listing
-
-#### Signature
-
-```solidity
-undefined
-```
-
-#### Parameters:
-
-| Parameter             | Type      | Description                                                               |
-| --------------------- | --------- | ------------------------------------------------------------------------- |
-| `tendermintPublicKey` | `bytes32` | Hex encoded tendermint public key                                         |
-| `details`             | `string`  | A string value to represent support for claim (commonly an external link) |
-
-### challengeListing
-
-Challenge a registered listing
-
-#### Signature
-
-```solidity
-undefined
-```
-
-#### Parameters:
-
-| Parameter             | Type      | Description                                                               |
-| --------------------- | --------- | ------------------------------------------------------------------------- |
-| `tendermintPublicKey` | `bytes32` | Hex encoded tendermint public key                                         |
-| `details`             | `string`  | A string value to represent support for claim (commonly an external link) |
-
-### challengeListing
-
-Challenge a registered listing
-
-#### Signature
-
-```solidity
-undefined
-```
-
-#### Parameters:
-
-| Parameter             | Type      | Description                                                               |
-| --------------------- | --------- | ------------------------------------------------------------------------- |
-| `tendermintPublicKey` | `bytes32` | Hex encoded tendermint public key                                         |
-| `details`             | `string`  | A string value to represent support for claim (commonly an external link) |
-
-### challengeListing
-
-Challenge a registered listing
-
-#### Signature
-
-```solidity
-undefined
-```
-
-#### Parameters:
-
-| Parameter             | Type      | Description                                                               |
-| --------------------- | --------- | ------------------------------------------------------------------------- |
-| `tendermintPublicKey` | `bytes32` | Hex encoded tendermint public key                                         |
-| `details`             | `string`  | A string value to represent support for claim (commonly an external link) |
-
-### challengeListing
-
-Challenge a registered listing
-
-#### Signature
-
-```solidity
-undefined
-```
-
-#### Parameters:
-
-| Parameter             | Type      | Description                                                               |
-| --------------------- | --------- | ------------------------------------------------------------------------- |
-| `tendermintPublicKey` | `bytes32` | Hex encoded tendermint public key                                         |
-| `details`             | `string`  | A string value to represent support for claim (commonly an external link) |
-
-### challengeListing
-
-Challenge a registered listing
-
-#### Signature
-
-```solidity
-undefined
-```
-
-#### Parameters:
-
-| Parameter             | Type      | Description                                                               |
-| --------------------- | --------- | ------------------------------------------------------------------------- |
-| `tendermintPublicKey` | `bytes32` | Hex encoded tendermint public key                                         |
-| `details`             | `string`  | A string value to represent support for claim (commonly an external link) |
-
-### challengeListing
-
-Challenge a registered listing
-
-#### Signature
-
-```solidity
-undefined
-```
-
-#### Parameters:
-
-| Parameter             | Type      | Description                                                               |
-| --------------------- | --------- | ------------------------------------------------------------------------- |
-| `tendermintPublicKey` | `bytes32` | Hex encoded tendermint public key                                         |
-| `details`             | `string`  | A string value to represent support for claim (commonly an external link) |
-
-### challengeListing
-
-Challenge a registered listing
-
-#### Signature
-
-```solidity
-undefined
-```
-
-#### Parameters:
-
-| Parameter             | Type      | Description                                                               |
-| --------------------- | --------- | ------------------------------------------------------------------------- |
-| `tendermintPublicKey` | `bytes32` | Hex encoded tendermint public key                                         |
-| `details`             | `string`  | A string value to represent support for claim (commonly an external link) |
-
-### challengeListing
-
-Challenge a registered listing
-
-#### Signature
-
-```solidity
-undefined
-```
-
-#### Parameters:
-
-| Parameter             | Type      | Description                                                               |
-| --------------------- | --------- | ------------------------------------------------------------------------- |
-| `tendermintPublicKey` | `bytes32` | Hex encoded tendermint public key                                         |
-| `details`             | `string`  | A string value to represent support for claim (commonly an external link) |
-
-### challengeListing
-
-Challenge a registered listing
-
-#### Signature
-
-```solidity
-undefined
-```
-
-#### Parameters:
-
-| Parameter             | Type      | Description                                                               |
-| --------------------- | --------- | ------------------------------------------------------------------------- |
-| `tendermintPublicKey` | `bytes32` | Hex encoded tendermint public key                                         |
-| `details`             | `string`  | A string value to represent support for claim (commonly an external link) |
-
-### challengeListing
-
-Challenge a registered listing
-
-#### Signature
-
-```solidity
-undefined
-```
-
-#### Parameters:
-
-| Parameter             | Type      | Description                                                               |
-| --------------------- | --------- | ------------------------------------------------------------------------- |
-| `tendermintPublicKey` | `bytes32` | Hex encoded tendermint public key                                         |
-| `details`             | `string`  | A string value to represent support for claim (commonly an external link) |
-
-### challengeListing
-
-Challenge a registered listing
-
-#### Signature
-
-```solidity
 function challengeListing(tendermintPublicKey bytes32, details string) public
 ```
 
@@ -309,223 +38,217 @@ function challengeListing(tendermintPublicKey bytes32, details string) public
 | `tendermintPublicKey` | `bytes32` | Hex encoded tendermint public key                                         |
 | `details`             | `string`  | A string value to represent support for claim (commonly an external link) |
 
-### challengeListing
+### claimRewards
 
-Challenge a registered listing
-
-#### Signature
-
-```solidity
-function challengeListing(tendermintPublicKey bytes32, details string) public
-```
-
-#### Parameters:
-
-| Parameter             | Type      | Description                                                               |
-| --------------------- | --------- | ------------------------------------------------------------------------- |
-| `tendermintPublicKey` | `bytes32` | Hex encoded tendermint public key                                         |
-| `details`             | `string`  | A string value to represent support for claim (commonly an external link) |
-
-### challengeListing
-
-Challenge a registered listing
+Claims rewards for a listing
 
 #### Signature
 
 ```solidity
-function challengeListing(tendermintPublicKey bytes32, details string) public
+function claimRewards(pubKey bytes32) public
 ```
 
 #### Parameters:
 
-| Parameter             | Type      | Description                                                               |
-| --------------------- | --------- | ------------------------------------------------------------------------- |
-| `tendermintPublicKey` | `bytes32` | Hex encoded tendermint public key                                         |
-| `details`             | `string`  | A string value to represent support for claim (commonly an external link) |
+| Parameter | Type      | Description                                        |
+| --------- | --------- | -------------------------------------------------- |
+| `pubKey`  | `bytes32` | Public key for the listing to have rewards claimed |
 
-### challengeListing
+### claimWinnings
 
-Challenge a registered listing
+Claims winnings from a challenge
 
 #### Signature
 
 ```solidity
-function challengeListing(tendermintPublicKey bytes32, details string) public
+function claimWinnings(challengeId uint256) public
 ```
 
 #### Parameters:
 
-| Parameter             | Type      | Description                                                               |
-| --------------------- | --------- | ------------------------------------------------------------------------- |
-| `tendermintPublicKey` | `bytes32` | Hex encoded tendermint public key                                         |
-| `details`             | `string`  | A string value to represent support for claim (commonly an external link) |
+| Parameter     | Type      | Description                         |
+| ------------- | --------- | ----------------------------------- |
+| `challengeId` | `uint256` | Challenge id to claim rewards from. |
 
-### challengeListing
+### confirmListing
 
-Challenge a registered listing
+Confirm a listing registration
 
 #### Signature
 
 ```solidity
-function challengeListing(tendermintPublicKey bytes32, details string) public
+function confirmListing(tendermintPublicKey bytes32) public
 ```
 
 #### Parameters:
 
-| Parameter             | Type      | Description                                                               |
-| --------------------- | --------- | ------------------------------------------------------------------------- |
-| `tendermintPublicKey` | `bytes32` | Hex encoded tendermint public key                                         |
-| `details`             | `string`  | A string value to represent support for claim (commonly an external link) |
+| Parameter             | Type      | Description                       |
+| --------------------- | --------- | --------------------------------- |
+| `tendermintPublicKey` | `bytes32` | Hex encoded tendermint public key |
 
-### challengeListing
+### constructor
 
-Challenge a registered listing
+Create a new ValidatorRegistry implementation
 
 #### Signature
 
 ```solidity
-function challengeListing(tendermintPublicKey bytes32, details string) public
+constructor(_treasuryAddress address, _votingAddress address, auth address, _events address, _applicationPeriod uint256, _commitPeriod uint256, _challengePeriod uint256, _exitPeriod uint256, _rewardPeriod uint256) public
 ```
 
 #### Parameters:
 
-| Parameter             | Type      | Description                                                               |
-| --------------------- | --------- | ------------------------------------------------------------------------- |
-| `tendermintPublicKey` | `bytes32` | Hex encoded tendermint public key                                         |
-| `details`             | `string`  | A string value to represent support for claim (commonly an external link) |
+| Parameter            | Type      | Description                                                                |
+| -------------------- | --------- | -------------------------------------------------------------------------- |
+| `_treasuryAddress`   | `address` | Deployed Treasury address                                                  |
+| `_votingAddress`     | `address` | Deployed Voting address                                                    |
+| `auth`               | `address` | AuthorizedAddresses deployed address                                       |
+| `_events`            | `address` | Deployed EventEmitter address                                              |
+| `_applicationPeriod` | `uint256` | Initial application period (in blocks) for pending listings                |
+| `_commitPeriod`      | `uint256` | Number of blocks after challenge initiated in which votes can be committed |
+| `_challengePeriod`   | `uint256` | Number of blocks a challenge lasts before being finalized                  |
+| `_exitPeriod`        | `uint256` | Number of blocks exiting listings must wait before claiming stake          |
+| `_rewardPeriod`      | `uint256` | The frequency (in blocks) with which validator rewards may be issued       |
 
-### challengeListing
+### finalizeExit
 
-Challenge a registered listing
+Complete a listing exit
 
 #### Signature
 
 ```solidity
-function challengeListing(tendermintPublicKey bytes32, details string) public
+function finalizeExit(tendermintPublicKey bytes32) public
 ```
 
 #### Parameters:
 
-| Parameter             | Type      | Description                                                               |
-| --------------------- | --------- | ------------------------------------------------------------------------- |
-| `tendermintPublicKey` | `bytes32` | Hex encoded tendermint public key                                         |
-| `details`             | `string`  | A string value to represent support for claim (commonly an external link) |
+| Parameter             | Type      | Description                       |
+| --------------------- | --------- | --------------------------------- |
+| `tendermintPublicKey` | `bytes32` | Hex encoded tendermint public key |
 
-### challengeListing
+### getChallenge
 
-Challenge a registered listing
+Expose challenge data for a given ID.
 
 #### Signature
 
 ```solidity
-function challengeListing(tendermintPublicKey bytes32, details string) public
+function getChallenge(challengeId uint256) public view (tuple)
 ```
 
 #### Parameters:
 
-| Parameter             | Type      | Description                                                               |
-| --------------------- | --------- | ------------------------------------------------------------------------- |
-| `tendermintPublicKey` | `bytes32` | Hex encoded tendermint public key                                         |
-| `details`             | `string`  | A string value to represent support for claim (commonly an external link) |
+| Parameter     | Type      | Description                           |
+| ------------- | --------- | ------------------------------------- |
+| `challengeId` | `uint256` | The ID to retreive challenge data for |
 
-### challengeListing
+#### Returns:
 
-Challenge a registered listing
+The challenge indicated by the provided ID.
+
+### getChallenges
+
+Expose challenge data
 
 #### Signature
 
 ```solidity
-function challengeListing(tendermintPublicKey bytes32, details string) public
+function getChallenges(challengeIds uint256[]) public view (tuple[])
 ```
 
 #### Parameters:
 
-| Parameter             | Type      | Description                                                               |
-| --------------------- | --------- | ------------------------------------------------------------------------- |
-| `tendermintPublicKey` | `bytes32` | Hex encoded tendermint public key                                         |
-| `details`             | `string`  | A string value to represent support for claim (commonly an external link) |
+| Parameter      | Type        | Description  |
+| -------------- | ----------- | ------------ |
+| `challengeIds` | `uint256[]` | challenge id |
 
-### challengeListing
+### getListing
 
-Challenge a registered listing
+Expose listing data for given public key.
 
 #### Signature
 
 ```solidity
-function challengeListing(tendermintPublicKey bytes32, details string) public
+function getListing(pubKey bytes32) public view (tuple)
 ```
 
 #### Parameters:
 
-| Parameter             | Type      | Description                                                               |
-| --------------------- | --------- | ------------------------------------------------------------------------- |
-| `tendermintPublicKey` | `bytes32` | Hex encoded tendermint public key                                         |
-| `details`             | `string`  | A string value to represent support for claim (commonly an external link) |
+| Parameter | Type      | Description                       |
+| --------- | --------- | --------------------------------- |
+| `pubKey`  | `bytes32` | Hex encoded tendermint public key |
 
-### challengeListing
+#### Returns:
 
-Challenge a registered listing
+The listing structure corresponding to the provided key.
+
+### getListings
+
+Expose several listings provided multiple public keys.
 
 #### Signature
 
 ```solidity
-function challengeListing(tendermintPublicKey bytes32, details string) public
+function getListings(pubKeys bytes32[]) public view (tuple[])
 ```
 
 #### Parameters:
 
-| Parameter             | Type      | Description                                                               |
-| --------------------- | --------- | ------------------------------------------------------------------------- |
-| `tendermintPublicKey` | `bytes32` | Hex encoded tendermint public key                                         |
-| `details`             | `string`  | A string value to represent support for claim (commonly an external link) |
+| Parameter | Type        | Description                                    |
+| --------- | ----------- | ---------------------------------------------- |
+| `pubKeys` | `bytes32[]` | Hex encoded Tendermint public keys to retreive |
 
-### challengeListing
+#### Returns:
 
-Challenge a registered listing
+The array of listing structures corresponding to the provided keys.
+
+### initExit
+
+Initiate a listing exit
 
 #### Signature
 
 ```solidity
-function challengeListing(tendermintPublicKey bytes32, details string) public
+function initExit(tendermintPublicKey bytes32) public
 ```
 
 #### Parameters:
 
-| Parameter             | Type      | Description                                                               |
-| --------------------- | --------- | ------------------------------------------------------------------------- |
-| `tendermintPublicKey` | `bytes32` | Hex encoded tendermint public key                                         |
-| `details`             | `string`  | A string value to represent support for claim (commonly an external link) |
+| Parameter             | Type      | Description                       |
+| --------------------- | --------- | --------------------------------- |
+| `tendermintPublicKey` | `bytes32` | Hex encoded tendermint public key |
 
-### challengeListing
+### registerListing
 
-Challenge a registered listing
+Register a listing
 
 #### Signature
 
 ```solidity
-function challengeListing(tendermintPublicKey bytes32, details string) public
+function registerListing(tendermintPublicKey bytes32, tokensToStake uint256, rewardRate int256, details string) public
 ```
 
 #### Parameters:
 
-| Parameter             | Type      | Description                                                               |
-| --------------------- | --------- | ------------------------------------------------------------------------- |
-| `tendermintPublicKey` | `bytes32` | Hex encoded tendermint public key                                         |
-| `details`             | `string`  | A string value to represent support for claim (commonly an external link) |
+| Parameter             | Type      | Description                                                                     |
+| --------------------- | --------- | ------------------------------------------------------------------------------- |
+| `tendermintPublicKey` | `bytes32` | Hex encoded tendermint public key                                               |
+| `tokensToStake`       | `uint256` | The number of tokes at stake if the order is challenged                         |
+| `rewardRate`          | `int256`  | The rate tokens are minted or destroyed over the active listings reward periods |
+| `details`             | `string`  | A string value to represent support for claim (commonly an external link)       |
 
-### challengeListing
+### resolveChallenge
 
-Challenge a registered listing
+Resolve a challenge
 
 #### Signature
 
 ```solidity
-function challengeListing(tendermintPublicKey bytes32, details string) public
+function resolveChallenge(pubKey bytes32) public
 ```
 
 #### Parameters:
 
-| Parameter             | Type      | Description                                                               |
-| --------------------- | --------- | ------------------------------------------------------------------------- |
-| `tendermintPublicKey` | `bytes32` | Hex encoded tendermint public key                                         |
-| `details`             | `string`  | A string value to represent support for claim (commonly an external link) |
+| Parameter | Type      | Description                       |
+| --------- | --------- | --------------------------------- |
+| `pubKey`  | `bytes32` | Hex encoded tendermint public key |

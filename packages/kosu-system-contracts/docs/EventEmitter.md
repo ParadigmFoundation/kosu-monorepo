@@ -6,8 +6,7 @@ A shared contract for all Kosu system contracts to trigger event logs through.
 
 -   [Methods](undefined)
     -   [constructor](#constructor)
-    -   [constructor](#constructor)
-    -   [constructor](#constructor)
+    -   [emitEvent](#emitevent)
 
 ## Methods
 
@@ -18,43 +17,29 @@ Event emitter instantiated with Authorizable.
 #### Signature
 
 ```solidity
-undefined
-```
-
-#### Parameters:
-
-| Parameter | Type        | Description                           |
-| --------- | ----------- | ------------------------------------- |
-| `auth`    | `undefined` | AuthorizedAddresses deployed address. |
-
-### constructor
-
-Event emitter instantiated with Authorizable.
-
-#### Signature
-
-```solidity
 constructor(auth address) public
 ```
 
 #### Parameters:
 
-| Parameter | Type        | Description                           |
-| --------- | ----------- | ------------------------------------- |
-| `auth`    | `undefined` | AuthorizedAddresses deployed address. |
+| Parameter | Type      | Description                           |
+| --------- | --------- | ------------------------------------- |
+| `auth`    | `address` | AuthorizedAddresses deployed address. |
 
-### constructor
+### emitEvent
 
-Event emitter instantiated with Authorizable.
+Emit generic events which can have decoding exposed though javascript library.
 
 #### Signature
 
 ```solidity
-constructor(auth address) public
+function emitEvent(eventType string, data bytes32[], stringData string) public
 ```
 
 #### Parameters:
 
-| Parameter | Type        | Description                           |
-| --------- | ----------- | ------------------------------------- |
-| `auth`    | `undefined` | AuthorizedAddresses deployed address. |
+| Parameter    | Type        | Description                                                    |
+| ------------ | ----------- | -------------------------------------------------------------- |
+| `eventType`  | `string`    | String name/type of event                                      |
+| `data`       | `bytes32[]` | Bytes32 encoded data to be emitted from a centralized location |
+| `stringData` | `string`    | String containing optional additonal information               |

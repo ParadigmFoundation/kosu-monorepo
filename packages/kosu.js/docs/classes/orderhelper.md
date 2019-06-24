@@ -41,7 +41,7 @@ of transactions.
 
 \+ **new OrderHelper**(`web3`: `Web3`, `orderGateway`: [OrderGateway](ordergateway.md)): _[OrderHelper](orderhelper.md)_
 
-_Defined in [OrderHelper.ts:24](https://github.com/ParadigmFoundation/kosu-monorepo/blob/27596fd/packages/kosu.js/src/OrderHelper.ts#L24)_
+_Defined in [OrderHelper.ts:24](https://github.com/ParadigmFoundation/kosu-monorepo/blob/4c58673/packages/kosu.js/src/OrderHelper.ts#L24)_
 
 Create a new `OrderHelper` instance (requires a provider via supplied `web3`
 instance).
@@ -63,7 +63,7 @@ instance).
 
 ● **orderGateway**: _[OrderGateway](ordergateway.md)_
 
-_Defined in [OrderHelper.ts:24](https://github.com/ParadigmFoundation/kosu-monorepo/blob/27596fd/packages/kosu.js/src/OrderHelper.ts#L24)_
+_Defined in [OrderHelper.ts:24](https://github.com/ParadigmFoundation/kosu-monorepo/blob/4c58673/packages/kosu.js/src/OrderHelper.ts#L24)_
 
 Instance of the `OrderGateway` wrapper.
 
@@ -73,7 +73,7 @@ Instance of the `OrderGateway` wrapper.
 
 ● **web3**: _`Web3`_
 
-_Defined in [OrderHelper.ts:19](https://github.com/ParadigmFoundation/kosu-monorepo/blob/27596fd/packages/kosu.js/src/OrderHelper.ts#L19)_
+_Defined in [OrderHelper.ts:19](https://github.com/ParadigmFoundation/kosu-monorepo/blob/4c58673/packages/kosu.js/src/OrderHelper.ts#L19)_
 
 An instance of `web3` used to interact with the Ethereum blockchain.
 
@@ -85,7 +85,7 @@ An instance of `web3` used to interact with the Ethereum blockchain.
 
 ▸ **makeOrder**(`order`: [Order](../interfaces/order.md)): _`Promise<Order>`_
 
-_Defined in [OrderHelper.ts:44](https://github.com/ParadigmFoundation/kosu-monorepo/blob/27596fd/packages/kosu.js/src/OrderHelper.ts#L44)_
+_Defined in [OrderHelper.ts:44](https://github.com/ParadigmFoundation/kosu-monorepo/blob/4c58673/packages/kosu.js/src/OrderHelper.ts#L44)_
 
 Sign and complete a maker order (requires a pre-configured Order object).
 
@@ -105,7 +105,7 @@ The supplied maker order with an appended `makerSignature`.
 
 ▸ **makerHex**(`order`: [Order](../interfaces/order.md)): _`Promise<string>`_
 
-_Defined in [OrderHelper.ts:92](https://github.com/ParadigmFoundation/kosu-monorepo/blob/27596fd/packages/kosu.js/src/OrderHelper.ts#L92)_
+_Defined in [OrderHelper.ts:92](https://github.com/ParadigmFoundation/kosu-monorepo/blob/4c58673/packages/kosu.js/src/OrderHelper.ts#L92)_
 
 Generate the maker hex (serialized `makerValues`).
 
@@ -123,7 +123,7 @@ Generate the maker hex (serialized `makerValues`).
 
 ▸ **prepareForPost**(`order`: [Order](../interfaces/order.md), `poster`: string): _`Promise<PostableOrder>`_
 
-_Defined in [OrderHelper.ts:73](https://github.com/ParadigmFoundation/kosu-monorepo/blob/27596fd/packages/kosu.js/src/OrderHelper.ts#L73)_
+_Defined in [OrderHelper.ts:73](https://github.com/ParadigmFoundation/kosu-monorepo/blob/4c58673/packages/kosu.js/src/OrderHelper.ts#L73)_
 
 Sign and order as a poster and append the poster signature to an order
 prior to submission to the Kosu relay network.
@@ -145,7 +145,7 @@ The maker order now signed and prepared for post with an appended `posterSignatu
 
 ▸ **recoverMaker**(`order`: [Order](../interfaces/order.md)): _`Promise<string>`_
 
-_Defined in [OrderHelper.ts:102](https://github.com/ParadigmFoundation/kosu-monorepo/blob/27596fd/packages/kosu.js/src/OrderHelper.ts#L102)_
+_Defined in [OrderHelper.ts:102](https://github.com/ParadigmFoundation/kosu-monorepo/blob/4c58673/packages/kosu.js/src/OrderHelper.ts#L102)_
 
 Recover the maker address from a signed order.
 
@@ -163,7 +163,7 @@ Recover the maker address from a signed order.
 
 ▸ **recoverPoster**(`order`: [PostableOrder](../interfaces/postableorder.md)): _`Promise<string>`_
 
-_Defined in [OrderHelper.ts:113](https://github.com/ParadigmFoundation/kosu-monorepo/blob/27596fd/packages/kosu.js/src/OrderHelper.ts#L113)_
+_Defined in [OrderHelper.ts:113](https://github.com/ParadigmFoundation/kosu-monorepo/blob/4c58673/packages/kosu.js/src/OrderHelper.ts#L113)_
 
 Recover the poster address from a maker order that has been signed from a
 poster.
@@ -182,7 +182,7 @@ poster.
 
 ▸ **takeOrder**(`order`: [TakeableOrder](../interfaces/takeableorder.md), `taker`: string): _`Promise<any>`_
 
-_Defined in [OrderHelper.ts:61](https://github.com/ParadigmFoundation/kosu-monorepo/blob/27596fd/packages/kosu.js/src/OrderHelper.ts#L61)_
+_Defined in [OrderHelper.ts:61](https://github.com/ParadigmFoundation/kosu-monorepo/blob/4c58673/packages/kosu.js/src/OrderHelper.ts#L61)_
 
 Take a signed maker order on the Ethereum blockchain via the order's
 specified SubContract, from the supplied taker address (should be available
