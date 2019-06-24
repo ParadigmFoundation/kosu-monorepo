@@ -120,10 +120,11 @@ export class OrderGateway {
         let args;
         try {
             args = await this.contract.arguments.callAsync(subContract);
+
+            return JSON.parse(args);
         } catch (error) {
             throw new Error(`Unable to load arguments from contract: ${error.message}`);
         }
-        return JSON.parse(args);
     }
 
     /**

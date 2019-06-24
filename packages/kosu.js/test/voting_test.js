@@ -7,6 +7,7 @@ describe("Voting", () => {
         const pollId = await testHelpers.variablePoll(3, 1);
         await kosu.voting.commitVote(pollId, encodedVote, TestValues.oneWei).should.be.fulfilled;
         await kosu.voting.revealVote(pollId, voteValue, voteSalt);
+        await testHelpers.skipBlocks(5);
         await kosu.voting
             .winningOption(pollId)
             .then(x => x.toString())
