@@ -7,7 +7,7 @@
     "scripts": {
         "test": "mocha",
         "coverage": "nyc mocha && istanbul report html && open coverage/lcov-report/index.html",
-        "test:ci": "ts-mocha -p tsconfig.json test/ --timeout 4000 -- geth",
+        "test:ci": "ts-mocha -p tsconfig.json test/ --timeout 8000 -- geth",
         "test:ganache": "docker run --rm -p 8545:8545 ${npm_package_config_ganache_image_uri}",
         "test:ganache_detached": "docker run --rm -d -p 8545:8545 ${npm_package_config_ganache_image_uri}",
         "build": "tsc",
