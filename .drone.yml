@@ -12,7 +12,7 @@ steps:
     commands:
       - git remote rm origin
       - git remote add origin https://github.com/ParadigmFoundation/kosu-monorepo.git
-      - git checkout master
+      - git branch --set-upstream-to=origin/master master
       - git pull
       - git checkout $DRONE_COMMIT
 
