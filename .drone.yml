@@ -34,7 +34,7 @@ steps:
       - yarn
       - yarn setup:ci
       - cd packages/kosu-system-contracts
-      - yarn deploy:kosu:ci
+      - yarn migrate:ci
     depends_on:
       - clone
     when:
