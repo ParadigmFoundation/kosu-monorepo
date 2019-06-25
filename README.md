@@ -205,11 +205,11 @@ Command-line interface for `kosud`.
 
 ## Contributing
 
-We strongly encourage all contributions! Read our [contribution guidelines](./CONTRIBUTING.md) and feel free to reach out with any questions.
+We strongly encourage all contributions! Read our [contribution guidelines](./.github/CONTRIBUTING.md) and feel free to reach out with any questions.
 
 ## Issues
 
-To report bugs within a specific Kosu package, please create an issue in this repository (template will auto-populate).
+To report bugs within a specific Kosu package, please [create an issue](https://github.com/ParadigmFoundation/kosu-monorepo/issues/create) in this repository (template will auto-populate).
 
 ## License
 
