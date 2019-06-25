@@ -8,12 +8,7 @@
         "optimizer": {
             "enabled": true,
             "runs": 200,
-            "details": {
-                "yul": true,
-                "deduplicate": true,
-                "cse": true,
-                "constantOptimizer": true
-            }
+            "details": { "yul": true, "deduplicate": true, "cse": true, "constantOptimizer": true }
         },
         "outputSelection": {
             "*": {
@@ -35,9 +30,10 @@
         "external/PosterRegistryProxy.sol",
         "lib/KosuToken.sol",
         "poster/PosterRegistry.sol",
+        "sub-contracts/ZeroExV2SubContract.sol",
+        "test/BasicTradeSubContract.sol",
         "treasury/Treasury.sol",
         "validator/ValidatorRegistry.sol",
-        "voting/Voting.sol",
-        "test/BasicTradeSubContract.sol"
+        "voting/Voting.sol"
     ]
 }
