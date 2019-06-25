@@ -9,10 +9,7 @@ Proxy contract for interacting with the PosterRegisty implementation contract.
     -   [registerTokens](#registertokens)
     -   [releaseTokens](#releasetokens)
     -   [setImplementation](#setimplementation)
-    -   [token](#token)
-    -   [tokensContributed](#tokenscontributed)
     -   [tokensRegisteredFor](#tokensregisteredfor)
-    -   [treasury](#treasury)
 
 ## Methods
 
@@ -23,15 +20,15 @@ Creates a Proxy for a PosterRegistry. Accepts an initial implementation that can
 #### Signature
 
 ```solidity
-constructor(auth, implementation)
+constructor(implementation address, auth address) public
 ```
 
 #### Parameters:
 
-| Parameter        | Type        | Description                                |
-| ---------------- | ----------- | ------------------------------------------ |
-| `auth`           | `undefined` | AuthorizedAddresses deployed address.      |
-| `implementation` | `undefined` | deployed implementation of PosterRegistry. |
+| Parameter        | Type      | Description                                |
+| ---------------- | --------- | ------------------------------------------ |
+| `implementation` | `address` | deployed implementation of PosterRegistry. |
+| `auth`           | `address` | AuthorizedAddresses deployed address.      |
 
 ### registerTokens
 
@@ -40,7 +37,7 @@ Calls registerTokens on the current registry.
 #### Signature
 
 ```solidity
-function registerTokens(amount uint256)
+function registerTokens(amount uint256) public
 ```
 
 #### Parameters:
@@ -56,7 +53,7 @@ Calls releaseTokens for the current registry.
 #### Signature
 
 ```solidity
-function releaseTokens(amount uint256)
+function releaseTokens(amount uint256) public
 ```
 
 #### Parameters:
@@ -72,7 +69,7 @@ Set a new PosterRegistry implementation if a replacement is deployed.
 #### Signature
 
 ```solidity
-function setImplementation(implementation address)
+function setImplementation(implementation address) public
 ```
 
 #### Parameters:
@@ -81,34 +78,6 @@ function setImplementation(implementation address)
 | ---------------- | --------- | --------------------------------------------------------------- |
 | `implementation` | `address` | Deployed address for replacement PosterRegistry implementation. |
 
-### token
-
-Reads the current registries token.
-
-#### Signature
-
-```solidity
-function token()
-```
-
-#### Returns:
-
-Address of configured ERC20 token.
-
-### tokensContributed
-
-Reads the current registries tokensContributed.
-
-#### Signature
-
-```solidity
-function tokensContributed()
-```
-
-#### Returns:
-
-Total number of tokens contributed the the current registry.
-
 ### tokensRegisteredFor
 
 Reads the current registries tokens registered for the supplied address.
@@ -116,7 +85,7 @@ Reads the current registries tokens registered for the supplied address.
 #### Signature
 
 ```solidity
-function tokensRegisteredFor(a address)
+function tokensRegisteredFor(a address) public view (uint256)
 ```
 
 #### Parameters:
@@ -128,17 +97,3 @@ function tokensRegisteredFor(a address)
 #### Returns:
 
 The current number of tokens contributed by the address.
-
-### treasury
-
-Reads the current registries Treasury address.
-
-#### Signature
-
-```solidity
-function treasury()
-```
-
-#### Returns:
-
-Address of configured treasury.
