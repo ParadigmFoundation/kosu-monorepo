@@ -21,7 +21,8 @@ contract EventEmitter is Authorizable {
     /** @dev Emit generic events which can have decoding exposed though javascript library.
         @notice Emit generic events which can have decoding exposed though javascript library.
         @param eventType String name/type of event
-        @param data Bytes32 encoded data to be emitted from a centralized location.
+        @param data Bytes32 encoded data to be emitted from a centralized location
+        @param stringData String containing optional additonal information
     */
     function emitEvent(string calldata eventType, bytes32[] calldata data, string calldata stringData) external isAuthorized {
         emit KosuEvent(eventType, data, stringData);
