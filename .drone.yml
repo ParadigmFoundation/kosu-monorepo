@@ -12,7 +12,8 @@ steps:
     commands:
       - git remote rm origin
       - git remote add origin https://github.com/ParadigmFoundation/kosu-monorepo.git
-      - git fetch
+      - git checkout master
+      - git git pull
       - git checkout $DRONE_COMMIT
 
   - name: lint-project
