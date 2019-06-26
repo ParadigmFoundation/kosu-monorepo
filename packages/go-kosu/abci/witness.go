@@ -57,11 +57,8 @@ func (app *App) pushTransactionWitness(tx *types.TransactionWitness) error {
 		return nil
 	}
 
-	poster := types.Poster{
+	app.store.SetPoster(tx.Address, types.Poster{
 		Balance: tx.Amount,
-	}
-	app.store.SetPoster(tx.Address, store.XPoster{
-		Poster: poster,
 	})
 
 	return nil

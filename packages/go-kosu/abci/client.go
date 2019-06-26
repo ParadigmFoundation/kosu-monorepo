@@ -86,8 +86,7 @@ func (c *Client) Subscribe(ctx context.Context, q string) (<-chan rpctypes.Resul
 	}
 
 	// Start WS if not yet
-	httpC, ok := c.Client.(*client.HTTP)
-	if ok {
+	if httpC, ok := c.Client.(*client.HTTP); ok {
 		if !httpC.IsRunning() {
 			if err := httpC.Start(); err != nil {
 				return nil, nil, err
@@ -102,7 +101,9 @@ func (c *Client) Subscribe(ctx context.Context, q string) (<-chan rpctypes.Resul
 	}
 
 	closer := func() {
-		httpC.Stop()
+		if httpC, ok := c.Client.(*client.HTTP); ok {
+			_ = httpC.Stop()
+		}
 	}
 
 	return ch, closer, nil

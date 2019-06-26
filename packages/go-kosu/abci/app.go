@@ -54,6 +54,7 @@ func NewApp(db db.DB, homedir string) *App {
 	return app
 }
 
+// Store returns the underlying store
 func (app *App) Store() *store.Store { return app.store }
 
 // Info loads the state from the db.

@@ -75,5 +75,5 @@ func (app *App) handlePoster(req *abci.RequestQuery) (proto.Message, error) {
 		return nil, fmt.Errorf("query: poster@%s not found", addr)
 	}
 
-	return &poster.Poster, nil
+	return poster, nil
 }

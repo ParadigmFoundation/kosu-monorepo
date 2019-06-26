@@ -34,10 +34,12 @@ func (c *GobCodec) Decode(buf []byte, s interface{}) error {
 	return gob.NewDecoder(r).Decode(s)
 }
 
+// ProtoCodec implements a protobuf based codec
 type ProtoCodec struct{}
 
 func (c *ProtoCodec) String() string { return "proto" }
 
+// Encode encodes using protobuf
 func (c *ProtoCodec) Encode(s interface{}) ([]byte, error) {
 	if s == nil {
 		return nil, nil
@@ -65,6 +67,7 @@ func (c *ProtoCodec) Encode(s interface{}) ([]byte, error) {
 	return buf.Bytes(), err
 }
 
+// Decode decodes using protobuf
 func (c *ProtoCodec) Decode(bs []byte, s interface{}) error {
 	buf := proto.NewBuffer(bs)
 	buf.SetDeterministic(true)
