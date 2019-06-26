@@ -1,3 +1,4 @@
+// nolint:lll
 package types
 
 import (
@@ -127,8 +128,8 @@ func TestTransactionOrder(t *testing.T) {
 			marshalled, err := json.Marshal(decodedTx.GetOrder())
 			require.NoError(t, err, "Expected no error marshalling order JSON")
 
-			orderJson := string(marshalled)
-			order, err := NewOrder(orderJson)
+			orderJSON := string(marshalled)
+			order, err := NewOrder(orderJSON)
 			require.NoError(t, err, "Expected no error creating Order object")
 
 			expectedPoster, _ := NewAddressFromString(tC.poster)
