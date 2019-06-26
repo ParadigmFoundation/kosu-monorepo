@@ -13,6 +13,7 @@ var (
 	ErrBytesNoPrefix = errors.New("missing '0x' prefix on hex string")
 )
 
+// HexBytes represents a generic byte array, represented as a 0x-prefixed string
 type HexBytes []byte
 
 // NewHexBytesFromString allows manual construction of hex bytes, from a prefixed or un-prefixed hex string

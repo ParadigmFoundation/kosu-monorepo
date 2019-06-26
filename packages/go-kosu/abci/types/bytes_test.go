@@ -1,7 +1,7 @@
+// nolint:lll
 package types
 
 import (
-	"encoding/hex"
 	"strings"
 	"testing"
 
@@ -35,7 +35,12 @@ func TestHexBytes(t *testing.T) {
 			bytes:     []byte{139, 54, 106, 61, 78, 70, 172, 84, 6, 241, 39, 102, 173, 51, 230, 72, 44, 228, 240, 129},
 		},
 		{
-			desc:      "Hex-encoded string #5 (signature from kosu.js)",
+			desc:      "Hex-encoded string #5 (address, non-checksummed, no prefix)",
+			hexString: "8b366a3d4e46ac5406f12766ad33e6482ce4f081",
+			bytes:     []byte{139, 54, 106, 61, 78, 70, 172, 84, 6, 241, 39, 102, 173, 51, 230, 72, 44, 228, 240, 129},
+		},
+		{
+			desc:      "Hex-encoded string #6 (signature from kosu.js)",
 			hexString: "0x88f5f4be74f5d8e2e9a5fc214b75c3526244bf6a4ed43d1cac333b9d889c7590271cb594c40b5aea11865d6c86a87775229d372779ebc4f0810cc4d1f989dc6101",
 			bytes:     []byte{136, 245, 244, 190, 116, 245, 216, 226, 233, 165, 252, 33, 75, 117, 195, 82, 98, 68, 191, 106, 78, 212, 61, 28, 172, 51, 59, 157, 136, 156, 117, 144, 39, 28, 181, 148, 196, 11, 90, 234, 17, 134, 93, 108, 134, 168, 119, 117, 34, 157, 55, 39, 121, 235, 196, 240, 129, 12, 196, 209, 249, 137, 220, 97, 1},
 		},
@@ -43,15 +48,19 @@ func TestHexBytes(t *testing.T) {
 	for _, tC := range testCases {
 		t.Run(tC.desc, func(t *testing.T) {
 			expectedBytes := tC.bytes
-			loadedBytes, err := hex.DecodeString(tC.hexString[2:])
-			require.NoError(t, err, "Shouldn't be error decoding string")
-			require.EqualValues(t, expectedBytes, loadedBytes, "Expected test cases to match provided bytes")
 
 			hexBytes, err := NewHexBytesFromString(tC.hexString)
 			require.NoError(t, err, "Should be no error creating hexBytes from string")
 			require.EqualValues(t, expectedBytes, hexBytes.Bytes(), "Constructed bytes and provided should be equal")
 
-			expectedString := strings.ToLower(tC.hexString)
+			// test that we accept both prefixed and non-prefixed strings
+			var expectedString string
+			if strings.HasPrefix(tC.hexString, "0x") {
+				expectedString = strings.ToLower(tC.hexString)
+			} else {
+				expectedString = strings.ToLower("0x" + tC.hexString)
+			}
+
 			hexString := hexBytes.String()
 			require.EqualValues(t, expectedString, hexString, "Hex string from hexBytes should match test case")
 		})
