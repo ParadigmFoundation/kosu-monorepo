@@ -40,33 +40,33 @@ func NewOrder(input string) (*Order, error) {
 }
 
 // PosterHex generates the hash used to sign the order
-func (o *Order) PosterHex() (posterHex []byte, e error) {
+func (o *Order) PosterHex() ([]byte, error) {
 	orderBytes, err := o.Serialize()
 	if err != nil {
-		e = ErrOrderSerialize
-		return
+		return nil, err
 	}
-	posterHex = crypto.Keccak256(orderBytes)
-	return
+
+	posterHex := crypto.Keccak256(orderBytes)
+	return posterHex, nil
 }
 
 // Serialize generates a byte array of the MakerValues as expected by Kosu contract system
-func (o *Order) Serialize() (orderBytes []byte, e error) {
+func (o *Order) Serialize() ([]byte, error) {
+	orderBytes := []byte{}
 	for _, m := range o.Arguments.Maker {
 		switch m.DataType {
 		case "address":
 			// strip '0x' prefix
 			bytes, err := hex.DecodeString(o.MakerValues[m.Name].(string)[2:])
 			if err != nil {
-				return orderBytes, err
+				return nil, err
 			}
 			orderBytes = append(orderBytes, bytes...)
 		case "uint":
 			bigInt := big.NewInt(0)
 			stringVal := o.MakerValues[m.Name].(string)
 			if _, ok := bigInt.SetString(stringVal, 10); !ok {
-				e = ErrOrderSerialize
-				return
+				return nil, ErrOrderSerialize
 			}
 			// pad as a 256 bit integer, as EVM does
 			slice := abi.U256(bigInt)
@@ -75,8 +75,7 @@ func (o *Order) Serialize() (orderBytes []byte, e error) {
 			// strip '0x' prefix
 			bytes, err := hex.DecodeString(o.MakerValues[m.Name].(string)[2:])
 			if err != nil {
-				e = ErrOrderSerialize
-				return
+				return nil, ErrOrderSerialize
 			}
 			orderBytes = append(orderBytes, bytes...)
 		}
@@ -100,7 +99,7 @@ func (o *Order) RecoverPoster() (Address, error) {
 }
 
 // String implements Stringer to represent Order as a string
-func (o *Order) String() (order string) {
+func (o *Order) String() string {
 	return fmt.Sprintf("Order{%v}", "@todo")
 }
 
