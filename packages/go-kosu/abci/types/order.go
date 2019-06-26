@@ -32,7 +32,6 @@ type Order struct {
 // NewOrder creates a new Kosu Order object from a JSON string
 func NewOrder(input string) (order *Order, e error) {
 	dec := json.NewDecoder(strings.NewReader(input))
-	dec.UseNumber()
 	if err := dec.Decode(&order); err != nil {
 		e = ErrOrderParse
 		return
@@ -64,7 +63,7 @@ func (o *Order) Serialize() (orderBytes []byte, e error) {
 			orderBytes = append(orderBytes, bytes...)
 		case "uint":
 			bigInt := big.NewInt(0)
-			stringVal := o.MakerValues[m.Name].(json.Number).String()
+			stringVal := o.MakerValues[m.Name].(string)
 			if _, ok := bigInt.SetString(stringVal, 10); !ok {
 				e = ErrOrderSerialize
 				return
