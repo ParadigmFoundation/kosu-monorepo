@@ -6,11 +6,7 @@ Common registry of system contract addresses authrorized to access internal meth
 
 -   [Methods](undefined)
     -   [authorizeAddress](#authorizeaddress)
-    -   [constructor](#constructor)
     -   [isAddressAuthorized](#isaddressauthorized)
-    -   [isOwner](#isowner)
-    -   [owner](#owner)
-    -   [renounceOwnership](#renounceownership)
     -   [transferOwnership](#transferownership)
     -   [unauthorizeAddress](#unauthorizeaddress)
 
@@ -23,7 +19,7 @@ Authorizes the address by setting the mapping value to true.
 #### Signature
 
 ```solidity
-function authorizeAddress(a address)
+function authorizeAddress(a address) public
 ```
 
 #### Parameters:
@@ -32,16 +28,6 @@ function authorizeAddress(a address)
 | --------- | --------- | -------------------- |
 | `a`       | `address` | Address to authorize |
 
-### constructor
-
-Constructor initializes with the creator permission set to true.
-
-#### Signature
-
-```solidity
-constructor()
-```
-
 ### isAddressAuthorized
 
 Verify if address is authorized by reading contract mapping
@@ -49,7 +35,7 @@ Verify if address is authorized by reading contract mapping
 #### Signature
 
 ```solidity
-function isAddressAuthorized(a address)
+function isAddressAuthorized(a address) public view (bool)
 ```
 
 #### Parameters:
@@ -62,16 +48,6 @@ function isAddressAuthorized(a address)
 
 True if the address is authorized, false otherwise.
 
-### renounceOwnership
-
-Allows the current owner to relinquish control of the contract.
-
-#### Signature
-
-```solidity
-function renounceOwnership()
-```
-
 ### transferOwnership
 
 Allows the current owner to transfer control of the contract to a newOwner.
@@ -79,7 +55,7 @@ Allows the current owner to transfer control of the contract to a newOwner.
 #### Signature
 
 ```solidity
-function transferOwnership(newOwner address)
+function transferOwnership(newOwner address) public
 ```
 
 #### Parameters:
@@ -95,7 +71,7 @@ Unauthorizes the address by setting the mapping value to false.
 #### Signature
 
 ```solidity
-function unauthorizeAddress(a address)
+function unauthorizeAddress(a address) public
 ```
 
 #### Parameters:

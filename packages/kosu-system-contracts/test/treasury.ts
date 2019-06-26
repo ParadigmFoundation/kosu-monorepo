@@ -18,7 +18,7 @@ describe("Treasury", async () => {
     after(async () => {
         // Reverting setup
         await auth.unauthorizeAddress.awaitTransactionSuccessAsync(accounts[5]);
-        await cleanAccounts();
+        await testHelpers.cleanAccounts();
     });
 
     beforeEach(async () => {
@@ -26,23 +26,23 @@ describe("Treasury", async () => {
         await auth.authorizeAddress.awaitTransactionSuccessAsync(accounts[5]);
 
         // Account 1 holds 100 kosu, 50 approved
-        await clearTreasury(accounts[1]);
-        await ensureTokenBalance(accounts[1], testValues.oneHundredWei);
-        await kosuToken.approve.awaitTransactionSuccessAsync(treasury.address, testValues.fiftyWei, {
+        await testHelpers.clearTreasury(accounts[1]);
+        await testHelpers.ensureTokenBalance(accounts[1], TestValues.oneHundredWei);
+        await kosuToken.approve.awaitTransactionSuccessAsync(treasury.address, TestValues.fiftyWei, {
             from: accounts[1],
         });
 
         // Account 2 holds 100 kosu, 50 approved
-        await clearTreasury(accounts[2]);
-        await ensureTokenBalance(accounts[2], testValues.oneHundredWei);
-        await kosuToken.approve.awaitTransactionSuccessAsync(treasury.address, testValues.fiftyWei, {
+        await testHelpers.clearTreasury(accounts[2]);
+        await testHelpers.ensureTokenBalance(accounts[2], TestValues.oneHundredWei);
+        await kosuToken.approve.awaitTransactionSuccessAsync(treasury.address, TestValues.fiftyWei, {
             from: accounts[2],
         });
 
         // Account 3 has 100 kosu
-        await clearTreasury(accounts[3]);
-        await ensureTokenBalance(accounts[3], testValues.oneHundredWei);
-        await kosuToken.approve.awaitTransactionSuccessAsync(treasury.address, testValues.oneHundredWei, {
+        await testHelpers.clearTreasury(accounts[3]);
+        await testHelpers.ensureTokenBalance(accounts[3], TestValues.oneHundredWei);
+        await kosuToken.approve.awaitTransactionSuccessAsync(treasury.address, TestValues.oneHundredWei, {
             from: accounts[3],
         });
     });
@@ -52,7 +52,7 @@ describe("Treasury", async () => {
         let from;
 
         before(() => {
-            expectedValue = testValues.fiftyWei;
+            expectedValue = TestValues.fiftyWei;
             from = accounts[1];
         });
 
@@ -116,7 +116,7 @@ describe("Treasury", async () => {
         let from;
 
         before(() => {
-            expectedValue = testValues.fiftyWei;
+            expectedValue = TestValues.fiftyWei;
             from = accounts[1];
         });
 
@@ -149,7 +149,7 @@ describe("Treasury", async () => {
 
         it("should up to the total current balance", async () => {
             await treasury.deposit.awaitTransactionSuccessAsync(expectedValue, { from });
-            await posterRegistry.registerTokens.awaitTransactionSuccessAsync(testValues.oneWei, { from });
+            await posterRegistry.registerTokens.awaitTransactionSuccessAsync(TestValues.oneWei, { from });
 
             const initialTokenBalance = await kosuToken.balanceOf.callAsync(from);
             const initialCurrentBalance = await treasury.currentBalance.callAsync(from);
@@ -176,20 +176,20 @@ describe("Treasury", async () => {
                 .minus(finalSystemBalance)
                 .toString()
                 .should.eq(expectedValue.minus(1).toString());
-            await posterRegistry.releaseTokens.awaitTransactionSuccessAsync(testValues.oneWei, { from });
+            await posterRegistry.releaseTokens.awaitTransactionSuccessAsync(TestValues.oneWei, { from });
         });
     });
 
     describe("contractDeposit", () => {
         it("should pull tokens from the given accounts and track the balance.", async () => {
-            await treasury.contractDeposit.awaitTransactionSuccessAsync(accounts[1], testValues.fiftyWei, {
+            await treasury.contractDeposit.awaitTransactionSuccessAsync(accounts[1], TestValues.fiftyWei, {
                 from: accounts[5],
             }).should.eventually.be.fulfilled;
 
             await treasury.currentBalance
                 .callAsync(accounts[1])
                 .then(x => x.toString())
-                .should.eventually.eq(testValues.fiftyWei.toString());
+                .should.eventually.eq(TestValues.fiftyWei.toString());
         });
 
         it("should fail on insufficient token approval.", async () => {
@@ -210,7 +210,7 @@ describe("Treasury", async () => {
 
     describe("contractWithdraw", () => {
         it("should reduce the balance by the provided value.", async () => {
-            await treasury.contractDeposit.awaitTransactionSuccessAsync(accounts[3], testValues.oneHundredWei, {
+            await treasury.contractDeposit.awaitTransactionSuccessAsync(accounts[3], TestValues.oneHundredWei, {
                 from: accounts[5],
             });
             await treasury.contractWithdraw.awaitTransactionSuccessAsync(accounts[3], new BigNumber("75"), {
@@ -236,7 +236,7 @@ describe("Treasury", async () => {
         let target;
 
         before(() => {
-            expectedValue = testValues.fiftyWei;
+            expectedValue = TestValues.fiftyWei;
             from = accounts[5];
             target = accounts[1];
         });
@@ -312,7 +312,7 @@ describe("Treasury", async () => {
         let target;
 
         before(() => {
-            expectedValue = testValues.fiftyWei;
+            expectedValue = TestValues.fiftyWei;
             from = accounts[5];
             target = accounts[1];
         });
@@ -351,14 +351,14 @@ describe("Treasury", async () => {
             await kosuToken.approve.awaitTransactionSuccessAsync(treasury.address, new BigNumber("100000"), {
                 from: accounts[3],
             });
-            await treasury.contractDeposit.awaitTransactionSuccessAsync(accounts[3], testValues.oneHundredWei, {
+            await treasury.contractDeposit.awaitTransactionSuccessAsync(accounts[3], TestValues.oneHundredWei, {
                 from: accounts[5],
             });
 
             await treasury.currentBalance
                 .callAsync(accounts[3])
                 .then(x => x.toString())
-                .should.eventually.eq(testValues.oneHundredWei.toString());
+                .should.eventually.eq(TestValues.oneHundredWei.toString());
 
             await treasury.updateBalance.awaitTransactionSuccessAsync(accounts[3], new BigNumber("73"), {
                 from: accounts[5],
@@ -406,13 +406,13 @@ describe("Treasury", async () => {
             await kosuToken.approve.awaitTransactionSuccessAsync(treasury.address, new BigNumber("100000"), {
                 from: accounts[3],
             });
-            await treasury.contractDeposit.awaitTransactionSuccessAsync(accounts[3], testValues.oneHundredWei, {
+            await treasury.contractDeposit.awaitTransactionSuccessAsync(accounts[3], TestValues.oneHundredWei, {
                 from: accounts[5],
             });
             await treasury.currentBalance
                 .callAsync(accounts[3])
                 .then(x => x.toString())
-                .should.eventually.eq(testValues.oneHundredWei.toString());
+                .should.eventually.eq(TestValues.oneHundredWei.toString());
 
             // should handle negative change
             await treasury.adjustBalance.awaitTransactionSuccessAsync(accounts[3], new BigNumber("-27"), {
@@ -480,7 +480,7 @@ describe("Treasury", async () => {
         let target;
 
         before(() => {
-            expectedValue = testValues.fiftyWei;
+            expectedValue = TestValues.fiftyWei;
             from = accounts[5];
             target = accounts[1];
         });
@@ -517,7 +517,7 @@ describe("Treasury", async () => {
         let target;
 
         before(() => {
-            expectedValue = testValues.fiftyWei;
+            expectedValue = TestValues.fiftyWei;
             from = accounts[5];
             target = accounts[1];
         });
@@ -556,13 +556,13 @@ describe("Treasury", async () => {
                 .callAsync(accounts[3])
                 .then(x => x.toString())
                 .should.eventually.eq("0");
-            await treasury.contractDeposit.awaitTransactionSuccessAsync(accounts[3], testValues.oneHundredWei, {
+            await treasury.contractDeposit.awaitTransactionSuccessAsync(accounts[3], TestValues.oneHundredWei, {
                 from: accounts[5],
             });
             await treasury.currentBalance
                 .callAsync(accounts[3])
                 .then(x => x.toString())
-                .should.eventually.eq(testValues.oneHundredWei.toString());
+                .should.eventually.eq(TestValues.oneHundredWei.toString());
         });
     });
 
@@ -571,7 +571,7 @@ describe("Treasury", async () => {
             it("should allow an added account to call protected methods", async () => {
                 await auth.unauthorizeAddress.awaitTransactionSuccessAsync(accounts[6]);
 
-                await treasury.contractDeposit.awaitTransactionSuccessAsync(accounts[1], testValues.fiftyWei, {
+                await treasury.contractDeposit.awaitTransactionSuccessAsync(accounts[1], TestValues.fiftyWei, {
                     from: accounts[6],
                 }).should.eventually.be.rejected;
 
@@ -580,12 +580,12 @@ describe("Treasury", async () => {
                 await kosuToken.allowance
                     .callAsync(accounts[1], treasury.address)
                     .then(x => x.toString())
-                    .should.eventually.eq(testValues.fiftyWei.toString());
+                    .should.eventually.eq(TestValues.fiftyWei.toString());
                 await kosuToken.balanceOf
                     .callAsync(accounts[1])
                     .then(x => x.toString())
-                    .should.eventually.eq(testValues.oneHundredWei.toString());
-                await treasury.contractDeposit.awaitTransactionSuccessAsync(accounts[1], testValues.fiftyWei, {
+                    .should.eventually.eq(TestValues.oneHundredWei.toString());
+                await treasury.contractDeposit.awaitTransactionSuccessAsync(accounts[1], TestValues.fiftyWei, {
                     from: accounts[6],
                 }).should.eventually.be.fulfilled;
             });

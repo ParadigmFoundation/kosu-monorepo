@@ -2,9 +2,6 @@ import { soliditySHA3 } from "ethereumjs-abi";
 import { bufferToHex } from "ethereumjs-util";
 import { toTwosComplement } from "web3-utils";
 
-import { BasicTradeSubContractContract } from "../generated-wrappers/basic_trade_sub_contract";
-import { artifacts } from "../src";
-
 describe("SubContract", () => {
     it("should serialize and sign the data", async () => {
         const order = {
@@ -20,8 +17,8 @@ describe("SubContract", () => {
         const datatypes = [];
         const values = [];
         const args = await contracts.orderGateway.arguments
-            .callAsync(contracts.subContract.address)
-            .then(raw => JSON.parse(raw));
+            .callAsync(contracts.basicTradeSubContract.address)
+            .then(rawJSON => JSON.parse(rawJSON));
         args.maker.forEach(argument => {
             if (argument.name.includes("signature")) {
                 return;
@@ -50,21 +47,21 @@ describe("SubContract", () => {
             raw.substr(2) +
             toTwosComplement(order.signerTokenCount).substr(2);
 
-        await contracts.subContract.isValid.callAsync(hex).should.eventually.eq(true);
-        await contracts.subContract.amountRemaining
+        await contracts.basicTradeSubContract.isValid.callAsync(hex).should.eventually.eq(true);
+        await contracts.basicTradeSubContract.amountRemaining
             .callAsync(hex)
             .then(x => x.toString())
             .should.eventually.eq(order.signerTokenCount.toString());
         await contracts.kosuToken.approve.awaitTransactionSuccessAsync(
-            contracts.subContract.address,
-            testValues.maxUint,
+            contracts.basicTradeSubContract.address,
+            TestValues.maxUint,
         );
         await contracts.kosuToken.approve.awaitTransactionSuccessAsync(
-            contracts.subContract.address,
-            testValues.maxUint,
+            contracts.basicTradeSubContract.address,
+            TestValues.maxUint,
         );
         const { logs } = await web3Wrapper.awaitTransactionSuccessAsync(
-            await contracts.subContract.participate.sendTransactionAsync(hex),
+            await contracts.basicTradeSubContract.participate.sendTransactionAsync(hex),
         );
         logs[0].event.should.eq("Transfer");
         logs[0].data.should.eq(toTwosComplement(order.signerTokenCount));

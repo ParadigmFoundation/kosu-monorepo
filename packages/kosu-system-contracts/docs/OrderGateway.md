@@ -7,7 +7,6 @@ Access SubContract implementation's methods to participate in trades and check o
 -   [Methods](undefined)
     -   [amountRemaining](#amountremaining)
     -   [arguments](#arguments)
-    -   [constructor](#constructor)
     -   [isValid](#isvalid)
     -   [participate](#participate)
 
@@ -20,15 +19,15 @@ Calls amountRemaining on provided subContract.
 #### Signature
 
 ```solidity
-function amountRemaining(data address, subContract bytes)
+function amountRemaining(subContract address, data bytes) public view (uint256)
 ```
 
 #### Parameters:
 
 | Parameter     | Type      | Description                                                         |
 | ------------- | --------- | ------------------------------------------------------------------- |
-| `data`        | `address` | Encoded maker values for Order encoded based on the makerArguments. |
-| `subContract` | `bytes`   | Address of contract implementing the SubContract interface.         |
+| `subContract` | `address` | Address of contract implementing the SubContract interface.         |
+| `data`        | `bytes`   | Encoded maker values for Order encoded based on the makerArguments. |
 
 #### Returns:
 
@@ -41,7 +40,7 @@ Calls arguments on provided subContract.
 #### Signature
 
 ```solidity
-function arguments(subContract address)
+function arguments(subContract address) public view (string)
 ```
 
 #### Parameters:
@@ -54,16 +53,6 @@ function arguments(subContract address)
 
 String encoded JSON representation of subContract maker arguments.
 
-### constructor
-
-Creates a new OrderGateway
-
-#### Signature
-
-```solidity
-constructor()
-```
-
 ### isValid
 
 Calls isValid on provided subContract.
@@ -71,15 +60,15 @@ Calls isValid on provided subContract.
 #### Signature
 
 ```solidity
-function isValid(data address, subContract bytes)
+function isValid(subContract address, data bytes) public view (bool)
 ```
 
 #### Parameters:
 
 | Parameter     | Type      | Description                                                         |
 | ------------- | --------- | ------------------------------------------------------------------- |
-| `data`        | `address` | Encoded maker values for Order encoded based on the makerArguments. |
-| `subContract` | `bytes`   | Address of contract implementing the SubContract interface.         |
+| `subContract` | `address` | Address of contract implementing the SubContract interface.         |
+| `data`        | `bytes`   | Encoded maker values for Order encoded based on the makerArguments. |
 
 #### Returns:
 
@@ -92,15 +81,15 @@ Calls participate on the provided subContract.
 #### Signature
 
 ```solidity
-function participate(data address, subContract bytes)
+function participate(subContract address, data bytes) public (bool)
 ```
 
 #### Parameters:
 
 | Parameter     | Type      | Description                                                    |
 | ------------- | --------- | -------------------------------------------------------------- |
-| `data`        | `address` | Encoded maker values for Order encoded based on the arguments. |
-| `subContract` | `bytes`   | Address of contract implementing the SubContract interface.    |
+| `subContract` | `address` | Address of contract implementing the SubContract interface.    |
+| `data`        | `bytes`   | Encoded maker values for Order encoded based on the arguments. |
 
 #### Returns:
 

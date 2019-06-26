@@ -8,7 +8,21 @@ steps:
   args:
     - '-c'
     - |
-      docker pull gcr.io/$PROJECT_ID/go-kosu-ci:latest || exit 0; docker pull gcr.io/$PROJECT_ID/node-ci:latest || exit 0; docker pull gcr.io/$PROJECT_ID/kosu-geth:latest || exit 0;
+      docker pull gcr.io/$PROJECT_ID/go-kosu-ci:latest || exit 0;
+      docker pull gcr.io/$PROJECT_ID/node-ci:latest || exit 0;
+      docker pull gcr.io/$PROJECT_ID/kosu-geth:latest || exit 0;
+      docker pull gcr.io/$PROJECT_ID/node-lts:latest || exit 0;
+
+# build and tag node-lts image
+- name: "gcr.io/cloud-builders/docker"
+  args: [
+    "build",
+    "--cache-from", "gcr.io/kosu-io/node-lts:latest",
+    "-t", "gcr.io/kosu-io/node-lts:$SHORT_SHA",
+    "-t", "gcr.io/kosu-io/node-lts:latest",
+    "-f", "./packages/dev-images/general/node.Dockerfile",
+    "./packages/dev-images"
+  ]
 
 # build and tag go-kosu ci image 
 - name: "gcr.io/cloud-builders/docker"
@@ -29,7 +43,7 @@ steps:
     "-t", "gcr.io/kosu-io/node-ci:$SHORT_SHA",
     "-t", "gcr.io/kosu-io/node-ci:latest",
     "-f", "./packages/dev-images/ci/node.Dockerfile",
-    "./packages/dev-images"
+    "."
   ]
 
 # build and tag kosu-geth
@@ -52,6 +66,9 @@ images: [
 
   # kosu-geth poa test image
   "gcr.io/kosu-io/kosu-geth:$SHORT_SHA", "gcr.io/kosu-io/kosu-geth:latest",
+
+  # general node:lts dev image
+  "gcr.io/kosu-io/node-lts:$SHORT_SHA", "gcr.io/kosu-io/node-lts:latest",
 ]
 
 options: 

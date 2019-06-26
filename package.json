@@ -21,7 +21,7 @@
         "prettier": "prettier --write '**/*.{ts,tsx,json,md,js}' --config .prettierrc",
         "prettier:ci": "prettier --list-different '**/*.{ts,tsx,json,md,js}' --config .prettierrc",
         "postinstall": "lerna link --force-local",
-        "setup:ci": "run-p prettier:ci lint build"
+        "setup:ci": "run-p lint build"
     },
     "workspaces": {
         "packages": [

@@ -9,12 +9,10 @@ KosuToken (KOSU) is an implentation of the ERC-20 interface, supporting mints an
     -   [approve](#approve)
     -   [balanceOf](#balanceof)
     -   [burn](#burn)
-    -   [constructor](#constructor)
     -   [decreaseAllowance](#decreaseallowance)
     -   [increaseAllowance](#increaseallowance)
     -   [mint](#mint)
     -   [mintTo](#mintto)
-    -   [totalSupply](#totalsupply)
     -   [transfer](#transfer)
     -   [transferFrom](#transferfrom)
 
@@ -27,7 +25,7 @@ Function to check the amount of tokens that an owner allowed to a spender.
 #### Signature
 
 ```solidity
-function allowance(owner address, spender address)
+function allowance(owner address, spender address) public view (uint256)
 ```
 
 #### Parameters:
@@ -48,7 +46,7 @@ Approve the passed address to spend the specified amount of tokens on behalf of 
 #### Signature
 
 ```solidity
-function approve(spender address, value uint256)
+function approve(spender address, value uint256) public (bool)
 ```
 
 #### Parameters:
@@ -65,7 +63,7 @@ Gets the balance of the specified address.
 #### Signature
 
 ```solidity
-function balanceOf(owner address)
+function balanceOf(owner address) public view (uint256)
 ```
 
 #### Parameters:
@@ -85,7 +83,7 @@ Burn tokens
 #### Signature
 
 ```solidity
-function burn(amount uint256)
+function burn(amount uint256) public
 ```
 
 #### Parameters:
@@ -94,16 +92,6 @@ function burn(amount uint256)
 | --------- | --------- | --------------------------- |
 | `amount`  | `uint256` | Number of tokens to destroy |
 
-### constructor
-
-Deploy a new ERC20 Token
-
-#### Signature
-
-```solidity
-constructor()
-```
-
 ### decreaseAllowance
 
 Decrease the amount of tokens that an owner allowed to a spender. approve should be called when allowed\_[_spender] == 0. To decrement allowed value is better to use this function to avoid 2 calls (and wait until the first transaction is mined) From MonolithDAO Token.sol Emits an Approval event.
@@ -111,7 +99,7 @@ Decrease the amount of tokens that an owner allowed to a spender. approve should
 #### Signature
 
 ```solidity
-function decreaseAllowance(spender address, subtractedValue uint256)
+function decreaseAllowance(spender address, subtractedValue uint256) public (bool)
 ```
 
 #### Parameters:
@@ -128,15 +116,15 @@ Increase the amount of tokens that an owner allowed to a spender. approve should
 #### Signature
 
 ```solidity
-function increaseAllowance(addedValue address, spender uint256)
+function increaseAllowance(spender address, addedValue uint256) public (bool)
 ```
 
 #### Parameters:
 
 | Parameter    | Type      | Description                                        |
 | ------------ | --------- | -------------------------------------------------- |
-| `addedValue` | `address` | The amount of tokens to increase the allowance by. |
-| `spender`    | `uint256` | The address which will spend the funds.            |
+| `spender`    | `address` | The address which will spend the funds.            |
+| `addedValue` | `uint256` | The amount of tokens to increase the allowance by. |
 
 ### mint
 
@@ -145,7 +133,7 @@ Mint tokens
 #### Signature
 
 ```solidity
-function mint(amount uint256)
+function mint(amount uint256) public
 ```
 
 #### Parameters:
@@ -161,7 +149,7 @@ Mint tokens to specified address
 #### Signature
 
 ```solidity
-function mintTo(_address address, amount uint256)
+function mintTo(_address address, amount uint256) public
 ```
 
 #### Parameters:
@@ -171,16 +159,6 @@ function mintTo(_address address, amount uint256)
 | `_address` | `address` | Address to receive tokens   |
 | `amount`   | `uint256` | Number of tokens to create. |
 
-### totalSupply
-
-Total number of tokens in existence
-
-#### Signature
-
-```solidity
-function totalSupply()
-```
-
 ### transfer
 
 Transfer token for a specified address
@@ -188,7 +166,7 @@ Transfer token for a specified address
 #### Signature
 
 ```solidity
-function transfer(to address, value uint256)
+function transfer(to address, value uint256) public (bool)
 ```
 
 #### Parameters:
@@ -205,7 +183,7 @@ Transfer tokens from one address to another. Note that while this function emits
 #### Signature
 
 ```solidity
-function transferFrom(from address, to address, value uint256)
+function transferFrom(from address, to address, value uint256) public (bool)
 ```
 
 #### Parameters:
