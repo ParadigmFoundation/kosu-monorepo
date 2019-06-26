@@ -129,6 +129,8 @@ func (app *App) BeginBlock(req abci.RequestBeginBlock) abci.ResponseBeginBlock {
 		if v.LastVoted+1 == currHeight {
 			v.Active = true
 			app.store.SetValidator(nodeID, v)
+		} else { // TODO: check-me
+			v.Active = false
 		}
 	})
 
