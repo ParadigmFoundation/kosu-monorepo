@@ -9,7 +9,7 @@ import (
 )
 
 func (app *App) checkWitnessTx(tx *types.TransactionWitness) error {
-	if app.state.LastEvent >= tx.Block {
+	if app.store.LastEvent() >= tx.Block {
 		return errors.New("transaction is older than the recorded state")
 	}
 
@@ -21,14 +21,8 @@ func (app *App) deliverWitnessTx(tx *types.TransactionWitness) abci.ResponseDeli
 		return abci.ResponseDeliverTx{Code: 1, Info: err.Error()}
 	}
 
-	if !true {
-		if err := app.state.PushTransactionWitness(tx); err != nil {
-			return abci.ResponseDeliverTx{Code: 1, Info: err.Error()}
-		}
-	} else {
-		if err := app.pushTransactionWitness(tx); err != nil {
-			return abci.ResponseDeliverTx{Code: 1, Info: err.Error()}
-		}
+	if err := app.pushTransactionWitness(tx); err != nil {
+		return abci.ResponseDeliverTx{Code: 1, Info: err.Error()}
 	}
 	return abci.ResponseDeliverTx{}
 }

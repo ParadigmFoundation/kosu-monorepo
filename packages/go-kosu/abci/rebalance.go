@@ -29,13 +29,6 @@ func (app *App) deliverRebalance(tx *types.TransactionRebalance) abci.ResponseDe
 	info := tx.RoundInfo
 	app.store.SetRoundInfo(*info)
 
-	if info.Number != 0 {
-		limits := app.state.GenLimits()
-		for addr, l := range limits {
-			app.log.Debug("DeliverRebalance =>", "addr", addr, "limit", l)
-		}
-	}
-
 	return abci.ResponseDeliverTx{
 		Code: 0,
 		Tags: NewTagsFromRoundInfo(info),

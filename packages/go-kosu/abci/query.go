@@ -2,8 +2,6 @@ package abci
 
 import (
 	"fmt"
-	"go-kosu/abci/types"
-	"go-kosu/store"
 	"regexp"
 	"strings"
 
@@ -59,21 +57,8 @@ func (app *App) registerHandlers() {
 }
 
 func (app *App) handleConsensusParams(req *abci.RequestQuery) (proto.Message, error) {
-	var param store.ConsensusParams
-	if err := app.tree.Get(store.ConsensusParamsKey, &param); err != nil {
-		return nil, err
-	}
-
-	pb := &types.ConsensusParams{
-		FinalityThreshold:     param.FinalityThreshold,
-		PeriodLimit:           param.PeriodLimit,
-		PeriodLength:          param.PeriodLength,
-		MaxOrderBytes:         param.MaxOrderBytes,
-		ConfirmationThreshold: param.ConfirmationThreshold,
-	}
-
-	return pb, nil
-
+	p := app.store.ConsensusParams()
+	return &p, nil
 }
 
 func (app *App) handleRoundInfo(req *abci.RequestQuery) (proto.Message, error) {

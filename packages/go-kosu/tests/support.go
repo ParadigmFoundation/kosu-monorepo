@@ -13,15 +13,12 @@ import (
 	rpctypes "github.com/tendermint/tendermint/rpc/core/types"
 
 	"go-kosu/abci"
-	"go-kosu/store"
 )
 
 // GivenABCIServer a ABCI Server inside a Convey block
 func GivenABCIServer(t *testing.T, suite *Suite, fn func(*testing.T)) {
 	Convey("Given an ABCI Server", t, func() {
-		suite.state = store.NewState()
-
-		app, closer := startServer(t, db.NewMemDB(), suite.state)
+		app, closer := startServer(t, db.NewMemDB())
 		defer closer()
 		suite.app = app
 
@@ -33,7 +30,7 @@ func GivenABCIServer(t *testing.T, suite *Suite, fn func(*testing.T)) {
 	})
 }
 
-func startServer(t *testing.T, db db.DB, state *store.State) (*abci.App, func()) {
+func startServer(t *testing.T, db db.DB) (*abci.App, func()) {
 	// Create a temp dir and initialize tendermint there
 	dir, err := ioutil.TempDir("/tmp", "/go-kosu-go-tests_")
 	require.NoError(t, err)
@@ -42,7 +39,7 @@ func startServer(t *testing.T, db db.DB, state *store.State) (*abci.App, func())
 	require.NoError(t, err)
 
 	// Initialize the server
-	app := abci.NewApp(state, db, dir)
+	app := abci.NewApp(db, dir)
 	app.Config.LogFormat = "none"
 	app.Config.LogLevel = "app:error"
 	srv, err := abci.StartInProcessServer(app)

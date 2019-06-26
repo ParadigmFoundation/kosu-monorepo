@@ -4,7 +4,6 @@ import (
 	"encoding/hex"
 	"errors"
 	"fmt"
-	"math"
 	"regexp"
 
 	abci "github.com/tendermint/tendermint/abci/types"
@@ -26,8 +25,6 @@ type App struct {
 	Config *cfg.Config
 
 	store *store.Store
-	state *store.State
-	tree  *store.StateTree
 
 	handlers map[*regexp.Regexp]QueryHandler
 
@@ -35,7 +32,7 @@ type App struct {
 }
 
 // NewApp returns a new ABCI App
-func NewApp(state *store.State, db db.DB, homedir string) *App {
+func NewApp(db db.DB, homedir string) *App {
 	config, err := LoadConfig(homedir)
 	if err != nil {
 		panic(err)
@@ -46,11 +43,8 @@ func NewApp(state *store.State, db db.DB, homedir string) *App {
 		panic(err)
 	}
 
-	tree := store.NewStateTree(db, new(store.GobCodec))
 	app := &App{
 		store:    store.NewStore(db, new(store.ProtoCodec)),
-		state:    state,
-		tree:     tree,
 		Config:   config,
 		handlers: make(map[*regexp.Regexp]QueryHandler),
 		log:      logger.With("module", "app"),
@@ -78,18 +72,11 @@ func (app *App) Info(req abci.RequestInfo) abci.ResponseInfo {
 		"ver", res.LastBlockHeight,
 	)
 
-	if err := app.state.UpdateFromTree(app.tree); err != nil {
-		panic(err)
-	}
-
 	return res
 }
 
 // Commit saves the tree's version.
 func (app *App) Commit() abci.ResponseCommit {
-	if err := app.state.PersistToTree(app.tree); err != nil {
-		panic(err)
-	}
 	app.store.Commit()
 	return abci.ResponseCommit{Data: app.store.LastCommitID().Hash}
 }
@@ -101,9 +88,8 @@ func (app *App) InitChain(req abci.RequestInitChain) abci.ResponseInitChain {
 }
 
 // BeginBlock .
+/*
 func (app *App) BeginBlock(req abci.RequestBeginBlock) abci.ResponseBeginBlock {
-	return abci.ResponseBeginBlock{}
-
 	currHeight := req.Header.Height
 	proposer := hex.EncodeToString(req.Header.ProposerAddress)
 
@@ -151,8 +137,6 @@ func (app *App) BeginBlock(req abci.RequestBeginBlock) abci.ResponseBeginBlock {
 
 // EndBlock .
 func (app *App) EndBlock(req abci.RequestEndBlock) abci.ResponseEndBlock {
-	return abci.ResponseEndBlock{}
-
 	updates := []abci.ValidatorUpdate{}
 
 	for addr, v := range app.state.Validators {
@@ -177,6 +161,7 @@ func (app *App) EndBlock(req abci.RequestEndBlock) abci.ResponseEndBlock {
 		ValidatorUpdates: updates,
 	}
 }
+*/
 
 // CheckTx .
 func (app *App) CheckTx(req []byte) abci.ResponseCheckTx {

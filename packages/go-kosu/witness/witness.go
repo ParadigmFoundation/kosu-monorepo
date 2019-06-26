@@ -12,7 +12,6 @@ import (
 
 	"go-kosu/abci"
 	"go-kosu/abci/types"
-	"go-kosu/store"
 )
 
 // Provider describes a block provider.
@@ -77,7 +76,7 @@ type Witness struct {
 	log      log.Logger
 
 	roundMutex sync.RWMutex
-	roundInfo  store.RoundInfo
+	roundInfo  types.RoundInfo
 
 	initHeight    uint64
 	currentHeight uint64
@@ -112,7 +111,7 @@ func (w *Witness) Start(ctx context.Context) error {
 		return err
 	}
 	w.roundMutex.Lock()
-	w.roundInfo.FromProto(info)
+	w.roundInfo = *info
 	w.roundMutex.Unlock()
 
 	w.log.Info("started", "initHeight", num, "RoundInfo", info)
@@ -228,7 +227,7 @@ func (w *Witness) rebalance(round, start uint64) error {
 }
 
 // RoundInfo returns the current in-memory RoundInfo
-func (w *Witness) RoundInfo() store.RoundInfo {
+func (w *Witness) RoundInfo() types.RoundInfo {
 	w.roundMutex.RLock()
 	defer w.roundMutex.RUnlock()
 

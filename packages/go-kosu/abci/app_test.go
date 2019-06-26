@@ -2,7 +2,6 @@ package abci
 
 import (
 	"go-kosu/abci/types"
-	"go-kosu/store"
 	"io/ioutil"
 	"os"
 	"testing"
@@ -21,7 +20,7 @@ func newTestApp(t *testing.T, db db.DB) (func(), *App) {
 	require.NoError(t, err)
 
 	fn := func() { _ = os.RemoveAll(dir) }
-	return fn, NewApp(store.NewState(), db, dir)
+	return fn, NewApp(db, dir)
 }
 
 func TestCheckTxSignature(t *testing.T) {
