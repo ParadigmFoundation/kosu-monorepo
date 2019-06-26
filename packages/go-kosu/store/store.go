@@ -84,6 +84,7 @@ func (s *Store) Has(key string, kv *sdk.KVStoreKey) bool {
 	return s.cms.GetCommitKVStore(kv).Has([]byte(key))
 }
 
+// All iterates over all the elements of a given store
 func (s *Store) All(kv *sdk.KVStoreKey, fn func(key string, buf []byte)) {
 	//	it := kv.Iterator([]byte(start), []byte(end))
 	it := s.cms.GetCommitKVStore(kv).Iterator(nil, nil)
