@@ -30,13 +30,13 @@ type Order struct {
 }
 
 // NewOrder creates a new Kosu Order object from a JSON string
-func NewOrder(input string) (order *Order, e error) {
+func NewOrder(input string) (*Order, error) {
+	order := &Order{}
 	dec := json.NewDecoder(strings.NewReader(input))
-	if err := dec.Decode(&order); err != nil {
-		e = ErrOrderParse
-		return
+	if err := dec.Decode(order); err != nil {
+		return nil, err
 	}
-	return
+	return order, nil
 }
 
 // PosterHex generates the hash used to sign the order
@@ -85,13 +85,18 @@ func (o *Order) Serialize() (orderBytes []byte, e error) {
 }
 
 // RecoverPoster returns the address used to sign the Kosu order as a poster
-func (o *Order) RecoverPoster() (poster Address, e error) {
+func (o *Order) RecoverPoster() (Address, error) {
 	hash, err := o.PosterHex()
 	if err != nil {
-		return poster, err
+		return Address{}, err
 	}
-	poster, e = o.PosterSignature.RecoverSigner(hash)
-	return
+
+	poster, err := o.PosterSignature.RecoverSigner(hash)
+	if err != nil {
+		return Address{}, err
+	}
+
+	return poster, nil
 }
 
 // String implements Stringer to represent Order as a string
@@ -102,7 +107,7 @@ func (o *Order) String() (order string) {
 // Arguments defines the data types required for maker and taker values
 type Arguments struct {
 	Maker []Argument `json:"maker"`
-	Taker []Argument `json:"taler"`
+	Taker []Argument `json:"taker"`
 }
 
 // Argument defines a maker or taker value with parameter name and data type

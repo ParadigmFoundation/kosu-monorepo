@@ -9,88 +9,60 @@ import (
 )
 
 var (
-	// ErrSignatureDecode returned when bad signature input provided to constructor
-	ErrSignatureDecode = errors.New("unable to decode provided string")
 	// ErrSignatureLength returned when trying to load invalid length signatures
 	ErrSignatureLength = errors.New("invalid length for signature")
 )
 
 // Signature represents a 65-byte Kosu order signature (from maker/poster)
-type Signature [65]byte
+type Signature struct {
+	HexBytes
+}
 
 // NewSignatureFromString creates a new signature provided a 0x-prefixed hex string
-func NewSignatureFromString(input string) (signature Signature, e error) {
+func NewSignatureFromString(input string) (*Signature, error) {
 	decoded, err := hex.DecodeString(input[2:])
 	if err != nil {
-		e = ErrSignatureDecode
-		return
+		return nil, err
 	}
 
 	if len(decoded) != 65 {
-		e = ErrSignatureLength
-		return
+		return nil, ErrSignatureLength
 	}
 
-	for i := 0; i < 65; i++ {
-		signature[i] = decoded[i]
-	}
-	return
+	bytes := HexBytes(decoded)
+	return &Signature{bytes}, nil
 }
 
 // RecoverSigner recovers the address that generated the signature, given a hash
-func (s *Signature) RecoverSigner(hash []byte) (signer Address, e error) {
+func (s *Signature) RecoverSigner(hash []byte) (Address, error) {
 	messageHash := hashEthereumMessage(hash)
 
 	recoveredKey, err := crypto.Ecrecover(messageHash, s.Bytes())
 	if err != nil {
-		e = err
-		return
+		return Address{}, err
 	}
 
 	uncompressedKey, err := crypto.UnmarshalPubkey(recoveredKey)
 	if err != nil {
-		e = err
-		return
+		return Address{}, err
 	}
 
 	signerBytes := crypto.PubkeyToAddress(*uncompressedKey).Bytes()
-	signer, err = NewAddressFromString("0x" + hex.EncodeToString(signerBytes))
+	signer, err := NewAddressFromBytes(signerBytes)
 	if err != nil {
-		e = err
-		return
+		return Address{}, err
 	}
-	return
-}
 
-// Bytes returns the signature's underlying bytes
-func (s *Signature) Bytes() (bytes []byte) {
-	bytes = make([]byte, 65)
-	for i := 0; i < 65; i++ {
-		bytes[i] = s[i]
-	}
-	return
-}
-
-// String returns a representation of the signature as a 0x-prefixed hex string
-func (s *Signature) String() (signature string) {
-	decoded := hex.EncodeToString(s.Bytes())
-	signature = "0x" + decoded
-	return
+	return signer, nil
 }
 
 // UnmarshalJSON implements the json.Unmarshaler interface
 func (s *Signature) UnmarshalJSON(bytes []byte) error {
-	encoded, err := hex.DecodeString(string(bytes)[3 : len(bytes)-1])
-	if err != nil {
-		return err
+	// 65 byte signature + '0x' prefix + open/close quotes
+	if len(bytes) != 134 {
+		return ErrAddressLength
 	}
-	if len(encoded) != 65 {
-		return ErrSignatureLength
-	}
-	for i := 0; i < 65; i++ {
-		s[i] = encoded[i]
-	}
-	return nil
+	return s.HexBytes.UnmarshalJSON(bytes)
 }
 
 // hashEthereumMessage implements eth_sign style personal message hashing (used in ecrecover)
