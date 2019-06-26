@@ -3,6 +3,8 @@ package types
 
 import (
 	"encoding/hex"
+	"encoding/json"
+	"strings"
 	"testing"
 
 	"github.com/stretchr/testify/require"
@@ -80,6 +82,27 @@ func TestRecoverSignature(t *testing.T) {
 			recoveredPoster, err := order.RecoverPoster()
 			require.NoError(t, err, "Should be no error recovering poster")
 			require.EqualValues(t, expectedPoster, recoveredPoster, "Expected recovered address to match supplied address")
+		})
+	}
+}
+
+func TestFromProto(t *testing.T) {
+	for _, tC := range testCases {
+		t.Run(tC.desc, func(t *testing.T) {
+			orderTransaction := &TransactionOrder{}
+
+			decoder := json.NewDecoder(strings.NewReader(tC.order))
+			err := decoder.Decode(&orderTransaction)
+			require.NoError(t, err, "Expected no error creating order transaction")
+
+			// convert to type Order
+			order, err := NewOrderFromProto(orderTransaction)
+			require.NoError(t, err, "Expected no error converting to Order type")
+
+			expectedPoster, _ := NewAddressFromString(tC.poster)
+			recoveredPoster, err := order.RecoverPoster()
+			require.NoError(t, err, "Expected no error recovering poster")
+			require.EqualValues(t, expectedPoster, recoveredPoster, "Expected recovered poster to match test case")
 		})
 	}
 }
