@@ -39,6 +39,17 @@ func NewOrder(input string) (*Order, error) {
 	return order, nil
 }
 
+// NewOrderFromProto creates a new Kosu Order object from a proto message
+func NewOrderFromProto(order *TransactionOrder) (*Order, error) {
+	marshalled, err := json.Marshal(order)
+	if err != nil {
+		return nil, err
+	}
+
+	orderJSON := string(marshalled)
+	return NewOrder(orderJSON)
+}
+
 // PosterHex generates the hash used to sign the order
 func (o *Order) PosterHex() ([]byte, error) {
 	orderBytes, err := o.Serialize()
