@@ -96,6 +96,7 @@ message Transaction {
   oneof data {
     TransactionRebalance rebalance = 1;
     TransactionWitness witness = 2;
+    TransactionOrder order = 3;
   }
 }
 
@@ -124,3 +125,32 @@ message TransactionWitness {
   bytes public_key = 5  ; // Tendermint ed25519 key of validator (base64 enc )
   bytes id = 6; // Hash of event data
 }
+
+/**
+ * TransactionOrder contains a signed order from a poster, and modifies their remaining period limit.
+ * 
+ * This transaction can originate from anywhere, so long as the address recovered from the poster
+ * signature has a non-zero balance of Kosu tokens (they are a poster).
+ */
+message TransactionOrder {
+  string subContract = 1;
+  string maker = 2;
+  OrderArguments arguments = 3;
+  map<string, string> makerValues = 4;
+  string makerSignature = 5;
+  string posterSignature = 6;
+}
+
+message OrderArguments {
+  repeated OrderArgument maker = 1;
+  repeated OrderArgument taker = 2;
+}
+
+message OrderArgument {
+  string name = 1;
+  string datatype = 2;
+  repeated int64 signatureFields = 3;
+}
+
+
+
