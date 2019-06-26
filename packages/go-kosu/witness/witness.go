@@ -128,7 +128,7 @@ func (w *Witness) Start(ctx context.Context) error {
 
 func (w *Witness) subscribe(ctx context.Context) error {
 	// Subscribe to rebalance events and synchronize
-	sub, err := w.client.Subscribe(ctx, "tm.event = 'Tx' AND tx.type = 'rebalance'")
+	sub, _, err := w.client.Subscribe(ctx, "tm.event = 'Tx' AND tx.type = 'rebalance'")
 	if err != nil {
 		return err
 	}

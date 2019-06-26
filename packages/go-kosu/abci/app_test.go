@@ -59,5 +59,5 @@ func TestCommitAndInfo(t *testing.T) {
 
 	res := newApp.Info(abci.RequestInfo{})
 	assert.Equal(t, int64(1), res.LastBlockHeight)
-	assert.Equal(t, app.tree.CommitInfo.Hash, res.LastBlockAppHash)
+	assert.Equal(t, app.Store().LastCommitID().Hash, res.LastBlockAppHash)
 }

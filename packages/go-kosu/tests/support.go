@@ -23,6 +23,7 @@ func GivenABCIServer(t *testing.T, suite *Suite, fn func(*testing.T)) {
 
 		app, closer := startServer(t, db.NewMemDB(), suite.state)
 		defer closer()
+		suite.app = app
 
 		key, err := abci.LoadPrivateKey(app.Config.RootDir)
 		require.NoError(t, err)
@@ -43,6 +44,7 @@ func startServer(t *testing.T, db db.DB, state *store.State) (*abci.App, func())
 	// Initialize the server
 	app := abci.NewApp(state, db, dir)
 	app.Config.LogFormat = "none"
+	app.Config.LogLevel = "app:error"
 	srv, err := abci.StartInProcessServer(app)
 	require.NoError(t, err)
 

@@ -39,6 +39,10 @@ type ProtoCodec struct{}
 func (c *ProtoCodec) String() string { return "proto" }
 
 func (c *ProtoCodec) Encode(s interface{}) ([]byte, error) {
+	if s == nil {
+		return nil, nil
+	}
+
 	buf := proto.NewBuffer(nil)
 	buf.SetDeterministic(true)
 
@@ -47,6 +51,8 @@ func (c *ProtoCodec) Encode(s interface{}) ([]byte, error) {
 	case uint64:
 		err = buf.EncodeFixed64(t)
 	case int:
+		err = buf.EncodeFixed32(uint64(t))
+	case uint32:
 		err = buf.EncodeFixed32(uint64(t))
 	default:
 		err = buf.Marshal(t.(proto.Message))
@@ -77,6 +83,13 @@ func (c *ProtoCodec) Decode(bs []byte, s interface{}) error {
 			return err
 		}
 		*t = int(l)
+		return nil
+	case *uint32:
+		l, err := buf.DecodeFixed32()
+		if err != nil {
+			return err
+		}
+		*t = uint32(l)
 		return nil
 	}
 	msg := s.(proto.Message)

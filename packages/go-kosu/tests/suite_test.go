@@ -12,4 +12,5 @@ type Suite struct {
 
 	state  *store.State
 	client *abci.Client
+	app    *abci.App
 }

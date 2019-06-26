@@ -15,20 +15,32 @@ type Store struct {
 
 	chainKey   *sdk.KVStoreKey
 	witnessKey *sdk.KVStoreKey
+	posterKey  *sdk.KVStoreKey
 }
 
 // NewStore returns a new store
 func NewStore(db db.DB, cdc Codec) *Store {
 	s := &Store{codec: cdc,
-		cms:        store.NewCommitMultiStore(db),
+		cms: store.NewCommitMultiStore(db),
+
 		chainKey:   sdk.NewKVStoreKey("chain"),
 		witnessKey: sdk.NewKVStoreKey("witness"),
+		posterKey:  sdk.NewKVStoreKey("poster"),
 	}
 
 	s.cms.MountStoreWithDB(s.chainKey, sdk.StoreTypeIAVL, nil)
 	s.cms.MountStoreWithDB(s.witnessKey, sdk.StoreTypeIAVL, nil)
+	s.cms.MountStoreWithDB(s.posterKey, sdk.StoreTypeIAVL, nil)
+
 	if err := s.cms.LoadLatestVersion(); err != nil {
 		panic(err)
+	}
+
+	// TODO: this should comes from genesis block
+	if s.cms.LastCommitID().IsZero() {
+		s.SetConsensusParams(types.ConsensusParams{
+			PeriodLength: 10,
+		})
 	}
 
 	return s
@@ -43,6 +55,10 @@ func (s *Store) Set(key string, kv sdk.KVStore, v interface{}) {
 		panic(err)
 	}
 
+	if buf == nil {
+		return
+	}
+
 	kv.Set([]byte(key), buf)
 }
 
@@ -51,6 +67,10 @@ func (s *Store) Get(key string, kv sdk.KVStore, v interface{}) {
 	if buf != nil {
 		s.codec.Decode(buf, v)
 	}
+}
+
+func (s *Store) Delete(key string, kv sdk.KVStore) {
+	kv.Delete([]byte(key))
 }
 
 func (s *Store) SetRoundInfo(v types.RoundInfo) {
@@ -102,4 +122,18 @@ func (s *Store) SetWitnessTx(tx TransactionWitness) {
 func (s *Store) IncWitnessTxConfirmations(id []byte) {
 	tx := s.WitnessTx(id)
 	s.Set("confs:"+string(tx.Id), s.cms.GetCommitKVStore(s.witnessKey), tx.Confirmations+1)
+}
+
+func (s *Store) Poster(addr string) *XPoster {
+	var v XPoster
+	s.Get(addr, s.cms.GetCommitKVStore(s.posterKey), &v)
+	return &v
+}
+
+func (s *Store) SetPoster(addr string, v XPoster) {
+	s.Set(addr, s.cms.GetCommitKVStore(s.posterKey), &v)
+}
+
+func (s *Store) DeletePoster(addr string) {
+	s.Delete(addr, s.cms.GetCommitKVStore(s.posterKey))
 }

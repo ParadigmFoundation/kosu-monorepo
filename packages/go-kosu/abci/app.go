@@ -60,13 +60,17 @@ func NewApp(state *store.State, db db.DB, homedir string) *App {
 	return app
 }
 
+func (app *App) Store() *store.Store { return app.store }
+
 // Info loads the state from the db.
 func (app *App) Info(req abci.RequestInfo) abci.ResponseInfo {
+	cID := app.store.LastCommitID()
+
 	res := abci.ResponseInfo{
 		Data:             "go-kosu",
 		Version:          req.GetVersion(),
-		LastBlockHeight:  app.tree.CommitInfo.Version,
-		LastBlockAppHash: app.tree.CommitInfo.Hash,
+		LastBlockHeight:  cID.Version,
+		LastBlockAppHash: cID.Hash,
 	}
 
 	app.log.Info("-- INFO --",
@@ -86,11 +90,8 @@ func (app *App) Commit() abci.ResponseCommit {
 	if err := app.state.PersistToTree(app.tree); err != nil {
 		panic(err)
 	}
-	if err := app.tree.Commit(); err != nil {
-		// TODO: Handle with care
-		panic(err)
-	}
-	return abci.ResponseCommit{Data: app.tree.CommitInfo.Hash}
+	app.store.Commit()
+	return abci.ResponseCommit{Data: app.store.LastCommitID().Hash}
 }
 
 // InitChain .
@@ -101,6 +102,8 @@ func (app *App) InitChain(req abci.RequestInitChain) abci.ResponseInitChain {
 
 // BeginBlock .
 func (app *App) BeginBlock(req abci.RequestBeginBlock) abci.ResponseBeginBlock {
+	return abci.ResponseBeginBlock{}
+
 	currHeight := req.Header.Height
 	proposer := hex.EncodeToString(req.Header.ProposerAddress)
 
@@ -148,6 +151,8 @@ func (app *App) BeginBlock(req abci.RequestBeginBlock) abci.ResponseBeginBlock {
 
 // EndBlock .
 func (app *App) EndBlock(req abci.RequestEndBlock) abci.ResponseEndBlock {
+	return abci.ResponseEndBlock{}
+
 	updates := []abci.ValidatorUpdate{}
 
 	for addr, v := range app.state.Validators {

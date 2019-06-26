@@ -77,32 +77,18 @@ func (app *App) handleConsensusParams(req *abci.RequestQuery) (proto.Message, er
 }
 
 func (app *App) handleRoundInfo(req *abci.RequestQuery) (proto.Message, error) {
-	var info store.RoundInfo
-	if err := app.tree.Get(store.RoundInfoKey, &info); err != nil {
-		return nil, err
-	}
-
-	p := new(types.RoundInfo)
-	info.ToProto(p)
-	return p, nil
+	nfo := app.store.RoundInfo()
+	return &nfo, nil
 }
 
 func (app *App) handlePoster(req *abci.RequestQuery) (proto.Message, error) {
 	path := req.GetPath()
 	addr := strings.Replace(path, "/posters/", "", 1)
-	poster, err := app.tree.GetPoster(addr)
-	if err != nil {
-		return nil, err
-	}
 
+	poster := app.store.Poster(addr)
 	if poster == nil || poster.Balance == nil {
 		return nil, fmt.Errorf("query: poster@%s not found", addr)
 	}
 
-	pb := &types.Poster{
-		Balance:    types.NewBigInt(poster.Balance.Bytes()),
-		OrderLimit: poster.Limit,
-	}
-
-	return pb, nil
+	return &poster.Poster, nil
 }
