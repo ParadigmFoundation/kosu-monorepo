@@ -17,6 +17,11 @@ func (s *Suite) TestRebalance() {
 					EndsAt:   110,
 				},
 			}
+
+			s.app.Store().SetConsensusParams(types.ConsensusParams{
+				PeriodLength: uint32(tx.RoundInfo.EndsAt - tx.RoundInfo.StartsAt),
+			})
+
 			BroadcastTxCommit(t, s.client, tx)
 
 			Convey("RoundInfo should be updated", func() {
