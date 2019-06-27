@@ -3,61 +3,43 @@ package types
 import (
 	"encoding/hex"
 	"errors"
+	"fmt"
+	"strconv"
 	"strings"
 )
 
 var (
-	// ErrBytesDecode returned when invalid bytes string is supplied
-	ErrBytesDecode = errors.New("invalid hex string supplied")
-	// ErrBytesNoPrefix returned when an input string does not have 0x prefix
-	ErrBytesNoPrefix = errors.New("missing '0x' prefix on hex string")
+	// ErrInvalidLength represents an error for an invalid length
+	ErrInvalidLength = errors.New("invalid length for input")
 )
 
 // HexBytes represents a generic byte array, represented as a 0x-prefixed string
 type HexBytes []byte
 
-// NewHexBytesFromString allows manual construction of hex bytes, from a prefixed or un-prefixed hex string
-func NewHexBytesFromString(input string) (*HexBytes, error) {
-	var parsed string
-	if strings.HasPrefix(input, "0x") {
-		parsed = input[2:]
-	} else {
-		parsed = input
-	}
-
-	bytes, err := hex.DecodeString(parsed)
-	if err != nil {
-		return nil, err
-	}
-
-	hexBytes := HexBytes(bytes)
-	return &hexBytes, nil
+// NewHexBytesFromString returns a new HexBytes provided string optionally prefixed with `0x`
+func NewHexBytesFromString(s string) (HexBytes, error) {
+	return hex.DecodeString(strings.TrimPrefix(s, "0x"))
 }
 
-// Bytes returns the underlying bytes
-func (hb HexBytes) Bytes() []byte {
-	return hb
-}
-
-// String implements the stringer interface (returns 0x-prefixed string)
-func (hb HexBytes) String() string {
-	return "0x" + hex.EncodeToString(hb)
-}
+func (b HexBytes) String() string { return "0x" + hex.EncodeToString(b) }
 
 // UnmarshalJSON implements the json.Unmarshaler interface
-func (hb *HexBytes) UnmarshalJSON(data []byte) error {
-	if len(data) < 2 || data[0] != '"' || data[len(data)-1] != '"' {
-		return ErrBytesDecode
-	}
-	if data[1] != '0' || data[2] != 'x' {
-		return ErrBytesNoPrefix
-	}
-
-	bytes, err := hex.DecodeString(string(data)[3 : len(data)-1])
+func (b HexBytes) UnmarshalJSON(bytes []byte) error {
+	str, err := strconv.Unquote(string(bytes))
 	if err != nil {
 		return err
 	}
 
-	*hb = bytes
+	h, err := NewHexBytesFromString(str)
+	if err != nil {
+		return err
+	}
+
+	copy(b, h)
 	return nil
+}
+
+// MarshalJSON implements the json.Marshaler interface
+func (b HexBytes) MarshalJSON() ([]byte, error) {
+	return []byte(fmt.Sprintf(`"%s"`, b.String())), nil
 }

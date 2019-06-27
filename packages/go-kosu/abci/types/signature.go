@@ -1,68 +1,90 @@
 package types
 
 import (
-	"encoding/hex"
-	"errors"
 	"strconv"
 
 	"github.com/ethereum/go-ethereum/crypto"
 )
 
-var (
-	// ErrSignatureLength returned when trying to load invalid length signatures
-	ErrSignatureLength = errors.New("invalid length for signature")
-)
+// Signature represents a Kosu order signature (from maker/poster)
+type Signature [65]byte
 
-// Signature represents a 65-byte Kosu order signature (from maker/poster)
-type Signature struct {
-	HexBytes
+// NewSignature returns a new Signature provided raw bytes
+func NewSignature(bytes []byte) (Signature, error) {
+	s := Signature{}
+	if len(bytes) != len(s) {
+		return s, ErrInvalidLength
+	}
+
+	copy(s[:], bytes)
+	return s, nil
 }
 
-// NewSignatureFromString creates a new signature provided a 0x-prefixed hex string
-func NewSignatureFromString(input string) (*Signature, error) {
-	decoded, err := hex.DecodeString(input[2:])
+// MustNewSignature is analogue to NewSignature panicking on error
+func MustNewSignature(bytes []byte) Signature {
+	sig, err := NewSignature(bytes)
 	if err != nil {
-		return nil, err
+		panic(err)
 	}
 
-	if len(decoded) != 65 {
-		return nil, ErrSignatureLength
-	}
-
-	bytes := HexBytes(decoded)
-	return &Signature{bytes}, nil
+	return sig
 }
+
+// NewSignatureFromString returns a new Signature provided a string optionally prefixed with `0x`
+func NewSignatureFromString(s string) (Signature, error) {
+	bytes, err := NewHexBytesFromString(s)
+	if err != nil {
+		return Signature{}, err
+	}
+
+	return NewSignature(bytes)
+}
+
+// MustNewSignatureString is analogue to NewSignatureString panicking on error
+func MustNewSignatureString(s string) Signature {
+	sig, err := NewSignatureFromString(s)
+	if err != nil {
+		panic(err)
+	}
+
+	return sig
+}
+
+// Bytes returns the raw []byte representation of the Address
+func (sig Signature) Bytes() []byte  { return HexBytes(sig[:]) }
+func (sig Signature) String() string { return HexBytes(sig[:]).String() }
+
+// UnmarshalJSON implements the json.Unmarshaler interface
+func (sig *Signature) UnmarshalJSON(bytes []byte) error { return HexBytes(sig[:]).UnmarshalJSON(bytes) }
+
+// MarshalJSON implements the json.Marshaler interface
+func (sig *Signature) MarshalJSON() ([]byte, error) { return HexBytes(sig[:]).MarshalJSON() }
 
 // RecoverSigner recovers the address that generated the signature, given a hash
-func (s *Signature) RecoverSigner(hash []byte) (Address, error) {
+func (sig *Signature) RecoverSigner(hash []byte) (Address, error) {
 	messageHash := hashEthereumMessage(hash)
 
-	recoveredKey, err := crypto.Ecrecover(messageHash, s.Bytes())
+	recoveredKey, err := crypto.Ecrecover(messageHash, sig.Bytes())
 	if err != nil {
 		return Address{}, err
+
 	}
 
 	uncompressedKey, err := crypto.UnmarshalPubkey(recoveredKey)
 	if err != nil {
 		return Address{}, err
+
 	}
 
 	signerBytes := crypto.PubkeyToAddress(*uncompressedKey).Bytes()
-	signer, err := NewAddressFromBytes(signerBytes)
+	signer, err := NewAddress(signerBytes)
 	if err != nil {
 		return Address{}, err
+
 	}
 
 	return signer, nil
-}
 
-// UnmarshalJSON implements the json.Unmarshaler interface
-func (s *Signature) UnmarshalJSON(bytes []byte) error {
-	// 65 byte signature + '0x' prefix + open/close quotes
-	if len(bytes) != 134 {
-		return ErrAddressLength
-	}
-	return s.HexBytes.UnmarshalJSON(bytes)
 }
 
 // hashEthereumMessage implements eth_sign style personal message hashing (used in ecrecover)

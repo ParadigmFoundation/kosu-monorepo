@@ -1,45 +1,55 @@
 package types
 
-import (
-	"encoding/hex"
-	"errors"
-)
+// Address represents an Ethereum address
+type Address [20]byte
 
-// Address represents a 20 byte Ethereum address
-type Address struct {
-	HexBytes
+// NewAddress returns a new Address provided raw bytes
+func NewAddress(bytes []byte) (Address, error) {
+	a := Address{}
+	if len(bytes) != len(a) {
+		return Address{}, ErrInvalidLength
+	}
+
+	copy(a[:], bytes)
+	return a, nil
 }
 
-var (
-	// ErrAddressLength represents an error for an address of invalid length
-	ErrAddressLength = errors.New("invalid length for address")
-)
+// MustNewAddress is analogue to NewAddress panicking on error
+func MustNewAddress(bytes []byte) Address {
+	addr, err := NewAddress(bytes)
+	if err != nil {
+		panic(err)
+	}
 
-// NewAddressFromString creates a new Address, provided a 0x-prefixed hex string
-func NewAddressFromString(input string) (Address, error) {
-	decoded, err := hex.DecodeString(input[2:])
+	return addr
+}
+
+// NewAddressFromString returns a new Address provided a string optionally prefixed with `0x`
+func NewAddressFromString(s string) (Address, error) {
+	bytes, err := NewHexBytesFromString(s)
 	if err != nil {
 		return Address{}, err
 	}
-	return NewAddressFromBytes(decoded)
+
+	return NewAddress(bytes)
 }
 
-// NewAddressFromBytes creates a new Address, provided raw bytes
-func NewAddressFromBytes(input []byte) (Address, error) {
-	if len(input) != 20 {
-		return Address{}, ErrAddressLength
+// MustNewAddressString is analogue to NewAddressString panicking on error
+func MustNewAddressString(s string) Address {
+	addr, err := NewAddressFromString(s)
+	if err != nil {
+		panic(err)
 	}
 
-	bytes := HexBytes(input)
-	return Address{bytes}, nil
+	return addr
 }
 
-// UnmarshalJSON implements the json.Unmarshaler interface.
-func (a *Address) UnmarshalJSON(bytes []byte) error {
-	// 20 byte address + '0x' prefix + open/close quotes
-	if len(bytes) != 44 {
-		return ErrAddressLength
-	}
+// Bytes returns the raw []byte representation of the Address
+func (a Address) Bytes() []byte  { return HexBytes(a[:]) }
+func (a Address) String() string { return HexBytes(a[:]).String() }
 
-	return a.HexBytes.UnmarshalJSON(bytes)
-}
+// UnmarshalJSON implements the json.Unmarshaler interface
+func (a *Address) UnmarshalJSON(bytes []byte) error { return HexBytes(a[:]).UnmarshalJSON(bytes) }
+
+// MarshalJSON implements the json.Marshaler interface
+func (a *Address) MarshalJSON() ([]byte, error) { return HexBytes(a[:]).MarshalJSON() }
