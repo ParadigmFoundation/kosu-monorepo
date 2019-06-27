@@ -1,16 +1,16 @@
 package abci
 
 import (
+	"math/big"
 	"testing"
+
+	"go-kosu/abci/types"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 	abci "github.com/tendermint/tendermint/abci/types"
 	"github.com/tendermint/tendermint/libs/common"
 	"github.com/tendermint/tendermint/libs/db"
-	"math/big"
-
-	"go-kosu/abci/types"
 )
 
 func TestDeliverRebalanceTx(t *testing.T) {
