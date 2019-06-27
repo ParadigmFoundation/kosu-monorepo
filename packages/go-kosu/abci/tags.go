@@ -6,6 +6,7 @@ import (
 	"github.com/tendermint/tendermint/libs/common"
 
 	"go-kosu/abci/types"
+	"go-kosu/store"
 )
 
 // NewTagsFromRoundInfo returns a set of KVPair tags given a state.RoundInfo
@@ -40,4 +41,14 @@ func NewRoundInfoFromTags(tags map[string]string) (*types.RoundInfo, error) {
 	}
 
 	return &info, nil
+}
+
+// NewTagsFromOrderInfo returns the KVPairs necessary to make up Order transaction tags
+func NewTagsFromOrderInfo(orderId []byte, posterAddress store.Address, newLimit uint32) []common.KVPair {
+	return []common.KVPair{
+		{Key: []byte("tx.type"), Value: []byte("order")},
+		{Key: []byte("order.id"), Value: orderId},
+		{Key: []byte("order.poster"), Value: posterAddress.Bytes()},
+		{Key: []byte("poster.limit"), Value: []byte(strconv.FormatUint(uint64(newLimit), 10))},
+	}
 }

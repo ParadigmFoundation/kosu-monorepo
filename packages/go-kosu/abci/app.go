@@ -19,6 +19,7 @@ import (
 
 var (
 	errProposalRejected = errors.New("proposal rejected")
+	errOrderRejected = errors.New("order rejected, no poster stake")
 )
 
 // App implements a tendermint ABCI.
@@ -196,6 +197,11 @@ func (app *App) CheckTx(req []byte) abci.ResponseCheckTx {
 			return abci.ResponseCheckTx{Code: 1, Log: err.Error()}
 		}
 		return abci.ResponseCheckTx{}
+	case *types.Transaction_Order:
+		if err := app.checkOrderTx(tx.GetOrder()); err != nil {
+			return abci.ResponseCheckTx{Code: 1, Log: err.Error()}
+		}
+		return abci.ResponseCheckTx{}
 	default:
 		fmt.Printf("Unknown Tx: %t", tx.GetData())
 	}
@@ -216,6 +222,8 @@ func (app *App) DeliverTx(req []byte) abci.ResponseDeliverTx {
 		return app.deliverRebalance(tx.GetRebalance())
 	case *types.Transaction_Witness:
 		return app.deliverWitnessTx(tx.GetWitness())
+	case *types.Transaction_Order:
+		return app.deliverOrderTx(tx.GetOrder())
 	default:
 		fmt.Printf("Unknown Tx: %t", tx.GetData())
 	}
