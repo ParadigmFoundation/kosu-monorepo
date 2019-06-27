@@ -18,6 +18,10 @@ In this system, holders of the protocol’s native staking token, _Kosu_ (ERC-20
 
 ## Validator listing process
 
+<center>
+    <img src="https://github.com/ParadigmFoundation/whitepaper/blob/whitepaper/v3/figures/fig3.png?raw=true" width="150px" >
+</center>
+
 ### Right to submit a proposal
 
 Any Kosu holder may create a proposal that indicates their intent to become a network validator by calling the `registerListing` method. The proposal should specify the following as parameters:
@@ -72,16 +76,15 @@ The split payout awarded to voters is distributed proportionally according to ea
 
 ### Voting
 
-Any holder of _Kosu_ tokens, even if staking as a Validator or Poster, may choose to vote during a challenge period with their tokens. The _commit period_ starts as soon as a challenge is made, and lasts the number of blocks specified in the `constructor`. During the commit period, voters signal their vote with the `commitVote` method and the following parameters:
+Any holder of _Kosu_ tokens, even if staking as a Validator or Poster, may choose to vote during a challenge period with their tokens. The _commit period_ begins as soon as a challenge is made and lasts the number of blocks specified in the `constructor`. During the commit period, voters signal their vote with the `commitVote` method and the following parameters:
 
 -   `_pollId`: Poll index to act upon
 -   `_vote`: Hash encoded vote (i.e. for a binary poll, 0 signifies 'against' and 1 signifies 'in favor')
--   `_tokensToCommit`: Numer of tokens comitted to vote
+-   `_tokensToCommit`: Number of tokens comitted to vote
 
 Reveal......
 
 ...(still need to finish majority)
 
-## Figure WP
 
 ## Proposal Steps (with vars/funcs from docs)
