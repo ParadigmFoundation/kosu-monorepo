@@ -14,6 +14,7 @@ import (
 
 	"go-kosu/abci/types"
 	"go-kosu/store"
+	"go-kosu/store/cosmos"
 )
 
 var (
@@ -25,7 +26,7 @@ type App struct {
 	abci.BaseApplication
 	Config *cfg.Config
 
-	store *store.Store
+	store store.Store
 
 	handlers map[*regexp.Regexp]QueryHandler
 
@@ -45,7 +46,7 @@ func NewApp(db db.DB, homedir string) *App {
 	}
 
 	app := &App{
-		store:    store.NewStore(db, new(store.ProtoCodec)),
+		store:    cosmos.NewStore(db, new(cosmos.ProtoCodec)),
 		Config:   config,
 		handlers: make(map[*regexp.Regexp]QueryHandler),
 		log:      logger.With("module", "app"),
@@ -56,7 +57,7 @@ func NewApp(db db.DB, homedir string) *App {
 }
 
 // Store returns the underlying store
-func (app *App) Store() *store.Store { return app.store }
+func (app *App) Store() store.Store { return app.store }
 
 // Info loads the state from the db.
 func (app *App) Info(req abci.RequestInfo) abci.ResponseInfo {
