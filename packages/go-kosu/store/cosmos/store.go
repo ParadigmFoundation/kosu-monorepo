@@ -45,6 +45,7 @@ func NewStore(db db.DB, cdc Codec) *Store {
 	if s.cms.LastCommitID().IsZero() {
 		s.SetConsensusParams(types.ConsensusParams{
 			PeriodLength: 10,
+			PeriodLimit: 100000,
 		})
 	}
 
@@ -208,5 +209,17 @@ func (s *Store) IterateValidators(fn func(id string, v *types.Validator)) {
 		}
 
 		fn(key, v)
+	})
+}
+
+// IteratePosters executes fn for each poster
+func (s *Store) IteratePosters(fn func(address string, p *types.Poster)) {
+	s.All(s.posterKey, func(key string, val []byte) {
+		p := &types.Poster{}
+		if err := s.codec.Decode(val, p); err != nil {
+			panic(err)
+		}
+
+		fn(key, p)
 	})
 }

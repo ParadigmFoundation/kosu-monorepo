@@ -28,6 +28,7 @@ type Store interface {
 	Poster(string) *types.Poster
 	SetPoster(string, types.Poster)
 	DeletePoster(string)
+	IteratePosters(func(string, *types.Poster))
 
 	ValidatorExists(string) bool
 	Validator(string) *types.Validator
