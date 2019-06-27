@@ -45,7 +45,7 @@ func NewStore(db db.DB, cdc Codec) *Store {
 	if s.cms.LastCommitID().IsZero() {
 		s.SetConsensusParams(types.ConsensusParams{
 			PeriodLength: 10,
-			PeriodLimit: 100000,
+			PeriodLimit:  100000,
 		})
 	}
 

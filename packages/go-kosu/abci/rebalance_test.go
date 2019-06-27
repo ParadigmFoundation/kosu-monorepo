@@ -3,12 +3,12 @@ package abci
 import (
 	"testing"
 
-	"math/big"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 	abci "github.com/tendermint/tendermint/abci/types"
 	"github.com/tendermint/tendermint/libs/common"
 	"github.com/tendermint/tendermint/libs/db"
+	"math/big"
 
 	"go-kosu/abci/types"
 )
@@ -58,15 +58,15 @@ func TestRebalanceRateLimit(t *testing.T) {
 	knownTotal := &big.Int{}
 	knownTotal.SetString("209794192312476157368", 10)
 
-	// expected limits computed on wolfram alpha: 
+	// expected limits computed on wolfram alpha:
 	// - sum all poster balances (=> 'sum')
 	// - calculate (balance / sum) for each (=> 'ratio')
 	// - calculate (ratio * max_limit) for each (=> 'decimal_limit')
 	// - floor decimal_limit (=> 'limit')
 	// - limit = ExpectedLimit below, converted to correct type
-	posterCases := []struct{
-		Address string
-		Balance string
+	posterCases := []struct {
+		Address       string
+		Balance       string
 		ExpectedLimit uint32
 	}{
 		{
