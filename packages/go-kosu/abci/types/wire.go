@@ -17,6 +17,8 @@ func WrapTx(data interface{}) *Transaction {
 		tx.Data = &Transaction_Rebalance{Rebalance: t}
 	case *TransactionWitness:
 		tx.Data = &Transaction_Witness{Witness: t}
+	case *TransactionOrder:
+		tx.Data = &Transaction_Order{Order: t}
 	}
 
 	return tx
