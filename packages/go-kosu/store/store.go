@@ -45,6 +45,13 @@ func NewStore(db db.DB, cdc Codec) *Store {
 		s.SetConsensusParams(types.ConsensusParams{
 			PeriodLength: 10,
 		})
+
+		s.SetRoundInfo(types.RoundInfo{
+			Number: 0,
+			StartsAt: 0,
+			EndsAt: 0,
+			Limit: 0,
+		})
 	}
 
 	return s
