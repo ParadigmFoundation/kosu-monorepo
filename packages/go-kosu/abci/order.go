@@ -51,7 +51,7 @@ func (app *App) deliverOrderTx(tx *types.TransactionOrder) abci.ResponseDeliverT
 		}
 	}
 
-	orderId, err := order.PosterHex()
+	orderID, err := order.PosterHex()
 	if err != nil {
 		return abci.ResponseDeliverTx{
 			Code: 1,
@@ -66,6 +66,6 @@ func (app *App) deliverOrderTx(tx *types.TransactionOrder) abci.ResponseDeliverT
 
 	return abci.ResponseDeliverTx{
 		Code: 0,
-		Tags: NewTagsFromOrderInfo(orderId, posterAddress, poster.Limit),
+		Tags: NewTagsFromOrderInfo(orderID, posterAddress, poster.Limit),
 	}
 }

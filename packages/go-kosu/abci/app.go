@@ -19,7 +19,7 @@ import (
 
 var (
 	errProposalRejected = errors.New("proposal rejected")
-	errOrderRejected = errors.New("order rejected, no poster stake")
+	errOrderRejected    = errors.New("order rejected, no poster stake")
 )
 
 // App implements a tendermint ABCI.

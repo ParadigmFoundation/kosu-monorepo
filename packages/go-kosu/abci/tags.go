@@ -44,10 +44,10 @@ func NewRoundInfoFromTags(tags map[string]string) (*types.RoundInfo, error) {
 }
 
 // NewTagsFromOrderInfo returns the KVPairs necessary to make up Order transaction tags
-func NewTagsFromOrderInfo(orderId []byte, posterAddress store.Address, newLimit uint32) []common.KVPair {
+func NewTagsFromOrderInfo(orderID []byte, posterAddress store.Address, newLimit uint32) []common.KVPair {
 	return []common.KVPair{
 		{Key: []byte("tx.type"), Value: []byte("order")},
-		{Key: []byte("order.id"), Value: orderId},
+		{Key: []byte("order.id"), Value: orderID},
 		{Key: []byte("order.poster"), Value: posterAddress.Bytes()},
 		{Key: []byte("poster.limit"), Value: []byte(strconv.FormatUint(uint64(newLimit), 10))},
 	}
