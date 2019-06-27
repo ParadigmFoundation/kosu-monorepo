@@ -126,18 +126,6 @@ func TestTransactionOrder(t *testing.T) {
 			decodedTx := &Transaction{}
 			err = DecodeTx(encoded, decodedTx)
 			require.NoError(t, err, "Expected no error decoding order transaction")
-
-			marshalled, err := json.Marshal(decodedTx.GetOrder())
-			require.NoError(t, err, "Expected no error marshalling order JSON")
-
-			orderJSON := string(marshalled)
-			order, err := NewOrder(orderJSON)
-			require.NoError(t, err, "Expected no error creating Order object")
-
-			expectedPoster, _ := NewAddressFromString(tC.poster)
-			recoveredPoster, err := order.RecoverPoster()
-			require.NoError(t, err, "Expected no error recovering order signature")
-			require.EqualValues(t, expectedPoster, recoveredPoster, "Expected recovered poster to match supplied")
 		})
 	}
 }

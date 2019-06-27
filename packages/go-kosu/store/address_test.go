@@ -1,4 +1,4 @@
-package types
+package store
 
 import (
 	"encoding/json"
@@ -75,12 +75,16 @@ func TestAddressJSON(t *testing.T) {
 		Addr Address `json:"addr"`
 	}{}
 
-	t.Run("Unmarshal", func(t *testing.T) {
+	t.Run("UnmarshalOK", func(t *testing.T) {
 		require.NoError(t,
 			json.Unmarshal([]byte(jsonStr), &obj),
 		)
 
 		assert.Equal(t, addr, obj.Addr.String())
+	})
+
+	t.Run("UnmarshalInvalidLength", func(t *testing.T) {
+		t.SkipNow()
 	})
 
 	t.Run("Marshal", func(t *testing.T) {

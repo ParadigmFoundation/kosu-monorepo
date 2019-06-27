@@ -1,9 +1,10 @@
 // nolint:lll
-package types
+package store
 
 import (
 	"encoding/hex"
 	"encoding/json"
+	"go-kosu/abci/types"
 	"strings"
 	"testing"
 
@@ -89,7 +90,7 @@ func TestRecoverSignature(t *testing.T) {
 func TestFromProto(t *testing.T) {
 	for _, tC := range testCases {
 		t.Run(tC.desc, func(t *testing.T) {
-			orderTransaction := &TransactionOrder{}
+			orderTransaction := &types.TransactionOrder{}
 
 			decoder := json.NewDecoder(strings.NewReader(tC.order))
 			err := decoder.Decode(&orderTransaction)
