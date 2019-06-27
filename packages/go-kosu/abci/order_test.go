@@ -1,11 +1,12 @@
+// nolint:lll
 package abci
 
 import (
+	"encoding/json"
 	"go-kosu/store"
 	"math/big"
-	"testing"
 	"strings"
-	"encoding/json"
+	"testing"
 
 	"go-kosu/abci/types"
 
@@ -19,7 +20,7 @@ import (
 var testCases = []struct {
 	desc   string
 	poster string
-	order string
+	order  string
 }{
 	{
 		desc:   "Mock order #1",
@@ -101,7 +102,7 @@ func TestDeliverOrderTx(t *testing.T) {
 			order, err := store.NewOrderFromProto(orderTransaction)
 			require.NoError(t, err)
 
-			expectedOrderId, err := order.PosterHex()
+			expectedOrderID, err := order.PosterHex()
 			require.NoError(t, err)
 
 			expectedPoster, err := order.RecoverPoster()
@@ -109,7 +110,7 @@ func TestDeliverOrderTx(t *testing.T) {
 
 			expectedTags := []common.KVPair{
 				{Key: []byte("tx.type"), Value: []byte("order")},
-				{Key: []byte("order.id"), Value: expectedOrderId},
+				{Key: []byte("order.id"), Value: expectedOrderID},
 				{Key: []byte("order.poster"), Value: expectedPoster.Bytes()},
 				{Key: []byte("poster.limit"), Value: []byte("33332")},
 			}
