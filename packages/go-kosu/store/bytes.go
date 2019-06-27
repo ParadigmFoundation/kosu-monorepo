@@ -1,4 +1,4 @@
-package types
+package store
 
 import (
 	"encoding/hex"
@@ -35,7 +35,7 @@ func (b HexBytes) UnmarshalJSON(bytes []byte) error {
 		return err
 	}
 
-	copy(b, h)
+	copy(b[:], h)
 	return nil
 }
 
