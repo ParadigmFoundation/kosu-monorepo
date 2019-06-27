@@ -1,5 +1,5 @@
 // nolint:lll
-package types
+package store
 
 import (
 	"encoding/json"
