@@ -42,17 +42,9 @@ message ConsensusParams {
  */
 message Poster {
   BigInt balance = 1;
-  uint64 orderLimit = 2;
-  uint64 streamLimit = 3;
+  uint32 limit = 2;
 }
 
-/**
- * RateLimit
- */
-message RateLimit {
-  string address = 1;
-  uint64 limit = 2;
-}
 
 /**
  * Validator
@@ -104,7 +96,6 @@ message Transaction {
  * TransactionRebalance
  */
 message TransactionRebalance {
-  repeated RateLimit limits = 1;
   RoundInfo round_info = 2;
 }
 
