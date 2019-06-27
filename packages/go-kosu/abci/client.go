@@ -78,23 +78,35 @@ func (c *Client) buildTx(tx interface{}) (tmtypes.Tx, error) {
 }
 
 // Subscribe subscribes to to a given query using the WS API.
-func (c *Client) Subscribe(ctx context.Context, q string) (<-chan rpctypes.ResultEvent, error) {
+func (c *Client) Subscribe(ctx context.Context, q string) (<-chan rpctypes.ResultEvent, func(), error) {
 	// Make sure the query is valid
 	_, err := query.New(q)
 	if err != nil {
-		return nil, err
+		return nil, nil, err
 	}
 
 	// Start WS if not yet
 	if httpC, ok := c.Client.(*client.HTTP); ok {
 		if !httpC.IsRunning() {
 			if err := httpC.Start(); err != nil {
-				return nil, err
+				return nil, nil, err
 			}
+
 		}
 	}
 
-	return c.Client.Subscribe(ctx, "kosu", q)
+	ch, err := c.Client.Subscribe(ctx, "kosu", q)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	closer := func() {
+		if httpC, ok := c.Client.(*client.HTTP); ok {
+			_ = httpC.Stop()
+		}
+	}
+
+	return ch, closer, nil
 }
 
 // QueryRoundInfo performs a ABCIQuery to "/roundinfo"

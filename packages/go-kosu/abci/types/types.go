@@ -95,3 +95,10 @@ func NewBigIntFromInt(n int64) *BigInt {
 	b := big.NewInt(n).Bytes()
 	return NewBigInt(b)
 }
+
+// NewValidator returns a new validator with zero balance
+func NewValidator() *Validator {
+	return &Validator{
+		Balance: NewBigIntFromInt(0),
+	}
+}

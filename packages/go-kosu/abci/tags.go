@@ -5,11 +5,11 @@ import (
 
 	"github.com/tendermint/tendermint/libs/common"
 
-	"go-kosu/store"
+	"go-kosu/abci/types"
 )
 
 // NewTagsFromRoundInfo returns a set of KVPair tags given a state.RoundInfo
-func NewTagsFromRoundInfo(info *store.RoundInfo) []common.KVPair {
+func NewTagsFromRoundInfo(info *types.RoundInfo) []common.KVPair {
 	return []common.KVPair{
 		{Key: []byte("tx.type"), Value: []byte("rebalance")},
 		{Key: []byte("round.number"), Value: []byte(strconv.FormatUint(info.Number, 10))},
@@ -19,8 +19,8 @@ func NewTagsFromRoundInfo(info *store.RoundInfo) []common.KVPair {
 }
 
 // NewRoundInfoFromTags parses a set of tags and returns a state.RoundInfo
-func NewRoundInfoFromTags(tags map[string]string) (*store.RoundInfo, error) {
-	var info store.RoundInfo
+func NewRoundInfoFromTags(tags map[string]string) (*types.RoundInfo, error) {
+	var info types.RoundInfo
 	var err error
 
 	fields := []struct {
