@@ -26,6 +26,10 @@ func (app *App) checkRebalanceTx(tx *types.TransactionRebalance) error {
 }
 
 func (app *App) deliverRebalance(tx *types.TransactionRebalance) abci.ResponseDeliverTx {
+	if err := app.checkRebalanceTx(tx); err != nil {
+		return abci.ResponseDeliverTx{Code: 1}
+	}
+
 	info := tx.RoundInfo
 	app.store.SetRoundInfo(*info)
 
