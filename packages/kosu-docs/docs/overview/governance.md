@@ -83,7 +83,7 @@ Voters on the winning side can individually claim winnings by calling the `claim
 
 The split payout awarded to voters is distributed proportionally according to each voter's _vote weight_, which is the number of _Kosu_ tokens committed by an individual voter as a proportion of total tokens committed by all winning voters.
 
-## Voting: Committing
+## Voting
 Any holder of _Kosu_ tokens, even if staking as a Validator or Poster, may choose to vote during a challenge period with their tokens. The voting process uses a commit-reveal scheme to hide voter decisions and ensure that voters do not switch their vote based on the winning outcome.
 
 ### Committing
