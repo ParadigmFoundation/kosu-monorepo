@@ -12,12 +12,10 @@ import (
 	"github.com/tendermint/tendermint/libs/log"
 
 	"go-kosu/abci"
-	"go-kosu/store"
 	"go-kosu/witness"
 )
 
 const (
-	ethAddr  = "wss://ropsten.infura.io/ws"
 	nodeAddr = "tcp://0.0.0.0:26657"
 )
 
@@ -60,7 +58,7 @@ func run(cfg *Config, key []byte) error {
 		return err
 	}
 
-	app := abci.NewApp(store.NewState(), db, cfg.Home)
+	app := abci.NewApp(db, cfg.Home)
 	srv, err := abci.StartInProcessServer(app)
 	if err != nil {
 		return err
@@ -75,7 +73,7 @@ func run(cfg *Config, key []byte) error {
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
 
-	if err := startWitness(ctx, ethAddr, nodeAddr, key, logger); err != nil {
+	if err := startWitness(ctx, cfg.Web3, nodeAddr, key, logger); err != nil {
 		return err
 	}
 
@@ -100,7 +98,7 @@ func main() {
 	}
 	rootCmd.Flags().StringVar(&cfg.Home, "home", "~/.kosu", "directory for config and data")
 	rootCmd.Flags().BoolVar(&cfg.Debug, "debug", false, "enable debuging")
-	rootCmd.Flags().StringVar(&cfg.Web3, "web3", "wss://ropsten.infura.ws", "web3 provider URL")
+	rootCmd.Flags().StringVar(&cfg.Web3, "web3", "wss://ethnet.zaidan.io/ws/kosu", "web3 provider URL")
 	rootCmd.Flags().BoolVar(&cfg.Init, "init", false, "initializes directory like 'tendermint init' does")
 
 	cobra.OnInitialize(func() {

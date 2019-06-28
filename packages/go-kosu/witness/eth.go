@@ -17,7 +17,7 @@ const (
 	// TODO use deployed addresses and network id to get address
 	// NOTE: the 'KosuEvent' has not yet been renamed to 'KosuEvent' in
 	// 	the EventEmitter contract yet.
-	KosuEventEmitterAddress = "0xf2098FB608098A562d24CCde594A304d739cc4B7"
+	KosuEventEmitterAddress = "0x2f3afeff0914f33769cdfbf3fcf870c33b26c311"
 )
 
 var _ Provider = &EthereumProvider{}

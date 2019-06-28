@@ -7,6 +7,7 @@ GOLINT = golangci-lint run --enable-all \
 		--disable=gocritic \
 		--disable=gochecknoinits \
 		--disable=scopelint \
+		--disable=interfacer \
 		--exclude-use-default=false \
 		--deadline=10m
 

@@ -84,6 +84,7 @@ steps:
       - yarn contracts:test:ci
     depends_on:
       - build-project
+      - npm-tests
     when:
       changeset:
         includes:

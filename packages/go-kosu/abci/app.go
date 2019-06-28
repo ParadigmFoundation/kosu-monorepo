@@ -14,6 +14,7 @@ import (
 
 	"go-kosu/abci/types"
 	"go-kosu/store"
+	"go-kosu/store/cosmos"
 )
 
 var (
@@ -25,8 +26,7 @@ type App struct {
 	abci.BaseApplication
 	Config *cfg.Config
 
-	state *store.State
-	tree  *store.StateTree
+	store store.Store
 
 	handlers map[*regexp.Regexp]QueryHandler
 
@@ -34,7 +34,7 @@ type App struct {
 }
 
 // NewApp returns a new ABCI App
-func NewApp(state *store.State, db db.DB, homedir string) *App {
+func NewApp(db db.DB, homedir string) *App {
 	config, err := LoadConfig(homedir)
 	if err != nil {
 		panic(err)
@@ -45,10 +45,8 @@ func NewApp(state *store.State, db db.DB, homedir string) *App {
 		panic(err)
 	}
 
-	tree := store.NewStateTree(db, new(store.GobCodec))
 	app := &App{
-		state:    state,
-		tree:     tree,
+		store:    cosmos.NewStore(db, new(cosmos.ProtoCodec)),
 		Config:   config,
 		handlers: make(map[*regexp.Regexp]QueryHandler),
 		log:      logger.With("module", "app"),
@@ -58,13 +56,18 @@ func NewApp(state *store.State, db db.DB, homedir string) *App {
 	return app
 }
 
+// Store returns the underlying store
+func (app *App) Store() store.Store { return app.store }
+
 // Info loads the state from the db.
 func (app *App) Info(req abci.RequestInfo) abci.ResponseInfo {
+	cID := app.store.LastCommitID()
+
 	res := abci.ResponseInfo{
 		Data:             "go-kosu",
 		Version:          req.GetVersion(),
-		LastBlockHeight:  app.tree.CommitInfo.Version,
-		LastBlockAppHash: app.tree.CommitInfo.Hash,
+		LastBlockHeight:  cID.Version,
+		LastBlockAppHash: cID.Hash,
 	}
 
 	app.log.Info("-- INFO --",
@@ -72,23 +75,13 @@ func (app *App) Info(req abci.RequestInfo) abci.ResponseInfo {
 		"ver", res.LastBlockHeight,
 	)
 
-	if err := app.state.UpdateFromTree(app.tree); err != nil {
-		panic(err)
-	}
-
 	return res
 }
 
 // Commit saves the tree's version.
 func (app *App) Commit() abci.ResponseCommit {
-	if err := app.state.PersistToTree(app.tree); err != nil {
-		panic(err)
-	}
-	if err := app.tree.Commit(); err != nil {
-		// TODO: Handle with care
-		panic(err)
-	}
-	return abci.ResponseCommit{Data: app.tree.CommitInfo.Hash}
+	app.store.Commit()
+	return abci.ResponseCommit{Data: app.store.LastCommitID().Hash}
 }
 
 // InitChain .
@@ -105,10 +98,11 @@ func (app *App) BeginBlock(req abci.RequestBeginBlock) abci.ResponseBeginBlock {
 	for _, vote := range req.LastCommitInfo.Votes {
 		nodeID := hex.EncodeToString(vote.Validator.Address)
 
-		v := app.state.Validators[nodeID]
-		if v == nil {
-			v = store.NewValidator()
-			app.state.Validators[nodeID] = v
+		var v *types.Validator
+		if !app.store.ValidatorExists(nodeID) {
+			v = types.NewValidator()
+		} else {
+			v = app.store.Validator(nodeID)
 		}
 
 		v.Active = vote.SignedLastBlock
@@ -128,18 +122,25 @@ func (app *App) BeginBlock(req abci.RequestBeginBlock) abci.ResponseBeginBlock {
 		if v.FirstVote == 0 {
 			v.FirstVote = currHeight
 		}
+
+		app.store.SetValidator(nodeID, v)
 	}
 
-	for _, v := range app.state.Validators {
-		v.Active = (v.LastVoted+1 == currHeight)
-	}
+	app.store.IterateValidators(func(nodeID string, v *types.Validator) {
+		if v.LastVoted+1 == currHeight {
+			v.Active = true
+			app.store.SetValidator(nodeID, v)
+		} else { // TODO: check-me
+			v.Active = false
+		}
+	})
 
 	// update confirmation threshold based on number of active validators
 	// confirmation threshold is >=2/3 active validators, unless there is
 	// only one active validator, in which case it MUST be 1 in order for
 	// state.balances to remain accurate.
-	votes := len(req.LastCommitInfo.Votes)
-	app.state.UpdateConfirmationThreshold(uint32(votes))
+	//votes := len(req.LastCommitInfo.Votes)
+	//app.state.UpdateConfirmationThreshold(uint32(votes))
 
 	return abci.ResponseBeginBlock{}
 }
@@ -148,23 +149,20 @@ func (app *App) BeginBlock(req abci.RequestBeginBlock) abci.ResponseBeginBlock {
 func (app *App) EndBlock(req abci.RequestEndBlock) abci.ResponseEndBlock {
 	updates := []abci.ValidatorUpdate{}
 
-	for addr, v := range app.state.Validators {
+	app.store.IterateValidators(func(id string, v *types.Validator) {
 		if v.Active {
-			continue
-		}
-
-		key, err := hex.DecodeString(addr)
-		if err != nil {
-			app.log.Error("EndBlock: DecodeString", "err", err)
-			continue
+			return
 		}
 
 		balance := v.Balance.BigInt().Uint64()
 		power := math.Round(float64(balance) / math.Pow(10, 18))
 
-		update := abci.Ed25519ValidatorUpdate(key, int64(power))
-		updates = append(updates, update)
-	}
+		// TODO(hharder): make sure this is correct
+		if v.PublicKey != nil {
+			update := abci.Ed25519ValidatorUpdate(v.PublicKey, int64(power))
+			updates = append(updates, update)
+		}
+	})
 
 	return abci.ResponseEndBlock{
 		ValidatorUpdates: updates,

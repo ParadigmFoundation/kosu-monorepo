@@ -90,5 +90,4 @@ func createConfig(homedir string, logger log.Logger) error {
 	}
 
 	return nil
-
 }

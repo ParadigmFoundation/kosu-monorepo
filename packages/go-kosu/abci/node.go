@@ -27,6 +27,8 @@ func (app *App) CreateNode() (*node.Node, error) {
 		w = log.NewTMLogger(os.Stdout)
 	case "none":
 		w = log.NewNopLogger()
+	default:
+		w = log.NewNopLogger()
 	}
 
 	logger, err := tmflags.ParseLogLevel(app.Config.LogLevel, w, "error")
