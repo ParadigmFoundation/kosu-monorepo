@@ -40,14 +40,6 @@ describe("ZeroExV2SubContract", () => {
             zeroExOrder.makerAddress,
         );
 
-        signatureUtils
-            .isValidECSignature(
-                orderHashUtils.getOrderHashHex(zeroExOrder),
-                signatureUtils.parseECSignature(signedZeroExOrder.signature),
-                accounts[0],
-            )
-            .should.eq(true, "Order signing failed.");
-
         await kosuToken.approve.awaitTransactionSuccessAsync(zeroExWrappers.erc20Proxy.address, value);
         await kosuToken.transfer.awaitTransactionSuccessAsync(accounts[1], value);
         await kosuToken.approve.awaitTransactionSuccessAsync(contracts.zeroExV2SubContract.address, value, {
