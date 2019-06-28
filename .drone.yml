@@ -15,9 +15,8 @@ steps:
       - git fetch
       - git branch --set-upstream-to=origin/master master
       - git pull
-      - git checkout $DRONE_BRANCH
+      - git checkout $DRONE_SOURCE_BRANCH
       - git checkout $DRONE_COMMIT
-      - env
 
   - name: lint-project
     image: gcr.io/kosu-io/node-ci:latest
