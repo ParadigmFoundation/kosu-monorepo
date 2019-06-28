@@ -1,4 +1,11 @@
-import { assetDataUtils, BigNumber, ContractWrappers, generatePseudoRandomSalt, orderHashUtils, signatureUtils } from "0x.js";
+import {
+    assetDataUtils,
+    BigNumber,
+    ContractWrappers,
+    generatePseudoRandomSalt,
+    orderHashUtils,
+    signatureUtils,
+} from "0x.js";
 import { numberToHex, toTwosComplement } from "web3-utils";
 
 const NULL_ADDRESS = "0x0000000000000000000000000000000000000000";
@@ -27,29 +34,41 @@ describe("ZeroExV2SubContract", () => {
             exchangeAddress: zeroExWrappers.exchange.address,
         };
 
-        const signedZeroExOrder = await signatureUtils.ecSignOrderAsync(provider, zeroExOrder, zeroExOrder.makerAddress);
+        const signedZeroExOrder = await signatureUtils.ecSignOrderAsync(
+            provider,
+            zeroExOrder,
+            zeroExOrder.makerAddress,
+        );
 
-        signatureUtils.isValidECSignature(orderHashUtils.getOrderHashHex(zeroExOrder), signatureUtils.parseECSignature(signedZeroExOrder.signature), accounts[0]).should.eq(true);
+        signatureUtils
+            .isValidECSignature(
+                orderHashUtils.getOrderHashHex(zeroExOrder),
+                signatureUtils.parseECSignature(signedZeroExOrder.signature),
+                accounts[0],
+            )
+            .should.eq(true);
 
         await kosuToken.approve.awaitTransactionSuccessAsync(zeroExWrappers.erc20Proxy.address, value);
         await kosuToken.transfer.awaitTransactionSuccessAsync(accounts[1], value);
-        await kosuToken.approve.awaitTransactionSuccessAsync(contracts.zeroExV2SubContract.address, value, { from: accounts[1] });
+        await kosuToken.approve.awaitTransactionSuccessAsync(contracts.zeroExV2SubContract.address, value, {
+            from: accounts[1],
+        });
 
         let makerBytes = "0x";
         _arguments.maker.forEach(arg => {
-           switch (arg.datatype) {
-               case "address":
-                   makerBytes = makerBytes + signedZeroExOrder[arg.name].slice(2);
-                   break;
-               case "uint":
-                   makerBytes = makerBytes + toTwosComplement(numberToHex(signedZeroExOrder[arg.name])).slice(2);
-                   break;
-               case "bytes":
-                   makerBytes = makerBytes + signedZeroExOrder[arg.name].slice(2);
-                   break;
-               default:
-                   break;
-           }
+            switch (arg.datatype) {
+                case "address":
+                    makerBytes = makerBytes + signedZeroExOrder[arg.name].slice(2);
+                    break;
+                case "uint":
+                    makerBytes = makerBytes + toTwosComplement(numberToHex(signedZeroExOrder[arg.name])).slice(2);
+                    break;
+                case "bytes":
+                    makerBytes = makerBytes + signedZeroExOrder[arg.name].slice(2);
+                    break;
+                default:
+                    break;
+            }
         });
 
         let fullBytes = makerBytes;
@@ -57,9 +76,14 @@ describe("ZeroExV2SubContract", () => {
         fullBytes = fullBytes + toTwosComplement(numberToHex(signedZeroExOrder.takerAssetAmount)).slice(2);
 
         await contracts.zeroExV2SubContract.isValid.callAsync(makerBytes).should.eventually.be.true;
-        await contracts.zeroExV2SubContract.amountRemaining.callAsync(makerBytes).then(x => x.toString()).should.eventually.eq("100");
+        await contracts.zeroExV2SubContract.amountRemaining
+            .callAsync(makerBytes)
+            .then(x => x.toString())
+            .should.eventually.eq("100");
 
-        const { logs } = await contracts.zeroExV2SubContract.participate.sendTransactionAsync(fullBytes, { from: accounts[1] }).then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash));
+        const { logs } = await contracts.zeroExV2SubContract.participate
+            .sendTransactionAsync(fullBytes, { from: accounts[1] })
+            .then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash));
         logs.forEach((log, index) => {
             logs[index] = { event: log.event, ...log.args };
         });
