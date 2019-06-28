@@ -55,7 +55,7 @@ before(async () => {
             provider.addProvider(traceSubprovider);
         }
 
-        const ganacheSubprovider = new GanacheSubprovider({ mnemonic: process.env.npm_package_config_test_mnemonic });
+        const ganacheSubprovider = new GanacheSubprovider({ mnemonic: process.env.npm_package_config_test_mnemonic, network_id: 6174 });
         provider.addProvider(ganacheSubprovider);
     }
 
