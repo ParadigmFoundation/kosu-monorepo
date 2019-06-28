@@ -14,12 +14,6 @@ contract BasicTradeSubContract is SubContract {
     mapping(bytes32 => uint) bought;
     string private _arguments;
 
-
-    event OriginalBytes(bytes val);
-    event SignatureBytes(bytes val);
-    event AddressVal(address val);
-    event UintVal(uint val);
-
     constructor(string memory args) public {
         _arguments = args;
     }
