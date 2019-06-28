@@ -4,9 +4,9 @@ title: What is Kosu?
 
 # What is Kosu?
 
-The Kosu protocol is a **relay protocol for smart contract-based financial primitives.** The **OrderStream** is a decentralized, event-based, and super-peer network with proof-of-stake based sybil tolerance with access control managed by an Ethereum contract system.
+The Kosu protocol is a **relay protocol for smart contract-based financial primitives.** The **Kosu network** is a decentralized, event-based, and super-peer network with proof-of-stake based sybil tolerance with access control managed by an Ethereum contract system.
 
-The OrderStream network provides a venue for order message broadcast and price discovery for any type of Ethereum-based financial primitive that meets the following criteria. They must 1) allow arbitrary "off-chain" methods for broadcast and discovery of signed, executable order messages, and 2) implement some type of settlement or execution "on-chain", where the transfer of assets and validation of balances takes place via protocol-independent Ethereum contracts.
+The Kosu network provides a venue for order message broadcast and price discovery for any type of Ethereum-based financial primitive that meets the following criteria. They must 1) allow arbitrary "off-chain" methods for broadcast and discovery of signed, executable order messages, and 2) implement some type of settlement or execution "on-chain", where the transfer of assets and validation of balances takes place via protocol-independent Ethereum contracts.
 
 [Click here](./overview/) for a complete technical introduction to the Kosu protocol.
 
@@ -26,9 +26,7 @@ Developers, applications, and businesses can leverage the core protocol (contrac
 
 The core protocol is implemented as an event-driven, proof-of-stake based relay network, supported by a system of Ethereum contracts. The network itself is currently built on [Tendermint](https://tendermint.com/).
 
-```
-@todo: add go-kosu blurb
-```
+[Click here](./overview/governance.md) to read about governance of the Kosu protocol.
 
 ## Developer tools
 
