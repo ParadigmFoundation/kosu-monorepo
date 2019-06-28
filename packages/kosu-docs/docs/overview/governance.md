@@ -35,7 +35,7 @@ Proposals must include a stake (`tokenToStake`) of _Kosu_ tokens greater than or
 
 ### Reward rate
 
-All validator proposals must include a reward (`rewardRate`) to be executed to the validator on a periodic basis. This reward may be positive (tokens minted as inflation), negative (tokens burned), or zero. If a listing with a negative reward rate is proposed and accepted, the validator must continually collateralize a treasury balance sufficient to cover the burn rate. If the validator is unable to cover a burn, they may be removed from the listing without a full challenge ("touch-and-remove"). If a listing owner's available balance (number of tokens deposited in treasury) falls below their stake size,they may also be touched-and-removed. An example of the previously described scenario would be a validator withdrawing their staked _Kosu_.
+All validator proposals must include a reward (`rewardRate`) to be executed to the validator on a periodic basis. This reward may be positive (tokens minted as inflation), negative (tokens burned), or zero. If a listing with a negative reward rate is proposed and accepted, the validator must continually collateralize a treasury balance sufficient to cover the burn rate. If the validator is unable to cover a burn, they may be removed from the listing without a full challenge ("touch-and-remove"). If a listing owner's available balance (number of tokens deposited in treasury) falls below their stake size, they may also be touched-and-removed. An example of the previously described scenario would be a validator withdrawing their staked _Kosu_.
 
 There is also a specified `maxRewardRate` which is the maximum amount of _Kosu_ tokens a validator can mint per period. The `maxRewardRate` is a function equal to the square root of the sum of total reward rates for all outstanding validator listings.
 
@@ -53,7 +53,7 @@ Pending proposals and accepted listings may be challenged at any time with the `
 -   Challenges may be voted on by any Kosu token holder using a commit-reveal vote scheme
     during a specified voting period.
 
--   Vote weight is limited by the system balance of a user within the Kosu contract system.
+-   Vote weight is determined by the system balance of a user within the Kosu contract system.
 
 -   After the completion of a vote period, the ruling is determined based on the binary outcome (yes or no)
     that received a majority of the participating vote weight.
@@ -74,7 +74,7 @@ The split payout awarded to voters is distributed proportionally according to ea
 
 ### Voting: Committing
 
-Any holder of _Kosu_ tokens, even if staking as a Validator or Poster, may choose to vote during a challenge period with their tokens. The voting process uses a commit-reveal scheme to hide voter decisions and ensure voters don't switch their vote based on the winning outcome. The _commit period_ begins as soon as a challenge is made and lasts the number of blocks specified in the `constructor`. During the commit period, voters signal their vote with the `commitVote` [method](https://docs.kosu.io/kosu-system-contracts/Voting.html#commitvote) and the following parameters:
+Any holder of _Kosu_ tokens, even if staking as a Validator or Poster, may choose to vote during a challenge period with their tokens. The voting process uses a commit-reveal scheme to hide voter decisions and ensure that voters do not switch their vote based on the winning outcome. The _commit period_ begins as soon as a challenge is made and lasts the number of blocks specified in the `constructor`. During the commit period, voters signal their vote with the `commitVote` [method](https://docs.kosu.io/kosu-system-contracts/Voting.html#commitvote) and the following parameters:
 
 -   `_pollId`: Poll index to act upon
 -   `_vote`: Hash encoded vote (i.e. for a binary poll, 0 signifies 'against' and 1 signifies 'in favor')
@@ -84,4 +84,4 @@ In order to generate the Hash encoded vote (the `_vote` parameter in the `commit
 
 ### Voting: Revealing
 
-The reveal period begins on the same block that the commit period ends. A vote needs to be committed _and_ revealed in order to count. The `revealVote` [method](https://docs.kosu.io/kosu-system-contracts/Voting.html#revealvote) is used to reveal a vote and accepts `_pollId`, `_voteOption`, and `_voteSalt` as parameters. If the vote Option (0 or 1) and vote Salt (randomly generated string of numbers) submitted with `revealVote` produce the same Hash encoded vote that was previously committed by the voter during the commit period, the vote is considered valid. Once the reveal period is over and the poll is finalized, the `totalRevealedTokens` and `totalWinningTokens` [methods](https://docs.kosu.io/kosu-system-contracts/Voting.html#totalrevealedtokens) can be called (both have `_pollId` as the only parameter) to see the total number of votes revealed and the number of votes revealed on the winning side.
+The reveal period begins on the same block that the commit period ends. A vote needs to be committed _and_ revealed in order to count. The `revealVote` [method](https://docs.kosu.io/kosu-system-contracts/Voting.html#revealvote) is used to reveal a vote and accepts `_pollId`, `_voteOption`, and `_voteSalt` as parameters. If the vote Option (0 or 1) and vote Salt (randomly generated string of numbers) submitted with `revealVote` produce the same Hash that was previously committed by the voter during the commit period, the vote is considered valid. Once the reveal period is over and the poll is finalized, the `totalRevealedTokens` and `totalWinningTokens` [methods](https://docs.kosu.io/kosu-system-contracts/Voting.html#totalrevealedtokens) can be called (both have `_pollId` as the only parameter) to see the total number of votes revealed and the number of votes revealed on the winning side.
