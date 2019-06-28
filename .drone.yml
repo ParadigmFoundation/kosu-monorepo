@@ -17,6 +17,7 @@ steps:
       - git pull
       - git checkout $DRONE_BRANCH
       - git checkout $DRONE_COMMIT
+      - env
 
   - name: lint-project
     image: gcr.io/kosu-io/node-ci:latest
