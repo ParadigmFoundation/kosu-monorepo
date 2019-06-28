@@ -1,7 +1,7 @@
 import { LogDecoder } from "@0x/contracts-test-utils";
 import { BlockchainLifecycle } from "@0x/dev-utils";
 import { CoverageSubprovider } from "@0x/sol-coverage";
-import { SolCompilerArtifactAdapter } from "@0x/sol-trace";
+import { RevertTraceSubprovider, SolCompilerArtifactAdapter } from "@0x/sol-trace";
 import { GanacheSubprovider, RPCSubprovider } from "@0x/subproviders";
 import { providerUtils } from "@0x/utils";
 import { Web3Wrapper } from "@0x/web3-wrapper";
@@ -19,6 +19,7 @@ import { TestHelpers, TestValues } from "../src/test-helpers";
 
 const useGeth = process.argv.includes("geth");
 const runCoverage = process.argv.includes("runCoverage");
+const trace = process.argv.includes("trace");
 
 chai.use(chaiAsPromised);
 chai.should();
@@ -32,9 +33,8 @@ before(async () => {
         const rpcSubprovider = new RPCSubprovider(process.env.WEB3_URI);
         provider.addProvider(rpcSubprovider);
     } else {
+        const artifactAdapter = new SolCompilerArtifactAdapter();
         if (runCoverage) {
-            console.log("running coverage");
-            const artifactAdapter = new SolCompilerArtifactAdapter();
             coverageSubprovider = new CoverageSubprovider(
                 artifactAdapter,
                 "0xc521f483f607eb5ea4d6b2dfdbd540134753a865",
@@ -47,6 +47,12 @@ before(async () => {
                 },
             );
             provider.addProvider(coverageSubprovider);
+        } else if (trace) {
+            const traceSubprovider = new RevertTraceSubprovider(
+                artifactAdapter,
+                "0xc521f483f607eb5ea4d6b2dfdbd540134753a865",
+            );
+            provider.addProvider(traceSubprovider);
         }
 
         const ganacheSubprovider = new GanacheSubprovider({ mnemonic: process.env.npm_package_config_test_mnemonic });
