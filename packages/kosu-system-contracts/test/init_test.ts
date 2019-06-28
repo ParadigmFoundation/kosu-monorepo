@@ -80,7 +80,7 @@ before(async () => {
 
     const txDefaults = {
         from: normalizedFromAddress,
-        gas: 7500000,
+        gas: 6500000,
         gasPrice: toWei("5", "gwei"),
     };
 
