@@ -37,6 +37,7 @@ module.exports = {
                 children: [
                     "/",
                     "/overview/",
+                    "/overview/governance",
                     "/overview/contributing",
                     //"/overview/terminology",
                     //"/overview/architecture",
