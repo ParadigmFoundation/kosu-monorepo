@@ -15,6 +15,7 @@ steps:
       - git fetch
       - git branch --set-upstream-to=origin/master master
       - git pull
+      - git checkout $DRONE_BRANCH
       - git checkout $DRONE_COMMIT
 
   - name: lint-project
