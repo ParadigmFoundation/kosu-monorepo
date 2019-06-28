@@ -8,6 +8,7 @@ interface MigratedContracts {
     voting: VotingContract;
     posterRegistryProxy: PosterRegistryProxyContract;
     posterRegistry: PosterRegistryContract;
+    zeroExV2SubContract: ZeroExV2SubContractContract;
 }
 
 interface MigratedTestContracts extends MigratedContracts {
