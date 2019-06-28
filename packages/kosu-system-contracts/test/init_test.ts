@@ -74,7 +74,8 @@ before(async () => {
     // @ts-ignore
     await new BlockchainLifecycle(web3Wrapper).startAsync();
 
-    const normalizedFromAddress = await web3.eth.getCoinbase().then((x: string) => x.toLowerCase());
+    const accounts = await web3Wrapper.getAvailableAddressesAsync();
+    const normalizedFromAddress = accounts[0].toLowerCase();
 
     const txDefaults = {
         from: normalizedFromAddress,
@@ -97,7 +98,7 @@ before(async () => {
         txDefaults,
         TestValues,
         contracts,
-        accounts: await testHelpers.getAccounts(),
+        accounts,
         web3,
         web3Wrapper,
         provider,
