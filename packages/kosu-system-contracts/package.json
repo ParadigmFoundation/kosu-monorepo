@@ -13,8 +13,8 @@
         "url": "https://github.com/ParadigmFoundation/kosu-monorepo/issues"
     },
     "scripts": {
-        "test": "ts-mocha -p test/tsconfig.json test/* --timeout 4000 --slow 2000",
-        "contracts:test:ci": "ts-mocha -p test/tsconfig.json test/* --slow 2000 --timeout 200000 -b -- geth",
+        "test": "ts-mocha -p test/tsconfig.json test/* --timeout 0 --slow 2000",
+        "contracts:test:ci": "ts-mocha -p test/tsconfig.json test/* --slow 2000 --timeout 0 -b -- geth",
         "coverage": "ts-mocha -p test/tsconfig.json test/* --slow 2000 --timeout 100000 -- runCoverage && istanbul report html && open coverage/index.html",
         "build": "run-s compile:solidity generate_contract_wrappers compile:typescript",
         "compile:solidity": "sol-compiler",
