@@ -18,13 +18,11 @@ In this system, holders of the protocol’s native staking token, _Kosu_ (ERC-20
 
 ## Validator listing process
 
-<center>
-    <img src="https://github.com/ParadigmFoundation/whitepaper/blob/whitepaper/v3/figures/fig3.png?raw=true" width="150px" >
-</center>
+![Listing lifecycle](https://github.com/ParadigmFoundation/whitepaper/blob/whitepaper/v3/figures/fig3.png?raw=true")
 
 ### Right to submit a proposal
 
-Any Kosu holder may create a proposal that indicates their intent to become a network validator by calling the `registerListing` method. The proposal should specify the following as parameters:
+Any Kosu holder may create a proposal that indicates their intent to become a network validator by calling the `registerListing` [method].(https://docs.kosu.io/kosu-system-contracts/ValidatorRegistry.html#registerlisting). The proposal should specify the following as parameters:
 
 -   `tendermintPublicKey`: a Tendermint public key
 -   `tokensToStake`: the amount of _Kosu_ tokens at stake if challenged
@@ -43,11 +41,11 @@ There is also a specified `maxRewardRate` which is the maximum amount of _Kosu_ 
 
 ### Unchallenged listings
 
-Proposals that are not challenged may be confirmed into the registry after a period of time measured in Ethereum blocks using the `confirmListing` method with the validator's `tendermintPublicKey` as the only parameter.
+Proposals that are not challenged may be confirmed into the registry after a period of time measured in Ethereum blocks using the `confirmListing` [method].(https://docs.kosu.io/kosu-system-contracts/ValidatorRegistry.html#confirmlisting) with the validator's `tendermintPublicKey` as the only parameter.
 
 ### Challenges
 
-Pending proposals and accepted listings may be challenged at any time with the `challengeListing` method specifying a `tendermintPublicKey` and an external link (`details`) as parameters. All challenges are identified with a `challengeId`.
+Pending proposals and accepted listings may be challenged at any time with the `challengeListing` [method].(https://docs.kosu.io/kosu-system-contracts/ValidatorRegistry.html#challengelisting) specifying a `tendermintPublicKey` and an external link (`details`) as parameters. All challenges are identified with a `challengeId`.
 
 -   Challengers must have an available balance of _Kosu_ tokens equal-to or greater-than the stake of the
     listing or proposal being challenged.
@@ -70,21 +68,21 @@ Pending proposals and accepted listings may be challenged at any time with the `
 
 ### Challenge payouts
 
-The payout of resolved challenges is split between the winning stakeholder, and the participating voters on the winning side. The first block produced after a challenge vote ends, the challenge is considered finalized as no more votes can be revealed. At this point, any party may call the `resolveChallenge` method and the payout is granted to the winning stakeholder (challenger or challenged listing). Voters on the winning side can individually claim winnings by calling the `claimWinnings` method with the `challengeId` as a parameter.
+The payout of resolved challenges is split between the winning stakeholder, and the participating voters on the winning side. The first block produced after a challenge vote ends, the challenge is considered finalized as no more votes can be revealed. At this point, any party may call the `resolveChallenge` [method].(https://docs.kosu.io/kosu-system-contracts/ValidatorRegistry.html#registerlisting) and the payout is granted to the winning stakeholder (challenger or challenged listing). Voters on the winning side can individually claim winnings by calling the `claimWinnings` [method].(https://docs.kosu.io/kosu-system-contracts/ValidatorRegistry.html#claimwinnings) with the `challengeId` as a parameter.
 
 The split payout awarded to voters is distributed proportionally according to each voter's _vote weight_, which is the number of _Kosu_ tokens committed by an individual voter as a proportion of total tokens committed by all winning voters.
 
 ### Voting: Committing
 
-Any holder of _Kosu_ tokens, even if staking as a Validator or Poster, may choose to vote during a challenge period with their tokens. The voting process uses a commit-reveal scheme to hide voter decisions and ensure voters don't switch their vote based on the winning outcome. The _commit period_ begins as soon as a challenge is made and lasts the number of blocks specified in the `constructor`. During the commit period, voters signal their vote with the `commitVote` method and the following parameters:
+Any holder of _Kosu_ tokens, even if staking as a Validator or Poster, may choose to vote during a challenge period with their tokens. The voting process uses a commit-reveal scheme to hide voter decisions and ensure voters don't switch their vote based on the winning outcome. The _commit period_ begins as soon as a challenge is made and lasts the number of blocks specified in the `constructor`. During the commit period, voters signal their vote with the `commitVote` [method].(https://docs.kosu.io/kosu-system-contracts/Voting.html#commitvote) and the following parameters:
 
 -   `_pollId`: Poll index to act upon
 -   `_vote`: Hash encoded vote (i.e. for a binary poll, 0 signifies 'against' and 1 signifies 'in favor')
 -   `_tokensToCommit`: Number of tokens comitted to vote
 
-In order to generate the Hash encoded vote (the `_vote` parameter in the `commitVote` method), the kosu voting library provides the `encodeVote` method. This methods accepts two parameters: `_voteOption` which is a 0 or 1 signifying 'against' or 'in favor', and `_voteSalt` which is a randomly generated string of numbers. The `encodeVote` method encodes the vote by hashing the Option and the Salt, creating the Hash encoded vote that is submitted as the `_vote` parameter in `commitVote`. 
+In order to generate the Hash encoded vote (the `_vote` parameter in the `commitVote` method), the kosu voting library provides the `encodeVote` [method].(https://docs.kosu.io/kosu.js/classes/voting.html#encodevote). This methods accepts two parameters: `_voteOption` which is a 0 or 1 signifying 'against' or 'in favor', and `_voteSalt` which is a randomly generated string of numbers. The `encodeVote` method encodes the vote by hashing the Option and the Salt, creating the Hash encoded vote that is submitted as the `_vote` parameter in `commitVote`. 
 
 ### Voting: Revealing
 
-The reveal period begins on the same block that the commit period ends. A vote needs to be committed _and_ revealed in order to count. The `revealVote` method is used to reveal a vote and accepts `_pollId`, `_voteOption`, and `_voteSalt` as parameters. If the vote Option (0 or 1) and vote Salt (randomly generated string of numbers) submitted with `revealVote` produce the same Hash encoded vote that was previously committed by the voter during the commit period, the vote is considered valid. Once the reveal period is over and the poll is finalized, the `totalRevealedTokens` and `totalWinningTokens` methods can be called (both have `_pollId` as the only parameter) to see the total number of votes revealed and the number of votes revealed on the winning side. 
+The reveal period begins on the same block that the commit period ends. A vote needs to be committed _and_ revealed in order to count. The `revealVote` [method].(https://docs.kosu.io/kosu-system-contracts/Voting.html#revealvote) is used to reveal a vote and accepts `_pollId`, `_voteOption`, and `_voteSalt` as parameters. If the vote Option (0 or 1) and vote Salt (randomly generated string of numbers) submitted with `revealVote` produce the same Hash encoded vote that was previously committed by the voter during the commit period, the vote is considered valid. Once the reveal period is over and the poll is finalized, the `totalRevealedTokens` and `totalWinningTokens` [methods].(https://docs.kosu.io/kosu-system-contracts/Voting.html#totalrevealedtokens) can be called (both have `_pollId` as the only parameter) to see the total number of votes revealed and the number of votes revealed on the winning side. 
 
