@@ -55,8 +55,8 @@ contract ZeroExV2SubContract is SubContract {
 
         // TODO May want to do somethign different to get the addresses
         // makerTokdenAssetData.getAddress(lastBitIndex)
-        IERC20 makerToken = IERC20(order.makerAssetData.popLast20Bytes());
-        IERC20 takerToken = IERC20(order.takerAssetData.popLast20Bytes());
+        IERC20 makerToken = IERC20(order.makerAssetData.getAddress(16));
+        IERC20 takerToken = IERC20(order.takerAssetData.getAddress(16));
 
         takerToken.transferFrom(taker, address(this), takeAmount);
         takerToken.approve(_proxy, takeAmount);
