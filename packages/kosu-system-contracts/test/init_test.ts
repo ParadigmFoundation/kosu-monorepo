@@ -1,5 +1,6 @@
 import { LogDecoder } from "@0x/contracts-test-utils";
 import { BlockchainLifecycle } from "@0x/dev-utils";
+import {runMigrationsAsync as runZeroExMigrationsAsync } from "@0x/migrations";
 import { CoverageSubprovider } from "@0x/sol-coverage";
 import { RevertTraceSubprovider, SolCompilerArtifactAdapter } from "@0x/sol-trace";
 import { GanacheSubprovider, RPCSubprovider } from "@0x/subproviders";
@@ -90,6 +91,12 @@ before(async () => {
         txDefaults,
         JSON.stringify(argumentsJson),
     );
+    if (!useGeth) {
+        web3.eth.personal.importRawKey("0xf2f48ee19680706196e2e339e5da3491186e0c4c5030670656b0e0164837257d", "password");
+        web3.eth.personal.unlockAccount("0x5409ed021d9299bf6814279a6a1411a7e866a631", "password", 60000000);
+        web3Wrapper.sendTransactionAsync({ from: accounts[9], to: "0x5409ed021d9299bf6814279a6a1411a7e866a631", value: TestValues.oneHundredEther.minus(TestValues.oneEther) });
+        await runZeroExMigrationsAsync(provider, { ...txDefaults,  from: "0x5409ed021d9299bf6814279a6a1411a7e866a631"});
+    }
 
     const testHelpers = new TestHelpers(web3Wrapper, { migratedContracts: contracts });
 
