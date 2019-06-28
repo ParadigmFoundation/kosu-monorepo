@@ -44,6 +44,7 @@
     },
     "dependencies": {
         "@0x/base-contract": "^5.0.5",
+        "@0x/contract-addresses": "^2.3.3",
         "@0x/contracts-exchange": "^2.1.5",
         "@0x/subproviders": "^4.1.0",
         "@0x/utils": "^4.3.1",
@@ -61,6 +62,7 @@
         "web3-utils": "1.0.0-beta.37"
     },
     "devDependencies": {
+        "0x.js": "^6.0.9",
         "@0x/abi-gen": "^2.0.9",
         "@0x/abi-gen-templates": "^2.0.2",
         "@0x/contracts-gen": "^1.0.8",
