@@ -1,10 +1,11 @@
-package types
+package store
 
 import (
 	"encoding/hex"
 	"encoding/json"
 	"errors"
 	"fmt"
+	"go-kosu/abci/types"
 	"math/big"
 	"strings"
 
@@ -40,7 +41,7 @@ func NewOrder(input string) (*Order, error) {
 }
 
 // NewOrderFromProto creates a new Kosu Order object from a proto message
-func NewOrderFromProto(order *TransactionOrder) (*Order, error) {
+func NewOrderFromProto(order *types.TransactionOrder) (*Order, error) {
 	marshalled, err := json.Marshal(order)
 	if err != nil {
 		return nil, err

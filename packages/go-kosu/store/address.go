@@ -1,4 +1,4 @@
-package types
+package store
 
 // Address represents an Ethereum address
 type Address [20]byte
