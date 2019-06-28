@@ -46,7 +46,7 @@ describe("ZeroExV2SubContract", () => {
                 signatureUtils.parseECSignature(signedZeroExOrder.signature),
                 accounts[0],
             )
-            .should.eq(true);
+            .should.eq(true, "Order signing failed.");
 
         await kosuToken.approve.awaitTransactionSuccessAsync(zeroExWrappers.erc20Proxy.address, value);
         await kosuToken.transfer.awaitTransactionSuccessAsync(accounts[1], value);
@@ -75,11 +75,13 @@ describe("ZeroExV2SubContract", () => {
         fullBytes = fullBytes + accounts[1].slice(2);
         fullBytes = fullBytes + toTwosComplement(numberToHex(signedZeroExOrder.takerAssetAmount)).slice(2);
 
-        await contracts.zeroExV2SubContract.isValid.callAsync(makerBytes).should.eventually.be.true;
+        await contracts.zeroExV2SubContract.isValid
+            .callAsync(makerBytes)
+            .should.eventually.eq(true, "Order is invalid");
         await contracts.zeroExV2SubContract.amountRemaining
             .callAsync(makerBytes)
             .then(x => x.toString())
-            .should.eventually.eq("100");
+            .should.eventually.eq("100", "Order does not have tokens available.");
 
         const { logs } = await contracts.zeroExV2SubContract.participate
             .sendTransactionAsync(fullBytes, { from: accounts[1] })
