@@ -46,8 +46,8 @@ contract ZeroExV2SubContract is SubContract {
 
     function participate(bytes calldata data) external returns (bool) {
         LibOrder.Order memory order = getOrder(data);
-        address taker = data.getAddress(409);
-        uint takeAmount = data.getUint(429);
+        address taker = data.getAddress(410);
+        uint takeAmount = data.getUint(430);
 
         // TODO May want to use a different method since 0x started doing something different for gas reasons.
         require(order.makerAssetData.readBytes4(0) == ERC20bytes, "Maker token asset isn't ERC20");
@@ -92,7 +92,7 @@ contract ZeroExV2SubContract is SubContract {
     }
 
     function getSignature(bytes memory data) internal returns (bytes memory) {
-        return data.getSignature(344);
+        return data.getBytes(344, 66);
     }
 
     function fillOrder(LibOrder.Order memory order, uint takeAmount, bytes memory signature) internal returns (LibFillResults.FillResults memory) {
