@@ -53,7 +53,7 @@ steps:
     "-m",
     "cp", 
     "./packages/go-kosu/kosud",
-    "gs://kosu-binaries/go-kosu/",
+    "gs://kosud/linux_amd64/",
   ]
 
 - name: "gcr.io/cloud-builders/gsutil"
@@ -61,7 +61,7 @@ steps:
     "-m",
     "cp", 
     "./packages/go-kosu/kosu-cli",
-    "gs://kosu-binaries/go-kosu/",
+    "gs://kosu-cli/linux_amd64/",
   ]
 
 # ================
