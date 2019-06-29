@@ -209,7 +209,7 @@ We strongly encourage all contributions! Read our [contribution guidelines](./.g
 
 ## Issues
 
-To report bugs within a specific Kosu package, please [create an issue](https://github.com/ParadigmFoundation/kosu-monorepo/issues/create) in this repository (template will auto-populate).
+To report bugs within a specific Kosu package, please [create an issue](https://github.com/ParadigmFoundation/kosu-monorepo/issues/new) in this repository (template will auto-populate).
 
 ## License
 
