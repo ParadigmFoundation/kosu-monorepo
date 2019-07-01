@@ -12,6 +12,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
+/*
 func TestTransactionRebalance(t *testing.T) {
 	t.Run("Sort", func(t *testing.T) {
 		tx := &TransactionRebalance{
@@ -32,6 +33,7 @@ func TestTransactionRebalance(t *testing.T) {
 		}
 	})
 }
+*/
 
 func TestBigInt(t *testing.T) {
 	// Create a large number

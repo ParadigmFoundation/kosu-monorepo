@@ -6,21 +6,9 @@ import (
 	"errors"
 	fmt "fmt"
 	"math/big"
-	"sort"
 
 	"github.com/golang/protobuf/proto"
 )
-
-// SortRateLimits sort the limits collection in lexicographic order using the Address as key
-func (t *TransactionRebalance) SortRateLimits() {
-	sort.Sort(rateLimits(t.Limits))
-}
-
-type rateLimits []*RateLimit
-
-func (p rateLimits) Len() int           { return len(p) }
-func (p rateLimits) Less(i, j int) bool { return p[i].Address < p[j].Address }
-func (p rateLimits) Swap(i, j int)      { p[i], p[j] = p[j], p[i] }
 
 // Bytes returns the underlying bytes
 func (b *BigInt) Bytes() []byte { return b.Value }
