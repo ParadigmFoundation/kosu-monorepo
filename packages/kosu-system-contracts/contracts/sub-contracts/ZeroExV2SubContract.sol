@@ -128,5 +128,15 @@ contract ZeroExV2SubContract is SubContract {
         return data.getBytes(344, 66);
     }
 
+    /** @dev Internal function to read the token asset code
+    */
+    function getTokenAssetCode(bytes memory data) internal pure returns (bytes4 outBytes4) {
+        if (data.length == 0) {
+            return 0x0;
+        }
+
+        assembly {
+            outBytes4 := mload(add(data, 32))
+        }
     }
 }
