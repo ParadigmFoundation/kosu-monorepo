@@ -1,7 +1,8 @@
 import { LogDecoder } from "@0x/contracts-test-utils";
 import { BlockchainLifecycle } from "@0x/dev-utils";
+import { runMigrationsAsync as runZeroExMigrationsAsync } from "@0x/migrations";
 import { CoverageSubprovider } from "@0x/sol-coverage";
-import { SolCompilerArtifactAdapter } from "@0x/sol-trace";
+import { RevertTraceSubprovider, SolCompilerArtifactAdapter } from "@0x/sol-trace";
 import { GanacheSubprovider, RPCSubprovider } from "@0x/subproviders";
 import { providerUtils } from "@0x/utils";
 import { Web3Wrapper } from "@0x/web3-wrapper";
@@ -19,6 +20,7 @@ import { TestHelpers, TestValues } from "../src/test-helpers";
 
 const useGeth = process.argv.includes("geth");
 const runCoverage = process.argv.includes("runCoverage");
+const trace = process.argv.includes("trace");
 
 chai.use(chaiAsPromised);
 chai.should();
@@ -32,9 +34,8 @@ before(async () => {
         const rpcSubprovider = new RPCSubprovider(process.env.WEB3_URI);
         provider.addProvider(rpcSubprovider);
     } else {
+        const artifactAdapter = new SolCompilerArtifactAdapter();
         if (runCoverage) {
-            console.log("running coverage");
-            const artifactAdapter = new SolCompilerArtifactAdapter();
             coverageSubprovider = new CoverageSubprovider(
                 artifactAdapter,
                 "0xc521f483f607eb5ea4d6b2dfdbd540134753a865",
@@ -47,9 +48,18 @@ before(async () => {
                 },
             );
             provider.addProvider(coverageSubprovider);
+        } else if (trace) {
+            const traceSubprovider = new RevertTraceSubprovider(
+                artifactAdapter,
+                "0xc521f483f607eb5ea4d6b2dfdbd540134753a865",
+            );
+            provider.addProvider(traceSubprovider);
         }
 
-        const ganacheSubprovider = new GanacheSubprovider({ mnemonic: process.env.npm_package_config_test_mnemonic });
+        const ganacheSubprovider = new GanacheSubprovider({
+            mnemonic: process.env.npm_package_config_test_mnemonic,
+            network_id: 6174,
+        });
         provider.addProvider(ganacheSubprovider);
     }
 
@@ -68,11 +78,12 @@ before(async () => {
     // @ts-ignore
     await new BlockchainLifecycle(web3Wrapper).startAsync();
 
-    const normalizedFromAddress = await web3.eth.getCoinbase().then((x: string) => x.toLowerCase());
+    const accounts = await web3Wrapper.getAvailableAddressesAsync();
+    const normalizedFromAddress = accounts[0].toLowerCase();
 
     const txDefaults = {
         from: normalizedFromAddress,
-        gas: 4500000,
+        gas: 6500000,
         gasPrice: toWei("5", "gwei"),
     };
 
@@ -83,6 +94,19 @@ before(async () => {
         txDefaults,
         JSON.stringify(argumentsJson),
     );
+    if (!useGeth) {
+        web3.eth.personal.importRawKey(
+            "0xf2f48ee19680706196e2e339e5da3491186e0c4c5030670656b0e0164837257d",
+            "password",
+        );
+        web3.eth.personal.unlockAccount("0x5409ed021d9299bf6814279a6a1411a7e866a631", "password", 60000000);
+        web3Wrapper.sendTransactionAsync({
+            from: accounts[9],
+            to: "0x5409ed021d9299bf6814279a6a1411a7e866a631",
+            value: TestValues.oneHundredEther.minus(TestValues.oneEther),
+        });
+        await runZeroExMigrationsAsync(provider, { ...txDefaults, from: "0x5409ed021d9299bf6814279a6a1411a7e866a631" });
+    }
 
     const testHelpers = new TestHelpers(web3Wrapper, { migratedContracts: contracts });
 
@@ -91,7 +115,7 @@ before(async () => {
         txDefaults,
         TestValues,
         contracts,
-        accounts: await testHelpers.getAccounts(),
+        accounts,
         web3,
         web3Wrapper,
         provider,
