@@ -125,7 +125,7 @@ contract ZeroExV2SubContract is SubContract {
     /** @dev Internal function to deserialize the 0x signature from the input bytes.
     */
     function getSignature(bytes memory data) internal returns (bytes memory) {
-        return data.getBytes(344, 66);
+        return data.getBytes(344, 66); // Special 0x signature with a trailing code representing the signature type.
     }
 
     /** @dev Internal function to read the token asset code
