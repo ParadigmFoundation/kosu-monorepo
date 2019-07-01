@@ -7,9 +7,6 @@ import "openzeppelin-solidity/contracts/token/ERC20/IERC20.sol";
 import { SafeMath as ZepSafeMath } from "openzeppelin-solidity/contracts/math/SafeMath.sol";
 import "@0x/contracts-exchange/contracts/src/interfaces/IExchange.sol";
 import "@0x/contracts-exchange-libs/contracts/src/LibOrder.sol";
-import "@0x/contracts-utils/contracts/src/LibBytes.sol";
-
-
 
 /** @title ZeroExV2SubContract
     @author Freydal
@@ -17,7 +14,6 @@ import "@0x/contracts-utils/contracts/src/LibBytes.sol";
 */
 contract ZeroExV2SubContract is SubContract {
     using BytesDecoder for bytes;
-    using LibBytes for bytes;
     using ZepSafeMath for uint;
 
     IExchange private _exchange;
@@ -79,8 +75,8 @@ contract ZeroExV2SubContract is SubContract {
         uint takeAmount = data.getUint(430);
 
         // TODO May want to use a different method since 0x started doing something different for gas reasons.
-        require(order.makerAssetData.readBytes4(0) == ERC20bytes, "Maker token asset isn't ERC20");
-        require(order.takerAssetData.readBytes4(0) == ERC20bytes, "Taker token asset isn't ERC20");
+        require(getTokenAssetCode(order.makerAssetData.getBytes(0, 4)) == ERC20bytes, "Maker token asset isn't ERC20");
+        require(getTokenAssetCode(order.takerAssetData.getBytes(0, 4)) == ERC20bytes, "Taker token asset isn't ERC20");
 
         // TODO May want to do somethign different to get the addresses
         // makerTokdenAssetData.getAddress(lastBitIndex)
