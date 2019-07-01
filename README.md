@@ -193,15 +193,23 @@ Pre-built binaries for `go-kosu` are available (per-commit CD builds are current
 
 ### `kosud`
 
-Kosu network client reference implementation, built on Tendermint consensus.
+Kosu network client reference implementation, built on Tendermint consensus. Run `kosud --help` for usage.
 
--   URL: [`https://storage.googleapis.com/kosu-binaries/go-kosu/kosud`](https://storage.googleapis.com/kosu-binaries/go-kosu/kosud)
+```
+wget https://storage.googleapis.com/kosud/linux_amd64/kosud
+chmod +x kosud
+install kosud /usr/local/bin
+```
 
 ### `kosu-cli`
 
-Command-line interface for `kosud`.
+Command-line interface for `kosud` (run `kosu-cli` for usage).
 
--   URL: [`https://storage.googleapis.com/kosu-binaries/go-kosu/kosu-cli`](https://storage.googleapis.com/kosu-binaries/go-kosu/kosu-cli)
+```
+wget https://storage.googleapis.com/kosu-cli/linux_amd64/kosu-cli
+chmod +x kosu-cli
+install kosu-cli /usr/local/bin
+```
 
 ## Contributing
 
@@ -209,7 +217,7 @@ We strongly encourage all contributions! Read our [contribution guidelines](./.g
 
 ## Issues
 
-To report bugs within a specific Kosu package, please [create an issue](https://github.com/ParadigmFoundation/kosu-monorepo/issues/create) in this repository (template will auto-populate).
+To report bugs within a specific Kosu package, please [create an issue](https://github.com/ParadigmFoundation/kosu-monorepo/issues/new) in this repository (template will auto-populate).
 
 ## License
 
