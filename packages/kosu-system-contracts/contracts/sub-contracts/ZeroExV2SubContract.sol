@@ -78,8 +78,6 @@ contract ZeroExV2SubContract is SubContract {
         require(getTokenAssetCode(order.makerAssetData.getBytes(0, 4)) == ERC20bytes, "Maker token asset isn't ERC20");
         require(getTokenAssetCode(order.takerAssetData.getBytes(0, 4)) == ERC20bytes, "Taker token asset isn't ERC20");
 
-        // TODO May want to do somethign different to get the addresses
-        // makerTokdenAssetData.getAddress(lastBitIndex)
         IERC20 makerToken = IERC20(order.makerAssetData.getAddress(16));
         IERC20 takerToken = IERC20(order.takerAssetData.getAddress(16));
 
