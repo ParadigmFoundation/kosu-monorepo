@@ -90,7 +90,7 @@ contract ZeroExV2SubContract is SubContract {
         takerToken.transferFrom(taker, address(this), takeAmount);
         takerToken.approve(_proxy, takeAmount);
 
-        LibFillResults.FillResults memory fillResult = fillOrder(order, takeAmount, getSignature(data));
+        LibFillResults.FillResults memory fillResult = _exchange.fillOrder(order, takeAmount, getSignature(data));
 
         if (fillResult.makerAssetFilledAmount > 0) {
             require(makerToken.transfer(taker, fillResult.makerAssetFilledAmount), "Didn't successfully forward exchanged tokens. Reverting.");
@@ -128,11 +128,5 @@ contract ZeroExV2SubContract is SubContract {
         return data.getBytes(344, 66);
     }
 
-    function fillOrder(LibOrder.Order memory order, uint takeAmount, bytes memory signature) internal returns (LibFillResults.FillResults memory) {
-        return _exchange.fillOrder(
-            order,
-            takeAmount,
-            signature
-        );
     }
 }
