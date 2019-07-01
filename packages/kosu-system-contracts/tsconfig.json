@@ -11,6 +11,7 @@
     "include": ["./generated-wrappers/*", "./src/**/*"],
     "files": [
         "generated-artifacts/AuthorizedAddresses.json",
+        "generated-artifacts/BasicTradeSubContract.json",
         "generated-artifacts/EventEmitter.json",
         "generated-artifacts/KosuToken.json",
         "generated-artifacts/OrderGateway.json",
@@ -18,6 +19,7 @@
         "generated-artifacts/PosterRegistryProxy.json",
         "generated-artifacts/Treasury.json",
         "generated-artifacts/ValidatorRegistry.json",
-        "generated-artifacts/Voting.json"
+        "generated-artifacts/Voting.json",
+        "generated-artifacts/ZeroExV2SubContract.json"
     ]
 }

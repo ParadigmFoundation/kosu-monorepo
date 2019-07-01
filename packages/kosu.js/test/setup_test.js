@@ -80,7 +80,7 @@ before(async () => {
 
 describe("config", () => {
     it("should connect to web3", () => {
-        assert.equal(accounts.length, 10, "There should be 10 ETH accounts.");
+        accounts.length.should.be.gte(10, "There should be 10 ETH accounts.");
     });
 
     it("should have the version set", () => {

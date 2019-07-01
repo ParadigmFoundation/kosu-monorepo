@@ -15,6 +15,7 @@ import * as PosterRegistryProxy from "../generated-artifacts/PosterRegistryProxy
 import * as Treasury from "../generated-artifacts/Treasury.json";
 import * as ValidatorRegistry from "../generated-artifacts/ValidatorRegistry.json";
 import * as Voting from "../generated-artifacts/Voting.json";
+import * as ZeroExV2SubContract from "../generated-artifacts/ZeroExV2SubContract.json";
 export const artifacts = {
     AuthorizedAddresses: AuthorizedAddresses as KosuContractArtifact,
     EventEmitter: EventEmitter as KosuContractArtifact,
@@ -25,6 +26,7 @@ export const artifacts = {
     Treasury: Treasury as KosuContractArtifact,
     ValidatorRegistry: ValidatorRegistry as KosuContractArtifact,
     Voting: Voting as KosuContractArtifact,
+    ZeroExV2SubContract: ZeroExV2SubContract as KosuContractArtifact,
     BasicTradeSubContract: BasicTradeSubContract as KosuContractArtifact,
 };
 
