@@ -68,11 +68,12 @@ contract ZeroExV2SubContract is SubContract {
         @param data Kosu order data serialized with arguments.
         @return Fill success.
     */
-
     function participate(bytes calldata data) external returns (bool) {
         LibOrder.Order memory order = getOrder(data);
         address taker = data.getAddress(410);
         uint takeAmount = data.getUint(430);
+
+        require(taker == tx.origin, "The taker should send the transaction");
 
         // TODO May want to use a different method since 0x started doing something different for gas reasons.
         require(getTokenAssetCode(order.makerAssetData.getBytes(0, 4)) == ERC20bytes, "Maker token asset isn't ERC20");
