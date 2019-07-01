@@ -62,10 +62,9 @@ func (app *App) rebalancePosterLimits() {
 // returns a closure that calculates and sets each poster limit based on current balance
 func posterIterator(app *App, totalBalance *big.Int) func(string, *types.Poster) {
 	return func(address string, poster *types.Poster) {
-		posterBalance := &big.Int{}
-		posterBalance.SetBytes(poster.Balance.Value)
-
+		posterBalance := poster.Balance.BigInt()
 		periodLimit := app.store.ConsensusParams().PeriodLimit
+
 		limit := posterLimit(periodLimit, posterBalance, totalBalance)
 
 		app.store.SetPoster(address, types.Poster{
