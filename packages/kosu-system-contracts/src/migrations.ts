@@ -1,3 +1,4 @@
+import { getContractAddressesForNetworkOrThrow } from "@0x/contract-addresses";
 import { Web3Wrapper } from "@0x/web3-wrapper";
 import { ContractArtifact } from "ethereum-types";
 import Web3ProviderEngine from "web3-provider-engine";
@@ -14,6 +15,7 @@ import {
     TreasuryContract,
     ValidatorRegistryContract,
     VotingContract,
+    ZeroExV2SubContractContract,
 } from "./index";
 
 /**
@@ -57,7 +59,7 @@ export async function migrations(
                 _rewardPeriod: 4,
             },
         };
-
+        const zeroExAddresses = getContractAddressesForNetworkOrThrow(netId === 6174 ? 50 : netId);
         const config = validatorValues[netId] || validatorValues.default;
 
         const orderGateway = await OrderGatewayContract.deployFrom0xArtifactAsync(
@@ -125,6 +127,14 @@ export async function migrations(
             config._exitPeriod,
             config._rewardPeriod,
         );
+        const zeroExV2SubContract = await ZeroExV2SubContractContract.deployFrom0xArtifactAsync(
+            artifacts.ZeroExV2SubContract as ContractArtifact,
+            provider,
+            txDefaults,
+            JSON.stringify(zeroExArguments),
+            zeroExAddresses.exchange,
+            zeroExAddresses.erc20Proxy,
+        );
 
         const transactions = [
             {
@@ -187,6 +197,7 @@ export async function migrations(
             posterRegistry,
             posterRegistryProxy,
             validatorRegistry,
+            zeroExV2SubContract,
         };
     } catch (e) {
         if (options.noLogs) {
@@ -195,3 +206,22 @@ export async function migrations(
         throw e;
     }
 }
+
+const zeroExArguments = {
+    maker: [
+        { datatype: "address", name: "makerAddress" },
+        { datatype: "address", name: "takerAddress" },
+        { datatype: "address", name: "feeRecipientAddress" },
+        { datatype: "address", name: "senderAddress" },
+        { datatype: "uint", name: "makerAssetAmount" },
+        { datatype: "uint", name: "takerAssetAmount" },
+        { datatype: "uint", name: "makerFee" },
+        { datatype: "uint", name: "takerFee" },
+        { datatype: "uint", name: "expirationTimeSeconds" },
+        { datatype: "uint", name: "salt" },
+        { datatype: "bytes", name: "makerAssetData" },
+        { datatype: "bytes", name: "takerAssetData" },
+        { datatype: "bytes", name: "signature" },
+    ],
+    taker: [{ datatype: "address", name: "taker" }, { datatype: "uint", name: "takerAssetAmount" }],
+};
