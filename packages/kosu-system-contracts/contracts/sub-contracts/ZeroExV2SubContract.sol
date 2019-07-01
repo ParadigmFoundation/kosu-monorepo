@@ -11,6 +11,10 @@ import "@0x/contracts-utils/contracts/src/LibBytes.sol";
 
 
 
+/** @title ZeroExV2SubContract
+    @author Freydal
+    @dev Implementation of a sub contract that forwards a 0x - kosu order to the zero ex contract system
+*/
 contract ZeroExV2SubContract is SubContract {
     using BytesDecoder for bytes;
     using LibBytes for bytes;
@@ -21,28 +25,53 @@ contract ZeroExV2SubContract is SubContract {
     string private _arguments;
     bytes4 private ERC20bytes = bytes4(keccak256("ERC20Token(address)"));
 
+    /** @dev Constructor
+        @notice Constructor
+        @param args The arguments json string.
+        @param exchangeAddress The 0x deployed exchange address.
+        @param proxyAddress The 0x deployed erc20 proxy address.
+    */
     constructor(string memory args, address exchangeAddress, address proxyAddress) public {
         _arguments = args;
         _exchange = IExchange(exchangeAddress);
         _proxy = proxyAddress;
     }
 
+    /** @dev The arguments used to serialize kosu orders.
+        @notice The arguments used to serialize kosu orders.
+        @return String encoded JSON object used to encode contract input.
+    */
     function arguments() external view returns (string memory) {
         return _arguments;
     }
 
+    /** @dev De-serializes kosu order data to 0x order and checks validity.
+        @notice De-serializes kosu order data to 0x order and checks validity.
+        @param data Kosu order data serialized with arguments.
+        @return Validity of order.
+    */
     function isValid(bytes calldata data) external view returns (bool) {
         LibOrder.Order memory order = getOrder(data);
         LibOrder.OrderInfo memory info = _exchange.getOrderInfo(order);
         return info.orderStatus == uint8(LibOrder.OrderStatus.FILLABLE);
     }
 
+    /** @dev De-serializes kosu order data to 0x order and checks remaining fillable tokens.
+        @notice De-serializes kosu order data to 0x order and checks remaining fillable tokens.
+        @param data Kosu order data serialized with arguments.
+        @return Tokens remaining to fill.
+    */
     function amountRemaining(bytes calldata data) external view returns (uint) {
         LibOrder.Order memory order = getOrder(data);
         LibOrder.OrderInfo memory info = _exchange.getOrderInfo(order);
         return order.takerAssetAmount - info.orderTakerAssetFilledAmount;
     }
 
+    /** @dev De-serializes ksou order data to 0x order and submits to the 0x exchange.
+        @notice De-serializes ksou order data to 0x order and submits to the 0x exchange.
+        @param data Kosu order data serialized with arguments.
+        @return Fill success.
+    */
 
     function participate(bytes calldata data) external returns (bool) {
         LibOrder.Order memory order = getOrder(data);
@@ -74,6 +103,8 @@ contract ZeroExV2SubContract is SubContract {
         return true;
     }
 
+    /** @dev Internal function to deserialize the Order data from the input bytes.
+    */
     function getOrder(bytes memory data) internal pure returns (LibOrder.Order memory) {
         return LibOrder.Order(
             data.getAddress(0),
@@ -91,6 +122,8 @@ contract ZeroExV2SubContract is SubContract {
         );
     }
 
+    /** @dev Internal function to deserialize the 0x signature from the input bytes.
+    */
     function getSignature(bytes memory data) internal returns (bytes memory) {
         return data.getBytes(344, 66);
     }
