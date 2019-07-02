@@ -8,7 +8,7 @@ import (
 	"github.com/tidwall/gjson"
 )
 
-var deployedAddressesPath = "./node_modules/@kosu/system-contracts/src/deployedAddresses.json"
+const deployedAddressesPath = "./node_modules/@kosu/system-contracts/src/deployedAddresses.json"
 
 // GetContractAddress returns the contract address given the Ethereum NetworkID and the contract name
 func GetContractAddress(nID *big.Int, contract string) (string, error) {
