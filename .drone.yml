@@ -104,7 +104,7 @@ steps:
     image: gcr.io/kosu-io/go-kosu-ci:latest
     pull: always
     environment:
-      ETHEREUM_TEST_ADDRESS: wss://kosu-geth:8546
+      WEB3_URI: wss://kosu-geth:8546
     commands:
       - cd packages/go-kosu
       - make ci
