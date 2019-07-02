@@ -255,17 +255,17 @@ export class TestHelpers {
         }
     }
 
-    public async variablePoll(start: number, end: number): Promise<number> {
+    public async variablePoll(start: number, end: number): Promise<{ blockNumber: number; pollId: number }> {
         const base = await this.web3Wrapper.getBlockNumberAsync();
         const creationBlock = base + 1;
         const commitEnd = creationBlock + start;
         const revealEnd = commitEnd + end;
-        const result = await this.migratedContracts.voting.createPoll.awaitTransactionSuccessAsync(
+        const { logs, blockNumber } = await this.migratedContracts.voting.createPoll.awaitTransactionSuccessAsync(
             commitEnd,
             revealEnd,
         );
-        const { pollId } = decodeKosuEvents(result.logs)[0];
-        return pollId;
+        const { pollId } = decodeKosuEvents(logs)[0];
+        return { blockNumber, pollId };
     }
 }
 

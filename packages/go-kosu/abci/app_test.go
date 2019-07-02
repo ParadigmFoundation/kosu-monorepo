@@ -1,15 +1,18 @@
 package abci
 
 import (
-	"go-kosu/abci/types"
 	"io/ioutil"
 	"os"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
+
 	abci "github.com/tendermint/tendermint/abci/types"
 	"github.com/tendermint/tendermint/libs/db"
+	tmtypes "github.com/tendermint/tendermint/types"
+
+	"go-kosu/abci/types"
 )
 
 func newTestApp(t *testing.T, db db.DB) (func(), *App) {
@@ -20,7 +23,16 @@ func newTestApp(t *testing.T, db db.DB) (func(), *App) {
 	require.NoError(t, err)
 
 	fn := func() { _ = os.RemoveAll(dir) }
-	return fn, NewApp(db, dir)
+
+	app := NewApp(db, dir)
+	doc, err := tmtypes.GenesisDocFromFile(app.Config.GenesisFile())
+	require.NoError(t, err)
+
+	if app.Store().LastCommitID().Version == 0 {
+		app.InitChain(abci.RequestInitChain{AppStateBytes: doc.AppState})
+	}
+
+	return fn, app
 }
 
 func TestCheckTxSignature(t *testing.T) {

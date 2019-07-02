@@ -3,14 +3,17 @@ package abci
 import (
 	"fmt"
 	"os"
+	"strings"
 
 	cfg "github.com/tendermint/tendermint/config"
 	cmn "github.com/tendermint/tendermint/libs/common"
 	log "github.com/tendermint/tendermint/libs/log"
 	"github.com/tendermint/tendermint/p2p"
 	"github.com/tendermint/tendermint/privval"
-	"github.com/tendermint/tendermint/types"
+	tmtypes "github.com/tendermint/tendermint/types"
 	tmtime "github.com/tendermint/tendermint/types/time"
+
+	"go-kosu/abci/types"
 )
 
 var chainIDPrefix = "kosu-chain-%v"
@@ -38,8 +41,14 @@ func createConfig(homedir string, logger log.Logger) error {
 	} else {
 		config.SetRoot(homedir)
 	}
-
 	cfg.EnsureRoot(config.RootDir)
+
+	// Update default config values
+	config.LogLevel = strings.Join(
+		[]string{"app:info,witness:info", config.LogLevel}, ",",
+	)
+	// WriteConfigFile will overwrite the default config written by .EnsureRoot
+	cfg.WriteConfigFile(config.RootDir+"/config/config.toml", config)
 
 	// private validator
 	privValKeyFile := config.PrivValidatorKeyFile()
@@ -71,13 +80,14 @@ func createConfig(homedir string, logger log.Logger) error {
 	if cmn.FileExists(genFile) {
 		logger.Info("Found genesis file", "path", genFile)
 	} else {
-		genDoc := types.GenesisDoc{
+		genDoc := tmtypes.GenesisDoc{
 			ChainID:         fmt.Sprintf(chainIDPrefix, cmn.RandStr(6)),
 			GenesisTime:     tmtime.Now(),
-			ConsensusParams: types.DefaultConsensusParams(),
+			ConsensusParams: tmtypes.DefaultConsensusParams(),
+			AppState:        appState.JSON(),
 		}
 		key := pv.GetPubKey()
-		genDoc.Validators = []types.GenesisValidator{{
+		genDoc.Validators = []tmtypes.GenesisValidator{{
 			Address: key.Address(),
 			PubKey:  key,
 			Power:   10,
@@ -90,4 +100,11 @@ func createConfig(homedir string, logger log.Logger) error {
 	}
 
 	return nil
+}
+
+var appState = &Genesis{
+	ConsensusParams: types.ConsensusParams{
+		PeriodLength: 10,
+		PeriodLimit:  100000,
+	},
 }
