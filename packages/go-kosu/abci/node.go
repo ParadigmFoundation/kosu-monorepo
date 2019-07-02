@@ -35,6 +35,7 @@ func (app *App) CreateNode() (*node.Node, error) {
 	if err != nil {
 		return nil, err
 	}
+
 	node, err := node.NewNode(
 		app.Config,
 		pv.LoadOrGenFilePV(

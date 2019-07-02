@@ -86,6 +86,18 @@ func (app *App) Commit() abci.ResponseCommit {
 
 // InitChain .
 func (app *App) InitChain(req abci.RequestInitChain) abci.ResponseInitChain {
+	if !app.store.LastCommitID().IsZero() {
+		panic("Using a non-zero state when initializing the chain")
+	}
+
+	gen, err := NewGenesisFromRequest(req)
+	if err != nil {
+		panic(err)
+	}
+
+	app.store.SetConsensusParams(gen.ConsensusParams)
+	app.log.Info("Loaded Genesis State", "gen", gen)
+
 	_ = req.Validators
 	return abci.ResponseInitChain{}
 }
