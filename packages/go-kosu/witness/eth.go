@@ -12,11 +12,6 @@ import (
 	"github.com/ethereum/go-ethereum/ethclient"
 )
 
-var contracts = map[uint64]string{
-	3:    "0xf2098FB608098A562d24CCde594A304d739cc4B7",
-	6174: "0x2f3afeff0914f33769cdfbf3fcf870c33b26c311",
-}
-
 var _ Provider = &EthereumProvider{}
 
 // EthereumProvider implements a Provider that connect to the Ethereum Blockchain
@@ -36,13 +31,14 @@ func NewEthereumProvider(addr string) (*EthereumProvider, error) {
 	if err != nil {
 		return nil, err
 	}
-	addr, ok := contracts[nID.Uint64()]
-	if !ok {
-		return nil, fmt.Errorf("contract address not found for NetworkID: %d", nID.Uint64())
+
+	cAddr, err := GetContractAddress(nID, "EventEmitter")
+	if err != nil {
+		return nil, err
 	}
 
 	events, err := NewEventEmitter(
-		common.HexToAddress(addr),
+		common.HexToAddress(cAddr),
 		client,
 	)
 	if err != nil {
