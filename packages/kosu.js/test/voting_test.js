@@ -4,10 +4,13 @@ describe("Voting", () => {
         const voteSalt = TestValues.fiveEther;
         const encodedVote = kosu.voting.encodeVote(voteValue, voteSalt);
 
-        const pollId = await testHelpers.variablePoll(3, 1);
+        const { blockNumber, pollId } = await testHelpers.variablePoll(10, 10);
+        const commitEnd = blockNumber + 10;
+        const revealEnd = blockNumber + 21;
         await kosu.voting.commitVote(pollId, encodedVote, TestValues.oneWei).should.be.fulfilled;
+        await testHelpers.skipTo(commitEnd);
         await kosu.voting.revealVote(pollId, voteValue, voteSalt);
-        await testHelpers.skipBlocks(5);
+        await testHelpers.skipTo(revealEnd);
         await kosu.voting
             .winningOption(pollId)
             .then(x => x.toString())
