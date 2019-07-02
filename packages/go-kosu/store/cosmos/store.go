@@ -41,14 +41,6 @@ func NewStore(db db.DB, cdc Codec) *Store {
 		panic(err)
 	}
 
-	// TODO: this should comes from genesis block
-	if s.cms.LastCommitID().IsZero() {
-		s.SetConsensusParams(types.ConsensusParams{
-			PeriodLength: 10,
-			PeriodLimit:  100000,
-		})
-	}
-
 	return s
 }
 
