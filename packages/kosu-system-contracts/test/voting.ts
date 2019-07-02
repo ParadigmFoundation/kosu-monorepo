@@ -10,17 +10,20 @@ describe("Voting", () => {
 
     const shortPoll = async () => {
         await testHelpers.prepareTokens(accounts[0], TestValues.fiveEther);
-        return testHelpers.variablePoll(1, 1);
+        const { pollId } = await testHelpers.variablePoll(1, 1);
+        return pollId;
     };
 
     const twoOnePoll = async () => {
         await testHelpers.prepareTokens(accounts[0], TestValues.fiveEther);
-        return testHelpers.variablePoll(2, 1);
+        const { pollId } = await testHelpers.variablePoll(2, 1);
+        return pollId;
     };
 
     const oneTwoPoll = async () => {
         await testHelpers.prepareTokens(accounts[0], TestValues.fiveEther);
-        return testHelpers.variablePoll(1, 2);
+        const { pollId } = await testHelpers.variablePoll(1, 2);
+        return pollId;
     };
 
     const salt = new BigNumber("42");
@@ -159,7 +162,7 @@ describe("Voting", () => {
             await kosuToken.transfer.awaitTransactionSuccessAsync(accounts[1], TestValues.fiveEther);
             await testHelpers.prepareTokens(accounts[0], TestValues.fiveEther);
             await testHelpers.prepareTokens(accounts[1], TestValues.fiveEther);
-            const pollId = await testHelpers.variablePoll(2, 2);
+            const { pollId } = await testHelpers.variablePoll(2, 2);
             await voting.commitVote.awaitTransactionSuccessAsync(pollId, secret1, TestValues.oneEther).should.eventually
                 .be.fulfilled;
             await voting.commitVote.awaitTransactionSuccessAsync(pollId, secret2, TestValues.fiveEther, {
@@ -180,7 +183,7 @@ describe("Voting", () => {
             await kosuToken.transfer.awaitTransactionSuccessAsync(accounts[1], TestValues.fiveEther);
             await testHelpers.prepareTokens(accounts[0], TestValues.fiveEther);
             await testHelpers.prepareTokens(accounts[1], TestValues.fiveEther);
-            const pollId = await testHelpers.variablePoll(2, 2);
+            const { pollId } = await testHelpers.variablePoll(2, 2);
             await voting.commitVote.awaitTransactionSuccessAsync(pollId, secret1, TestValues.fiveEther).should
                 .eventually.be.fulfilled;
             await voting.commitVote.awaitTransactionSuccessAsync(pollId, secret2, TestValues.fiveEther, {
@@ -203,7 +206,7 @@ describe("Voting", () => {
             await kosuToken.transfer.awaitTransactionSuccessAsync(accounts[1], TestValues.fiveEther);
             await testHelpers.prepareTokens(accounts[0], TestValues.fiveEther);
             await testHelpers.prepareTokens(accounts[1], TestValues.fiveEther);
-            const pollId = await testHelpers.variablePoll(2, 2);
+            const { pollId } = await testHelpers.variablePoll(2, 2);
             await voting.commitVote.awaitTransactionSuccessAsync(pollId, secret1, TestValues.oneEther).should.eventually
                 .be.fulfilled;
             await voting.commitVote.awaitTransactionSuccessAsync(pollId, secret1, TestValues.fiveEther, {
@@ -226,7 +229,7 @@ describe("Voting", () => {
             await kosuToken.transfer.awaitTransactionSuccessAsync(accounts[1], TestValues.fiveEther);
             await testHelpers.prepareTokens(accounts[0], TestValues.fiveEther);
             await testHelpers.prepareTokens(accounts[1], TestValues.fiveEther);
-            const pollId = await testHelpers.variablePoll(2, 2);
+            const { pollId } = await testHelpers.variablePoll(2, 2);
             await voting.commitVote.awaitTransactionSuccessAsync(pollId, secret1, TestValues.oneEther).should.eventually
                 .be.fulfilled;
             await voting.commitVote.awaitTransactionSuccessAsync(pollId, secret2, TestValues.fiveEther, {
@@ -247,7 +250,7 @@ describe("Voting", () => {
             await kosuToken.transfer.awaitTransactionSuccessAsync(accounts[1], TestValues.fiveEther);
             await testHelpers.prepareTokens(accounts[0], TestValues.fiveEther);
             await testHelpers.prepareTokens(accounts[1], TestValues.fiveEther);
-            const pollId = await testHelpers.variablePoll(2, 2);
+            const { pollId } = await testHelpers.variablePoll(2, 2);
             await voting.commitVote.awaitTransactionSuccessAsync(pollId, secret1, TestValues.oneEther).should.eventually
                 .be.fulfilled;
             await voting.commitVote.awaitTransactionSuccessAsync(pollId, secret2, TestValues.fiveEther, {
