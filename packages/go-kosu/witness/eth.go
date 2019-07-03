@@ -12,14 +12,6 @@ import (
 	"github.com/ethereum/go-ethereum/ethclient"
 )
 
-const (
-	// KosuEventEmitterAddress is the address of the EventEmitter contract
-	// TODO use deployed addresses and network id to get address
-	// NOTE: the 'KosuEvent' has not yet been renamed to 'KosuEvent' in
-	// 	the EventEmitter contract yet.
-	KosuEventEmitterAddress = "0x2f3afeff0914f33769cdfbf3fcf870c33b26c311"
-)
-
 var _ Provider = &EthereumProvider{}
 
 // EthereumProvider implements a Provider that connect to the Ethereum Blockchain
@@ -35,8 +27,18 @@ func NewEthereumProvider(addr string) (*EthereumProvider, error) {
 		return nil, err
 	}
 
+	nID, err := client.NetworkID(context.Background())
+	if err != nil {
+		return nil, err
+	}
+
+	cAddr, err := GetContractAddress(nID, "EventEmitter")
+	if err != nil {
+		return nil, err
+	}
+
 	events, err := NewEventEmitter(
-		common.HexToAddress(KosuEventEmitterAddress),
+		common.HexToAddress(cAddr),
 		client,
 	)
 	if err != nil {
