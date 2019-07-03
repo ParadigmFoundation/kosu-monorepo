@@ -28,14 +28,15 @@ func WrapTx(data interface{}) *Transaction {
 // Encoding process consist in base64(proto.Marshal())
 func EncodeTx(tx proto.Message) ([]byte, error) {
 	// Encode to binary
-	buf, err := proto.Marshal(tx)
-	if err != nil {
+	buf := proto.NewBuffer(nil)
+	buf.SetDeterministic(true)
+	if err := buf.Marshal(tx); err != nil {
 		return nil, err
 	}
 
 	w := bytes.NewBuffer(nil)
 	enc := base64.NewEncoder(base64.StdEncoding, w)
-	if _, err := enc.Write(buf); err != nil {
+	if _, err := enc.Write(buf.Bytes()); err != nil {
 		return nil, err
 	}
 
