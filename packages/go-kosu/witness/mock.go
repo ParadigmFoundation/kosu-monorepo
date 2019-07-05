@@ -11,8 +11,6 @@ type MockProvider struct {
 	lastBlockNumber uint64
 	events          chan (*EventEmitterKosuEvent)
 	blocks          chan (*types.Header)
-
-	mu
 }
 
 func NewMockProvider(lastBlockNumber uint64) *MockProvider {
