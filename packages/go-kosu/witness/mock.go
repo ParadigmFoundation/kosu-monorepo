@@ -1,77 +1,53 @@
+// nolint
 package witness
 
 import (
 	"context"
+
+	"github.com/ethereum/go-ethereum/core/types"
 )
 
-// MockProvider mocks a Provider, it's useful for testing
 type MockProvider struct {
 	lastBlockNumber uint64
-	blocks          chan *Block
-	events          chan *Event
+	events          chan (*EventEmitterKosuEvent)
+	blocks          chan (*types.Header)
+
+	mu
 }
 
-// NewMockProvider returns a new MockProvider, it receives events sent to channel ch
-func NewMockProvider(ch <-chan interface{}) *MockProvider {
-	m := &MockProvider{
-		blocks: make(chan *Block),
-		events: make(chan *Event),
-	}
-	go m.loop(ch)
-	return m
-}
-
-func (m *MockProvider) loop(ch <-chan interface{}) {
-	for {
-		msg, ok := <-ch
-		if !ok {
-			m.close()
-			return
-		}
-
-		switch t := msg.(type) {
-		case Block:
-			n := t.Number.Uint64()
-			if n > m.lastBlockNumber {
-				m.lastBlockNumber = n
-			}
-			m.blocks <- &t
-		case Event:
-			m.events <- &t
-		}
+func NewMockProvider(lastBlockNumber uint64) *MockProvider {
+	return &MockProvider{
+		lastBlockNumber: lastBlockNumber,
+		events:          make(chan *EventEmitterKosuEvent),
+		blocks:          make(chan *types.Header),
 	}
 }
 
-func (m *MockProvider) close() {
-	close(m.blocks)
-	close(m.events)
-}
-
-// nolint
 func (m *MockProvider) GetLastBlockNumber(_ context.Context) (uint64, error) {
 	return m.lastBlockNumber, nil
 }
 
-// nolint
-func (m *MockProvider) WatchBlocks(ctx context.Context, ch chan *Block) error {
+func (m *MockProvider) WatchEvents(ctx context.Context, fn EventHandler) error {
 	for {
 		select {
-		case block := <-m.blocks:
-			ch <- block
 		case <-ctx.Done():
 			return ctx.Err()
+		case e := <-m.events:
+			fn(e)
 		}
 	}
 }
 
-// nolint
-func (m *MockProvider) WatchEvents(ctx context.Context, ch chan *Event) error {
+func (m *MockProvider) WatchBlocks(ctx context.Context, fn BlockHandler) error {
 	for {
 		select {
-		case event := <-m.events:
-			ch <- event
 		case <-ctx.Done():
 			return ctx.Err()
+		case e := <-m.blocks:
+			fn(e)
 		}
 	}
 }
+
+func (m *MockProvider) EventsCh() chan<- (*EventEmitterKosuEvent) { return m.events }
+func (m *MockProvider) BlocksCh() chan<- (*types.Header)          { return m.blocks }

@@ -32,6 +32,7 @@ require (
 	github.com/tendermint/iavl v0.12.2 // indirect
 	github.com/tendermint/tendermint v0.31.5
 	golang.org/x/crypto v0.0.0-20190426145343-a29dc8fdc734
+	golang.org/x/tools v0.0.0-20190703212419-2214986f1668 // indirect
 	google.golang.org/grpc v1.20.1 // indirect
 	gopkg.in/natefinch/npipe.v2 v2.0.0-20160621034901-c1b8fa8bdcce // indirect
 	gopkg.in/urfave/cli.v1 v1.20.0 // indirect

@@ -87,8 +87,7 @@ func (s *Suite) TestWitnessRebalance() {
 		defer cancel()
 
 		// Create the witness
-		ch := make(chan interface{})
-		w := witness.New(s.client, witness.NewMockProvider(ch), witness.DefaultOptions)
+		w := witness.New(s.client, witness.NewMockProvider(0), witness.DefaultOptions)
 		require.NoError(t, w.WithLogger(nil).Start(ctx))
 
 		Convey("When a set of Rebalance Tx are committed", func() {
