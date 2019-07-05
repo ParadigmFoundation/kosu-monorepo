@@ -14,7 +14,6 @@ var _ Provider = &EthereumProvider{}
 // EthereumProvider implements a Provider that connect to the Ethereum Blockchain
 type EthereumProvider struct {
 	client *ethclient.Client
-	eAddr  string
 }
 
 // NewEthereumProvider returns a new EthereumProvider
@@ -24,25 +23,31 @@ func NewEthereumProvider(addr string) (*EthereumProvider, error) {
 		return nil, err
 	}
 
-	nID, err := client.NetworkID(context.Background())
-	if err != nil {
-		return nil, err
-	}
-
-	eAddr, err := GetContractAddress(nID, "EventEmitter")
-	if err != nil {
-		return nil, err
-	}
-
-	return &EthereumProvider{client, eAddr}, nil
+<<<<<<< HEAD
+	return &EthereumProvider{client: client}, nil
 }
 
 // WatchEvents watches for emitted events from the EventEmitter contract.
 // First, emits the existing events in the blockchain, then subscribes to get the emitted events as they happen
 func (w *EthereumProvider) WatchEvents(ctx context.Context, fn EventHandler) error {
 	emitter, err := NewEventEmitter(
-		common.HexToAddress(w.eAddr),
+		common.HexToAddress(KosuEventEmitterAddress),
 		w.client,
+=======
+	nID, err := client.NetworkID(context.Background())
+	if err != nil {
+		return nil, err
+	}
+
+	cAddr, err := GetContractAddress(nID, "EventEmitter")
+	if err != nil {
+		return nil, err
+	}
+
+	events, err := NewEventEmitter(
+		common.HexToAddress(cAddr),
+		client,
+>>>>>>> master
 	)
 	if err != nil {
 		return err

@@ -12,7 +12,7 @@ import (
 )
 
 func TestEth(t *testing.T) {
-	env := "ETHEREUM_TEST_ADDRESS"
+	env := "WEB3_TEST_URI"
 	addr := os.Getenv(env)
 	if addr == "" {
 		t.Skipf("%s env not declared", env)

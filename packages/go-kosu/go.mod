@@ -31,6 +31,7 @@ require (
 	github.com/syndtr/goleveldb v1.0.0 // indirect
 	github.com/tendermint/iavl v0.12.2 // indirect
 	github.com/tendermint/tendermint v0.31.5
+	github.com/tidwall/gjson v1.3.0
 	golang.org/x/crypto v0.0.0-20190426145343-a29dc8fdc734
 	golang.org/x/tools v0.0.0-20190703212419-2214986f1668 // indirect
 	google.golang.org/grpc v1.20.1 // indirect
