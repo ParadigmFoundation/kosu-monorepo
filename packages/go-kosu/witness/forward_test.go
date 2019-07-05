@@ -24,7 +24,7 @@ func TestForwardMaturity(t *testing.T) {
 	defer cancel()
 
 	count := 0
-	fn := func(e *EventEmitterKosuEvent) {
+	fn := func(_ *EventEmitterKosuEvent) {
 		count++
 		if count == 3 {
 			cancel()
