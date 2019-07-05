@@ -2,7 +2,6 @@ package witness
 
 import (
 	"context"
-	"fmt"
 	"os"
 	"sync"
 
@@ -129,7 +128,6 @@ func (w *Witness) subscribe(ctx context.Context) error {
 
 func (w *Witness) forward(ctx context.Context) error {
 	fn := func(e *EventEmitterKosuEvent) {
-		fmt.Printf("e.EventType = %+v\n", e.EventType)
 		switch e.EventType {
 		case "PosterRegistryUpdate":
 			w.handlePosterRegistryUpdate(e)
