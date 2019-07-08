@@ -2,13 +2,11 @@ package witness
 
 import (
 	"context"
-	"os"
+	"log"
 
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/core/types"
 	"github.com/ethereum/go-ethereum/ethclient"
-
-	"github.com/tendermint/tendermint/libs/log"
 )
 
 var _ Provider = &EthereumProvider{}
@@ -16,9 +14,6 @@ var _ Provider = &EthereumProvider{}
 // EthereumProvider implements a Provider that connect to the Ethereum Blockchain
 type EthereumProvider struct {
 	client *ethclient.Client
-	eAddr  string
-
-	log log.Logger
 }
 
 // NewEthereumProvider returns a new EthereumProvider
@@ -28,35 +23,31 @@ func NewEthereumProvider(addr string) (*EthereumProvider, error) {
 		return nil, err
 	}
 
-	nID, err := client.NetworkID(context.Background())
-	if err != nil {
-		return nil, err
-	}
-
-	eAddr, err := GetContractAddress(nID, "EventEmitter")
-	if err != nil {
-		return nil, err
-	}
-
-	eth := &EthereumProvider{client, eAddr, nil}
-	return eth.WithLogger(log.NewTMLogger(os.Stdout)), nil
-}
-
-// WithLogger attaches a logger
-func (w *EthereumProvider) WithLogger(logger log.Logger) *EthereumProvider {
-	if logger == nil {
-		logger = log.NewNopLogger()
-	}
-	w.log = logger.With("module", "ethereum")
-	return w
+<<<<<<< HEAD
+	return &EthereumProvider{client: client}, nil
 }
 
 // WatchEvents watches for emitted events from the EventEmitter contract.
 // First, emits the existing events in the blockchain, then subscribes to get the emitted events as they happen
 func (w *EthereumProvider) WatchEvents(ctx context.Context, fn EventHandler) error {
 	emitter, err := NewEventEmitter(
-		common.HexToAddress(w.eAddr),
+		common.HexToAddress(KosuEventEmitterAddress),
 		w.client,
+=======
+	nID, err := client.NetworkID(context.Background())
+	if err != nil {
+		return nil, err
+	}
+
+	cAddr, err := GetContractAddress(nID, "EventEmitter")
+	if err != nil {
+		return nil, err
+	}
+
+	events, err := NewEventEmitter(
+		common.HexToAddress(cAddr),
+		client,
+>>>>>>> master
 	)
 	if err != nil {
 		return err
@@ -77,13 +68,8 @@ func (w *EthereumProvider) WatchEvents(ctx context.Context, fn EventHandler) err
 	}
 	defer sub.Unsubscribe()
 
-	wFn := func(evt *EventEmitterKosuEvent) {
-		w.log.Debug("new event", "type", evt.EventType, "block", evt.Raw.BlockNumber)
-		fn(evt)
-	}
-
 	for f.Next() {
-		wFn(f.Event)
+		fn(f.Event)
 	}
 
 	for {
@@ -91,10 +77,10 @@ func (w *EthereumProvider) WatchEvents(ctx context.Context, fn EventHandler) err
 		case <-ctx.Done():
 			return ctx.Err()
 		case err := <-sub.Err():
-			w.log.Error("watchEvents", "err", err)
+			log.Fatalf("WatchEvents: err = %+v", err)
 			return err
 		case evt := <-events:
-			wFn(evt)
+			fn(evt)
 		}
 	}
 }

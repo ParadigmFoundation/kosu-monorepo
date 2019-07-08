@@ -2,55 +2,27 @@ package witness
 
 import (
 	"context"
-	"encoding/hex"
-	"fmt"
-	"math/big"
 	"os"
 	"sync"
 
+	eth "github.com/ethereum/go-ethereum/core/types"
 	"github.com/tendermint/tendermint/libs/log"
 
 	"go-kosu/abci"
 	"go-kosu/abci/types"
 )
 
+// EventHandler is a callback that handles EventEmitterKosuEvent
+type EventHandler func(*EventEmitterKosuEvent)
+
+// BlockHandler is a callback that handles new ethereum block headers
+type BlockHandler func(blk *eth.Header)
+
 // Provider describes a block provider.
 type Provider interface {
 	GetLastBlockNumber(context.Context) (uint64, error)
-	WatchBlocks(context.Context, chan *Block) error
-	WatchEvents(context.Context, chan *Event) error
-}
-
-// Block is holds the basic block information.
-type Block struct {
-	Hash   []byte
-	Number *big.Int
-}
-
-func (b *Block) String() string {
-	return fmt.Sprintf("<number: %s, hash: %s>", b.Number.String(), hex.EncodeToString(b.Hash))
-}
-
-// Event contains the information of a EventEmitter contract
-type Event struct {
-	Block   Block
-	Address string
-	Amount  *big.Int
-}
-
-func (e *Event) String() string {
-	return fmt.Sprintf("<block:%v addr:%s amount:+%s>", e.Block.Number, e.Address, e.Amount.String())
-}
-
-// WitnessTx builds TransactionWitness out of the event data
-func (e *Event) WitnessTx() *types.TransactionWitness {
-	tx := &types.TransactionWitness{
-		Subject: types.TransactionWitness_POSTER,
-		Amount:  types.NewBigInt(e.Amount.Bytes()),
-		Block:   e.Block.Number.Uint64(),
-		Address: e.Address,
-	}
-	return tx
+	WatchBlocks(context.Context, BlockHandler) error
+	WatchEvents(context.Context, EventHandler) error
 }
 
 // Options are parameter to control Witness behavior
@@ -155,45 +127,52 @@ func (w *Witness) subscribe(ctx context.Context) error {
 }
 
 func (w *Witness) forward(ctx context.Context) error {
-	fn := func(e *Event) {
-		args := []interface{}{
-			"event", e.Block.Number.String(),
+	fn := func(e *EventEmitterKosuEvent) {
+		switch e.EventType {
+		case "PosterRegistryUpdate":
+			w.handlePosterRegistryUpdate(e)
+		case "ValidatorRegistryUpdate":
+			w.handleValidatorRegistryUpdate(e)
 		}
-
-		res, err := w.client.BroadcastTxSync(e.WitnessTx())
-		if err != nil {
-			args = append(args, "err", err)
-			if res.Log != "" {
-				args = append(args, "log", res.Log)
-			}
-			w.log.Error("BroadcastTxSync: WitnessTx", args...)
-			return
-
-		}
-		w.log.Info("BroadcastTxSync: WitnessTx", append(args, "hash", res.Hash[0:4])...)
 	}
 
 	// Forward events from the provider (probably Ethereum) to the local node as TXs
 	return ForwardEvents(ctx, w.provider, int64(w.opts.FinalityThreshold), fn)
 }
 
-func (w *Witness) handleBlocks(ctx context.Context) error {
-	ch := make(chan *Block)
-	errCh := make(chan error)
-	go func() {
-		err := w.provider.WatchBlocks(ctx, ch)
-		w.log.Error("WatchBlocks", "err", err)
-		errCh <- err
-		close(ch)
-	}()
+func (w *Witness) handlePosterRegistryUpdate(e *EventEmitterKosuEvent) {
+	args := []interface{}{
+		"event", e.Raw.BlockNumber,
+	}
 
-	for block := range ch {
-		if block == nil {
-			break
+	tx := &types.TransactionWitness{
+		Subject: types.TransactionWitness_POSTER,
+		Amount:  types.NewBigInt(e.Data[1][:]),
+		Block:   e.Raw.BlockNumber,
+		Address: e.Raw.Address.String(),
+	}
+
+	res, err := w.client.BroadcastTxSync(tx)
+	if err != nil {
+		args = append(args, "err", err)
+		if res.Log != "" {
+			args = append(args, "log", res.Log)
 		}
+		w.log.Error("BroadcastTxSync: WitnessTx", args...)
+		return
 
-		num := w.roundInfo.Number
-		cur := block.Number.Uint64()
+	}
+	w.log.Info("BroadcastTxSync: WitnessTx", append(args, "hash", res.Hash[0:4])...)
+}
+
+func (w *Witness) handleValidatorRegistryUpdate(e *EventEmitterKosuEvent) {
+	w.log.Info("handle", "type", e.EventType)
+}
+
+func (w *Witness) handleBlocks(ctx context.Context) error {
+	fn := func(blk *eth.Header) {
+		num := w.RoundInfo().Number
+		cur := blk.Number.Uint64()
 		mat := cur - uint64(w.opts.FinalityThreshold)
 		w.currentHeight = cur
 
@@ -204,8 +183,7 @@ func (w *Witness) handleBlocks(ctx context.Context) error {
 			}
 		}
 	}
-
-	return <-errCh
+	return w.provider.WatchBlocks(ctx, fn)
 }
 
 func (w *Witness) rebalance(round, start uint64) error {
