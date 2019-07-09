@@ -2,6 +2,7 @@ package witness
 
 import (
 	"context"
+	"encoding/hex"
 	"os"
 	"sync"
 
@@ -144,18 +145,8 @@ func (w *Witness) forward(ctx context.Context) error {
 	return ForwardEvents(ctx, w.provider, int64(w.opts.FinalityThreshold), fn)
 }
 
-func (w *Witness) handlePosterRegistryUpdate(e *EventEmitterKosuEvent) {
-	args := []interface{}{
-		"event", e.Raw.BlockNumber,
-	}
-
-	tx := &types.TransactionWitness{
-		Subject: types.TransactionWitness_POSTER,
-		Amount:  types.NewBigInt(e.Data[1][:]),
-		Block:   e.Raw.BlockNumber,
-		Address: e.Raw.Address.String(),
-	}
-
+// broadcastTxSync broadcast and log a tx
+func (w *Witness) broadcastTxSync(tx interface{}, args []interface{}) {
 	res, err := w.client.BroadcastTxSync(tx)
 	if err != nil {
 		args = append(args, "err", err)
@@ -164,13 +155,38 @@ func (w *Witness) handlePosterRegistryUpdate(e *EventEmitterKosuEvent) {
 		}
 		w.log.Error("BroadcastTxSync: WitnessTx", args...)
 		return
-
 	}
 	w.log.Info("BroadcastTxSync: WitnessTx", append(args, "hash", res.Hash[0:4])...)
 }
 
+func (w *Witness) handlePosterRegistryUpdate(e *EventEmitterKosuEvent) {
+	tx := &types.TransactionWitness{
+		Subject: types.TransactionWitness_POSTER,
+		Amount:  types.NewBigInt(e.Data[1][:]),
+		Block:   e.Raw.BlockNumber,
+		Address: e.Raw.Address.String(),
+	}
+
+	w.broadcastTxSync(tx, []interface{}{
+		"subject", "poster",
+		"block", e.Raw.BlockNumber,
+	})
+}
+
 func (w *Witness) handleValidatorRegistryUpdate(e *EventEmitterKosuEvent) {
-	w.log.Info("handle", "type", e.EventType)
+	tx := &types.TransactionWitness{
+		Subject:   types.TransactionWitness_VALIDATOR,
+		Block:     e.Raw.BlockNumber,
+		Address:   hex.EncodeToString(e.Data[0][:]),
+		PublicKey: e.Data[1][:],
+		Amount:    types.NewBigInt(e.Data[2][:]),
+	}
+
+	w.broadcastTxSync(tx, []interface{}{
+		"subject", "validator",
+		"block", e.Raw.BlockNumber,
+		"pubKey", hex.EncodeToString(tx.PublicKey),
+	})
 }
 
 func (w *Witness) handleBlocks(ctx context.Context) error {

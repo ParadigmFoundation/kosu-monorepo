@@ -10,12 +10,12 @@ import (
 	tmtypes "github.com/tendermint/tendermint/types"
 
 	"go-kosu/abci/types"
-	"go-kosu/witness"
 )
 
-func (s *Suite) TestWitnessTx() {
+func (s *Suite) TestWitnessTxPoster() {
 	GivenABCIServer(s.T(), s, func(t *testing.T) {
 		tx := &types.TransactionWitness{
+			Subject: types.TransactionWitness_POSTER,
 			Block:   10,
 			Address: "0xffff",
 			Amount:  types.NewBigIntFromInt(100),
@@ -70,46 +70,43 @@ func (s *Suite) TestWitnessTx() {
 	})
 }
 
-func (s *Suite) TestWitnessRebalance() {
+func (s *Suite) TestWitnessValidator() {
 	GivenABCIServer(s.T(), s, func(t *testing.T) {
-		tx := &types.TransactionRebalance{
-			RoundInfo: &types.RoundInfo{
-				StartsAt: 10,
-				EndsAt:   20,
-			},
+		tx := &types.TransactionWitness{
+			Subject:   types.TransactionWitness_VALIDATOR,
+			Block:     10,
+			Address:   "0xffff",
+			PublicKey: []byte("123456789abcdef0123456789abcdef0"),
+			// Amount needs to be >= 10**18
+			Amount: types.NewBigInt([]byte{
+				0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
+			}),
 		}
-
-		s.app.Store().SetConsensusParams(types.ConsensusParams{
-			PeriodLength: uint32(tx.RoundInfo.EndsAt - tx.RoundInfo.StartsAt),
-		})
 
 		ctx, cancel := context.WithCancel(context.Background())
 		defer cancel()
 
-		// Create the witness
-		w := witness.New(s.client, witness.NewMockProvider(0), witness.DefaultOptions)
-		require.NoError(t, w.WithLogger(nil).Start(ctx))
+		ch, closer, err := s.client.Subscribe(ctx, "tm.event = 'NewBlock'")
+		So(err, ShouldBeNil)
+		defer closer()
 
-		Convey("When a set of Rebalance Tx are committed", func() {
-			roundNumber := []uint64{1, 2, 3}
-			for _, n := range roundNumber {
-				tx.RoundInfo.Number = n
+		Convey("And an initial number of validators", func() {
+			res, err := s.client.Validators(nil)
+			require.NoError(t, err)
+			validators := len(res.Validators)
 
-				BroadcastTxCommit(t, s.client, tx)
+			Convey("When a Tx is broadcasted", func() {
+				BroadcastTxSync(t, s.client, tx)
+				Convey("Validators should be updated", func() {
+					// Wait for 2 blocks for validator set to be updated
+					<-ch
+					<-ch
 
-				tx.RoundInfo.StartsAt = tx.RoundInfo.EndsAt
-				tx.RoundInfo.EndsAt += 10
-			}
+					res, err := s.client.Validators(nil)
+					require.NoError(t, err)
 
-			// Wait until the next block is minted
-			sub, closer, err := s.client.Subscribe(ctx, "tm.event = 'NewBlock'")
-			So(err, ShouldBeNil)
-			defer closer()
-
-			<-sub
-
-			Convey("It should update the local witness state", func() {
-				So(w.RoundInfo().Number, ShouldEqual, 3)
+					So(len(res.Validators), ShouldEqual, validators+1)
+				})
 			})
 		})
 	})

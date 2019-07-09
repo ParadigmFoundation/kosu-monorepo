@@ -21,9 +21,20 @@ func (app *App) deliverWitnessTx(tx *types.TransactionWitness) abci.ResponseDeli
 		return abci.ResponseDeliverTx{Code: 1, Info: err.Error()}
 	}
 
-	if err := app.pushTransactionWitness(tx); err != nil {
-		return abci.ResponseDeliverTx{Code: 1, Info: err.Error()}
+	switch tx.Subject {
+	case types.TransactionWitness_POSTER:
+		if err := app.pushTransactionWitness(tx); err != nil {
+			return abci.ResponseDeliverTx{Code: 1, Info: err.Error()}
+		}
+	case types.TransactionWitness_VALIDATOR:
+		addr := tx.Address
+		v := &types.Validator{
+			PublicKey: tx.PublicKey,
+			Balance:   tx.Amount,
+		}
+		app.store.SetValidator(addr, v)
 	}
+
 	return abci.ResponseDeliverTx{}
 }
 

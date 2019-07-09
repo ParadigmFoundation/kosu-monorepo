@@ -106,6 +106,7 @@ func (app *App) InitChain(req abci.RequestInitChain) abci.ResponseInitChain {
 func (app *App) BeginBlock(req abci.RequestBeginBlock) abci.ResponseBeginBlock {
 	currHeight := req.Header.Height
 	proposer := hex.EncodeToString(req.Header.ProposerAddress)
+	app.log.Error("proposer", "v", proposer)
 
 	for _, vote := range req.LastCommitInfo.Votes {
 		nodeID := hex.EncodeToString(vote.Validator.Address)
