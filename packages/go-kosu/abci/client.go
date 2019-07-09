@@ -13,6 +13,11 @@ import (
 	"go-kosu/abci/types"
 )
 
+var (
+	// ErrNotFound is returned when a Query could not found a resource
+	ErrNotFound = errors.New("not found")
+)
+
 // Client wraps a tendermint/rpc/client.
 // It adds convenience methods to make Broadcast and Query requests match our own types.
 type Client struct {
@@ -112,7 +117,7 @@ func (c *Client) Subscribe(ctx context.Context, q string) (<-chan rpctypes.Resul
 // QueryRoundInfo performs a ABCIQuery to "/roundinfo"
 func (c *Client) QueryRoundInfo() (*types.RoundInfo, error) {
 	var pb types.RoundInfo
-	if err := c.query("/roundinfo", &pb); err != nil {
+	if err := c.query("/chain/key", []byte("roundinfo"), &pb); err != nil {
 		return nil, err
 	}
 
@@ -122,7 +127,7 @@ func (c *Client) QueryRoundInfo() (*types.RoundInfo, error) {
 // QueryConsensusParams performs a ABCI Query to "/consensusparams"
 func (c *Client) QueryConsensusParams() (*types.ConsensusParams, error) {
 	var pb types.ConsensusParams
-	if err := c.query("/consensusparams", &pb); err != nil {
+	if err := c.query("/chain/key", []byte("consensusparams"), &pb); err != nil {
 		return nil, err
 	}
 
@@ -132,15 +137,15 @@ func (c *Client) QueryConsensusParams() (*types.ConsensusParams, error) {
 // QueryPoster performs a ABCI Query to "/posters/<addr>"
 func (c *Client) QueryPoster(addr string) (*types.Poster, error) {
 	var pb types.Poster
-	if err := c.query("/posters/"+addr, &pb); err != nil {
+	if err := c.query("/poster/key", []byte(addr), &pb); err != nil {
 		return nil, err
 	}
 
 	return &pb, nil
 }
 
-func (c *Client) query(path string, pb proto.Message) error {
-	out, err := c.ABCIQuery(path, nil)
+func (c *Client) query(path string, data []byte, pb proto.Message) error {
+	out, err := c.ABCIQuery(path, data)
 	if err != nil {
 		return err
 	}
@@ -148,6 +153,10 @@ func (c *Client) query(path string, pb proto.Message) error {
 
 	if res.IsErr() {
 		return errors.New(res.GetLog())
+	}
+
+	if len(res.Value) == 0 {
+		return ErrNotFound
 	}
 
 	return proto.Unmarshal(res.Value, pb)

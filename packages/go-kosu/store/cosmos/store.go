@@ -1,9 +1,12 @@
 package cosmos
 
 import (
-	cosmos "github.com/cosmos/cosmos-sdk/store"
-	sdk "github.com/cosmos/cosmos-sdk/types"
+	abci "github.com/tendermint/tendermint/abci/types"
 	"github.com/tendermint/tendermint/libs/db"
+
+	cosmos "github.com/cosmos/cosmos-sdk/store"
+	"github.com/cosmos/cosmos-sdk/store/rootmulti"
+	sdk "github.com/cosmos/cosmos-sdk/types"
 
 	"go-kosu/abci/types"
 	"go-kosu/store"
@@ -13,7 +16,7 @@ import (
 type Store struct {
 	codec Codec
 
-	cms cosmos.CommitMultiStore
+	cms *rootmulti.Store
 
 	chainKey     *sdk.KVStoreKey
 	witnessKey   *sdk.KVStoreKey
@@ -24,7 +27,7 @@ type Store struct {
 // NewStore returns a new store
 func NewStore(db db.DB, cdc Codec) *Store {
 	s := &Store{codec: cdc,
-		cms: cosmos.NewCommitMultiStore(db),
+		cms: rootmulti.NewStore(db),
 
 		chainKey:     sdk.NewKVStoreKey("chain"),
 		witnessKey:   sdk.NewKVStoreKey("witness"),
@@ -58,14 +61,16 @@ func (s *Store) Set(key string, kv *sdk.KVStoreKey, v interface{}) {
 	s.cms.GetCommitKVStore(kv).Set([]byte(key), buf)
 }
 
-// Get is a generic state getter
-func (s *Store) Get(key string, kv *sdk.KVStoreKey, v interface{}) {
+// Get is a generic state getter, it returns false if the key does not exists
+func (s *Store) Get(key string, kv *sdk.KVStoreKey, v interface{}) bool {
 	buf := s.cms.GetCommitKVStore(kv).Get([]byte(key))
 	if buf != nil {
 		if err := s.codec.Decode(buf, v); err != nil {
 			panic(err)
 		}
+		return true
 	}
+	return false
 }
 
 // Delete is a generic state deleter
@@ -96,6 +101,11 @@ func (s *Store) Commit() cosmos.CommitID { return s.cms.Commit() }
 
 // LastCommitID returns the last commit info
 func (s *Store) LastCommitID() cosmos.CommitID { return s.cms.LastCommitID() }
+
+// Query wrap the rootmulti.Query method
+func (s *Store) Query(req abci.RequestQuery) abci.ResponseQuery {
+	return s.cms.Query(req)
+}
 
 // SetRoundInfo sets the RoundInfo
 func (s *Store) SetRoundInfo(v types.RoundInfo) {
@@ -161,7 +171,9 @@ func (s *Store) IncWitnessTxConfirmations(id []byte) {
 // Poster gets a Poster
 func (s *Store) Poster(addr string) *types.Poster {
 	var v types.Poster
-	s.Get(addr, s.posterKey, &v)
+	if ok := s.Get(addr, s.posterKey, &v); !ok {
+		return nil
+	}
 	return &v
 }
 
@@ -183,7 +195,9 @@ func (s *Store) ValidatorExists(addr string) bool {
 // Validator gets a validator
 func (s *Store) Validator(id string) *types.Validator {
 	v := &types.Validator{}
-	s.Get(id, s.validatorKey, v)
+	if ok := s.Get(id, s.validatorKey, v); !ok {
+		return nil
+	}
 	return v
 }
 

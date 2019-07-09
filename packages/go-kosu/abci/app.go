@@ -5,7 +5,6 @@ import (
 	"errors"
 	"fmt"
 	"math"
-	"regexp"
 
 	abci "github.com/tendermint/tendermint/abci/types"
 	cfg "github.com/tendermint/tendermint/config"
@@ -26,12 +25,9 @@ var (
 type App struct {
 	abci.BaseApplication
 	Config *cfg.Config
+	log    log.Logger
 
 	store store.Store
-
-	handlers map[*regexp.Regexp]QueryHandler
-
-	log log.Logger
 }
 
 // NewApp returns a new ABCI App
@@ -47,14 +43,17 @@ func NewApp(db db.DB, homedir string) *App {
 	}
 
 	app := &App{
-		store:    cosmos.NewStore(db, new(cosmos.ProtoCodec)),
-		Config:   config,
-		handlers: make(map[*regexp.Regexp]QueryHandler),
-		log:      logger.With("module", "app"),
+		store:  cosmos.NewStore(db, new(cosmos.ProtoCodec)),
+		Config: config,
+		log:    logger.With("module", "app"),
 	}
-	app.registerHandlers()
 
 	return app
+}
+
+// Query queries the application state using the store.Query method
+func (app *App) Query(req abci.RequestQuery) abci.ResponseQuery {
+	return app.store.Query(req)
 }
 
 // Store returns the underlying store
