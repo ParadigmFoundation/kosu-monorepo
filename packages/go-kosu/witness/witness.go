@@ -80,7 +80,11 @@ func (w *Witness) Start(ctx context.Context) error {
 	// Load the current RoundInfo and keep it local
 	info, err := w.client.QueryRoundInfo()
 	if err != nil {
-		return err
+		if err == abci.ErrNotFound {
+			info = &types.RoundInfo{}
+		} else {
+			return err
+		}
 	}
 	w.roundMutex.Lock()
 	w.roundInfo = *info

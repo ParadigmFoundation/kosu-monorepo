@@ -19,7 +19,7 @@ func (app *App) checkOrderTx(tx *types.TransactionOrder) error {
 	}
 
 	poster := app.store.Poster(posterAddress.String())
-	if poster.Limit < uint32(1) {
+	if poster == nil {
 		return errOrderRejected
 	}
 
@@ -44,7 +44,7 @@ func (app *App) deliverOrderTx(tx *types.TransactionOrder) abci.ResponseDeliverT
 	}
 
 	poster := app.store.Poster(posterAddress.String())
-	if poster.Limit < uint32(1) {
+	if poster == nil {
 		return abci.ResponseDeliverTx{
 			Code: 1,
 			Log:  errOrderRejected.Error(),

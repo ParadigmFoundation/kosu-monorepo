@@ -1,15 +1,18 @@
 package store
 
 import (
-	"go-kosu/abci/types"
+	abci "github.com/tendermint/tendermint/abci/types"
 
 	"github.com/cosmos/cosmos-sdk/store"
+
+	"go-kosu/abci/types"
 )
 
 // Store stores the application state
 type Store interface {
 	Commit() store.CommitID
 	LastCommitID() store.CommitID
+	Query(abci.RequestQuery) abci.ResponseQuery
 
 	RoundInfo() types.RoundInfo
 	SetRoundInfo(types.RoundInfo)
