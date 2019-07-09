@@ -177,8 +177,8 @@ func (w *Witness) handleValidatorRegistryUpdate(e *EventEmitterKosuEvent) {
 	tx := &types.TransactionWitness{
 		Subject:   types.TransactionWitness_VALIDATOR,
 		Block:     e.Raw.BlockNumber,
-		Address:   hex.EncodeToString(e.Data[0][:]),
-		PublicKey: e.Data[1][:],
+		PublicKey: e.Data[0][:],
+		Address:   hex.EncodeToString(e.Data[1][:]),
 		Amount:    types.NewBigInt(e.Data[2][:]),
 	}
 

@@ -106,7 +106,6 @@ func (app *App) InitChain(req abci.RequestInitChain) abci.ResponseInitChain {
 func (app *App) BeginBlock(req abci.RequestBeginBlock) abci.ResponseBeginBlock {
 	currHeight := req.Header.Height
 	proposer := hex.EncodeToString(req.Header.ProposerAddress)
-	app.log.Error("proposer", "v", proposer)
 
 	for _, vote := range req.LastCommitInfo.Votes {
 		nodeID := hex.EncodeToString(vote.Validator.Address)
@@ -118,10 +117,10 @@ func (app *App) BeginBlock(req abci.RequestBeginBlock) abci.ResponseBeginBlock {
 			v = app.store.Validator(nodeID)
 		}
 
-		v.Active = vote.SignedLastBlock
 		v.Power = vote.Validator.Power
 
 		if vote.SignedLastBlock {
+			v.Active = true
 			v.TotalVotes++
 			v.LastVoted = (currHeight - 1)
 		}
@@ -142,10 +141,10 @@ func (app *App) BeginBlock(req abci.RequestBeginBlock) abci.ResponseBeginBlock {
 	app.store.IterateValidators(func(nodeID string, v *types.Validator) {
 		if v.LastVoted+1 == currHeight {
 			v.Active = true
-			app.store.SetValidator(nodeID, v)
 		} else { // TODO: check-me
 			v.Active = false
 		}
+		app.store.SetValidator(nodeID, v)
 	})
 
 	// update confirmation threshold based on number of active validators
