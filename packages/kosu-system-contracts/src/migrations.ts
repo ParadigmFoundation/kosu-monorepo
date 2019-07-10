@@ -161,12 +161,12 @@ export async function migrations(
                     console.log(`Authorized address: ${posterRegistryProxy.address}`);
                 },
             },
-            {
-                hash: await kosuToken.mint.sendTransactionAsync(new BN(toWei("1000000000"))),
-                success: () => {
-                    console.log(`Minted ${toWei("1000000000")} tokens`);
-                },
-            },
+            // {
+            //     hash: await web3Wrapper.sendTransactionAsync({ ...txDefaults, to: kosuToken.address, value: 1000 }),
+            //     success: () => {
+            //         console.log(`Minted ${toWei("1000000000")} tokens`);
+            //     },
+            // },
             {
                 hash: await authorizedAddresses.authorizeAddress.sendTransactionAsync(validatorRegistry.address),
                 success: () => {
