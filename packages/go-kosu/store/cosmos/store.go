@@ -206,6 +206,11 @@ func (s *Store) SetValidator(id string, v *types.Validator) {
 	s.Set(id, s.validatorKey, v)
 }
 
+// DeleteValidator deletes a validator
+func (s *Store) DeleteValidator(id string) {
+	s.Delete(id, s.validatorKey)
+}
+
 // IterateValidators executes fn for each validator
 func (s *Store) IterateValidators(fn func(id string, v *types.Validator)) {
 	s.All(s.validatorKey, func(key string, val []byte) {

@@ -21,18 +21,8 @@ func (app *App) deliverWitnessTx(tx *types.TransactionWitness) abci.ResponseDeli
 		return abci.ResponseDeliverTx{Code: 1, Info: err.Error()}
 	}
 
-	switch tx.Subject {
-	case types.TransactionWitness_POSTER:
-		if err := app.pushTransactionWitness(tx); err != nil {
-			return abci.ResponseDeliverTx{Code: 1, Info: err.Error()}
-		}
-	case types.TransactionWitness_VALIDATOR:
-		addr := tx.Address
-		v := &types.Validator{
-			PublicKey: tx.PublicKey,
-			Balance:   tx.Amount,
-		}
-		app.store.SetValidator(addr, v)
+	if err := app.pushTransactionWitness(tx); err != nil {
+		return abci.ResponseDeliverTx{Code: 1, Info: err.Error()}
 	}
 
 	return abci.ResponseDeliverTx{}
@@ -64,13 +54,26 @@ func (app *App) pushTransactionWitness(tx *types.TransactionWitness) error {
 	}
 
 	if tx.Amount.BigInt().Uint64() == 0 {
-		app.store.DeletePoster(tx.Address)
+		switch tx.Subject {
+		case types.TransactionWitness_POSTER:
+			app.store.DeletePoster(tx.Address)
+		case types.TransactionWitness_VALIDATOR:
+			app.store.DeleteValidator(tx.Address)
+		}
 		return nil
 	}
 
-	app.store.SetPoster(tx.Address, types.Poster{
-		Balance: tx.Amount,
-	})
+	switch tx.Subject {
+	case types.TransactionWitness_POSTER:
+		app.store.SetPoster(tx.Address, types.Poster{
+			Balance: tx.Amount,
+		})
+	case types.TransactionWitness_VALIDATOR:
+		app.store.SetValidator(tx.Address, &types.Validator{
+			Balance:   tx.Amount,
+			PublicKey: tx.PublicKey,
+		})
+	}
 
 	return nil
 }

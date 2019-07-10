@@ -36,5 +36,6 @@ type Store interface {
 	ValidatorExists(string) bool
 	Validator(string) *types.Validator
 	SetValidator(string, *types.Validator)
+	DeleteValidator(string)
 	IterateValidators(func(string, *types.Validator))
 }

@@ -94,11 +94,28 @@ func TestPoster(t *testing.T, s store.Store) {
 
 // TestValidator verifies the Validator storage behavior
 func TestValidator(t *testing.T, s store.Store) {
+	addr := "0xabcde"
+	v := &types.Validator{
+		PublicKey: []byte{0, 1, 2, 3, 4},
+	}
+	s.SetValidator(addr, v)
+
+	t.Run("should be found", func(t *testing.T) {
+		newV := s.Validator(addr)
+		assert.Equal(t, v.String(), newV.String())
+	})
+
 	t.Run("should return nil when not found/exists", func(t *testing.T) {
 		addr := "0x404"
 		require.False(t, s.ValidatorExists(addr))
 
 		v := s.Validator(addr)
 		assert.Nil(t, v)
+	})
+
+	t.Run("should return nil after deletion", func(t *testing.T) {
+		s.DeleteValidator(addr)
+		newV := s.Validator(addr)
+		assert.Nil(t, newV)
 	})
 }
