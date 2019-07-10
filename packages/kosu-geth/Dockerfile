@@ -1,4 +1,4 @@
-FROM ethereum/client-go:stable
+FROM ethereum/client-go:v1.8.27
 
 COPY genesis.json accounts passwords ./
 RUN mkdir keystore/
