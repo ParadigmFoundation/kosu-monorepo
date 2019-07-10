@@ -3,6 +3,7 @@ package witness
 import (
 	"context"
 	"os"
+	"time"
 
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/core/types"
@@ -13,16 +14,37 @@ import (
 
 var _ Provider = &EthereumProvider{}
 
+// EthereumProviderOpts controls internal provider options
+type EthereumProviderOpts struct {
+	Delay       time.Duration
+	DelayFactor int
+	DelayMax    time.Duration
+}
+
+// DefaultEthereumProviderOpts provides sensible options for the provider
+// This options are used when NewEthereumProvider is invoked
+var DefaultEthereumProviderOpts = EthereumProviderOpts{
+	Delay:       1 * time.Second,
+	DelayFactor: 2,
+	DelayMax:    30 * time.Second,
+}
+
 // EthereumProvider implements a Provider that connect to the Ethereum Blockchain
 type EthereumProvider struct {
 	client *ethclient.Client
 	eAddr  string
 
-	log log.Logger
+	log  log.Logger
+	opts EthereumProviderOpts
 }
 
 // NewEthereumProvider returns a new EthereumProvider
 func NewEthereumProvider(addr string) (*EthereumProvider, error) {
+	return NewEthereumProviderWithOpts(addr, DefaultEthereumProviderOpts)
+}
+
+// NewEthereumProviderWithOpts returns a new EthereumProvider given opts
+func NewEthereumProviderWithOpts(addr string, opts EthereumProviderOpts) (*EthereumProvider, error) {
 	client, err := ethclient.Dial(addr)
 	if err != nil {
 		return nil, err
@@ -38,7 +60,7 @@ func NewEthereumProvider(addr string) (*EthereumProvider, error) {
 		return nil, err
 	}
 
-	eth := &EthereumProvider{client, eAddr, nil}
+	eth := &EthereumProvider{client, eAddr, nil, opts}
 	return eth.WithLogger(log.NewTMLogger(os.Stdout)), nil
 }
 
@@ -51,9 +73,31 @@ func (w *EthereumProvider) WithLogger(logger log.Logger) *EthereumProvider {
 	return w
 }
 
+func (w *EthereumProvider) backoff(name string, fn func() error) error {
+	delay := w.opts.Delay
+
+	for {
+		err := fn()
+
+		w.log.Error("Watcher: retrying...", "op", name, "err", err, "in", delay)
+		time.Sleep(delay)
+
+		delay = delay * time.Duration(w.opts.DelayFactor)
+		if delay > w.opts.DelayMax {
+			delay = w.opts.DelayMax
+		}
+	}
+}
+
 // WatchEvents watches for emitted events from the EventEmitter contract.
 // First, emits the existing events in the blockchain, then subscribes to get the emitted events as they happen
 func (w *EthereumProvider) WatchEvents(ctx context.Context, fn EventHandler) error {
+	return w.backoff("events", func() error {
+		return w.watchEvents(ctx, fn)
+	})
+}
+
+func (w *EthereumProvider) watchEvents(ctx context.Context, fn EventHandler) error {
 	emitter, err := NewEventEmitter(
 		common.HexToAddress(w.eAddr),
 		w.client,
@@ -101,6 +145,12 @@ func (w *EthereumProvider) WatchEvents(ctx context.Context, fn EventHandler) err
 
 // WatchBlocks watches for incoming block headers
 func (w *EthereumProvider) WatchBlocks(ctx context.Context, fn BlockHandler) error {
+	return w.backoff("blocks", func() error {
+		return w.watchBlocks(ctx, fn)
+	})
+}
+
+func (w *EthereumProvider) watchBlocks(ctx context.Context, fn BlockHandler) error {
 	ch := make(chan *types.Header)
 	defer close(ch)
 
