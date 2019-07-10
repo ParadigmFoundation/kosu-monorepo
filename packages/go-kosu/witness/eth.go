@@ -78,6 +78,9 @@ func (w *EthereumProvider) backoff(name string, fn func() error) error {
 
 	for {
 		err := fn()
+		if err == context.Canceled || err == context.DeadlineExceeded {
+			return err
+		}
 
 		w.log.Error("Watcher: retrying...", "op", name, "err", err, "in", delay)
 		time.Sleep(delay)
