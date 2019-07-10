@@ -19,7 +19,7 @@ contract Treasury is Authorizable {
         @param kosuTokenAddress The deployed KosuToken contract address
         @param auth AuthorizedAddresses deployed address.
     */
-    constructor(address kosuTokenAddress, address auth) Authorizable(auth) public {
+    constructor(address payable kosuTokenAddress, address auth) Authorizable(auth) public {
         kosuToken = KosuToken(kosuTokenAddress);
     }
 
