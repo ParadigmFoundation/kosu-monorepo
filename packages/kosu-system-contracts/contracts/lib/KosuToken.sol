@@ -2,21 +2,58 @@ pragma solidity ^0.5.0;
 
 import "openzeppelin-solidity/contracts/token/ERC20/ERC20.sol";
 import "../base/Authorizable.sol";
+import "./Formula.sol";
 
 /** @title KosuToken
     @author Freydal
-    @dev KosuToken (KOSU) is an implentation of the ERC-20 interface, supporting mints and burns.
+    @dev KosuToken (KOSU) is an implentation of the ERC-20 interface and supporting bonding curve for mints and burns.
 */
 contract KosuToken is ERC20, Authorizable {
 
     string public name = "KOSU";
     string public symbol = "KOSU";
     uint8 public decimals = 18;
+    uint private _weiPaid = 0;
+    uint32 constant private r = 850000; // ppm
 
     /** @dev Deploy a new ERC20 Token
         @notice Deploy a new ERC20 Token
     */
     constructor(address _auth) Authorizable(_auth) public {
+    }
+
+    /** @dev Default payable method to allow contract to accept ether being sent directly to the address.
+        @notice Default payable method to allow contract to accept ether being sent directly to the address.
+    */
+    function () external payable {
+        generateTokens();
+    }
+
+    function generateTokens() payable public {
+        if (msg.value == 0) return;
+
+        uint tokensToMint = calculateEtherToToken(msg.value);
+
+        _weiPaid = _weiPaid.add(msg.value);
+        _mint(msg.sender, tokensToMint);
+    }
+
+    function liquidateTokens(uint tokensToBurn) public {
+        if (tokensToBurn == 0) return;
+
+        uint etherToRelease = calculateTokenToEther(tokensToBurn);
+
+        _burn(msg.sender, tokensToBurn);
+        msg.sender.transfer(etherToRelease);
+        _weiPaid = _weiPaid.sub(etherToRelease);
+    }
+
+    function estimateEtherToToken(uint input) public view returns (uint) {
+        return calculateEtherToToken(input);
+    }
+
+    function estimateTokenToEther(uint input) public view returns (uint) {
+        return calculateTokenToEther(input);
     }
 
     /** @dev Burn tokens
@@ -42,5 +79,18 @@ contract KosuToken is ERC20, Authorizable {
     */
     function mintTo(address _address, uint amount) public isAuthorized {
         _mint(_address, amount);
+    }
+
+    function calculateEtherToToken(uint etherValue) internal view returns (uint) {
+        if (_weiPaid == 0 && totalSupply() == 0) {
+            require(msg.value == 1 ether);
+            return 30 ether;
+        } else {
+            return Formula.calculatePurchaseReturn(totalSupply(), _weiPaid, r, etherValue);
+        }
+    }
+
+    function calculateTokenToEther(uint numberOfTokens) internal view returns (uint) {
+        return Formula.calculateSaleReturn(totalSupply(), _weiPaid, r, numberOfTokens);
     }
 }
