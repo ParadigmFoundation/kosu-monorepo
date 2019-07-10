@@ -23,7 +23,7 @@ import {
  */
 export async function migrations(
     provider: Web3ProviderEngine,
-    txDefaults: {},
+    txDefaults: { from: string },
     options: { noLogs?: boolean } = {},
 ): Promise<MigratedContracts> {
     const web3Wrapper = new Web3Wrapper(provider);
