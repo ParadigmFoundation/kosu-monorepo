@@ -7,6 +7,7 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 )
 
 // Factory is a function that returns a new store and a cleanup/closer function
@@ -23,6 +24,8 @@ func TestSuite(t *testing.T, f Factory) {
 		{"ConsensusParams", TestConsensusParams},
 		{"LastEvent", TestLastEvent},
 		{"Witness", TestWitness},
+		{"Poster", TestPoster},
+		{"Validator", TestValidator},
 	}
 
 	for _, test := range cases {
@@ -78,4 +81,24 @@ func TestWitness(t *testing.T, s store.Store) {
 	assert.True(t, s.WitnessTxExists(witnessTx.Id))
 	assert.Equal(t, witnessTx.Confirmations+1, s.WitnessTx(witnessTx.Id).Confirmations)
 	assert.False(t, s.WitnessTxExists([]byte("xxx")))
+}
+
+// TestPoster verifies the Poster storage behavior
+func TestPoster(t *testing.T, s store.Store) {
+	t.Run("should return nil when not found/exists", func(t *testing.T) {
+		addr := "0x404"
+		v := s.Poster(addr)
+		assert.Nil(t, v)
+	})
+}
+
+// TestValidator verifies the Validator storage behavior
+func TestValidator(t *testing.T, s store.Store) {
+	t.Run("should return nil when not found/exists", func(t *testing.T) {
+		addr := "0x404"
+		require.False(t, s.ValidatorExists(addr))
+
+		v := s.Validator(addr)
+		assert.Nil(t, v)
+	})
 }
