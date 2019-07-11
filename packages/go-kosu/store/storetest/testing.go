@@ -76,10 +76,12 @@ func TestWitness(t *testing.T, s store.Store) {
 
 	witnessTx.Id = witnessTx.Hash()
 	s.SetWitnessTx(witnessTx)
-	s.IncWitnessTxConfirmations(witnessTx.Id)
+
+	found := s.WitnessTx(witnessTx.Id)
 
 	assert.True(t, s.WitnessTxExists(witnessTx.Id))
-	assert.Equal(t, witnessTx.Confirmations+1, s.WitnessTx(witnessTx.Id).Confirmations)
+	assert.Equal(t, found.Confirmations, witnessTx.Confirmations)
+	assert.Equal(t, found.Id, witnessTx.Id)
 	assert.False(t, s.WitnessTxExists([]byte("xxx")))
 }
 

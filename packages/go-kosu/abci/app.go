@@ -1,6 +1,7 @@
 package abci
 
 import (
+	"crypto/sha256"
 	"encoding/hex"
 	"errors"
 	"fmt"
@@ -26,8 +27,10 @@ type App struct {
 	abci.BaseApplication
 	Config *cfg.Config
 	log    log.Logger
+	store  store.Store
 
-	store store.Store
+	confirmationThreshold int64
+	currentValidators     []abci.Validator
 }
 
 // NewApp returns a new ABCI App
@@ -98,7 +101,16 @@ func (app *App) InitChain(req abci.RequestInitChain) abci.ResponseInitChain {
 	app.store.SetConsensusParams(gen.ConsensusParams)
 	app.log.Info("Loaded Genesis State", "gen", gen)
 
-	_ = req.Validators
+	// load initial validators from genesis request
+	app.currentValidators = make([]abci.Validator, len(req.Validators))
+	for i, v := range req.Validators {
+		key := v.PubKey.Data
+		addr := sha256.Sum256(key)
+		app.currentValidators[i] = abci.Validator{
+			Address: addr[:20],
+			Power:   req.Validators[i].Power,
+		}
+	}
 	return abci.ResponseInitChain{}
 }
 
@@ -106,8 +118,17 @@ func (app *App) InitChain(req abci.RequestInitChain) abci.ResponseInitChain {
 func (app *App) BeginBlock(req abci.RequestBeginBlock) abci.ResponseBeginBlock {
 	currHeight := req.Header.Height
 	proposer := hex.EncodeToString(req.Header.ProposerAddress)
+	votes := req.LastCommitInfo.Votes
 
-	for _, vote := range req.LastCommitInfo.Votes {
+	if len(votes) > 0 {
+		app.currentValidators = make([]abci.Validator, len(votes))
+	}
+
+	var totalPower int64
+	for i, vote := range votes {
+		totalPower += vote.Validator.Power
+		app.currentValidators[i] = vote.Validator
+
 		nodeID := hex.EncodeToString(vote.Validator.Address)
 
 		var v *types.Validator
@@ -147,12 +168,7 @@ func (app *App) BeginBlock(req abci.RequestBeginBlock) abci.ResponseBeginBlock {
 		app.store.SetValidator(nodeID, v)
 	})
 
-	// update confirmation threshold based on number of active validators
-	// confirmation threshold is >=2/3 active validators, unless there is
-	// only one active validator, in which case it MUST be 1 in order for
-	// state.balances to remain accurate.
-	//votes := len(req.LastCommitInfo.Votes)
-	//app.state.UpdateConfirmationThreshold(uint32(votes))
+	app.confirmationThreshold = 2 * (totalPower / 3)
 
 	return abci.ResponseBeginBlock{}
 }

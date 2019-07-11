@@ -84,6 +84,14 @@ func NewBigIntFromInt(n int64) *BigInt {
 	return NewBigInt(b)
 }
 
+// NewBigIntFromString returns a new BigInt given a number in string
+// interpreted in the given base.
+func NewBigIntFromString(s string, base int) *BigInt {
+	b := big.NewInt(0)
+	b.SetString(s, base)
+	return NewBigInt(b.Bytes())
+}
+
 // NewValidator returns a new validator with zero balance
 func NewValidator() *Validator {
 	return &Validator{

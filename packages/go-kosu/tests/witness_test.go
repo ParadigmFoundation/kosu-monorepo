@@ -7,6 +7,7 @@ import (
 	. "github.com/smartystreets/goconvey/convey"
 	"github.com/stretchr/testify/require"
 
+	"github.com/tendermint/tendermint/privval"
 	tmtypes "github.com/tendermint/tendermint/types"
 
 	"go-kosu/abci/types"
@@ -14,11 +15,16 @@ import (
 
 func (s *Suite) TestWitnessTxPoster() {
 	GivenABCIServer(s.T(), s, func(t *testing.T) {
+		priv := privval.LoadFilePV(
+			s.app.Config.PrivValidatorKeyFile(),
+			s.app.Config.PrivValidatorStateFile(),
+		).Key
+
 		tx := &types.TransactionWitness{
 			Subject: types.TransactionWitness_POSTER,
 			Block:   10,
-			Address: "0xffff",
-			Amount:  types.NewBigIntFromInt(100),
+			Address: priv.Address.String(),
+			Amount:  types.NewBigIntFromString("1000000000000000000", 10),
 		}
 
 		ctx, cancel := context.WithCancel(context.Background())
@@ -29,11 +35,6 @@ func (s *Suite) TestWitnessTxPoster() {
 		defer closer()
 
 		Convey("Broadcasting a Witness Tx with enough confirmations", func() {
-			// we make required confirmations 0, so that any will be enough
-			s.app.Store().SetConsensusParams(types.ConsensusParams{
-				ConfirmationThreshold: 0,
-			})
-
 			BroadcastTxSync(t, s.client, tx)
 
 			Convey("Querying Poster by Tx.Address should be found after N confirmations", func() {
@@ -72,15 +73,23 @@ func (s *Suite) TestWitnessTxPoster() {
 
 func (s *Suite) TestWitnessValidator() {
 	GivenABCIServer(s.T(), s, func(t *testing.T) {
+		priv := privval.LoadFilePV(
+			s.app.Config.PrivValidatorKeyFile(),
+			s.app.Config.PrivValidatorStateFile(),
+		).Key
+
 		tx := &types.TransactionWitness{
-			Subject:   types.TransactionWitness_VALIDATOR,
-			Block:     10,
-			Address:   "0xffff",
-			PublicKey: []byte("123456789abcdef0123456789abcdef0"),
-			// Amount needs to be >= 10**18
-			Amount: types.NewBigInt([]byte{
-				0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
-			}),
+			Subject: types.TransactionWitness_VALIDATOR,
+			Block:   10,
+			Address: priv.Address.String(),
+
+			// we need to skip the fingerprint (5 bytes), not sure why is this.
+			// I think it's related to amino
+			PublicKey: priv.PubKey.Bytes()[5:],
+
+			// we will set an amount to 10**18, which will translate into power:1.
+			// is the minimum voting power
+			Amount: types.NewBigIntFromString("1000000000000000000", 10),
 		}
 
 		ctx, cancel := context.WithCancel(context.Background())
@@ -93,11 +102,11 @@ func (s *Suite) TestWitnessValidator() {
 		Convey("And an initial number of validators", func() {
 			res, err := s.client.Validators(nil)
 			require.NoError(t, err)
-			validators := len(res.Validators)
+			So(res.Validators[0].VotingPower, ShouldEqual, 10)
 
 			Convey("When a Tx is broadcasted", func() {
 				BroadcastTxSync(t, s.client, tx)
-				Convey("Validators should be updated", func() {
+				Convey("Validator's voting power should be updated", func() {
 					// Wait for 2 blocks for validator set to be updated
 					<-ch
 					<-ch
@@ -105,7 +114,8 @@ func (s *Suite) TestWitnessValidator() {
 					res, err := s.client.Validators(nil)
 					require.NoError(t, err)
 
-					So(len(res.Validators), ShouldEqual, validators+1)
+					So(res.Validators[0].VotingPower, ShouldEqual, 1)
+
 				})
 			})
 		})

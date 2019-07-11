@@ -1,9 +1,11 @@
 package abci
 
 import (
+	"encoding/hex"
 	"errors"
 	"go-kosu/abci/types"
 	"go-kosu/store"
+	"strings"
 
 	abci "github.com/tendermint/tendermint/abci/types"
 )
@@ -39,17 +41,31 @@ func (app *App) pushTransactionWitness(tx *types.TransactionWitness) error {
 
 	app.store.SetLastEvent(tx.Block)
 
+	// calculate vote power for the current validator
+	var v *abci.Validator
+	for _, val := range app.currentValidators {
+		x := hex.EncodeToString(val.Address)
+		if strings.ToLower(x) == strings.ToLower(tx.Address) {
+			v = &val
+		}
+	}
+
+	if v == nil {
+		return errors.New("validators set can't be blank")
+	}
+
 	if !app.store.WitnessTxExists(tx.Id) {
 		app.store.SetWitnessTx(store.TransactionWitness{
 			TransactionWitness: *tx,
 		})
 	}
 
-	// TODO: delete witness
+	// TODO(gchaincl): delete witness
 
-	app.store.IncWitnessTxConfirmations(tx.Id)
 	wTx := app.store.WitnessTx(tx.Id)
-	if app.store.ConsensusParams().ConfirmationThreshold > wTx.Confirmations {
+	wTx.Confirmations += uint32(v.Power)
+
+	if app.confirmationThreshold > int64(wTx.Confirmations) {
 		return nil
 	}
 
@@ -74,6 +90,5 @@ func (app *App) pushTransactionWitness(tx *types.TransactionWitness) error {
 			PublicKey: tx.PublicKey,
 		})
 	}
-
 	return nil
 }

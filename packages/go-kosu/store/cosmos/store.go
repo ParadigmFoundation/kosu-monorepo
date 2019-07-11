@@ -162,12 +162,6 @@ func (s *Store) SetWitnessTx(tx store.TransactionWitness) {
 	s.Set("confs:"+string(tx.Id), s.witnessKey, tx.Confirmations)
 }
 
-// IncWitnessTxConfirmations increases the confirmation by 1
-func (s *Store) IncWitnessTxConfirmations(id []byte) {
-	tx := s.WitnessTx(id)
-	s.Set("confs:"+string(tx.Id), s.witnessKey, tx.Confirmations+1)
-}
-
 // Poster gets a Poster
 func (s *Store) Poster(addr string) *types.Poster {
 	var v types.Poster
