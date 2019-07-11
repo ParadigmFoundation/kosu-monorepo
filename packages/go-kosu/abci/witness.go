@@ -51,7 +51,8 @@ func (app *App) pushTransactionWitness(tx *types.TransactionWitness) error {
 	}
 
 	if v == nil {
-		return errors.New("validators set can't be blank")
+		// TODO(hharder): should we create a validator with this address and amount=0?
+		return errors.New("tx.Address was not found in the validator set")
 	}
 
 	if !app.store.WitnessTxExists(tx.Id) {
