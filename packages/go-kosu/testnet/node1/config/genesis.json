@@ -39,5 +39,11 @@
             "name": "node3"
         }
     ],
-    "app_hash": ""
+    "app_hash": "",
+    "app_state": {
+        "ConsensusParams": {
+            "PeriodLimit": 100000,
+            "PeriodLength": 10
+        }
+    }
 }
