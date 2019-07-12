@@ -46,26 +46,12 @@ steps:
     "."
   ]
 
-# build and tag kosu-geth
-- name: "gcr.io/cloud-builders/docker"
-  args: [
-    "build",
-    "--cache-from", "gcr.io/kosu-io/kosu-geth:latest",
-    "-t", "gcr.io/kosu-io/kosu-geth:$SHORT_SHA",
-    "-t", "gcr.io/kosu-io/kosu-geth:latest",
-    "-f", "./packages/kosu-geth/Dockerfile",
-    "./packages/kosu-geth"
-  ]
-
 images: [
   # go-kosu ci image
   "gcr.io/kosu-io/go-kosu-ci:$SHORT_SHA", "gcr.io/kosu-io/go-kosu-ci:latest",
 
   # general nodejs ci image
   "gcr.io/kosu-io/node-ci:$SHORT_SHA", "gcr.io/kosu-io/node-ci:latest",
-
-  # kosu-geth poa test image
-  "gcr.io/kosu-io/kosu-geth:$SHORT_SHA", "gcr.io/kosu-io/kosu-geth:latest",
 
   # general node:lts dev image
   "gcr.io/kosu-io/node-lts:$SHORT_SHA", "gcr.io/kosu-io/node-lts:latest",
