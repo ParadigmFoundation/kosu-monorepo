@@ -94,6 +94,7 @@ before(async () => {
         txDefaults,
         JSON.stringify(argumentsJson),
     );
+    contracts.kosuToken.generateTokens.awaitTransactionSuccessAsync("0", { value: TestValues.oneEther.times(85) });
     if (!useGeth) {
         web3.eth.personal.importRawKey(
             "0xf2f48ee19680706196e2e339e5da3491186e0c4c5030670656b0e0164837257d",
