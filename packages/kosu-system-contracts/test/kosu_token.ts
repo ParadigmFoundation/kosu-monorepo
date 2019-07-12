@@ -74,7 +74,7 @@ describe("KosuToken", () => {
                 const startingEther = await web3Wrapper.getBalanceInWeiAsync(token.address);
                 const estimate = await token.estimateEtherToToken.callAsync(TestValues.oneEther);
 
-                token.bondTokens.awaitTransactionSuccessAsync(TestValues.zero, { value: TestValues.oneEther });
+                await token.bondTokens.awaitTransactionSuccessAsync(TestValues.zero, { value: TestValues.oneEther });
 
                 const finalBalance = await token.balanceOf.callAsync(from);
                 const finalSupply = await token.totalSupply.callAsync();
@@ -102,7 +102,7 @@ describe("KosuToken", () => {
                 const startingEther = await web3Wrapper.getBalanceInWeiAsync(token.address);
                 const estimate = await token.estimateTokenToEther.callAsync(TestValues.oneEther);
 
-                token.releaseTokens.awaitTransactionSuccessAsync(TestValues.oneEther);
+                await token.releaseTokens.awaitTransactionSuccessAsync(TestValues.oneEther);
 
                 const finalBalance = await token.balanceOf.callAsync(from);
                 const finalSupply = await token.totalSupply.callAsync();
