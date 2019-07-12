@@ -26,10 +26,10 @@ contract KosuToken is ERC20, Authorizable {
         @notice Default payable method to allow contract to accept ether being sent directly to the address.
     */
     function () external payable {
-        generateTokens(0);
+        bondTokens(0);
     }
 
-    function generateTokens(uint minPayout) payable public returns (uint) {
+    function bondTokens(uint minPayout) payable public returns (uint) {
         if (msg.value == 0) return 0;
 
         uint tokensToMint = calculateEtherToToken(msg.value);
@@ -41,7 +41,7 @@ contract KosuToken is ERC20, Authorizable {
         return tokensToMint;
     }
 
-    function liquidateTokens(uint tokensToBurn) public {
+    function releaseTokens(uint tokensToBurn) public {
         if (tokensToBurn == 0) return;
 
         uint etherToRelease = calculateTokenToEther(tokensToBurn);

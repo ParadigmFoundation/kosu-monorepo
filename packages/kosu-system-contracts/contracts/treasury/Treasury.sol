@@ -25,7 +25,7 @@ contract Treasury is Authorizable {
 
     function () external payable {
         uint initialBalance = kosuToken.balanceOf(address(this));
-        uint minted = kosuToken.generateTokens.value(msg.value)(0);
+        uint minted = kosuToken.bondTokens.value(msg.value)(0);
         require(initialBalance+minted == kosuToken.balanceOf(address(this)));
 
         setSystemBalance(msg.sender, getSystemBalance(msg.sender).add(minted));
