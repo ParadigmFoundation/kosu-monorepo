@@ -28,6 +28,17 @@ contract PosterRegistry {
         e = EventEmitter(_events);
     }
 
+    /** @dev Fallback payable function to allow for direct deposit of ether to generate and claim tokens for Posting to Kosu network
+        @notice Fallback payable function to allow for direct deposit of ether to generate and claim tokens for Posting to Kosu network
+    */
+    function () external payable {
+        uint amount = _treasury.contractBond.value(msg.value)(msg.sender);
+        _treasury.claimTokens(msg.sender, amount);
+        _tokensContributed = _tokensContributed.add(amount);
+        _balances[msg.sender] = _balances[msg.sender].add(amount);
+        emitEvent(msg.sender);
+    }
+
     /** @dev The number of tokens that have been contributed to the contract
         @notice The number of tokens that have been contributed to the contract
         @return Total number of tokens contributed.
