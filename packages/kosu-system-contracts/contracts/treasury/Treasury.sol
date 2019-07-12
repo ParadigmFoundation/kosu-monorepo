@@ -27,12 +27,7 @@ contract Treasury is Authorizable {
         @notice Fallback payable function to allow for direct deposit of funds into the Treasury.
     */
     function () external payable {
-        uint initialBalance = kosuToken.balanceOf(address(this));
-        uint minted = kosuToken.bondTokens.value(msg.value)(0);
-        require(initialBalance+minted == kosuToken.balanceOf(address(this)));
-
-        setSystemBalance(msg.sender, getSystemBalance(msg.sender).add(minted));
-        setCurrentBalance(msg.sender, getCurrentBalance(msg.sender).add(minted));
+        _bond(msg.sender);
     }
 
     /** @dev Deposits tokens into the treasury.
@@ -41,6 +36,14 @@ contract Treasury is Authorizable {
     */
     function deposit(uint amount) public {
         _deposit(msg.sender, amount);
+    }
+
+    /** @dev Allows Kosu contracts to bond for the user.
+        @notice Allows Kosu contracts to bond for the user.
+        @param user The user the calling contract is acting on behalf of.
+    */
+    function contractBond(address user) isAuthorized payable public {
+        _bond(user);
     }
 
     /** @dev Allows contracts to deposit.
@@ -185,6 +188,14 @@ contract Treasury is Authorizable {
     }
 
     // INTERNAL
+    function _bond(address user) internal {
+        uint initialBalance = kosuToken.balanceOf(address(this));
+        uint minted = kosuToken.bondTokens.value(msg.value)(0);
+        require(initialBalance+minted == kosuToken.balanceOf(address(this)));
+
+        setSystemBalance(user, getSystemBalance(user).add(minted));
+        setCurrentBalance(user, getCurrentBalance(user).add(minted));
+    }
 
     function _deposit(address account, uint amount) internal {
         //Pulls token from the user and increases both internal ans system balances by the value.
