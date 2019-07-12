@@ -4,7 +4,7 @@ kind: pipeline
 name: tests
 
 steps:
-  - name: lint-project
+  - name: prettier-project
     image: gcr.io/kosu-io/node-lts:latest
     pull: always
     environment:
