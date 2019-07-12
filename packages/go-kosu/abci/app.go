@@ -93,11 +93,18 @@ func (app *App) InitChain(req abci.RequestInitChain) abci.ResponseInitChain {
 		panic("Using a non-zero state when initializing the chain")
 	}
 
-	gen, err := NewGenesisFromRequest(req)
-	if err != nil {
-		panic(err)
+	// load genesis state from request (which is defined in config/genesis.json)
+	// if appState == nil we the defaults
+	var gen *Genesis
+	if len(req.AppStateBytes) == 0 {
+		gen = appState
+	} else {
+		var err error
+		gen, err = NewGenesisFromRequest(req)
+		if err != nil {
+			panic(err)
+		}
 	}
-
 	app.store.SetConsensusParams(gen.ConsensusParams)
 	app.log.Info("Loaded Genesis State", "gen", gen)
 
