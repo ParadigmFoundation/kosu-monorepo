@@ -23,6 +23,9 @@ contract Treasury is Authorizable {
         kosuToken = KosuToken(kosuTokenAddress);
     }
 
+    /** @dev Fallback payable function to allow for direct deposit of funds into the Treasury.
+        @notice Fallback payable function to allow for direct deposit of funds into the Treasury.
+    */
     function () external payable {
         uint initialBalance = kosuToken.balanceOf(address(this));
         uint minted = kosuToken.bondTokens.value(msg.value)(0);
