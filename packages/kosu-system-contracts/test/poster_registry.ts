@@ -37,7 +37,6 @@ describe("PosterRegistry", () => {
                 },
             );
         }
-
     });
 
     describe("registerTokens", () => {
