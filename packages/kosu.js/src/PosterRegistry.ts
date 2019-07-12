@@ -1,6 +1,6 @@
 import { BigNumber } from "@0x/utils";
 import { Web3Wrapper } from "@0x/web3-wrapper";
-import { artifacts, DeployedAddresses, PosterRegistryProxyContract } from "@kosu/system-contracts";
+import { artifacts, DeployedAddresses, PosterRegistryContract } from "@kosu/system-contracts";
 import { TransactionReceiptWithDecodedLogs } from "ethereum-protocol";
 import Web3 from "web3";
 
@@ -33,7 +33,7 @@ export class PosterRegistry {
      * A lower-level, auto-generated contract wrapper for the PosterRegistry
      * proxy contract. Generated from solidity source code.
      */
-    private contract: PosterRegistryProxyContract;
+    private contract: PosterRegistryContract;
 
     /**
      * The address of the deployed PosterRegistry proxy contract.
@@ -50,7 +50,7 @@ export class PosterRegistry {
         this.web3 = options.web3;
         this.web3Wrapper = options.web3Wrapper;
         this.treasury = treasury;
-        this.address = options.posterRegistryProxyAddress;
+        this.address = options.posterRegistryAddress;
     }
 
     /**
@@ -58,20 +58,20 @@ export class PosterRegistry {
      *
      * @returns The contract wrapper instance.
      */
-    private async getContract(): Promise<PosterRegistryProxyContract> {
+    private async getContract(): Promise<PosterRegistryContract> {
         if (!this.contract) {
             const networkId = await this.web3Wrapper.getNetworkIdAsync();
             const coinbase = await this.web3.eth.getCoinbase().catch(() => undefined);
 
             if (!this.address) {
-                this.address = DeployedAddresses[networkId].PosterRegistryProxy;
+                this.address = DeployedAddresses[networkId].PosterRegistry;
             }
             if (!this.address) {
                 throw new Error("Invalid network for PosterRegistry");
             }
 
-            this.contract = new PosterRegistryProxyContract(
-                artifacts.PosterRegistryProxy.compilerOutput.abi,
+            this.contract = new PosterRegistryContract(
+                artifacts.PosterRegistry.compilerOutput.abi,
                 this.address,
                 this.web3Wrapper.getProvider(),
                 { from: coinbase },
