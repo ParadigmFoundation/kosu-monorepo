@@ -3,25 +3,9 @@
 kind: pipeline
 name: tests
 
-clone:
-  disable: true
-
 steps:
-  - name: clone
-    image: gcr.io/kosu-io/node-ci:latest
-    commands:
-      - git remote rm origin
-      - git remote add origin $DRONE_GIT_HTTP_URL
-      - git fetch
-      - git branch --set-upstream-to=origin/master master
-      - git pull
-      - git checkout .
-      - git clean -fd
-      - git checkout $DRONE_SOURCE_BRANCH
-      - git pull
-
   - name: lint-project
-    image: gcr.io/kosu-io/node-ci:latest
+    image: gcr.io/kosu-io/node-lts:latest
     pull: always
     environment:
       WEB3_URI: http://kosu-geth:8545
@@ -31,7 +15,7 @@ steps:
       - clone
 
   - name: build-project
-    image: gcr.io/kosu-io/node-ci:latest
+    image: gcr.io/kosu-io/node-lts:latest
     pull: always
     environment:
       WEB3_URI: http://kosu-geth:8545
@@ -58,7 +42,7 @@ steps:
           ]
 
   - name: npm-tests
-    image: gcr.io/kosu-io/node-ci:latest
+    image: gcr.io/kosu-io/node-lts:latest
     pull: always
     environment:
       WEB3_URI: http://kosu-geth:8545
@@ -79,7 +63,7 @@ steps:
           ]
 
   - name: solidity-tests
-    image: gcr.io/kosu-io/node-ci:latest
+    image: gcr.io/kosu-io/node-lts:latest
     pull: always
     environment:
       WEB3_URI: http://kosu-geth:8545
