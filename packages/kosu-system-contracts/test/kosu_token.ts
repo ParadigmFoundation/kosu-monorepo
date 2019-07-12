@@ -18,29 +18,53 @@ describe.only("KosuToken", () => {
 
     it("should receive a transfer and mint some tokens", async () => {
         await printInfo();
-        const resp = await web3Wrapper.sendTransactionAsync({ to: token.address, value: TestValues.oneEther, from: accounts[0] }).then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash));
+        const resp = await web3Wrapper
+            .sendTransactionAsync({ to: token.address, value: TestValues.oneEther, from: accounts[0] })
+            .then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash));
         await printInfo();
-        await web3Wrapper.sendTransactionAsync({ to: token.address, value: TestValues.oneEther, from: accounts[0] }).then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash));
+        await web3Wrapper
+            .sendTransactionAsync({ to: token.address, value: TestValues.oneEther, from: accounts[0] })
+            .then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash));
         await printInfo();
-        await web3Wrapper.sendTransactionAsync({ to: token.address, value: TestValues.oneEther, from: accounts[0] }).then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash));
+        await web3Wrapper
+            .sendTransactionAsync({ to: token.address, value: TestValues.oneEther, from: accounts[0] })
+            .then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash));
         await printInfo();
-        await web3Wrapper.sendTransactionAsync({ to: token.address, value: TestValues.oneEther, from: accounts[0] }).then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash));
+        await web3Wrapper
+            .sendTransactionAsync({ to: token.address, value: TestValues.oneEther, from: accounts[0] })
+            .then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash));
         await printInfo();
-        await web3Wrapper.sendTransactionAsync({ to: token.address, value: TestValues.oneEther, from: accounts[0] }).then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash));
+        await web3Wrapper
+            .sendTransactionAsync({ to: token.address, value: TestValues.oneEther, from: accounts[0] })
+            .then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash));
         await printInfo();
-        await web3Wrapper.sendTransactionAsync({ to: token.address, value: TestValues.oneEther, from: accounts[0] }).then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash));
+        await web3Wrapper
+            .sendTransactionAsync({ to: token.address, value: TestValues.oneEther, from: accounts[0] })
+            .then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash));
         await printInfo();
-        await web3Wrapper.sendTransactionAsync({ to: token.address, value: TestValues.oneEther, from: accounts[0] }).then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash));
+        await web3Wrapper
+            .sendTransactionAsync({ to: token.address, value: TestValues.oneEther, from: accounts[0] })
+            .then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash));
         await printInfo();
-        await web3Wrapper.sendTransactionAsync({ to: token.address, value: TestValues.oneEther, from: accounts[0] }).then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash));
+        await web3Wrapper
+            .sendTransactionAsync({ to: token.address, value: TestValues.oneEther, from: accounts[0] })
+            .then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash));
         await printInfo();
-        await web3Wrapper.sendTransactionAsync({ to: token.address, value: TestValues.oneEther, from: accounts[0] }).then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash));
+        await web3Wrapper
+            .sendTransactionAsync({ to: token.address, value: TestValues.oneEther, from: accounts[0] })
+            .then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash));
         await printInfo();
-        await web3Wrapper.sendTransactionAsync({ to: token.address, value: TestValues.oneEther, from: accounts[0] }).then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash));
+        await web3Wrapper
+            .sendTransactionAsync({ to: token.address, value: TestValues.oneEther, from: accounts[0] })
+            .then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash));
         await printInfo();
-        await web3Wrapper.sendTransactionAsync({ to: token.address, value: TestValues.oneEther, from: accounts[0] }).then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash));
+        await web3Wrapper
+            .sendTransactionAsync({ to: token.address, value: TestValues.oneEther, from: accounts[0] })
+            .then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash));
         await printInfo();
-        await web3Wrapper.sendTransactionAsync({ to: token.address, value: TestValues.oneEther, from: accounts[0] }).then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash));
+        await web3Wrapper
+            .sendTransactionAsync({ to: token.address, value: TestValues.oneEther, from: accounts[0] })
+            .then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash));
         await printInfo();
 
         await token.liquidateTokens.awaitTransactionSuccessAsync(TestValues.oneEther.times(30));

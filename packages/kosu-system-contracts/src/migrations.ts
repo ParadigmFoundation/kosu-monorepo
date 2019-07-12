@@ -162,7 +162,11 @@ export async function migrations(
                 },
             },
             {
-                hash: await web3Wrapper.sendTransactionAsync({ ...txDefaults, to: kosuToken.address, value: toWei("1") }),
+                hash: await web3Wrapper.sendTransactionAsync({
+                    ...txDefaults,
+                    to: kosuToken.address,
+                    value: toWei("1"),
+                }),
                 success: () => {
                     console.log("Submitted initial bonding transaction.");
                 },

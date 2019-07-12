@@ -598,14 +598,26 @@ describe("Treasury", async () => {
             const initialCurrentBalance = await treasury.currentBalance.callAsync(accounts[0]);
             const expectedReturn = await kosuToken.estimateEtherToToken.callAsync(TestValues.oneEther);
 
-            await web3Wrapper.sendTransactionAsync({ to: treasury.address, value: TestValues.oneEther, from: accounts[0], gas: 4500000 }).then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash));
-
+            await web3Wrapper
+                .sendTransactionAsync({
+                    to: treasury.address,
+                    value: TestValues.oneEther,
+                    from: accounts[0],
+                    gas: 4500000,
+                })
+                .then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash));
 
             const finalSystemBalance = await treasury.systemBalance.callAsync(accounts[0]);
             const finalCurrentBalance = await treasury.currentBalance.callAsync(accounts[0]);
 
-            initialSystemBalance.plus(expectedReturn).toString().should.eq(finalSystemBalance.toString());
-            initialCurrentBalance.plus(expectedReturn).toString().should.eq(finalCurrentBalance.toString());
+            initialSystemBalance
+                .plus(expectedReturn)
+                .toString()
+                .should.eq(finalSystemBalance.toString());
+            initialCurrentBalance
+                .plus(expectedReturn)
+                .toString()
+                .should.eq(finalCurrentBalance.toString());
         });
     });
 });
