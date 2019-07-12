@@ -1,18 +1,18 @@
 import { BigNumber } from "@0x/utils";
 
-import { AuthorizedAddressesContract, KosuTokenContract, PosterRegistryProxyContract, TreasuryContract } from "../src";
+import { AuthorizedAddressesContract, KosuTokenContract, PosterRegistryContract, TreasuryContract } from "../src";
 
 describe("Treasury", async () => {
     let treasury: TreasuryContract;
     let kosuToken: KosuTokenContract;
     let auth: AuthorizedAddressesContract;
-    let posterRegistry: PosterRegistryProxyContract;
+    let posterRegistry: PosterRegistryContract;
 
     before(async () => {
         treasury = contracts.treasury;
         kosuToken = contracts.kosuToken;
         auth = contracts.authorizedAddresses;
-        posterRegistry = contracts.posterRegistryProxy;
+        posterRegistry = contracts.posterRegistry;
     });
 
     after(async () => {

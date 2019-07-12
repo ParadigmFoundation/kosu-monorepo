@@ -27,7 +27,6 @@
         "access_control/AuthorizedAddresses.sol",
         "event/EventEmitter.sol",
         "external/OrderGateway.sol",
-        "external/PosterRegistryProxy.sol",
         "lib/KosuToken.sol",
         "poster/PosterRegistry.sol",
         "sub-contracts/ZeroExV2SubContract.sol",

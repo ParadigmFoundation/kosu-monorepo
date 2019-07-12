@@ -16,7 +16,6 @@
         "generated-artifacts/KosuToken.json",
         "generated-artifacts/OrderGateway.json",
         "generated-artifacts/PosterRegistry.json",
-        "generated-artifacts/PosterRegistryProxy.json",
         "generated-artifacts/Treasury.json",
         "generated-artifacts/ValidatorRegistry.json",
         "generated-artifacts/Voting.json",
