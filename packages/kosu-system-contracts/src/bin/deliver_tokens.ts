@@ -39,7 +39,7 @@ if (args["test-mnemonic"] || !mnemonic) {
     for (const account of addresses) {
         const expectedAmount = await kosuToken.estimateEtherToToken.callAsync(new BigNumber(web3.utils.toWei("60")));
         /* tslint:disable */
-        await kosuToken.generateTokens.awaitTransactionSuccessAsync(new BigNumber("0"), { from: account.toLowerCase(), gas: 4500000, value: new BigNumber(web3.utils.toWei("60")) })
+        await kosuToken.bondTokens.awaitTransactionSuccessAsync(new BigNumber("0"), { from: account.toLowerCase(), gas: 4500000, value: new BigNumber(web3.utils.toWei("60")) })
             .then(
             () => console.log(`Minted ${expectedAmount.toString()} tokens for ${account}.`),
             async reason => {
