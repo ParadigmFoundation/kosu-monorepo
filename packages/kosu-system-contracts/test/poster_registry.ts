@@ -257,4 +257,27 @@ describe("PosterRegistry", () => {
             decodedLogs.stake.should.eq("0");
         });
     });
+
+    describe("fallback", () => {
+        it("should correctly mint tokens through the treasury payable function", async () => {
+            const initialRegisteredTokens = await posterRegistry.tokensRegisteredFor.callAsync(accounts[0]);
+            const expectedReturn = await token.estimateEtherToToken.callAsync(TestValues.oneEther);
+
+            await web3Wrapper
+                .sendTransactionAsync({
+                    to: posterRegistry.address,
+                    value: TestValues.oneEther,
+                    from: accounts[0],
+                    gas: 4500000,
+                })
+                .then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash));
+
+            const finalRegisteredTokens = await posterRegistry.tokensRegisteredFor.callAsync(accounts[0]);
+
+            initialRegisteredTokens
+                .plus(expectedReturn)
+                .toString()
+                .should.eq(finalRegisteredTokens.toString());
+        });
+    });
 });
