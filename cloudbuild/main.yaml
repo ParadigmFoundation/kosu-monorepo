@@ -6,11 +6,11 @@ steps:
 # INSTALL AND BUILD
 # =================
 
-- name: gcr.io/kosu-io/node-lts:latest
+- name: gcr.io/kosu-io/node-ci:latest
   entrypoint: yarn
   args: ["install"]
 
-- name: gcr.io/kosu-io/node-lts:latest
+- name: gcr.io/kosu-io/node-ci:latest
   entrypoint: yarn
   args: ["build"]
 
@@ -18,7 +18,7 @@ steps:
 # BUILD DOCS
 # ==========
 
-- name: gcr.io/kosu-io/node-lts:latest
+- name: gcr.io/kosu-io/node-ci:latest
   entrypoint: yarn
   args: ["docs"]
 
@@ -86,7 +86,7 @@ steps:
     "./packages/kosu-docs/docs/kosu-system-contracts"
   ]
 
-- name: "gcr.io/kosu-io/node-lts:latest"
+- name: "gcr.io/kosu-io/node-ci:latest"
   entrypoint: "yarn"
   args: [
     "lerna", 
