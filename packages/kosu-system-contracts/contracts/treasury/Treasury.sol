@@ -23,6 +23,15 @@ contract Treasury is Authorizable {
         kosuToken = KosuToken(kosuTokenAddress);
     }
 
+    function () external payable {
+        uint initialBalance = kosuToken.balanceOf(address(this));
+        uint minted = kosuToken.generateTokens.value(msg.value)(0);
+        require(initialBalance+minted == kosuToken.balanceOf(address(this)));
+
+        setSystemBalance(msg.sender, getSystemBalance(msg.sender).add(minted));
+        setCurrentBalance(msg.sender, getCurrentBalance(msg.sender).add(minted));
+    }
+
     /** @dev Deposits tokens into the treasury.
         @notice Deposits tokens into the treasury.
         @param amount Number of tokens to deposit
