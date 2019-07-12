@@ -20,12 +20,8 @@ if (args["test-mnemonic"] || !mnemonic) {
 }
 
 (async () => {
-    const mnemonicSubprovider = mnemonic ? new MnemonicWalletSubprovider({ mnemonic }) : null;
     const rpcSubprovider = new RPCSubprovider(args["rpc-url"]);
     const provider = new Web3ProviderEngine();
-    if (mnemonicSubprovider) {
-        provider.addProvider(mnemonicSubprovider);
-    }
     provider.addProvider(rpcSubprovider);
     providerUtils.startProviderEngine(provider);
     const web3 = new Web3(args["rpc-url"]);
@@ -38,17 +34,16 @@ if (args["test-mnemonic"] || !mnemonic) {
         DeployedAddresses[networkId].KosuToken,
         provider,
     );
-    const aLot = new BigNumber(web3.utils.toWei("100000"));
-    const from = (await web3Wrapper.getAvailableAddressesAsync())[0];
-    const addresses = ["0xAA554D0c5ff879387Fc234dE5D22EC02983baA27", "0x8b366a3d4e46aC5406F12766Ad33E6482Ce4F081"];
-    addresses.push.apply(addresses, await web3.eth.getAccounts());
+    const addresses = await web3.eth.getAccounts();
 
     for (const account of addresses) {
+        const expectedAmount = await kosuToken.estimateEtherToToken.callAsync(new BigNumber(web3.utils.toWei("60")));
         /* tslint:disable */
-        await kosuToken.transfer.awaitTransactionSuccessAsync(account, aLot, { from, gas: 4500000 }).then(
-            () => console.log(`Transferred ${aLot.toString()} tokens to ${account}.`),
+        await kosuToken.generateTokens.awaitTransactionSuccessAsync(new BigNumber("0"), { from: account.toLowerCase(), gas: 4500000, value: new BigNumber(web3.utils.toWei("60")) })
+            .then(
+            () => console.log(`Minted ${expectedAmount.toString()} tokens for ${account}.`),
             async reason => {
-                console.log(`Failed to send tokens to ${account} due to:`);
+                console.log(`Failed to mint tokens with ${account} due to:`);
                 console.log(reason);
                 return Promise.reject();
             },
