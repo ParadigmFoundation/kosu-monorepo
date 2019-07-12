@@ -23,7 +23,7 @@ contract PosterRegistry is Authorizable {
         @param _events Deployed Events contract address
         @param _auth Deployed AuthorizedAddresses contract address
     */
-    constructor(address _treasuryAddress, address _events, address _auth) Authorizable(_auth) public {
+    constructor(address payable _treasuryAddress, address _events, address _auth) Authorizable(_auth) public {
         _treasury = Treasury(_treasuryAddress);
         _kosuToken = _treasury.kosuToken();
         e = EventEmitter(_events);
