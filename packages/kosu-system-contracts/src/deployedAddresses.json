@@ -18,8 +18,7 @@
         "Treasury": "0x46572f9082dd2429c2c138fa9483a67d4f29d423",
         "Voting": "0x5d60c93d8b48682cd387c8be7e9461b67ecfbea1",
         "PosterRegistry": "0x7e6534b8205713246e91a14b462d2dbcac3ede17",
-        "PosterRegistryProxy": "0x301bb008f2a8a3cae9918743fe43428551392773",
-        "ValidatorRegistry": "0x0265e7d1b094787cb13174e18a1cefc41279a6c9",
-        "ZeroExV2SubContract": "0x55999ef5e9b2f96356169322059cc08aeba08a6f"
+        "ValidatorRegistry": "0x301bb008f2a8a3cae9918743fe43428551392773",
+        "ZeroExV2SubContract": "0x0265e7d1b094787cb13174e18a1cefc41279a6c9"
     }
 }

@@ -42,7 +42,7 @@ contract Voting {
         @param treasuryAddress Deployed Treasury address
         @param _emitterAddress Deployed EventEmitter address
     */
-    constructor(address treasuryAddress, address _emitterAddress) public {
+    constructor(address payable treasuryAddress, address _emitterAddress) public {
         emitter = EventEmitter(_emitterAddress);
         treasury = Treasury(treasuryAddress);
     }

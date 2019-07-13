@@ -8,7 +8,7 @@ import "../event/EventEmitter.sol";
     @author Freydal
     @dev Implementation contract for the PosterRegistry, allowing users to bond and un-bond tokens.
 */
-contract PosterRegistry is Authorizable {
+contract PosterRegistry {
     using SafeMath for uint;
 
     mapping(address => uint) private _balances;
@@ -21,12 +21,22 @@ contract PosterRegistry is Authorizable {
         @notice Creates a new PosterRegistry
         @param _treasuryAddress Deployed Treasury contract address
         @param _events Deployed Events contract address
-        @param _auth Deployed AuthorizedAddresses contract address
     */
-    constructor(address _treasuryAddress, address _events, address _auth) Authorizable(_auth) public {
+    constructor(address payable _treasuryAddress, address _events) public {
         _treasury = Treasury(_treasuryAddress);
         _kosuToken = _treasury.kosuToken();
         e = EventEmitter(_events);
+    }
+
+    /** @dev Fallback payable function to allow for direct deposit of ether to generate and claim tokens for Posting to Kosu network
+        @notice Fallback payable function to allow for direct deposit of ether to generate and claim tokens for Posting to Kosu network
+    */
+    function () external payable {
+        uint amount = _treasury.contractBond.value(msg.value)(msg.sender);
+        _treasury.claimTokens(msg.sender, amount);
+        _tokensContributed = _tokensContributed.add(amount);
+        _balances[msg.sender] = _balances[msg.sender].add(amount);
+        emitEvent(msg.sender);
     }
 
     /** @dev The number of tokens that have been contributed to the contract
@@ -64,29 +74,27 @@ contract PosterRegistry is Authorizable {
 
     /** @dev Register tokens.
         @notice Register tokens.
-        @param msgSender Address that called the proxy
         @param amount Number of tokens to register
     */
-    function registerTokens(address msgSender, uint amount) external isAuthorized {
+    function registerTokens(uint amount) external {
         //Claim tokens from the treasury, delivering them to this contract and accounting for the balances locally.
-        _treasury.claimTokens(msgSender, amount);
+        _treasury.claimTokens(msg.sender, amount);
         _tokensContributed = _tokensContributed.add(amount);
-        _balances[msgSender] = _balances[msgSender].add(amount);
-        emitEvent(msgSender);
+        _balances[msg.sender] = _balances[msg.sender].add(amount);
+        emitEvent(msg.sender);
     }
 
     /** @dev Release tokens from the registry.
         @notice Release tokens from the registry.
-        @param msgSender Address that called the proxy
         @param amount Number of tokens to release
     */
-    function releaseTokens(address msgSender, uint amount) external isAuthorized {
+    function releaseTokens(uint amount) external {
         //Approve treasury to take tokens from this contract, treasury takes tokens and updates accounting.
         _kosuToken.approve(address(_treasury), amount);
-        _treasury.releaseTokens(msgSender, amount);
-        _balances[msgSender] = _balances[msgSender].sub(amount);
+        _treasury.releaseTokens(msg.sender, amount);
+        _balances[msg.sender] = _balances[msg.sender].sub(amount);
         _tokensContributed = _tokensContributed.sub(amount);
-        emitEvent(msgSender);
+        emitEvent(msg.sender);
     }
 
     // Internal

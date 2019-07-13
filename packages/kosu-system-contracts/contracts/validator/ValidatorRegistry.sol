@@ -78,7 +78,7 @@ contract ValidatorRegistry {
         @param _exitPeriod Number of blocks exiting listings must wait before claiming stake
         @param _rewardPeriod The frequency (in blocks) with which validator rewards may be issued
     */
-    constructor(address _treasuryAddress, address _votingAddress, address auth, address _events, uint _applicationPeriod, uint _commitPeriod, uint _challengePeriod, uint _exitPeriod, uint _rewardPeriod) public {
+    constructor(address payable _treasuryAddress, address _votingAddress, address auth, address _events, uint _applicationPeriod, uint _commitPeriod, uint _challengePeriod, uint _exitPeriod, uint _rewardPeriod) public {
         treasury = Treasury(_treasuryAddress);
         voting = Voting(_votingAddress);
         kosuToken = treasury.kosuToken();
