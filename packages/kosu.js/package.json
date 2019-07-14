@@ -37,7 +37,6 @@
         "ethereumjs-util": "^5.2.0",
         "isomorphic-ws": "^4.0.1",
         "node-fetch": "^2.2.0",
-        "truffle-contract": "^4.0.11",
         "web3": "1.0.0-beta.37",
         "web3-eth-contract": "^1.0.0-beta.53",
         "web3-provider-engine": "^15.0.0",
@@ -63,8 +62,7 @@
         "ts-node": "^8.1.0",
         "tslint": "^5.16.0",
         "typedoc": "^0.14.2",
-        "typedoc-plugin-markdown": "^2.0.1",
-        "typescript": "^3.4.5"
+        "typedoc-plugin-markdown": "^2.0.1"
     },
     "publishConfig": {
         "access": "public"

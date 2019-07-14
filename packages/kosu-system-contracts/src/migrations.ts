@@ -11,7 +11,6 @@ import {
     KosuTokenContract,
     OrderGatewayContract,
     PosterRegistryContract,
-    PosterRegistryProxyContract,
     TreasuryContract,
     ValidatorRegistryContract,
     VotingContract,
@@ -23,7 +22,7 @@ import {
  */
 export async function migrations(
     provider: Web3ProviderEngine,
-    txDefaults: {},
+    txDefaults: { from: string },
     options: { noLogs?: boolean } = {},
 ): Promise<MigratedContracts> {
     const web3Wrapper = new Web3Wrapper(provider);
@@ -104,14 +103,6 @@ export async function migrations(
             txDefaults,
             treasury.address,
             eventEmitter.address,
-            authorizedAddresses.address,
-        );
-        const posterRegistryProxy = await PosterRegistryProxyContract.deployFrom0xArtifactAsync(
-            artifacts.PosterRegistryProxy as ContractArtifact,
-            provider,
-            txDefaults,
-            posterRegistry.address,
-            authorizedAddresses.address,
         );
         const validatorRegistry = await ValidatorRegistryContract.deployFrom0xArtifactAsync(
             artifacts.ValidatorRegistry as ContractArtifact,
@@ -156,15 +147,13 @@ export async function migrations(
                 },
             },
             {
-                hash: await authorizedAddresses.authorizeAddress.sendTransactionAsync(posterRegistryProxy.address),
+                hash: await web3Wrapper.sendTransactionAsync({
+                    ...txDefaults,
+                    to: kosuToken.address,
+                    value: toWei("1"),
+                }),
                 success: () => {
-                    console.log(`Authorized address: ${posterRegistryProxy.address}`);
-                },
-            },
-            {
-                hash: await kosuToken.mint.sendTransactionAsync(new BN(toWei("1000000000"))),
-                success: () => {
-                    console.log(`Minted ${toWei("1000000000")} tokens`);
+                    console.log("Submitted initial bonding transaction.");
                 },
             },
             {
@@ -195,7 +184,6 @@ export async function migrations(
             treasury,
             voting,
             posterRegistry,
-            posterRegistryProxy,
             validatorRegistry,
             zeroExV2SubContract,
         };

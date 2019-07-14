@@ -6,25 +6,22 @@ import {
     decodeKosuEvents,
     KosuTokenContract,
     PosterRegistryContract,
-    PosterRegistryProxyContract,
     TreasuryContract,
 } from "../src";
 
 describe("PosterRegistry", () => {
-    let posterRegistryProxy: PosterRegistryProxyContract;
     let posterRegistry: PosterRegistryContract;
     let token: KosuTokenContract;
     let treasury: TreasuryContract;
     let auth: AuthorizedAddressesContract;
 
     const cleanupUser = async (from: string): Promise<void> => {
-        await posterRegistryProxy.releaseTokens.awaitTransactionSuccessAsync(
-            await posterRegistryProxy.tokensRegisteredFor.callAsync(from),
+        await posterRegistry.releaseTokens.awaitTransactionSuccessAsync(
+            await posterRegistry.tokensRegisteredFor.callAsync(from),
         );
     };
 
     before(() => {
-        posterRegistryProxy = contracts.posterRegistryProxy;
         posterRegistry = contracts.posterRegistry;
         token = contracts.kosuToken;
         treasury = contracts.treasury;
@@ -32,15 +29,12 @@ describe("PosterRegistry", () => {
     });
 
     after(async () => {
-        const transactions = [];
         for (const account of accounts) {
-            transactions.push(
-                posterRegistryProxy.releaseTokens.awaitTransactionSuccessAsync(
-                    await posterRegistryProxy.tokensRegisteredFor.callAsync(account),
-                    {
-                        from: account,
-                    },
-                ),
+            await posterRegistry.releaseTokens.awaitTransactionSuccessAsync(
+                await posterRegistry.tokensRegisteredFor.callAsync(account),
+                {
+                    from: account,
+                },
             );
         }
     });
@@ -54,7 +48,7 @@ describe("PosterRegistry", () => {
                 .callAsync(from)
                 .then(x => x.toString())
                 .should.eventually.eq("0");
-            await posterRegistryProxy.registerTokens.awaitTransactionSuccessAsync(value, { from }).should.eventually.be
+            await posterRegistry.registerTokens.awaitTransactionSuccessAsync(value, { from }).should.eventually.be
                 .rejected;
         });
 
@@ -73,7 +67,7 @@ describe("PosterRegistry", () => {
                 .callAsync(from, treasury.address)
                 .then(x => x.toString())
                 .should.eventually.eq("0");
-            await posterRegistryProxy.registerTokens.awaitTransactionSuccessAsync(value).should.eventually.be.rejected;
+            await posterRegistry.registerTokens.awaitTransactionSuccessAsync(value).should.eventually.be.rejected;
         });
 
         it("should increase tokensContributed and tokensRegisteredFor by the amount", async () => {
@@ -82,25 +76,25 @@ describe("PosterRegistry", () => {
             const from = accounts[0];
 
             await token.approve.awaitTransactionSuccessAsync(treasury.address, value);
-            await posterRegistryProxy.registerTokens.awaitTransactionSuccessAsync(value);
+            await posterRegistry.registerTokens.awaitTransactionSuccessAsync(value);
 
-            await posterRegistryProxy.tokensRegisteredFor
+            await posterRegistry.tokensRegisteredFor
                 .callAsync(from)
                 .then(x => x.toString())
                 .should.eventually.eq(value);
-            await posterRegistryProxy.tokensContributed
+            await posterRegistry.tokensContributed
                 .callAsync()
                 .then(x => x.toString())
                 .should.eventually.eq(value);
 
             await token.approve.awaitTransactionSuccessAsync(treasury.address, value);
-            await posterRegistryProxy.registerTokens.awaitTransactionSuccessAsync(value);
+            await posterRegistry.registerTokens.awaitTransactionSuccessAsync(value);
 
-            await posterRegistryProxy.tokensRegisteredFor
+            await posterRegistry.tokensRegisteredFor
                 .callAsync(from)
                 .then(x => x.toString())
                 .should.eventually.eq(double);
-            await posterRegistryProxy.tokensContributed
+            await posterRegistry.tokensContributed
                 .callAsync()
                 .then(x => x.toString())
                 .should.eventually.eq(double);
@@ -114,12 +108,12 @@ describe("PosterRegistry", () => {
 
             await cleanupUser(from);
 
-            await posterRegistryProxy.tokensRegisteredFor
+            await posterRegistry.tokensRegisteredFor
                 .callAsync(from)
                 .then(x => x.toString())
                 .should.eventually.eq("0");
 
-            await posterRegistryProxy.releaseTokens.awaitTransactionSuccessAsync(amount).should.eventually.be.rejected;
+            await posterRegistry.releaseTokens.awaitTransactionSuccessAsync(amount).should.eventually.be.rejected;
         });
 
         it("should reduce balance and total by the amount", async () => {
@@ -128,24 +122,24 @@ describe("PosterRegistry", () => {
             const from = accounts[0];
 
             await token.approve.awaitTransactionSuccessAsync(treasury.address, double);
-            await posterRegistryProxy.registerTokens.awaitTransactionSuccessAsync(double);
+            await posterRegistry.registerTokens.awaitTransactionSuccessAsync(double);
 
-            await posterRegistryProxy.tokensRegisteredFor
+            await posterRegistry.tokensRegisteredFor
                 .callAsync(from)
                 .then(x => x.toString())
                 .should.eventually.eq(double);
-            await posterRegistryProxy.tokensContributed
+            await posterRegistry.tokensContributed
                 .callAsync()
                 .then(x => x.toString())
                 .should.eventually.eq(double);
 
-            await posterRegistryProxy.releaseTokens.awaitTransactionSuccessAsync(value, { from });
+            await posterRegistry.releaseTokens.awaitTransactionSuccessAsync(value, { from });
 
-            await posterRegistryProxy.tokensRegisteredFor
+            await posterRegistry.tokensRegisteredFor
                 .callAsync(from)
                 .then(x => x.toString())
                 .should.eventually.eq(value);
-            await posterRegistryProxy.tokensContributed
+            await posterRegistry.tokensContributed
                 .callAsync()
                 .then(x => x.toString())
                 .should.eventually.eq(value);
@@ -156,11 +150,11 @@ describe("PosterRegistry", () => {
             const from = accounts[0];
 
             await token.approve.awaitTransactionSuccessAsync(treasury.address, value);
-            await posterRegistryProxy.registerTokens.awaitTransactionSuccessAsync(value);
+            await posterRegistry.registerTokens.awaitTransactionSuccessAsync(value);
 
             const initialBalance = await treasury.currentBalance.callAsync(from);
 
-            await posterRegistryProxy.releaseTokens.awaitTransactionSuccessAsync(value);
+            await posterRegistry.releaseTokens.awaitTransactionSuccessAsync(value);
 
             const afterBalance: BigNumber = await treasury.currentBalance.callAsync(from);
 
@@ -173,7 +167,7 @@ describe("PosterRegistry", () => {
 
     describe("token", () => {
         it("should have a token token configured", async () => {
-            posterRegistryProxy.token.callAsync().should.eventually.eq(token.address);
+            posterRegistry.token.callAsync().should.eventually.eq(token.address);
         });
     });
 
@@ -185,9 +179,9 @@ describe("PosterRegistry", () => {
             await cleanupUser(from);
 
             await token.approve.awaitTransactionSuccessAsync(treasury.address, value, { from });
-            await posterRegistryProxy.registerTokens.awaitTransactionSuccessAsync(value, { from });
+            await posterRegistry.registerTokens.awaitTransactionSuccessAsync(value, { from });
 
-            await posterRegistryProxy.tokensRegisteredFor
+            await posterRegistry.tokensRegisteredFor
                 .callAsync(from)
                 .then(x => x.toString())
                 .should.eventually.eq(value);
@@ -202,9 +196,9 @@ describe("PosterRegistry", () => {
             await cleanupUser(from);
 
             await token.approve.awaitTransactionSuccessAsync(treasury.address, value);
-            await posterRegistryProxy.registerTokens.awaitTransactionSuccessAsync(value);
+            await posterRegistry.registerTokens.awaitTransactionSuccessAsync(value);
 
-            await posterRegistryProxy.tokensContributed
+            await posterRegistry.tokensContributed
                 .callAsync()
                 .then(x => x.toString())
                 .should.eventually.eq(value);
@@ -217,9 +211,9 @@ describe("PosterRegistry", () => {
             await cleanupUser(from);
 
             await token.approve.awaitTransactionSuccessAsync(treasury.address, value);
-            await posterRegistryProxy.registerTokens.awaitTransactionSuccessAsync(value);
+            await posterRegistry.registerTokens.awaitTransactionSuccessAsync(value);
 
-            await posterRegistryProxy.tokensContributed
+            await posterRegistry.tokensContributed
                 .callAsync()
                 .then(x => x.toString())
                 .should.eventually.eq(value);
@@ -238,7 +232,7 @@ describe("PosterRegistry", () => {
             await cleanupUser(from);
 
             await token.approve.awaitTransactionSuccessAsync(treasury.address, value);
-            const result = await posterRegistryProxy.registerTokens.awaitTransactionSuccessAsync(value);
+            const result = await posterRegistry.registerTokens.awaitTransactionSuccessAsync(value);
             const decodedLogs = decodeKosuEvents(result.logs)[0];
 
             decodedLogs.eventType.should.eq("PosterRegistryUpdate");
@@ -253,14 +247,37 @@ describe("PosterRegistry", () => {
             await cleanupUser(from);
 
             await token.approve.awaitTransactionSuccessAsync(treasury.address, value);
-            await posterRegistryProxy.registerTokens.awaitTransactionSuccessAsync(value);
+            await posterRegistry.registerTokens.awaitTransactionSuccessAsync(value);
 
-            const result = await posterRegistryProxy.releaseTokens.awaitTransactionSuccessAsync(value);
+            const result = await posterRegistry.releaseTokens.awaitTransactionSuccessAsync(value);
             const decodedLogs = decodeKosuEvents(result.logs)[0];
 
             decodedLogs.eventType.should.eq("PosterRegistryUpdate");
             decodedLogs.poster.should.eq(from.toLowerCase());
             decodedLogs.stake.should.eq("0");
+        });
+    });
+
+    describe("fallback", () => {
+        it("should correctly mint tokens through the treasury payable function", async () => {
+            const initialRegisteredTokens = await posterRegistry.tokensRegisteredFor.callAsync(accounts[0]);
+            const expectedReturn = await token.estimateEtherToToken.callAsync(TestValues.oneEther);
+
+            await web3Wrapper
+                .sendTransactionAsync({
+                    to: posterRegistry.address,
+                    value: TestValues.oneEther,
+                    from: accounts[0],
+                    gas: 4500000,
+                })
+                .then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash));
+
+            const finalRegisteredTokens = await posterRegistry.tokensRegisteredFor.callAsync(accounts[0]);
+
+            initialRegisteredTokens
+                .plus(expectedReturn)
+                .toString()
+                .should.eq(finalRegisteredTokens.toString());
         });
     });
 });

@@ -1,18 +1,18 @@
 import { BigNumber } from "@0x/utils";
 
-import { AuthorizedAddressesContract, KosuTokenContract, PosterRegistryProxyContract, TreasuryContract } from "../src";
+import { AuthorizedAddressesContract, KosuTokenContract, PosterRegistryContract, TreasuryContract } from "../src";
 
 describe("Treasury", async () => {
     let treasury: TreasuryContract;
     let kosuToken: KosuTokenContract;
     let auth: AuthorizedAddressesContract;
-    let posterRegistry: PosterRegistryProxyContract;
+    let posterRegistry: PosterRegistryContract;
 
     before(async () => {
         treasury = contracts.treasury;
         kosuToken = contracts.kosuToken;
         auth = contracts.authorizedAddresses;
-        posterRegistry = contracts.posterRegistryProxy;
+        posterRegistry = contracts.posterRegistry;
     });
 
     after(async () => {
@@ -589,6 +589,35 @@ describe("Treasury", async () => {
                     from: accounts[6],
                 }).should.eventually.be.fulfilled;
             });
+        });
+    });
+
+    describe("fallback", () => {
+        it("should correctly mint tokens through the treasury payable function", async () => {
+            const initialSystemBalance = await treasury.systemBalance.callAsync(accounts[0]);
+            const initialCurrentBalance = await treasury.currentBalance.callAsync(accounts[0]);
+            const expectedReturn = await kosuToken.estimateEtherToToken.callAsync(TestValues.oneEther);
+
+            await web3Wrapper
+                .sendTransactionAsync({
+                    to: treasury.address,
+                    value: TestValues.oneEther,
+                    from: accounts[0],
+                    gas: 4500000,
+                })
+                .then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash));
+
+            const finalSystemBalance = await treasury.systemBalance.callAsync(accounts[0]);
+            const finalCurrentBalance = await treasury.currentBalance.callAsync(accounts[0]);
+
+            initialSystemBalance
+                .plus(expectedReturn)
+                .toString()
+                .should.eq(finalSystemBalance.toString());
+            initialCurrentBalance
+                .plus(expectedReturn)
+                .toString()
+                .should.eq(finalCurrentBalance.toString());
         });
     });
 });

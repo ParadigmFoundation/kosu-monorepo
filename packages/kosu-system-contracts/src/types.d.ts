@@ -6,7 +6,6 @@ interface MigratedContracts {
     kosuToken: KosuTokenContract;
     validatorRegistry: ValidatorRegistryContract;
     voting: VotingContract;
-    posterRegistryProxy: PosterRegistryProxyContract;
     posterRegistry: PosterRegistryContract;
     zeroExV2SubContract: ZeroExV2SubContractContract;
 }

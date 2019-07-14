@@ -9,7 +9,7 @@ interface KosuOptions {
     kosuTokenAddress?: string;
     eventEmitterAddress?: string;
     orderGatewayAddress?: string;
-    posterRegistryProxyAddress?: string;
+    posterRegistryAddress?: string;
     validatorRegistryAddress?: string;
 }
 

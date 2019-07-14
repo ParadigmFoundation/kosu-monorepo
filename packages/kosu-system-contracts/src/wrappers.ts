@@ -8,7 +8,6 @@ export * from "../generated-wrappers/event_emitter";
 export * from "../generated-wrappers/kosu_token";
 export * from "../generated-wrappers/order_gateway";
 export * from "../generated-wrappers/poster_registry";
-export * from "../generated-wrappers/poster_registry_proxy";
 export * from "../generated-wrappers/treasury";
 export * from "../generated-wrappers/validator_registry";
 export * from "../generated-wrappers/voting";

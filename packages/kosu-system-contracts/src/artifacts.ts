@@ -11,7 +11,6 @@ import * as EventEmitter from "../generated-artifacts/EventEmitter.json";
 import * as KosuToken from "../generated-artifacts/KosuToken.json";
 import * as OrderGateway from "../generated-artifacts/OrderGateway.json";
 import * as PosterRegistry from "../generated-artifacts/PosterRegistry.json";
-import * as PosterRegistryProxy from "../generated-artifacts/PosterRegistryProxy.json";
 import * as Treasury from "../generated-artifacts/Treasury.json";
 import * as ValidatorRegistry from "../generated-artifacts/ValidatorRegistry.json";
 import * as Voting from "../generated-artifacts/Voting.json";
@@ -20,7 +19,6 @@ export const artifacts = {
     AuthorizedAddresses: AuthorizedAddresses as KosuContractArtifact,
     EventEmitter: EventEmitter as KosuContractArtifact,
     OrderGateway: OrderGateway as KosuContractArtifact,
-    PosterRegistryProxy: PosterRegistryProxy as KosuContractArtifact,
     KosuToken: KosuToken as KosuContractArtifact,
     PosterRegistry: PosterRegistry as KosuContractArtifact,
     Treasury: Treasury as KosuContractArtifact,
