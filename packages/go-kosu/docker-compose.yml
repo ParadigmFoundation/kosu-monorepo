@@ -1,53 +1,73 @@
 version: '3'
 
-services:
+services: 
+  geth:
+    container_name: geth
+    build:
+      context: ../kosu-geth
+      dockerfile: Dockerfile
+    ports:
+      - "8545:8545"
+      - "8546:8546"
+    networks:
+      localnet:
+        ipv4_address: 192.167.10.10
+
   node0:
     container_name: node0
     build:
       context: .
       dockerfile: Dockerfile.compose
-    command: ["/go-kosu/kosud", "--home", "/go-kosu/testnet/node0"]
+    command: ["/go-kosu/kosud", "--home", "/go-kosu/testnet/node0", "--web3", "ws://geth:8546"]
     ports: 
       - "8000:26657"
     networks:
       localnet:
         ipv4_address: 192.167.10.2
+    depends_on:
+      - geth
 
   node1:
     container_name: node1
     build:
       context: .
       dockerfile: Dockerfile.compose
-    command: ["/go-kosu/kosud", "--home", "/go-kosu/testnet/node1"]
+    command: ["/go-kosu/kosud", "--home", "/go-kosu/testnet/node1", "--web3", "ws://geth:8546"]
     ports: 
       - "8001:26657"
     networks:
       localnet:
         ipv4_address: 192.167.10.3
+    depends_on:
+      - geth
 
   node2:
     container_name: node2
     build:
       context: .
       dockerfile: Dockerfile.compose
-    command: ["/go-kosu/kosud", "--home", "/go-kosu/testnet/node2"]
+    command: ["/go-kosu/kosud", "--home", "/go-kosu/testnet/node2", "--web3", "ws://geth:8546"]
     ports: 
       - "8002:26657"
     networks:
       localnet:
         ipv4_address: 192.167.10.4
+    depends_on:
+      - geth
 
   node3:
     container_name: node3
     build:
       context: .
       dockerfile: Dockerfile.compose
-    command: ["/go-kosu/kosud", "--home", "/go-kosu/testnet/node3"]
+    command: ["/go-kosu/kosud", "--home", "/go-kosu/testnet/node3", "--web3", "ws://geth:8546"]
     ports: 
       - "8003:26657"
     networks:
       localnet:
         ipv4_address: 192.167.10.5
+    depends_on:
+      - geth
 
 networks:
   localnet:
