@@ -1,14 +1,14 @@
 package abci
 
 import (
-	"crypto/sha256"
+	"bytes"
 	"encoding/hex"
 	"errors"
 	"fmt"
-	"math"
 
 	abci "github.com/tendermint/tendermint/abci/types"
 	cfg "github.com/tendermint/tendermint/config"
+	"github.com/tendermint/tendermint/crypto/tmhash"
 	"github.com/tendermint/tendermint/libs/db"
 	"github.com/tendermint/tendermint/libs/log"
 
@@ -30,7 +30,6 @@ type App struct {
 	store  store.Store
 
 	confirmationThreshold int64
-	currentValidators     []abci.Validator
 }
 
 // NewApp returns a new ABCI App
@@ -108,35 +107,28 @@ func (app *App) InitChain(req abci.RequestInitChain) abci.ResponseInitChain {
 	app.store.SetConsensusParams(gen.ConsensusParams)
 	app.log.Info("Loaded Genesis State", "gen", gen)
 
-	// load initial validators from genesis request
-	app.currentValidators = make([]abci.Validator, len(req.Validators))
-	for i, v := range req.Validators {
-		key := v.PubKey.Data
-		addr := sha256.Sum256(key)
-		app.currentValidators[i] = abci.Validator{
-			Address: addr[:20],
-			Power:   req.Validators[i].Power,
-		}
+	for _, v := range req.Validators {
+		nodeID := tmhash.SumTruncated(v.PubKey.Data)
+		app.store.SetValidator(nodeID, &types.Validator{
+			Balance:   types.NewBigIntFromInt(0),
+			Power:     v.Power,
+			PublicKey: v.PubKey.Data,
+		})
 	}
+
 	return abci.ResponseInitChain{}
 }
 
 // BeginBlock .
 func (app *App) BeginBlock(req abci.RequestBeginBlock) abci.ResponseBeginBlock {
 	currHeight := req.Header.Height
-	proposer := hex.EncodeToString(req.Header.ProposerAddress)
+	proposer := req.Header.ProposerAddress
 	votes := req.LastCommitInfo.Votes
 
-	if len(votes) > 0 {
-		app.currentValidators = make([]abci.Validator, len(votes))
-	}
-
 	var totalPower int64
-	for i, vote := range votes {
+	for _, vote := range votes {
 		totalPower += vote.Validator.Power
-		app.currentValidators[i] = vote.Validator
-
-		nodeID := hex.EncodeToString(vote.Validator.Address)
+		nodeID := vote.Validator.Address
 
 		var v *types.Validator
 		if !app.store.ValidatorExists(nodeID) {
@@ -154,7 +146,7 @@ func (app *App) BeginBlock(req abci.RequestBeginBlock) abci.ResponseBeginBlock {
 		}
 
 		// record if they are proposer this round
-		if proposer == nodeID {
+		if bytes.Equal(proposer, nodeID) {
 			v.LastProposed = currHeight
 		}
 
@@ -166,7 +158,7 @@ func (app *App) BeginBlock(req abci.RequestBeginBlock) abci.ResponseBeginBlock {
 		app.store.SetValidator(nodeID, v)
 	}
 
-	app.store.IterateValidators(func(nodeID string, v *types.Validator) {
+	app.store.IterateValidators(func(nodeID []byte, v *types.Validator) {
 		if v.LastVoted+1 == currHeight {
 			v.Active = true
 		} else { // TODO: check-me
@@ -184,19 +176,22 @@ func (app *App) BeginBlock(req abci.RequestBeginBlock) abci.ResponseBeginBlock {
 func (app *App) EndBlock(req abci.RequestEndBlock) abci.ResponseEndBlock {
 	updates := []abci.ValidatorUpdate{}
 
-	app.store.IterateValidators(func(id string, v *types.Validator) {
-		if v.Active {
+	app.store.IterateValidators(func(nodeID []byte, v *types.Validator) {
+		if v.Applied {
 			return
 		}
 
-		balance := v.Balance.BigInt().Uint64()
-		power := math.Round(float64(balance) / math.Pow(10, 18))
+		//		balance := v.Balance.BigInt().Uint64()
+		//		power := math.Round(float64(balance) / math.Pow(10, 18))
 
 		// TODO(hharder): make sure this is correct
 		if v.PublicKey != nil {
-			update := abci.Ed25519ValidatorUpdate(v.PublicKey, int64(power))
+			update := abci.Ed25519ValidatorUpdate(v.PublicKey, int64(v.Power))
 			updates = append(updates, update)
 		}
+
+		v.Applied = true
+		app.store.SetValidator(nodeID, v)
 	})
 
 	return abci.ResponseEndBlock{
@@ -255,7 +250,8 @@ func (app *App) DeliverTx(req []byte) abci.ResponseDeliverTx {
 	case *types.Transaction_Rebalance:
 		return app.deliverRebalance(tx.GetRebalance())
 	case *types.Transaction_Witness:
-		return app.deliverWitnessTx(tx.GetWitness())
+		nodeID := tmhash.SumTruncated(stx.Proof.PublicKey)
+		return app.deliverWitnessTx(tx.GetWitness(), nodeID)
 	case *types.Transaction_Order:
 		return app.deliverOrderTx(tx.GetOrder())
 	default:

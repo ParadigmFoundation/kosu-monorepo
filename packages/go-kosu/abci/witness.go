@@ -1,11 +1,10 @@
 package abci
 
 import (
-	"encoding/hex"
 	"errors"
 	"go-kosu/abci/types"
 	"go-kosu/store"
-	"strings"
+	"math"
 
 	abci "github.com/tendermint/tendermint/abci/types"
 )
@@ -18,19 +17,19 @@ func (app *App) checkWitnessTx(tx *types.TransactionWitness) error {
 	return nil
 }
 
-func (app *App) deliverWitnessTx(tx *types.TransactionWitness) abci.ResponseDeliverTx {
+func (app *App) deliverWitnessTx(tx *types.TransactionWitness, nodeID []byte) abci.ResponseDeliverTx {
 	if err := app.checkWitnessTx(tx); err != nil {
 		return abci.ResponseDeliverTx{Code: 1, Info: err.Error()}
 	}
 
-	if err := app.pushTransactionWitness(tx); err != nil {
+	if err := app.pushTransactionWitness(tx, nodeID); err != nil {
 		return abci.ResponseDeliverTx{Code: 1, Info: err.Error()}
 	}
 
 	return abci.ResponseDeliverTx{}
 }
 
-func (app *App) pushTransactionWitness(tx *types.TransactionWitness) error {
+func (app *App) pushTransactionWitness(tx *types.TransactionWitness, nodeID []byte) error {
 	if app.store.LastEvent() > tx.Block {
 		return errors.New("transaction is older than the recorded state")
 	}
@@ -38,22 +37,7 @@ func (app *App) pushTransactionWitness(tx *types.TransactionWitness) error {
 	if tx.Amount == nil {
 		tx.Amount = types.NewBigIntFromInt(0)
 	}
-
 	app.store.SetLastEvent(tx.Block)
-
-	// calculate vote power for the current validator
-	var v *abci.Validator
-	for _, val := range app.currentValidators {
-		x := hex.EncodeToString(val.Address)
-		if strings.ToLower(x) == strings.ToLower(tx.Address) {
-			v = &val
-		}
-	}
-
-	if v == nil {
-		// TODO(hharder): should we create a validator with this address and amount=0?
-		return errors.New("tx.Address was not found in the validator set")
-	}
 
 	if !app.store.WitnessTxExists(tx.Id) {
 		app.store.SetWitnessTx(store.TransactionWitness{
@@ -64,8 +48,21 @@ func (app *App) pushTransactionWitness(tx *types.TransactionWitness) error {
 	// TODO(gchaincl): delete witness
 
 	wTx := app.store.WitnessTx(tx.Id)
-	wTx.Confirmations += uint32(v.Power)
 
+	v := app.store.Validator(nodeID)
+	if v == nil {
+		err := errors.New("validator does not exists")
+		app.log.Error("store.Validator()", "err", err)
+		return err
+	}
+
+	balance := tx.Amount.BigInt().Uint64()
+	power := math.Round(float64(balance) / math.Pow(10, 18))
+
+	app.log.Info("adding confirmations", "+power", power)
+	wTx.Confirmations += uint32(power)
+
+	app.log.Error("info", "threshold", app.confirmationThreshold, "conf", wTx.Confirmations)
 	if app.confirmationThreshold > int64(wTx.Confirmations) {
 		return nil
 	}
@@ -75,7 +72,7 @@ func (app *App) pushTransactionWitness(tx *types.TransactionWitness) error {
 		case types.TransactionWitness_POSTER:
 			app.store.DeletePoster(tx.Address)
 		case types.TransactionWitness_VALIDATOR:
-			app.store.DeleteValidator(tx.Address)
+			app.store.DeleteValidator(nodeID)
 		}
 		return nil
 	}
@@ -86,9 +83,12 @@ func (app *App) pushTransactionWitness(tx *types.TransactionWitness) error {
 			Balance: tx.Amount,
 		})
 	case types.TransactionWitness_VALIDATOR:
-		app.store.SetValidator(tx.Address, &types.Validator{
-			Balance:   tx.Amount,
-			PublicKey: tx.PublicKey,
+		app.store.SetValidator(nodeID, &types.Validator{
+			Balance:    tx.Amount,
+			PublicKey:  tx.PublicKey,
+			EthAccount: tx.Address,
+			Active:     false,
+			Power:      int64(power),
 		})
 	}
 	return nil

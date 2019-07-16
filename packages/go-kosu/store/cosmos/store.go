@@ -1,6 +1,8 @@
 package cosmos
 
 import (
+	"encoding/hex"
+
 	abci "github.com/tendermint/tendermint/abci/types"
 	"github.com/tendermint/tendermint/libs/db"
 
@@ -182,34 +184,42 @@ func (s *Store) DeletePoster(addr string) {
 }
 
 // ValidatorExists checks if a given WitnessTx has been persisted
-func (s *Store) ValidatorExists(addr string) bool {
-	return s.Has(addr, s.validatorKey)
+func (s *Store) ValidatorExists(id []byte) bool {
+	key := hex.EncodeToString(id)
+	return s.Has(key, s.validatorKey)
 }
 
 // Validator gets a validator
-func (s *Store) Validator(id string) *types.Validator {
+func (s *Store) Validator(id []byte) *types.Validator {
+	key := hex.EncodeToString(id)
 	v := &types.Validator{}
-	if ok := s.Get(id, s.validatorKey, v); !ok {
+	if ok := s.Get(key, s.validatorKey, v); !ok {
 		return nil
 	}
 	return v
 }
 
 // SetValidator sets a validator
-func (s *Store) SetValidator(id string, v *types.Validator) {
-	s.Set(id, s.validatorKey, v)
+func (s *Store) SetValidator(id []byte, v *types.Validator) {
+	key := hex.EncodeToString(id)
+	s.Set(key, s.validatorKey, v)
 }
 
 // DeleteValidator deletes a validator
-func (s *Store) DeleteValidator(id string) {
-	s.Delete(id, s.validatorKey)
+func (s *Store) DeleteValidator(id []byte) {
+	key := hex.EncodeToString(id)
+	s.Delete(key, s.validatorKey)
 }
 
 // IterateValidators executes fn for each validator
-func (s *Store) IterateValidators(fn func(id string, v *types.Validator)) {
-	s.All(s.validatorKey, func(key string, val []byte) {
+func (s *Store) IterateValidators(fn func(id []byte, v *types.Validator)) {
+	s.All(s.validatorKey, func(id string, val []byte) {
 		v := &types.Validator{}
 		if err := s.codec.Decode(val, v); err != nil {
+			panic(err)
+		}
+		key, err := hex.DecodeString(id)
+		if err != nil {
 			panic(err)
 		}
 

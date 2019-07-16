@@ -32,9 +32,9 @@ type Store interface {
 	DeletePoster(string)
 	IteratePosters(func(string, *types.Poster))
 
-	ValidatorExists(string) bool
-	Validator(string) *types.Validator
-	SetValidator(string, *types.Validator)
-	DeleteValidator(string)
-	IterateValidators(func(string, *types.Validator))
+	ValidatorExists([]byte) bool
+	Validator([]byte) *types.Validator
+	SetValidator([]byte, *types.Validator)
+	DeleteValidator([]byte)
+	IterateValidators(func([]byte, *types.Validator))
 }
