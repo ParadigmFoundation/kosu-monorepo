@@ -7,6 +7,7 @@ import (
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
+	"github.com/tendermint/tendermint/crypto/tmhash"
 	"github.com/tendermint/tendermint/libs/db"
 )
 
@@ -15,12 +16,21 @@ func TestDeliverWitnessTx(t *testing.T) {
 	done, app := newTestApp(t, db)
 	defer done()
 
-	_, priv, err := types.NewKeyPair()
+	pub, priv, err := types.NewKeyPair()
 	require.NoError(t, err)
 
+	// set a new validator
+	nodeID := tmhash.SumTruncated(pub)
+	app.store.SetValidator(nodeID, &types.Validator{
+		Power:     1,
+		PublicKey: pub,
+		Balance:   types.NewBigInt([]byte{0x00}),
+	})
+
 	wtx := &types.TransactionWitness{
-		Block:   1,
-		Address: "ffffffff",
+		Block:     1,
+		Address:   "ffffffff",
+		PublicKey: pub,
 	}
 
 	tx, err := types.WrapTx(wtx).SignedTransaction(priv)

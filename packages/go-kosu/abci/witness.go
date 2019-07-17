@@ -2,6 +2,9 @@ package abci
 
 import (
 	"errors"
+	"math"
+	"math/big"
+
 	"go-kosu/abci/types"
 	"go-kosu/store"
 
@@ -55,7 +58,7 @@ func (app *App) pushTransactionWitness(tx *types.TransactionWitness, nodeID []by
 		return err
 	}
 
-	power := v.VotePower()
+	power := scaleBalance(tx.Amount.BigInt())
 	app.log.Info("adding confirmations", "+power", power, "current", wTx.Confirmations)
 	wTx.Confirmations += uint64(power)
 	app.store.SetWitnessTx(wTx)
@@ -90,4 +93,22 @@ func (app *App) pushTransactionWitness(tx *types.TransactionWitness, nodeID []by
 		})
 	}
 	return nil
+}
+
+func scaleBalance(balance *big.Int) int64 {
+	if balance.Cmp(big.NewInt(0)) == 0 {
+		return int64(0)
+	}
+
+	scaled := &big.Rat{}
+	divisor := &big.Int{}
+
+	// scale balance by 10**18 (base units for KOSU)
+	// nolint:gosec
+	divisor = divisor.Exp(big.NewInt(10), big.NewInt(18), nil)
+	scaled.SetFrac(balance, divisor)
+
+	res, _ := scaled.Float64()
+	power := math.Floor(res)
+	return int64(power)
 }

@@ -5,7 +5,6 @@ import (
 	"crypto/sha256"
 	"errors"
 	"fmt"
-	"math"
 	"math/big"
 
 	"github.com/golang/protobuf/proto"
@@ -71,31 +70,6 @@ func (tx *TransactionWitness) Hash() []byte {
 
 	hash := sha256.Sum256(buf.Bytes())
 	return hash[:]
-}
-
-// VotePower returns the scaled balance (vote power) of a validator
-func (v *Validator) VotePower() int64 {
-	balance := v.Balance.BigInt()
-	if balance.Cmp(big.NewInt(0)) == 0 {
-		// SPECIAL CASE @todo: establish genesis validator balances in genesis.json
-		// This needs to be handled carefully.
-		if v.Power != 0 {
-			return v.Power
-		}
-		return int64(0)
-	}
-
-	scaled := &big.Rat{}
-	divisor := &big.Int{}
-
-	// scale balance by 10**18 (base units for KOSU)
-	// nolint:gosec
-	divisor = divisor.Exp(big.NewInt(10), big.NewInt(18), nil)
-	scaled.SetFrac(balance, divisor)
-
-	res, _ := scaled.Float64()
-	power := math.Floor(res)
-	return int64(power)
 }
 
 // NewBigInt returns a new BigInt with value set to the provided byte slice.
