@@ -4,7 +4,7 @@ import (
 	"bytes"
 	"crypto/sha256"
 	"errors"
-	fmt "fmt"
+	"fmt"
 	"math/big"
 
 	"github.com/golang/protobuf/proto"

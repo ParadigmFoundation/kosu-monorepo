@@ -2,9 +2,11 @@ package abci
 
 import (
 	"errors"
+	"math"
+	"math/big"
+
 	"go-kosu/abci/types"
 	"go-kosu/store"
-	"math"
 
 	abci "github.com/tendermint/tendermint/abci/types"
 )
@@ -56,14 +58,13 @@ func (app *App) pushTransactionWitness(tx *types.TransactionWitness, nodeID []by
 		return err
 	}
 
-	balance := tx.Amount.BigInt().Uint64()
-	power := math.Round(float64(balance) / math.Pow(10, 18))
-
-	app.log.Info("adding confirmations", "+power", power)
-	wTx.Confirmations += uint32(power)
+	power := scaleBalance(tx.Amount.BigInt())
+	app.log.Info("adding confirmations", "+power", power, "current", wTx.Confirmations)
+	wTx.Confirmations += uint64(power)
+	app.store.SetWitnessTx(wTx)
 
 	app.log.Error("info", "threshold", app.confirmationThreshold, "conf", wTx.Confirmations)
-	if app.confirmationThreshold > int64(wTx.Confirmations) {
+	if app.confirmationThreshold > wTx.Confirmations {
 		return nil
 	}
 
@@ -88,8 +89,26 @@ func (app *App) pushTransactionWitness(tx *types.TransactionWitness, nodeID []by
 			PublicKey:  tx.PublicKey,
 			EthAccount: tx.Address,
 			Active:     false,
-			Power:      int64(power),
+			Power:      power,
 		})
 	}
 	return nil
+}
+
+func scaleBalance(balance *big.Int) int64 {
+	if balance.Cmp(big.NewInt(0)) == 0 {
+		return int64(0)
+	}
+
+	scaled := &big.Rat{}
+	divisor := &big.Int{}
+
+	// scale balance by 10**18 (base units for KOSU)
+	// nolint:gosec
+	divisor = divisor.Exp(big.NewInt(10), big.NewInt(18), nil)
+	scaled.SetFrac(balance, divisor)
+
+	res, _ := scaled.Float64()
+	power := math.Floor(res)
+	return int64(power)
 }

@@ -5,6 +5,8 @@ import (
 	"encoding/hex"
 	"errors"
 	"fmt"
+	"math"
+	"math/big"
 
 	abci "github.com/tendermint/tendermint/abci/types"
 	cfg "github.com/tendermint/tendermint/config"
@@ -29,7 +31,7 @@ type App struct {
 	log    log.Logger
 	store  store.Store
 
-	confirmationThreshold int64
+	confirmationThreshold uint64
 }
 
 // NewApp returns a new ABCI App
@@ -125,10 +127,12 @@ func (app *App) BeginBlock(req abci.RequestBeginBlock) abci.ResponseBeginBlock {
 	proposer := req.Header.ProposerAddress
 	votes := req.LastCommitInfo.Votes
 
-	var totalPower int64
+	totalPower := big.NewInt(0)
 	for _, vote := range votes {
-		totalPower += vote.Validator.Power
 		nodeID := vote.Validator.Address
+
+		power := big.NewInt(vote.Validator.Power)
+		totalPower = totalPower.Add(totalPower, power)
 
 		var v *types.Validator
 		if !app.store.ValidatorExists(nodeID) {
@@ -167,9 +171,23 @@ func (app *App) BeginBlock(req abci.RequestBeginBlock) abci.ResponseBeginBlock {
 		app.store.SetValidator(nodeID, v)
 	})
 
-	app.confirmationThreshold = 2 * (totalPower / 3)
+	app.updateConfirmationThreshold(totalPower)
+	app.log.Info("Updated confirmation threshold", "threshold", app.confirmationThreshold)
 
 	return abci.ResponseBeginBlock{}
+}
+
+func (app *App) updateConfirmationThreshold(activePower *big.Int) {
+	threshold := big.NewInt(0).Mul(big.NewInt(2), activePower)
+	threshold.Div(threshold, big.NewInt(3))
+
+	var f uint64
+	if threshold.IsUint64() {
+		f = threshold.Uint64()
+	} else {
+		f = math.MaxUint64
+	}
+	app.confirmationThreshold = f
 }
 
 // EndBlock .
@@ -186,7 +204,7 @@ func (app *App) EndBlock(req abci.RequestEndBlock) abci.ResponseEndBlock {
 
 		// TODO(hharder): make sure this is correct
 		if v.PublicKey != nil {
-			update := abci.Ed25519ValidatorUpdate(v.PublicKey, int64(v.Power))
+			update := abci.Ed25519ValidatorUpdate(v.PublicKey, v.Power)
 			updates = append(updates, update)
 		}
 
