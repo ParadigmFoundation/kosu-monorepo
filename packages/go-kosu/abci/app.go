@@ -3,6 +3,8 @@ package abci
 import (
 	"bytes"
 	"encoding/hex"
+	"math/big"
+	"math"
 	"errors"
 	"fmt"
 
@@ -29,7 +31,7 @@ type App struct {
 	log    log.Logger
 	store  store.Store
 
-	confirmationThreshold int64
+	confirmationThreshold uint64
 }
 
 // NewApp returns a new ABCI App
@@ -125,10 +127,12 @@ func (app *App) BeginBlock(req abci.RequestBeginBlock) abci.ResponseBeginBlock {
 	proposer := req.Header.ProposerAddress
 	votes := req.LastCommitInfo.Votes
 
-	var totalPower int64
+	totalPower := big.NewInt(0)
 	for _, vote := range votes {
-		totalPower += vote.Validator.Power
 		nodeID := vote.Validator.Address
+
+		power := big.NewInt(vote.Validator.Power)
+		totalPower = totalPower.Add(totalPower, power)
 
 		var v *types.Validator
 		if !app.store.ValidatorExists(nodeID) {
@@ -167,9 +171,24 @@ func (app *App) BeginBlock(req abci.RequestBeginBlock) abci.ResponseBeginBlock {
 		app.store.SetValidator(nodeID, v)
 	})
 
-	app.confirmationThreshold = 2 * (totalPower / 3)
+	app.updateConfirmationThreshold(totalPower)
 
 	return abci.ResponseBeginBlock{}
+}
+
+func (app *App) updateConfirmationThreshold(activePower *big.Int) {
+	// BFT requires >= 2/3 active power
+	twoThirds := big.NewRat(2, 3)
+
+	power := &big.Rat{}
+	power.SetFrac(activePower, big.NewInt(1))
+
+	thresholdRatio := twoThirds.Mul(twoThirds, power)
+	threshold, _ := thresholdRatio.Float64()
+
+	floored := math.Floor(threshold)
+	app.confirmationThreshold = uint64(floored)
+	app.log.Info("Updated confirmation threshold", "threshold", floored)
 }
 
 // EndBlock .

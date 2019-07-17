@@ -4,7 +4,6 @@ import (
 	"errors"
 	"go-kosu/abci/types"
 	"go-kosu/store"
-	"math"
 
 	abci "github.com/tendermint/tendermint/abci/types"
 )
@@ -56,14 +55,13 @@ func (app *App) pushTransactionWitness(tx *types.TransactionWitness, nodeID []by
 		return err
 	}
 
-	balance := tx.Amount.BigInt().Uint64()
-	power := math.Round(float64(balance) / math.Pow(10, 18))
-
-	app.log.Info("adding confirmations", "+power", power)
-	wTx.Confirmations += uint32(power)
+	power := v.VotePower()
+	app.log.Info("adding confirmations", "+power", power, "current", wTx.Confirmations)
+	wTx.Confirmations += uint64(power)
+	app.store.SetWitnessTx(wTx)
 
 	app.log.Error("info", "threshold", app.confirmationThreshold, "conf", wTx.Confirmations)
-	if app.confirmationThreshold > int64(wTx.Confirmations) {
+	if app.confirmationThreshold > wTx.Confirmations {
 		return nil
 	}
 
