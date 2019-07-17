@@ -75,31 +75,20 @@ func posterIterator(app *App, totalBalance *big.Int) func(string, *types.Poster)
 }
 
 // calculates a poster's period limit based on their balance and the total poster balance
-func posterLimit(periodLimit uint32, posterBalance, totalBalance *big.Int) uint32 {
-	limitRatio := &big.Rat{}
-	limitRatio.Set(posterLimitRatio(periodLimit, posterBalance, totalBalance))
-
-	floatLimit, _ := limitRatio.Float64()
-	flooredLimit := math.Floor(floatLimit)
-
-	limit := uint32(flooredLimit)
-	return limit
-}
-
-// calculates the poster's limit ratio, equal to the poster's order limit when evaluated
-func posterLimitRatio(periodLimit uint32, posterBalance, totalBalance *big.Int) *big.Rat {
-	// create copies or posterBalance/totalBalance for safety
-	pb, tb := &big.Int{}, &big.Int{}
+func posterLimit(periodLimit uint64, posterBalance, totalBalance *big.Int) uint64 {
+	// copy periodLimit (pl), posterBalance (pb), totalBalance (tb)
+	var pl, pb, tb big.Int
+	pl.SetUint64(periodLimit)
 	pb.Set(posterBalance)
 	tb.Set(totalBalance)
 
-	pl := &big.Int{}
-	pl.SetUint64(uint64(periodLimit))
+	// limit = (posterBalance / totalBalance) * periodLimit
+	limit := big.NewInt(0)
+	limit.Mul(&pl, &pb)
+	limit.Div(limit, &tb)
 
-	// poster_limit_ratio = (period_limit * poster_balance) / total_balance
-	pl.Mul(pl, pb)
-	limitRatio := &big.Rat{}
-	limitRatio.SetFrac(pl, tb)
-
-	return limitRatio
+	if !limit.IsUint64() {
+		return math.MaxUint64
+	}
+	return limit.Uint64()
 }
