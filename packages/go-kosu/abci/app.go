@@ -178,14 +178,16 @@ func (app *App) BeginBlock(req abci.RequestBeginBlock) abci.ResponseBeginBlock {
 }
 
 func (app *App) updateConfirmationThreshold(activePower *big.Int) {
-	power := new(big.Rat).SetInt(activePower)
+	threshold := big.NewInt(0).Mul(big.NewInt(2), activePower)
+	threshold.Div(threshold, big.NewInt(3))
 
-	threshold, _ := new(big.Rat).Mul(
-		big.NewRat(2, 3), // BFT requires >= 2/3 active power
-		power,
-	).Float64()
-
-	app.confirmationThreshold = uint64(math.Floor(threshold))
+	var f uint64
+	if threshold.IsUint64() {
+		f = threshold.Uint64()
+	} else {
+		f = math.MaxUint64
+	}
+	app.confirmationThreshold = f
 }
 
 // EndBlock .
