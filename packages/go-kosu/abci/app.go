@@ -172,23 +172,20 @@ func (app *App) BeginBlock(req abci.RequestBeginBlock) abci.ResponseBeginBlock {
 	})
 
 	app.updateConfirmationThreshold(totalPower)
+	app.log.Info("Updated confirmation threshold", "threshold", app.confirmationThreshold)
 
 	return abci.ResponseBeginBlock{}
 }
 
 func (app *App) updateConfirmationThreshold(activePower *big.Int) {
-	// BFT requires >= 2/3 active power
-	twoThirds := big.NewRat(2, 3)
+	power := new(big.Rat).SetInt(activePower)
 
-	power := &big.Rat{}
-	power.SetFrac(activePower, big.NewInt(1))
+	threshold, _ := new(big.Rat).Mul(
+		big.NewRat(2, 3), // BFT requires >= 2/3 active power
+		power,
+	).Float64()
 
-	thresholdRatio := twoThirds.Mul(twoThirds, power)
-	threshold, _ := thresholdRatio.Float64()
-
-	floored := math.Floor(threshold)
-	app.confirmationThreshold = uint64(floored)
-	app.log.Info("Updated confirmation threshold", "threshold", floored)
+	app.confirmationThreshold = uint64(math.Floor(threshold))
 }
 
 // EndBlock .
