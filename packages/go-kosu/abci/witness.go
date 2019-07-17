@@ -86,7 +86,7 @@ func (app *App) pushTransactionWitness(tx *types.TransactionWitness, nodeID []by
 			PublicKey:  tx.PublicKey,
 			EthAccount: tx.Address,
 			Active:     false,
-			Power:      int64(power),
+			Power:      power,
 		})
 	}
 	return nil

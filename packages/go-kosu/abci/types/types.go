@@ -89,7 +89,7 @@ func (v *Validator) VotePower() int64 {
 	divisor := &big.Int{}
 
 	// scale balance by 10**18 (base units for KOSU)
-	divisor = divisor.Exp(big.NewInt(10), big.NewInt(18), nil)
+	divisor = divisor.Exp(big.NewInt(10), big.NewInt(18), big.NewInt(0))
 	scaled.SetFrac(balance, divisor)
 
 	res, _ := scaled.Float64()

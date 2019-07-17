@@ -3,10 +3,10 @@ package abci
 import (
 	"bytes"
 	"encoding/hex"
-	"math/big"
-	"math"
 	"errors"
 	"fmt"
+	"math"
+	"math/big"
 
 	abci "github.com/tendermint/tendermint/abci/types"
 	cfg "github.com/tendermint/tendermint/config"
@@ -205,7 +205,7 @@ func (app *App) EndBlock(req abci.RequestEndBlock) abci.ResponseEndBlock {
 
 		// TODO(hharder): make sure this is correct
 		if v.PublicKey != nil {
-			update := abci.Ed25519ValidatorUpdate(v.PublicKey, int64(v.Power))
+			update := abci.Ed25519ValidatorUpdate(v.PublicKey, v.Power)
 			updates = append(updates, update)
 		}
 
