@@ -67,47 +67,47 @@ func TestRebalanceRateLimit(t *testing.T) {
 	posterCases := []struct {
 		Address       string
 		Balance       string
-		ExpectedLimit uint32
+		ExpectedLimit uint64
 	}{
 		{
 			"0x00000000000000000000000000000000000000001",
 			"34246874234973750268",
-			uint32(16324),
+			uint64(16324),
 		},
 		{
 			"0x00000000000000000000000000000000000000002",
 			"1692165432169854765",
-			uint32(806),
+			uint64(806),
 		},
 		{
 			"0x00000000000000000000000000000000000000003",
 			"12259168432695218424",
-			uint32(5843),
+			uint64(5843),
 		},
 		{
 			"0x00000000000000000000000000000000000000004",
 			"28964871648846924367",
-			uint32(13806),
+			uint64(13806),
 		},
 		{
 			"0x00000000000000000000000000000000000000005",
 			"44726432169457899",
-			uint32(21),
+			uint64(21),
 		},
 		{
 			"0x00000000000000000000000000000000000000006",
 			"1362696487442343798",
-			uint32(649),
+			uint64(649),
 		},
 		{
 			"0x00000000000000000000000000000000000000007",
 			"1224689755452112",
-			uint32(0),
+			uint64(0),
 		},
 		{
 			"0x00000000000000000000000000000000000000008",
 			"131222464954423155735",
-			uint32(62548),
+			uint64(62548),
 		},
 	}
 
@@ -126,7 +126,7 @@ func TestRebalanceRateLimit(t *testing.T) {
 		setPosterBalance(app, testCase.Address, balance)
 
 		poster := app.store.Poster(testCase.Address)
-		assert.Equal(t, uint32(0), poster.Limit, "Poster should have no limit before rebalance")
+		assert.Equal(t, uint64(0), poster.Limit, "Poster should have no limit before rebalance")
 	}
 
 	calculatedTotal := app.totalPosterStake()

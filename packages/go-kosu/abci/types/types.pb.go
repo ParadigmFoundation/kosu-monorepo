@@ -155,7 +155,7 @@ func (m *RoundInfo) GetLimit() uint64 {
 // ConsensusParams
 type ConsensusParams struct {
 	FinalityThreshold     uint32   `protobuf:"varint,1,opt,name=FinalityThreshold,proto3" json:"FinalityThreshold,omitempty"`
-	PeriodLimit           uint32   `protobuf:"varint,2,opt,name=PeriodLimit,proto3" json:"PeriodLimit,omitempty"`
+	PeriodLimit           uint64   `protobuf:"varint,2,opt,name=PeriodLimit,proto3" json:"PeriodLimit,omitempty"`
 	PeriodLength          uint32   `protobuf:"varint,3,opt,name=PeriodLength,proto3" json:"PeriodLength,omitempty"`
 	MaxOrderBytes         uint32   `protobuf:"varint,4,opt,name=MaxOrderBytes,proto3" json:"MaxOrderBytes,omitempty"`
 	ConfirmationThreshold uint64   `protobuf:"varint,5,opt,name=ConfirmationThreshold,proto3" json:"ConfirmationThreshold,omitempty"`
@@ -196,7 +196,7 @@ func (m *ConsensusParams) GetFinalityThreshold() uint32 {
 	return 0
 }
 
-func (m *ConsensusParams) GetPeriodLimit() uint32 {
+func (m *ConsensusParams) GetPeriodLimit() uint64 {
 	if m != nil {
 		return m.PeriodLimit
 	}
@@ -228,7 +228,7 @@ func (m *ConsensusParams) GetConfirmationThreshold() uint64 {
 // Poster
 type Poster struct {
 	Balance              *BigInt  `protobuf:"bytes,1,opt,name=balance,proto3" json:"balance,omitempty"`
-	Limit                uint32   `protobuf:"varint,2,opt,name=limit,proto3" json:"limit,omitempty"`
+	Limit                uint64   `protobuf:"varint,2,opt,name=limit,proto3" json:"limit,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -266,7 +266,7 @@ func (m *Poster) GetBalance() *BigInt {
 	return nil
 }
 
-func (m *Poster) GetLimit() uint32 {
+func (m *Poster) GetLimit() uint64 {
 	if m != nil {
 		return m.Limit
 	}
