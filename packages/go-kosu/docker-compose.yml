@@ -1,12 +1,12 @@
 version: '3'
 
-services:
+services: 
   node0:
     container_name: node0
     build:
       context: .
       dockerfile: Dockerfile.compose
-    command: ["/go-kosu/kosud", "--home", "/go-kosu/testnet/node0"]
+    command: ["/go-kosu/kosud", "--home", "/go-kosu/testnet/node0", "--web3", "ws://172.17.0.1:8546"]
     ports: 
       - "8000:26657"
     networks:
@@ -18,7 +18,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.compose
-    command: ["/go-kosu/kosud", "--home", "/go-kosu/testnet/node1"]
+    command: ["/go-kosu/kosud", "--home", "/go-kosu/testnet/node1", "--web3", "ws://172.17.0.1:8546"]
     ports: 
       - "8001:26657"
     networks:
@@ -30,7 +30,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.compose
-    command: ["/go-kosu/kosud", "--home", "/go-kosu/testnet/node2"]
+    command: ["/go-kosu/kosud", "--home", "/go-kosu/testnet/node2", "--web3", "ws://172.17.0.1:8546"]
     ports: 
       - "8002:26657"
     networks:
@@ -42,7 +42,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.compose
-    command: ["/go-kosu/kosud", "--home", "/go-kosu/testnet/node3"]
+    command: ["/go-kosu/kosud", "--home", "/go-kosu/testnet/node3", "--web3", "ws://172.17.0.1:8546"]
     ports: 
       - "8003:26657"
     networks:

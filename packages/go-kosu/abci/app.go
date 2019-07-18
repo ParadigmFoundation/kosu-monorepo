@@ -1,13 +1,16 @@
 package abci
 
 import (
+	"bytes"
 	"encoding/hex"
 	"errors"
 	"fmt"
 	"math"
+	"math/big"
 
 	abci "github.com/tendermint/tendermint/abci/types"
 	cfg "github.com/tendermint/tendermint/config"
+	"github.com/tendermint/tendermint/crypto/tmhash"
 	"github.com/tendermint/tendermint/libs/db"
 	"github.com/tendermint/tendermint/libs/log"
 
@@ -26,8 +29,9 @@ type App struct {
 	abci.BaseApplication
 	Config *cfg.Config
 	log    log.Logger
+	store  store.Store
 
-	store store.Store
+	confirmationThreshold uint64
 }
 
 // NewApp returns a new ABCI App
@@ -90,25 +94,45 @@ func (app *App) InitChain(req abci.RequestInitChain) abci.ResponseInitChain {
 		panic("Using a non-zero state when initializing the chain")
 	}
 
-	gen, err := NewGenesisFromRequest(req)
-	if err != nil {
-		panic(err)
+	// load genesis state from request (which is defined in config/genesis.json)
+	// if appState == nil we the defaults
+	var gen *Genesis
+	if len(req.AppStateBytes) == 0 {
+		gen = appState
+	} else {
+		var err error
+		gen, err = NewGenesisFromRequest(req)
+		if err != nil {
+			panic(err)
+		}
 	}
-
 	app.store.SetConsensusParams(gen.ConsensusParams)
 	app.log.Info("Loaded Genesis State", "gen", gen)
 
-	_ = req.Validators
+	for _, v := range req.Validators {
+		nodeID := tmhash.SumTruncated(v.PubKey.Data)
+		app.store.SetValidator(nodeID, &types.Validator{
+			Balance:   types.NewBigIntFromInt(0),
+			Power:     v.Power,
+			PublicKey: v.PubKey.Data,
+		})
+	}
+
 	return abci.ResponseInitChain{}
 }
 
 // BeginBlock .
 func (app *App) BeginBlock(req abci.RequestBeginBlock) abci.ResponseBeginBlock {
 	currHeight := req.Header.Height
-	proposer := hex.EncodeToString(req.Header.ProposerAddress)
+	proposer := req.Header.ProposerAddress
+	votes := req.LastCommitInfo.Votes
 
-	for _, vote := range req.LastCommitInfo.Votes {
-		nodeID := hex.EncodeToString(vote.Validator.Address)
+	totalPower := big.NewInt(0)
+	for _, vote := range votes {
+		nodeID := vote.Validator.Address
+
+		power := big.NewInt(vote.Validator.Power)
+		totalPower = totalPower.Add(totalPower, power)
 
 		var v *types.Validator
 		if !app.store.ValidatorExists(nodeID) {
@@ -117,16 +141,16 @@ func (app *App) BeginBlock(req abci.RequestBeginBlock) abci.ResponseBeginBlock {
 			v = app.store.Validator(nodeID)
 		}
 
-		v.Active = vote.SignedLastBlock
 		v.Power = vote.Validator.Power
 
 		if vote.SignedLastBlock {
+			v.Active = true
 			v.TotalVotes++
 			v.LastVoted = (currHeight - 1)
 		}
 
 		// record if they are proposer this round
-		if proposer == nodeID {
+		if bytes.Equal(proposer, nodeID) {
 			v.LastProposed = currHeight
 		}
 
@@ -138,42 +162,54 @@ func (app *App) BeginBlock(req abci.RequestBeginBlock) abci.ResponseBeginBlock {
 		app.store.SetValidator(nodeID, v)
 	}
 
-	app.store.IterateValidators(func(nodeID string, v *types.Validator) {
+	app.store.IterateValidators(func(nodeID []byte, v *types.Validator) {
 		if v.LastVoted+1 == currHeight {
 			v.Active = true
-			app.store.SetValidator(nodeID, v)
 		} else { // TODO: check-me
 			v.Active = false
 		}
+		app.store.SetValidator(nodeID, v)
 	})
 
-	// update confirmation threshold based on number of active validators
-	// confirmation threshold is >=2/3 active validators, unless there is
-	// only one active validator, in which case it MUST be 1 in order for
-	// state.balances to remain accurate.
-	//votes := len(req.LastCommitInfo.Votes)
-	//app.state.UpdateConfirmationThreshold(uint32(votes))
+	app.updateConfirmationThreshold(totalPower)
+	app.log.Info("Updated confirmation threshold", "threshold", app.confirmationThreshold)
 
 	return abci.ResponseBeginBlock{}
+}
+
+func (app *App) updateConfirmationThreshold(activePower *big.Int) {
+	threshold := big.NewInt(0).Mul(big.NewInt(2), activePower)
+	threshold.Div(threshold, big.NewInt(3))
+
+	var f uint64
+	if threshold.IsUint64() {
+		f = threshold.Uint64()
+	} else {
+		f = math.MaxUint64
+	}
+	app.confirmationThreshold = f
 }
 
 // EndBlock .
 func (app *App) EndBlock(req abci.RequestEndBlock) abci.ResponseEndBlock {
 	updates := []abci.ValidatorUpdate{}
 
-	app.store.IterateValidators(func(id string, v *types.Validator) {
-		if v.Active {
+	app.store.IterateValidators(func(nodeID []byte, v *types.Validator) {
+		if v.Applied {
 			return
 		}
 
-		balance := v.Balance.BigInt().Uint64()
-		power := math.Round(float64(balance) / math.Pow(10, 18))
+		//		balance := v.Balance.BigInt().Uint64()
+		//		power := math.Round(float64(balance) / math.Pow(10, 18))
 
 		// TODO(hharder): make sure this is correct
 		if v.PublicKey != nil {
-			update := abci.Ed25519ValidatorUpdate(v.PublicKey, int64(power))
+			update := abci.Ed25519ValidatorUpdate(v.PublicKey, v.Power)
 			updates = append(updates, update)
 		}
+
+		v.Applied = true
+		app.store.SetValidator(nodeID, v)
 	})
 
 	return abci.ResponseEndBlock{
@@ -232,7 +268,8 @@ func (app *App) DeliverTx(req []byte) abci.ResponseDeliverTx {
 	case *types.Transaction_Rebalance:
 		return app.deliverRebalance(tx.GetRebalance())
 	case *types.Transaction_Witness:
-		return app.deliverWitnessTx(tx.GetWitness())
+		nodeID := tmhash.SumTruncated(stx.Proof.PublicKey)
+		return app.deliverWitnessTx(tx.GetWitness(), nodeID)
 	case *types.Transaction_Order:
 		return app.deliverOrderTx(tx.GetOrder())
 	default:

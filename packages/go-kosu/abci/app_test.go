@@ -2,6 +2,8 @@ package abci
 
 import (
 	"io/ioutil"
+	"math"
+	"math/big"
 	"os"
 	"testing"
 
@@ -71,4 +73,51 @@ func TestCommitAndInfo(t *testing.T) {
 	res := newApp.Info(abci.RequestInfo{})
 	assert.Equal(t, int64(1), res.LastBlockHeight)
 	assert.Equal(t, app.Store().LastCommitID().Hash, res.LastBlockAppHash)
+}
+
+func TestUpdateConfirmationThreshold(t *testing.T) {
+	tests := []struct {
+		power    string
+		expected uint64
+	}{
+		{"0", 0},
+		{"1", 0},
+		{"2", 1},
+		{"3", 2},
+		{"4", 2},
+		{"5", 3},
+		{"10", 6},
+		{"100", 66},
+		{"1000", 666},
+		{"1001", 667},
+		{"10000", 6666},
+		{"100000", 66666},
+		{"1000000", 666666},
+		{"10000000", 6666666},
+		{"100000000", 66666666},
+		{"1000000000", 666666666},
+		{"10000000000", 6666666666},
+		{"100000000000", 66666666666},
+		{"1000000000000", 666666666666},
+		{"10000000000000", 6666666666666},
+		{"100000000000000", 66666666666666},
+		{"1000000000000000", 666666666666666},
+		{"10000000000000000", 6666666666666666},
+		{"100000000000000000", 66666666666666666},
+		{"1000000000000000000", 666666666666666666},
+		{"10000000000000000000", 6666666666666666666},
+		{"100000000000000000000", math.MaxUint64},
+		{"1000000000000000000000", math.MaxUint64},
+	}
+
+	for i, test := range tests {
+		app := &App{}
+		power, ok := big.NewInt(0).SetString(test.power, 10)
+		require.True(t, ok)
+
+		app.updateConfirmationThreshold(power)
+		assert.Equal(t, test.expected, app.confirmationThreshold,
+			"#%2d for power %s, got: %d, want: %d", i, power, app.confirmationThreshold, test.expected,
+		)
+	}
 }

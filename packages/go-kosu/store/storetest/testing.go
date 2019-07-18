@@ -76,10 +76,12 @@ func TestWitness(t *testing.T, s store.Store) {
 
 	witnessTx.Id = witnessTx.Hash()
 	s.SetWitnessTx(witnessTx)
-	s.IncWitnessTxConfirmations(witnessTx.Id)
+
+	found := s.WitnessTx(witnessTx.Id)
 
 	assert.True(t, s.WitnessTxExists(witnessTx.Id))
-	assert.Equal(t, witnessTx.Confirmations+1, s.WitnessTx(witnessTx.Id).Confirmations)
+	assert.Equal(t, found.Confirmations, witnessTx.Confirmations)
+	assert.Equal(t, found.Id, witnessTx.Id)
 	assert.False(t, s.WitnessTxExists([]byte("xxx")))
 }
 
@@ -94,11 +96,28 @@ func TestPoster(t *testing.T, s store.Store) {
 
 // TestValidator verifies the Validator storage behavior
 func TestValidator(t *testing.T, s store.Store) {
+	addr := []byte{0, 1, 2, 3, 4}
+	v := &types.Validator{
+		PublicKey: []byte{0, 1, 2, 3, 4},
+	}
+	s.SetValidator(addr, v)
+
+	t.Run("should be found", func(t *testing.T) {
+		newV := s.Validator(addr)
+		assert.Equal(t, v.String(), newV.String())
+	})
+
 	t.Run("should return nil when not found/exists", func(t *testing.T) {
-		addr := "0x404"
+		addr := []byte{4, 0, 4}
 		require.False(t, s.ValidatorExists(addr))
 
 		v := s.Validator(addr)
 		assert.Nil(t, v)
+	})
+
+	t.Run("should return nil after deletion", func(t *testing.T) {
+		s.DeleteValidator(addr)
+		newV := s.Validator(addr)
+		assert.Nil(t, newV)
 	})
 }

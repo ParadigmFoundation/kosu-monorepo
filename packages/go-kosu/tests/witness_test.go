@@ -7,18 +7,24 @@ import (
 	. "github.com/smartystreets/goconvey/convey"
 	"github.com/stretchr/testify/require"
 
+	"github.com/tendermint/tendermint/privval"
 	tmtypes "github.com/tendermint/tendermint/types"
 
 	"go-kosu/abci/types"
-	"go-kosu/witness"
 )
 
-func (s *Suite) TestWitnessTx() {
+func (s *Suite) TestWitnessTxPoster() {
 	GivenABCIServer(s.T(), s, func(t *testing.T) {
+		priv := privval.LoadFilePV(
+			s.app.Config.PrivValidatorKeyFile(),
+			s.app.Config.PrivValidatorStateFile(),
+		).Key
+
 		tx := &types.TransactionWitness{
+			Subject: types.TransactionWitness_POSTER,
 			Block:   10,
-			Address: "0xffff",
-			Amount:  types.NewBigIntFromInt(100),
+			Address: priv.Address.String(),
+			Amount:  types.NewBigIntFromString("1000000000000000000", 10),
 		}
 
 		ctx, cancel := context.WithCancel(context.Background())
@@ -29,11 +35,6 @@ func (s *Suite) TestWitnessTx() {
 		defer closer()
 
 		Convey("Broadcasting a Witness Tx with enough confirmations", func() {
-			// we make required confirmations 0, so that any will be enough
-			s.app.Store().SetConsensusParams(types.ConsensusParams{
-				ConfirmationThreshold: 0,
-			})
-
 			BroadcastTxSync(t, s.client, tx)
 
 			Convey("Querying Poster by Tx.Address should be found after N confirmations", func() {
@@ -70,46 +71,52 @@ func (s *Suite) TestWitnessTx() {
 	})
 }
 
-func (s *Suite) TestWitnessRebalance() {
+func (s *Suite) TestWitnessValidator() {
 	GivenABCIServer(s.T(), s, func(t *testing.T) {
-		tx := &types.TransactionRebalance{
-			RoundInfo: &types.RoundInfo{
-				StartsAt: 10,
-				EndsAt:   20,
-			},
-		}
+		priv := privval.LoadFilePV(
+			s.app.Config.PrivValidatorKeyFile(),
+			s.app.Config.PrivValidatorStateFile(),
+		).Key
 
-		s.app.Store().SetConsensusParams(types.ConsensusParams{
-			PeriodLength: uint32(tx.RoundInfo.EndsAt - tx.RoundInfo.StartsAt),
-		})
+		tx := &types.TransactionWitness{
+			Subject: types.TransactionWitness_VALIDATOR,
+			Block:   10,
+			Address: priv.Address.String(),
+
+			// we need to skip the fingerprint (5 bytes), not sure why is this.
+			// I think it's related to amino
+			PublicKey: priv.PubKey.Bytes()[5:],
+
+			// we will set an amount to 10**18, which will translate into power:1.
+			// is the minimum voting power
+			Amount: types.NewBigIntFromString("1000000000000000000", 10),
+		}
 
 		ctx, cancel := context.WithCancel(context.Background())
 		defer cancel()
 
-		// Create the witness
-		w := witness.New(s.client, witness.NewMockProvider(0), witness.DefaultOptions)
-		require.NoError(t, w.WithLogger(nil).Start(ctx))
+		ch, closer, err := s.client.Subscribe(ctx, "tm.event = 'NewBlock'")
+		So(err, ShouldBeNil)
+		defer closer()
 
-		Convey("When a set of Rebalance Tx are committed", func() {
-			roundNumber := []uint64{1, 2, 3}
-			for _, n := range roundNumber {
-				tx.RoundInfo.Number = n
+		Convey("And an initial number of validators", func() {
+			res, err := s.client.Validators(nil)
+			require.NoError(t, err)
+			So(res.Validators[0].VotingPower, ShouldEqual, 10)
 
-				BroadcastTxCommit(t, s.client, tx)
+			Convey("When a Tx is broadcasted", func() {
+				BroadcastTxSync(t, s.client, tx)
+				Convey("Validator's voting power should be updated", func() {
+					// Wait for 2 blocks for validator set to be updated
+					<-ch
+					<-ch
 
-				tx.RoundInfo.StartsAt = tx.RoundInfo.EndsAt
-				tx.RoundInfo.EndsAt += 10
-			}
+					res, err := s.client.Validators(nil)
+					require.NoError(t, err)
 
-			// Wait until the next block is minted
-			sub, closer, err := s.client.Subscribe(ctx, "tm.event = 'NewBlock'")
-			So(err, ShouldBeNil)
-			defer closer()
+					So(res.Validators[0].VotingPower, ShouldEqual, 1)
 
-			<-sub
-
-			Convey("It should update the local witness state", func() {
-				So(w.RoundInfo().Number, ShouldEqual, 3)
+				})
 			})
 		})
 	})

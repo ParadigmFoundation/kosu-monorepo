@@ -2,10 +2,12 @@ package abci
 
 import (
 	"go-kosu/abci/types"
+	"log"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
+	"github.com/tendermint/tendermint/crypto/tmhash"
 	"github.com/tendermint/tendermint/libs/db"
 )
 
@@ -14,11 +16,21 @@ func TestDeliverWitnessTx(t *testing.T) {
 	done, app := newTestApp(t, db)
 	defer done()
 
-	_, priv, err := types.NewKeyPair()
+	pub, priv, err := types.NewKeyPair()
 	require.NoError(t, err)
 
+	// set a new validator
+	nodeID := tmhash.SumTruncated(pub)
+	app.store.SetValidator(nodeID, &types.Validator{
+		Power:     1,
+		PublicKey: pub,
+		Balance:   types.NewBigInt([]byte{0x00}),
+	})
+
 	wtx := &types.TransactionWitness{
-		Block: 1,
+		Block:     1,
+		Address:   "ffffffff",
+		PublicKey: pub,
 	}
 
 	tx, err := types.WrapTx(wtx).SignedTransaction(priv)
@@ -29,5 +41,6 @@ func TestDeliverWitnessTx(t *testing.T) {
 
 	res := app.DeliverTx(buf)
 
-	assert.EqualValues(t, 0, res.Code)
+	log.Printf("res = %+v\n", res)
+	assert.EqualValues(t, 0, res.Code, res.Log)
 }

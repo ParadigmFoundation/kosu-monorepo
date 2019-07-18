@@ -34,7 +34,7 @@ message ConsensusParams {
   uint64 PeriodLimit = 2;
   uint32 PeriodLength = 3;
   uint32 MaxOrderBytes = 4;
-  uint32 ConfirmationThreshold = 5;
+  uint64 ConfirmationThreshold = 5;
 }
 
 /**

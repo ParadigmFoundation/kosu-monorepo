@@ -4,7 +4,7 @@ import (
 	"bytes"
 	"crypto/sha256"
 	"errors"
-	fmt "fmt"
+	"fmt"
 	"math/big"
 
 	"github.com/golang/protobuf/proto"
@@ -82,6 +82,14 @@ func NewBigInt(bytes []byte) *BigInt {
 func NewBigIntFromInt(n int64) *BigInt {
 	b := big.NewInt(n).Bytes()
 	return NewBigInt(b)
+}
+
+// NewBigIntFromString returns a new BigInt given a number in string
+// interpreted in the given base.
+func NewBigIntFromString(s string, base int) *BigInt {
+	b := big.NewInt(0)
+	b.SetString(s, base)
+	return NewBigInt(b.Bytes())
 }
 
 // NewValidator returns a new validator with zero balance

@@ -11,7 +11,7 @@ import (
 func (app *App) checkRebalanceTx(tx *types.TransactionRebalance) error {
 	// Next round should matches the next block number
 	if (tx.RoundInfo.Number - app.store.RoundInfo().Number) != 1 {
-		app.log.Error("round difference != 1",
+		app.log.Debug("round difference != 1",
 			"tx", tx.RoundInfo.Number,
 			"state", app.store.RoundInfo().Number,
 		)
@@ -20,7 +20,7 @@ func (app *App) checkRebalanceTx(tx *types.TransactionRebalance) error {
 
 	period := tx.RoundInfo.EndsAt - tx.RoundInfo.StartsAt
 	if uint32(period) != app.store.ConsensusParams().PeriodLength {
-		app.log.Error("invalid period", "round_info", tx.RoundInfo)
+		app.log.Debug("invalid period", "round_info", tx.RoundInfo)
 		return errProposalRejected
 	}
 
