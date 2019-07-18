@@ -37,10 +37,11 @@ git clone https://github.com/ParadigmFoundation/kosu-monorepo.git
 Build and link all package dependencies with `yarn` (do not use `npm`):
 
 ```
-yarn 
+yarn
 ```
 
 ### Build all packages
+
 The following command will build all packages, including the Kosu contract system and the `kosud` binary:
 
 ```
@@ -62,9 +63,9 @@ make
 
 The `go-kosu` project includes several executeables, found in the `cmd` folder. See the [binaries](#binaries) section for download and install instructions.
 
-- [`kosud`](#binary-kosud) - Kosu reference implementation validator and full-node client.
-- [`kosu-cli`](#binary-kosu-cli) - Command-line interface for `kosud` and other tools.
-- [`kosu-rpc`](#binary-kosu-rpc) - RPC server for `kosud` serving a JSONRPC-API over WebSockets and/or HTTP.
+-   [`kosud`](#binary-kosud) - Kosu reference implementation validator and full-node client.
+-   [`kosu-cli`](#binary-kosu-cli) - Command-line interface for `kosud` and other tools.
+-   [`kosu-rpc`](#binary-kosu-rpc) - RPC server for `kosud` serving a JSONRPC-API over WebSockets and/or HTTP.
 
 ### Downloads
 
@@ -105,6 +106,7 @@ install kosu-rpc /usr/local/bin
 Each binary has a `help` command or `--help` flag which should be used for full command reference.
 
 ### Start a node
+
 You can start a single-node Kosu development network with the following command:
 
 ```bash
@@ -112,6 +114,7 @@ kosud --init --home=$HOME/.kosu
 ```
 
 ### Sending transactions
+
 Force a rebalance transaction (must be parameterized correctly):
 
 ```bash
@@ -119,6 +122,7 @@ kosu-cli tx rebalance [round_number] [period_start] [period_end]
 ```
 
 ### Querying state
+
 The `kosu-cli` executable provides the ability to query the node's and network's current state (see `kosu-cli query --help` for all commands).
 
 ```bash
@@ -134,7 +138,7 @@ kosu-cli query poster [ethereum_address]
 
 ### Running test-network
 
-A four-node test network can be started with `docker-compose` for testing and development. It expects an Ethereum JSONRPC-API to be available at `localhost:8545` with the Kosu system contracts deployed. 
+A four-node test network can be started with `docker-compose` for testing and development. It expects an Ethereum JSONRPC-API to be available at `localhost:8545` with the Kosu system contracts deployed.
 
 The test-net will expose the Tendermint ABCI RPC-API on ports `8000` to `8003` for nodes `0` through `3` respectively.
 
