@@ -2,44 +2,19 @@ package rpc
 
 import (
 	"context"
-	"fmt"
 	"io/ioutil"
 	"os"
 	"testing"
 	"time"
 
+	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
+
 	"go-kosu/abci"
 
-	"github.com/stretchr/testify/require"
 	"github.com/tendermint/tendermint/libs/db"
 	"github.com/tendermint/tendermint/libs/log"
 )
-
-func TestRPCCall(t *testing.T) {
-	server := NewServer(nil)
-	client := DialInProc(server)
-	require.NoError(t, client.Call(nil, "kosu_foo"))
-}
-
-func TestRPCSubscription(t *testing.T) {
-	_, closer := startServer(t, db.NewMemDB())
-	defer closer()
-	abciClient := abci.NewHTTPClient("http://localhost:26657", nil)
-
-	server := NewServer(abciClient)
-	client := DialInProc(server)
-
-	fn := func(i interface{}) {
-		fmt.Printf("i = %+v\n", i)
-	}
-	ctx, cancel := context.WithCancel(context.Background())
-
-	err := client.Subscribe(ctx, fn, "tm.event = 'NewBlock'")
-	require.NoError(t, err)
-
-	time.Sleep(3 * time.Second)
-	cancel()
-}
 
 // TODO use tests/support.go version of startServer
 func startServer(t *testing.T, db db.DB) (*abci.App, func()) {
@@ -62,4 +37,34 @@ func startServer(t *testing.T, db db.DB) (*abci.App, func()) {
 		srv.Stop()
 		os.RemoveAll(dir)
 	}
+}
+
+func TestRPCLatestHeight(t *testing.T) {
+	_, closer := startServer(t, db.NewMemDB())
+	defer closer()
+	client := DialInProc(
+		NewServer(
+			abci.NewHTTPClient("http://localhost:26657", nil),
+		),
+	)
+
+	// Get the initial (prior the first block is mined)
+	latest, err := client.LatestHeight()
+	require.NoError(t, err)
+	assert.EqualValues(t, 0, latest)
+
+	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+	fn := func(i interface{}) {
+		// this is invoked when a block is mined
+		latest, err := client.LatestHeight()
+		require.NoError(t, err)
+		assert.EqualValues(t, 1, latest)
+
+		cancel()
+	}
+
+	err = client.Subscribe(ctx, fn, "tm.event = 'NewBlock'")
+	require.NoError(t, err)
+
+	<-ctx.Done()
 }

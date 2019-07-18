@@ -42,6 +42,14 @@ func (c *Client) Subscribe(ctx context.Context, fn func(interface{}), query stri
 	return nil
 }
 
-func (c *Client) Call(result interface{}, method string, args ...interface{}) error {
-	return c.rpc.Call(result, method, args...)
+func (c *Client) Call(result interface{}, ns, method string, args ...interface{}) error {
+	return c.rpc.Call(result, ns+"_"+method, args...)
+}
+
+func (c *Client) LatestHeight() (int64, error) {
+	var latestHeight int64
+	if err := c.Call(&latestHeight, "kosu", "latestHeight"); err != nil {
+		return 0, err
+	}
+	return latestHeight, nil
 }

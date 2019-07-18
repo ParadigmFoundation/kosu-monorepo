@@ -52,6 +52,16 @@ func (s *Service) Subscribe(ctx context.Context, query string) (*rpc.Subscriptio
 	return rpcSub, nil
 }
 
-func (s *Service) Foo() error {
-	return nil
+// LatestHeight returns the height of the best known block
+// The `latestHeight` method will return the integer height of the latest block committed to the blockchain.",
+func (s *Service) LatestHeight() (int64, error) {
+	res, err := s.abci.Block(nil)
+	if err != nil {
+		return 0, err
+	}
+	if res.Block == nil {
+		return 0, nil
+	}
+
+	return res.Block.Height, nil
 }
