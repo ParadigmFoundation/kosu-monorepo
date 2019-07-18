@@ -6,6 +6,8 @@
 
 This monorepo contains the packages that implement the Kosu protocol, alongside supporting packages and developer tooling.
 
+Documentation for Kosu packages is available in this repository, and hosted at [`docs.kosu.io`](https://docs.kosu.io).
+
 ## Contents
 
 -   [Packages](#packages)
@@ -152,7 +154,7 @@ See the [`go-kosu`](https://github.com/ParadigmFoundation/kosu-monorepo/tree/mas
 
 ## Documentation
 
-Generated documentation is published for the following packages with each commit, and published to [`docs.kosu.io`](https://docs.kosu.io)`:
+Generated documentation is published for the following packages with each commit, and published to [`docs.kosu.io`](https://docs.kosu.io):
 
 -   [`@kosu/kosu.js`](https://docs.kosu.io/kosu.js): TypeScript library for interacting with the Kosu contract system and network.
 -   [`@kosu/system-contracts`](https://docs.kosu.io/kosu-system-contracts): The core Kosu system smart-contracts in Solidity, and TypeScript test suite.
