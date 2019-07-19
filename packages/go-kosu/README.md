@@ -65,7 +65,6 @@ The `go-kosu` project includes several executeables, found in the `cmd` folder. 
 
 -   [`kosud`](#binary-kosud) - Kosu reference implementation validator and full-node client.
 -   [`kosu-cli`](#binary-kosu-cli) - Command-line interface for `kosud` and other tools.
--   [`kosu-rpc`](#binary-kosu-rpc) - RPC server for `kosud` serving a JSONRPC-API over WebSockets and/or HTTP.
 
 ### Downloads
 
@@ -89,16 +88,6 @@ Command-line interface for `kosud` (run `kosu-cli` for usage).
 wget https://storage.googleapis.com/kosu-cli/linux_amd64/kosu-cli
 chmod +x kosu-cli
 install kosu-cli /usr/local/bin
-```
-
-#### Binary: `kosu-rpc`
-
-RPC server for `kosud` (JSONRPC available over WebSockets or HTTP).
-
-```bash
-wget https://storage.googleapis.com/kosu-cli/linux_amd64/kosu-rpc
-chmod +x kosu-rpc
-install kosu-rpc /usr/local/bin
 ```
 
 ## Usage
