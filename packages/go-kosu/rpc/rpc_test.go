@@ -30,7 +30,7 @@ func TestRPCLatestHeight(t *testing.T) {
 	assert.EqualValues(t, 0, latest)
 
 	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
-	fn := func(i interface{}) {
+	fn := func(_ interface{}) {
 		// this is invoked when a block is mined
 		require.NoError(t, client.Call(&latest, "kosu_latestHeight"))
 		assert.EqualValues(t, 1, latest)
