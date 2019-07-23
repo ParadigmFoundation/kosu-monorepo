@@ -144,8 +144,8 @@ To start a single-node Kosu development network as a validator, and initialize a
 ./kosud --init --web3 wss://ethnet.zaidan.io/ws/ropsten
 ```
 
-To start the `JSON-RPC` bridge and interact with kosud use the ```kosud rpc``` sub-command. By default the HTTP and WS endpoints are binded to ports `14341` and `14342` repectively.
-
+To start the `JSON-RPC` bridge and interact with kosud use the `kosud rpc` sub-command.
+By default the HTTP and WS endpoints are binded to ports `14341` and `14342` repectively.
 
 The command-line interface will also be built (see `kosu-cli help` for all commands).
 
