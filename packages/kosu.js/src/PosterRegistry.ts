@@ -151,6 +151,8 @@ export class PosterRegistry {
      */
     public async pay(value: BigNumber): Promise<TransactionReceiptWithDecodedLogs> {
         const contract = await this.getContract();
-        return this.web3Wrapper.sendTransactionAsync({ from: await this.web3.eth.getCoinbase(), to: contract.address, value, gas: 220000 }).then(async txHash => this.web3Wrapper.awaitTransactionSuccessAsync(txHash));
+        return this.web3Wrapper
+            .sendTransactionAsync({ from: await this.web3.eth.getCoinbase(), to: contract.address, value, gas: 220000 })
+            .then(async txHash => this.web3Wrapper.awaitTransactionSuccessAsync(txHash));
     }
 }

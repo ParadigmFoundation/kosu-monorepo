@@ -72,10 +72,12 @@ describe("KosuToken", () => {
             const initialEth = await web3Wrapper.getBalanceInWeiAsync(accounts[0]);
             await kosu.kosuToken.releaseTokens(difference);
             const finalEth = await web3Wrapper.getBalanceInWeiAsync(accounts[0]);
-            finalEth.minus(initialEth).toNumber().should.be.gt(0);
+            finalEth
+                .minus(initialEth)
+                .toNumber()
+                .should.be.gt(0);
         });
     });
-
 
     describe("estimateEtherToToken", () => {
         it("should estimate tokens generated from ether", async () => {
@@ -88,7 +90,6 @@ describe("KosuToken", () => {
             await kosu.kosuToken.estimateTokenToEther(TestValues.oneEther).then(val => val.toNumber().should.be.gt(0));
         });
     });
-
 
     describe("pay", () => {
         it("should generate tokens", async () => {
