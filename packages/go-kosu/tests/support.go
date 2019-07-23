@@ -38,7 +38,7 @@ func StartServer(t *testing.T, db db.DB) (*abci.App, func()) {
 	require.NoError(t, err)
 
 	// Update block generation time to 100ms to make tests run fast
-	abci.DefaultConfig.Consensus.TimeoutCommit = time.Duration(100 * time.Millisecond)
+	abci.DefaultConfig.Consensus.TimeoutCommit = 100 * time.Millisecond
 	err = abci.InitTendermintWithLogger(dir, log.NewNopLogger())
 	require.NoError(t, err)
 
