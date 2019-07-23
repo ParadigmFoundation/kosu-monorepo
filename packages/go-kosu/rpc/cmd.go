@@ -30,7 +30,7 @@ func NewCommand() *cobra.Command {
 		Short: "starts the rpc bridge",
 		Long:  "The RPC bridge exposes a set of kosud functionalities over JSON-RPC 2.0",
 		PreRunE: func(cmd *cobra.Command, args []string) error {
-			if http == false && ws == false {
+			if !http && !ws {
 				return errors.New("both `--ws` and `--http` where false, you need to enable at least one")
 			}
 
@@ -54,7 +54,7 @@ func NewCommand() *cobra.Command {
 			srv := NewServer(client)
 
 			wg := sync.WaitGroup{}
-			if http == true {
+			if http {
 				wg.Add(1)
 				go func() {
 					defer wg.Done()
@@ -64,7 +64,7 @@ func NewCommand() *cobra.Command {
 				}()
 			}
 
-			if ws == true {
+			if ws {
 				wg.Add(1)
 				go func() {
 					defer wg.Done()
