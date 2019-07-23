@@ -55,8 +55,6 @@ steps:
     commands:
       - cd packages/go-kosu
       - make ci
-    depends_on:
-      - build-project
 
 services:
     - name: kosu-geth
