@@ -5,8 +5,10 @@ title: Methods
 {{ .Description }}
 
 {{- range .Types }}
-  {{- range .Entries }}
+{{- range .Entries }}
+
 ## Method: {{ .Method }}
+
 {{ .Text }}
-  {{ end }}
+{{ end }}
 {{ end }}
