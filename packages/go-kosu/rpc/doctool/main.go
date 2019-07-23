@@ -10,6 +10,7 @@ import (
 	"os"
 )
 
+// nolint
 type DocEntry struct {
 	Method string `json:"method"`
 	Text   string `json:"text"`
