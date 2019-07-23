@@ -18,6 +18,9 @@ import (
 
 var chainIDPrefix = "kosu-chain-%v"
 
+// DefaultConfig returns the default Tendermint config for a Kosu node
+var DefaultConfig = cfg.DefaultConfig()
+
 // InitTendermint creates an initial tendermint file structure.
 func InitTendermint(homedir string) error {
 	logger := log.NewTMLogger(log.NewSyncWriter(os.Stdout)).With("module", "main")
@@ -35,7 +38,7 @@ func InitTendermintWithLogger(homedir string, logger log.Logger) error {
 
 // Code from tendermint init...
 func createConfig(homedir string, logger log.Logger) error {
-	config := cfg.DefaultConfig()
+	config := DefaultConfig
 	if homedir == "" {
 		config.SetRoot(DefaultHomeDir)
 	} else {

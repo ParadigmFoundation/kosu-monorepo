@@ -12,6 +12,7 @@ import (
 	"github.com/tendermint/tendermint/libs/log"
 
 	"go-kosu/abci"
+	"go-kosu/rpc"
 	"go-kosu/witness"
 )
 
@@ -96,8 +97,8 @@ func main() {
 			}
 		},
 	}
-	rootCmd.Flags().StringVar(&cfg.Home, "home", "~/.kosu", "directory for config and data")
-	rootCmd.Flags().BoolVar(&cfg.Debug, "debug", false, "enable debuging")
+	rootCmd.PersistentFlags().StringVar(&cfg.Home, "home", "~/.kosu", "directory for config and data")
+	rootCmd.PersistentFlags().BoolVar(&cfg.Debug, "debug", false, "enable debuging")
 	rootCmd.Flags().StringVar(&cfg.Web3, "web3", "wss://ethnet.zaidan.io/ws/kosu", "web3 provider URL")
 	rootCmd.Flags().BoolVar(&cfg.Init, "init", false, "initializes directory like 'tendermint init' does")
 
@@ -115,6 +116,8 @@ func main() {
 			stdlog.Fatal(err)
 		}
 	})
+
+	rootCmd.AddCommand(rpc.NewCommand())
 
 	if err := rootCmd.Execute(); err != nil {
 		stdlog.Fatal(err)

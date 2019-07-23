@@ -3,6 +3,7 @@ package abci
 import (
 	"encoding/base64"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"io/ioutil"
 	"os"
@@ -21,6 +22,8 @@ const (
 	KOSUHOME = ".kosu"
 )
 
+var errHomeDirNotFound = errors.New("homedir does not exists! Did you run the init command?")
+
 // DefaultHomeDir is the default full path used to store config and data
 var DefaultHomeDir = os.ExpandEnv(fmt.Sprintf("$HOME/%s", KOSUHOME))
 
@@ -31,7 +34,7 @@ func LoadConfig(homedir string) (*config.Config, error) {
 	}
 
 	if !common.FileExists(filepath.Join(homedir, "config", "config.toml")) {
-		return nil, fmt.Errorf("missing homedir! Did you run the init command?")
+		return nil, errHomeDirNotFound
 	}
 
 	// Have a config file, load it
@@ -43,7 +46,7 @@ func LoadConfig(homedir string) (*config.Config, error) {
 	// I don't think this ever returns an err.  It seems to create a default config if missing
 	err := viper.ReadInConfig()
 	if err != nil {
-		return nil, fmt.Errorf("missing homedir/config file. Did you run 'kosud --init'?")
+		return nil, errHomeDirNotFound
 	}
 
 	cfg := config.DefaultConfig()
