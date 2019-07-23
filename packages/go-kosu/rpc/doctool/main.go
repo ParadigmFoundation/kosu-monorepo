@@ -56,7 +56,7 @@ func main() {
 		pkgDocs.Types = append(pkgDocs.Types, typeDocs)
 	}
 
-	t, err := template.New("template.md").ParseFiles("./template.md")
+	t, err := template.New("template.md").ParseFiles("./template.md.tpl")
 	if err != nil {
 		panic(err)
 	}
