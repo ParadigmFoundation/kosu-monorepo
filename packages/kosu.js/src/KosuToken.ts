@@ -157,4 +157,60 @@ export class KosuToken {
         const contract = await this.getContract();
         return contract.allowance.callAsync(owner, spender);
     }
+
+    /**
+     * Calculated tokens to be minted from deposited ether.
+     *
+     * @param etherInput Amount of ether to be submitted to generate tokens.
+     * @returns Estimation of tokens to be minted.
+     */
+    public async estimateEtherToToken(etherInput: BigNumber): Promise<BigNumber> {
+        const contract = await this.getContract();
+        return contract.estimateEtherToToken.callAsync(etherInput);
+    }
+
+    /**
+     * Calculates ether to be returned for burning tokens.
+     *
+     * @param tokensToBurn Amount of tokens to burn for returned ether.
+     * @returns Estimation of ether to be returned.
+     */
+    public async estimateTokenToEther(tokensToBurn: BigNumber): Promise<BigNumber> {
+        const contract = await this.getContract();
+        return contract.estimateTokenToEther.callAsync(tokensToBurn);
+    }
+
+    /**
+     * Sends ether to the contract to bond tokens.
+     *
+     * @param value Amount of wei to deposit
+     * @param minPayout Minimum amount of tokens required to be minted to prevent transaction from reverting.
+     * @returns Logs from the transaction block.
+     */
+    public async bondTokens(value: BigNumber, minPayout: BigNumber): Promise<TransactionReceiptWithDecodedLogs> {
+        const contract = await this.getContract();
+        return contract.bondTokens.awaitTransactionSuccessAsync(minPayout, { value });
+    }
+
+    /**
+     * Releases tokens to be burned and return bonded ether.
+     *
+     * @param tokensToBurn Amount of tokens to burn for returned ether.
+     * @returns Logs from the transaction block.
+     */
+    public async releaseTokens(tokensToBurn: BigNumber): Promise<TransactionReceiptWithDecodedLogs> {
+        const contract = await this.getContract();
+        return contract.releaseTokens.awaitTransactionSuccessAsync(tokensToBurn);
+    }
+
+    /**
+     * Sends ether to the contract to bond tokens.
+     *
+     * @param value Amount of wei to deposit
+     * @returns Logs from the transaction block.
+     */
+    public async pay(value: BigNumber): Promise<TransactionReceiptWithDecodedLogs> {
+        const contract = await this.getContract();
+        return this.web3Wrapper.sendTransactionAsync({ from: await this.web3.eth.getCoinbase(), to: contract.address, value, gas: 70000 }).then(async txHash => this.web3Wrapper.awaitTransactionSuccessAsync(txHash));
+    }
 }
