@@ -4,6 +4,7 @@ import (
 	"io/ioutil"
 	"os"
 	"testing"
+	"time"
 
 	. "github.com/smartystreets/goconvey/convey" //nolint
 	"github.com/stretchr/testify/require"
@@ -18,7 +19,7 @@ import (
 // GivenABCIServer a ABCI Server inside a Convey block
 func GivenABCIServer(t *testing.T, suite *Suite, fn func(*testing.T)) {
 	Convey("Given an ABCI Server", t, func() {
-		app, closer := startServer(t, db.NewMemDB())
+		app, closer := StartServer(t, db.NewMemDB())
 		defer closer()
 		suite.app = app
 
@@ -30,11 +31,14 @@ func GivenABCIServer(t *testing.T, suite *Suite, fn func(*testing.T)) {
 	})
 }
 
-func startServer(t *testing.T, db db.DB) (*abci.App, func()) {
+// StartServer starts a kosud test server
+func StartServer(t *testing.T, db db.DB) (*abci.App, func()) {
 	// Create a temp dir and initialize tendermint there
 	dir, err := ioutil.TempDir("/tmp", "/go-kosu-go-tests_")
 	require.NoError(t, err)
 
+	// Update block generation time to 100ms to make tests run fast
+	abci.DefaultConfig.Consensus.TimeoutCommit = time.Duration(100 * time.Millisecond)
 	err = abci.InitTendermintWithLogger(dir, log.NewNopLogger())
 	require.NoError(t, err)
 
