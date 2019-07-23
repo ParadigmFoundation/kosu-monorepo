@@ -3,6 +3,7 @@ package rpc
 import (
 	"context"
 	"go-kosu/abci"
+	"log"
 
 	"github.com/ethereum/go-ethereum/rpc"
 )
@@ -44,7 +45,10 @@ func (s *Service) Subscribe(ctx context.Context, query string) (*rpc.Subscriptio
 			case <-notifier.Closed():
 				return
 			case e := <-events:
-				notifier.Notify(rpcSub.ID, e)
+				err := notifier.Notify(rpcSub.ID, e)
+				if err != nil {
+					log.Printf("rpc: %+v", err)
+				}
 			}
 		}
 	}()
