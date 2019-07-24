@@ -9,6 +9,7 @@ import (
 	"github.com/stretchr/testify/suite"
 
 	"github.com/tendermint/tendermint/libs/db"
+	rpctypes "github.com/tendermint/tendermint/rpc/core/types"
 )
 
 type Suite struct {
