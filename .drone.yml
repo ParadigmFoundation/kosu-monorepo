@@ -26,20 +26,6 @@ steps:
       - yarn migrate:ci
     depends_on:
       - clone
-    when:
-      changeset:
-        includes:
-          [
-            .drone.yml,
-            package.json,
-            tsconfig.json,
-            packages/go-kosu/**/*.*,
-            packages/kosu-sdk-contracts/**/*.*,
-            packages/kosu-system-contracts/**/*.*,
-            packages/kosu.js/**/*.*,
-            packages/tslint-config/**/*.*,
-            packages/tsc-config/**/*.*,
-          ]
 
   - name: npm-tests
     image: gcr.io/kosu-io/node-lts:latest
@@ -50,17 +36,6 @@ steps:
       - yarn test:ci
     depends_on:
       - build-project
-    when:
-      changeset:
-        includes:
-          [
-            .drone.yml,
-            packages/kosu-sdk-contracts/**/*.*,
-            packages/kosu-system-contracts/**/*.*,
-            packages/kosu.js/**/*.*,
-            packages/tslint-config/**/*.*,
-            packages/tsc-config/**/*.*,
-          ]
 
   - name: solidity-tests
     image: gcr.io/kosu-io/node-lts:latest
@@ -71,17 +46,6 @@ steps:
       - yarn contracts:test:ci
     depends_on:
       - build-project
-    when:
-      changeset:
-        includes:
-          [
-            .drone.yml,
-            packages/kosu-sdk-contracts/**/*.*,
-            packages/kosu-system-contracts/**/*.*,
-            packages/tslint-config/**/*.*,
-            packages/tsc-config/**/*.*,
-            tsconfig.json,
-          ]
 
   - name: go-kosu
     image: gcr.io/kosu-io/go-kosu-ci:latest
@@ -93,15 +57,6 @@ steps:
       - make ci
     depends_on:
       - build-project
-    when:
-      changeset:
-        includes:
-          [
-            .drone.yml,
-            packages/go-kosu/**/*.*,
-            packages/kosu-sdk-contracts/**/*.*,
-            packages/kosu-system-contracts/**/*.*,
-          ]
 
 services:
     - name: kosu-geth
