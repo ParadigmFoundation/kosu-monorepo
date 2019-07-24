@@ -216,4 +216,17 @@ export class Treasury {
         const contract = await this.getContract();
         return this.kosuToken.approve(contract.address, value);
     }
+
+    /**
+     * Sends ether to the contract to bond and deposit tokens.
+     *
+     * @param value Amount of wei to deposit
+     * @returns Logs from the transaction block.
+     */
+    public async pay(value: BigNumber): Promise<TransactionReceiptWithDecodedLogs> {
+        const contract = await this.getContract();
+        return this.web3Wrapper
+            .sendTransactionAsync({ from: await this.web3.eth.getCoinbase(), to: contract.address, value, gas: 120000 })
+            .then(async txHash => this.web3Wrapper.awaitTransactionSuccessAsync(txHash));
+    }
 }
