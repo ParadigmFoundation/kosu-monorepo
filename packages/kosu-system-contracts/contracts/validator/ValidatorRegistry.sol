@@ -406,7 +406,7 @@ contract ValidatorRegistry {
         } else {
             if (listing.rewardRate > 0) {
                 uint rewardRate = uint(listing.rewardRate);
-                _maxGenerationSum = _maxGenerationSum.add(rewardRate.mul(rewardRate));
+                _maxGenerationSum = _maxGenerationSum.add(rewardRate);
             }
 
             listing.lastRewardBlock = block.number;
@@ -555,7 +555,7 @@ contract ValidatorRegistry {
     function removeListing(Listing storage l) internal {
         if (l.rewardRate > 0 && l.confirmationBlock > 0) {
             uint rewardRate = uint(l.rewardRate);
-            _maxGenerationSum = _maxGenerationSum.sub(rewardRate.mul(rewardRate));
+            _maxGenerationSum = _maxGenerationSum.sub(rewardRate);
         }
 
         bytes32[] memory data = new bytes32[](1);
