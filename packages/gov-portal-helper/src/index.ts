@@ -325,6 +325,7 @@ class Gov {
             await this._processListing(listing);
         }
         this.kosu.eventEmitter.getFutureDecodedLogs(this.initBlock + 1, this._handleEvents.bind(this));
+        this.initialized = true;
     }
 
     /**
