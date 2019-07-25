@@ -1,6 +1,6 @@
 {
     "name": "@kosu/system-contracts",
-    "version": "0.1.4",
+    "version": "0.1.5",
     "description": "Kosu protocol core contracts in Solidity.",
     "license": "MIT",
     "repository": {

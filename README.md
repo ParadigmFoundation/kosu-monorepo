@@ -34,10 +34,10 @@ Documentation for Kosu packages is available in this repository, and hosted at [
 
 Smart-contract packages (Solidity) including the core Kosu system contracts and SubContract SDK.
 
-| Package &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;            | Version                                                        | Description                                                            |
-| :----------------------------------------------------------- | :------------------------------------------------------------- | :--------------------------------------------------------------------- |
-| [`@kosu/system-contracts`](./packages/kosu-system-contracts) | ![npm](https://img.shields.io/npm/v/@kosu/subcontract-sdk.svg) | The core Kosu contract system and test suite, implemented in Solidity. |
-| [`@kosu/subcontract-sdk`](./packages/kosu-sdk-contracts)     | ![npm](https://img.shields.io/npm/v/@kosu/subcontract-sdk.svg) | The Kosu `SubContract` interface and example implementations.          |
+| Package &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;            | Version                                                         | Description                                                            |
+| :----------------------------------------------------------- | :-------------------------------------------------------------- | :--------------------------------------------------------------------- |
+| [`@kosu/system-contracts`](./packages/kosu-system-contracts) | ![npm](https://img.shields.io/npm/v/@kosu/system-contracts.svg) | The core Kosu contract system and test suite, implemented in Solidity. |
+| [`@kosu/subcontract-sdk`](./packages/kosu-sdk-contracts)     | ![npm](https://img.shields.io/npm/v/@kosu/subcontract-sdk.svg)  | The Kosu `SubContract` interface and example implementations.          |
 
 ### Library packages
 

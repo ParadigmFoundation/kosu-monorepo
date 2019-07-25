@@ -8,7 +8,7 @@ The Validator Registry contract is an implementation of a token-curated registry
 
 The goal of a TCR is to produce a curated set of listings, which are entries that have successfully been included in the registry. Listings begin as proposals which indicate intent to join the registry, backed by a number of tokens. Proposals and listings may be challenged at any time, where a challenger must put up an equal number of tokens as the listing or proposal owner. Challenges trigger votes, which any token holder may participate in. If voted out, the validator’s tokens are distributed to the individuals responsible for raising – and voting in – the successful challenge.
 
-Holders of the protocol’s native staking token, KOSU (implemnting the ERC-20 standard), can vote on proposals using a one-token-vote basis. Validators and Posters are required to stake Kosu tokens in order to perform their designated roles in the network. These participants will also be able to vote on proposals using their Validator or Poster stakes.
+Holders of the protocol’s native staking token, KOSU (implementing the ERC-20 standard), can vote on proposals using a one-token-vote basis. Validators and Posters are required to stake Kosu tokens in order to perform their designated roles in the network. These participants will also be able to vote on proposals using their Validator or Poster stakes.
 
 ### Network participants
 
