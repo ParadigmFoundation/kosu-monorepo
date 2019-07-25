@@ -96,7 +96,6 @@ func (c *Client) Subscribe(ctx context.Context, q string) (<-chan rpctypes.Resul
 			if err := httpC.Start(); err != nil {
 				return nil, nil, err
 			}
-
 		}
 	}
 

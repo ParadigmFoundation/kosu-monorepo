@@ -1,6 +1,7 @@
 package cli
 
 import (
+	"context"
 	"encoding/base64"
 	"fmt"
 	"go-kosu/abci"
@@ -57,7 +58,7 @@ func (cli *CLI) RebalanceTx() *cobra.Command {
 			}
 
 			if res.DeliverTx.IsErr() {
-				printAndExit("deliver tx: %s\n", res.DeliverTx.Log)
+				printAndExit("deliver tx: %s\n", res.DeliverTx.Info)
 			}
 
 			fmt.Printf("ok: < %s>\n", tx.RoundInfo)
@@ -103,16 +104,26 @@ func (cli *CLI) UpdateValidators() *cobra.Command {
 			}
 
 			if res.DeliverTx.IsErr() {
-				printAndExit("deliver tx: %s\n", res.DeliverTx.Log)
+				printAndExit("deliver tx: %s\n", res.DeliverTx.Info)
 			}
+
+			ch, closer, err := cli.client.Subscribe(context.Background(), "tm.event = 'NewBlock'")
+			if err != nil {
+				printAndExit("subscribe: %v", err)
+			}
+			defer closer()
+
+			// wait for the next block
+			<-ch
 
 			set, err := cli.client.Validators(nil)
 			if err != nil {
 				printAndExit("validators: %v", err)
 			}
 
+			fmt.Println("New validator set")
 			for _, v := range set.Validators {
-				fmt.Printf("%s", v)
+				fmt.Printf("<%s power:%d>\n", v.PubKey.Address().String(), v.VotingPower)
 			}
 			return nil
 		},
