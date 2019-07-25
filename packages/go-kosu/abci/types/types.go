@@ -25,6 +25,7 @@ func (b *BigInt) MarshalText() ([]byte, error) {
 	return []byte(str), nil
 }
 
+// Zero returns true if the value is 0
 func (b *BigInt) Zero() bool {
 	return b.BigInt().Cmp(big.NewInt(0)) == 0
 }

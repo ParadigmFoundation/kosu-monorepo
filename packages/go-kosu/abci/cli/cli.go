@@ -67,6 +67,7 @@ func (cli *CLI) RebalanceTx() *cobra.Command {
 	}
 }
 
+// UpdateValidators updates the validator set by sending a Validator's WitnessTx
 func (cli *CLI) UpdateValidators() *cobra.Command {
 	return &cobra.Command{
 		Use:   "update-validator <block> <pubkey> <address> <power>",
