@@ -164,6 +164,12 @@ func (s *Store) SetWitnessTx(tx store.TransactionWitness) {
 	s.Set("confs:"+string(tx.Id), s.witnessKey, tx.Confirmations)
 }
 
+// DeleteWitnessTx deletes a WitnessTx
+func (s *Store) DeleteWitnessTx(id []byte) {
+	s.Delete("proto:"+string(id), s.witnessKey)
+	s.Delete("confs:"+string(id), s.witnessKey)
+}
+
 // Poster gets a Poster
 func (s *Store) Poster(addr string) *types.Poster {
 	var v types.Poster

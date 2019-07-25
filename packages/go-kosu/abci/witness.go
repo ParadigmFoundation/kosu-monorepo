@@ -47,8 +47,6 @@ func (app *App) pushTransactionWitness(tx *types.TransactionWitness, nodeID []by
 		})
 	}
 
-	// TODO(gchaincl): delete witness
-
 	wTx := app.store.WitnessTx(tx.Id)
 
 	v := app.store.Validator(nodeID)
@@ -58,22 +56,27 @@ func (app *App) pushTransactionWitness(tx *types.TransactionWitness, nodeID []by
 		return err
 	}
 
-	power := scaleBalance(tx.Amount.BigInt())
+	power := app.powerFromTx(nodeID, tx)
+
 	app.log.Info("adding confirmations", "+power", power, "current", wTx.Confirmations)
 	wTx.Confirmations += uint64(power)
 	app.store.SetWitnessTx(wTx)
 
-	app.log.Error("info", "threshold", app.confirmationThreshold, "conf", wTx.Confirmations)
+	app.log.Info("info", "threshold", app.confirmationThreshold, "conf", wTx.Confirmations)
 	if app.confirmationThreshold > wTx.Confirmations {
 		return nil
 	}
+	app.store.DeleteWitnessTx(tx.Id)
 
-	if tx.Amount.BigInt().Uint64() == 0 {
+	if tx.Amount.Zero() {
 		switch tx.Subject {
 		case types.TransactionWitness_POSTER:
 			app.store.DeletePoster(tx.Address)
 		case types.TransactionWitness_VALIDATOR:
-			app.store.DeleteValidator(nodeID)
+			v.Balance = tx.Amount
+			v.Power = 0
+			v.Applied = false
+			app.store.SetValidator(nodeID, v)
 		}
 		return nil
 	}
@@ -86,13 +89,27 @@ func (app *App) pushTransactionWitness(tx *types.TransactionWitness, nodeID []by
 	case types.TransactionWitness_VALIDATOR:
 		app.store.SetValidator(nodeID, &types.Validator{
 			Balance:    tx.Amount,
+			Power:      power,
 			PublicKey:  tx.PublicKey,
 			EthAccount: tx.Address,
-			Active:     false,
-			Power:      power,
+			Applied:    false,
 		})
 	}
 	return nil
+}
+
+func (app *App) powerFromTx(nodeID []byte, tx *types.TransactionWitness) int64 {
+	if tx.Subject == types.TransactionWitness_VALIDATOR && tx.Amount.Zero() {
+		// if tx amount is 0 it means that it's a validator removal
+		// so we'll calculate the power out of the validator's amount
+		v := app.store.Validator(nodeID)
+		if v == nil {
+			return 0
+		}
+		return v.Power
+	}
+
+	return scaleBalance(tx.Amount.BigInt())
 }
 
 func scaleBalance(balance *big.Int) int64 {

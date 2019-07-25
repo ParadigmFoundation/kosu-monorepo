@@ -57,6 +57,7 @@ func main() {
 	}
 	tx.AddCommand(
 		abci.RebalanceTx(),
+		abci.UpdateValidators(),
 	)
 
 	query := &cobra.Command{

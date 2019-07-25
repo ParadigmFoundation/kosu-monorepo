@@ -141,8 +141,6 @@ func (app *App) BeginBlock(req abci.RequestBeginBlock) abci.ResponseBeginBlock {
 			v = app.store.Validator(nodeID)
 		}
 
-		v.Power = vote.Validator.Power
-
 		if vote.SignedLastBlock {
 			v.Active = true
 			v.TotalVotes++

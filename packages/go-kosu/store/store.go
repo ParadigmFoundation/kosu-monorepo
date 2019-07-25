@@ -26,6 +26,7 @@ type Store interface {
 	WitnessTxExists([]byte) bool
 	WitnessTx([]byte) TransactionWitness
 	SetWitnessTx(TransactionWitness)
+	DeleteWitnessTx([]byte)
 
 	Poster(string) *types.Poster
 	SetPoster(string, types.Poster)

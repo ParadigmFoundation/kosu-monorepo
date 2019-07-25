@@ -25,6 +25,10 @@ func (b *BigInt) MarshalText() ([]byte, error) {
 	return []byte(str), nil
 }
 
+func (b *BigInt) Zero() bool {
+	return b.BigInt().Cmp(big.NewInt(0)) == 0
+}
+
 var (
 	// ErrNoPubKeyExpected is returned when no public key was expected but it was defined
 	ErrNoPubKeyExpected = errors.New("expected no publicKey for poster witnesses")
