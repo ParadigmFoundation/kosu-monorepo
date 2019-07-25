@@ -64,7 +64,7 @@ contract ValidatorRegistry {
     uint public nextChallenge = 1;
     bytes32[] public _listingKeys;
     EventEmitter private eventEmitter;
-    uint _maxGenerationSum = 2 ether * 2 ether;
+    uint _maxGenerationSum = 2 ether;
 
     /** @dev Create a new ValidatorRegistry implementation
         @notice Create a new ValidatorRegistry implementation
@@ -103,7 +103,7 @@ contract ValidatorRegistry {
         @return Maximum KosuToken a validator can generate per period.
     */
     function maxRewardRate() public view returns (uint) {
-        return (sqrt(_maxGenerationSum));
+        return _maxGenerationSum;
     }
 
     /** @dev Expose listing data for given public key.
@@ -406,7 +406,7 @@ contract ValidatorRegistry {
         } else {
             if (listing.rewardRate > 0) {
                 uint rewardRate = uint(listing.rewardRate);
-                _maxGenerationSum = _maxGenerationSum.add(rewardRate);
+                _maxGenerationSum = _maxGenerationSum.add(sqrt(rewardRate));
             }
 
             listing.lastRewardBlock = block.number;
@@ -555,7 +555,7 @@ contract ValidatorRegistry {
     function removeListing(Listing storage l) internal {
         if (l.rewardRate > 0 && l.confirmationBlock > 0) {
             uint rewardRate = uint(l.rewardRate);
-            _maxGenerationSum = _maxGenerationSum.sub(rewardRate);
+            _maxGenerationSum = _maxGenerationSum.sub(sqrt(rewardRate));
         }
 
         bytes32[] memory data = new bytes32[](1);
