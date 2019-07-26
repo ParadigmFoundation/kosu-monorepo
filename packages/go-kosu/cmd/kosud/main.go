@@ -112,7 +112,8 @@ func main() {
 	initCmd := &cobra.Command{
 		Use:   "init",
 		Short: "Initialize a home directory and configuration",
-		Long:  "Generates a Tendermint configuration directory and key pair for a Kosu node.\nThe default home directory is '$HOME/.kosu', which can be overridden with the '--home' flag.",
+		Long: "Generates a Tendermint configuration directory and key pair for a Kosu node.\n" +
+			"The default home directory is '$HOME/.kosu', which can be overridden with the '--home' flag.",
 		Run: func(cmd *cobra.Command, args []string) {
 			if err := abci.InitTendermint(cfg.Home); err != nil {
 				stdlog.Fatal(err)
@@ -122,7 +123,7 @@ func main() {
 
 	rootCmd.PersistentFlags().StringVarP(&cfg.Home, "home", "H", "~/.kosu", "directory for config and data")
 	rootCmd.PersistentFlags().BoolVarP(&cfg.Debug, "debug", "d", false, "enable debuging")
-	rootCmd.Flags().StringVarP(&cfg.Web3, "web3", "E", "ws://localhost:8546", "URL of a WebSocket Ethereum JSONRPC provider")
+	rootCmd.Flags().StringVarP(&cfg.Web3, "web3", "E", "ws://localhost:8546", "URL of an Ethereum JSONRPC provider")
 
 	rootCmd.AddCommand(rpc.NewCommand())
 	rootCmd.AddCommand(initCmd)
