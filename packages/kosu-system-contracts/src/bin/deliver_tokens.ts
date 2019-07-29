@@ -30,7 +30,6 @@ if (args["test-mnemonic"] || !mnemonic) {
     const networkId = await web3.eth.net.getId();
 
     const kosuToken = new KosuTokenContract(
-        artifacts.KosuToken.compilerOutput.abi,
         DeployedAddresses[networkId].KosuToken,
         provider,
     );

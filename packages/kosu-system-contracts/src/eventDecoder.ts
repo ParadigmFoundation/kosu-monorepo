@@ -1,4 +1,4 @@
-import Decoder from "web3-eth-abi";
+const Decoder: any = require('web3-eth-abi');
 import { hexToNumberString, soliditySha3 } from "web3-utils";
 
 import * as EventEmitter from "../generated-artifacts/EventEmitter.json";

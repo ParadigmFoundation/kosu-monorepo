@@ -89,10 +89,10 @@ describe("ValidatorRegistry", async () => {
     });
 
     describe("constructor", () => {
-        it("should have a resonable gas cost", async () => {
+        it("should have a reasonable gas cost", async () => {
             const { txReceipt } = await ValidatorRegistryContract.deployFrom0xArtifactAsync(
                 artifacts.ValidatorRegistry as ContractArtifact,
-                web3.currentProvider,
+                provider,
                 txDefaults,
                 treasury.address,
                 voting.address,
@@ -659,7 +659,7 @@ describe("ValidatorRegistry", async () => {
                 .eq(TestValues.fiveEther)
                 .should.eq(true);
 
-            const challenge = await validatorRegistry.getChallenge.callAsync(decodedLogs.challengeId);
+            const challenge = await validatorRegistry.getChallenge.callAsync(new BigNumber(decodedLogs.challengeId));
             challenge.challenger.should.eq(accounts[1].toLowerCase());
 
             await testHelpers.finishChallenge(tendermintPublicKey, result.blockNumber);
@@ -832,8 +832,8 @@ describe("ValidatorRegistry", async () => {
                         .toString(),
                 );
 
-            await validatorRegistry.claimWinnings.awaitTransactionSuccessAsync(challengeId, { from: accounts[1] });
-            await validatorRegistry.claimWinnings.awaitTransactionSuccessAsync(challengeId, { from: accounts[2] });
+            await validatorRegistry.claimWinnings.awaitTransactionSuccessAsync(new BigNumber(challengeId), { from: accounts[1] });
+            await validatorRegistry.claimWinnings.awaitTransactionSuccessAsync(new BigNumber(challengeId), { from: accounts[2] });
 
             await testHelpers.clearTreasury(accounts[1]);
             await testHelpers.clearTreasury(accounts[2]);
@@ -891,8 +891,8 @@ describe("ValidatorRegistry", async () => {
                 .toString()
                 .should.eq(await testHelpers.toStakeholderCut(minimumBalance));
 
-            await validatorRegistry.claimWinnings.awaitTransactionSuccessAsync(challengeId, { from: accounts[1] });
-            await validatorRegistry.claimWinnings.awaitTransactionSuccessAsync(challengeId, { from: accounts[2] });
+            await validatorRegistry.claimWinnings.awaitTransactionSuccessAsync(new BigNumber(challengeId), { from: accounts[1] });
+            await validatorRegistry.claimWinnings.awaitTransactionSuccessAsync(new BigNumber(challengeId), { from: accounts[2] });
 
             await testHelpers.clearTreasury(accounts[1]);
             await testHelpers.clearTreasury(accounts[2]);
@@ -953,8 +953,8 @@ describe("ValidatorRegistry", async () => {
                         .toString(),
                 );
 
-            await validatorRegistry.claimWinnings.awaitTransactionSuccessAsync(challengeId, { from: accounts[1] });
-            await validatorRegistry.claimWinnings.awaitTransactionSuccessAsync(challengeId, { from: accounts[2] });
+            await validatorRegistry.claimWinnings.awaitTransactionSuccessAsync(new BigNumber(challengeId), { from: accounts[1] });
+            await validatorRegistry.claimWinnings.awaitTransactionSuccessAsync(new BigNumber(challengeId), { from: accounts[2] });
 
             await testHelpers.clearTreasury(accounts[0]);
             await testHelpers.clearTreasury(accounts[1]);
@@ -1013,8 +1013,8 @@ describe("ValidatorRegistry", async () => {
                 .toString()
                 .should.eq(await testHelpers.toStakeholderCut(minimumBalance));
 
-            await validatorRegistry.claimWinnings.awaitTransactionSuccessAsync(challengeId, { from: accounts[1] });
-            await validatorRegistry.claimWinnings.awaitTransactionSuccessAsync(challengeId, { from: accounts[2] });
+            await validatorRegistry.claimWinnings.awaitTransactionSuccessAsync(new BigNumber(challengeId), { from: accounts[1] });
+            await validatorRegistry.claimWinnings.awaitTransactionSuccessAsync(new BigNumber(challengeId), { from: accounts[2] });
 
             await testHelpers.clearTreasury(accounts[1]);
             await testHelpers.clearTreasury(accounts[2]);
@@ -1061,7 +1061,7 @@ describe("ValidatorRegistry", async () => {
 
             await validatorRegistry.resolveChallenge.awaitTransactionSuccessAsync(tendermintPublicKey).should.eventually
                 .be.fulfilled;
-            await validatorRegistry.claimWinnings.awaitTransactionSuccessAsync(challengeId, { from: accounts[5] })
+            await validatorRegistry.claimWinnings.awaitTransactionSuccessAsync(new BigNumber(challengeId), { from: accounts[5] })
                 .should.eventually.be.fulfilled;
 
             const finalVoterSystemBalance = await treasury.systemBalance.callAsync(accounts[5]);
@@ -1076,8 +1076,8 @@ describe("ValidatorRegistry", async () => {
                 .toString()
                 .should.eq("0");
 
-            await validatorRegistry.claimWinnings.awaitTransactionSuccessAsync(challengeId, { from: accounts[1] });
-            await validatorRegistry.claimWinnings.awaitTransactionSuccessAsync(challengeId, { from: accounts[2] });
+            await validatorRegistry.claimWinnings.awaitTransactionSuccessAsync(new BigNumber(challengeId), { from: accounts[1] });
+            await validatorRegistry.claimWinnings.awaitTransactionSuccessAsync(new BigNumber(challengeId), { from: accounts[2] });
 
             await testHelpers.clearTreasury(accounts[0]);
             await testHelpers.clearTreasury(accounts[1]);
@@ -1122,7 +1122,7 @@ describe("ValidatorRegistry", async () => {
 
             await validatorRegistry.resolveChallenge.awaitTransactionSuccessAsync(tendermintPublicKey).should.eventually
                 .be.fulfilled;
-            await validatorRegistry.claimWinnings.awaitTransactionSuccessAsync(challengeId, { from: accounts[5] })
+            await validatorRegistry.claimWinnings.awaitTransactionSuccessAsync(new BigNumber(challengeId), { from: accounts[5] })
                 .should.eventually.be.fulfilled;
 
             const finalVoterSystemBalance = await treasury.systemBalance.callAsync(accounts[5]);
@@ -1137,8 +1137,8 @@ describe("ValidatorRegistry", async () => {
                 .toString()
                 .should.eq("0");
 
-            await validatorRegistry.claimWinnings.awaitTransactionSuccessAsync(challengeId, { from: accounts[1] });
-            await validatorRegistry.claimWinnings.awaitTransactionSuccessAsync(challengeId, { from: accounts[2] });
+            await validatorRegistry.claimWinnings.awaitTransactionSuccessAsync(new BigNumber(challengeId), { from: accounts[1] });
+            await validatorRegistry.claimWinnings.awaitTransactionSuccessAsync(new BigNumber(challengeId), { from: accounts[2] });
 
             await testHelpers.clearTreasury(accounts[0]);
             await testHelpers.clearTreasury(accounts[1]);
@@ -1183,7 +1183,7 @@ describe("ValidatorRegistry", async () => {
 
             await validatorRegistry.resolveChallenge.awaitTransactionSuccessAsync(tendermintPublicKey).should.eventually
                 .be.fulfilled;
-            await validatorRegistry.claimWinnings.awaitTransactionSuccessAsync(challengeId, { from: accounts[5] })
+            await validatorRegistry.claimWinnings.awaitTransactionSuccessAsync(new BigNumber(challengeId), { from: accounts[5] })
                 .should.eventually.be.fulfilled;
 
             const finalVoterSystemBalance = await treasury.systemBalance.callAsync(accounts[5]);
@@ -1198,8 +1198,8 @@ describe("ValidatorRegistry", async () => {
                 .toString()
                 .should.eq(minimumBalance.minus(await testHelpers.toStakeholderCut(minimumBalance)).toString());
 
-            await validatorRegistry.claimWinnings.awaitTransactionSuccessAsync(challengeId, { from: accounts[1] });
-            await validatorRegistry.claimWinnings.awaitTransactionSuccessAsync(challengeId, { from: accounts[2] });
+            await validatorRegistry.claimWinnings.awaitTransactionSuccessAsync(new BigNumber(challengeId), { from: accounts[1] });
+            await validatorRegistry.claimWinnings.awaitTransactionSuccessAsync(new BigNumber(challengeId), { from: accounts[2] });
 
             await testHelpers.clearTreasury(accounts[0]);
             await testHelpers.clearTreasury(accounts[5]);
@@ -1242,7 +1242,7 @@ describe("ValidatorRegistry", async () => {
             const initialListingHolderSystemBalance = await treasury.systemBalance.callAsync(accounts[0]);
             const initialListingHolderCurrentBalance = await treasury.currentBalance.callAsync(accounts[0]);
 
-            await validatorRegistry.claimWinnings.awaitTransactionSuccessAsync(challengeId, { from: accounts[5] })
+            await validatorRegistry.claimWinnings.awaitTransactionSuccessAsync(new BigNumber(challengeId), { from: accounts[5] })
                 .should.eventually.be.fulfilled;
 
             const finalChallengerSystemBalance = await treasury.systemBalance.callAsync(accounts[1]);
@@ -1266,8 +1266,8 @@ describe("ValidatorRegistry", async () => {
                         .toString(),
                 );
 
-            await validatorRegistry.claimWinnings.awaitTransactionSuccessAsync(challengeId, { from: accounts[1] });
-            await validatorRegistry.claimWinnings.awaitTransactionSuccessAsync(challengeId, { from: accounts[2] });
+            await validatorRegistry.claimWinnings.awaitTransactionSuccessAsync(new BigNumber(challengeId), { from: accounts[1] });
+            await validatorRegistry.claimWinnings.awaitTransactionSuccessAsync(new BigNumber(challengeId), { from: accounts[2] });
 
             await testHelpers.clearTreasury(accounts[0]);
             await testHelpers.clearTreasury(accounts[1]);
@@ -1306,12 +1306,12 @@ describe("ValidatorRegistry", async () => {
                 from: accounts[5],
             });
 
-            await validatorRegistry.claimWinnings.awaitTransactionSuccessAsync(challengeId, { from: accounts[5] })
+            await validatorRegistry.claimWinnings.awaitTransactionSuccessAsync(new BigNumber(challengeId), { from: accounts[5] })
                 .should.eventually.be.rejected;
 
             await testHelpers.skipChallengePeriod(blockNumber);
-            await validatorRegistry.claimWinnings.awaitTransactionSuccessAsync(challengeId, { from: accounts[1] });
-            await validatorRegistry.claimWinnings.awaitTransactionSuccessAsync(challengeId, { from: accounts[2] });
+            await validatorRegistry.claimWinnings.awaitTransactionSuccessAsync(new BigNumber(challengeId), { from: accounts[1] });
+            await validatorRegistry.claimWinnings.awaitTransactionSuccessAsync(new BigNumber(challengeId), { from: accounts[2] });
 
             await testHelpers.clearTreasury(accounts[0]);
             await testHelpers.clearTreasury(accounts[1]);

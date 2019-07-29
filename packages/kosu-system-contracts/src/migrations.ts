@@ -2,7 +2,7 @@ import { getContractAddressesForNetworkOrThrow } from "@0x/contract-addresses";
 import { Web3Wrapper } from "@0x/web3-wrapper";
 import { ContractArtifact } from "ethereum-types";
 import Web3ProviderEngine from "web3-provider-engine";
-import { BN, toWei } from "web3-utils";
+import { toWei } from "web3-utils";
 
 import {
     artifacts,
