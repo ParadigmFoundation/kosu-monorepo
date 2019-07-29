@@ -21,20 +21,14 @@
     },
     "devDependencies": {
         "@babel/cli": "^7.4.4",
-        "@babel/core": "^7.4.5",
         "@babel/plugin-proposal-class-properties": "^7.4.4",
         "@babel/plugin-proposal-object-rest-spread": "^7.4.4",
         "@babel/preset-env": "^7.4.5",
         "@babel/preset-typescript": "^7.3.3",
-        "@types/node": "^12.0.7",
         "babel-loader": "^8.0.6",
         "jsdoc-babel": "^0.5.0",
         "jsdoc-to-markdown": "^5.0.0",
-        "ts-loader": "^6.0.2",
-        "typescript": "^3.5.1",
-        "webpack": "^4.32.2",
-        "webpack-cli": "^3.3.2",
-        "webpack-dev-server": "^3.4.1"
+        "ts-loader": "^6.0.2"
     },
     "files": [
         "lib/",
