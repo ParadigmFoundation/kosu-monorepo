@@ -35,7 +35,11 @@
     "private": true,
     "devDependencies": {
         "@0x/dev-utils": "^2.2.2",
+        "@babel/cli": "^7.4.4",
         "@babel/core": "^7.4.4",
+        "@babel/plugin-proposal-class-properties": "^7.4.4",
+        "@babel/plugin-proposal-object-rest-spread": "^7.4.4",
+        "@babel/preset-env": "^7.4.5",
         "@kosu/tslint-config": "^0.0.4",
         "@types/chai": "^4.1.7",
         "@types/chai-as-promised": "^7.1.0",

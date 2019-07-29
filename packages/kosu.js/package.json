@@ -37,7 +37,7 @@
         "ethereumjs-util": "^5.2.0",
         "isomorphic-ws": "^4.0.1",
         "node-fetch": "^2.2.0",
-        "web3": "1.0.0-beta.37",
+        "web3": "1.0.0-beta.55",
         "web3-eth-contract": "1.0.0-beta.53",
         "web3-provider-engine": "15.0.0",
         "web3-utils": "1.0.0-beta.53",

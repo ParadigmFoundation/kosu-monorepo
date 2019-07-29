@@ -17,13 +17,9 @@
         "@0x/subproviders": "^4.0.6",
         "@kosu/kosu.js": "^0.1.5",
         "@kosu/tsc-config": "^0.1.0",
-        "web3": "1.0.0-beta.37"
+        "web3": "1.0.0-beta.55"
     },
     "devDependencies": {
-        "@babel/cli": "^7.4.4",
-        "@babel/plugin-proposal-class-properties": "^7.4.4",
-        "@babel/plugin-proposal-object-rest-spread": "^7.4.4",
-        "@babel/preset-env": "^7.4.5",
         "@babel/preset-typescript": "^7.3.3",
         "babel-loader": "^8.0.6",
         "jsdoc-babel": "^0.5.0",
