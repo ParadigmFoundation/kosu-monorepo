@@ -113,6 +113,7 @@ url -X POST localhost:14341 \
 	-H 'Content-Type: application/json'
 ```
 */
+// nolint:lll
 func (s *Service) AddOrders(orders []*types.TransactionOrder) error {
 	for _, order := range orders {
 		res, err := s.abci.BroadcastTxSync(order)
