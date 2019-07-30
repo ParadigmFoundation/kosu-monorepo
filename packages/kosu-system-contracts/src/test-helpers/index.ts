@@ -42,7 +42,7 @@ export class TestHelpers {
             Object.keys(DeployedAddresses[config.networkId]).forEach(contractName => {
                 contracts[contractName.charAt(0).toLowerCase() + contractName.slice(1)] = new Wrappers[
                     `${contractName}Contract`
-                ](artifacts[contractName].compilerOutput.abi, addresses[contractName], this.web3Wrapper.getProvider(), {
+                ](addresses[contractName], this.web3Wrapper.getProvider(), {
                     from: config.from,
                 });
             });
