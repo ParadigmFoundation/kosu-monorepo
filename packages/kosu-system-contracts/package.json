@@ -45,6 +45,7 @@
     "dependencies": {
         "@0x/base-contract": "^5.0.5",
         "@0x/contract-addresses": "^3.0.2",
+        "@0x/dev-utils": "^2.2.2",
         "@0x/contracts-exchange": "^2.1.5",
         "ethers": "~4.0.4",
         "@0x/subproviders": "^4.1.0",
