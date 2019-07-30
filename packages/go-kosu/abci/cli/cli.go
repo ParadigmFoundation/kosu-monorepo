@@ -1,6 +1,8 @@
 package cli
 
 import (
+	"context"
+	"encoding/base64"
 	"fmt"
 	"go-kosu/abci"
 	"go-kosu/abci/types"
@@ -56,10 +58,74 @@ func (cli *CLI) RebalanceTx() *cobra.Command {
 			}
 
 			if res.DeliverTx.IsErr() {
-				printAndExit("deliver tx: %s\n", res.DeliverTx.Log)
+				printAndExit("deliver tx: %s\n", res.DeliverTx.Info)
 			}
 
 			fmt.Printf("ok: < %s>\n", tx.RoundInfo)
+			return nil
+		},
+	}
+}
+
+// UpdateValidators updates the validator set by sending a Validator's WitnessTx
+func (cli *CLI) UpdateValidators() *cobra.Command {
+	return &cobra.Command{
+		Use:   "update-validator <block> <pubkey> <address> <power>",
+		Short: "update validators by sending a WitnessTx",
+		Long:  "pubkey needs to be encoded in base64. To remove a validator use power = 0",
+		Args:  cobra.ExactArgs(4),
+		RunE: func(cmd *cobra.Command, args []string) error {
+			block, err := strconv.ParseUint(args[0], 10, 64)
+			if err != nil {
+				return err
+			}
+
+			pubKey, err := base64.StdEncoding.DecodeString(args[1])
+			if err != nil {
+				return err
+			}
+
+			addr, amount := args[2], args[3]
+
+			tx := &types.TransactionWitness{
+				Subject:   types.TransactionWitness_VALIDATOR,
+				Block:     block,
+				PublicKey: pubKey,
+				Address:   addr,
+				Amount:    types.NewBigIntFromString(amount, 10),
+			}
+
+			res, err := cli.client.BroadcastTxCommit(tx)
+			if err != nil {
+				printAndExit("%v\n", err)
+			}
+
+			if res.CheckTx.IsErr() {
+				printAndExit("check tx: %s\n", res.CheckTx.Log)
+			}
+
+			if res.DeliverTx.IsErr() {
+				printAndExit("deliver tx: %s\n", res.DeliverTx.Info)
+			}
+
+			ch, closer, err := cli.client.Subscribe(context.Background(), "tm.event = 'NewBlock'")
+			if err != nil {
+				printAndExit("subscribe: %v", err)
+			}
+			defer closer()
+
+			// wait for the next block
+			<-ch
+
+			set, err := cli.client.Validators(nil)
+			if err != nil {
+				printAndExit("validators: %v", err)
+			}
+
+			fmt.Println("New validator set")
+			for _, v := range set.Validators {
+				fmt.Printf("<%s power:%d>\n", v.PubKey.Address().String(), v.VotingPower)
+			}
 			return nil
 		},
 	}

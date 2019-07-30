@@ -141,8 +141,6 @@ func (app *App) BeginBlock(req abci.RequestBeginBlock) abci.ResponseBeginBlock {
 			v = app.store.Validator(nodeID)
 		}
 
-		v.Power = vote.Validator.Power
-
 		if vote.SignedLastBlock {
 			v.Active = true
 			v.TotalVotes++
@@ -208,8 +206,12 @@ func (app *App) EndBlock(req abci.RequestEndBlock) abci.ResponseEndBlock {
 			updates = append(updates, update)
 		}
 
-		v.Applied = true
-		app.store.SetValidator(nodeID, v)
+		if v.Power == 0 {
+			app.store.DeleteValidator(nodeID)
+		} else {
+			v.Applied = true
+			app.store.SetValidator(nodeID, v)
+		}
 	})
 
 	return abci.ResponseEndBlock{

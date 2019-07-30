@@ -9,10 +9,11 @@ import (
 	"go-kosu/store"
 
 	abci "github.com/tendermint/tendermint/abci/types"
+	"github.com/tendermint/tendermint/crypto/tmhash"
 )
 
 func (app *App) checkWitnessTx(tx *types.TransactionWitness) error {
-	if app.store.LastEvent() >= tx.Block {
+	if app.store.LastEvent() > tx.Block {
 		return errors.New("transaction is older than the recorded state")
 	}
 
@@ -47,8 +48,6 @@ func (app *App) pushTransactionWitness(tx *types.TransactionWitness, nodeID []by
 		})
 	}
 
-	// TODO(gchaincl): delete witness
-
 	wTx := app.store.WitnessTx(tx.Id)
 
 	v := app.store.Validator(nodeID)
@@ -58,38 +57,31 @@ func (app *App) pushTransactionWitness(tx *types.TransactionWitness, nodeID []by
 		return err
 	}
 
-	power := scaleBalance(tx.Amount.BigInt())
-	app.log.Info("adding confirmations", "+power", power, "current", wTx.Confirmations)
-	wTx.Confirmations += uint64(power)
+	app.log.Info("adding confirmations", "+power", v.Power, "current", wTx.Confirmations)
+	wTx.Confirmations += uint64(v.Power)
 	app.store.SetWitnessTx(wTx)
 
-	app.log.Error("info", "threshold", app.confirmationThreshold, "conf", wTx.Confirmations)
+	app.log.Info("info", "threshold", app.confirmationThreshold, "conf", wTx.Confirmations)
 	if app.confirmationThreshold > wTx.Confirmations {
 		return nil
 	}
-
-	if tx.Amount.BigInt().Uint64() == 0 {
-		switch tx.Subject {
-		case types.TransactionWitness_POSTER:
-			app.store.DeletePoster(tx.Address)
-		case types.TransactionWitness_VALIDATOR:
-			app.store.DeleteValidator(nodeID)
-		}
-		return nil
-	}
+	//	app.store.DeleteWitnessTx(tx.Id)
 
 	switch tx.Subject {
 	case types.TransactionWitness_POSTER:
-		app.store.SetPoster(tx.Address, types.Poster{
-			Balance: tx.Amount,
-		})
+		if tx.Amount.Zero() {
+			app.store.DeletePoster(tx.Address)
+		} else {
+			app.store.SetPoster(tx.Address, types.Poster{Balance: tx.Amount})
+		}
 	case types.TransactionWitness_VALIDATOR:
-		app.store.SetValidator(nodeID, &types.Validator{
+		id := tmhash.SumTruncated(tx.PublicKey)
+		app.store.SetValidator(id, &types.Validator{
 			Balance:    tx.Amount,
+			Power:      scaleBalance(tx.Amount.BigInt()),
 			PublicKey:  tx.PublicKey,
 			EthAccount: tx.Address,
-			Active:     false,
-			Power:      power,
+			Applied:    false,
 		})
 	}
 	return nil
