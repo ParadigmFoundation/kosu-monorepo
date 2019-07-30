@@ -33,7 +33,7 @@
         "prettier:deployedAddresses": "prettier --write src/deployedAddresses.json --config ../../.prettierrc",
         "ganache_rpc": "docker run --rm -p 8545:8545 ${npm_package_config_kosu_ganache_image}",
         "ganache_rpc:detached": "docker run --rm -d -p 8545:8545 ${npm_package_config_kosu_ganache_image}",
-        "generate_contract_wrappers": "abi-gen --abis  ${npm_package_config_abis} --template ../../node_modules/@0x/abi-gen-templates/contract.handlebars --partials '../../node_modules/@0x/abi-gen-templates/partials/**/*.handlebars' --output generated-wrappers --backend ethers",
+        "generate_contract_wrappers": "abi-gen --abis  ${npm_package_config_abis} --template ./abi-gen-templates/contract.handlebars --partials '../../node_modules/@0x/abi-gen-templates/partials/**/*.handlebars' --output generated-wrappers --backend ethers",
         "docs": "node devdoc.js ./generated-artifacts ./docs "
     },
     "config": {
@@ -66,7 +66,7 @@
     "devDependencies": {
         "0x.js": "^6.0.9",
         "@0x/abi-gen": "^3.1.1",
-        "@0x/abi-gen-templates": "^2.0.2",
+        "@0x/abi-gen-templates": "^2.3.0",
         "@0x/contracts-gen": "^1.0.8",
         "@0x/contracts-test-utils": "^3.1.2",
         "@0x/migrations": "^4.1.6",
