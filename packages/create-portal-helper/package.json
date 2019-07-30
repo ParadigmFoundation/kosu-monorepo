@@ -17,7 +17,7 @@
         "@0x/subproviders": "^4.0.6",
         "@kosu/kosu.js": "^0.1.5",
         "@kosu/tsc-config": "^0.1.0",
-        "web3": "1.0.0-beta.55"
+        "web3": "1.2.0"
     },
     "devDependencies": {
         "@babel/preset-typescript": "^7.3.3",
