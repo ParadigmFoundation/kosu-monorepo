@@ -1,5 +1,0 @@
-// nolint
-
-/*
- */
-package rpc
