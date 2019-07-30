@@ -47,8 +47,8 @@ describe("PosterRegistry", () => {
                 .callAsync(from)
                 .then(x => x.toString())
                 .should.eventually.eq("0");
-            await posterRegistry.registerTokens.awaitTransactionSuccessAsync(TestValues.oneHundredEther, { from }).should.eventually.be
-                .rejected;
+            await posterRegistry.registerTokens.awaitTransactionSuccessAsync(TestValues.oneHundredEther, { from })
+                .should.eventually.be.rejected;
         });
 
         it("should require an approval greater or equal to the amount registered", async () => {
@@ -65,7 +65,8 @@ describe("PosterRegistry", () => {
                 .callAsync(from, treasury.address)
                 .then(x => x.toString())
                 .should.eventually.eq("0");
-            await posterRegistry.registerTokens.awaitTransactionSuccessAsync(TestValues.oneHundredEther).should.eventually.be.rejected;
+            await posterRegistry.registerTokens.awaitTransactionSuccessAsync(TestValues.oneHundredEther).should
+                .eventually.be.rejected;
         });
 
         it("should increase tokensContributed and tokensRegisteredFor by the amount", async () => {

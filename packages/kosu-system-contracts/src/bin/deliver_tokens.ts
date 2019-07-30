@@ -29,10 +29,7 @@ if (args["test-mnemonic"] || !mnemonic) {
 
     const networkId = await web3.eth.net.getId();
 
-    const kosuToken = new KosuTokenContract(
-        DeployedAddresses[networkId].KosuToken,
-        provider,
-    );
+    const kosuToken = new KosuTokenContract(DeployedAddresses[networkId].KosuToken, provider);
     const addresses = await web3.eth.getAccounts();
 
     for (const account of addresses) {
