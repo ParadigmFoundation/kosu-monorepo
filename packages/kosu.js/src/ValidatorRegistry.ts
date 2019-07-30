@@ -1,6 +1,6 @@
 import { BigNumber } from "@0x/utils";
 import { Web3Wrapper } from "@0x/web3-wrapper";
-import { artifacts, DeployedAddresses, ValidatorRegistryContract } from "@kosu/system-contracts";
+import { DeployedAddresses, ValidatorRegistryContract } from "@kosu/system-contracts";
 import { TransactionReceiptWithDecodedLogs } from "ethereum-protocol";
 import Web3 from "web3";
 
@@ -52,7 +52,6 @@ export class ValidatorRegistry {
             }
 
             this.contract = new ValidatorRegistryContract(
-                artifacts.ValidatorRegistry.compilerOutput.abi,
                 this.address,
                 this.web3Wrapper.getProvider(),
                 { from: this.coinbase },

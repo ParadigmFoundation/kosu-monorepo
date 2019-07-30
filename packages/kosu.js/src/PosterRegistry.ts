@@ -1,6 +1,6 @@
 import { BigNumber } from "@0x/utils";
 import { Web3Wrapper } from "@0x/web3-wrapper";
-import { artifacts, DeployedAddresses, PosterRegistryContract } from "@kosu/system-contracts";
+import { DeployedAddresses, PosterRegistryContract } from "@kosu/system-contracts";
 import { TransactionReceiptWithDecodedLogs } from "ethereum-protocol";
 import Web3 from "web3";
 
@@ -71,7 +71,6 @@ export class PosterRegistry {
             }
 
             this.contract = new PosterRegistryContract(
-                artifacts.PosterRegistry.compilerOutput.abi,
                 this.address,
                 this.web3Wrapper.getProvider(),
                 { from: coinbase },

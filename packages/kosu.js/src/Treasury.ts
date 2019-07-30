@@ -1,6 +1,6 @@
 import { BigNumber } from "@0x/utils";
 import { Web3Wrapper } from "@0x/web3-wrapper";
-import { artifacts, DeployedAddresses, TreasuryContract } from "@kosu/system-contracts";
+import { DeployedAddresses, TreasuryContract } from "@kosu/system-contracts";
 import { TransactionReceiptWithDecodedLogs } from "ethereum-protocol";
 import Web3 from "web3";
 
@@ -79,7 +79,6 @@ export class Treasury {
             }
 
             this.contract = new TreasuryContract(
-                artifacts.Treasury.compilerOutput.abi,
                 this.address,
                 this.web3Wrapper.getProvider(),
                 { from: this.coinbase },

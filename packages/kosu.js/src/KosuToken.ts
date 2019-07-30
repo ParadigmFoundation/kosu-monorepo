@@ -1,6 +1,6 @@
 import { BigNumber } from "@0x/utils";
 import { Web3Wrapper } from "@0x/web3-wrapper";
-import { artifacts, DeployedAddresses, KosuTokenContract } from "@kosu/system-contracts";
+import { DeployedAddresses, KosuTokenContract } from "@kosu/system-contracts";
 import { TransactionReceiptWithDecodedLogs } from "ethereum-protocol";
 import Web3 from "web3";
 
@@ -78,7 +78,6 @@ export class KosuToken {
             }
 
             this.contract = new KosuTokenContract(
-                artifacts.KosuToken.compilerOutput.abi,
                 this.address,
                 this.web3Wrapper.getProvider(),
                 { from: coinbase },
