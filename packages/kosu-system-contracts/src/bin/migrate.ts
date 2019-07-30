@@ -1,7 +1,6 @@
 import { BlockchainLifecycle } from "@0x/dev-utils";
 import { MnemonicWalletSubprovider, RPCSubprovider } from "@0x/subproviders";
 import { providerUtils } from "@0x/utils";
-import { provider } from "web3-providers";
 import { Web3Wrapper } from "@0x/web3-wrapper";
 import fs from "fs";
 import safeRequire from "safe-node-require";
@@ -35,7 +34,7 @@ if (args["test-mnemonic"] || !mnemonic) {
     providerEngine.addProvider(rpcSubprovider);
     providerUtils.startProviderEngine(providerEngine);
 
-    const web3 = new Web3((providerEngine as unknown) as provider);
+    const web3 = new Web3(providerEngine);
 
     const normalizedFromAddress = await web3.eth.getCoinbase().then((x: string) => x.toLowerCase());
 
