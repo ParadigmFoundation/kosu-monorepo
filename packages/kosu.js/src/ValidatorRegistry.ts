@@ -179,7 +179,7 @@ export class ValidatorRegistry {
      */
     public async getChallenge(challengeId: BigNumber): Promise<Challenge> {
         const contract = await this.getContract();
-        return contract.getChallenge.callAsync(challengeId);
+        return contract.getChallenge.callAsync(new BigNumber(challengeId.toString()));
     }
 
     /**
@@ -221,7 +221,7 @@ export class ValidatorRegistry {
         const maxRewardRate = await this.maxRewardRate();
 
         if (systemBalance.lt(_tokensToStake)) {
-            const tokensShort = _tokensToStake.minus(systemBalance);
+            const tokensShort = new BigNumber(_tokensToStake.toString()).minus(systemBalance);
             await this.treasury.deposit(tokensShort);
         }
 
@@ -229,7 +229,7 @@ export class ValidatorRegistry {
             throw new Error(`Reward rate: ${_rewardRate.toString()} exceeds maxmimum of ${maxRewardRate.toString()}`);
         }
 
-        return contract.registerListing.awaitTransactionSuccessAsync(_pubKey, _tokensToStake, _rewardRate, _details);
+        return contract.registerListing.awaitTransactionSuccessAsync(_pubKey, new BigNumber(_tokensToStake.toString()), new BigNumber(_rewardRate.toString()), _details);
     }
 
     /**
@@ -309,7 +309,7 @@ export class ValidatorRegistry {
      */
     public async claimWinnings(challengeId: BigNumber): Promise<TransactionReceiptWithDecodedLogs> {
         const contract = await this.getContract();
-        return contract.claimWinnings.awaitTransactionSuccessAsync(challengeId);
+        return contract.claimWinnings.awaitTransactionSuccessAsync(new BigNumber(challengeId.toString()));
     }
 
     /**

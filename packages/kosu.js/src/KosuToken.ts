@@ -117,7 +117,7 @@ export class KosuToken {
      */
     public async transfer(to: string, value: BigNumber): Promise<TransactionReceiptWithDecodedLogs> {
         const contract = await this.getContract();
-        return contract.transfer.awaitTransactionSuccessAsync(to, value);
+        return contract.transfer.awaitTransactionSuccessAsync(to, new BigNumber(value.toString()));
     }
 
     /**
@@ -130,7 +130,7 @@ export class KosuToken {
      */
     public async transferFrom(from: string, to: string, value: BigNumber): Promise<TransactionReceiptWithDecodedLogs> {
         const contract = await this.getContract();
-        return contract.transferFrom.awaitTransactionSuccessAsync(from, to, value);
+        return contract.transferFrom.awaitTransactionSuccessAsync(from, to, new BigNumber(value.toString()));
     }
 
     /**
@@ -142,7 +142,7 @@ export class KosuToken {
      */
     public async approve(spender: string, value: BigNumber): Promise<TransactionReceiptWithDecodedLogs> {
         const contract = await this.getContract();
-        return contract.approve.awaitTransactionSuccessAsync(spender, value);
+        return contract.approve.awaitTransactionSuccessAsync(spender, new BigNumber(value.toString()));
     }
 
     /**
@@ -165,7 +165,7 @@ export class KosuToken {
      */
     public async estimateEtherToToken(etherInput: BigNumber): Promise<BigNumber> {
         const contract = await this.getContract();
-        return contract.estimateEtherToToken.callAsync(etherInput);
+        return contract.estimateEtherToToken.callAsync(new BigNumber(etherInput.toString()));
     }
 
     /**
@@ -176,7 +176,7 @@ export class KosuToken {
      */
     public async estimateTokenToEther(tokensToBurn: BigNumber): Promise<BigNumber> {
         const contract = await this.getContract();
-        return contract.estimateTokenToEther.callAsync(tokensToBurn);
+        return contract.estimateTokenToEther.callAsync(new BigNumber(tokensToBurn.toString()));
     }
 
     /**
@@ -188,7 +188,7 @@ export class KosuToken {
      */
     public async bondTokens(value: BigNumber, minPayout: BigNumber): Promise<TransactionReceiptWithDecodedLogs> {
         const contract = await this.getContract();
-        return contract.bondTokens.awaitTransactionSuccessAsync(minPayout, { value });
+        return contract.bondTokens.awaitTransactionSuccessAsync(new BigNumber(minPayout.toString()), { value: new BigNumber(value.toString()) });
     }
 
     /**
@@ -199,7 +199,7 @@ export class KosuToken {
      */
     public async releaseTokens(tokensToBurn: BigNumber): Promise<TransactionReceiptWithDecodedLogs> {
         const contract = await this.getContract();
-        return contract.releaseTokens.awaitTransactionSuccessAsync(tokensToBurn);
+        return contract.releaseTokens.awaitTransactionSuccessAsync(new BigNumber(tokensToBurn.toString()));
     }
 
     /**
@@ -211,7 +211,7 @@ export class KosuToken {
     public async pay(value: BigNumber): Promise<TransactionReceiptWithDecodedLogs> {
         const contract = await this.getContract();
         return this.web3Wrapper
-            .sendTransactionAsync({ from: await this.web3.eth.getCoinbase(), to: contract.address, value, gas: 70000 })
+            .sendTransactionAsync({ from: await this.web3.eth.getCoinbase(), to: contract.address, value: new BigNumber(value.toString()), gas: 70000 })
             .then(async txHash => this.web3Wrapper.awaitTransactionSuccessAsync(txHash));
     }
 }
