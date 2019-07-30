@@ -99,6 +99,7 @@ func TestValidator(t *testing.T, s store.Store) {
 	addr := []byte{0, 1, 2, 3, 4}
 	v := &types.Validator{
 		PublicKey: []byte{0, 1, 2, 3, 4},
+		Power:     10,
 	}
 	s.SetValidator(addr, v)
 
