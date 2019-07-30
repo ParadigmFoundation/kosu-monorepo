@@ -88,36 +88,45 @@ func main() {
 		key []byte
 	)
 
+	cobra.OnInitialize(func() {
+		cfg.Home = expandPath(cfg.Home)
+	})
+
 	rootCmd := &cobra.Command{
 		Use:   "kosud",
 		Short: "Starts the kosu node",
+		Long:  "Main entrypoint for Kosu validators and full nodes.\nPrior to use, 'kosud init' must be run.",
 		Run: func(cmd *cobra.Command, args []string) {
-			if err := run(&cfg, key); err != nil {
+			var err error
+			key, err = abci.LoadPrivateKey(cfg.Home)
+			if err != nil {
+				stdlog.Fatal(err)
+			}
+
+			if err = run(&cfg, key); err != nil {
 				stdlog.Fatal(err)
 			}
 		},
 	}
-	rootCmd.PersistentFlags().StringVar(&cfg.Home, "home", "~/.kosu", "directory for config and data")
-	rootCmd.PersistentFlags().BoolVar(&cfg.Debug, "debug", false, "enable debuging")
-	rootCmd.Flags().StringVar(&cfg.Web3, "web3", "wss://ethnet.zaidan.io/ws/kosu", "web3 provider URL")
-	rootCmd.Flags().BoolVar(&cfg.Init, "init", false, "initializes directory like 'tendermint init' does")
 
-	cobra.OnInitialize(func() {
-		cfg.Home = expandPath(cfg.Home)
-		if cfg.Init {
+	initCmd := &cobra.Command{
+		Use:   "init",
+		Short: "Initialize a home directory and configuration",
+		Long: "Generates a Tendermint configuration directory and key pair for a Kosu node.\n" +
+			"The default home directory is '$HOME/.kosu', which can be overridden with the '--home' flag.",
+		Run: func(cmd *cobra.Command, args []string) {
 			if err := abci.InitTendermint(cfg.Home); err != nil {
 				stdlog.Fatal(err)
 			}
-		}
+		},
+	}
 
-		var err error
-		key, err = abci.LoadPrivateKey(cfg.Home)
-		if err != nil {
-			stdlog.Fatal(err)
-		}
-	})
+	rootCmd.PersistentFlags().StringVarP(&cfg.Home, "home", "H", "~/.kosu", "directory for config and data")
+	rootCmd.PersistentFlags().BoolVarP(&cfg.Debug, "debug", "d", false, "enable debuging")
+	rootCmd.Flags().StringVarP(&cfg.Web3, "web3", "E", "ws://localhost:8546", "URL of an Ethereum JSONRPC provider")
 
 	rootCmd.AddCommand(rpc.NewCommand())
+	rootCmd.AddCommand(initCmd)
 
 	if err := rootCmd.Execute(); err != nil {
 		stdlog.Fatal(err)
