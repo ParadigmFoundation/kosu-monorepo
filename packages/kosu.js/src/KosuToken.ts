@@ -77,11 +77,7 @@ export class KosuToken {
                 throw new Error("Invalid network for KosuToken");
             }
 
-            this.contract = new KosuTokenContract(
-                this.address,
-                this.web3Wrapper.getProvider(),
-                { from: coinbase },
-            );
+            this.contract = new KosuTokenContract(this.address, this.web3Wrapper.getProvider(), { from: coinbase });
         }
         return this.contract;
     }
@@ -188,7 +184,9 @@ export class KosuToken {
      */
     public async bondTokens(value: BigNumber, minPayout: BigNumber): Promise<TransactionReceiptWithDecodedLogs> {
         const contract = await this.getContract();
-        return contract.bondTokens.awaitTransactionSuccessAsync(new BigNumber(minPayout.toString()), { value: new BigNumber(value.toString()) });
+        return contract.bondTokens.awaitTransactionSuccessAsync(new BigNumber(minPayout.toString()), {
+            value: new BigNumber(value.toString()),
+        });
     }
 
     /**
@@ -211,7 +209,12 @@ export class KosuToken {
     public async pay(value: BigNumber): Promise<TransactionReceiptWithDecodedLogs> {
         const contract = await this.getContract();
         return this.web3Wrapper
-            .sendTransactionAsync({ from: await this.web3.eth.getCoinbase(), to: contract.address, value: new BigNumber(value.toString()), gas: 70000 })
+            .sendTransactionAsync({
+                from: await this.web3.eth.getCoinbase(),
+                to: contract.address,
+                value: new BigNumber(value.toString()),
+                gas: 70000,
+            })
             .then(async txHash => this.web3Wrapper.awaitTransactionSuccessAsync(txHash));
     }
 }

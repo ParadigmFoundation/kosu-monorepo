@@ -79,7 +79,11 @@ export class Voting {
 
         // tslint:disable-next-line: no-console
         console.log(`Committing vote ${_vote} with ${_tokensToCommit} DIGM tokens`);
-        return contract.commitVote.awaitTransactionSuccessAsync(new BigNumber(_pollId.toString()), _vote, new BigNumber(_tokensToCommit.toString()));
+        return contract.commitVote.awaitTransactionSuccessAsync(
+            new BigNumber(_pollId.toString()),
+            _vote,
+            new BigNumber(_tokensToCommit.toString()),
+        );
     }
 
     /**
@@ -95,7 +99,11 @@ export class Voting {
         _voteSalt: BigNumber,
     ): Promise<TransactionReceiptWithDecodedLogs> {
         const contract = await this.getContract();
-        return contract.revealVote.awaitTransactionSuccessAsync(new BigNumber(_pollId.toString()), new BigNumber(_voteOption.toString()), new BigNumber(_voteSalt.toString()));
+        return contract.revealVote.awaitTransactionSuccessAsync(
+            new BigNumber(_pollId.toString()),
+            new BigNumber(_voteOption.toString()),
+            new BigNumber(_voteSalt.toString()),
+        );
     }
 
     /**

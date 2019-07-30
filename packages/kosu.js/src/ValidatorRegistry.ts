@@ -229,7 +229,12 @@ export class ValidatorRegistry {
             throw new Error(`Reward rate: ${_rewardRate.toString()} exceeds maxmimum of ${maxRewardRate.toString()}`);
         }
 
-        return contract.registerListing.awaitTransactionSuccessAsync(_pubKey, new BigNumber(_tokensToStake.toString()), new BigNumber(_rewardRate.toString()), _details);
+        return contract.registerListing.awaitTransactionSuccessAsync(
+            _pubKey,
+            new BigNumber(_tokensToStake.toString()),
+            new BigNumber(_rewardRate.toString()),
+            _details,
+        );
     }
 
     /**
