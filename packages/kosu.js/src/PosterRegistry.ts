@@ -70,11 +70,9 @@ export class PosterRegistry {
                 throw new Error("Invalid network for PosterRegistry");
             }
 
-            this.contract = new PosterRegistryContract(
-                this.address,
-                this.web3Wrapper.getProvider(),
-                { from: coinbase },
-            );
+            this.contract = new PosterRegistryContract(this.address, this.web3Wrapper.getProvider(), {
+                from: coinbase,
+            });
         }
         return this.contract;
     }

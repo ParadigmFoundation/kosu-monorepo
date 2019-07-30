@@ -51,11 +51,9 @@ export class ValidatorRegistry {
                 throw new Error("Invalid network for ValidatorRegistry");
             }
 
-            this.contract = new ValidatorRegistryContract(
-                this.address,
-                this.web3Wrapper.getProvider(),
-                { from: this.coinbase },
-            );
+            this.contract = new ValidatorRegistryContract(this.address, this.web3Wrapper.getProvider(), {
+                from: this.coinbase,
+            });
         }
         return this.contract;
     }

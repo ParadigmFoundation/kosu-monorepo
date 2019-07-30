@@ -78,11 +78,7 @@ export class Treasury {
                 throw new Error("Invalid network for Treasury");
             }
 
-            this.contract = new TreasuryContract(
-                this.address,
-                this.web3Wrapper.getProvider(),
-                { from: this.coinbase },
-            );
+            this.contract = new TreasuryContract(this.address, this.web3Wrapper.getProvider(), { from: this.coinbase });
         }
         return this.contract;
     }

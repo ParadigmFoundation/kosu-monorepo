@@ -52,11 +52,7 @@ export class Voting {
                 throw new Error("Invalid network for Voting");
             }
 
-            this.contract = new VotingContract(
-                this.address,
-                this.web3Wrapper.getProvider(),
-                { from: this.coinbase },
-            );
+            this.contract = new VotingContract(this.address, this.web3Wrapper.getProvider(), { from: this.coinbase });
         }
         return this.contract;
     }

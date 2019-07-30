@@ -77,11 +77,7 @@ export class KosuToken {
                 throw new Error("Invalid network for KosuToken");
             }
 
-            this.contract = new KosuTokenContract(
-                this.address,
-                this.web3Wrapper.getProvider(),
-                { from: coinbase },
-            );
+            this.contract = new KosuTokenContract(this.address, this.web3Wrapper.getProvider(), { from: coinbase });
         }
         return this.contract;
     }
