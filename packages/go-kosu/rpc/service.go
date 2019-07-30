@@ -105,6 +105,13 @@ func (s *Service) LatestHeight() (int64, error) {
 	"posterSignature":"0xc3550b7ceab610e638dfb1b33e5cf7aaf9490854197328eadbe8ac049adef7510a07a0ea046fa1d410c5cc1048828152b9368a8d8925f8f0072192ebfe1bbb3101"
  }]`,
  ```
+
+*** cURL example
+```bash
+url -X POST localhost:14341 \
+	--data '{"jsonrpc":"2.0", "id": 1, "method": "kosu_addOrders", "params": [[<PAYLOAD>]]}' \
+	-H 'Content-Type: application/json'
+```
 */
 func (s *Service) AddOrders(orders []*types.TransactionOrder) error {
 	for _, order := range orders {
