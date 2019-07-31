@@ -8,12 +8,15 @@
 
     -   [BigInt](#kosu.BigInt)
     -   [ConsensusParams](#kosu.ConsensusParams)
+    -   [OrderArgument](#kosu.OrderArgument)
+    -   [OrderArguments](#kosu.OrderArguments)
     -   [Poster](#kosu.Poster)
     -   [Proof](#kosu.Proof)
-    -   [RateLimit](#kosu.RateLimit)
     -   [RoundInfo](#kosu.RoundInfo)
     -   [SignedTransaction](#kosu.SignedTransaction)
     -   [Transaction](#kosu.Transaction)
+    -   [TransactionOrder](#kosu.TransactionOrder)
+    -   [TransactionOrder.MakerValuesEntry](#kosu.TransactionOrder.MakerValuesEntry)
     -   [TransactionRebalance](#kosu.TransactionRebalance)
     -   [TransactionWitness](#kosu.TransactionWitness)
     -   [Validator](#kosu.Validator)
@@ -47,10 +50,29 @@ ConsensusParams
 | Field                 | Type              | Label | Description |
 | --------------------- | ----------------- | ----- | ----------- |
 | FinalityThreshold     | [uint32](#uint32) |       |             |
-| PeriodLimit           | [uint32](#uint32) |       |             |
+| PeriodLimit           | [uint64](#uint64) |       |             |
 | PeriodLength          | [uint32](#uint32) |       |             |
 | MaxOrderBytes         | [uint32](#uint32) |       |             |
-| ConfirmationThreshold | [uint32](#uint32) |       |             |
+| ConfirmationThreshold | [uint64](#uint64) |       |             |
+
+<a name="kosu.OrderArgument"></a>
+
+### OrderArgument
+
+| Field           | Type              | Label    | Description |
+| --------------- | ----------------- | -------- | ----------- |
+| name            | [string](#string) |          |             |
+| datatype        | [string](#string) |          |             |
+| signatureFields | [int64](#int64)   | repeated |             |
+
+<a name="kosu.OrderArguments"></a>
+
+### OrderArguments
+
+| Field | Type                                 | Label    | Description |
+| ----- | ------------------------------------ | -------- | ----------- |
+| maker | [OrderArgument](#kosu.OrderArgument) | repeated |             |
+| taker | [OrderArgument](#kosu.OrderArgument) | repeated |             |
 
 <a name="kosu.Poster"></a>
 
@@ -58,11 +80,10 @@ ConsensusParams
 
 Poster
 
-| Field       | Type                   | Label | Description |
-| ----------- | ---------------------- | ----- | ----------- |
-| balance     | [BigInt](#kosu.BigInt) |       |             |
-| orderLimit  | [uint64](#uint64)      |       |             |
-| streamLimit | [uint64](#uint64)      |       |             |
+| Field   | Type                   | Label | Description |
+| ------- | ---------------------- | ----- | ----------- |
+| balance | [BigInt](#kosu.BigInt) |       |             |
+| limit   | [uint64](#uint64)      |       |             |
 
 <a name="kosu.Proof"></a>
 
@@ -74,17 +95,6 @@ Proof is used to sign a Transaction and produce a SignedTransaction.
 | ---------- | --------------- | ----- | ----------- |
 | public_key | [bytes](#bytes) |       |             |
 | signature  | [bytes](#bytes) |       |             |
-
-<a name="kosu.RateLimit"></a>
-
-### RateLimit
-
-RateLimit
-
-| Field   | Type              | Label | Description |
-| ------- | ----------------- | ----- | ----------- |
-| address | [string](#string) |       |             |
-| limit   | [uint64](#uint64) |       |             |
 
 <a name="kosu.RoundInfo"></a>
 
@@ -122,6 +132,34 @@ Transaction
 | --------- | -------------------------------------------------- | ----- | ----------- |
 | rebalance | [TransactionRebalance](#kosu.TransactionRebalance) |       |             |
 | witness   | [TransactionWitness](#kosu.TransactionWitness)     |       |             |
+| order     | [TransactionOrder](#kosu.TransactionOrder)         |       |             |
+
+<a name="kosu.TransactionOrder"></a>
+
+### TransactionOrder
+
+TransactionOrder contains a signed order from a poster, and modifies their remaining period limit.
+
+This transaction can originate from anywhere, so long as the address recovered from the poster
+signature has a non-zero balance of Kosu tokens (they are a poster).
+
+| Field           | Type                                                                         | Label    | Description |
+| --------------- | ---------------------------------------------------------------------------- | -------- | ----------- |
+| subContract     | [string](#string)                                                            |          |             |
+| maker           | [string](#string)                                                            |          |             |
+| arguments       | [OrderArguments](#kosu.OrderArguments)                                       |          |             |
+| makerValues     | [TransactionOrder.MakerValuesEntry](#kosu.TransactionOrder.MakerValuesEntry) | repeated |             |
+| makerSignature  | [string](#string)                                                            |          |             |
+| posterSignature | [string](#string)                                                            |          |             |
+
+<a name="kosu.TransactionOrder.MakerValuesEntry"></a>
+
+### TransactionOrder.MakerValuesEntry
+
+| Field | Type              | Label | Description |
+| ----- | ----------------- | ----- | ----------- |
+| key   | [string](#string) |       |             |
+| value | [string](#string) |       |             |
 
 <a name="kosu.TransactionRebalance"></a>
 
@@ -129,10 +167,9 @@ Transaction
 
 TransactionRebalance
 
-| Field      | Type                         | Label    | Description |
-| ---------- | ---------------------------- | -------- | ----------- |
-| limits     | [RateLimit](#kosu.RateLimit) | repeated |             |
-| round_info | [RoundInfo](#kosu.RoundInfo) |          |             |
+| Field      | Type                         | Label | Description |
+| ---------- | ---------------------------- | ----- | ----------- |
+| round_info | [RoundInfo](#kosu.RoundInfo) |       |             |
 
 <a name="kosu.TransactionWitness"></a>
 
@@ -141,14 +178,15 @@ TransactionRebalance
 TransactionWitness performs state modification of Stake Event transactions (modify staker&#39;s balance).
 This transaction should be originated from the validator nodes.
 
-| Field      | Type                                                           | Label | Description                                       |
-| ---------- | -------------------------------------------------------------- | ----- | ------------------------------------------------- |
-| subject    | [TransactionWitness.Subject](#kosu.TransactionWitness.Subject) |       |                                                   |
-| amount     | [BigInt](#kosu.BigInt)                                         |       |                                                   |
-| block      | [uint64](#uint64)                                              |       | Block number of event                             |
-| address    | [string](#string)                                              |       | Ethereum address of validator/poster              |
-| public_key | [bytes](#bytes)                                                |       | Tendermint ed25519 key of validator (base64 enc ) |
-| id         | [bytes](#bytes)                                                |       | Hash of event data                                |
+| Field         | Type                                                           | Label | Description                                       |
+| ------------- | -------------------------------------------------------------- | ----- | ------------------------------------------------- |
+| subject       | [TransactionWitness.Subject](#kosu.TransactionWitness.Subject) |       |                                                   |
+| amount        | [BigInt](#kosu.BigInt)                                         |       |                                                   |
+| block         | [uint64](#uint64)                                              |       | Block number of event                             |
+| address       | [string](#string)                                              |       | Ethereum address of validator/poster              |
+| public_key    | [bytes](#bytes)                                                |       | Tendermint ed25519 key of validator (base64 enc ) |
+| id            | [bytes](#bytes)                                                |       | Hash of event data                                |
+| confirmations | [uint64](#uint64)                                              |       |                                                   |
 
 <a name="kosu.Validator"></a>
 
