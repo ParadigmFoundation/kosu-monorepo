@@ -40,7 +40,7 @@ export class TestHelpers {
             Object.keys(receipts).forEach(contractName => {
                 contracts[contractName.charAt(0).toLowerCase() + contractName.slice(1)] = new Wrappers[
                     `${contractName}Contract`
-                ](receipts[contractName].address, this.web3Wrapper.getProvider(), {
+                ](receipts[contractName].contractAddress, this.web3Wrapper.getProvider(), {
                     from: config.from,
                 });
             });
