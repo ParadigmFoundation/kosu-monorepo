@@ -22,7 +22,7 @@
         "lint": "tslint -p .",
         "truffle:clean": "shx rm -rf build/contracts",
         "contracts:clean": "shx rm -rf  generated-artifacts generated-wrappers",
-        "deploy:ropsten": "ts-node -T src/bin/migrate.ts --rpc-url=https://eth-ropsten.alchemyapi.io/jsonrpc/KUnSgCMXUSlgavPAznIBDCKhPhpgk8XA && ts-node --files src/bin/deliver_tokens.ts --rpc-url=https://ethnet.zaidan.io/ropsten &&yarn prettier:deployedAddresses",
+        "deploy:ropsten": "ts-node -T src/bin/migrate.ts --rpc-url=https://eth-ropsten.alchemyapi.io/jsonrpc/KUnSgCMXUSlgavPAznIBDCKhPhpgk8XA",
         "deploy:kosu": "ts-node -T src/bin/migrate.ts --test-mnemonic --rpc-url=https://ethnet.zaidan.io/kosu && ts-node --files src/bin/deliver_tokens.ts --test-mnemonic --rpc-url=https://ethnet.zaidan.io/kosu && yarn prettier:deployedAddresses",
         "deploy:kosu:ci": "ts-node -T src/bin/migrate.ts --test-mnemonic --rpc-url=${WEB3_URI} && ts-node --files src/bin/deliver_tokens.ts --test-mnemonic --rpc-url=${WEB3_URI} && yarn prettier:deployedAddresses",
         "deploy:0x:kosu": "0x-migrate --rpc-url https://ethnet.zaidan.io/kosu --from 0x5409ED021D9299bf6814279A6A1411A7e866A631",
