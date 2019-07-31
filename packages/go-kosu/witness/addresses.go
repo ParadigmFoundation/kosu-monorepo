@@ -16,7 +16,7 @@ func GetContractAddress(nID *big.Int, contract string) (string, error) {
 		return "", err
 	}
 
-	query := fmt.Sprintf("%d.%s", nID.Uint64(), contract)
+	query := fmt.Sprintf("%d.%s.contractAddress", nID.Uint64(), contract)
 	res := gjson.GetBytes(buf, query)
 
 	if !res.Exists() {

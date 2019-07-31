@@ -85,7 +85,7 @@ describe("OrderGateway", () => {
             await testOrderGateway.initializing;
 
             deployedAddress.should.not.equal(testOrderGateway.address);
-            testOrderGateway.address.should.equal(DeployedAddresses[3].OrderGateway);
+            testOrderGateway.address.should.equal(DeployedAddresses[3].OrderGateway.contractAddress);
         });
 
         it("should select an existing contract if the options provide address.", async () => {

@@ -70,7 +70,7 @@ export class KosuToken {
 
             if (!this.address) {
                 /* istanbul ignore next */
-                this.address = DeployedAddresses[networkId].KosuToken;
+                this.address = DeployedAddresses[networkId].KosuToken.contractAddress;
             }
             if (!this.address) {
                 /* istanbul ignore next */

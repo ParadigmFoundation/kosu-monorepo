@@ -67,7 +67,7 @@ export class OrderGateway {
         const networkId = options.networkId || (await options.web3.eth.net.getId());
 
         if (!this.address) {
-            this.address = DeployedAddresses[networkId].OrderGateway;
+            this.address = DeployedAddresses[networkId].OrderGateway.contractAddress;
         }
         if (!this.address) {
             /* istanbul ignore next */

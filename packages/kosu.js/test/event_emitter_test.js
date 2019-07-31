@@ -10,7 +10,7 @@ describe("EventEmitter", () => {
         it("should return the configured address.", async () => {
             await new EventEmitter({ web3Wrapper })
                 .getAddress()
-                .should.eventually.eq(DeployedAddresses["6174"].EventEmitter);
+                .should.eventually.eq(DeployedAddresses["6174"].EventEmitter.contractAddress);
         });
 
         it("throw when using an unknown network", async () => {

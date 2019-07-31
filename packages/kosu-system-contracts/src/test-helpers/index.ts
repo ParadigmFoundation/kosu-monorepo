@@ -1,9 +1,7 @@
 import { BigNumber } from "@0x/utils";
-import { SupportedProvider, Web3Wrapper } from "@0x/web3-wrapper";
-import { ContractAbi } from "ethereum-types";
+import { Web3Wrapper } from "@0x/web3-wrapper";
 
 import { decodeKosuEvents, DeployedAddresses } from "..";
-import { artifacts } from "../artifacts";
 import * as Wrappers from "../wrappers";
 
 import { TestValues } from "./test_values";
@@ -30,8 +28,8 @@ export class TestHelpers {
         if (config.migratedContracts) {
             this.migratedContracts = config.migratedContracts;
         } else if (config.networkId) {
-            const addresses = DeployedAddresses[config.networkId];
-            if (!addresses) {
+            const receipts = DeployedAddresses[config.networkId];
+            if (!receipts) {
                 throw new Error(`TestHelpers can't find addresses for ${config.networkId}`);
             }
             if (!config.from) {
@@ -39,10 +37,10 @@ export class TestHelpers {
             }
             const contracts = {};
 
-            Object.keys(DeployedAddresses[config.networkId]).forEach(contractName => {
+            Object.keys(receipts).forEach(contractName => {
                 contracts[contractName.charAt(0).toLowerCase() + contractName.slice(1)] = new Wrappers[
                     `${contractName}Contract`
-                ](addresses[contractName], this.web3Wrapper.getProvider(), {
+                ](receipts[contractName].address, this.web3Wrapper.getProvider(), {
                     from: config.from,
                 });
             });
