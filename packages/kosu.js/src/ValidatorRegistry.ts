@@ -1,6 +1,6 @@
 import { BigNumber } from "@0x/utils";
 import { Web3Wrapper } from "@0x/web3-wrapper";
-import { artifacts, DeployedAddresses, ValidatorRegistryContract } from "@kosu/system-contracts";
+import { DeployedAddresses, ValidatorRegistryContract } from "@kosu/system-contracts";
 import { TransactionReceiptWithDecodedLogs } from "ethereum-protocol";
 import Web3 from "web3";
 
@@ -51,12 +51,9 @@ export class ValidatorRegistry {
                 throw new Error("Invalid network for ValidatorRegistry");
             }
 
-            this.contract = new ValidatorRegistryContract(
-                artifacts.ValidatorRegistry.compilerOutput.abi,
-                this.address,
-                this.web3Wrapper.getProvider(),
-                { from: this.coinbase },
-            );
+            this.contract = new ValidatorRegistryContract(this.address, this.web3Wrapper.getProvider(), {
+                from: this.coinbase,
+            });
         }
         return this.contract;
     }
@@ -182,7 +179,7 @@ export class ValidatorRegistry {
      */
     public async getChallenge(challengeId: BigNumber): Promise<Challenge> {
         const contract = await this.getContract();
-        return contract.getChallenge.callAsync(challengeId);
+        return contract.getChallenge.callAsync(new BigNumber(challengeId.toString()));
     }
 
     /**
@@ -224,7 +221,7 @@ export class ValidatorRegistry {
         const maxRewardRate = await this.maxRewardRate();
 
         if (systemBalance.lt(_tokensToStake)) {
-            const tokensShort = _tokensToStake.minus(systemBalance);
+            const tokensShort = new BigNumber(_tokensToStake.toString()).minus(systemBalance);
             await this.treasury.deposit(tokensShort);
         }
 
@@ -232,7 +229,12 @@ export class ValidatorRegistry {
             throw new Error(`Reward rate: ${_rewardRate.toString()} exceeds maxmimum of ${maxRewardRate.toString()}`);
         }
 
-        return contract.registerListing.awaitTransactionSuccessAsync(_pubKey, _tokensToStake, _rewardRate, _details);
+        return contract.registerListing.awaitTransactionSuccessAsync(
+            _pubKey,
+            new BigNumber(_tokensToStake.toString()),
+            new BigNumber(_rewardRate.toString()),
+            _details,
+        );
     }
 
     /**
@@ -312,7 +314,7 @@ export class ValidatorRegistry {
      */
     public async claimWinnings(challengeId: BigNumber): Promise<TransactionReceiptWithDecodedLogs> {
         const contract = await this.getContract();
-        return contract.claimWinnings.awaitTransactionSuccessAsync(challengeId);
+        return contract.claimWinnings.awaitTransactionSuccessAsync(new BigNumber(challengeId.toString()));
     }
 
     /**

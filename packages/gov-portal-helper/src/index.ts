@@ -244,7 +244,7 @@ class Gov {
     public challenges: Map<StoreChallenge>;
     public proposals: Map<Proposal>;
 
-    public networkId: string;
+    public networkId: number;
     public coinbase: string;
 
     public kosu: Kosu;
