@@ -7,25 +7,31 @@ import (
 	. "github.com/smartystreets/goconvey/convey"
 	"github.com/stretchr/testify/require"
 
+	"github.com/tendermint/tendermint/config"
 	"github.com/tendermint/tendermint/privval"
 	tmtypes "github.com/tendermint/tendermint/types"
 
 	"go-kosu/abci/types"
 )
 
+func buildWitnessTx(cfg *config.Config, tx *types.TransactionWitness) *types.TransactionWitness {
+	priv := privval.LoadFilePV(
+		cfg.PrivValidatorKeyFile(),
+		cfg.PrivValidatorStateFile(),
+	).Key
+
+	tx.Address = priv.Address.String()
+	tx.PublicKey = priv.PubKey.Bytes()[5:]
+	return tx
+}
+
 func (s *Suite) TestWitnessTxPoster() {
 	GivenABCIServer(s.T(), s, func(t *testing.T) {
-		priv := privval.LoadFilePV(
-			s.app.Config.PrivValidatorKeyFile(),
-			s.app.Config.PrivValidatorStateFile(),
-		).Key
-
-		tx := &types.TransactionWitness{
+		tx := buildWitnessTx(s.app.Config, &types.TransactionWitness{
 			Subject: types.TransactionWitness_POSTER,
 			Block:   10,
-			Address: priv.Address.String(),
 			Amount:  types.NewBigIntFromString("1000000000000000000", 10),
-		}
+		})
 
 		ctx, cancel := context.WithCancel(context.Background())
 		defer cancel()
@@ -73,24 +79,11 @@ func (s *Suite) TestWitnessTxPoster() {
 
 func (s *Suite) TestWitnessValidator() {
 	GivenABCIServer(s.T(), s, func(t *testing.T) {
-		priv := privval.LoadFilePV(
-			s.app.Config.PrivValidatorKeyFile(),
-			s.app.Config.PrivValidatorStateFile(),
-		).Key
-
-		tx := &types.TransactionWitness{
+		tx := buildWitnessTx(s.app.Config, &types.TransactionWitness{
 			Subject: types.TransactionWitness_VALIDATOR,
 			Block:   10,
-			Address: priv.Address.String(),
-
-			// we need to skip the fingerprint (5 bytes), not sure why is this.
-			// I think it's related to amino
-			PublicKey: priv.PubKey.Bytes()[5:],
-
-			// we will set an amount to 10**18, which will translate into power:1.
-			// is the minimum voting power
-			Amount: types.NewBigIntFromString("1000000000000000000", 10),
-		}
+			Amount:  types.NewBigIntFromString("1000000000000000000", 10),
+		})
 
 		ctx, cancel := context.WithCancel(context.Background())
 		defer cancel()
@@ -116,6 +109,36 @@ func (s *Suite) TestWitnessValidator() {
 
 					So(res.Validators[0].VotingPower, ShouldEqual, 1)
 
+				})
+			})
+		})
+	})
+}
+
+func (s *Suite) TestWitnessTxPruning() {
+	GivenABCIServer(s.T(), s, func(t *testing.T) {
+		Convey("When a Tx#1 is broadcasted", func() {
+			tx := buildWitnessTx(s.app.Config, &types.TransactionWitness{
+				Subject: types.TransactionWitness_VALIDATOR,
+				Block:   10,
+				Amount:  types.NewBigIntFromString("1000000000000000000", 10),
+			})
+			txID := tx.Hash()
+
+			BroadcastTxCommit(t, s.client, tx)
+			res, err := s.client.ABCIQuery("/witness/key", txID)
+			require.NoError(t, err)
+			require.Zero(t, res.Response.Code)
+			require.NotNil(t, res.Response.Value)
+
+			Convey("And Tx#2 is broadcasted 10 Ethereum blocks later", func() {
+				tx.Block += 10
+				BroadcastTxCommit(t, s.client, tx)
+
+				Convey("Tx#1 should not exist", func() {
+					res, err := s.client.ABCIQuery("/witness/key", txID)
+					require.NoError(t, err)
+					require.Zero(t, res.Response.Code)
 				})
 			})
 		})
