@@ -109,6 +109,7 @@ curl -X POST --data '{"jsonrpc":"2.0","method":"kosu_latestHeight", "id": 1}' lo
 {"jsonrpc":"2.0","id":1,"result":260}
 ```
 */
+// nolint:lll
 func (s *Service) LatestHeight() (int64, error) {
 	res, err := s.abci.Block(nil)
 	if err != nil {

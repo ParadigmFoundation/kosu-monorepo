@@ -10,7 +10,6 @@ import (
 	"github.com/stretchr/testify/require"
 
 	"go-kosu/abci"
-	"go-kosu/abci/types"
 	"go-kosu/tests"
 
 	"github.com/tendermint/tendermint/libs/db"
@@ -61,32 +60,4 @@ func TestRPCLatestHeight(t *testing.T) {
 			fn(e)
 		}
 	}
-}
-
-func TestQueryPoster(t *testing.T) {
-	app, client, closer := setupNewTestClient(t)
-	defer closer()
-
-	poster := &types.Poster{
-		Limit: 99,
-	}
-	app.Store().SetPoster("abc", *poster)
-	app.Store().Commit()
-
-	t.Run("Found", func(t *testing.T) {
-		var res types.Poster
-		require.NoError(t,
-			client.Call(&res, "kosu_queryPoster", "abc"),
-		)
-		assert.Equal(t, *poster, res)
-
-	})
-
-	t.Run("NotFound", func(t *testing.T) {
-		var res types.Poster
-		err := client.Call(&res, "kosu_queryPoster", "a-not-found-address")
-		require.NotNil(t, err)
-		assert.Error(t, err)
-		assert.Contains(t, err.Error(), "not found")
-	})
 }

@@ -10,18 +10,20 @@ import (
 	"text/template"
 )
 
-// nolint
+// DocEntry holds documentation for a method
 type DocEntry struct {
 	Method string `json:"method"`
 	Text   string `json:"text"`
 }
 
+// TypeDocs holds the documentation of a given type
 type TypeDocs struct {
 	Title       string
 	Description string
 	Entries     []DocEntry
 }
 
+// PkgDocs is the top level doc struct
 type PkgDocs struct {
 	Title       string
 	Description string
