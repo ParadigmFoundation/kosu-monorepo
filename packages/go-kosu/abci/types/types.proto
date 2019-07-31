@@ -115,6 +115,7 @@ message TransactionWitness {
   string address = 4; // Ethereum address of validator/poster
   bytes public_key = 5  ; // Tendermint ed25519 key of validator (base64 enc )
   bytes id = 6; // Hash of event data
+  uint64 confirmations = 7;
 }
 
 /**

@@ -11,7 +11,6 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 
 	"go-kosu/abci/types"
-	"go-kosu/store"
 )
 
 // Store stores the application state
@@ -147,27 +146,35 @@ func (s *Store) LastEvent() uint64 {
 
 // WitnessTxExists checks if a given WitnessTx has been persisted
 func (s *Store) WitnessTxExists(id []byte) bool {
-	return s.Has("proto:"+string(id), s.witnessKey)
+	return s.Has(string(id), s.witnessKey)
 }
 
 // WitnessTx gets a WitnessTx
-func (s *Store) WitnessTx(id []byte) store.TransactionWitness {
-	v := store.TransactionWitness{}
-	s.Get("proto:"+string(id), s.witnessKey, &v)
-	s.Get("confs:"+string(id), s.witnessKey, &v.Confirmations)
+func (s *Store) WitnessTx(id []byte) *types.TransactionWitness {
+	v := &types.TransactionWitness{}
+	s.Get(string(id), s.witnessKey, v)
 	return v
 }
 
+// IterateWitnessTxs executes fn for each validator
+func (s *Store) IterateWitnessTxs(fn func(*types.TransactionWitness)) {
+	s.All(s.witnessKey, func(_ string, val []byte) {
+		tx := &types.TransactionWitness{}
+		if err := s.codec.Decode(val, tx); err != nil {
+			panic(err)
+		}
+		fn(tx)
+	})
+}
+
 // SetWitnessTx sets a WitnessTx
-func (s *Store) SetWitnessTx(tx store.TransactionWitness) {
-	s.Set("proto:"+string(tx.Id), s.witnessKey, &tx)
-	s.Set("confs:"+string(tx.Id), s.witnessKey, tx.Confirmations)
+func (s *Store) SetWitnessTx(tx *types.TransactionWitness) {
+	s.Set(string(tx.Id), s.witnessKey, tx)
 }
 
 // DeleteWitnessTx deletes a WitnessTx
 func (s *Store) DeleteWitnessTx(id []byte) {
-	s.Delete("proto:"+string(id), s.witnessKey)
-	s.Delete("confs:"+string(id), s.witnessKey)
+	s.Delete(string(id), s.witnessKey)
 }
 
 // Poster gets a Poster

@@ -1,12 +1,12 @@
 package abci
 
 import (
+	"encoding/hex"
 	"errors"
 	"math"
 	"math/big"
 
 	"go-kosu/abci/types"
-	"go-kosu/store"
 
 	abci "github.com/tendermint/tendermint/abci/types"
 	"github.com/tendermint/tendermint/crypto/tmhash"
@@ -32,10 +32,25 @@ func (app *App) deliverWitnessTx(tx *types.TransactionWitness, nodeID []byte) ab
 	return abci.ResponseDeliverTx{}
 }
 
+const blocksBeforePruning = 10
+
+func (app *App) pruneWitnessTxs(block uint64) {
+	fn := func(tx *types.TransactionWitness) {
+		// TODO(hharder) do we need to check for .Confirmations here?
+		if block-tx.Block >= blocksBeforePruning {
+			app.log.Debug("Pruning tx", "id", hex.EncodeToString(tx.Id))
+			app.store.DeleteWitnessTx(tx.Id)
+		}
+	}
+	app.store.IterateWitnessTxs(fn)
+}
+
 func (app *App) pushTransactionWitness(tx *types.TransactionWitness, nodeID []byte) error {
 	if app.store.LastEvent() > tx.Block {
 		return errors.New("transaction is older than the recorded state")
 	}
+
+	app.pruneWitnessTxs(tx.Block)
 
 	if tx.Amount == nil {
 		tx.Amount = types.NewBigIntFromInt(0)
@@ -43,9 +58,7 @@ func (app *App) pushTransactionWitness(tx *types.TransactionWitness, nodeID []by
 	app.store.SetLastEvent(tx.Block)
 
 	if !app.store.WitnessTxExists(tx.Id) {
-		app.store.SetWitnessTx(store.TransactionWitness{
-			TransactionWitness: *tx,
-		})
+		app.store.SetWitnessTx(tx)
 	}
 
 	wTx := app.store.WitnessTx(tx.Id)
@@ -65,7 +78,6 @@ func (app *App) pushTransactionWitness(tx *types.TransactionWitness, nodeID []by
 	if app.confirmationThreshold > wTx.Confirmations {
 		return nil
 	}
-	//	app.store.DeleteWitnessTx(tx.Id)
 
 	switch tx.Subject {
 	case types.TransactionWitness_POSTER:

@@ -9,6 +9,7 @@ import (
 	"math/big"
 
 	abci "github.com/tendermint/tendermint/abci/types"
+	"github.com/tendermint/tendermint/config"
 	cfg "github.com/tendermint/tendermint/config"
 	"github.com/tendermint/tendermint/crypto/tmhash"
 	"github.com/tendermint/tendermint/libs/db"
@@ -34,25 +35,31 @@ type App struct {
 	confirmationThreshold uint64
 }
 
-// NewApp returns a new ABCI App
+// NewApp returns a new ABCI App, it will load the config from homedir
 func NewApp(db db.DB, homedir string) *App {
-	config, err := LoadConfig(homedir)
+	cfg, err := LoadConfig(homedir)
 	if err != nil {
 		panic(err)
 	}
 
-	logger, err := NewLogger(config)
+	return NewAppWithConfig(db, cfg)
+}
+
+// NewAppWithConfig returns a new ABCI App given a config
+func NewAppWithConfig(db db.DB, cfg *config.Config) *App {
+	logger, err := NewLogger(cfg)
 	if err != nil {
 		panic(err)
 	}
 
 	app := &App{
 		store:  cosmos.NewStore(db, new(cosmos.ProtoCodec)),
-		Config: config,
+		Config: cfg,
 		log:    logger.With("module", "app"),
 	}
 
 	return app
+
 }
 
 // Query queries the application state using the store.Query method
@@ -242,7 +249,10 @@ func (app *App) CheckTx(req []byte) abci.ResponseCheckTx {
 		}
 		return abci.ResponseCheckTx{}
 	case *types.Transaction_Witness:
-		if err := app.checkWitnessTx(tx.GetWitness()); err != nil {
+		w := tx.GetWitness()
+		// .Confirmations should not be defined in the request
+		w.Confirmations = 0
+		if err := app.checkWitnessTx(w); err != nil {
 			return abci.ResponseCheckTx{Code: 1, Log: err.Error()}
 		}
 		return abci.ResponseCheckTx{}
