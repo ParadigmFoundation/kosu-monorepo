@@ -60,7 +60,9 @@ if (args["test-mnemonic"] || !mnemonic) {
     for (const contractKey of Object.keys(migratedContracts)) {
         const contract = migratedContracts[contractKey];
         contracts[contract.contractName] = contract.txReceipt;
-        contracts[contract.contractName].timestamp = await web3.eth.getBlock(contract.txReceipt.blockNumber.toString()).then(b => b.timestamp);
+        contracts[contract.contractName].timestamp = await web3.eth
+            .getBlock(contract.txReceipt.blockNumber.toString())
+            .then(b => b.timestamp);
     }
     deployedAddresses[networkId] = contracts;
     // @ts-ignore
