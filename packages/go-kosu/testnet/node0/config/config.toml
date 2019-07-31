@@ -22,7 +22,7 @@ db_backend = "leveldb"
 db_dir = "data"
 
 # Output level for logging, including package level options
-log_level = "app:info,witness:info,ethereum:info,*:error"
+log_level = "app:info,*:error"
 
 # Output format: 'plain' (colored text) or 'json'
 log_format = "plain"

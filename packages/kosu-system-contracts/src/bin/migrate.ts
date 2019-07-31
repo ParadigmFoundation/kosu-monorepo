@@ -6,7 +6,7 @@ import fs from "fs";
 import safeRequire from "safe-node-require";
 import Web3 from "web3";
 import Web3ProviderEngine from "web3-provider-engine";
-import { BN, toWei } from "web3-utils";
+import { toWei } from "web3-utils";
 import yargs from "yargs";
 
 import * as deployedAddresses from "../deployedAddresses.json";
@@ -27,14 +27,14 @@ if (args["test-mnemonic"] || !mnemonic) {
 (async () => {
     const mnemonicSubprovider = mnemonic ? new MnemonicWalletSubprovider({ mnemonic }) : null;
     const rpcSubprovider = new RPCSubprovider(args["rpc-url"]);
-    const provider = new Web3ProviderEngine();
+    const providerEngine = new Web3ProviderEngine();
     if (mnemonicSubprovider) {
-        provider.addProvider(mnemonicSubprovider);
+        providerEngine.addProvider(mnemonicSubprovider);
     }
-    provider.addProvider(rpcSubprovider);
-    providerUtils.startProviderEngine(provider);
+    providerEngine.addProvider(rpcSubprovider);
+    providerUtils.startProviderEngine(providerEngine);
 
-    const web3 = new Web3(provider);
+    const web3 = new Web3(providerEngine);
 
     const normalizedFromAddress = await web3.eth.getCoinbase().then((x: string) => x.toLowerCase());
 
@@ -54,7 +54,7 @@ if (args["test-mnemonic"] || !mnemonic) {
         }
     }
 
-    const migratedContracts = await migrations(provider, txDefaults, {});
+    const migratedContracts = await migrations(providerEngine, txDefaults, {});
 
     const contracts = {};
     for (const contractKey of Object.keys(migratedContracts)) {

@@ -1,6 +1,6 @@
 import { BigNumber } from "@0x/utils";
 import { Web3Wrapper } from "@0x/web3-wrapper";
-import { artifacts, DeployedAddresses, OrderGatewayContract } from "@kosu/system-contracts";
+import { DeployedAddresses, OrderGatewayContract } from "@kosu/system-contracts";
 import Web3 from "web3";
 
 import { OrderSerializer } from "./OrderSerializer";
@@ -65,7 +65,6 @@ export class OrderGateway {
      */
     private async init(options: KosuOptions): Promise<void> {
         const networkId = options.networkId || (await options.web3.eth.net.getId());
-        const abi = artifacts.OrderGateway.compilerOutput.abi;
 
         if (!this.address) {
             this.address = DeployedAddresses[networkId].OrderGateway;
@@ -75,7 +74,7 @@ export class OrderGateway {
             throw new Error("Invalid network for OrderGateway");
         }
 
-        this.contract = new OrderGatewayContract(abi, this.address, this.web3.currentProvider, {
+        this.contract = new OrderGatewayContract(this.address, this.web3.currentProvider, {
             from: await this.web3.eth.getCoinbase().catch(
                 /* istanbul ignore next */
                 () => undefined,

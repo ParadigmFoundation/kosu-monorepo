@@ -24,8 +24,9 @@ type Store interface {
 	SetLastEvent(uint64)
 
 	WitnessTxExists([]byte) bool
-	WitnessTx([]byte) TransactionWitness
-	SetWitnessTx(TransactionWitness)
+	WitnessTx([]byte) *types.TransactionWitness
+	IterateWitnessTxs(func(tx *types.TransactionWitness))
+	SetWitnessTx(*types.TransactionWitness)
 	DeleteWitnessTx([]byte)
 
 	Poster(string) *types.Poster
