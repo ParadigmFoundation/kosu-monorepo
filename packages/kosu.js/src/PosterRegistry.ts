@@ -1,6 +1,6 @@
 import { BigNumber } from "@0x/utils";
 import { Web3Wrapper } from "@0x/web3-wrapper";
-import { artifacts, DeployedAddresses, PosterRegistryContract } from "@kosu/system-contracts";
+import { DeployedAddresses, PosterRegistryContract } from "@kosu/system-contracts";
 import { TransactionReceiptWithDecodedLogs } from "ethereum-protocol";
 import Web3 from "web3";
 
@@ -70,12 +70,9 @@ export class PosterRegistry {
                 throw new Error("Invalid network for PosterRegistry");
             }
 
-            this.contract = new PosterRegistryContract(
-                artifacts.PosterRegistry.compilerOutput.abi,
-                this.address,
-                this.web3Wrapper.getProvider(),
-                { from: coinbase },
-            );
+            this.contract = new PosterRegistryContract(this.address, this.web3Wrapper.getProvider(), {
+                from: coinbase,
+            });
         }
         return this.contract;
     }
@@ -129,7 +126,7 @@ export class PosterRegistry {
             }
         }
 
-        return contract.registerTokens.awaitTransactionSuccessAsync(amount);
+        return contract.registerTokens.awaitTransactionSuccessAsync(parsed);
     }
 
     /**
@@ -140,7 +137,7 @@ export class PosterRegistry {
      */
     public async releaseTokens(amount: BigNumber): Promise<TransactionReceiptWithDecodedLogs> {
         const contract = await this.getContract();
-        return contract.releaseTokens.awaitTransactionSuccessAsync(amount);
+        return contract.releaseTokens.awaitTransactionSuccessAsync(new BigNumber(amount.toString()));
     }
 
     /**
@@ -152,7 +149,12 @@ export class PosterRegistry {
     public async pay(value: BigNumber): Promise<TransactionReceiptWithDecodedLogs> {
         const contract = await this.getContract();
         return this.web3Wrapper
-            .sendTransactionAsync({ from: await this.web3.eth.getCoinbase(), to: contract.address, value, gas: 220000 })
+            .sendTransactionAsync({
+                from: await this.web3.eth.getCoinbase(),
+                to: contract.address,
+                value: new BigNumber(value.toString()),
+                gas: 220000,
+            })
             .then(async txHash => this.web3Wrapper.awaitTransactionSuccessAsync(txHash));
     }
 }

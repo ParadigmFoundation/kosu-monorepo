@@ -1,6 +1,6 @@
 import { BigNumber } from "@0x/utils";
 import { Web3Wrapper } from "@0x/web3-wrapper";
-import { artifacts, DeployedAddresses, TreasuryContract } from "@kosu/system-contracts";
+import { DeployedAddresses, TreasuryContract } from "@kosu/system-contracts";
 import { TransactionReceiptWithDecodedLogs } from "ethereum-protocol";
 import Web3 from "web3";
 
@@ -78,12 +78,7 @@ export class Treasury {
                 throw new Error("Invalid network for Treasury");
             }
 
-            this.contract = new TreasuryContract(
-                artifacts.Treasury.compilerOutput.abi,
-                this.address,
-                this.web3Wrapper.getProvider(),
-                { from: this.coinbase },
-            );
+            this.contract = new TreasuryContract(this.address, this.web3Wrapper.getProvider(), { from: this.coinbase });
         }
         return this.contract;
     }
@@ -116,7 +111,7 @@ export class Treasury {
             await this.kosuToken.approve(this.address, value);
         }
 
-        return contract.deposit.awaitTransactionSuccessAsync(value);
+        return contract.deposit.awaitTransactionSuccessAsync(new BigNumber(value.toString()));
     }
 
     /**
@@ -134,7 +129,7 @@ export class Treasury {
      */
     public async withdraw(value: BigNumber): Promise<TransactionReceiptWithDecodedLogs> {
         const contract = await this.getContract();
-        return contract.withdraw.awaitTransactionSuccessAsync(value);
+        return contract.withdraw.awaitTransactionSuccessAsync(new BigNumber(value.toString()));
     }
 
     /**
@@ -214,7 +209,7 @@ export class Treasury {
      */
     public async approveTreasury(value: BigNumber): Promise<TransactionReceiptWithDecodedLogs> {
         const contract = await this.getContract();
-        return this.kosuToken.approve(contract.address, value);
+        return this.kosuToken.approve(contract.address, new BigNumber(value.toString()));
     }
 
     /**
@@ -226,7 +221,12 @@ export class Treasury {
     public async pay(value: BigNumber): Promise<TransactionReceiptWithDecodedLogs> {
         const contract = await this.getContract();
         return this.web3Wrapper
-            .sendTransactionAsync({ from: await this.web3.eth.getCoinbase(), to: contract.address, value, gas: 120000 })
+            .sendTransactionAsync({
+                from: await this.web3.eth.getCoinbase(),
+                to: contract.address,
+                value: new BigNumber(value.toString()),
+                gas: 120000,
+            })
             .then(async txHash => this.web3Wrapper.awaitTransactionSuccessAsync(txHash));
     }
 }

@@ -1,6 +1,6 @@
 import { BigNumber } from "@0x/utils";
 import { Web3Wrapper } from "@0x/web3-wrapper";
-import { artifacts, DeployedAddresses, VotingContract } from "@kosu/system-contracts";
+import { DeployedAddresses, VotingContract } from "@kosu/system-contracts";
 import { TransactionReceiptWithDecodedLogs } from "ethereum-protocol";
 import Web3 from "web3";
 
@@ -52,12 +52,7 @@ export class Voting {
                 throw new Error("Invalid network for Voting");
             }
 
-            this.contract = new VotingContract(
-                artifacts.Voting.compilerOutput.abi,
-                this.address,
-                this.web3Wrapper.getProvider(),
-                { from: this.coinbase },
-            );
+            this.contract = new VotingContract(this.address, this.web3Wrapper.getProvider(), { from: this.coinbase });
         }
         return this.contract;
     }
@@ -78,13 +73,17 @@ export class Voting {
 
         const systemBalance = await this.treasury.systemBalance(this.coinbase);
         if (systemBalance.lt(_tokensToCommit)) {
-            const tokensShort = _tokensToCommit.minus(systemBalance);
+            const tokensShort = new BigNumber(_tokensToCommit.toString()).minus(systemBalance);
             await this.treasury.deposit(tokensShort);
         }
 
         // tslint:disable-next-line: no-console
         console.log(`Committing vote ${_vote} with ${_tokensToCommit} DIGM tokens`);
-        return contract.commitVote.awaitTransactionSuccessAsync(_pollId, _vote, _tokensToCommit);
+        return contract.commitVote.awaitTransactionSuccessAsync(
+            new BigNumber(_pollId.toString()),
+            _vote,
+            new BigNumber(_tokensToCommit.toString()),
+        );
     }
 
     /**
@@ -100,7 +99,11 @@ export class Voting {
         _voteSalt: BigNumber,
     ): Promise<TransactionReceiptWithDecodedLogs> {
         const contract = await this.getContract();
-        return contract.revealVote.awaitTransactionSuccessAsync(_pollId, _voteOption, _voteSalt);
+        return contract.revealVote.awaitTransactionSuccessAsync(
+            new BigNumber(_pollId.toString()),
+            new BigNumber(_voteOption.toString()),
+            new BigNumber(_voteSalt.toString()),
+        );
     }
 
     /**
@@ -110,7 +113,7 @@ export class Voting {
      */
     public async winningOption(_pollId: BigNumber): Promise<BigNumber> {
         const contract = await this.getContract();
-        return contract.winningOption.callAsync(_pollId);
+        return contract.winningOption.callAsync(new BigNumber(_pollId.toString()));
     }
 
     /**
@@ -120,7 +123,7 @@ export class Voting {
      */
     public async totalWinningTokens(_pollId: BigNumber): Promise<BigNumber> {
         const contract = await this.getContract();
-        return contract.totalWinningTokens.callAsync(_pollId);
+        return contract.totalWinningTokens.callAsync(new BigNumber(_pollId.toString()));
     }
 
     /**
@@ -130,7 +133,7 @@ export class Voting {
      */
     public async totalRevealedTokens(_pollId: BigNumber): Promise<BigNumber> {
         const contract = await this.getContract();
-        return contract.totalRevealedTokens.callAsync(_pollId);
+        return contract.totalRevealedTokens.callAsync(new BigNumber(_pollId.toString()));
     }
 
     /**
@@ -141,7 +144,7 @@ export class Voting {
      */
     public async userWinningTokens(_pollId: BigNumber, _userAddress: string = this.coinbase): Promise<BigNumber> {
         const contract = await this.getContract();
-        return contract.userWinningTokens.callAsync(_pollId, _userAddress);
+        return contract.userWinningTokens.callAsync(new BigNumber(_pollId.toString()), _userAddress);
     }
 
     /**
