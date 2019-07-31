@@ -66,11 +66,9 @@ func TestLastEvent(t *testing.T, s store.Store) {
 
 // TestWitness verifies the Witness storage behavior
 func TestWitness(t *testing.T, s store.Store) {
-	witnessTx := store.TransactionWitness{
-		TransactionWitness: types.TransactionWitness{
-			Address: "0xaaaa",
-			Amount:  types.NewBigIntFromInt(10),
-		},
+	witnessTx := &types.TransactionWitness{
+		Address:       "0xaaaa",
+		Amount:        types.NewBigIntFromInt(10),
 		Confirmations: 99,
 	}
 

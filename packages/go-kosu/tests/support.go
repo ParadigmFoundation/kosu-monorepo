@@ -26,9 +26,12 @@ func StartServer(t *testing.T, db db.DB) (*abci.App, func()) {
 	require.NoError(t, err)
 
 	// Initialize the server
-	app := abci.NewApp(db, dir)
-	app.Config.LogFormat = "none"
-	app.Config.LogLevel = "app:error"
+	cfg, err := abci.LoadConfig(dir)
+	require.NoError(t, err)
+
+	cfg.LogFormat = "plain"
+	cfg.LogLevel = "app:error,*:none"
+	app := abci.NewAppWithConfig(db, cfg)
 	srv, err := abci.StartInProcessServer(app)
 	require.NoError(t, err)
 
