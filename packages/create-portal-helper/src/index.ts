@@ -126,7 +126,7 @@ class Create {
         const rawRes = await fetch("https://ethgasstation.info/json/ethgasAPI.json");
         const parsed = await rawRes.json();
         const gasPriceGwei = parsed["safeLow"] ? parsed["safeLow"].toString() : "5";
-        this.gasPriceWei = new BigNumber(this.web3.utils.toWei(gasPriceGwei, "Gwei"));
+        this.gasPriceWei = new BigNumber(this.web3.utils.toWei(gasPriceGwei, "Gwei").toString());
 
         this.initialized = true;
     }
@@ -306,7 +306,7 @@ class Create {
      * create.convertToWei(100)    // > "100000000000000000000" (BigNumber)
      * ```
      */
-    convertToWei(etherAmount: string | BigNumber): Promise<string> {
+    convertToWei(etherAmount: string | BigNumber): string {
         return this.web3.utils.toWei(etherAmount.toString());
     }
 
@@ -323,7 +323,7 @@ class Create {
      * create.convertToWei(100000000000000000000)    // > "100" (BigNumber)
      * ```
      */
-    convertFromWei(weiAmount: string | BigNumber): Promise<string> {
+    convertFromWei(weiAmount: string | BigNumber): string {
         return this.web3.utils.fromWei(weiAmount.toString());
     }
 
