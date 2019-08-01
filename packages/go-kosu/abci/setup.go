@@ -87,7 +87,7 @@ func createConfig(homedir string, logger log.Logger) error {
 			ChainID:         fmt.Sprintf(chainIDPrefix, cmn.RandStr(6)),
 			GenesisTime:     tmtime.Now(),
 			ConsensusParams: tmtypes.DefaultConsensusParams(),
-			AppState:        appState.JSON(),
+			AppState:        GenesisAppState.JSON(),
 		}
 		key := pv.GetPubKey()
 		genDoc.Validators = []tmtypes.GenesisValidator{{
@@ -105,9 +105,11 @@ func createConfig(homedir string, logger log.Logger) error {
 	return nil
 }
 
-var appState = &Genesis{
+// GenesisAppState is the initial (genesis) Application state
+var GenesisAppState = &Genesis{
 	ConsensusParams: types.ConsensusParams{
-		PeriodLength: 10,
-		PeriodLimit:  100000,
+		PeriodLength:        10,
+		PeriodLimit:         100000,
+		BlocksBeforePruning: 10,
 	},
 }

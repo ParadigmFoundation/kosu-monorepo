@@ -32,12 +32,10 @@ func (app *App) deliverWitnessTx(tx *types.TransactionWitness, nodeID []byte) ab
 	return abci.ResponseDeliverTx{}
 }
 
-const blocksBeforePruning = 10
-
 func (app *App) pruneWitnessTxs(block uint64) {
 	fn := func(tx *types.TransactionWitness) {
-		// TODO(hharder) do we need to check for .Confirmations here?
-		if block-tx.Block >= blocksBeforePruning {
+		params := app.store.ConsensusParams()
+		if block-tx.Block >= params.BlocksBeforePruning {
 			app.log.Debug("Pruning tx", "id", hex.EncodeToString(tx.Id))
 			app.store.DeleteWitnessTx(tx.Id)
 		}

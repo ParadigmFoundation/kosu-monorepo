@@ -105,7 +105,7 @@ func (app *App) InitChain(req abci.RequestInitChain) abci.ResponseInitChain {
 	// if appState == nil we the defaults
 	var gen *Genesis
 	if len(req.AppStateBytes) == 0 {
-		gen = appState
+		gen = GenesisAppState
 	} else {
 		var err error
 		gen, err = NewGenesisFromRequest(req)

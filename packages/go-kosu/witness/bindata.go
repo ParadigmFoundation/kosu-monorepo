@@ -92,7 +92,7 @@ func Node_modulesKosuSystemContractsSrcDeployedaddressesJson() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "../node_modules/@kosu/system-contracts/src/deployedAddresses.json", size: 1316, mode: os.FileMode(420), modTime: time.Unix(1564084128, 0)}
+	info := bindataFileInfo{name: "../node_modules/@kosu/system-contracts/src/deployedAddresses.json", size: 1316, mode: os.FileMode(420), modTime: time.Unix(1564558481, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
