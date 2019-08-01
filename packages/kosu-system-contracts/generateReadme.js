@@ -19,6 +19,18 @@ const NETWORKS = {
     },
 };
 
+const PATHS = {
+    OrderGateway: "./contracts/external/OrderGateway.sol",
+    AuthorizedAddresses: "./contracts/access_control/AuthorizedAddresses.sol",
+    EventEmitter: "./contracts/event/EventEmitter.sol",
+    KosuToken: "./contracts/lib/KosuToken.sol",
+    Treasury: "./contracts/treasury/Treasury.sol",
+    Voting: "./contracts/voting/Voting.sol",
+    PosterRegistry: "./contracts/poster/PosterRegistry.sol",
+    ValidatorRegistry: "./contracts/validator/ValidatorRegistry.sol",
+    ZeroExV2SubContract: "./contracts/sub-contracts/ZeroExV2SubContract.sol",
+};
+
 const printTableCorrectly = (jsonOutput, table) => {
     const parts = [];
     parts.push(`| ${table.headers.join(" | ")} |`);
@@ -70,7 +82,7 @@ const printTableCorrectly = (jsonOutput, table) => {
             const etherscan = networkInfo.etherscan;
 
             rows.push([
-                { link: { title: contractName, source: `./contracts` } },
+                { link: { title: contractName, source: PATHS[contractName] } },
                 new Date(contract.timestamp * 1000).toLocaleDateString("en-US", {
                     day: "2-digit",
                     month: "2-digit",
