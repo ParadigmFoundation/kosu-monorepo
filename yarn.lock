@@ -23,10 +23,10 @@
     lodash "^4.17.11"
     web3-provider-engine "14.0.6"
 
-"@0x/abi-gen-templates@2.3.0":
-  version "2.3.0"
-  resolved "https://registry.yarnpkg.com/@0x/abi-gen-templates/-/abi-gen-templates-2.3.0.tgz#4d1a60cdfd3aac6c7456b56b8ff980a12d7b9e52"
-  integrity sha512-KTG3Rf+m5z9JuGtaOxPWMxPrpS6a76FQkE5XTYHYRYak+iHR+DqN3JlMZSP59c9zVEiKGoXo7RvcUU7/X3pd4A==
+"@0x/abi-gen-templates@^2.3.0":
+  version "2.4.0"
+  resolved "https://registry.yarnpkg.com/@0x/abi-gen-templates/-/abi-gen-templates-2.4.0.tgz#046378be165a4a1e6cdf06041f90686a519a8d80"
+  integrity sha512-sVuXZl4rgcvvhWZoYGbWjutuRmvgIeboPfMFR8uhwEaqb7JsSEMFbyqOm9O4AkApHvLNfuMuDHs+suRxxR5pxA==
 
 "@0x/abi-gen-wrappers@^5.0.3":
   version "5.0.3"
