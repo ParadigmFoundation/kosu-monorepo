@@ -35,6 +35,7 @@ message ConsensusParams {
   uint32 PeriodLength = 3;
   uint32 MaxOrderBytes = 4;
   uint64 ConfirmationThreshold = 5;
+  uint64 BlocksBeforePruning = 6;
 }
 
 /**

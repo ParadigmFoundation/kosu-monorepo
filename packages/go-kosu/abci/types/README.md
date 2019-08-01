@@ -54,6 +54,7 @@ ConsensusParams
 | PeriodLength          | [uint32](#uint32) |       |             |
 | MaxOrderBytes         | [uint32](#uint32) |       |             |
 | ConfirmationThreshold | [uint64](#uint64) |       |             |
+| BlocksBeforePruning   | [uint64](#uint64) |       |             |
 
 <a name="kosu.OrderArgument"></a>
 
