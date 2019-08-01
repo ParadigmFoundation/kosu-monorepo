@@ -120,7 +120,7 @@ class Create {
         this.EXCHANGE_ADDRESS = this.zeroExContracts.exchange.address;
 
         // ropsten web3 provider required for check poster bond
-        this.kosu = new Kosu();
+        this.kosu = new Kosu({ provider: this.web3.currentProvider });
 
         // get a reasonable gas price, use 5 if API fails
         const rawRes = await fetch("https://ethgasstation.info/json/ethgasAPI.json");

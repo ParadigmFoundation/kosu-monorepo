@@ -81,18 +81,18 @@ describe("OrderGateway", () => {
             await orderGateway.initializing;
             const deployedAddress = orderGateway.address;
 
-            const testOrderGateway = new OrderGateway({ web3, networkId: 3 });
+            const testOrderGateway = new OrderGateway({ web3, web3Wrapper, networkId: 3 });
             await testOrderGateway.initializing;
 
             deployedAddress.should.not.equal(testOrderGateway.address);
-            testOrderGateway.address.should.equal(DeployedAddresses[3].OrderGateway);
+            testOrderGateway.address.should.equal(DeployedAddresses[3].OrderGateway.contractAddress);
         });
 
         it("should select an existing contract if the options provide address.", async () => {
             await orderGateway.initializing;
             const deployedAddress = orderGateway.address;
 
-            const testOrderGateway = new OrderGateway({ web3, orderGatewayAddress: deployedAddress });
+            const testOrderGateway = new OrderGateway({ web3, web3Wrapper, orderGatewayAddress: deployedAddress });
             await testOrderGateway.initializing;
 
             deployedAddress.should.equal(testOrderGateway.address);

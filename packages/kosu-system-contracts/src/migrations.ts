@@ -126,51 +126,33 @@ export async function migrations(
             zeroExAddresses.exchange,
             zeroExAddresses.erc20Proxy,
         );
+        await authorizedAddresses.authorizeAddress.awaitTransactionSuccessAsync(treasury.address).then(() => {
+            console.log(`Authorized address: ${treasury.address}`);
+        });
 
-        const transactions = [
-            {
-                hash: await authorizedAddresses.authorizeAddress.sendTransactionAsync(treasury.address),
-                success: () => {
-                    console.log(`Authorized address: ${treasury.address}`);
-                },
-            },
-            {
-                hash: await authorizedAddresses.authorizeAddress.sendTransactionAsync(voting.address),
-                success: () => {
-                    console.log(`Authorized address: ${voting.address}`);
-                },
-            },
-            {
-                hash: await authorizedAddresses.authorizeAddress.sendTransactionAsync(posterRegistry.address),
-                success: () => {
-                    console.log(`Authorized address: ${posterRegistry.address}`);
-                },
-            },
-            {
-                hash: await web3Wrapper.sendTransactionAsync({
-                    ...txDefaults,
-                    to: kosuToken.address,
-                    value: toWei("1"),
-                }),
-                success: () => {
+        await authorizedAddresses.authorizeAddress.awaitTransactionSuccessAsync(voting.address).then(() => {
+            console.log(`Authorized address: ${voting.address}`);
+        });
+
+        await authorizedAddresses.authorizeAddress.awaitTransactionSuccessAsync(posterRegistry.address).then(() => {
+            console.log(`Authorized address: ${posterRegistry.address}`);
+        });
+
+        await web3Wrapper
+            .sendTransactionAsync({
+                ...txDefaults,
+                to: kosuToken.address,
+                value: toWei("1"),
+            })
+            .then(txHash =>
+                web3Wrapper.awaitTransactionSuccessAsync(txHash).then(() => {
                     console.log("Submitted initial bonding transaction.");
-                },
-            },
-            {
-                hash: await authorizedAddresses.authorizeAddress.sendTransactionAsync(validatorRegistry.address),
-                success: () => {
-                    console.log(`Authorized address: ${validatorRegistry.address}`);
-                },
-            },
-        ];
-
-        await Promise.all(
-            transactions.map(tx =>
-                web3Wrapper.awaitTransactionSuccessAsync(tx.hash).then(() => {
-                    tx.success();
                 }),
-            ),
-        );
+            );
+
+        await authorizedAddresses.authorizeAddress.awaitTransactionSuccessAsync(validatorRegistry.address).then(() => {
+            console.log(`Authorized address: ${validatorRegistry.address}`);
+        });
 
         if (options.noLogs) {
             console = _console;

@@ -64,7 +64,7 @@ export class PosterRegistry {
             const coinbase = await this.web3.eth.getCoinbase().catch(() => undefined);
 
             if (!this.address) {
-                this.address = DeployedAddresses[networkId].PosterRegistry;
+                this.address = DeployedAddresses[networkId].PosterRegistry.contractAddress;
             }
             if (!this.address) {
                 throw new Error("Invalid network for PosterRegistry");

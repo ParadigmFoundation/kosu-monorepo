@@ -3,8 +3,8 @@ const decodeKosuEvents = require("@kosu/system-contracts").decodeKosuEvents;
 
 describe("ValidatorRegistry", () => {
     it("should be configured properly", async () => {
-        await kosu.validatorRegistry.kosuToken().should.eventually.eq(DeployedAddresses.KosuToken);
-        await kosu.validatorRegistry.voting().should.eventually.eq(DeployedAddresses.Voting);
+        await kosu.validatorRegistry.kosuToken().should.eventually.eq(DeployedAddresses.KosuToken.contractAddress);
+        await kosu.validatorRegistry.voting().should.eventually.eq(DeployedAddresses.Voting.contractAddress);
         await kosu.validatorRegistry
             .applicationPeriod()
             .then(x => x.toNumber())
