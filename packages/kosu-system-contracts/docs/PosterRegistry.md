@@ -19,16 +19,15 @@ Creates a new PosterRegistry
 #### Signature
 
 ```solidity
-constructor(_treasuryAddress address, _events address, _auth address) public
+constructor(_treasuryAddress address, _events address) public
 ```
 
 #### Parameters:
 
-| Parameter          | Type      | Description                                   |
-| ------------------ | --------- | --------------------------------------------- |
-| `_treasuryAddress` | `address` | Deployed Treasury contract address            |
-| `_events`          | `address` | Deployed Events contract address              |
-| `_auth`            | `address` | Deployed AuthorizedAddresses contract address |
+| Parameter          | Type      | Description                        |
+| ------------------ | --------- | ---------------------------------- |
+| `_treasuryAddress` | `address` | Deployed Treasury contract address |
+| `_events`          | `address` | Deployed Events contract address   |
 
 ### registerTokens
 
@@ -37,15 +36,14 @@ Register tokens.
 #### Signature
 
 ```solidity
-function registerTokens(msgSender address, amount uint256) public
+function registerTokens(amount uint256) public
 ```
 
 #### Parameters:
 
-| Parameter   | Type      | Description                   |
-| ----------- | --------- | ----------------------------- |
-| `msgSender` | `address` | Address that called the proxy |
-| `amount`    | `uint256` | Number of tokens to register  |
+| Parameter | Type      | Description                  |
+| --------- | --------- | ---------------------------- |
+| `amount`  | `uint256` | Number of tokens to register |
 
 ### releaseTokens
 
@@ -54,15 +52,14 @@ Release tokens from the registry.
 #### Signature
 
 ```solidity
-function releaseTokens(msgSender address, amount uint256) public
+function releaseTokens(amount uint256) public
 ```
 
 #### Parameters:
 
-| Parameter   | Type      | Description                   |
-| ----------- | --------- | ----------------------------- |
-| `msgSender` | `address` | Address that called the proxy |
-| `amount`    | `uint256` | Number of tokens to release   |
+| Parameter | Type      | Description                 |
+| --------- | --------- | --------------------------- |
+| `amount`  | `uint256` | Number of tokens to release |
 
 ### tokensRegisteredFor
 
