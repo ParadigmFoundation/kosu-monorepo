@@ -11,6 +11,7 @@ The Kosu Treasury is the central balance management contract with the Kosu syste
     -   [claimTokens](#claimtokens)
     -   [confiscate](#confiscate)
     -   [constructor](#constructor)
+    -   [contractBond](#contractbond)
     -   [contractDeposit](#contractdeposit)
     -   [contractWithdraw](#contractwithdraw)
     -   [currentBalance](#currentbalance)
@@ -123,6 +124,22 @@ constructor(kosuTokenAddress address, auth address) public
 | ------------------ | --------- | --------------------------------------- |
 | `kosuTokenAddress` | `address` | The deployed KosuToken contract address |
 | `auth`             | `address` | AuthorizedAddresses deployed address.   |
+
+### contractBond
+
+Allows Kosu contracts to bond for the user.
+
+#### Signature
+
+```solidity
+function contractBond(user address) public (uint256)
+```
+
+#### Parameters:
+
+| Parameter | Type      | Description                                           |
+| --------- | --------- | ----------------------------------------------------- |
+| `user`    | `address` | The user the calling contract is acting on behalf of. |
 
 ### contractDeposit
 

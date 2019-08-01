@@ -20,11 +20,15 @@
         "web3": "1.2.0"
     },
     "devDependencies": {
+        "@babel/cli": "^7.5.5",
+        "@babel/core": "^7.5.5",
+        "@babel/preset-env": "^7.5.5",
         "@babel/preset-typescript": "^7.3.3",
         "babel-loader": "^8.0.6",
         "jsdoc-babel": "^0.5.0",
         "jsdoc-to-markdown": "^5.0.0",
-        "ts-loader": "^6.0.2"
+        "ts-loader": "^6.0.2",
+        "typescript": "^3.5.3"
     },
     "files": [
         "lib/",

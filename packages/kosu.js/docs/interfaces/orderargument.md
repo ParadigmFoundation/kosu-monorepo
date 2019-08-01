@@ -1,4 +1,4 @@
-> ## [kosu.js](../README.md)
+> **[kosu.js](../README.md)**
 
 [Globals](../globals.md) / [OrderArgument](orderargument.md) /
 
@@ -8,9 +8,9 @@
 
 -   **OrderArgument**
 
-### Index
+## Index
 
-#### Properties
+### Properties
 
 -   [datatype](orderargument.md#datatype)
 -   [name](orderargument.md#name)
@@ -19,16 +19,14 @@
 
 ### datatype
 
-● **datatype**: _string_
+• **datatype**: _string_
 
-_Defined in [types.d.ts:37](https://github.com/ParadigmFoundation/kosu-monorepo/blob/4c58673/packages/kosu.js/src/types.d.ts#L37)_
+_Defined in [types.d.ts:37](https://github.com/ParadigmFoundation/kosu-monorepo/blob/5992fd1/packages/kosu.js/src/types.d.ts#L37)_
 
 ---
 
 ### name
 
-● **name**: _string_
+• **name**: _string_
 
-_Defined in [types.d.ts:36](https://github.com/ParadigmFoundation/kosu-monorepo/blob/4c58673/packages/kosu.js/src/types.d.ts#L36)_
-
----
+_Defined in [types.d.ts:36](https://github.com/ParadigmFoundation/kosu-monorepo/blob/5992fd1/packages/kosu.js/src/types.d.ts#L36)_
