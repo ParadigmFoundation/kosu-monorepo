@@ -137,7 +137,7 @@ export class Kosu {
      * @param options An options object used to configure `kosu` and the configured
      * contract instances. A custom `provider` may be supplied.
      */
-    constructor(options: KosuOptions = { provider: "https://ropsten.infura.io" }) {
+    constructor(options: KosuOptions) {
         // Configuring web3
         this.web3 = new Web3(options.provider);
         this.web3Wrapper = new Web3Wrapper(options.provider);
