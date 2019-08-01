@@ -1,4 +1,4 @@
-> ## [kosu.js](../README.md)
+> **[kosu.js](../README.md)**
 
 [Globals](../globals.md) / [EventEmitter](eventemitter.md) /
 
@@ -12,19 +12,19 @@ to subscribe to future events.
 
 -   **EventEmitter**
 
-### Index
+## Index
 
-#### Constructors
+### Constructors
 
 -   [constructor](eventemitter.md#constructor)
 
-#### Properties
+### Properties
 
 -   [address](eventemitter.md#private-address)
 -   [kosuWeb3Wrapper](eventemitter.md#private-kosuweb3wrapper)
 -   [web3Wrapper](eventemitter.md#private-web3wrapper)
 
-#### Methods
+### Methods
 
 -   [\_decodeLogs](eventemitter.md#private-_decodelogs)
 -   [getAddress](eventemitter.md#getaddress)
@@ -38,7 +38,7 @@ to subscribe to future events.
 
 \+ **new EventEmitter**(`options`: [KosuOptions](../interfaces/kosuoptions.md)): _[EventEmitter](eventemitter.md)_
 
-_Defined in [EventEmitter.ts:47](https://github.com/ParadigmFoundation/kosu-monorepo/blob/4c58673/packages/kosu.js/src/EventEmitter.ts#L47)_
+_Defined in [EventEmitter.ts:47](https://github.com/ParadigmFoundation/kosu-monorepo/blob/5992fd1/packages/kosu.js/src/EventEmitter.ts#L47)_
 
 Create a new `EventEmitter` instance.
 
@@ -50,15 +50,13 @@ Create a new `EventEmitter` instance.
 
 **Returns:** _[EventEmitter](eventemitter.md)_
 
----
-
 ## Properties
 
 ### `Private` address
 
-● **address**: _string_
+• **address**: _string_
 
-_Defined in [EventEmitter.ts:41](https://github.com/ParadigmFoundation/kosu-monorepo/blob/4c58673/packages/kosu.js/src/EventEmitter.ts#L41)_
+_Defined in [EventEmitter.ts:41](https://github.com/ParadigmFoundation/kosu-monorepo/blob/5992fd1/packages/kosu.js/src/EventEmitter.ts#L41)_
 
 The address of the deployed `EventEmitter` contract for the current Ethereum
 network.
@@ -67,9 +65,9 @@ network.
 
 ### `Private` kosuWeb3Wrapper
 
-● **kosuWeb3Wrapper**: _`Web3Wrapper`_
+• **kosuWeb3Wrapper**: _`Web3Wrapper`_
 
-_Defined in [EventEmitter.ts:47](https://github.com/ParadigmFoundation/kosu-monorepo/blob/4c58673/packages/kosu.js/src/EventEmitter.ts#L47)_
+_Defined in [EventEmitter.ts:47](https://github.com/ParadigmFoundation/kosu-monorepo/blob/5992fd1/packages/kosu.js/src/EventEmitter.ts#L47)_
 
 A separate `web3Wrapper` instance that can be configured with the Kosu
 development proof-of-authority network for testing purposes.
@@ -78,13 +76,11 @@ development proof-of-authority network for testing purposes.
 
 ### `Private` web3Wrapper
 
-● **web3Wrapper**: _`Web3Wrapper`_
+• **web3Wrapper**: _`Web3Wrapper`_
 
-_Defined in [EventEmitter.ts:35](https://github.com/ParadigmFoundation/kosu-monorepo/blob/4c58673/packages/kosu.js/src/EventEmitter.ts#L35)_
+_Defined in [EventEmitter.ts:35](https://github.com/ParadigmFoundation/kosu-monorepo/blob/5992fd1/packages/kosu.js/src/EventEmitter.ts#L35)_
 
 The `web3Wrapper` instance with the contract's ABI loaded.
-
----
 
 ## Methods
 
@@ -92,7 +88,7 @@ The `web3Wrapper` instance with the contract's ABI loaded.
 
 ▸ **\_decodeLogs**(`logs`: `LogEntry`[]): _`Array<LogWithDecodedKosuArgs<DecodedLogArgs, DecodedKosuLogArgs>>`_
 
-_Defined in [EventEmitter.ts:143](https://github.com/ParadigmFoundation/kosu-monorepo/blob/4c58673/packages/kosu.js/src/EventEmitter.ts#L143)_
+_Defined in [EventEmitter.ts:143](https://github.com/ParadigmFoundation/kosu-monorepo/blob/5992fd1/packages/kosu.js/src/EventEmitter.ts#L143)_
 
 **Parameters:**
 
@@ -108,7 +104,7 @@ _Defined in [EventEmitter.ts:143](https://github.com/ParadigmFoundation/kosu-mon
 
 ▸ **getAddress**(): _`Promise<string>`_
 
-_Defined in [EventEmitter.ts:63](https://github.com/ParadigmFoundation/kosu-monorepo/blob/4c58673/packages/kosu.js/src/EventEmitter.ts#L63)_
+_Defined in [EventEmitter.ts:63](https://github.com/ParadigmFoundation/kosu-monorepo/blob/5992fd1/packages/kosu.js/src/EventEmitter.ts#L63)_
 
 Return the address of the configured deployed contract. If not already cached,
 will return the deployed address for the detected network ID (if available).
@@ -121,17 +117,17 @@ will return the deployed address for the detected network ID (if available).
 
 ▸ **getFutureDecodedLogs**(`start`: number, `callback`: function): _`Timeout`_
 
-_Defined in [EventEmitter.ts:109](https://github.com/ParadigmFoundation/kosu-monorepo/blob/4c58673/packages/kosu.js/src/EventEmitter.ts#L109)_
+_Defined in [EventEmitter.ts:109](https://github.com/ParadigmFoundation/kosu-monorepo/blob/5992fd1/packages/kosu.js/src/EventEmitter.ts#L109)_
 
 **`todo`** document better (and confirm)
 
 **Parameters:**
 
-■`start`: _number_
+▪ **start**: _number_
 
 The first block to process events with the `callback` for.
 
-■`callback`: _function_
+▪ **callback**: _function_
 
 A callback function to be called on an array of each new event log.
 
@@ -151,7 +147,7 @@ A callback function to be called on an array of each new event log.
 
 ▸ **getPastDecodedLogs**(`config`: `FilterObject`): _`Promise<Array<LogWithDecodedKosuArgs<DecodedLogArgs, DecodedKosuLogArgs>>>`_
 
-_Defined in [EventEmitter.ts:82](https://github.com/ParadigmFoundation/kosu-monorepo/blob/4c58673/packages/kosu.js/src/EventEmitter.ts#L82)_
+_Defined in [EventEmitter.ts:82](https://github.com/ParadigmFoundation/kosu-monorepo/blob/5992fd1/packages/kosu.js/src/EventEmitter.ts#L82)_
 
 Get all past decoded logs from the Kosu `EventEmitter` contract, with the
 oldest event at position 0.
@@ -172,7 +168,7 @@ An array of event logs with decoded arguments from the EventEmitter.
 
 ▸ **getPastLogsFromKosuEndpoint**(`config`: `FilterObject`): _`Promise<any[]>`_
 
-_Defined in [EventEmitter.ts:133](https://github.com/ParadigmFoundation/kosu-monorepo/blob/4c58673/packages/kosu.js/src/EventEmitter.ts#L133)_
+_Defined in [EventEmitter.ts:133](https://github.com/ParadigmFoundation/kosu-monorepo/blob/5992fd1/packages/kosu.js/src/EventEmitter.ts#L133)_
 
 Load all historical even logs from the Kosu EventEmitter contract that is
 deployed on the Kosu private test-network.
@@ -184,5 +180,3 @@ deployed on the Kosu private test-network.
 | `config` | `FilterObject` | Filter object for querying past logs (see `web3Wrapper.getLogsAsync`). |
 
 **Returns:** _`Promise<any[]>`_
-
----
