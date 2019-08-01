@@ -11,6 +11,7 @@ import (
 	"github.com/tendermint/tendermint/privval"
 	tmtypes "github.com/tendermint/tendermint/types"
 
+	"go-kosu/abci"
 	"go-kosu/abci/types"
 )
 
@@ -131,8 +132,8 @@ func (s *Suite) TestWitnessTxPruning() {
 			require.Zero(t, res.Response.Code)
 			require.NotNil(t, res.Response.Value)
 
-			Convey("And Tx#2 is broadcasted 10 Ethereum blocks later", func() {
-				tx.Block += 10
+			Convey("And Tx#2 is broadcasted `BlocksBeforePruning` Ethereum blocks later", func() {
+				tx.Block += abci.GenesisAppState.ConsensusParams.BlocksBeforePruning
 				BroadcastTxCommit(t, s.client, tx)
 
 				Convey("Tx#1 should not exist", func() {
