@@ -38,6 +38,7 @@ log "$LOADING_DOCS"
 
 gsutil -m rsync -r -c -d gs://kosu-docs/kosu.js ./docs/kosu.js
 gsutil -m rsync -r -c -d gs://kosu-docs/kosu-system-contracts ./docs/kosu-system-contracts 
+gsutil -m rsync -r -c -d gs://kosu-docs/go-kosu ./docs/go-kosu 
 
 log "$LOADED_DOCS"
 exit 0
