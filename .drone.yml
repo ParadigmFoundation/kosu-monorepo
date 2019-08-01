@@ -54,7 +54,6 @@ steps:
       WEB3_TEST_URI: ws://kosu-geth:8546
     commands:
       - cd packages/go-kosu
-      - cat ./node_modules/@kosu/system-contracts/src/deployedAddresses.json
       - make ci
     depends_on:
       - build-project
