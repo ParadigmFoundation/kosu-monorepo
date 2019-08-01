@@ -1,0 +1,5 @@
+issues:
+  exclude-rules:
+    - path: rpc/service.go
+      linters:
+        - lll
