@@ -69,17 +69,19 @@ const printTableCorrectly = (jsonOutput, table) => {
             const contract = contracts[contractName];
             const etherscan = networkInfo.etherscan;
 
-            rows.push([
-                { link: { title: contractName, source: `./contracts` } },
-                new Date(contract.timestamp * 1000).toLocaleDateString("en-US", {
-                    day: "2-digit",
-                    month: "2-digit",
-                    year: "2-digit",
-                }),
-                etherscan
-                    ? { link: { title: contract.contractAddress, source: `${etherscan}${contract.contractAddress}` } }
+            const date = new Date(contract.timestamp * 1000).toLocaleDateString("en-US", {
+                day: "2-digit",
+                month: "2-digit",
+                year: "2-digit",
+            });
+
+            rows.push({
+                "Contract Name": `[${contractName}](./contracts${contractName}.sol)`,
+                "Last Deploy Date": date.toString(),
+                "Deployed Address": etherscan
+                    ? `[${contract.contractAddress}](${etherscan}${contract.contractAddress})`
                     : contract.contractAddress,
-            ]);
+            });
         }
 
         printTableCorrectly(jsonOutput, {
