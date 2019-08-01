@@ -1,19 +1,33 @@
 package main
 
 import (
-	"encoding/json"
 	"fmt"
 	"go/doc"
 	"go/parser"
 	"go/token"
 	"log"
 	"os"
+	"text/template"
 )
 
-// nolint
+// DocEntry holds documentation for a method
 type DocEntry struct {
 	Method string `json:"method"`
 	Text   string `json:"text"`
+}
+
+// TypeDocs holds the documentation of a given type
+type TypeDocs struct {
+	Title       string
+	Description string
+	Entries     []DocEntry
+}
+
+// PkgDocs is the top level doc struct
+type PkgDocs struct {
+	Title       string
+	Description string
+	Types       []TypeDocs
 }
 
 func main() {
@@ -28,18 +42,28 @@ func main() {
 		log.Fatal(err)
 	}
 
-	docs := []DocEntry{}
 	pkg := doc.New(pkgs["rpc"], os.Args[1], doc.AllDecls)
+	pkgDocs := PkgDocs{
+		Title:       pkg.Name,
+		Description: pkg.Doc,
+	}
 	for _, t := range pkg.Types {
-		for _, m := range t.Methods {
-			docs = append(docs, DocEntry{Method: m.Name, Text: m.Doc})
+		if t.Name != "Service" {
+			continue
 		}
+		typeDocs := TypeDocs{Title: t.Name, Description: t.Doc}
+		for _, m := range t.Methods {
+			typeDocs.Entries = append(typeDocs.Entries, DocEntry{Method: m.Name, Text: m.Doc})
+		}
+		pkgDocs.Types = append(pkgDocs.Types, typeDocs)
 	}
 
-	text, err := json.MarshalIndent(docs, "", "    ")
+	t, err := template.New("template.md.tpl").ParseFiles("./template.md.tpl")
 	if err != nil {
-		log.Fatal(err)
+		panic(err)
+	}
+	if err := t.Execute(os.Stdout, pkgDocs); err != nil {
+		panic(err)
 	}
 
-	fmt.Printf("%s\n", text)
 }

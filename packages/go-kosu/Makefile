@@ -32,3 +32,6 @@ gen:
 	go generate ./...
 
 ci: lint test
+
+rpcdocs:
+	cd ./rpc/doctool && go run main.go ../

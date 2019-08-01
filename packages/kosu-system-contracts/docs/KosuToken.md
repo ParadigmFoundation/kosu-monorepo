@@ -1,6 +1,6 @@
 # KosuToken
 
-KosuToken (KOSU) is an implentation of the ERC-20 interface, supporting mints and burns.
+KosuToken (KOSU) is an implentation of the ERC-20 interface and supporting bonding curve for mints and burns.
 
 ## Contents
 
@@ -8,11 +8,15 @@ KosuToken (KOSU) is an implentation of the ERC-20 interface, supporting mints an
     -   [allowance](#allowance)
     -   [approve](#approve)
     -   [balanceOf](#balanceof)
+    -   [bondTokens](#bondtokens)
     -   [burn](#burn)
     -   [decreaseAllowance](#decreaseallowance)
+    -   [estimateEtherToToken](#estimateethertotoken)
+    -   [estimateTokenToEther](#estimatetokentoether)
     -   [increaseAllowance](#increaseallowance)
     -   [mint](#mint)
     -   [mintTo](#mintto)
+    -   [releaseTokens](#releasetokens)
     -   [transfer](#transfer)
     -   [transferFrom](#transferfrom)
 
@@ -76,6 +80,22 @@ function balanceOf(owner address) public view (uint256)
 
 An uint256 representing the amount owned by the passed address.
 
+### bondTokens
+
+Uses the ether paid to calculate and mint tokens.
+
+#### Signature
+
+```solidity
+function bondTokens(minPayout uint256) public (uint256)
+```
+
+#### Parameters:
+
+| Parameter   | Type      | Description                                                                                                                          |
+| ----------- | --------- | ------------------------------------------------------------------------------------------------------------------------------------ |
+| `minPayout` | `uint256` | The minimum number of tokens to mint otherwise the transaction is reverted. This should prevent a front runner modifying the output. |
+
 ### burn
 
 Burn tokens
@@ -108,6 +128,46 @@ function decreaseAllowance(spender address, subtractedValue uint256) public (boo
 | ----------------- | --------- | -------------------------------------------------- |
 | `spender`         | `address` | The address which will spend the funds.            |
 | `subtractedValue` | `uint256` | The amount of tokens to decrease the allowance by. |
+
+### estimateEtherToToken
+
+Estimates the number of tokens to generate with the input ether at the current state.
+
+#### Signature
+
+```solidity
+function estimateEtherToToken(input uint256) public view (uint256)
+```
+
+#### Parameters:
+
+| Parameter | Type      | Description                       |
+| --------- | --------- | --------------------------------- |
+| `input`   | `uint256` | The amount of ether to contribute |
+
+#### Returns:
+
+Number of tokens that would be generated
+
+### estimateTokenToEther
+
+Estimates the amount of ether to return with the input number of tokens to burn.
+
+#### Signature
+
+```solidity
+function estimateTokenToEther(input uint256) public view (uint256)
+```
+
+#### Parameters:
+
+| Parameter | Type      | Description                  |
+| --------- | --------- | ---------------------------- |
+| `input`   | `uint256` | The number of tokens to burn |
+
+#### Returns:
+
+Amount of ether to receive
 
 ### increaseAllowance
 
@@ -158,6 +218,22 @@ function mintTo(_address address, amount uint256) public
 | ---------- | --------- | --------------------------- |
 | `_address` | `address` | Address to receive tokens   |
 | `amount`   | `uint256` | Number of tokens to create. |
+
+### releaseTokens
+
+Burns the input amount of tokens returning the calculated amount of ether.
+
+#### Signature
+
+```solidity
+function releaseTokens(tokensToBurn uint256) public
+```
+
+#### Parameters:
+
+| Parameter      | Type      | Description                  |
+| -------------- | --------- | ---------------------------- |
+| `tokensToBurn` | `uint256` | The number of tokens to burn |
 
 ### transfer
 
