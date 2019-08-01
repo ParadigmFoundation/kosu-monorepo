@@ -74,7 +74,7 @@ export class OrderGateway {
             throw new Error("Invalid network for OrderGateway");
         }
 
-        this.contract = new OrderGatewayContract(this.address, this.web3.currentProvider, {
+        this.contract = new OrderGatewayContract(this.address, this.web3Wrapper.getProvider(), {
             from: await this.web3.eth.getCoinbase().catch(
                 /* istanbul ignore next */
                 () => undefined,
