@@ -78,6 +78,12 @@ module.exports = {
                     "/kosu-system-contracts/Voting",
                 ],
             },
+            {
+                title: "Go Kosu",
+                collapsable: true,
+                food: "4.svg",
+                children: ["/go-kosu/", "/go-kosu/kosu_rpc"],
+            },
         ],
     },
 };

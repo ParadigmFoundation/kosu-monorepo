@@ -15,14 +15,19 @@ import (
 	"github.com/tendermint/tendermint/libs/db"
 )
 
-func TestRPCLatestHeight(t *testing.T) {
-	_, closer := tests.StartServer(t, db.NewMemDB())
-	defer closer()
+func setupNewTestClient(t *testing.T) (*abci.App, *rpc.Client, func()) {
+	app, closer := tests.StartServer(t, db.NewMemDB())
 	client := rpc.DialInProc(
 		NewServer(
 			abci.NewHTTPClient("http://localhost:26657", nil),
 		),
 	)
+	return app, client, closer
+}
+
+func TestRPCLatestHeight(t *testing.T) {
+	_, client, closer := setupNewTestClient(t)
+	defer closer()
 
 	var latest uint64
 	// Get the initial (prior the first block is mined)
@@ -34,6 +39,7 @@ func TestRPCLatestHeight(t *testing.T) {
 		// this is invoked when a block is mined
 		require.NoError(t, client.Call(&latest, "kosu_latestHeight"))
 		assert.EqualValues(t, 1, latest)
+
 		cancel()
 	}
 

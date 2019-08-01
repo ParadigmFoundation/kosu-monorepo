@@ -22,9 +22,44 @@ func NewService(abci *abci.Client) *Service {
 	}
 }
 
-// Subscribe subscribes to the ABCI events
-// To tell which events you want, you need to provide a query.
-// More information about query can be found here: https://tendermint.com/rpc/#subscribe
+/*
+Subscribe subscribes to the ABCI events.
+
+To tell which events you want, you need to provide a query.
+More information about query can be found here: https://tendermint.com/rpc/#subscribe
+Subscriptions will only work over WS.
+#### Parameters
+`query` TM query string
+
+#### Returns
+`*rpc.Subscription`
+
+#### Examples
+```go
+ch := make(chan interface{})
+args := []interface{}{
+	"subscribe",
+	"tm.event='NewBlock'",
+}
+ctx := context.Background()
+sub, err := client.Subscribe(ctx, "kosu", ch, args...)
+if err != nil {
+	panic(err)
+}
+defer sub.Unsubscribe()
+
+for {
+	select {
+	case <-ctx.Done():
+		return
+	case <-sub.Err():
+		return
+	case e := <-ch:
+		fmt.Printf("event: %+v", e)
+	}
+}
+```
+*/
 func (s *Service) Subscribe(ctx context.Context, query string) (*rpc.Subscription, error) {
 	notifier, supported := rpc.NotifierFromContext(ctx)
 	if !supported {
@@ -58,8 +93,22 @@ func (s *Service) Subscribe(ctx context.Context, query string) (*rpc.Subscriptio
 	return rpcSub, nil
 }
 
-// LatestHeight returns the height of the best known block
-// The `latestHeight` method will return the integer height of the latest block committed to the blockchain.",
+/*
+LatestHeight returns the height of the best known block.
+The `latestHeight` method will return the integer height of the latest block committed to the blockchain.
+
+#### Parameters
+None
+
+#### Returns
+`latestHeight` - _int64_ latest block height
+
+#### Examples
+```bash
+curl -X POST --data '{"jsonrpc":"2.0","method":"kosu_latestHeight", "id": 1}' localhost:14341 --header 'Content-Type: application/json'
+{"jsonrpc":"2.0","id":1,"result":260}
+```
+*/
 func (s *Service) LatestHeight() (int64, error) {
 	res, err := s.abci.Block(nil)
 	if err != nil {
@@ -74,7 +123,7 @@ func (s *Service) LatestHeight() (int64, error) {
 
 // AddOrders adds an array of Kosu orders to the network
 /*
-*** Example payload
+### Example payload
  ```json
  [{
 	 "subContract":"0xebe8fdf63db77e3b41b0aec8208c49fa46569606",
@@ -106,14 +155,13 @@ func (s *Service) LatestHeight() (int64, error) {
  }]`,
  ```
 
-*** cURL example
+### cURL example
 ```bash
-url -X POST localhost:14341 \
+curl -X POST localhost:14341 \
 	--data '{"jsonrpc":"2.0", "id": 1, "method": "kosu_addOrders", "params": [[<PAYLOAD>]]}' \
 	-H 'Content-Type: application/json'
 ```
 */
-// nolint:lll
 func (s *Service) AddOrders(orders []*types.TransactionOrder) error {
 	for _, order := range orders {
 		res, err := s.abci.BroadcastTxSync(order)

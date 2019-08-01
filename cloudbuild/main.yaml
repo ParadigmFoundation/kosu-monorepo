@@ -44,6 +44,15 @@ steps:
     "gs://kosu-docs/kosu-system-contracts"
   ]
 
+- name: "gcr.io/cloud-builders/gsutil"
+  args: [
+    "-m", 
+    "rsync", 
+    "-r", "-c", "-d", 
+    "./packages/go-kosu/docs",
+    "gs://kosu-docs/go-kosu"
+  ]
+
 # ================
 # PUBLISH BINARIES
 # ================
@@ -84,6 +93,15 @@ steps:
     "-r", "-c", "-d", 
     "./packages/kosu-system-contracts/docs",
     "./packages/kosu-docs/docs/kosu-system-contracts"
+  ]
+
+- name: "gcr.io/cloud-builders/gsutil"
+  args: [
+    "-m", 
+    "rsync", 
+    "-r", "-c", "-d", 
+    "./packages/go-kosu/docs",
+    "./packages/kosu-docs/docs/go-kosu"
   ]
 
 - name: "gcr.io/kosu-io/node-ci:latest"
