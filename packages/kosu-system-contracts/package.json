@@ -16,7 +16,7 @@
         "test": "yarn build && ts-mocha -p test/tsconfig.json test/* --timeout 0 --slow 2000 -b",
         "contracts:test:ci": "ts-mocha -p test/tsconfig.json test/* --slow 2000 --timeout 0 -b -- geth",
         "coverage": "ts-mocha -p test/tsconfig.json test/* --slow 2000 --timeout 100000 -- runCoverage && istanbul report html && open coverage/index.html",
-        "build": "run-s compile:solidity generate_contract_wrappers compile:typescript",
+        "build": "run-s compile:solidity generate:contract_wrappers compile:typescript",
         "compile:solidity": "sol-compiler",
         "compile:typescript": "tsc",
         "lint": "tslint -p .",
@@ -27,14 +27,15 @@
         "deploy:kosu:ci": "ts-node -T src/bin/migrate.ts --test-mnemonic --rpc-url=${WEB3_URI} && ts-node --files src/bin/deliver_tokens.ts --test-mnemonic --rpc-url=${WEB3_URI} && yarn prettier:deployedAddresses",
         "deploy:0x:kosu": "0x-migrate --rpc-url https://ethnet.zaidan.io/kosu --from 0x5409ED021D9299bf6814279A6A1411A7e866A631",
         "deploy:0x:kosu:ci": "0x-migrate --rpc-url ${WEB3_URI} --from 0x5409ed021d9299bf6814279a6a1411a7e866a631",
-        "migrate:ropsten": "run-s deploy:ropsten",
-        "migrate:zaidan": "run-s deploy:kosu deploy:0x:kosu",
+        "migrate:ropsten": "run-s deploy:ropsten generate:readme",
+        "migrate:zaidan": "run-s deploy:kosu deploy:0x:kosu generate:readme",
         "migrate:ci": "run-s deploy:kosu:ci deploy:0x:kosu:ci",
         "prettier:deployedAddresses": "prettier --write src/deployedAddresses.json --config ../../.prettierrc",
         "ganache_rpc": "docker run --rm -p 8545:8545 ${npm_package_config_kosu_ganache_image}",
         "ganache_rpc:detached": "docker run --rm -d -p 8545:8545 ${npm_package_config_kosu_ganache_image}",
-        "generate_contract_wrappers": "abi-gen --abis  ${npm_package_config_abis} --template ./abi-gen-templates/contract.handlebars --partials '../../node_modules/@0x/abi-gen-templates/partials/**/*.handlebars' --output generated-wrappers --backend ethers",
-        "docs": "node devdoc.js ./generated-artifacts ./docs "
+        "generate:contract_wrappers": "abi-gen --abis  ${npm_package_config_abis} --template ./abi-gen-templates/contract.handlebars --partials '../../node_modules/@0x/abi-gen-templates/partials/**/*.handlebars' --output generated-wrappers --backend ethers",
+        "generate:readme": "node scripts/generateReadme.js",
+        "docs": "node scripts/devdoc.js ./generated-artifacts ./docs"
     },
     "config": {
         "kosu_ganache_image": "gcr.io/kosu-io/kosu-ganache",
