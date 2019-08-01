@@ -1,4 +1,4 @@
-> ## [kosu.js](../README.md)
+> **[kosu.js](../README.md)**
 
 [Globals](../globals.md) / [LogWithDecodedKosuArgs](logwithdecodedkosuargs.md) /
 
@@ -6,46 +6,44 @@
 
 ## Type parameters
 
-■`A`
+▪ **A**
 
-■`B`
+▪ **B**
 
 ## Hierarchy
 
--   any
+* any
 
-    -   **LogWithDecodedKosuArgs**
+  * **LogWithDecodedKosuArgs**
 
-### Index
+## Index
 
-#### Properties
+### Properties
 
--   [args](logwithdecodedkosuargs.md#args)
--   [decodedArgs](logwithdecodedkosuargs.md#decodedargs)
--   [event](logwithdecodedkosuargs.md#event)
+* [args](logwithdecodedkosuargs.md#args)
+* [decodedArgs](logwithdecodedkosuargs.md#decodedargs)
+* [event](logwithdecodedkosuargs.md#event)
 
 ## Properties
 
-### args
+###  args
 
-● **args**: _`A`_
+• **args**: *`A`*
 
-_Defined in [types.d.ts:56](https://github.com/ParadigmFoundation/kosu-monorepo/blob/4c58673/packages/kosu.js/src/types.d.ts#L56)_
+*Defined in [types.d.ts:56](https://github.com/ParadigmFoundation/kosu-monorepo/blob/5992fd1/packages/kosu.js/src/types.d.ts#L56)*
 
----
+___
 
-### decodedArgs
+###  decodedArgs
 
-● **decodedArgs**: _`B`_
+• **decodedArgs**: *`B`*
 
-_Defined in [types.d.ts:57](https://github.com/ParadigmFoundation/kosu-monorepo/blob/4c58673/packages/kosu.js/src/types.d.ts#L57)_
+*Defined in [types.d.ts:57](https://github.com/ParadigmFoundation/kosu-monorepo/blob/5992fd1/packages/kosu.js/src/types.d.ts#L57)*
 
----
+___
 
-### event
+###  event
 
-● **event**: _string_
+• **event**: *string*
 
-_Defined in [types.d.ts:55](https://github.com/ParadigmFoundation/kosu-monorepo/blob/4c58673/packages/kosu.js/src/types.d.ts#L55)_
-
----
+*Defined in [types.d.ts:55](https://github.com/ParadigmFoundation/kosu-monorepo/blob/5992fd1/packages/kosu.js/src/types.d.ts#L55)*

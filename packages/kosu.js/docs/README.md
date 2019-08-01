@@ -1,4 +1,4 @@
-> ## [kosu.js](README.md)
+> **[kosu.js](README.md)**
 
 [Globals](globals.md) /
 
@@ -38,20 +38,20 @@ import { Kosu } from "@kosu/kosu.js";
 
 // directly access exported classes/utilities
 import {
-// contract wrapper classes
-KosuToken,
-OrderGateway,
-PosterRegistry,
-Treasury,
-ValidatorRegistry,
-Voting,
+    // contract wrapper classes
+    KosuToken,
+    OrderGateway,
+    PosterRegistry,
+    Treasury,
+    ValidatorRegistry,
+    Voting,
 
-// utils/classes and constants
-OrderSerializer,
-OrderHelper,
-Signature,
-toBytes32
-NULL_ADDRESS,
+    // utils/classes and constants
+    OrderSerializer,
+    OrderHelper,
+    Signature,
+    toBytes32
+    NULL_ADDRESS,
 } from "@kosu/kosu.js";
 ```
 
@@ -61,18 +61,18 @@ NULL_ADDRESS,
 const { Kosu } = require("@kosu/kosu.js");
 
 const {
-KosuToken,
-OrderGateway,
-PosterRegistry,
-Treasury,
-ValidatorRegistry,
-Voting,
+    KosuToken,
+    OrderGateway,
+    PosterRegistry,
+    Treasury,
+    ValidatorRegistry,
+    Voting,
 
-OrderSerializer,
-OrderHelper,
-Signature,
-toBytes32
-NULL_ADDRESS,
+    OrderSerializer,
+    OrderHelper,
+    Signature,
+    toBytes32
+    NULL_ADDRESS,
 } = require("@kosu/kosu.js");
 ```
 

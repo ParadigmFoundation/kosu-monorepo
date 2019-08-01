@@ -1,4 +1,4 @@
-> ## [kosu.js](../README.md)
+> **[kosu.js](../README.md)**
 
 [Globals](../globals.md) / [KosuUtils](kosuutils.md) /
 
@@ -6,42 +6,38 @@
 
 ## Hierarchy
 
--   **KosuUtils**
+* **KosuUtils**
 
-### Index
+## Index
 
-#### Properties
+### Properties
 
--   [NULL_ADDRESS](kosuutils.md#null_address)
+* [NULL_ADDRESS](kosuutils.md#null_address)
 
-#### Methods
+### Methods
 
--   [toBytes32](kosuutils.md#tobytes32)
+* [toBytes32](kosuutils.md#tobytes32)
 
 ## Properties
 
-### NULL_ADDRESS
+###  NULL_ADDRESS
 
-● **NULL_ADDRESS**: _string_
+• **NULL_ADDRESS**: *string*
 
-_Defined in [types.d.ts:42](https://github.com/ParadigmFoundation/kosu-monorepo/blob/4c58673/packages/kosu.js/src/types.d.ts#L42)_
-
----
+*Defined in [types.d.ts:42](https://github.com/ParadigmFoundation/kosu-monorepo/blob/5992fd1/packages/kosu.js/src/types.d.ts#L42)*
 
 ## Methods
 
-### toBytes32
+###  toBytes32
 
-▸ **toBytes32**(`value`: string): _number | string | `BN`_
+▸ **toBytes32**(`value`: string): *number | string | `BN`*
 
-_Defined in [types.d.ts:41](https://github.com/ParadigmFoundation/kosu-monorepo/blob/4c58673/packages/kosu.js/src/types.d.ts#L41)_
+*Defined in [types.d.ts:41](https://github.com/ParadigmFoundation/kosu-monorepo/blob/5992fd1/packages/kosu.js/src/types.d.ts#L41)*
 
 **Parameters:**
 
-| Name    | Type   |
-| ------- | ------ |
-| `value` | string |
+Name | Type |
+------ | ------ |
+`value` | string |
 
-**Returns:** _number | string | `BN`_
-
----
+**Returns:** *number | string | `BN`*

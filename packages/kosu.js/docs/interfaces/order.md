@@ -1,4 +1,4 @@
-> ## [kosu.js](../README.md)
+> **[kosu.js](../README.md)**
 
 [Globals](../globals.md) / [Order](order.md) /
 
@@ -6,87 +6,85 @@
 
 ## Hierarchy
 
--   **Order**
+* **Order**
 
-    -   [PostableOrder](postableorder.md)
+  * [PostableOrder](postableorder.md)
 
-    -   [TakeableOrder](takeableorder.md)
+  * [TakeableOrder](takeableorder.md)
 
-### Index
+## Index
 
-#### Properties
+### Properties
 
--   [arguments](order.md#optional-arguments)
--   [id](order.md#id)
--   [maker](order.md#maker)
--   [makerSignature](order.md#optional-makersignature)
--   [makerValues](order.md#makervalues)
--   [poster](order.md#poster)
--   [subContract](order.md#subcontract)
--   [takerValues](order.md#optional-takervalues)
+* [arguments](order.md#optional-arguments)
+* [id](order.md#id)
+* [maker](order.md#maker)
+* [makerSignature](order.md#optional-makersignature)
+* [makerValues](order.md#makervalues)
+* [poster](order.md#poster)
+* [subContract](order.md#subcontract)
+* [takerValues](order.md#optional-takervalues)
 
 ## Properties
 
 ### `Optional` arguments
 
-● **arguments**? : _any_
+• **arguments**? : *any*
 
-_Defined in [types.d.ts:22](https://github.com/ParadigmFoundation/kosu-monorepo/blob/4c58673/packages/kosu.js/src/types.d.ts#L22)_
+*Defined in [types.d.ts:22](https://github.com/ParadigmFoundation/kosu-monorepo/blob/5992fd1/packages/kosu.js/src/types.d.ts#L22)*
 
----
+___
 
-### id
+###  id
 
-● **id**: _any_
+• **id**: *any*
 
-_Defined in [types.d.ts:23](https://github.com/ParadigmFoundation/kosu-monorepo/blob/4c58673/packages/kosu.js/src/types.d.ts#L23)_
+*Defined in [types.d.ts:23](https://github.com/ParadigmFoundation/kosu-monorepo/blob/5992fd1/packages/kosu.js/src/types.d.ts#L23)*
 
----
+___
 
-### maker
+###  maker
 
-● **maker**: _string_
+• **maker**: *string*
 
-_Defined in [types.d.ts:18](https://github.com/ParadigmFoundation/kosu-monorepo/blob/4c58673/packages/kosu.js/src/types.d.ts#L18)_
+*Defined in [types.d.ts:18](https://github.com/ParadigmFoundation/kosu-monorepo/blob/5992fd1/packages/kosu.js/src/types.d.ts#L18)*
 
----
+___
 
 ### `Optional` makerSignature
 
-● **makerSignature**? : _any_
+• **makerSignature**? : *any*
 
-_Defined in [types.d.ts:21](https://github.com/ParadigmFoundation/kosu-monorepo/blob/4c58673/packages/kosu.js/src/types.d.ts#L21)_
+*Defined in [types.d.ts:21](https://github.com/ParadigmFoundation/kosu-monorepo/blob/5992fd1/packages/kosu.js/src/types.d.ts#L21)*
 
----
+___
 
-### makerValues
+###  makerValues
 
-● **makerValues**: _any_
+• **makerValues**: *any*
 
-_Defined in [types.d.ts:19](https://github.com/ParadigmFoundation/kosu-monorepo/blob/4c58673/packages/kosu.js/src/types.d.ts#L19)_
+*Defined in [types.d.ts:19](https://github.com/ParadigmFoundation/kosu-monorepo/blob/5992fd1/packages/kosu.js/src/types.d.ts#L19)*
 
----
+___
 
-### poster
+###  poster
 
-● **poster**: _string_
+• **poster**: *string*
 
-_Defined in [types.d.ts:24](https://github.com/ParadigmFoundation/kosu-monorepo/blob/4c58673/packages/kosu.js/src/types.d.ts#L24)_
+*Defined in [types.d.ts:24](https://github.com/ParadigmFoundation/kosu-monorepo/blob/5992fd1/packages/kosu.js/src/types.d.ts#L24)*
 
----
+___
 
-### subContract
+###  subContract
 
-● **subContract**: _string_
+• **subContract**: *string*
 
-_Defined in [types.d.ts:17](https://github.com/ParadigmFoundation/kosu-monorepo/blob/4c58673/packages/kosu.js/src/types.d.ts#L17)_
+*Defined in [types.d.ts:17](https://github.com/ParadigmFoundation/kosu-monorepo/blob/5992fd1/packages/kosu.js/src/types.d.ts#L17)*
 
----
+___
 
 ### `Optional` takerValues
 
-● **takerValues**? : _any_
+• **takerValues**? : *any*
 
-_Defined in [types.d.ts:20](https://github.com/ParadigmFoundation/kosu-monorepo/blob/4c58673/packages/kosu.js/src/types.d.ts#L20)_
-
----
+*Defined in [types.d.ts:20](https://github.com/ParadigmFoundation/kosu-monorepo/blob/5992fd1/packages/kosu.js/src/types.d.ts#L20)*
