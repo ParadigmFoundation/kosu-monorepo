@@ -82,10 +82,7 @@ module.exports = {
                 title: "Go Kosu",
                 collapsable: true,
                 food: "4.svg",
-                children: [
-                    "/go-kosu/",
-                    "/go-kosu/kosu_rpc",
-                ],
+                children: ["/go-kosu/", "/go-kosu/kosu_rpc"],
             },
         ],
     },
