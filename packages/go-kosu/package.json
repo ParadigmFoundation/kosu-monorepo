@@ -10,7 +10,7 @@
         "abigen": "jq '.compilerOutput.abi' node_modules/@kosu/system-contracts/generated-artifacts/EventEmitter.json |  abigen --abi - --pkg witness --type EventEmitter -out witness/event_emitter.go",
         "docs": "yarn docs:clean && yarn docs:setup && yarn docs:rpc",
         "docs:clean": "rm -rf ./docs/",
-        "docs:setup": "mkdir -p ./docs",
+        "docs:setup": "mkdir -p ./docs && cp README.md ./docs/",
         "docs:rpc": "make -s rpcdocs > docs/kosu_rpc.md"
     },
     "config": {},
