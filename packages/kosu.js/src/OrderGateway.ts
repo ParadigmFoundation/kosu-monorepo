@@ -67,14 +67,14 @@ export class OrderGateway {
         const networkId = options.networkId || (await options.web3.eth.net.getId());
 
         if (!this.address) {
-            this.address = DeployedAddresses[networkId].OrderGateway;
+            this.address = DeployedAddresses[networkId].OrderGateway.contractAddress;
         }
         if (!this.address) {
             /* istanbul ignore next */
             throw new Error("Invalid network for OrderGateway");
         }
 
-        this.contract = new OrderGatewayContract(this.address, this.web3.currentProvider, {
+        this.contract = new OrderGatewayContract(this.address, this.web3Wrapper.getProvider(), {
             from: await this.web3.eth.getCoinbase().catch(
                 /* istanbul ignore next */
                 () => undefined,

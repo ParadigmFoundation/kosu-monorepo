@@ -44,7 +44,7 @@ export class ValidatorRegistry {
             );
 
             if (!this.address) {
-                this.address = DeployedAddresses[networkId].ValidatorRegistry;
+                this.address = DeployedAddresses[networkId].ValidatorRegistry.contractAddress;
             }
             if (!this.address) {
                 /* istanbul ignore next */

@@ -45,7 +45,7 @@ export class Voting {
 
             if (!this.address) {
                 /* istanbul ignore next */
-                this.address = DeployedAddresses[networkId].Voting;
+                this.address = DeployedAddresses[networkId].Voting.contractAddress;
             }
             if (!this.address) {
                 /* istanbul ignore next */
