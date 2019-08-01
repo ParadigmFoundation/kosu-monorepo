@@ -19,6 +19,18 @@ const NETWORKS = {
     },
 };
 
+const printTableCorrectly = (jsonOutput, table) => {
+    const parts = [];
+    parts.push(`| ${table.headers.join(" | ")} |`);
+    parts.push(`| ${table.headers.map(() => " -- |").join("")}`);
+    for (row of table.rows) {
+        parts.push(
+            `| ${row.map(e => (typeof e.link == "object" ? `[${e.link.title}](${e.link.source})` : e)).join(" | ")} |`,
+        );
+    }
+    jsonOutput.push(parts.join("\n"));
+};
+
 (() => {
     const jsonOutput = [];
 
@@ -70,12 +82,16 @@ const NETWORKS = {
             ]);
         }
 
-        jsonOutput.push({
-            table: {
-                headers: ["Contract Name", "Last Deploy Date", "Deployed Address"],
-                rows,
-            },
+        printTableCorrectly(jsonOutput, {
+            headers: ["Contract Name", "Last Deploy Date", "Deployed Address"],
+            rows,
         });
+        // jsonOutput.push({
+        //     table: {
+        //         headers: ["Contract Name", "Last Deploy Date", "Deployed Address"],
+        //         rows,
+        //     },
+        // });
     }
 
     fs.writeFileSync(path.resolve(".", "README.md"), json2md(jsonOutput));
