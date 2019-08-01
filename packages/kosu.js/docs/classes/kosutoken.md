@@ -13,50 +13,51 @@ If instantiated outside the `Kosu` class, an instance of `web3` and of the
 
 ## Hierarchy
 
-* **KosuToken**
+-   **KosuToken**
 
 ## Index
 
 ### Constructors
 
-* [constructor](kosutoken.md#constructor)
+-   [constructor](kosutoken.md#constructor)
 
 ### Properties
 
-* [address](kosutoken.md#private-address)
-* [contract](kosutoken.md#private-contract)
-* [web3](kosutoken.md#private-web3)
-* [web3Wrapper](kosutoken.md#private-web3wrapper)
+-   [address](kosutoken.md#private-address)
+-   [contract](kosutoken.md#private-contract)
+-   [web3](kosutoken.md#private-web3)
+-   [web3Wrapper](kosutoken.md#private-web3wrapper)
 
 ### Methods
 
-* [allowance](kosutoken.md#allowance)
-* [approve](kosutoken.md#approve)
-* [balanceOf](kosutoken.md#balanceof)
-* [bondTokens](kosutoken.md#bondtokens)
-* [estimateEtherToToken](kosutoken.md#estimateethertotoken)
-* [estimateTokenToEther](kosutoken.md#estimatetokentoether)
-* [getContract](kosutoken.md#private-getcontract)
-* [pay](kosutoken.md#pay)
-* [releaseTokens](kosutoken.md#releasetokens)
-* [totalSupply](kosutoken.md#totalsupply)
-* [transfer](kosutoken.md#transfer)
-* [transferFrom](kosutoken.md#transferfrom)
+-   [allowance](kosutoken.md#allowance)
+-   [approve](kosutoken.md#approve)
+-   [balanceOf](kosutoken.md#balanceof)
+-   [bondTokens](kosutoken.md#bondtokens)
+-   [estimateEtherToToken](kosutoken.md#estimateethertotoken)
+-   [estimateTokenToEther](kosutoken.md#estimatetokentoether)
+-   [getContract](kosutoken.md#private-getcontract)
+-   [pay](kosutoken.md#pay)
+-   [releaseTokens](kosutoken.md#releasetokens)
+-   [totalSupply](kosutoken.md#totalsupply)
+-   [transfer](kosutoken.md#transfer)
+-   [transferFrom](kosutoken.md#transferfrom)
 
 ## Constructors
 
-###  constructor
+### constructor
 
-\+ **new KosuToken**(`options`: [KosuOptions](../interfaces/kosuoptions.md)): *[KosuToken](kosutoken.md)*
+\+ **new KosuToken**(`options`: [KosuOptions](../interfaces/kosuoptions.md)): _[KosuToken](kosutoken.md)_
 
-*Defined in [KosuToken.ts:37](https://github.com/ParadigmFoundation/kosu-monorepo/blob/5992fd1/packages/kosu.js/src/KosuToken.ts#L37)*
+_Defined in [KosuToken.ts:37](https://github.com/ParadigmFoundation/kosu-monorepo/blob/5992fd1/packages/kosu.js/src/KosuToken.ts#L37)_
 
 Creates a new KosuToken instance, supplied with an options object.
 
 The KosuToken address _may_ be passed in as `options.kosuTokenAddress`, but
 can also be loaded during each method call from the known deployed addresses.
 
-**`example`** 
+**`example`**
+
 ```typescript
 const options = { web3: new Web3(window.ethereum), web3Wrapper };
 const kosuToken = new KosuToken(options);
@@ -64,286 +65,286 @@ const kosuToken = new KosuToken(options);
 
 **Parameters:**
 
-Name | Type | Description |
------- | ------ | ------ |
-`options` | [KosuOptions](../interfaces/kosuoptions.md) | initialization options object (incl. `web3` and `web3wrapper`) |
+| Name      | Type                                        | Description                                                    |
+| --------- | ------------------------------------------- | -------------------------------------------------------------- |
+| `options` | [KosuOptions](../interfaces/kosuoptions.md) | initialization options object (incl. `web3` and `web3wrapper`) |
 
-**Returns:** *[KosuToken](kosutoken.md)*
+**Returns:** _[KosuToken](kosutoken.md)_
 
 ## Properties
 
 ### `Private` address
 
-• **address**: *string*
+• **address**: _string_
 
-*Defined in [KosuToken.ts:37](https://github.com/ParadigmFoundation/kosu-monorepo/blob/5992fd1/packages/kosu.js/src/KosuToken.ts#L37)*
+_Defined in [KosuToken.ts:37](https://github.com/ParadigmFoundation/kosu-monorepo/blob/5992fd1/packages/kosu.js/src/KosuToken.ts#L37)_
 
 The current KosuToken deployed address, loaded based on the detected
 `networkId` from a mapping of known deployed addresses.
 
-___
+---
 
 ### `Private` contract
 
-• **contract**: *`KosuTokenContract`*
+• **contract**: _`KosuTokenContract`_
 
-*Defined in [KosuToken.ts:31](https://github.com/ParadigmFoundation/kosu-monorepo/blob/5992fd1/packages/kosu.js/src/KosuToken.ts#L31)*
+_Defined in [KosuToken.ts:31](https://github.com/ParadigmFoundation/kosu-monorepo/blob/5992fd1/packages/kosu.js/src/KosuToken.ts#L31)_
 
 An instance of the lower-level contract wrapper for the Kosu token, auto-
 generated from the Solidity source code.
 
-___
+---
 
 ### `Private` web3
 
-• **web3**: *`Web3`*
+• **web3**: _`Web3`_
 
-*Defined in [KosuToken.ts:19](https://github.com/ParadigmFoundation/kosu-monorepo/blob/5992fd1/packages/kosu.js/src/KosuToken.ts#L19)*
+_Defined in [KosuToken.ts:19](https://github.com/ParadigmFoundation/kosu-monorepo/blob/5992fd1/packages/kosu.js/src/KosuToken.ts#L19)_
 
 An instance of `web3` used to interact with the Ethereum blockchain.
 
-___
+---
 
 ### `Private` web3Wrapper
 
-• **web3Wrapper**: *`Web3Wrapper`*
+• **web3Wrapper**: _`Web3Wrapper`_
 
-*Defined in [KosuToken.ts:25](https://github.com/ParadigmFoundation/kosu-monorepo/blob/5992fd1/packages/kosu.js/src/KosuToken.ts#L25)*
+_Defined in [KosuToken.ts:25](https://github.com/ParadigmFoundation/kosu-monorepo/blob/5992fd1/packages/kosu.js/src/KosuToken.ts#L25)_
 
 An instance of a 0x `Web3Wrapper` used for some RPC calls and for certain
 methods.
 
 ## Methods
 
-###  allowance
+### allowance
 
-▸ **allowance**(`owner`: string, `spender`: string): *`Promise<BigNumber>`*
+▸ **allowance**(`owner`: string, `spender`: string): _`Promise<BigNumber>`_
 
-*Defined in [KosuToken.ts:151](https://github.com/ParadigmFoundation/kosu-monorepo/blob/5992fd1/packages/kosu.js/src/KosuToken.ts#L151)*
+_Defined in [KosuToken.ts:151](https://github.com/ParadigmFoundation/kosu-monorepo/blob/5992fd1/packages/kosu.js/src/KosuToken.ts#L151)_
 
 Reads approved allowance for a given `owner` and `spender` account.
 
 **Parameters:**
 
-Name | Type | Description |
------- | ------ | ------ |
-`owner` | string | Address of source tokens |
-`spender` | string | Address of spender of tokens |
+| Name      | Type   | Description                  |
+| --------- | ------ | ---------------------------- |
+| `owner`   | string | Address of source tokens     |
+| `spender` | string | Address of spender of tokens |
 
-**Returns:** *`Promise<BigNumber>`*
+**Returns:** _`Promise<BigNumber>`_
 
 The allowance granted to the `spender` in units of wei.
 
-___
+---
 
-###  approve
+### approve
 
-▸ **approve**(`spender`: string, `value`: `BigNumber`): *`Promise<TransactionReceiptWithDecodedLogs>`*
+▸ **approve**(`spender`: string, `value`: `BigNumber`): _`Promise<TransactionReceiptWithDecodedLogs>`_
 
-*Defined in [KosuToken.ts:139](https://github.com/ParadigmFoundation/kosu-monorepo/blob/5992fd1/packages/kosu.js/src/KosuToken.ts#L139)*
+_Defined in [KosuToken.ts:139](https://github.com/ParadigmFoundation/kosu-monorepo/blob/5992fd1/packages/kosu.js/src/KosuToken.ts#L139)_
 
 Sets approval for user to transfer tokens on `coinbase`'s behalf.
 
 **Parameters:**
 
-Name | Type | Description |
------- | ------ | ------ |
-`spender` | string | Address allowed to spend `coinbase`'s tokens. |
-`value` | `BigNumber` | The uint value (in wei) to approve `spender` for. |
+| Name      | Type        | Description                                       |
+| --------- | ----------- | ------------------------------------------------- |
+| `spender` | string      | Address allowed to spend `coinbase`'s tokens.     |
+| `value`   | `BigNumber` | The uint value (in wei) to approve `spender` for. |
 
-**Returns:** *`Promise<TransactionReceiptWithDecodedLogs>`*
+**Returns:** _`Promise<TransactionReceiptWithDecodedLogs>`_
 
 The transaction receipt after it has been included in a block.
 
-___
+---
 
-###  balanceOf
+### balanceOf
 
-▸ **balanceOf**(`owner`: string): *`Promise<BigNumber>`*
+▸ **balanceOf**(`owner`: string): _`Promise<BigNumber>`_
 
-*Defined in [KosuToken.ts:102](https://github.com/ParadigmFoundation/kosu-monorepo/blob/5992fd1/packages/kosu.js/src/KosuToken.ts#L102)*
+_Defined in [KosuToken.ts:102](https://github.com/ParadigmFoundation/kosu-monorepo/blob/5992fd1/packages/kosu.js/src/KosuToken.ts#L102)_
 
 Reads the balance for a user address, returned in wei.
 
 **Parameters:**
 
-Name | Type | Description |
------- | ------ | ------ |
-`owner` | string | The Ethereum address of a token holder. |
+| Name    | Type   | Description                             |
+| ------- | ------ | --------------------------------------- |
+| `owner` | string | The Ethereum address of a token holder. |
 
-**Returns:** *`Promise<BigNumber>`*
+**Returns:** _`Promise<BigNumber>`_
 
 The `owner`'s KOSU balance in wei.
 
-___
+---
 
-###  bondTokens
+### bondTokens
 
-▸ **bondTokens**(`value`: `BigNumber`, `minPayout`: `BigNumber`): *`Promise<TransactionReceiptWithDecodedLogs>`*
+▸ **bondTokens**(`value`: `BigNumber`, `minPayout`: `BigNumber`): _`Promise<TransactionReceiptWithDecodedLogs>`_
 
-*Defined in [KosuToken.ts:185](https://github.com/ParadigmFoundation/kosu-monorepo/blob/5992fd1/packages/kosu.js/src/KosuToken.ts#L185)*
+_Defined in [KosuToken.ts:185](https://github.com/ParadigmFoundation/kosu-monorepo/blob/5992fd1/packages/kosu.js/src/KosuToken.ts#L185)_
 
 Sends ether to the contract to bond tokens.
 
 **Parameters:**
 
-Name | Type | Description |
------- | ------ | ------ |
-`value` | `BigNumber` | Amount of wei to deposit |
-`minPayout` | `BigNumber` | Minimum amount of tokens required to be minted to prevent transaction from reverting. |
+| Name        | Type        | Description                                                                           |
+| ----------- | ----------- | ------------------------------------------------------------------------------------- |
+| `value`     | `BigNumber` | Amount of wei to deposit                                                              |
+| `minPayout` | `BigNumber` | Minimum amount of tokens required to be minted to prevent transaction from reverting. |
 
-**Returns:** *`Promise<TransactionReceiptWithDecodedLogs>`*
+**Returns:** _`Promise<TransactionReceiptWithDecodedLogs>`_
 
 Logs from the transaction block.
 
-___
+---
 
-###  estimateEtherToToken
+### estimateEtherToToken
 
-▸ **estimateEtherToToken**(`etherInput`: `BigNumber`): *`Promise<BigNumber>`*
+▸ **estimateEtherToToken**(`etherInput`: `BigNumber`): _`Promise<BigNumber>`_
 
-*Defined in [KosuToken.ts:162](https://github.com/ParadigmFoundation/kosu-monorepo/blob/5992fd1/packages/kosu.js/src/KosuToken.ts#L162)*
+_Defined in [KosuToken.ts:162](https://github.com/ParadigmFoundation/kosu-monorepo/blob/5992fd1/packages/kosu.js/src/KosuToken.ts#L162)_
 
 Calculated tokens to be minted from deposited ether.
 
 **Parameters:**
 
-Name | Type | Description |
------- | ------ | ------ |
-`etherInput` | `BigNumber` | Amount of ether to be submitted to generate tokens. |
+| Name         | Type        | Description                                         |
+| ------------ | ----------- | --------------------------------------------------- |
+| `etherInput` | `BigNumber` | Amount of ether to be submitted to generate tokens. |
 
-**Returns:** *`Promise<BigNumber>`*
+**Returns:** _`Promise<BigNumber>`_
 
 Estimation of tokens to be minted.
 
-___
+---
 
-###  estimateTokenToEther
+### estimateTokenToEther
 
-▸ **estimateTokenToEther**(`tokensToBurn`: `BigNumber`): *`Promise<BigNumber>`*
+▸ **estimateTokenToEther**(`tokensToBurn`: `BigNumber`): _`Promise<BigNumber>`_
 
-*Defined in [KosuToken.ts:173](https://github.com/ParadigmFoundation/kosu-monorepo/blob/5992fd1/packages/kosu.js/src/KosuToken.ts#L173)*
+_Defined in [KosuToken.ts:173](https://github.com/ParadigmFoundation/kosu-monorepo/blob/5992fd1/packages/kosu.js/src/KosuToken.ts#L173)_
 
 Calculates ether to be returned for burning tokens.
 
 **Parameters:**
 
-Name | Type | Description |
------- | ------ | ------ |
-`tokensToBurn` | `BigNumber` | Amount of tokens to burn for returned ether. |
+| Name           | Type        | Description                                  |
+| -------------- | ----------- | -------------------------------------------- |
+| `tokensToBurn` | `BigNumber` | Amount of tokens to burn for returned ether. |
 
-**Returns:** *`Promise<BigNumber>`*
+**Returns:** _`Promise<BigNumber>`_
 
 Estimation of ether to be returned.
 
-___
+---
 
 ### `Private` getContract
 
-▸ **getContract**(): *`Promise<KosuTokenContract>`*
+▸ **getContract**(): _`Promise<KosuTokenContract>`_
 
-*Defined in [KosuToken.ts:63](https://github.com/ParadigmFoundation/kosu-monorepo/blob/5992fd1/packages/kosu.js/src/KosuToken.ts#L63)*
+_Defined in [KosuToken.ts:63](https://github.com/ParadigmFoundation/kosu-monorepo/blob/5992fd1/packages/kosu.js/src/KosuToken.ts#L63)_
 
 Asynchronously initializes the contract instance or returns it from cache.
 
-**Returns:** *`Promise<KosuTokenContract>`*
+**Returns:** _`Promise<KosuTokenContract>`_
 
 The low-level KosuToken contract wrapper instance.
 
-___
+---
 
-###  pay
+### pay
 
-▸ **pay**(`value`: `BigNumber`): *`Promise<TransactionReceiptWithDecodedLogs>`*
+▸ **pay**(`value`: `BigNumber`): _`Promise<TransactionReceiptWithDecodedLogs>`_
 
-*Defined in [KosuToken.ts:209](https://github.com/ParadigmFoundation/kosu-monorepo/blob/5992fd1/packages/kosu.js/src/KosuToken.ts#L209)*
+_Defined in [KosuToken.ts:209](https://github.com/ParadigmFoundation/kosu-monorepo/blob/5992fd1/packages/kosu.js/src/KosuToken.ts#L209)_
 
 Sends ether to the contract to bond tokens.
 
 **Parameters:**
 
-Name | Type | Description |
------- | ------ | ------ |
-`value` | `BigNumber` | Amount of wei to deposit |
+| Name    | Type        | Description              |
+| ------- | ----------- | ------------------------ |
+| `value` | `BigNumber` | Amount of wei to deposit |
 
-**Returns:** *`Promise<TransactionReceiptWithDecodedLogs>`*
+**Returns:** _`Promise<TransactionReceiptWithDecodedLogs>`_
 
 Logs from the transaction block.
 
-___
+---
 
-###  releaseTokens
+### releaseTokens
 
-▸ **releaseTokens**(`tokensToBurn`: `BigNumber`): *`Promise<TransactionReceiptWithDecodedLogs>`*
+▸ **releaseTokens**(`tokensToBurn`: `BigNumber`): _`Promise<TransactionReceiptWithDecodedLogs>`_
 
-*Defined in [KosuToken.ts:198](https://github.com/ParadigmFoundation/kosu-monorepo/blob/5992fd1/packages/kosu.js/src/KosuToken.ts#L198)*
+_Defined in [KosuToken.ts:198](https://github.com/ParadigmFoundation/kosu-monorepo/blob/5992fd1/packages/kosu.js/src/KosuToken.ts#L198)_
 
 Releases tokens to be burned and return bonded ether.
 
 **Parameters:**
 
-Name | Type | Description |
------- | ------ | ------ |
-`tokensToBurn` | `BigNumber` | Amount of tokens to burn for returned ether. |
+| Name           | Type        | Description                                  |
+| -------------- | ----------- | -------------------------------------------- |
+| `tokensToBurn` | `BigNumber` | Amount of tokens to burn for returned ether. |
 
-**Returns:** *`Promise<TransactionReceiptWithDecodedLogs>`*
+**Returns:** _`Promise<TransactionReceiptWithDecodedLogs>`_
 
 Logs from the transaction block.
 
-___
+---
 
-###  totalSupply
+### totalSupply
 
-▸ **totalSupply**(): *`Promise<BigNumber>`*
+▸ **totalSupply**(): _`Promise<BigNumber>`_
 
-*Defined in [KosuToken.ts:91](https://github.com/ParadigmFoundation/kosu-monorepo/blob/5992fd1/packages/kosu.js/src/KosuToken.ts#L91)*
+_Defined in [KosuToken.ts:91](https://github.com/ParadigmFoundation/kosu-monorepo/blob/5992fd1/packages/kosu.js/src/KosuToken.ts#L91)_
 
 Reads the total supply of KOSU, resolves to a `BigNumber` of the amount of
 tokens in units of wei.
 
-**Returns:** *`Promise<BigNumber>`*
+**Returns:** _`Promise<BigNumber>`_
 
 The total KOSU supply in wei.
 
-___
+---
 
-###  transfer
+### transfer
 
-▸ **transfer**(`to`: string, `value`: `BigNumber`): *`Promise<TransactionReceiptWithDecodedLogs>`*
+▸ **transfer**(`to`: string, `value`: `BigNumber`): _`Promise<TransactionReceiptWithDecodedLogs>`_
 
-*Defined in [KosuToken.ts:114](https://github.com/ParadigmFoundation/kosu-monorepo/blob/5992fd1/packages/kosu.js/src/KosuToken.ts#L114)*
+_Defined in [KosuToken.ts:114](https://github.com/ParadigmFoundation/kosu-monorepo/blob/5992fd1/packages/kosu.js/src/KosuToken.ts#L114)_
 
 Transfers tokens to an address, from the current `coinbase` account.
 
 **Parameters:**
 
-Name | Type | Description |
------- | ------ | ------ |
-`to` | string | Ethereum Address of token receiver. |
-`value` | `BigNumber` | The `uint` value of tokens to transfer (in wei). |
+| Name    | Type        | Description                                      |
+| ------- | ----------- | ------------------------------------------------ |
+| `to`    | string      | Ethereum Address of token receiver.              |
+| `value` | `BigNumber` | The `uint` value of tokens to transfer (in wei). |
 
-**Returns:** *`Promise<TransactionReceiptWithDecodedLogs>`*
+**Returns:** _`Promise<TransactionReceiptWithDecodedLogs>`_
 
 The transaction's receipt after inclusion in a block.
 
-___
+---
 
-###  transferFrom
+### transferFrom
 
-▸ **transferFrom**(`from`: string, `to`: string, `value`: `BigNumber`): *`Promise<TransactionReceiptWithDecodedLogs>`*
+▸ **transferFrom**(`from`: string, `to`: string, `value`: `BigNumber`): _`Promise<TransactionReceiptWithDecodedLogs>`_
 
-*Defined in [KosuToken.ts:127](https://github.com/ParadigmFoundation/kosu-monorepo/blob/5992fd1/packages/kosu.js/src/KosuToken.ts#L127)*
+_Defined in [KosuToken.ts:127](https://github.com/ParadigmFoundation/kosu-monorepo/blob/5992fd1/packages/kosu.js/src/KosuToken.ts#L127)_
 
 Transfers token from an address to a destination address.
 
 **Parameters:**
 
-Name | Type | Description |
------- | ------ | ------ |
-`from` | string | Address of token source. |
-`to` | string | Address of token destination. |
-`value` | `BigNumber` | The `uint` value of tokens to transfer (in wei). |
+| Name    | Type        | Description                                      |
+| ------- | ----------- | ------------------------------------------------ |
+| `from`  | string      | Address of token source.                         |
+| `to`    | string      | Address of token destination.                    |
+| `value` | `BigNumber` | The `uint` value of tokens to transfer (in wei). |
 
-**Returns:** *`Promise<TransactionReceiptWithDecodedLogs>`*
+**Returns:** _`Promise<TransactionReceiptWithDecodedLogs>`_
 
 The transaction receipt after it has been included in a block.

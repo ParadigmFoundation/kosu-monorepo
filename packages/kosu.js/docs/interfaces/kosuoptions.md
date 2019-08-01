@@ -6,117 +6,117 @@
 
 ## Hierarchy
 
-* **KosuOptions**
+-   **KosuOptions**
 
 ## Index
 
 ### Properties
 
-* [eventEmitterAddress](kosuoptions.md#optional-eventemitteraddress)
-* [kosuTokenAddress](kosuoptions.md#optional-kosutokenaddress)
-* [networkId](kosuoptions.md#optional-networkid)
-* [orderGatewayAddress](kosuoptions.md#optional-ordergatewayaddress)
-* [orderStreamURL](kosuoptions.md#optional-orderstreamurl)
-* [posterRegistryAddress](kosuoptions.md#optional-posterregistryaddress)
-* [provider](kosuoptions.md#optional-provider)
-* [treasuryAddress](kosuoptions.md#optional-treasuryaddress)
-* [validatorRegistryAddress](kosuoptions.md#optional-validatorregistryaddress)
-* [votingAddress](kosuoptions.md#optional-votingaddress)
-* [web3](kosuoptions.md#optional-web3)
-* [web3Wrapper](kosuoptions.md#optional-web3wrapper)
+-   [eventEmitterAddress](kosuoptions.md#optional-eventemitteraddress)
+-   [kosuTokenAddress](kosuoptions.md#optional-kosutokenaddress)
+-   [networkId](kosuoptions.md#optional-networkid)
+-   [orderGatewayAddress](kosuoptions.md#optional-ordergatewayaddress)
+-   [orderStreamURL](kosuoptions.md#optional-orderstreamurl)
+-   [posterRegistryAddress](kosuoptions.md#optional-posterregistryaddress)
+-   [provider](kosuoptions.md#optional-provider)
+-   [treasuryAddress](kosuoptions.md#optional-treasuryaddress)
+-   [validatorRegistryAddress](kosuoptions.md#optional-validatorregistryaddress)
+-   [votingAddress](kosuoptions.md#optional-votingaddress)
+-   [web3](kosuoptions.md#optional-web3)
+-   [web3Wrapper](kosuoptions.md#optional-web3wrapper)
 
 ## Properties
 
 ### `Optional` eventEmitterAddress
 
-• **eventEmitterAddress**? : *string*
+• **eventEmitterAddress**? : _string_
 
-*Defined in [types.d.ts:10](https://github.com/ParadigmFoundation/kosu-monorepo/blob/5992fd1/packages/kosu.js/src/types.d.ts#L10)*
+_Defined in [types.d.ts:10](https://github.com/ParadigmFoundation/kosu-monorepo/blob/5992fd1/packages/kosu.js/src/types.d.ts#L10)_
 
-___
+---
 
 ### `Optional` kosuTokenAddress
 
-• **kosuTokenAddress**? : *string*
+• **kosuTokenAddress**? : _string_
 
-*Defined in [types.d.ts:9](https://github.com/ParadigmFoundation/kosu-monorepo/blob/5992fd1/packages/kosu.js/src/types.d.ts#L9)*
+_Defined in [types.d.ts:9](https://github.com/ParadigmFoundation/kosu-monorepo/blob/5992fd1/packages/kosu.js/src/types.d.ts#L9)_
 
-___
+---
 
 ### `Optional` networkId
 
-• **networkId**? : *number | string*
+• **networkId**? : _number | string_
 
-*Defined in [types.d.ts:3](https://github.com/ParadigmFoundation/kosu-monorepo/blob/5992fd1/packages/kosu.js/src/types.d.ts#L3)*
+_Defined in [types.d.ts:3](https://github.com/ParadigmFoundation/kosu-monorepo/blob/5992fd1/packages/kosu.js/src/types.d.ts#L3)_
 
-___
+---
 
 ### `Optional` orderGatewayAddress
 
-• **orderGatewayAddress**? : *string*
+• **orderGatewayAddress**? : _string_
 
-*Defined in [types.d.ts:11](https://github.com/ParadigmFoundation/kosu-monorepo/blob/5992fd1/packages/kosu.js/src/types.d.ts#L11)*
+_Defined in [types.d.ts:11](https://github.com/ParadigmFoundation/kosu-monorepo/blob/5992fd1/packages/kosu.js/src/types.d.ts#L11)_
 
-___
+---
 
 ### `Optional` orderStreamURL
 
-• **orderStreamURL**? : *string*
+• **orderStreamURL**? : _string_
 
-*Defined in [types.d.ts:6](https://github.com/ParadigmFoundation/kosu-monorepo/blob/5992fd1/packages/kosu.js/src/types.d.ts#L6)*
+_Defined in [types.d.ts:6](https://github.com/ParadigmFoundation/kosu-monorepo/blob/5992fd1/packages/kosu.js/src/types.d.ts#L6)_
 
-___
+---
 
 ### `Optional` posterRegistryAddress
 
-• **posterRegistryAddress**? : *string*
+• **posterRegistryAddress**? : _string_
 
-*Defined in [types.d.ts:12](https://github.com/ParadigmFoundation/kosu-monorepo/blob/5992fd1/packages/kosu.js/src/types.d.ts#L12)*
+_Defined in [types.d.ts:12](https://github.com/ParadigmFoundation/kosu-monorepo/blob/5992fd1/packages/kosu.js/src/types.d.ts#L12)_
 
-___
+---
 
 ### `Optional` provider
 
-• **provider**? : *[provider](kosuoptions.md#optional-provider)*
+• **provider**? : _[provider](kosuoptions.md#optional-provider)_
 
-*Defined in [types.d.ts:2](https://github.com/ParadigmFoundation/kosu-monorepo/blob/5992fd1/packages/kosu.js/src/types.d.ts#L2)*
+_Defined in [types.d.ts:2](https://github.com/ParadigmFoundation/kosu-monorepo/blob/5992fd1/packages/kosu.js/src/types.d.ts#L2)_
 
-___
+---
 
 ### `Optional` treasuryAddress
 
-• **treasuryAddress**? : *string*
+• **treasuryAddress**? : _string_
 
-*Defined in [types.d.ts:8](https://github.com/ParadigmFoundation/kosu-monorepo/blob/5992fd1/packages/kosu.js/src/types.d.ts#L8)*
+_Defined in [types.d.ts:8](https://github.com/ParadigmFoundation/kosu-monorepo/blob/5992fd1/packages/kosu.js/src/types.d.ts#L8)_
 
-___
+---
 
 ### `Optional` validatorRegistryAddress
 
-• **validatorRegistryAddress**? : *string*
+• **validatorRegistryAddress**? : _string_
 
-*Defined in [types.d.ts:13](https://github.com/ParadigmFoundation/kosu-monorepo/blob/5992fd1/packages/kosu.js/src/types.d.ts#L13)*
+_Defined in [types.d.ts:13](https://github.com/ParadigmFoundation/kosu-monorepo/blob/5992fd1/packages/kosu.js/src/types.d.ts#L13)_
 
-___
+---
 
 ### `Optional` votingAddress
 
-• **votingAddress**? : *string*
+• **votingAddress**? : _string_
 
-*Defined in [types.d.ts:7](https://github.com/ParadigmFoundation/kosu-monorepo/blob/5992fd1/packages/kosu.js/src/types.d.ts#L7)*
+_Defined in [types.d.ts:7](https://github.com/ParadigmFoundation/kosu-monorepo/blob/5992fd1/packages/kosu.js/src/types.d.ts#L7)_
 
-___
+---
 
 ### `Optional` web3
 
-• **web3**? : *`Web3`*
+• **web3**? : _`Web3`_
 
-*Defined in [types.d.ts:4](https://github.com/ParadigmFoundation/kosu-monorepo/blob/5992fd1/packages/kosu.js/src/types.d.ts#L4)*
+_Defined in [types.d.ts:4](https://github.com/ParadigmFoundation/kosu-monorepo/blob/5992fd1/packages/kosu.js/src/types.d.ts#L4)_
 
-___
+---
 
 ### `Optional` web3Wrapper
 
-• **web3Wrapper**? : *`Web3Wrapper`*
+• **web3Wrapper**? : _`Web3Wrapper`_
 
-*Defined in [types.d.ts:5](https://github.com/ParadigmFoundation/kosu-monorepo/blob/5992fd1/packages/kosu.js/src/types.d.ts#L5)*
+_Defined in [types.d.ts:5](https://github.com/ParadigmFoundation/kosu-monorepo/blob/5992fd1/packages/kosu.js/src/types.d.ts#L5)_

@@ -8,245 +8,245 @@ Integration with Voting contract on an Ethereum blockchain.
 
 ## Hierarchy
 
-* **Voting**
+-   **Voting**
 
 ## Index
 
 ### Constructors
 
-* [constructor](voting.md#constructor)
+-   [constructor](voting.md#constructor)
 
 ### Properties
 
-* [address](voting.md#private-address)
-* [coinbase](voting.md#private-coinbase)
-* [contract](voting.md#private-contract)
-* [treasury](voting.md#private-treasury)
-* [web3](voting.md#private-web3)
-* [web3Wrapper](voting.md#private-web3wrapper)
+-   [address](voting.md#private-address)
+-   [coinbase](voting.md#private-coinbase)
+-   [contract](voting.md#private-contract)
+-   [treasury](voting.md#private-treasury)
+-   [web3](voting.md#private-web3)
+-   [web3Wrapper](voting.md#private-web3wrapper)
 
 ### Methods
 
-* [commitVote](voting.md#commitvote)
-* [encodeVote](voting.md#encodevote)
-* [getContract](voting.md#private-getcontract)
-* [revealVote](voting.md#revealvote)
-* [totalRevealedTokens](voting.md#totalrevealedtokens)
-* [totalWinningTokens](voting.md#totalwinningtokens)
-* [userWinningTokens](voting.md#userwinningtokens)
-* [winningOption](voting.md#winningoption)
+-   [commitVote](voting.md#commitvote)
+-   [encodeVote](voting.md#encodevote)
+-   [getContract](voting.md#private-getcontract)
+-   [revealVote](voting.md#revealvote)
+-   [totalRevealedTokens](voting.md#totalrevealedtokens)
+-   [totalWinningTokens](voting.md#totalwinningtokens)
+-   [userWinningTokens](voting.md#userwinningtokens)
+-   [winningOption](voting.md#winningoption)
 
 ## Constructors
 
-###  constructor
+### constructor
 
-\+ **new Voting**(`options`: [KosuOptions](../interfaces/kosuoptions.md), `treasury`: [Treasury](treasury.md)): *[Voting](voting.md)*
+\+ **new Voting**(`options`: [KosuOptions](../interfaces/kosuoptions.md), `treasury`: [Treasury](treasury.md)): _[Voting](voting.md)_
 
-*Defined in [Voting.ts:18](https://github.com/ParadigmFoundation/kosu-monorepo/blob/5992fd1/packages/kosu.js/src/Voting.ts#L18)*
+_Defined in [Voting.ts:18](https://github.com/ParadigmFoundation/kosu-monorepo/blob/5992fd1/packages/kosu.js/src/Voting.ts#L18)_
 
 Create a new Voting instance.
 
 **Parameters:**
 
-Name | Type | Description |
------- | ------ | ------ |
-`options` | [KosuOptions](../interfaces/kosuoptions.md) | instantiation options |
-`treasury` | [Treasury](treasury.md) | treasury integration instance  |
+| Name       | Type                                        | Description                   |
+| ---------- | ------------------------------------------- | ----------------------------- |
+| `options`  | [KosuOptions](../interfaces/kosuoptions.md) | instantiation options         |
+| `treasury` | [Treasury](treasury.md)                     | treasury integration instance |
 
-**Returns:** *[Voting](voting.md)*
+**Returns:** _[Voting](voting.md)_
 
 ## Properties
 
 ### `Private` address
 
-• **address**: *string*
+• **address**: _string_
 
-*Defined in [Voting.ts:16](https://github.com/ParadigmFoundation/kosu-monorepo/blob/5992fd1/packages/kosu.js/src/Voting.ts#L16)*
+_Defined in [Voting.ts:16](https://github.com/ParadigmFoundation/kosu-monorepo/blob/5992fd1/packages/kosu.js/src/Voting.ts#L16)_
 
-___
+---
 
 ### `Private` coinbase
 
-• **coinbase**: *string*
+• **coinbase**: _string_
 
-*Defined in [Voting.ts:18](https://github.com/ParadigmFoundation/kosu-monorepo/blob/5992fd1/packages/kosu.js/src/Voting.ts#L18)*
+_Defined in [Voting.ts:18](https://github.com/ParadigmFoundation/kosu-monorepo/blob/5992fd1/packages/kosu.js/src/Voting.ts#L18)_
 
-___
+---
 
 ### `Private` contract
 
-• **contract**: *any*
+• **contract**: _any_
 
-*Defined in [Voting.ts:17](https://github.com/ParadigmFoundation/kosu-monorepo/blob/5992fd1/packages/kosu.js/src/Voting.ts#L17)*
+_Defined in [Voting.ts:17](https://github.com/ParadigmFoundation/kosu-monorepo/blob/5992fd1/packages/kosu.js/src/Voting.ts#L17)_
 
-___
+---
 
 ### `Private` treasury
 
-• **treasury**: *[Treasury](treasury.md)*
+• **treasury**: _[Treasury](treasury.md)_
 
-*Defined in [Voting.ts:14](https://github.com/ParadigmFoundation/kosu-monorepo/blob/5992fd1/packages/kosu.js/src/Voting.ts#L14)*
+_Defined in [Voting.ts:14](https://github.com/ParadigmFoundation/kosu-monorepo/blob/5992fd1/packages/kosu.js/src/Voting.ts#L14)_
 
-___
+---
 
 ### `Private` web3
 
-• **web3**: *`Web3`*
+• **web3**: _`Web3`_
 
-*Defined in [Voting.ts:13](https://github.com/ParadigmFoundation/kosu-monorepo/blob/5992fd1/packages/kosu.js/src/Voting.ts#L13)*
+_Defined in [Voting.ts:13](https://github.com/ParadigmFoundation/kosu-monorepo/blob/5992fd1/packages/kosu.js/src/Voting.ts#L13)_
 
-___
+---
 
 ### `Private` web3Wrapper
 
-• **web3Wrapper**: *`Web3Wrapper`*
+• **web3Wrapper**: _`Web3Wrapper`_
 
-*Defined in [Voting.ts:15](https://github.com/ParadigmFoundation/kosu-monorepo/blob/5992fd1/packages/kosu.js/src/Voting.ts#L15)*
+_Defined in [Voting.ts:15](https://github.com/ParadigmFoundation/kosu-monorepo/blob/5992fd1/packages/kosu.js/src/Voting.ts#L15)_
 
 ## Methods
 
-###  commitVote
+### commitVote
 
-▸ **commitVote**(`_pollId`: `BigNumber`, `_vote`: string, `_tokensToCommit`: `BigNumber`): *`Promise<TransactionReceiptWithDecodedLogs>`*
+▸ **commitVote**(`_pollId`: `BigNumber`, `_vote`: string, `_tokensToCommit`: `BigNumber`): _`Promise<TransactionReceiptWithDecodedLogs>`_
 
-*Defined in [Voting.ts:67](https://github.com/ParadigmFoundation/kosu-monorepo/blob/5992fd1/packages/kosu.js/src/Voting.ts#L67)*
+_Defined in [Voting.ts:67](https://github.com/ParadigmFoundation/kosu-monorepo/blob/5992fd1/packages/kosu.js/src/Voting.ts#L67)_
 
 Commits vote to voting contract
 
 **Parameters:**
 
-Name | Type | Description |
------- | ------ | ------ |
-`_pollId` | `BigNumber` | uint poll index |
-`_vote` | string | encoded vote option |
-`_tokensToCommit` | `BigNumber` | uint number of tokens to be commited to vote  |
+| Name              | Type        | Description                                  |
+| ----------------- | ----------- | -------------------------------------------- |
+| `_pollId`         | `BigNumber` | uint poll index                              |
+| `_vote`           | string      | encoded vote option                          |
+| `_tokensToCommit` | `BigNumber` | uint number of tokens to be commited to vote |
 
-**Returns:** *`Promise<TransactionReceiptWithDecodedLogs>`*
+**Returns:** _`Promise<TransactionReceiptWithDecodedLogs>`_
 
-___
+---
 
-###  encodeVote
+### encodeVote
 
-▸ **encodeVote**(`_voteOption`: string, `_voteSalt`: string): *string*
+▸ **encodeVote**(`_voteOption`: string, `_voteSalt`: string): _string_
 
-*Defined in [Voting.ts:158](https://github.com/ParadigmFoundation/kosu-monorepo/blob/5992fd1/packages/kosu.js/src/Voting.ts#L158)*
+_Defined in [Voting.ts:158](https://github.com/ParadigmFoundation/kosu-monorepo/blob/5992fd1/packages/kosu.js/src/Voting.ts#L158)_
 
 Encodes a vote by hashing the option and salt
 
 **Parameters:**
 
-Name | Type | Description |
------- | ------ | ------ |
-`_voteOption` | string | . |
-`_voteSalt` | string | .  |
+| Name          | Type   | Description |
+| ------------- | ------ | ----------- |
+| `_voteOption` | string | .           |
+| `_voteSalt`   | string | .           |
 
-**Returns:** *string*
+**Returns:** _string_
 
 Encoded vote
 
-___
+---
 
 ### `Private` getContract
 
-▸ **getContract**(): *`Promise<VotingContract>`*
+▸ **getContract**(): _`Promise<VotingContract>`_
 
-*Defined in [Voting.ts:38](https://github.com/ParadigmFoundation/kosu-monorepo/blob/5992fd1/packages/kosu.js/src/Voting.ts#L38)*
+_Defined in [Voting.ts:38](https://github.com/ParadigmFoundation/kosu-monorepo/blob/5992fd1/packages/kosu.js/src/Voting.ts#L38)_
 
 Asynchronously initializes the contract instance or returns it from cache
 
-**Returns:** *`Promise<VotingContract>`*
+**Returns:** _`Promise<VotingContract>`_
 
 The contract
 
-___
+---
 
-###  revealVote
+### revealVote
 
-▸ **revealVote**(`_pollId`: `BigNumber`, `_voteOption`: `BigNumber`, `_voteSalt`: `BigNumber`): *`Promise<TransactionReceiptWithDecodedLogs>`*
+▸ **revealVote**(`_pollId`: `BigNumber`, `_voteOption`: `BigNumber`, `_voteSalt`: `BigNumber`): _`Promise<TransactionReceiptWithDecodedLogs>`_
 
-*Defined in [Voting.ts:96](https://github.com/ParadigmFoundation/kosu-monorepo/blob/5992fd1/packages/kosu.js/src/Voting.ts#L96)*
+_Defined in [Voting.ts:96](https://github.com/ParadigmFoundation/kosu-monorepo/blob/5992fd1/packages/kosu.js/src/Voting.ts#L96)_
 
 Reveals vote on voting contract
 
 **Parameters:**
 
-Name | Type | Description |
------- | ------ | ------ |
-`_pollId` | `BigNumber` | uint poll index |
-`_voteOption` | `BigNumber` | uint representation of vote position |
-`_voteSalt` | `BigNumber` | uint salt used to encode vote option  |
+| Name          | Type        | Description                          |
+| ------------- | ----------- | ------------------------------------ |
+| `_pollId`     | `BigNumber` | uint poll index                      |
+| `_voteOption` | `BigNumber` | uint representation of vote position |
+| `_voteSalt`   | `BigNumber` | uint salt used to encode vote option |
 
-**Returns:** *`Promise<TransactionReceiptWithDecodedLogs>`*
+**Returns:** _`Promise<TransactionReceiptWithDecodedLogs>`_
 
-___
+---
 
-###  totalRevealedTokens
+### totalRevealedTokens
 
-▸ **totalRevealedTokens**(`_pollId`: `BigNumber`): *`Promise<BigNumber>`*
+▸ **totalRevealedTokens**(`_pollId`: `BigNumber`): _`Promise<BigNumber>`_
 
-*Defined in [Voting.ts:134](https://github.com/ParadigmFoundation/kosu-monorepo/blob/5992fd1/packages/kosu.js/src/Voting.ts#L134)*
-
-Reads the total winning tokens for poll
-
-**Parameters:**
-
-Name | Type | Description |
------- | ------ | ------ |
-`_pollId` | `BigNumber` | uint poll index  |
-
-**Returns:** *`Promise<BigNumber>`*
-
-___
-
-###  totalWinningTokens
-
-▸ **totalWinningTokens**(`_pollId`: `BigNumber`): *`Promise<BigNumber>`*
-
-*Defined in [Voting.ts:124](https://github.com/ParadigmFoundation/kosu-monorepo/blob/5992fd1/packages/kosu.js/src/Voting.ts#L124)*
+_Defined in [Voting.ts:134](https://github.com/ParadigmFoundation/kosu-monorepo/blob/5992fd1/packages/kosu.js/src/Voting.ts#L134)_
 
 Reads the total winning tokens for poll
 
 **Parameters:**
 
-Name | Type | Description |
------- | ------ | ------ |
-`_pollId` | `BigNumber` | uint poll index  |
+| Name      | Type        | Description     |
+| --------- | ----------- | --------------- |
+| `_pollId` | `BigNumber` | uint poll index |
 
-**Returns:** *`Promise<BigNumber>`*
+**Returns:** _`Promise<BigNumber>`_
 
-___
+---
 
-###  userWinningTokens
+### totalWinningTokens
 
-▸ **userWinningTokens**(`_pollId`: `BigNumber`, `_userAddress`: string): *`Promise<BigNumber>`*
+▸ **totalWinningTokens**(`_pollId`: `BigNumber`): _`Promise<BigNumber>`_
 
-*Defined in [Voting.ts:145](https://github.com/ParadigmFoundation/kosu-monorepo/blob/5992fd1/packages/kosu.js/src/Voting.ts#L145)*
+_Defined in [Voting.ts:124](https://github.com/ParadigmFoundation/kosu-monorepo/blob/5992fd1/packages/kosu.js/src/Voting.ts#L124)_
+
+Reads the total winning tokens for poll
+
+**Parameters:**
+
+| Name      | Type        | Description     |
+| --------- | ----------- | --------------- |
+| `_pollId` | `BigNumber` | uint poll index |
+
+**Returns:** _`Promise<BigNumber>`_
+
+---
+
+### userWinningTokens
+
+▸ **userWinningTokens**(`_pollId`: `BigNumber`, `_userAddress`: string): _`Promise<BigNumber>`_
+
+_Defined in [Voting.ts:145](https://github.com/ParadigmFoundation/kosu-monorepo/blob/5992fd1/packages/kosu.js/src/Voting.ts#L145)_
 
 Reads users winning tokens committed for poll
 
 **Parameters:**
 
-Name | Type | Default | Description |
------- | ------ | ------ | ------ |
-`_pollId` | `BigNumber` | - | uint poll index |
-`_userAddress` | string |  this.coinbase | address of user whose winning contribution is  |
+| Name           | Type        | Default       | Description                                   |
+| -------------- | ----------- | ------------- | --------------------------------------------- |
+| `_pollId`      | `BigNumber` | -             | uint poll index                               |
+| `_userAddress` | string      | this.coinbase | address of user whose winning contribution is |
 
-**Returns:** *`Promise<BigNumber>`*
+**Returns:** _`Promise<BigNumber>`_
 
-___
+---
 
-###  winningOption
+### winningOption
 
-▸ **winningOption**(`_pollId`: `BigNumber`): *`Promise<BigNumber>`*
+▸ **winningOption**(`_pollId`: `BigNumber`): _`Promise<BigNumber>`_
 
-*Defined in [Voting.ts:114](https://github.com/ParadigmFoundation/kosu-monorepo/blob/5992fd1/packages/kosu.js/src/Voting.ts#L114)*
+_Defined in [Voting.ts:114](https://github.com/ParadigmFoundation/kosu-monorepo/blob/5992fd1/packages/kosu.js/src/Voting.ts#L114)_
 
 Reads the winning option for poll
 
 **Parameters:**
 
-Name | Type | Description |
------- | ------ | ------ |
-`_pollId` | `BigNumber` | uint poll index  |
+| Name      | Type        | Description     |
+| --------- | ----------- | --------------- |
+| `_pollId` | `BigNumber` | uint poll index |
 
-**Returns:** *`Promise<BigNumber>`*
+**Returns:** _`Promise<BigNumber>`_

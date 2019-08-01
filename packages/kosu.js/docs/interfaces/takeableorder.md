@@ -6,99 +6,99 @@
 
 ## Hierarchy
 
-* [Order](order.md)
+-   [Order](order.md)
 
-  * **TakeableOrder**
+    -   **TakeableOrder**
 
 ## Index
 
 ### Properties
 
-* [arguments](takeableorder.md#optional-arguments)
-* [id](takeableorder.md#id)
-* [maker](takeableorder.md#maker)
-* [makerSignature](takeableorder.md#optional-makersignature)
-* [makerValues](takeableorder.md#makervalues)
-* [poster](takeableorder.md#poster)
-* [subContract](takeableorder.md#subcontract)
-* [takerValues](takeableorder.md#takervalues)
+-   [arguments](takeableorder.md#optional-arguments)
+-   [id](takeableorder.md#id)
+-   [maker](takeableorder.md#maker)
+-   [makerSignature](takeableorder.md#optional-makersignature)
+-   [makerValues](takeableorder.md#makervalues)
+-   [poster](takeableorder.md#poster)
+-   [subContract](takeableorder.md#subcontract)
+-   [takerValues](takeableorder.md#takervalues)
 
 ## Properties
 
 ### `Optional` arguments
 
-• **arguments**? : *any*
+• **arguments**? : _any_
 
-*Inherited from [Order](order.md).[arguments](order.md#optional-arguments)*
+_Inherited from [Order](order.md).[arguments](order.md#optional-arguments)_
 
-*Defined in [types.d.ts:22](https://github.com/ParadigmFoundation/kosu-monorepo/blob/5992fd1/packages/kosu.js/src/types.d.ts#L22)*
+_Defined in [types.d.ts:22](https://github.com/ParadigmFoundation/kosu-monorepo/blob/5992fd1/packages/kosu.js/src/types.d.ts#L22)_
 
-___
+---
 
-###  id
+### id
 
-• **id**: *any*
+• **id**: _any_
 
-*Inherited from [Order](order.md).[id](order.md#id)*
+_Inherited from [Order](order.md).[id](order.md#id)_
 
-*Defined in [types.d.ts:23](https://github.com/ParadigmFoundation/kosu-monorepo/blob/5992fd1/packages/kosu.js/src/types.d.ts#L23)*
+_Defined in [types.d.ts:23](https://github.com/ParadigmFoundation/kosu-monorepo/blob/5992fd1/packages/kosu.js/src/types.d.ts#L23)_
 
-___
+---
 
-###  maker
+### maker
 
-• **maker**: *string*
+• **maker**: _string_
 
-*Inherited from [Order](order.md).[maker](order.md#maker)*
+_Inherited from [Order](order.md).[maker](order.md#maker)_
 
-*Defined in [types.d.ts:18](https://github.com/ParadigmFoundation/kosu-monorepo/blob/5992fd1/packages/kosu.js/src/types.d.ts#L18)*
+_Defined in [types.d.ts:18](https://github.com/ParadigmFoundation/kosu-monorepo/blob/5992fd1/packages/kosu.js/src/types.d.ts#L18)_
 
-___
+---
 
 ### `Optional` makerSignature
 
-• **makerSignature**? : *any*
+• **makerSignature**? : _any_
 
-*Inherited from [Order](order.md).[makerSignature](order.md#optional-makersignature)*
+_Inherited from [Order](order.md).[makerSignature](order.md#optional-makersignature)_
 
-*Defined in [types.d.ts:21](https://github.com/ParadigmFoundation/kosu-monorepo/blob/5992fd1/packages/kosu.js/src/types.d.ts#L21)*
+_Defined in [types.d.ts:21](https://github.com/ParadigmFoundation/kosu-monorepo/blob/5992fd1/packages/kosu.js/src/types.d.ts#L21)_
 
-___
+---
 
-###  makerValues
+### makerValues
 
-• **makerValues**: *any*
+• **makerValues**: _any_
 
-*Inherited from [Order](order.md).[makerValues](order.md#makervalues)*
+_Inherited from [Order](order.md).[makerValues](order.md#makervalues)_
 
-*Defined in [types.d.ts:19](https://github.com/ParadigmFoundation/kosu-monorepo/blob/5992fd1/packages/kosu.js/src/types.d.ts#L19)*
+_Defined in [types.d.ts:19](https://github.com/ParadigmFoundation/kosu-monorepo/blob/5992fd1/packages/kosu.js/src/types.d.ts#L19)_
 
-___
+---
 
-###  poster
+### poster
 
-• **poster**: *string*
+• **poster**: _string_
 
-*Inherited from [Order](order.md).[poster](order.md#poster)*
+_Inherited from [Order](order.md).[poster](order.md#poster)_
 
-*Defined in [types.d.ts:24](https://github.com/ParadigmFoundation/kosu-monorepo/blob/5992fd1/packages/kosu.js/src/types.d.ts#L24)*
+_Defined in [types.d.ts:24](https://github.com/ParadigmFoundation/kosu-monorepo/blob/5992fd1/packages/kosu.js/src/types.d.ts#L24)_
 
-___
+---
 
-###  subContract
+### subContract
 
-• **subContract**: *string*
+• **subContract**: _string_
 
-*Inherited from [Order](order.md).[subContract](order.md#subcontract)*
+_Inherited from [Order](order.md).[subContract](order.md#subcontract)_
 
-*Defined in [types.d.ts:17](https://github.com/ParadigmFoundation/kosu-monorepo/blob/5992fd1/packages/kosu.js/src/types.d.ts#L17)*
+_Defined in [types.d.ts:17](https://github.com/ParadigmFoundation/kosu-monorepo/blob/5992fd1/packages/kosu.js/src/types.d.ts#L17)_
 
-___
+---
 
-###  takerValues
+### takerValues
 
-• **takerValues**: *any*
+• **takerValues**: _any_
 
-*Overrides [Order](order.md).[takerValues](order.md#optional-takervalues)*
+_Overrides [Order](order.md).[takerValues](order.md#optional-takervalues)_
 
-*Defined in [types.d.ts:32](https://github.com/ParadigmFoundation/kosu-monorepo/blob/5992fd1/packages/kosu.js/src/types.d.ts#L32)*
+_Defined in [types.d.ts:32](https://github.com/ParadigmFoundation/kosu-monorepo/blob/5992fd1/packages/kosu.js/src/types.d.ts#L32)_

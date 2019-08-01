@@ -6,4 +6,4 @@
 
 ## Hierarchy
 
-* **DecodedKosuLogArgs**
+-   **DecodedKosuLogArgs**

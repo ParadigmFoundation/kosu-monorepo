@@ -6,27 +6,27 @@
 
 ## Hierarchy
 
-* **OrderArgument**
+-   **OrderArgument**
 
 ## Index
 
 ### Properties
 
-* [datatype](orderargument.md#datatype)
-* [name](orderargument.md#name)
+-   [datatype](orderargument.md#datatype)
+-   [name](orderargument.md#name)
 
 ## Properties
 
-###  datatype
+### datatype
 
-• **datatype**: *string*
+• **datatype**: _string_
 
-*Defined in [types.d.ts:37](https://github.com/ParadigmFoundation/kosu-monorepo/blob/5992fd1/packages/kosu.js/src/types.d.ts#L37)*
+_Defined in [types.d.ts:37](https://github.com/ParadigmFoundation/kosu-monorepo/blob/5992fd1/packages/kosu.js/src/types.d.ts#L37)_
 
-___
+---
 
-###  name
+### name
 
-• **name**: *string*
+• **name**: _string_
 
-*Defined in [types.d.ts:36](https://github.com/ParadigmFoundation/kosu-monorepo/blob/5992fd1/packages/kosu.js/src/types.d.ts#L36)*
+_Defined in [types.d.ts:36](https://github.com/ParadigmFoundation/kosu-monorepo/blob/5992fd1/packages/kosu.js/src/types.d.ts#L36)_
