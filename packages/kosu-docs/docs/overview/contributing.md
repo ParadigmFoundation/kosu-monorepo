@@ -34,7 +34,4 @@ Name your branch with the format `{fix | feature | refactor }/{ description }`
 
 ### Additional Details
 
-If you have any questions, please feel free to reach out to [Henry Harder](mailto:henry@paradigm.market) (GitHub [@hrharder](https://github.com/hrharder)), or message us on any of our communication channels. We are always happy to help! If you have feedback, bugs, or feature requests, please shoot them our way. 
-
-
-
+If you have any questions, please feel free to reach out to [Henry Harder](mailto:henry@paradigm.market) (GitHub [@hrharder](https://github.com/hrharder)), or message us on any of our communication channels. We are always happy to help! If you have feedback, bugs, or feature requests, please shoot them our way.
