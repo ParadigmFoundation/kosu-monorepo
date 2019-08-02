@@ -14,17 +14,17 @@ Holders of the protocol’s native staking token, KOSU (ERC-20 standard), with n
 
 The primary stakeholders within the Kosu system are validators, posters, and voters. It is possible and likely for individual stakeholders to serve two (or more) roles at once.
 
-#### Validators
+### Validators
 
 The Kosu network uses a Tendermint bonded proof-of-stake security model wherein validators stake (by locking) tokens into a contract proportional to the amount of vote power they wish to receive on the network.
 
 Validators are required to run full Ethereum nodes to faciliate a one-way peg-zone between the two chains. To do so, validators submit special attestations, or “witness" transactions, to the Kosu network about specific state changes to the protocol's contract system. These updates include user bonded token balances (which affect an order rate limit enforced by the network), and updates to the dynamic registry contract containing the curated list of validators.
 
-#### Posters
+### Posters
 
 Posters are individuals wishing to leverage the network's decentralized order booking and message relay features. They gain write access to the network by bonding any amount of KOSU tokens in a poster registry contract.
 
-#### Voters
+### Voters
 
 A voter is any entity who holds KOSU and participates in governance polls. Both posters and validators are allowed to participate in votes with their locked balances, and any additional tokens they wish to deposit.
 
@@ -55,7 +55,7 @@ There is also a specified `maxRewardRate` which is the maximum amount of KOSU a 
 
 Proposals that are not challenged may be confirmed into the registry after a period of time measured in Ethereum blocks using the `confirmListing` [method](https://docs.kosu.io/kosu-system-contracts/ValidatorRegistry.html#confirmlisting) with the validator's `tendermintPublicKey` as the only parameter.
 
-## Challenges
+### Challenges
 
 Pending proposals and accepted listings may be challenged at any time with the `challengeListing` [method](https://docs.kosu.io/kosu-system-contracts/ValidatorRegistry.html#challengelisting) specifying a `tendermintPublicKey` and an external link (`details`) as parameters. All challenges are identified with a `challengeId`.
 
@@ -86,7 +86,7 @@ Voters on the winning side can individually claim winnings by calling the `claim
 
 The split payout awarded to voters is distributed proportionally according to each voter's _vote weight_, which is the number of KOSU committed by an individual voter as a proportion of total tokens committed by all winning voters.
 
-## Voting
+### Voting
 
 Any holder of KOSU within the Treasury, including participants that are staking/bonding as a Validator/Poster, may choose to vote during a challenge period with their tokens. The voting process uses a commit-reveal scheme to hide voter decisions and ensure that voters do not switch their vote based on the winning outcome.
 
