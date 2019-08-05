@@ -4,13 +4,13 @@ title: Introduction
 
 # Kosu Introduction
 
-Kosu is a decentralized relay network that facilitates broadcast and discovery of peer-to-peer exchange orders on Ethereum.
+Kosu is a decentralized relay network that facilitates broadcast, discovery, and aggregation of peer-to-peer exchange orders on Ethereum.
 
-Orders for any type of smart contract-based financial instrumentation implementing "hybrid-decentralized" exchange logic (_off-chain order message relay_ and _on-chain settlement_) may be broadcast to the network. The network is generalizable, supporting orders of arbitrary maker-taker based settlement systems. This hybrid exchange architecture was originally pioneered by the 0x protocol, and naturally, one of the initial use cases for Kosu is as a decentralized relay network for 0x order messages. Other examples of supported settlement logic that can be broadcast to the network are [peer-to-peer loans](https://github.com/dharmaprotocol/dharma.js), and [margin tokens](https://github.com/dydxprotocol/protocol_v1).
+Orders for any type of smart contract-based financial instrumentation implementing "hybrid-decentralized" exchange logic (_off-chain order message relay_ and _on-chain settlement_) may be broadcast to the network. The network is generalizable, supporting orders of arbitrary maker-taker based settlement systems. This hybrid exchange architecture was originally pioneered by the 0x protocol, and naturally, one of the initial use cases for Kosu is as a decentralized relay and aggregation network for 0x order messages. Other examples of supported settlement logic that can be broadcast to the network are [peer-to-peer loans](https://github.com/dharmaprotocol/dharma.js), and [margin tokens](https://github.com/dydxprotocol/protocol_v1).
 
 In its entirety, the system curates a consistent, decentralized order book and serves as a liquidity aggregation primitive for second layer systems.
 
-The Kosu network is a bonded proof-of-stake blockchain built on Tendermint Consensus. The underlying state machine is responsible for enforcing a simple access control ruleset and order booking procedure. The network utilizes a shared security model, wherein all staking and token-based logic is implemented on the Ethereum main network. The model provides unidirectional communication and checkpoints between the two networks by leveraging Tendermint to provide finality for specific Ethereum-based state changes.
+The Kosu network is a bonded proof-of-stake blockchain built on Tendermint. The underlying state machine is responsible for enforcing a simple access control ruleset and order booking procedure. The network utilizes a shared security model, wherein all staking and token-based logic is implemented on the Ethereum main network. The model provides unidirectional communication and checkpoints between the two networks by leveraging Tendermint to provide finality for specific Ethereum-based state changes.
 
 The core protocol and relay network is supported by a dynamic set of independent validators and voting token holders. The network's validators, users, and voters are coordinated and incentivized toward the common goals of network security and value by a native token system and a variety of crypto-economic mechanisms.
 
