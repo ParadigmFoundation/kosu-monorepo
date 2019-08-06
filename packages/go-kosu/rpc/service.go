@@ -3,6 +3,7 @@ package rpc
 import (
 	"context"
 	"errors"
+	"fmt"
 	"go-kosu/abci"
 	"go-kosu/abci/types"
 	"log"
@@ -23,13 +24,10 @@ func NewService(abci *abci.Client) *Service {
 }
 
 /*
-Subscribe subscribes to the ABCI events.
+Subscribe subscribes to the Kosu Event Bus
 
-To tell which events you want, you need to provide a query.
-More information about query can be found here: https://tendermint.com/rpc/#subscribe
-Subscriptions will only work over WS.
-#### Parameters
-`query` TM query string
+### Parameters
+`event` - _string_ ('blocks' | 'orders')
 
 #### Returns
 `*rpc.Subscription`
@@ -37,12 +35,8 @@ Subscriptions will only work over WS.
 #### Examples
 ```go
 ch := make(chan interface{})
-args := []interface{}{
-	"subscribe",
-	"tm.event='NewBlock'",
-}
 ctx := context.Background()
-sub, err := client.Subscribe(ctx, "kosu", ch, args...)
+sub, err := client.Subscribe(ctx, "kosu", ch, "subscribe", "orders")
 if err != nil {
 	panic(err)
 }
@@ -60,10 +54,20 @@ for {
 }
 ```
 */
-func (s *Service) Subscribe(ctx context.Context, query string) (*rpc.Subscription, error) {
+func (s *Service) Subscribe(ctx context.Context, event string) (*rpc.Subscription, error) {
 	notifier, supported := rpc.NotifierFromContext(ctx)
 	if !supported {
 		return nil, rpc.ErrNotificationsUnsupported
+	}
+
+	var query string
+	switch event {
+	case "blocks":
+		query = "tm.event='NewBlock'"
+	case "orders":
+		query = "tm.event='Tx' AND tx.type='order'"
+	default:
+		return nil, fmt.Errorf("unknown SubscriptionEvent '%s'", event)
 	}
 
 	events, closer, err := s.abci.Subscribe(ctx, query)
@@ -74,6 +78,7 @@ func (s *Service) Subscribe(ctx context.Context, query string) (*rpc.Subscriptio
 	rpcSub := notifier.CreateSubscription()
 	go func() {
 		defer closer()
+		defer s.abci.Unsubscribe(ctx, query) // nolint
 
 		for {
 			select {
@@ -82,7 +87,7 @@ func (s *Service) Subscribe(ctx context.Context, query string) (*rpc.Subscriptio
 			case <-notifier.Closed():
 				return
 			case e := <-events:
-				err := notifier.Notify(rpcSub.ID, e)
+				err := notifier.Notify(rpcSub.ID, e.Data)
 				if err != nil {
 					log.Printf("rpc: %+v", err)
 				}
