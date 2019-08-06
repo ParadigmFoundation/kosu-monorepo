@@ -70,7 +70,7 @@ func (s *Service) Subscribe(ctx context.Context, event string) (*rpc.Subscriptio
 		return nil, fmt.Errorf("unknown SubscriptionEvent '%s'", event)
 	}
 
-	events, _, err := s.abci.Subscribe(ctx, query)
+	events, closer, err := s.abci.Subscribe(ctx, query)
 	if err != nil {
 		return nil, err
 	}
@@ -82,6 +82,7 @@ func (s *Service) Subscribe(ctx context.Context, event string) (*rpc.Subscriptio
 		for {
 			select {
 			case <-rpcSub.Err():
+				closer()
 				return
 			case <-notifier.Closed():
 				return
