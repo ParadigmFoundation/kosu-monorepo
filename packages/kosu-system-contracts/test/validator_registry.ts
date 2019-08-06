@@ -105,7 +105,7 @@ describe("ValidatorRegistry", async () => {
                 TestValues.oneWei,
             );
 
-            txReceipt.gasUsed.should.be.lt(4400000);
+            txReceipt.gasUsed.should.be.lt(4600000);
         });
     });
 
@@ -1600,6 +1600,57 @@ describe("ValidatorRegistry", async () => {
                 });
             });
         });
+    });
+
+    describe("maxRewardRate", () => {
+       it("should properly change when listings are added and removed", async () => {
+           const keys = ["0x01", "0x02", "0x03", "0x04", "0x05", "0x06"];
+
+           const initialMax = await validatorRegistry.maxRewardRate.callAsync();
+
+           await testHelpers.prepareListing(keys[0], {
+               reward: initialMax,
+           });
+           await validatorRegistry.confirmListing.awaitTransactionSuccessAsync(keys[0]);
+
+           const increasedMax = await validatorRegistry.maxRewardRate.callAsync();
+
+           initialMax.lt(increasedMax).should.eq(true);
+
+           await testHelpers.prepareListing(keys[1], {
+               reward: initialMax,
+           });
+           await validatorRegistry.confirmListing.awaitTransactionSuccessAsync(keys[1]);
+
+           await validatorRegistry.maxRewardRate.callAsync().then(x => x.toString()).should.eventually.eq(increasedMax.toString());
+
+           await testHelpers.prepareListing(keys[2], {
+               reward: initialMax.div(2),
+           });
+           await validatorRegistry.confirmListing.awaitTransactionSuccessAsync(keys[2]);
+
+           await validatorRegistry.maxRewardRate.callAsync().then(x => x.toString()).should.eventually.eq(increasedMax.toString());
+
+           await testHelpers.prepareListing(keys[3], {
+               reward: increasedMax,
+           });
+           await validatorRegistry.confirmListing.awaitTransactionSuccessAsync(keys[3]);
+
+           const additionallyIncreasedMax = await validatorRegistry.maxRewardRate.callAsync();
+           increasedMax.lt(additionallyIncreasedMax).should.eq(true);
+
+           await testHelpers.exitListing(keys[1]);
+           await validatorRegistry.maxRewardRate.callAsync().then(x => x.toString()).should.eventually.eq(additionallyIncreasedMax.toString());
+
+           await testHelpers.exitListing(keys[3]);
+           await validatorRegistry.maxRewardRate.callAsync().then(x => x.toString()).should.eventually.eq(increasedMax.toString());
+
+           await testHelpers.exitListing(keys[0]);
+           await validatorRegistry.maxRewardRate.callAsync().then(x => x.lte(initialMax)).should.eventually.eq(true);
+
+           await testHelpers.exitListing(keys[2]);
+           await validatorRegistry.maxRewardRate.callAsync().then(x => x.toString()).should.eventually.eq(initialMax.toString());
+       });
     });
 
     describe("ValidatorRegistryUpdate", () => {
