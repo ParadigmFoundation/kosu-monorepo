@@ -12,14 +12,16 @@ import (
 
 	"go-kosu/abci"
 	"go-kosu/abci/cli"
+	"go-kosu/version"
 )
 
 func main() {
 	var client abci.Client
 
 	rootCmd := &cobra.Command{
-		Use:   "kosu-cli",
-		Short: "kosu console client",
+		Use:     "kosu-cli",
+		Short:   "kosu console client",
+		Version: version.Version,
 	}
 	rootCmd.PersistentFlags().String("abci", "http://localhost:26657", "ABCI server url")
 	rootCmd.PersistentFlags().String("home", "~/.kosu", "directory for config and data")

@@ -12,8 +12,7 @@ GOLINT = golangci-lint run --enable-all \
 		--deadline=10m
 
 build:
-	go build -o kosud ./cmd/kosud
-	go build -o kosu-cli ./cmd/kosu-cli
+	./scripts/build.sh
 
 testnet: build
 	docker-compose rm -f

@@ -13,6 +13,7 @@ import (
 
 	"go-kosu/abci"
 	"go-kosu/rpc"
+	"go-kosu/version"
 	"go-kosu/witness"
 )
 
@@ -93,9 +94,10 @@ func main() {
 	})
 
 	rootCmd := &cobra.Command{
-		Use:   "kosud",
-		Short: "Starts the kosu node",
-		Long:  "Main entrypoint for Kosu validators and full nodes.\nPrior to use, 'kosud init' must be run.",
+		Use:     "kosud",
+		Version: version.Version,
+		Short:   "Starts the kosu node",
+		Long:    "Main entrypoint for Kosu validators and full nodes.\nPrior to use, 'kosud init' must be run.",
 		Run: func(cmd *cobra.Command, args []string) {
 			var err error
 			key, err = abci.LoadPrivateKey(cfg.Home)

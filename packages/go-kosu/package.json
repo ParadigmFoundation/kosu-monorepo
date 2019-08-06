@@ -1,6 +1,5 @@
 {
     "name": "@kosu/go-kosu",
-    "private": true,
     "version": "0.0.1",
     "description": "Development and CI docker images and supporting scripts for Kosu.",
     "repository": "https://github.com/ParadigmFoundation/kosu-monorepo.git",
@@ -11,7 +10,8 @@
         "docs": "yarn docs:clean && yarn docs:setup && yarn docs:rpc",
         "docs:clean": "rm -rf ./docs/",
         "docs:setup": "mkdir -p ./docs && cp README.md ./docs/",
-        "docs:rpc": "make -s rpcdocs > docs/kosu_rpc.md"
+        "docs:rpc": "make -s rpcdocs > docs/kosu_rpc.md",
+		"go:build": "make build"
     },
     "config": {},
     "dependencies": {
