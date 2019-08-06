@@ -11,7 +11,7 @@
         "docs:clean": "rm -rf ./docs/",
         "docs:setup": "mkdir -p ./docs && cp README.md ./docs/",
         "docs:rpc": "make -s rpcdocs > docs/kosu_rpc.md",
-		"go:build": "make build"
+        "go:build": "make build"
     },
     "config": {},
     "dependencies": {
