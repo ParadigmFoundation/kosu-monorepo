@@ -70,14 +70,13 @@ func (s *Service) Subscribe(ctx context.Context, event string) (*rpc.Subscriptio
 		return nil, fmt.Errorf("unknown SubscriptionEvent '%s'", event)
 	}
 
-	events, closer, err := s.abci.Subscribe(ctx, query)
+	events, _, err := s.abci.Subscribe(ctx, query)
 	if err != nil {
 		return nil, err
 	}
 
 	rpcSub := notifier.CreateSubscription()
 	go func() {
-		defer closer()
 		defer s.abci.Unsubscribe(ctx, query) // nolint
 
 		for {
