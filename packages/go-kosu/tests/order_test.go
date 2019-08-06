@@ -49,7 +49,7 @@ func (s *Suite) TestOrderTx() {
 				ch := make(chan tmtypes.EventDataTx)
 				defer close(ch)
 
-				sub, err := client.Subscribe(ctx, "kosu", ch, "subscribe", "orders")
+				sub, err := client.Subscribe(ctx, "kosu", ch, "newOrders")
 				require.NoError(t, err)
 				defer sub.Unsubscribe()
 
