@@ -74,6 +74,7 @@ func TestAddOrders(t *testing.T) {
 	app, client, closer := newServerClient(t)
 	defer closer()
 
+	// nolint:lll
 	validTx := &types.TransactionOrder{
 		SubContract:     "0xebe8fdf63db77e3b41b0aec8208c49fa46569606",
 		Maker:           "0xe3ec7592166d0145b9677f5f45dd1bd95ffe6596",

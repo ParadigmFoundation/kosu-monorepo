@@ -384,11 +384,13 @@ func (s *Service) AddOrders(orders []*types.TransactionOrder) (*AddOrdersResult,
 	return result, nil
 }
 
+// OrderRejection represent an Order rejection where the Order field contains the hash of the Tx and Reason the error behind the rejection
 type OrderRejection struct {
 	Order  string `json:"order"`
 	Reason string `json:"reason"`
 }
 
+// AddOrdersResult aggregates all the accepted and rejected Orders added by AddOrders method
 type AddOrdersResult struct {
 	Accepted []string         `json:"accepted"`
 	Rejected []OrderRejection `json:"rejected"`
