@@ -14,13 +14,11 @@ During the continuous validator governance and curation process, individuals wis
 
 For the nascent network, validators will be able to extract little value from the act of validating alone, and thus will require inflationary rewards that justify the costs of managing validator infrastructure. However, in a mature state the Kosu network could present implicit value capture opportunities to validators in the form of positional information advantages. More generally, validator reward schedules are market-driven and account for both implicit and explicit reward capture.
 
-It is important to note that this validator selection model is considerably more subjective than
-largest-bond (rank) based proof-of-stake validator selection mechanisms. With that said, the unique domain requirements as well as the limited impact of malicious validator behavior seem to warrant such subjectivity.
+It is important to note that this validator selection model is considerably more subjective than largest-bond (rank) based proof-of-stake validator selection mechanisms. With that said, the unique domain requirements as well as the limited impact of malicious validator behavior seem to warrant such subjectivity.
 
 ## Validator Token Curated Registry
 
-The Validator Registry contract is an implementation of a token-curated registry (TCR) and a
-cornerstone piece of the Kosu protocol that enables decentralized curation of the networks validator set. The goal of a TCR is to produce a curated set of listings, which are entries that have successfully been included in the registry. Listings begin as proposals which indicate intent to join the registry, backed by a number of tokens. Proposals and listings may be challenged at any time, where a challenger must put up an equal number of tokens as the listing or proposal owner. Challenges trigger votes, which any token holder may participate in. The specific mechanics of listings, proposals, and challenges within the Kosu Validator Registry are described in the [Kosu governance](https://docs.kosu.io/overview/governance.html#overview) doc.
+The Validator Registry contract is an implementation of a token-curated registry (TCR) and a cornerstone piece of the Kosu protocol that enables decentralized curation of the networks validator set. The goal of a TCR is to produce a curated set of listings, which are entries that have successfully been included in the registry. Listings begin as proposals which indicate intent to join the registry, backed by a number of tokens. Proposals and listings may be challenged at any time, where a challenger must put up an equal number of tokens as the listing or proposal owner. Challenges trigger votes, which any token holder may participate in. The specific mechanics of listings, proposals, and challenges within the Kosu Validator Registry are described in the [Kosu governance](https://docs.kosu.io/overview/governance.html#overview) doc.
 
 ## Posters
 
