@@ -54,7 +54,7 @@ func TestRPCLatestHeight(t *testing.T) {
 	ch := make(chan interface{})
 	defer close(ch)
 
-	sub, err := client.Subscribe(ctx, "kosu", ch, "subscribe", "tm.event = 'NewBlock'")
+	sub, err := client.Subscribe(ctx, "kosu", ch, "newBlocks")
 	defer sub.Unsubscribe()
 	require.NoError(t, err)
 

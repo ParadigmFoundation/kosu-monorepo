@@ -14,3 +14,8 @@ func NewServer(abci *abci.Client) *rpc.Server {
 	}
 	return srv
 }
+
+// DialInProc wraps rpc.DialInProc constructor
+func DialInProc(s *rpc.Server) *rpc.Client {
+	return rpc.DialInProc(s)
+}
