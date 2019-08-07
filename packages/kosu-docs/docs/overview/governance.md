@@ -1,4 +1,4 @@
-# Kosu governance
+# Kosu Governance & Validator TCR
 
 This paper details the continuous governance and validator curation process used in the Kosu protocol.
 
