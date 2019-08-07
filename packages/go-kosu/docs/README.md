@@ -127,7 +127,7 @@ kosu-cli query round
 kosu-cli query poster [ethereum_address]
 ```
 
-###  JSON-RPC
+### JSON-RPC
 
 The `kosud` binary provides a `JSON-RPC` bridge which allows you to subscribe to events and submit transactions.
 Start the `JSON-RPC` bridge and interact with kosud use the `kosud rpc` sub-command.
@@ -141,5 +141,3 @@ The test-net will expose the Tendermint ABCI RPC-API on ports `8000` to `8003` f
 ```bash
 make testnet
 ```
-
-

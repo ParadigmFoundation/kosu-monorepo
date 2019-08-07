@@ -1,20 +1,8 @@
-/*
-The `kosud` binary provides a JSON RPC based on [go-ethereum/rpc](https://godoc.org/github.com/ethereum/go-ethereum/rpc) package.
-
-You can start the bridge with the following command:
-```bash
-kosud rpc
-```
-For more information use `kosud rpc --help`.
-
-By default the HTTP and WS endpoints are binded to ports `14341` and `14342` repectively.
-Note that the subscriptions operations are only available via WebSockets.
-*/
 package rpc
 
 import (
 	"context"
-	"errors"
+	"encoding/hex"
 	"go-kosu/abci"
 	"go-kosu/abci/types"
 	"log"
@@ -71,13 +59,16 @@ func (s *Service) subscribeTM(ctx context.Context, query string) (*rpc.Subscript
 /*
 NewBlocks subscribes to new blocks on the Kosu blockchain
 
-*Parameters*
-* `newBlocks` - _string_
+_Parameters_
 
-*Returns*
-* `block` - _[object](https://godoc.org/github.com/tendermint/tendermint/types#Block)_
+-   `newBlocks` - _string_
+
+_Returns_
+
+-   `block` - _[object](https://godoc.org/github.com/tendermint/tendermint/types#Block)_
 
 #### Go example
+
 ```go
 blocks := make(chan types.Block) // imported from github.com/tendermint/tendermint/types
 ctx := context.Background()
@@ -100,14 +91,15 @@ for {
 ```
 
 #### Example payload
+
 ```json
 // request
-{"jsonrpc": "2.0", "method": "kosu_subscribe", "id": 123, "params": ["newBlocks"]}
+{ "jsonrpc": "2.0", "method": "kosu_subscribe", "id": 123, "params": ["newBlocks"] }
 ```
 
 ```json
 // response
-{"jsonrpc":"2.0","id":123,"result":"0x97cd66b222737445bc1695c0272619b6"}
+{ "jsonrpc":"2.0","id":123,"result":"0x97cd66b222737445bc1695c0272619b6" }
 {
   "jsonrpc": "2.0",
   "method": "kosu_subscription",
@@ -183,7 +175,6 @@ for {
     }
   }
 }
-
 ```
 */
 func (s *Service) NewBlocks(ctx context.Context) (*rpc.Subscription, error) {
@@ -194,13 +185,15 @@ func (s *Service) NewBlocks(ctx context.Context) (*rpc.Subscription, error) {
 /*
 NewOrders subscribes to new Order Transactions
 
-*Parameters*
+_Parameters_
 None
 
-*Returns*
-* `Order Transaction` - _[object]()_
+_Returns_
+
+-   `Order Transaction` - _[object]()_
 
 #### Go Example
+
 ```go
 orders := make(chan types.TransactionOrder) // imported from go-kosu/abci/types
 ctx := context.Background()
@@ -223,14 +216,15 @@ for {
 ```
 
 #### Example payload
+
 ```json
 // request
-{"jsonrpc": "2.0", "method": "kosu_subscribe", "id": 123, "params": ["newOrders"]}
+{ "jsonrpc": "2.0", "method": "kosu_subscribe", "id": 123, "params": ["newOrders"] }
 ```
 
 ```json
 // response
-{"jsonrpc":"2.0","id":123,"result":"0x97cd66b222737445bc1695c0272619b6"}
+{ "jsonrpc":"2.0","id":123,"result":"0x97cd66b222737445bc1695c0272619b6" }
 {
   "jsonrpc": "2.0",
   "method": "kosu_subscription",
@@ -307,18 +301,20 @@ func (s *Service) NewOrders(ctx context.Context) (*rpc.Subscription, error) {
 LatestHeight returns the height of the best known block.
 The `latestHeight` method will return the integer height of the latest block committed to the blockchain.
 
-*Parameters*
+_Parameters_
 None
 
-*Returns*
+_Returns_
 `latestHeight` - _int64_
 
 #### Examples
+
 ```bash
 curl -X POST --data '{"jsonrpc":"2.0","method":"kosu_latestHeight", "id": 1}' localhost:14341 --header 'Content-Type: application/json'
 ```
+
 ```json
-{"jsonrpc":"2.0","id":1,"result":260}
+{ "jsonrpc": "2.0", "id": 1, "result": 260 }
 ```
 */
 func (s *Service) LatestHeight() (int64, error) {
@@ -336,58 +332,88 @@ func (s *Service) LatestHeight() (int64, error) {
 /*
 AddOrders adds an array of Kosu orders to the network
 
-*Parameters*
-* `Orders` - Array([object]())
+### cURL example
 
-*Returns*
-* `AddOrdersResult` - Array([object]())
-
-#### cURL example
 ```bash
 curl -X POST localhost:14341 \
 	--data '{"jsonrpc":"2.0", "id": 1, "method": "kosu_addOrders", "params": [[<PAYLOAD>]]}' \
 	-H 'Content-Type: application/json'
 ```
+
 ```json
- [{
-	 "subContract":"0xebe8fdf63db77e3b41b0aec8208c49fa46569606",
-	 "maker":"0xe3ec7592166d0145b9677f5f45dd1bd95ffe6596",
-	 "arguments":{
-		 "maker":[
-		 	{"datatype":"address","name":"signer"},
-			{"datatype":"address","name":"signerToken"},
-			{"datatype":"uint","name":"signerTokenCount"},
-			{"datatype":"address","name":"buyerToken"},
-			{"datatype":"uint","name":"buyerTokenCount"},
-			{"datatype":"signature","name":"signature","signatureFields":[0,1,2,3,4]}
-		],
-		"taker":[
-			{"datatype":"uint","name":"tokensToBuy"}
-		]
-	},
-	"makerValues": {
-		"signer":"0xe3ec7592166d0145b9677f5f45dd1bd95ffe6596",
-		"signerToken":"0xbFB972996fd7658099a95E6290e8B0fa46b9BDd5",
-		"signerTokenCount":"1000",
-		"buyer":"0xbcd1c49f4e54cca1a0a59ac21b7eb90f07970a3a",
-		"buyerToken":"0x92cBc0Bec2121f55E84bC331f096b7dAAe5A5ddA",
-		"buyerTokenCount":"1000",
-		"signature":"0xce84772cbbbe5a844c9002e6d54e53d72830b890ff1ea1521cbd86faada28aa136997b5cd3cafd85e887a9d6fc25bb2bfbe03fc6319d371b2c976f3374bcd8c300"
-	},
-	"makerSignature":"0xce84772cbbbe5a844c9002e6d54e53d72830b890ff1ea1521cbd86faada28aa136997b5cd3cafd85e887a9d6fc25bb2bfbe03fc6319d371b2c976f3374bcd8c300",
-	"posterSignature":"0xc3550b7ceab610e638dfb1b33e5cf7aaf9490854197328eadbe8ac049adef7510a07a0ea046fa1d410c5cc1048828152b9368a8d8925f8f0072192ebfe1bbb3101"
- }]
- ```
+{
+    "accepted": ["84977cca6134f03768494370cb6a7ba3884ddf3783e58f403dbf6a2ca50cea68"],
+    "rejected": [
+        {
+            "order": "4cad310a0047a3d2dfec72a53d0cc13ea000ac674d76222a2b9334c833f2024b",
+            "reason": "encoding/hex: odd length hex string"
+        }
+    ]
+}
+```
+
+### Payload example
+
+```json
+[
+    {
+        "subContract": "0xebe8fdf63db77e3b41b0aec8208c49fa46569606",
+        "maker": "0xe3ec7592166d0145b9677f5f45dd1bd95ffe6596",
+        "arguments": {
+            "maker": [
+                { "datatype": "address", "name": "signer" },
+                { "datatype": "address", "name": "signerToken" },
+                { "datatype": "uint", "name": "signerTokenCount" },
+                { "datatype": "address", "name": "buyerToken" },
+                { "datatype": "uint", "name": "buyerTokenCount" },
+                { "datatype": "signature", "name": "signature", "signatureFields": [0, 1, 2, 3, 4] }
+            ],
+            "taker": [{ "datatype": "uint", "name": "tokensToBuy" }]
+        },
+        "makerValues": {
+            "signer": "0xe3ec7592166d0145b9677f5f45dd1bd95ffe6596",
+            "signerToken": "0xbFB972996fd7658099a95E6290e8B0fa46b9BDd5",
+            "signerTokenCount": "1000",
+            "buyer": "0xbcd1c49f4e54cca1a0a59ac21b7eb90f07970a3a",
+            "buyerToken": "0x92cBc0Bec2121f55E84bC331f096b7dAAe5A5ddA",
+            "buyerTokenCount": "1000",
+            "signature": "0xce84772cbbbe5a844c9002e6d54e53d72830b890ff1ea1521cbd86faada28aa136997b5cd3cafd85e887a9d6fc25bb2bfbe03fc6319d371b2c976f3374bcd8c300"
+        },
+        "makerSignature": "0xce84772cbbbe5a844c9002e6d54e53d72830b890ff1ea1521cbd86faada28aa136997b5cd3cafd85e887a9d6fc25bb2bfbe03fc6319d371b2c976f3374bcd8c300",
+        "posterSignature": "0xc3550b7ceab610e638dfb1b33e5cf7aaf9490854197328eadbe8ac049adef7510a07a0ea046fa1d410c5cc1048828152b9368a8d8925f8f0072192ebfe1bbb3101"
+    }
+]
+```
 */
-func (s *Service) AddOrders(orders []*types.TransactionOrder) error {
+func (s *Service) AddOrders(orders []*types.TransactionOrder) (*AddOrdersResult, error) {
+	result := &AddOrdersResult{}
 	for _, order := range orders {
 		res, err := s.abci.BroadcastTxSync(order)
 		if err != nil {
-			return err
+			return result, err
 		}
+
+		hash := hex.EncodeToString(res.Hash)
 		if res.Code != 0 {
-			return errors.New(res.Log)
+			result.Rejected = append(result.Rejected, OrderRejection{
+				Order:  hash,
+				Reason: res.Log,
+			})
+		} else {
+			result.Accepted = append(result.Accepted, hash)
 		}
 	}
-	return nil
+	return result, nil
+}
+
+// OrderRejection represent an Order rejection where the Order field contains the hash of the Tx and Reason the error behind the rejection
+type OrderRejection struct {
+	Order  string `json:"order"`
+	Reason string `json:"reason"`
+}
+
+// AddOrdersResult aggregates all the accepted and rejected Orders added by AddOrders method
+type AddOrdersResult struct {
+	Accepted []string         `json:"accepted"`
+	Rejected []OrderRejection `json:"rejected"`
 }

@@ -6,10 +6,13 @@ JSON-RPC is a stateless, light-weight remote procedure call (RPC) protocol,
 the protocol specification can be found [here](https://www.jsonrpc.org/specification)
 
 ### Usage
+
 You can start the bridge with the following command:
+
 ```bash
 kosud rpc
 ```
+
 For more information use `kosud rpc --help`.
 
 By default the HTTP and WS endpoints are binded to ports `14341` and `14342` repectively.
@@ -19,102 +22,119 @@ The current API exposes all of its methods under the `kosu` namespace
 which means that the method call should be prefixed with `kosu_`.
 
 #### Method call example
+
 To perform a request calling the `foo` method we should:
+
 ```json
-{"jsonrpc": "2.0", "method": "kosu_foo", "params": [], "id": 1}
+{ "jsonrpc": "2.0", "method": "kosu_foo", "params": [], "id": 1 }
 ```
 
 For subscriptions, we use the `kosu_subscribe` method, and the event name is specified within the first param
+
 #### Subscription example
+
 To subscribe to the `newBlocks` events we should:
+
 ```json
-{"jsonrpc": "2.0", "method": "kosu_subscribe", "params": ["newBlocks"], "id": 1}
+{ "jsonrpc": "2.0", "method": "kosu_subscribe", "params": ["newBlocks"], "id": 1 }
 ```
 
 # API
+
 ## Methods
 
 ### _AddOrders_
 
 AddOrders adds an array of Kosu orders to the network
 
-*Parameters*
-* `Orders` - Array([object]())
+### cURL example
 
-*Returns*
-* `AddOrdersResult` - Array([object]())
-
-#### cURL example
 ```bash
 curl -X POST localhost:14341 \
 	--data '{"jsonrpc":"2.0", "id": 1, "method": "kosu_addOrders", "params": [[<PAYLOAD>]]}' \
 	-H 'Content-Type: application/json'
 ```
+
 ```json
- [{
-	 "subContract":"0xebe8fdf63db77e3b41b0aec8208c49fa46569606",
-	 "maker":"0xe3ec7592166d0145b9677f5f45dd1bd95ffe6596",
-	 "arguments":{
-		 "maker":[
-		 	{"datatype":"address","name":"signer"},
-			{"datatype":"address","name":"signerToken"},
-			{"datatype":"uint","name":"signerTokenCount"},
-			{"datatype":"address","name":"buyerToken"},
-			{"datatype":"uint","name":"buyerTokenCount"},
-			{"datatype":"signature","name":"signature","signatureFields":[0,1,2,3,4]}
-		],
-		"taker":[
-			{"datatype":"uint","name":"tokensToBuy"}
-		]
-	},
-	"makerValues": {
-		"signer":"0xe3ec7592166d0145b9677f5f45dd1bd95ffe6596",
-		"signerToken":"0xbFB972996fd7658099a95E6290e8B0fa46b9BDd5",
-		"signerTokenCount":"1000",
-		"buyer":"0xbcd1c49f4e54cca1a0a59ac21b7eb90f07970a3a",
-		"buyerToken":"0x92cBc0Bec2121f55E84bC331f096b7dAAe5A5ddA",
-		"buyerTokenCount":"1000",
-		"signature":"0xce84772cbbbe5a844c9002e6d54e53d72830b890ff1ea1521cbd86faada28aa136997b5cd3cafd85e887a9d6fc25bb2bfbe03fc6319d371b2c976f3374bcd8c300"
-	},
-	"makerSignature":"0xce84772cbbbe5a844c9002e6d54e53d72830b890ff1ea1521cbd86faada28aa136997b5cd3cafd85e887a9d6fc25bb2bfbe03fc6319d371b2c976f3374bcd8c300",
-	"posterSignature":"0xc3550b7ceab610e638dfb1b33e5cf7aaf9490854197328eadbe8ac049adef7510a07a0ea046fa1d410c5cc1048828152b9368a8d8925f8f0072192ebfe1bbb3101"
- }]
- ```
+{
+    "accepted": ["84977cca6134f03768494370cb6a7ba3884ddf3783e58f403dbf6a2ca50cea68"],
+    "rejected": [
+        {
+            "order": "4cad310a0047a3d2dfec72a53d0cc13ea000ac674d76222a2b9334c833f2024b",
+            "reason": "encoding/hex: odd length hex string"
+        }
+    ]
+}
+```
 
+### Payload example
 
+```json
+[
+    {
+        "subContract": "0xebe8fdf63db77e3b41b0aec8208c49fa46569606",
+        "maker": "0xe3ec7592166d0145b9677f5f45dd1bd95ffe6596",
+        "arguments": {
+            "maker": [
+                { "datatype": "address", "name": "signer" },
+                { "datatype": "address", "name": "signerToken" },
+                { "datatype": "uint", "name": "signerTokenCount" },
+                { "datatype": "address", "name": "buyerToken" },
+                { "datatype": "uint", "name": "buyerTokenCount" },
+                { "datatype": "signature", "name": "signature", "signatureFields": [0, 1, 2, 3, 4] }
+            ],
+            "taker": [{ "datatype": "uint", "name": "tokensToBuy" }]
+        },
+        "makerValues": {
+            "signer": "0xe3ec7592166d0145b9677f5f45dd1bd95ffe6596",
+            "signerToken": "0xbFB972996fd7658099a95E6290e8B0fa46b9BDd5",
+            "signerTokenCount": "1000",
+            "buyer": "0xbcd1c49f4e54cca1a0a59ac21b7eb90f07970a3a",
+            "buyerToken": "0x92cBc0Bec2121f55E84bC331f096b7dAAe5A5ddA",
+            "buyerTokenCount": "1000",
+            "signature": "0xce84772cbbbe5a844c9002e6d54e53d72830b890ff1ea1521cbd86faada28aa136997b5cd3cafd85e887a9d6fc25bb2bfbe03fc6319d371b2c976f3374bcd8c300"
+        },
+        "makerSignature": "0xce84772cbbbe5a844c9002e6d54e53d72830b890ff1ea1521cbd86faada28aa136997b5cd3cafd85e887a9d6fc25bb2bfbe03fc6319d371b2c976f3374bcd8c300",
+        "posterSignature": "0xc3550b7ceab610e638dfb1b33e5cf7aaf9490854197328eadbe8ac049adef7510a07a0ea046fa1d410c5cc1048828152b9368a8d8925f8f0072192ebfe1bbb3101"
+    }
+]
+```
 
 ### _LatestHeight_
 
 LatestHeight returns the height of the best known block.
 The `latestHeight` method will return the integer height of the latest block committed to the blockchain.
 
-*Parameters*
+_Parameters_
 None
 
-*Returns*
+_Returns_
 `latestHeight` - _int64_
 
 #### Examples
+
 ```bash
 curl -X POST --data '{"jsonrpc":"2.0","method":"kosu_latestHeight", "id": 1}' localhost:14341 --header 'Content-Type: application/json'
 ```
+
 ```json
-{"jsonrpc":"2.0","id":1,"result":260}
+{ "jsonrpc": "2.0", "id": 1, "result": 260 }
 ```
-
-
 
 ### _NewBlocks_
 
 NewBlocks subscribes to new blocks on the Kosu blockchain
 
-*Parameters*
-* `newBlocks` - _string_
+_Parameters_
 
-*Returns*
-* `block` - _[object](https://godoc.org/github.com/tendermint/tendermint/types#Block)_
+-   `newBlocks` - _string_
+
+_Returns_
+
+-   `block` - _[object](https://godoc.org/github.com/tendermint/tendermint/types#Block)_
 
 #### Go example
+
 ```go
 blocks := make(chan types.Block) // imported from github.com/tendermint/tendermint/types
 ctx := context.Background()
@@ -137,14 +157,15 @@ for {
 ```
 
 #### Example payload
+
 ```json
 // request
-{"jsonrpc": "2.0", "method": "kosu_subscribe", "id": 123, "params": ["newBlocks"]}
+{ "jsonrpc": "2.0", "method": "kosu_subscribe", "id": 123, "params": ["newBlocks"] }
 ```
 
 ```json
 // response
-{"jsonrpc":"2.0","id":123,"result":"0x97cd66b222737445bc1695c0272619b6"}
+{ "jsonrpc":"2.0","id":123,"result":"0x97cd66b222737445bc1695c0272619b6" }
 {
   "jsonrpc": "2.0",
   "method": "kosu_subscription",
@@ -220,22 +241,21 @@ for {
     }
   }
 }
-
 ```
-
-
 
 ### _NewOrders_
 
 NewOrders subscribes to new Order Transactions
 
-*Parameters*
+_Parameters_
 None
 
-*Returns*
-* `Order Transaction` - _[object]()_
+_Returns_
+
+-   `Order Transaction` - _[object]()_
 
 #### Go Example
+
 ```go
 orders := make(chan types.TransactionOrder) // imported from go-kosu/abci/types
 ctx := context.Background()
@@ -258,14 +278,15 @@ for {
 ```
 
 #### Example payload
+
 ```json
 // request
-{"jsonrpc": "2.0", "method": "kosu_subscribe", "id": 123, "params": ["newOrders"]}
+{ "jsonrpc": "2.0", "method": "kosu_subscribe", "id": 123, "params": ["newOrders"] }
 ```
 
 ```json
 // response
-{"jsonrpc":"2.0","id":123,"result":"0x97cd66b222737445bc1695c0272619b6"}
+{ "jsonrpc":"2.0","id":123,"result":"0x97cd66b222737445bc1695c0272619b6" }
 {
   "jsonrpc": "2.0",
   "method": "kosu_subscription",
@@ -332,6 +353,3 @@ for {
   }
 }
 ```
-
-
-
