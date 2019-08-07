@@ -1,8 +1,20 @@
+/*
+The `kosud` binary provides a JSON RPC based on [go-ethereum/rpc](https://godoc.org/github.com/ethereum/go-ethereum/rpc) package.
+
+You can start the bridge with the following command:
+```bash
+kosud rpc
+```
+For more information use `kosud rpc --help`.
+
+By default the HTTP and WS endpoints are binded to ports `14341` and `14342` repectively.
+Note that the subscriptions operations are only available via WebSockets.
+*/
 package rpc
 
 import (
 	"context"
-	"encoding/hex"
+	"errors"
 	"go-kosu/abci"
 	"go-kosu/abci/types"
 	"log"
@@ -59,8 +71,11 @@ func (s *Service) subscribeTM(ctx context.Context, query string) (*rpc.Subscript
 /*
 NewBlocks subscribes to new blocks on the Kosu blockchain
 
-#### Returns
-[block](https://godoc.org/github.com/tendermint/tendermint/types#Block)
+*Parameters*
+* `newBlocks` - _string_
+
+*Returns*
+* `block` - _[object](https://godoc.org/github.com/tendermint/tendermint/types#Block)_
 
 #### Go example
 ```go
@@ -85,13 +100,13 @@ for {
 ```
 
 #### Example payload
-> request
 ```json
+// request
 {"jsonrpc": "2.0", "method": "kosu_subscribe", "id": 123, "params": ["newBlocks"]}
 ```
 
-// response
 ```json
+// response
 {"jsonrpc":"2.0","id":123,"result":"0x97cd66b222737445bc1695c0272619b6"}
 {
   "jsonrpc": "2.0",
@@ -179,8 +194,11 @@ func (s *Service) NewBlocks(ctx context.Context) (*rpc.Subscription, error) {
 /*
 NewOrders subscribes to new Order Transactions
 
-#### Returns
-[OrderTx]()
+*Parameters*
+None
+
+*Returns*
+* `Order Transaction` - _[object]()_
 
 #### Go Example
 ```go
@@ -205,13 +223,13 @@ for {
 ```
 
 #### Example payload
-> request
 ```json
+// request
 {"jsonrpc": "2.0", "method": "kosu_subscribe", "id": 123, "params": ["newOrders"]}
 ```
 
-// response
 ```json
+// response
 {"jsonrpc":"2.0","id":123,"result":"0x97cd66b222737445bc1695c0272619b6"}
 {
   "jsonrpc": "2.0",
@@ -275,9 +293,10 @@ for {
         "makerSignature": "0xbbc6600a2891b029d694027a6aed6a13e85e59ce4fcbed1210e66b5c1bbbb1ca19891490edf46877fb6a0ae548db3dc3dd83fa55a6f3c66596fe7f8740eb2c7e00",
         "posterSignature": "0x6c0684cb993dded088ea5e0bd9c5808c827a6bd2800beeaa9e1c4686049a16b30e2b0694e4c19647fb45c150e3b8e02ecd6f7a552099af98fec5c0c7d7ffb6d901"
       }
-	}
+    }
   }
 }
+```
 */
 func (s *Service) NewOrders(ctx context.Context) (*rpc.Subscription, error) {
 	query := "tm.event='Tx' AND tx.type='order'"
@@ -288,15 +307,17 @@ func (s *Service) NewOrders(ctx context.Context) (*rpc.Subscription, error) {
 LatestHeight returns the height of the best known block.
 The `latestHeight` method will return the integer height of the latest block committed to the blockchain.
 
-#### Parameters
+*Parameters*
 None
 
-#### Returns
-`latestHeight` - _int64_ latest block height
+*Returns*
+`latestHeight` - _int64_
 
-#### cURL Example
+#### Examples
 ```bash
 curl -X POST --data '{"jsonrpc":"2.0","method":"kosu_latestHeight", "id": 1}' localhost:14341 --header 'Content-Type: application/json'
+```
+```json
 {"jsonrpc":"2.0","id":1,"result":260}
 ```
 */
@@ -312,10 +333,22 @@ func (s *Service) LatestHeight() (int64, error) {
 	return res.Block.Height, nil
 }
 
-// AddOrders adds an array of Kosu orders to the network
 /*
-### Payload example
- ```json
+AddOrders adds an array of Kosu orders to the network
+
+*Parameters*
+* `Orders` - Array([object]())
+
+*Returns*
+* `AddOrdersResult` - Array([object]())
+
+#### cURL example
+```bash
+curl -X POST localhost:14341 \
+	--data '{"jsonrpc":"2.0", "id": 1, "method": "kosu_addOrders", "params": [[<PAYLOAD>]]}' \
+	-H 'Content-Type: application/json'
+```
+```json
  [{
 	 "subContract":"0xebe8fdf63db77e3b41b0aec8208c49fa46569606",
 	 "maker":"0xe3ec7592166d0145b9677f5f45dd1bd95ffe6596",
@@ -343,55 +376,18 @@ func (s *Service) LatestHeight() (int64, error) {
 	},
 	"makerSignature":"0xce84772cbbbe5a844c9002e6d54e53d72830b890ff1ea1521cbd86faada28aa136997b5cd3cafd85e887a9d6fc25bb2bfbe03fc6319d371b2c976f3374bcd8c300",
 	"posterSignature":"0xc3550b7ceab610e638dfb1b33e5cf7aaf9490854197328eadbe8ac049adef7510a07a0ea046fa1d410c5cc1048828152b9368a8d8925f8f0072192ebfe1bbb3101"
- }]`,
+ }]
  ```
-
-### Result example
-{
-	"accepted":[
-		"84977cca6134f03768494370cb6a7ba3884ddf3783e58f403dbf6a2ca50cea68"
-	],
-	"rejected":[
-		{"order":"4cad310a0047a3d2dfec72a53d0cc13ea000ac674d76222a2b9334c833f2024b","reason":"encoding/hex: odd length hex string"}
-	]
-}
-
-### cURL example
-```bash
-curl -X POST localhost:14341 \
-	--data '{"jsonrpc":"2.0", "id": 1, "method": "kosu_addOrders", "params": [[<PAYLOAD>]]}' \
-	-H 'Content-Type: application/json'
-```
 */
-func (s *Service) AddOrders(orders []*types.TransactionOrder) (*AddOrdersResult, error) {
-	result := &AddOrdersResult{}
+func (s *Service) AddOrders(orders []*types.TransactionOrder) error {
 	for _, order := range orders {
 		res, err := s.abci.BroadcastTxSync(order)
 		if err != nil {
-			return result, err
+			return err
 		}
-
-		hash := hex.EncodeToString(res.Hash)
 		if res.Code != 0 {
-			result.Rejected = append(result.Rejected, OrderRejection{
-				Order:  hash,
-				Reason: res.Log,
-			})
-		} else {
-			result.Accepted = append(result.Accepted, hash)
+			return errors.New(res.Log)
 		}
 	}
-	return result, nil
-}
-
-// OrderRejection represent an Order rejection where the Order field contains the hash of the Tx and Reason the error behind the rejection
-type OrderRejection struct {
-	Order  string `json:"order"`
-	Reason string `json:"reason"`
-}
-
-// AddOrdersResult aggregates all the accepted and rejected Orders added by AddOrders method
-type AddOrdersResult struct {
-	Accepted []string         `json:"accepted"`
-	Rejected []OrderRejection `json:"rejected"`
+	return nil
 }

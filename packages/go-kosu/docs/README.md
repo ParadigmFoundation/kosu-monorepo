@@ -102,6 +102,8 @@ You can start a single-node Kosu development network with the following command:
 kosud --init --home=$HOME/.kosu
 ```
 
+The command-line interface will also be built (see `kosu-cli help` for all commands).
+
 ### Sending transactions
 
 Force a rebalance transaction (must be parameterized correctly):
@@ -125,6 +127,11 @@ kosu-cli query round
 kosu-cli query poster [ethereum_address]
 ```
 
+###  JSON-RPC
+
+The `kosud` binary provides a `JSON-RPC` bridge which allows you to subscribe to events and submit transactions.
+Start the `JSON-RPC` bridge and interact with kosud use the `kosud rpc` sub-command.
+
 ### Running test-network
 
 A four-node test network can be started with `docker-compose` for testing and development. It expects an Ethereum JSONRPC-API to be available at `localhost:8545` with the Kosu system contracts deployed.
@@ -132,12 +139,7 @@ A four-node test network can be started with `docker-compose` for testing and de
 The test-net will expose the Tendermint ABCI RPC-API on ports `8000` to `8003` for nodes `0` through `3` respectively.
 
 ```bash
-# start (foreground)
-docker-compose up --build
-
-# start (background)
-docker-compose up -d --build
-
-# stop and remove containers
-docker-compose down
+make testnet
 ```
+
+
