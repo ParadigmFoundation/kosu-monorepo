@@ -63,9 +63,8 @@ contract ValidatorRegistry {
     uint public rewardPeriod;
     uint public minimumBalance = 1 ether;
     uint public stakeholderCut = 30; // Will be used as a percent so must be sub 100
-    uint _maxMultiplierNumerator = 12;
-    uint _maxMultiplierDenominator = 10;
-    uint _minMaxGenerator = 2 ether;
+    uint public maxGeneratorGrowth = 12000000000;
+    uint public minMaxGenerator = 2 ether;
     Treasury public treasury;
     Voting public voting;
     KosuToken public kosuToken;
@@ -116,11 +115,11 @@ contract ValidatorRegistry {
     function maxRewardRate() public view returns (uint) {
         uint currentMax = uint(_generators[_maxGenerator].value);
         if (currentMax == 0) {
-            return _minMaxGenerator;
+            return minMaxGenerator;
         }
-        uint max = _maxMultiplierNumerator.mul(currentMax).div(_maxMultiplierDenominator);
-        if (max < _minMaxGenerator) {
-            return _minMaxGenerator;
+        uint max = currentMax.add(maxGeneratorGrowth);
+        if (max < minMaxGenerator) {
+            return minMaxGenerator;
         }
         return max; //TODO: default / minimum?
     }
