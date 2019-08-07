@@ -115,7 +115,7 @@ contract ValidatorRegistry {
     */
     function maxRewardRate() public view returns (uint) {
         uint currentMax = uint(_generators[_maxGenerator].value);
-        if ( currentMax == 0) {
+        if (currentMax == 0) {
             return _minMaxGenerator;
         }
         uint max = _maxMultiplierNumerator.mul(currentMax).div(_maxMultiplierDenominator);
@@ -189,7 +189,7 @@ contract ValidatorRegistry {
         uint challengeCount = nextChallenge - 1;
         Challenge[] memory challenges = new Challenge[](challengeCount);
         for (uint i = 0; i < challengeCount; i++) {
-            challenges[i] = _challenges[i+1];
+            challenges[i] = _challenges[i + 1];
         }
         return challenges;
     }
@@ -636,10 +636,10 @@ contract ValidatorRegistry {
         }
         bytes32 nextGenerator = _maxGenerator;
 
-        while(true) {
+        while (true) {
             MaxList memory gen = _generators[nextGenerator];
-            if(gen.value > value) {
-                if(gen.next != 0x0) {
+            if (gen.value > value) {
+                if (gen.next != 0x0) {
                     nextGenerator = gen.next;
                     continue;
                 } else {
@@ -659,20 +659,20 @@ contract ValidatorRegistry {
 
         (bytes32 previous, bytes32 next) = findGeneratorPlaceInList(newGenerator.value);
 
-        if(previous == 0x0 && next == 0x0) {
+        if (previous == 0x0 && next == 0x0) {
             _maxGenerator = newGenerator.self;
             return;
         } else if (previous == 0x0 && next == _maxGenerator) {
             _maxGenerator = newGenerator.self;
         }
 
-        if(previous != 0x0) {
+        if (previous != 0x0) {
             MaxList storage entryBeforeNew = _generators[previous];
             entryBeforeNew.next = newGenerator.self;
             newGenerator.previous = entryBeforeNew.self;
         }
 
-        if(next != 0x0) {
+        if (next != 0x0) {
             MaxList storage entryAfterNew = _generators[next];
             entryAfterNew.previous = newGenerator.self;
             newGenerator.next = entryAfterNew.self;
@@ -693,11 +693,11 @@ contract ValidatorRegistry {
         }
 
 
-        while(true) {
-            if ( currentEntry.self == 0x0) {
+        while (true) {
+            if (currentEntry.self == 0x0) {
                 return;
             } else if (currentEntry.self == entryKey) {
-                if(currentEntry.next != 0x0) {
+                if (currentEntry.next != 0x0) {
                     _generators[currentEntry.previous].next = currentEntry.next;
                     _generators[currentEntry.next].previous = currentEntry.previous;
                     delete _generators[currentEntry.self];
