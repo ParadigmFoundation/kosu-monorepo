@@ -2,8 +2,36 @@
 title: Contributing
 ---
 
-# Contribute to Paradigm
+## Kosu Monorepo Contribution Guide
 
-The Paradigm Protocol is being developed as open-source software under a [GPL 3.0 License](./LICENSE). If you would like to get involved in the project, please feel free to do so by checking out the issues tab on our various repositories, creating issues, or forking the repository and making pull requests. We will be publishing formal contribution guidelines soon.
+All contributions to the kosu-monorepo are welcome and greatly appreciated! This document serves to outline the process for contributions and help you get set up.
 
-If you have any questions, please feel free to reach out to [Henry Harder](mailto:henry@paradigm.market) (GitHub [@hrharder](https://github.com/hrharder)).
+### Steps to get started
+
+1. Fork 'ParadigmFoundation/kosu-monorepo'
+2. Clone your fork
+3. Follow the [installation instructions](./README.md) in the monorepo's top level README.
+4. Open pull requests with the `[WIP]` flag against the `master` branch and include a description of the intended change in the PR description.
+
+Before removing the `[WIP]` tag and submitting a PR for review, make sure that:
+
+-   it passes our linter checks (`yarn lint`).
+-   it's properly formatted with `yarn prettier`.
+-   the whole kosu-monorepo builds (`yarn build`)
+-   the test suite passes for all packages (`yarn test`)
+-   it passes our continuous integration tests ([https://ci.kosu.io](https://ci.kosu.io))
+-   your fork is up to date with `master`
+
+### Branch structure & naming
+
+Our main branch, `master`, represents the current development state of the codebase. All pull requests should be opened against `master`.
+
+Name your branch with the format `{fix | feature | refactor }/{ description }`
+
+-   A `fix` addresses a bug or other issue
+-   A `feature` adds new functionality/interface surface area
+-   A `refactor` changes no business logic or interfaces, but improves implementation
+
+### Additional Details
+
+If you have any questions, please feel free to reach out to [Henry Harder](mailto:henry@paradigm.market) (GitHub [@hrharder](https://github.com/hrharder)), or message us on any of our communication channels. We are always happy to help! If you have feedback, bugs, or feature requests, please shoot them our way.

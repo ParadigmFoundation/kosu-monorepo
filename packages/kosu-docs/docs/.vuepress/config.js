@@ -39,6 +39,7 @@ module.exports = {
                     "/overview/",
                     "/overview/governance",
                     "/overview/contributing",
+                    "/overview/token-model",
                     //"/overview/terminology",
                     //"/overview/architecture",
                     //"/overview/examples"
