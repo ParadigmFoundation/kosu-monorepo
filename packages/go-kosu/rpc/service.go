@@ -59,10 +59,16 @@ func (s *Service) subscribeTM(ctx context.Context, query string) (*rpc.Subscript
 /*
 NewBlocks subscribes to new blocks on the Kosu blockchain
 
-#### Returns
-[block](https://godoc.org/github.com/tendermint/tendermint/types#Block)
+_Parameters_
+
+-   `newBlocks` - _string_
+
+_Returns_
+
+-   `block` - _[object](https://godoc.org/github.com/tendermint/tendermint/types#Block)_
 
 #### Go example
+
 ```go
 blocks := make(chan types.Block) // imported from github.com/tendermint/tendermint/types
 ctx := context.Background()
@@ -85,14 +91,15 @@ for {
 ```
 
 #### Example payload
-> request
+
 ```json
-{"jsonrpc": "2.0", "method": "kosu_subscribe", "id": 123, "params": ["newBlocks"]}
+// request
+{ "jsonrpc": "2.0", "method": "kosu_subscribe", "id": 123, "params": ["newBlocks"] }
 ```
 
-// response
 ```json
-{"jsonrpc":"2.0","id":123,"result":"0x97cd66b222737445bc1695c0272619b6"}
+// response
+{ "jsonrpc":"2.0","id":123,"result":"0x97cd66b222737445bc1695c0272619b6" }
 {
   "jsonrpc": "2.0",
   "method": "kosu_subscription",
@@ -168,7 +175,6 @@ for {
     }
   }
 }
-
 ```
 */
 func (s *Service) NewBlocks(ctx context.Context) (*rpc.Subscription, error) {
@@ -179,10 +185,15 @@ func (s *Service) NewBlocks(ctx context.Context) (*rpc.Subscription, error) {
 /*
 NewOrders subscribes to new Order Transactions
 
-#### Returns
-[OrderTx]()
+_Parameters_
+None
+
+_Returns_
+
+-   `Order Transaction` - _[object]()_
 
 #### Go Example
+
 ```go
 orders := make(chan types.TransactionOrder) // imported from go-kosu/abci/types
 ctx := context.Background()
@@ -205,14 +216,15 @@ for {
 ```
 
 #### Example payload
-> request
+
 ```json
-{"jsonrpc": "2.0", "method": "kosu_subscribe", "id": 123, "params": ["newOrders"]}
+// request
+{ "jsonrpc": "2.0", "method": "kosu_subscribe", "id": 123, "params": ["newOrders"] }
 ```
 
-// response
 ```json
-{"jsonrpc":"2.0","id":123,"result":"0x97cd66b222737445bc1695c0272619b6"}
+// response
+{ "jsonrpc":"2.0","id":123,"result":"0x97cd66b222737445bc1695c0272619b6" }
 {
   "jsonrpc": "2.0",
   "method": "kosu_subscription",
@@ -275,9 +287,10 @@ for {
         "makerSignature": "0xbbc6600a2891b029d694027a6aed6a13e85e59ce4fcbed1210e66b5c1bbbb1ca19891490edf46877fb6a0ae548db3dc3dd83fa55a6f3c66596fe7f8740eb2c7e00",
         "posterSignature": "0x6c0684cb993dded088ea5e0bd9c5808c827a6bd2800beeaa9e1c4686049a16b30e2b0694e4c19647fb45c150e3b8e02ecd6f7a552099af98fec5c0c7d7ffb6d901"
       }
-	}
+    }
   }
 }
+```
 */
 func (s *Service) NewOrders(ctx context.Context) (*rpc.Subscription, error) {
 	query := "tm.event='Tx' AND tx.type='order'"
@@ -288,16 +301,20 @@ func (s *Service) NewOrders(ctx context.Context) (*rpc.Subscription, error) {
 LatestHeight returns the height of the best known block.
 The `latestHeight` method will return the integer height of the latest block committed to the blockchain.
 
-#### Parameters
+_Parameters_
 None
 
-#### Returns
-`latestHeight` - _int64_ latest block height
+_Returns_
+`latestHeight` - _int64_
 
-#### cURL Example
+#### Examples
+
 ```bash
 curl -X POST --data '{"jsonrpc":"2.0","method":"kosu_latestHeight", "id": 1}' localhost:14341 --header 'Content-Type: application/json'
-{"jsonrpc":"2.0","id":1,"result":260}
+```
+
+```json
+{ "jsonrpc": "2.0", "id": 1, "result": 260 }
 ```
 */
 func (s *Service) LatestHeight() (int64, error) {
@@ -312,55 +329,60 @@ func (s *Service) LatestHeight() (int64, error) {
 	return res.Block.Height, nil
 }
 
-// AddOrders adds an array of Kosu orders to the network
 /*
-### Payload example
- ```json
- [{
-	 "subContract":"0xebe8fdf63db77e3b41b0aec8208c49fa46569606",
-	 "maker":"0xe3ec7592166d0145b9677f5f45dd1bd95ffe6596",
-	 "arguments":{
-		 "maker":[
-		 	{"datatype":"address","name":"signer"},
-			{"datatype":"address","name":"signerToken"},
-			{"datatype":"uint","name":"signerTokenCount"},
-			{"datatype":"address","name":"buyerToken"},
-			{"datatype":"uint","name":"buyerTokenCount"},
-			{"datatype":"signature","name":"signature","signatureFields":[0,1,2,3,4]}
-		],
-		"taker":[
-			{"datatype":"uint","name":"tokensToBuy"}
-		]
-	},
-	"makerValues": {
-		"signer":"0xe3ec7592166d0145b9677f5f45dd1bd95ffe6596",
-		"signerToken":"0xbFB972996fd7658099a95E6290e8B0fa46b9BDd5",
-		"signerTokenCount":"1000",
-		"buyer":"0xbcd1c49f4e54cca1a0a59ac21b7eb90f07970a3a",
-		"buyerToken":"0x92cBc0Bec2121f55E84bC331f096b7dAAe5A5ddA",
-		"buyerTokenCount":"1000",
-		"signature":"0xce84772cbbbe5a844c9002e6d54e53d72830b890ff1ea1521cbd86faada28aa136997b5cd3cafd85e887a9d6fc25bb2bfbe03fc6319d371b2c976f3374bcd8c300"
-	},
-	"makerSignature":"0xce84772cbbbe5a844c9002e6d54e53d72830b890ff1ea1521cbd86faada28aa136997b5cd3cafd85e887a9d6fc25bb2bfbe03fc6319d371b2c976f3374bcd8c300",
-	"posterSignature":"0xc3550b7ceab610e638dfb1b33e5cf7aaf9490854197328eadbe8ac049adef7510a07a0ea046fa1d410c5cc1048828152b9368a8d8925f8f0072192ebfe1bbb3101"
- }]`,
- ```
-
-### Result example
-{
-	"accepted":[
-		"84977cca6134f03768494370cb6a7ba3884ddf3783e58f403dbf6a2ca50cea68"
-	],
-	"rejected":[
-		{"order":"4cad310a0047a3d2dfec72a53d0cc13ea000ac674d76222a2b9334c833f2024b","reason":"encoding/hex: odd length hex string"}
-	]
-}
+AddOrders adds an array of Kosu orders to the network
 
 ### cURL example
+
 ```bash
 curl -X POST localhost:14341 \
 	--data '{"jsonrpc":"2.0", "id": 1, "method": "kosu_addOrders", "params": [[<PAYLOAD>]]}' \
 	-H 'Content-Type: application/json'
+```
+
+```json
+{
+    "accepted": ["84977cca6134f03768494370cb6a7ba3884ddf3783e58f403dbf6a2ca50cea68"],
+    "rejected": [
+        {
+            "order": "4cad310a0047a3d2dfec72a53d0cc13ea000ac674d76222a2b9334c833f2024b",
+            "reason": "encoding/hex: odd length hex string"
+        }
+    ]
+}
+```
+
+### Payload example
+
+```json
+[
+    {
+        "subContract": "0xebe8fdf63db77e3b41b0aec8208c49fa46569606",
+        "maker": "0xe3ec7592166d0145b9677f5f45dd1bd95ffe6596",
+        "arguments": {
+            "maker": [
+                { "datatype": "address", "name": "signer" },
+                { "datatype": "address", "name": "signerToken" },
+                { "datatype": "uint", "name": "signerTokenCount" },
+                { "datatype": "address", "name": "buyerToken" },
+                { "datatype": "uint", "name": "buyerTokenCount" },
+                { "datatype": "signature", "name": "signature", "signatureFields": [0, 1, 2, 3, 4] }
+            ],
+            "taker": [{ "datatype": "uint", "name": "tokensToBuy" }]
+        },
+        "makerValues": {
+            "signer": "0xe3ec7592166d0145b9677f5f45dd1bd95ffe6596",
+            "signerToken": "0xbFB972996fd7658099a95E6290e8B0fa46b9BDd5",
+            "signerTokenCount": "1000",
+            "buyer": "0xbcd1c49f4e54cca1a0a59ac21b7eb90f07970a3a",
+            "buyerToken": "0x92cBc0Bec2121f55E84bC331f096b7dAAe5A5ddA",
+            "buyerTokenCount": "1000",
+            "signature": "0xce84772cbbbe5a844c9002e6d54e53d72830b890ff1ea1521cbd86faada28aa136997b5cd3cafd85e887a9d6fc25bb2bfbe03fc6319d371b2c976f3374bcd8c300"
+        },
+        "makerSignature": "0xce84772cbbbe5a844c9002e6d54e53d72830b890ff1ea1521cbd86faada28aa136997b5cd3cafd85e887a9d6fc25bb2bfbe03fc6319d371b2c976f3374bcd8c300",
+        "posterSignature": "0xc3550b7ceab610e638dfb1b33e5cf7aaf9490854197328eadbe8ac049adef7510a07a0ea046fa1d410c5cc1048828152b9368a8d8925f8f0072192ebfe1bbb3101"
+    }
+]
 ```
 */
 func (s *Service) AddOrders(orders []*types.TransactionOrder) (*AddOrdersResult, error) {
