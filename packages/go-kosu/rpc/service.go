@@ -2,7 +2,7 @@ package rpc
 
 import (
 	"context"
-	"errors"
+	"encoding/hex"
 	"go-kosu/abci"
 	"go-kosu/abci/types"
 	"log"
@@ -294,7 +294,7 @@ None
 #### Returns
 `latestHeight` - _int64_ latest block height
 
-#### Examples
+#### cURL Example
 ```bash
 curl -X POST --data '{"jsonrpc":"2.0","method":"kosu_latestHeight", "id": 1}' localhost:14341 --header 'Content-Type: application/json'
 {"jsonrpc":"2.0","id":1,"result":260}
@@ -314,7 +314,7 @@ func (s *Service) LatestHeight() (int64, error) {
 
 // AddOrders adds an array of Kosu orders to the network
 /*
-### Example payload
+### Payload example
  ```json
  [{
 	 "subContract":"0xebe8fdf63db77e3b41b0aec8208c49fa46569606",
@@ -346,6 +346,16 @@ func (s *Service) LatestHeight() (int64, error) {
  }]`,
  ```
 
+### Result example
+{
+	"accepted":[
+		"84977cca6134f03768494370cb6a7ba3884ddf3783e58f403dbf6a2ca50cea68"
+	],
+	"rejected":[
+		{"order":"4cad310a0047a3d2dfec72a53d0cc13ea000ac674d76222a2b9334c833f2024b","reason":"encoding/hex: odd length hex string"}
+	]
+}
+
 ### cURL example
 ```bash
 curl -X POST localhost:14341 \
@@ -353,15 +363,35 @@ curl -X POST localhost:14341 \
 	-H 'Content-Type: application/json'
 ```
 */
-func (s *Service) AddOrders(orders []*types.TransactionOrder) error {
+func (s *Service) AddOrders(orders []*types.TransactionOrder) (*AddOrdersResult, error) {
+	result := &AddOrdersResult{}
 	for _, order := range orders {
 		res, err := s.abci.BroadcastTxSync(order)
 		if err != nil {
-			return err
+			return result, err
 		}
+
+		hash := hex.EncodeToString(res.Hash)
 		if res.Code != 0 {
-			return errors.New(res.Log)
+			result.Rejected = append(result.Rejected, OrderRejection{
+				Order:  hash,
+				Reason: res.Log,
+			})
+		} else {
+			result.Accepted = append(result.Accepted, hash)
 		}
 	}
-	return nil
+	return result, nil
+}
+
+// OrderRejection represent an Order rejection where the Order field contains the hash of the Tx and Reason the error behind the rejection
+type OrderRejection struct {
+	Order  string `json:"order"`
+	Reason string `json:"reason"`
+}
+
+// AddOrdersResult aggregates all the accepted and rejected Orders added by AddOrders method
+type AddOrdersResult struct {
+	Accepted []string         `json:"accepted"`
+	Rejected []OrderRejection `json:"rejected"`
 }

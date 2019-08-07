@@ -10,24 +10,33 @@ import (
 	"github.com/stretchr/testify/require"
 
 	"go-kosu/abci"
+	"go-kosu/abci/types"
 	"go-kosu/tests"
 
 	"github.com/tendermint/tendermint/libs/db"
 )
 
-func setupNewTestClient(t *testing.T) (*abci.App, *rpc.Client, func()) {
+func newServerClient(t *testing.T) (*abci.App, *rpc.Client, func()) {
 	app, closer := tests.StartServer(t, db.NewMemDB())
+	key, err := abci.LoadPrivateKey(app.Config.RootDir)
+	require.NoError(t, err)
+	client := rpc.DialInProc(
+		NewServer(
+			abci.NewHTTPClient("http://localhost:26657", key),
+		),
+	)
+
+	return app, client, closer
+}
+
+func TestRPCLatestHeight(t *testing.T) {
+	_, closer := tests.StartServer(t, db.NewMemDB())
+	defer closer()
 	client := rpc.DialInProc(
 		NewServer(
 			abci.NewHTTPClient("http://localhost:26657", nil),
 		),
 	)
-	return app, client, closer
-}
-
-func TestRPCLatestHeight(t *testing.T) {
-	_, client, closer := setupNewTestClient(t)
-	defer closer()
 
 	var latest uint64
 	// Get the initial (prior the first block is mined)
@@ -39,7 +48,6 @@ func TestRPCLatestHeight(t *testing.T) {
 		// this is invoked when a block is mined
 		require.NoError(t, client.Call(&latest, "kosu_latestHeight"))
 		assert.EqualValues(t, 1, latest)
-
 		cancel()
 	}
 
@@ -60,4 +68,37 @@ func TestRPCLatestHeight(t *testing.T) {
 			fn(e)
 		}
 	}
+}
+
+func TestAddOrders(t *testing.T) {
+	app, client, closer := newServerClient(t)
+	defer closer()
+
+	// nolint:lll
+	validTx := &types.TransactionOrder{
+		SubContract:     "0xebe8fdf63db77e3b41b0aec8208c49fa46569606",
+		Maker:           "0xe3ec7592166d0145b9677f5f45dd1bd95ffe6596",
+		MakerSignature:  "0xce84772cbbbe5a844c9002e6d54e53d72830b890ff1ea1521cbd86faada28aa136997b5cd3cafd85e887a9d6fc25bb2bfbe03fc6319d371b2c976f3374bcd8c300",
+		PosterSignature: "0xc3550b7ceab610e638dfb1b33e5cf7aaf9490854197328eadbe8ac049adef7510a07a0ea046fa1d410c5cc1048828152b9368a8d8925f8f0072192ebfe1bbb3101",
+	}
+	invalidTx := &types.TransactionOrder{
+		SubContract:     "0xfff",
+		Maker:           "0xfff",
+		MakerSignature:  "0xfff",
+		PosterSignature: "0xfff",
+	}
+
+	// this poster address is generated out of the validTx
+	app.Store().SetPoster("0x02fbf1aa49bc3b9631e8e96572935a5894879724", types.Poster{
+		Balance: types.NewBigIntFromInt(100),
+	})
+
+	params := []interface{}{validTx, invalidTx}
+	result := &AddOrdersResult{}
+
+	err := client.Call(result, "kosu_addOrders", params)
+	require.NoError(t, err)
+
+	assert.Len(t, result.Accepted, 1)
+	assert.Len(t, result.Rejected, 1)
 }
