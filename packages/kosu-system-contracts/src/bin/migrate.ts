@@ -40,7 +40,6 @@ if (args["test-mnemonic"] || !mnemonic) {
 
     const txDefaults = {
         from: normalizedFromAddress,
-        gas: 4500000,
         gasPrice: toWei("5", "gwei"),
     };
 
