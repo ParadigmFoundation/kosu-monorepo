@@ -57,13 +57,13 @@ func (s *Service) subscribeTM(ctx context.Context, query string) (*rpc.Subscript
 }
 
 /*
-NewBlocks subscribes to new blocks on the Kosu blockchain
+NewBlocks subscribes to new blocks on the Kosu blockchain.
 
-_Parameters_
+_Parameters:_
 
 -   `newBlocks` - _string_
 
-_Returns_
+_Returns:_
 
 -   `block` - _[object](https://godoc.org/github.com/tendermint/tendermint/types#Block)_
 
@@ -183,12 +183,11 @@ func (s *Service) NewBlocks(ctx context.Context) (*rpc.Subscription, error) {
 }
 
 /*
-NewOrders subscribes to new Order Transactions
+NewOrders subscribes to new Order Transactions.
 
-_Parameters_
-None
+_Parameters:_
 
-_Returns_
+_Returns:_
 
 -   `Order Transaction` - _[object]()_
 
@@ -301,13 +300,13 @@ func (s *Service) NewOrders(ctx context.Context) (*rpc.Subscription, error) {
 LatestHeight returns the height of the best known block.
 The `latestHeight` method will return the integer height of the latest block committed to the blockchain.
 
-_Parameters_
-None
+_Parameters:_
 
-_Returns_
-`latestHeight` - _int64_
+_Returns:_
 
-#### Examples
+-   `latestHeight` - _int64_
+
+#### cURL Example
 
 ```bash
 curl -X POST --data '{"jsonrpc":"2.0","method":"kosu_latestHeight", "id": 1}' localhost:14341 --header 'Content-Type: application/json'
@@ -330,9 +329,17 @@ func (s *Service) LatestHeight() (int64, error) {
 }
 
 /*
-AddOrders adds an array of Kosu orders to the network
+AddOrders adds an array of Kosu orders to the network.
 
-### cURL example
+_Parameters:_
+
+-   Order Transactions - `Array([order]())`
+
+_Returns:_
+
+-   Orders Result - `[object](AddOrdersResult)`
+
+#### cURL example
 
 ```bash
 curl -X POST localhost:14341 \
@@ -352,7 +359,7 @@ curl -X POST localhost:14341 \
 }
 ```
 
-### Payload example
+#### Payload example
 
 ```json
 [
