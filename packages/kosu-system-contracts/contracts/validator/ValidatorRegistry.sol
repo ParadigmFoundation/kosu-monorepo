@@ -595,7 +595,6 @@ contract ValidatorRegistry is Ownable {
 
     function removeListing(Listing storage l) internal {
         if (l.rewardRate > 0 && l.confirmationBlock > 0) {
-            uint rewardRate = uint(l.rewardRate);
             removeEntryFromList(l.tendermintPublicKey);
         }
 
