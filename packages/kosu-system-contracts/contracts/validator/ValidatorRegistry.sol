@@ -2,6 +2,7 @@ pragma solidity ^0.5.0;
 pragma experimental ABIEncoderV2;
 
 import "openzeppelin-solidity/contracts/math/SafeMath.sol";
+import "openzeppelin-solidity/contracts/ownership/Ownable.sol";
 import "../event/EventEmitter.sol";
 import "../treasury/Treasury.sol";
 import "../voting/Voting.sol";
@@ -10,7 +11,7 @@ import "../voting/Voting.sol";
     @author Freydal
     @dev Stores registry of validator listings and provides functionality to curate through proposals and challenges.
 */
-contract ValidatorRegistry {
+contract ValidatorRegistry is Ownable {
     using SafeMath for uint;
 
     enum Status {
@@ -62,7 +63,7 @@ contract ValidatorRegistry {
     uint public exitPeriod;
     uint public rewardPeriod;
     uint public minimumBalance = 1 ether;
-    uint public stakeholderCut = 30; // Will be used as a percent so must be sub 100
+    uint public stakeholderCut = 30; // per 100
     uint public maxGeneratorGrowth = 12000000000;
     uint public minMaxGenerator = 2 ether;
     Treasury public treasury;
@@ -87,7 +88,7 @@ contract ValidatorRegistry {
         @param _exitPeriod Number of blocks exiting listings must wait before claiming stake
         @param _rewardPeriod The frequency (in blocks) with which validator rewards may be issued
     */
-    constructor(address payable _treasuryAddress, address _votingAddress, address _events, uint _applicationPeriod, uint _commitPeriod, uint _challengePeriod, uint _exitPeriod, uint _rewardPeriod) public {
+    constructor(address payable _treasuryAddress, address _votingAddress, address _events, uint _applicationPeriod, uint _commitPeriod, uint _challengePeriod, uint _exitPeriod, uint _rewardPeriod) public Ownable() {
         treasury = Treasury(_treasuryAddress);
         voting = Voting(_votingAddress);
         kosuToken = treasury.kosuToken();
@@ -490,6 +491,30 @@ contract ValidatorRegistry {
 
         //Clear listing data and remove from tracking array
         removeListing(listing);
+    }
+
+    function updateConfigValue(uint index, uint value) public onlyOwner {
+        if (index == 0) {
+            applicationPeriod = value;
+        } else if (index == 1) {
+            commitPeriod = value;
+        } else if (index == 2) {
+            challengePeriod = value;
+        } else if (index == 3) {
+            exitPeriod = value;
+        } else if (index == 4) {
+            rewardPeriod = value;
+        } else if (index == 5) {
+            minimumBalance = value;
+        } else if (index == 6) {
+            stakeholderCut = value;
+        } else if (index == 7) {
+            maxGeneratorGrowth = value;
+        } else if (index == 8) {
+            minMaxGenerator = value;
+        } else {
+            revert("Index does not match a value");
+        }
     }
 
     //INTERNAL

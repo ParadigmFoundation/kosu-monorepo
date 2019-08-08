@@ -105,7 +105,7 @@ describe("ValidatorRegistry", async () => {
                 TestValues.oneWei,
             );
 
-            txReceipt.gasUsed.should.be.lt(4700000);
+            txReceipt.gasUsed.should.be.lt(5000000);
         });
     });
 
@@ -1668,6 +1668,32 @@ describe("ValidatorRegistry", async () => {
                 .callAsync()
                 .then(x => x.toString())
                 .should.eventually.eq(initialMax.toString());
+        });
+    });
+
+    describe.only("updateConfigValue", () => {
+        it("should only let the owner act", async () => {
+            await validatorRegistry.updateConfigValue.awaitTransactionSuccessAsync(TestValues.zero, TestValues.oneHundredEther, { from: accounts[9] }).should.eventually.be.rejected;
+        });
+
+        [
+            "applicationPeriod",
+            "commitPeriod",
+            "challengePeriod",
+            "exitPeriod",
+            "rewardPeriod",
+            "minimumBalance",
+            "stakeholderCut",
+            "maxGeneratorGrowth",
+            "minMaxGenerator",
+        ].forEach((method, index) => {
+            it(`should correctly set a new ${method}`, async () => {
+                const originalValue = await validatorRegistry[method].callAsync();
+                await validatorRegistry.updateConfigValue.awaitTransactionSuccessAsync(new BigNumber(index), TestValues.maxUint).should.eventually.be.fulfilled;
+                const newValue = await validatorRegistry[method].callAsync();
+                newValue.toString().should.eq(TestValues.maxUint.toString());
+                await validatorRegistry.updateConfigValue.awaitTransactionSuccessAsync(new BigNumber(index), originalValue).should.eventually.be.fulfilled;
+            });
         });
     });
 
