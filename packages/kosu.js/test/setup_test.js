@@ -56,7 +56,7 @@ before(async () => {
     };
 
     if (!useGeth) {
-        await migrations(provider, { from: accounts[0].toLowerCase(), gas: "4500000" });
+        await migrations(provider, { from: accounts[0].toLowerCase() });
     }
     global.basicTradeSubContract = await kosuSubContractHelper(provider, {
         from: accounts[0].toLowerCase(),
