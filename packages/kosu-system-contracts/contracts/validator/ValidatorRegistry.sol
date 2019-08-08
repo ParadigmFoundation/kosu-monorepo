@@ -652,7 +652,7 @@ contract ValidatorRegistry is Ownable {
         eventEmitter.emitEvent("ValidatorChallengeResolved", data, "");
     }
 
-    function findGeneratorPlaceInList(int value) internal returns (bytes32 previous, bytes32 next) {
+    function findGeneratorPlaceInList(int value) internal view returns (bytes32 previous, bytes32 next) {
         if (_maxGenerator == 0x0) {
             return (0x0, 0x0);
         }
