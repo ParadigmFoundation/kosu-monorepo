@@ -21,10 +21,6 @@ func (s *Suite) TestRebalance() {
 				},
 			}
 
-			s.app.Store().SetConsensusParams(types.ConsensusParams{
-				PeriodLength: uint32(tx.RoundInfo.EndsAt - tx.RoundInfo.StartsAt),
-			})
-
 			BroadcastTxCommit(t, s.client, tx)
 
 			Convey("RoundInfo should be updated", func() {
@@ -61,10 +57,6 @@ func (s *Suite) TestRebalanceWitness() {
 				EndsAt:   20,
 			},
 		}
-
-		s.app.Store().SetConsensusParams(types.ConsensusParams{
-			PeriodLength: uint32(tx.RoundInfo.EndsAt - tx.RoundInfo.StartsAt),
-		})
 
 		ctx, cancel := context.WithCancel(context.Background())
 		defer cancel()

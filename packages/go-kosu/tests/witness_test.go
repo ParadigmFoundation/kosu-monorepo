@@ -28,7 +28,7 @@ func buildWitnessTx(cfg *config.Config, tx *types.TransactionWitness) *types.Tra
 
 func (s *Suite) TestWitnessTxPoster() {
 	GivenABCIServer(s.T(), s, func(t *testing.T) {
-		tx := buildWitnessTx(s.app.Config, &types.TransactionWitness{
+		tx := buildWitnessTx(s.config, &types.TransactionWitness{
 			Subject: types.TransactionWitness_POSTER,
 			Block:   10,
 			Amount:  types.NewBigIntFromString("1000000000000000000", 10),
@@ -80,7 +80,7 @@ func (s *Suite) TestWitnessTxPoster() {
 
 func (s *Suite) TestWitnessValidator() {
 	GivenABCIServer(s.T(), s, func(t *testing.T) {
-		tx := buildWitnessTx(s.app.Config, &types.TransactionWitness{
+		tx := buildWitnessTx(s.config, &types.TransactionWitness{
 			Subject: types.TransactionWitness_VALIDATOR,
 			Block:   10,
 			Amount:  types.NewBigIntFromString("1000000000000000000", 10),
@@ -119,7 +119,7 @@ func (s *Suite) TestWitnessValidator() {
 func (s *Suite) TestWitnessTxPruning() {
 	GivenABCIServer(s.T(), s, func(t *testing.T) {
 		Convey("When a Tx#1 is broadcasted", func() {
-			tx := buildWitnessTx(s.app.Config, &types.TransactionWitness{
+			tx := buildWitnessTx(s.config, &types.TransactionWitness{
 				Subject: types.TransactionWitness_VALIDATOR,
 				Block:   10,
 				Amount:  types.NewBigIntFromString("1000000000000000000", 10),
