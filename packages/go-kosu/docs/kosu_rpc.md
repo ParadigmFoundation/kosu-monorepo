@@ -1,9 +1,9 @@
 # JSON RPC
 
-Kosu expses a JSON-RPC 2.0 API based on the [go-ethereum/rpc](https://godoc.org/github.com/ethereum/go-ethereum/rpc) package.
+Kosu exposes a JSON-RPC 2.0 API based on the [go-ethereum/rpc](https://godoc.org/github.com/ethereum/go-ethereum/rpc) package.
 
 JSON-RPC is a stateless, light-weight remote procedure call (RPC) protocol,
-the protocol specification can be found [here](https://www.jsonrpc.org/specification)
+the protocol specification can be found [here](https://www.jsonrpc.org/specification).
 
 ### Usage
 
@@ -15,7 +15,7 @@ kosud rpc
 
 For more information use `kosud rpc --help`.
 
-By default the HTTP and WS endpoints are binded to ports `14341` and `14342` repectively.
+By default the HTTP and WS endpoints are bound to ports `14341` and `14342` respectively.
 Note that the subscriptions operations are only available via WebSockets.
 
 The current API exposes all of its methods under the `kosu` namespace
@@ -29,7 +29,7 @@ To perform a request calling the `foo` method we should:
 { "jsonrpc": "2.0", "method": "kosu_foo", "params": [], "id": 1 }
 ```
 
-For subscriptions, we use the `kosu_subscribe` method, and the event name is specified within the first param
+For subscriptions, we use the `kosu_subscribe` method, and the event name is specified within the first parameter.
 
 #### Subscription example
 
@@ -45,9 +45,17 @@ To subscribe to the `newBlocks` events we should:
 
 ### _AddOrders_
 
-AddOrders adds an array of Kosu orders to the network
+AddOrders adds an array of Kosu orders to the network.
 
-### cURL example
+_Parameters:_
+
+-   Order Transactions - `Array([order]())`
+
+_Returns:_
+
+-   Orders Result - `[object](AddOrdersResult)`
+
+#### cURL example
 
 ```bash
 curl -X POST localhost:14341 \
@@ -67,7 +75,7 @@ curl -X POST localhost:14341 \
 }
 ```
 
-### Payload example
+#### Payload example
 
 ```json
 [
@@ -105,13 +113,13 @@ curl -X POST localhost:14341 \
 LatestHeight returns the height of the best known block.
 The `latestHeight` method will return the integer height of the latest block committed to the blockchain.
 
-_Parameters_
-None
+_Parameters:_
 
-_Returns_
-`latestHeight` - _int64_
+_Returns:_
 
-#### Examples
+-   `latestHeight` - _int64_
+
+#### cURL Example
 
 ```bash
 curl -X POST --data '{"jsonrpc":"2.0","method":"kosu_latestHeight", "id": 1}' localhost:14341 --header 'Content-Type: application/json'
@@ -123,13 +131,13 @@ curl -X POST --data '{"jsonrpc":"2.0","method":"kosu_latestHeight", "id": 1}' lo
 
 ### _NewBlocks_
 
-NewBlocks subscribes to new blocks on the Kosu blockchain
+NewBlocks subscribes to new blocks on the Kosu blockchain.
 
-_Parameters_
+_Parameters:_
 
 -   `newBlocks` - _string_
 
-_Returns_
+_Returns:_
 
 -   `block` - _[object](https://godoc.org/github.com/tendermint/tendermint/types#Block)_
 
@@ -245,12 +253,11 @@ for {
 
 ### _NewOrders_
 
-NewOrders subscribes to new Order Transactions
+NewOrders subscribes to new Order Transactions.
 
-_Parameters_
-None
+_Parameters:_
 
-_Returns_
+_Returns:_
 
 -   `Order Transaction` - _[object]()_
 
