@@ -1,6 +1,6 @@
 {
     "name": "@kosu/gov-portal-helper",
-    "version": "0.1.16",
+    "version": "0.1.17",
     "description": "Abstraction library for interacting with the Kosu contract system governance functions.",
     "main": "lib/index.js",
     "license": "MIT",
@@ -12,7 +12,7 @@
         "build": "tsc"
     },
     "dependencies": {
-        "@kosu/kosu.js": "^0.1.5",
+        "@kosu/kosu.js": "^0.1.6",
         "@kosu/tsc-config": "^0.1.0",
         "bignumber.js": "8.0.2",
         "browser-cookies": "^1.2.0",
