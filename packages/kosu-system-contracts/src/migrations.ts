@@ -110,7 +110,6 @@ export async function migrations(
             txDefaults,
             treasury.address,
             voting.address,
-            authorizedAddresses.address,
             eventEmitter.address,
             config._applicationPeriod,
             config._commitPeriod,

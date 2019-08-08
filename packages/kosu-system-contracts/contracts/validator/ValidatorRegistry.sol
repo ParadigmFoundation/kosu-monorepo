@@ -76,11 +76,10 @@ contract ValidatorRegistry {
     bytes32 _maxGenerator;
     mapping(bytes32 => MaxList)_generators;
 
-    /** @dev Create a new ValidatorRegistry implementation
-        @notice Create a new ValidatorRegistry implementation
+    /** @dev Create a new ValidatorRegistry
+        @notice Create a new ValidatorRegistry
         @param _treasuryAddress Deployed Treasury address
         @param _votingAddress Deployed Voting address
-        @param auth AuthorizedAddresses deployed address
         @param _events Deployed EventEmitter address
         @param _applicationPeriod Initial application period (in blocks) for pending listings
         @param _commitPeriod Number of blocks after challenge initiated in which votes can be committed
@@ -88,7 +87,7 @@ contract ValidatorRegistry {
         @param _exitPeriod Number of blocks exiting listings must wait before claiming stake
         @param _rewardPeriod The frequency (in blocks) with which validator rewards may be issued
     */
-    constructor(address payable _treasuryAddress, address _votingAddress, address auth, address _events, uint _applicationPeriod, uint _commitPeriod, uint _challengePeriod, uint _exitPeriod, uint _rewardPeriod) public {
+    constructor(address payable _treasuryAddress, address _votingAddress, address _events, uint _applicationPeriod, uint _commitPeriod, uint _challengePeriod, uint _exitPeriod, uint _rewardPeriod) public {
         treasury = Treasury(_treasuryAddress);
         voting = Voting(_votingAddress);
         kosuToken = treasury.kosuToken();
