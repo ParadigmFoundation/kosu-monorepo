@@ -23,19 +23,25 @@ func (s *Suite) TestOrderTx() {
 
 	GivenABCIServer(s.T(), s, func(t *testing.T) {
 		Convey("And an existing poster with Limit > 0", func() {
-			poster := types.Poster{
-				Limit: 10,
+			posterTx := &types.TransactionWitness{
+				Subject: types.TransactionWitness_POSTER,
+				Address: addr,
+				Amount:  types.NewBigIntFromInt(10),
 			}
+			BroadcastTxCommit(t, s.client, posterTx)
 
-			// TODO: Avoid using the store in this test
-			s.app.Store().SetPoster(addr, poster)
+			BroadcastNextRebalance(t, s.client)
 
 			Convey("When sending an OrderTx", func() {
+				poster, err := s.client.QueryPoster(addr)
+				require.NoError(t, err)
 				BroadcastTxCommit(t, s.client, tx)
 
 				Convey("Limit should be decremented by 1", func() {
-					found := s.app.Store().Poster(addr)
-					So(found.Limit, ShouldEqual, poster.Limit-1)
+					found, err := s.client.QueryPoster(addr)
+					require.NoError(t, err)
+
+					So(poster.Limit, ShouldEqual, found.Limit+1)
 				})
 			})
 
@@ -49,7 +55,7 @@ func (s *Suite) TestOrderTx() {
 				ch := make(chan tmtypes.EventDataTx)
 				defer close(ch)
 
-				sub, err := client.Subscribe(ctx, "kosu", ch, "subscribe", "orders")
+				sub, err := client.Subscribe(ctx, "kosu", ch, "newOrders")
 				require.NoError(t, err)
 				defer sub.Unsubscribe()
 
@@ -64,7 +70,7 @@ func (s *Suite) TestOrderTx() {
 			})
 
 			Convey("And a non existing poster", func() {
-				s.app.Store().DeletePoster(addr)
+				tx.Maker = "0x404"
 
 				Convey("When sending an OrderTx", func() {
 					res, err := s.client.BroadcastTxSync(tx)

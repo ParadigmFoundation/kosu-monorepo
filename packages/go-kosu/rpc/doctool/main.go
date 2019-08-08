@@ -7,6 +7,7 @@ import (
 	"go/token"
 	"log"
 	"os"
+	"strings"
 	"text/template"
 )
 
@@ -53,6 +54,9 @@ func main() {
 		}
 		typeDocs := TypeDocs{Title: t.Name, Description: t.Doc}
 		for _, m := range t.Methods {
+			if !isPublic(m.Name) {
+				continue
+			}
 			typeDocs.Entries = append(typeDocs.Entries, DocEntry{Method: m.Name, Text: m.Doc})
 		}
 		pkgDocs.Types = append(pkgDocs.Types, typeDocs)
@@ -65,5 +69,12 @@ func main() {
 	if err := t.Execute(os.Stdout, pkgDocs); err != nil {
 		panic(err)
 	}
+}
 
+func isPublic(s string) bool {
+	if s == "" {
+		return false
+	}
+
+	return strings.ToUpper(s[:1]) == s[:1]
 }
