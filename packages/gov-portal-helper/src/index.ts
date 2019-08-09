@@ -467,7 +467,7 @@ class Gov {
     hasCommittedVote(challengeId: BigNumber): boolean {
         try {
             const vote = this._loadVote(challengeId.toString());
-            return (vote.commitTxHash && vote.commitTxHash.startsWith('0x'));
+            return vote.commitTxHash && vote.commitTxHash.startsWith("0x");
         } catch (e) {
             return false;
         }
@@ -519,7 +519,7 @@ class Gov {
     hasRevealedVote(challengeId: BigNumber): boolean {
         try {
             const vote = this._loadVote(challengeId.toString());
-            return (vote.revealTxHash && vote.revealTxHash.startsWith('0x'));
+            return vote.revealTxHash && vote.revealTxHash.startsWith("0x");
         } catch (e) {
             return false;
         }
