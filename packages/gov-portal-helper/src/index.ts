@@ -1011,7 +1011,7 @@ class Gov {
         cookies.set(key, cookie);
     }
 
-    _loadVote(id: string) {
+    _loadVote(id: string): Vote {
         const key = `gov_vote#${id}#${this.coinbase}`;
         const cookie = cookies.get(key);
         if (!cookie) {
