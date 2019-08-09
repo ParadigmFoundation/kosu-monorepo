@@ -19,7 +19,7 @@ describe("KosuToken", () => {
     describe("bonding", () => {
         it("should have expected initial output with parameterization", async () => {
             await web3Wrapper
-                .sendTransactionAsync({ to: token.address, value: TestValues.oneEther, from })
+                .sendTransactionAsync({ to: token.address, value: TestValues.twoEther.div("10"), from })
                 .then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash));
 
             const finalBalance = await token.balanceOf.callAsync(from);
@@ -27,14 +27,14 @@ describe("KosuToken", () => {
             const endingEther = await web3Wrapper.getBalanceInWeiAsync(token.address);
 
             TestValues.oneEther
-                .times(30)
+                .times(10000)
                 .toString()
                 .should.eq(finalBalance.toString());
             TestValues.oneEther
-                .times(30)
+                .times(10000)
                 .toString()
                 .should.eq(finalSupply.toString());
-            TestValues.oneEther.toString().should.eq(endingEther.toString());
+            TestValues.twoEther.div(10).toString().should.eq(endingEther.toString());
         });
 
         describe("fallback", () => {
