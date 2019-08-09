@@ -101,6 +101,8 @@ interface Vote {
     value: string;
     salt: string;
     encoded: string;
+    commitTxHash?: string;
+    revealTxHash?: string;
 }
 
 // will be the global window object in browser
@@ -196,6 +198,8 @@ interface Map<T> {
  * @property {string} value the vote value (should be "1" or "0" for challenge votes)
  * @property {string} salt a secret string used to hash the vote; must use same salt in commit as reveal
  * @property {string} encoded the encoded vote, as passed to the contract system
+ * @property {string} commitTxHash the transaction hash of the commit transaction
+ * @property {string} revealTxHash the transaction hash of the reveal transaction
  */
 
 /**
