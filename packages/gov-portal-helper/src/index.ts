@@ -1005,7 +1005,7 @@ class Gov {
     }
 
     _storeVote(vote: Vote): void {
-        const { id, value, salt } = vote;
+        const { id } = vote;
         const key = `gov_vote#${id}#${this.coinbase}`;
         const cookie = JSON.stringify(vote);
         cookies.set(key, cookie);
