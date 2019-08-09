@@ -34,7 +34,10 @@ describe("KosuToken", () => {
                 .times(10000)
                 .toString()
                 .should.eq(finalSupply.toString());
-            TestValues.twoEther.div(10).toString().should.eq(endingEther.toString());
+            TestValues.twoEther
+                .div(10)
+                .toString()
+                .should.eq(endingEther.toString());
         });
 
         describe("fallback", () => {
