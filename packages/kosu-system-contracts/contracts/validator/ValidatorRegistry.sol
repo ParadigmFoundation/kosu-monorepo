@@ -61,7 +61,7 @@ contract ValidatorRegistry {
     uint public challengePeriod;
     uint public exitPeriod;
     uint public rewardPeriod;
-    uint public minimumBalance = 1 ether;
+    uint public minimumBalance = 500 ether;
     uint public stakeholderCut = 30; // Will be used as a percent so must be sub 100
     uint public maxGeneratorGrowth = 12000000000;
     uint public minMaxGenerator = 2 ether;
