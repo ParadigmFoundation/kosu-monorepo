@@ -459,6 +459,21 @@ class Gov {
     }
 
     /**
+     * Check for a previously committed vote, by challengeId (as a BigNumber).
+     *
+     * @param {BigNumber} challengeId the challenge to check for a stored commit vote for
+     * @returns {boolean} the boolean representing the presence of a commit vote
+     */
+    hasCommittedVote(challengeId: BigNumber): boolean {
+        try {
+            const vote = this._loadVote(challengeId.toString());
+            return (vote.commitTxHash && vote.commitTxHash.startsWith('0x'));
+        } catch (e) {
+            return false;
+        }
+    }
+
+    /**
      * Reveal a previously committed vote, by challengeId (as a BigNumber).
      *
      * For this method to work, the user must have committed a vote during the
@@ -493,6 +508,21 @@ class Gov {
         }
 
         return receipt.transactionHash;
+    }
+
+    /**
+     * Check for a previously revealed vote, by challengeId (as a BigNumber).
+     *
+     * @param {BigNumber} challengeId the challenge to check for a stored reveal vote for
+     * @returns {boolean} the boolean representing the presence of a reveal vote
+     */
+    hasRevealedVote(challengeId: BigNumber): boolean {
+        try {
+            const vote = this._loadVote(challengeId.toString());
+            return (vote.revealTxHash && vote.revealTxHash.startsWith('0x'));
+        } catch (e) {
+            return false;
+        }
     }
 
     /**
