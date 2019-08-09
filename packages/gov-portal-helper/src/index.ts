@@ -442,7 +442,6 @@ class Gov {
      */
     async commitVote(challengeId: BigNumber, value: string, amount: BigNumber): Promise<string> {
         const vote = this._createVote(challengeId, value);
-        this._storeVote(vote);
 
         const { id, encoded } = vote;
         const pollId = new BigNumber(id);
@@ -451,6 +450,8 @@ class Gov {
         let receipt;
         try {
             receipt = await this.kosu.voting.commitVote(pollId, encoded, tokens);
+            vote.commitTxHash = receipt.tansactionHash;
+            this._storeVote(vote);
         } catch (error) {
             throw Error(`[gov] failed to commit vote: ${error.message}`);
         }
