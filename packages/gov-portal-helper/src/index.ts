@@ -1006,13 +1006,13 @@ class Gov {
 
     _storeVote(vote: Vote): void {
         const { id } = vote;
-        const key = `gov_vote#${id}#${this.coinbase}`;
+        const key = `gov_vote#${id}#${this.networkId}#${this.coinbase}`;
         const cookie = JSON.stringify(vote);
         cookies.set(key, cookie);
     }
 
     _loadVote(id: string): Vote {
-        const key = `gov_vote#${id}#${this.coinbase}`;
+        const key = `gov_vote#${id}#${this.networkId}#${this.coinbase}`;
         const cookie = cookies.get(key);
         if (!cookie) {
             throw new Error("[gov] vote not stored for this pollId");
