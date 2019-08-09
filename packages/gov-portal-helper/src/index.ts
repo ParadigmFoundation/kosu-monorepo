@@ -486,6 +486,8 @@ class Gov {
         let receipt;
         try {
             receipt = await this.kosu.voting.revealVote(id, voteNum, saltNum);
+            vote.revealTxHash = receipt.tansactionHash;
+            this._storeVote(vote);
         } catch (error) {
             throw new Error(`[gov] failed to reveal vote: ${error.message}`);
         }
