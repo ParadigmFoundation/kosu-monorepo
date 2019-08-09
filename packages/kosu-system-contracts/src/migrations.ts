@@ -142,7 +142,7 @@ export async function migrations(
             .sendTransactionAsync({
                 ...txDefaults,
                 to: kosuToken.address,
-                value: toWei("1"),
+                value: toWei("0.2"),
             })
             .then(txHash =>
                 web3Wrapper.awaitTransactionSuccessAsync(txHash).then(() => {
