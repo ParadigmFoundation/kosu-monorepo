@@ -63,8 +63,9 @@ contract ValidatorRegistry {
     uint public rewardPeriod;
     uint public minimumBalance = 500 ether;
     uint public stakeholderCut = 30; // Will be used as a percent so must be sub 100
-    uint public maxGeneratorGrowth = 12000000000;
-    uint public minMaxGenerator = 2 ether;
+    uint public minMaxGenerator = 1 ether / 10;
+    uint public maxGeneratorGrowth = 5 ether / 1000;
+    uint public maxMaxGenerator = 2 ether / 10;
     Treasury public treasury;
     Voting public voting;
     KosuToken public kosuToken;
@@ -120,8 +121,10 @@ contract ValidatorRegistry {
         uint max = currentMax.add(maxGeneratorGrowth);
         if (max < minMaxGenerator) {
             return minMaxGenerator;
+        } else if (max > maxMaxGenerator) {
+            return maxMaxGenerator;
         }
-        return max; //TODO: default / minimum?
+        return max;
     }
 
     /** @dev Expose listing data for given public key.

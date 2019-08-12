@@ -1665,6 +1665,24 @@ describe("ValidatorRegistry", async () => {
                 .then(x => x.toString())
                 .should.eventually.eq(initialMax.toString());
         });
+
+        it("should max at 0.2 ether", async () => {
+            let currentMax;
+            const keys = [];
+            do {
+                currentMax = await validatorRegistry.maxRewardRate.callAsync();
+                const key = `0x${Date.now()}0`;
+                keys.push(key);
+                await testHelpers.prepareListing(key, {
+                    reward: currentMax,
+                });
+                await validatorRegistry.confirmListing.awaitTransactionSuccessAsync(key);
+            } while (currentMax.lt(await validatorRegistry.maxRewardRate.callAsync()));
+            currentMax.toString().should.eq(await validatorRegistry.maxMaxGenerator.callAsync().then(x => x.toString()));
+            for (const key of keys) {
+                await testHelpers.exitListing(key);
+            }
+        });
     });
 
     describe("ValidatorRegistryUpdate", () => {
