@@ -54,14 +54,10 @@ describe("ValidatorRegistry", async () => {
         stakeholderCut = await validatorRegistry.stakeholderCut.callAsync();
         challengePeriod = await validatorRegistry.challengePeriod.callAsync();
         commitPeriod = await validatorRegistry.commitPeriod.callAsync();
-        const transactions = [];
-        for (const account of accounts) {
-            transactions.push(kosuToken.transfer.awaitTransactionSuccessAsync(account, TestValues.oneHundredEther));
-        }
-        await Promise.all(transactions);
 
         for (const account of accounts) {
-            await kosuToken.approve.awaitTransactionSuccessAsync(treasury.address, TestValues.oneHundredEther, {
+            await kosuToken.transfer.awaitTransactionSuccessAsync(account, minimumBalance.multipliedBy(10));
+            await kosuToken.approve.awaitTransactionSuccessAsync(treasury.address, minimumBalance.multipliedBy(10), {
                 from: account,
             });
             await validatorRegistry.registerListing.awaitTransactionSuccessAsync(
@@ -385,11 +381,11 @@ describe("ValidatorRegistry", async () => {
 
             it("should be initialized correctly", async () => {
                 const maxReward = await validatorRegistry.maxRewardRate.callAsync();
+                const stake = minimumBalance.plus(4);
 
-                await kosuToken.approve.awaitTransactionSuccessAsync(treasury.address, TestValues.sixEther);
                 const result = await validatorRegistry.registerListing.awaitTransactionSuccessAsync(
                     tendermintPublicKey,
-                    TestValues.sixEther,
+                    stake,
                     maxReward,
                     paradigmMarket,
                 ).should.eventually.be.fulfilled;
@@ -399,7 +395,7 @@ describe("ValidatorRegistry", async () => {
                 listing.owner.should.eq(accounts[0]);
                 listing.applicationBlock.toString().should.eq(result.blockNumber.toString());
                 listing.rewardRate.toString().should.eq(maxReward.toString());
-                listing.stakedBalance.toString().should.eq(TestValues.sixEther.toString());
+                listing.stakedBalance.toString().should.eq(stake.toString());
                 listing.status.should.eq(1);
                 listing.details.should.eq(paradigmMarket);
             });
@@ -612,7 +608,7 @@ describe("ValidatorRegistry", async () => {
     describe("challengeListing", () => {
         let stakedBalance;
         beforeEach(async () => {
-            stakedBalance = TestValues.fiveEther;
+            stakedBalance = minimumBalance.plus(12);
             await testHelpers.prepareListing(tendermintPublicKey, {
                 reward: await validatorRegistry.maxRewardRate.callAsync(),
                 stake: stakedBalance,
@@ -656,7 +652,7 @@ describe("ValidatorRegistry", async () => {
                 .should.eq(true);
             initialCurrentBalance
                 .minus(finalCurrentBalance)
-                .eq(TestValues.fiveEther)
+                .eq(stakedBalance)
                 .should.eq(true);
 
             const challenge = await validatorRegistry.getChallenge.callAsync(new BigNumber(decodedLogs.challengeId));
@@ -767,7 +763,7 @@ describe("ValidatorRegistry", async () => {
         });
 
         it("should require challenge to be ended, should fail if called a second time and should correctly finalize a successful challenge", async () => {
-            await testHelpers.prepareTokens(accounts[1], TestValues.fiveEther);
+            await testHelpers.prepareTokens(accounts[1], minimumBalance);
             await testHelpers.prepareTokens(accounts[2], TestValues.fiveEther);
             const { blockNumber, logs } = await validatorRegistry.challengeListing.awaitTransactionSuccessAsync(
                 tendermintPublicKey,
@@ -844,7 +840,7 @@ describe("ValidatorRegistry", async () => {
         });
 
         it("should correctly finalize a failed challenge", async () => {
-            await testHelpers.prepareTokens(accounts[1], TestValues.fiveEther);
+            await testHelpers.prepareTokens(accounts[1], minimumBalance);
             await testHelpers.prepareTokens(accounts[2], TestValues.fiveEther);
             const { blockNumber, logs } = await validatorRegistry.challengeListing.awaitTransactionSuccessAsync(
                 tendermintPublicKey,
@@ -908,7 +904,7 @@ describe("ValidatorRegistry", async () => {
         });
 
         it("should correctly finalize a failed challenge on an exiting listing", async () => {
-            await testHelpers.prepareTokens(accounts[1], TestValues.fiveEther);
+            await testHelpers.prepareTokens(accounts[1], minimumBalance);
             await testHelpers.prepareTokens(accounts[2], TestValues.fiveEther);
             await validatorRegistry.confirmListing.awaitTransactionSuccessAsync(tendermintPublicKey);
             await validatorRegistry.initExit.awaitTransactionSuccessAsync(tendermintPublicKey);
@@ -974,7 +970,7 @@ describe("ValidatorRegistry", async () => {
         });
 
         it("should correctly finalize a failed challenge on a pending listing", async () => {
-            await testHelpers.prepareTokens(accounts[1], TestValues.fiveEther);
+            await testHelpers.prepareTokens(accounts[1], minimumBalance);
             await testHelpers.prepareTokens(accounts[2], TestValues.fiveEther);
             const { blockNumber, logs } = await validatorRegistry.challengeListing.awaitTransactionSuccessAsync(
                 tendermintPublicKey,
@@ -1047,7 +1043,7 @@ describe("ValidatorRegistry", async () => {
         });
 
         it("should succeed but deliver zero tokens if the user did not vote", async () => {
-            await testHelpers.prepareTokens(accounts[1], TestValues.fiveEther);
+            await testHelpers.prepareTokens(accounts[1], minimumBalance);
             await testHelpers.prepareTokens(accounts[2], TestValues.fiveEther);
             await validatorRegistry.confirmListing.awaitTransactionSuccessAsync(tendermintPublicKey);
             await validatorRegistry.initExit.awaitTransactionSuccessAsync(tendermintPublicKey);
@@ -1106,7 +1102,7 @@ describe("ValidatorRegistry", async () => {
         });
 
         it("should succeed but deliver zero tokens if the user voted for the looser", async () => {
-            await testHelpers.prepareTokens(accounts[1], TestValues.fiveEther);
+            await testHelpers.prepareTokens(accounts[1], minimumBalance);
             await testHelpers.prepareTokens(accounts[2], TestValues.fiveEther);
             await testHelpers.prepareTokens(accounts[5], TestValues.fiveEther);
             await validatorRegistry.confirmListing.awaitTransactionSuccessAsync(tendermintPublicKey);
@@ -1172,7 +1168,7 @@ describe("ValidatorRegistry", async () => {
         });
 
         it("should correctly distribute the winnings", async () => {
-            await testHelpers.prepareTokens(accounts[1], TestValues.oneEther);
+            await testHelpers.prepareTokens(accounts[1], minimumBalance);
             await testHelpers.prepareTokens(accounts[2], TestValues.oneEther);
             await testHelpers.prepareTokens(accounts[5], TestValues.fiveEther);
             await validatorRegistry.confirmListing.awaitTransactionSuccessAsync(tendermintPublicKey);
@@ -1237,7 +1233,7 @@ describe("ValidatorRegistry", async () => {
         });
 
         it("should finalize a un-final challenge", async () => {
-            await testHelpers.prepareTokens(accounts[1], TestValues.fiveEther);
+            await testHelpers.prepareTokens(accounts[1], minimumBalance);
             await testHelpers.prepareTokens(accounts[2], TestValues.fiveEther);
             await testHelpers.prepareTokens(accounts[5], TestValues.fiveEther);
             await validatorRegistry.confirmListing.awaitTransactionSuccessAsync(tendermintPublicKey);
@@ -1311,7 +1307,7 @@ describe("ValidatorRegistry", async () => {
         });
 
         it("should fail if the challenge has not ended", async () => {
-            await testHelpers.prepareTokens(accounts[1], TestValues.fiveEther);
+            await testHelpers.prepareTokens(accounts[1], minimumBalance);
             await testHelpers.prepareTokens(accounts[2], TestValues.fiveEther);
             await testHelpers.prepareTokens(accounts[5], TestValues.fiveEther);
             await validatorRegistry.confirmListing.awaitTransactionSuccessAsync(tendermintPublicKey);
@@ -1488,10 +1484,10 @@ describe("ValidatorRegistry", async () => {
 
             it("should burn up to all the staked balance", async () => {
                 const burnFive = new BigNumber(TestValues.fiveEther).times(new BigNumber("-1"));
-                await kosuToken.approve.awaitTransactionSuccessAsync(treasury.address, TestValues.sixEther, {
+                await kosuToken.approve.awaitTransactionSuccessAsync(treasury.address, minimumBalance.plus(TestValues.sixEther), {
                     from: accounts[1],
                 });
-                await treasury.deposit.awaitTransactionSuccessAsync(TestValues.sixEther, { from: accounts[1] });
+                await treasury.deposit.awaitTransactionSuccessAsync(minimumBalance.plus(TestValues.sixEther), { from: accounts[1] });
 
                 const preRegisterCurrentBalance = await treasury.currentBalance.callAsync(accounts[1]);
                 const preRegisterSystemBalance = await treasury.systemBalance.callAsync(accounts[1]);
@@ -1527,7 +1523,7 @@ describe("ValidatorRegistry", async () => {
 
                 preRegisterCurrentBalance
                     .minus(postConfirmCurrentBalance)
-                    .eq(TestValues.sixEther)
+                    .eq(minimumBalance.plus(TestValues.fiveEther))
                     .should.eq(true, "Confirmation burn failure");
                 preRegisterSystemBalance
                     .minus(postConfirmSystemBalance)
@@ -1542,11 +1538,11 @@ describe("ValidatorRegistry", async () => {
 
                 preRegisterCurrentBalance
                     .minus(postClaimCurrentBalance)
-                    .eq(TestValues.sixEther)
+                    .eq(TestValues.tenEther)
                     .should.eq(true, "Burned all the test tokens - Current");
                 preRegisterSystemBalance
                     .minus(postClaimSystemBalance)
-                    .eq(TestValues.sixEther)
+                    .eq(TestValues.tenEther)
                     .should.eq(true, "Burned all the test tokens - System");
 
                 await testHelpers.clearTreasury(accounts[1]);
@@ -1554,10 +1550,10 @@ describe("ValidatorRegistry", async () => {
 
             describe("funded", () => {
                 beforeEach(async () => {
-                    await kosuToken.approve.awaitTransactionSuccessAsync(treasury.address, TestValues.fiveEther, {
+                    await kosuToken.approve.awaitTransactionSuccessAsync(treasury.address, minimumBalance.plus(TestValues.fiveEther), {
                         from: accounts[1],
                     });
-                    await treasury.deposit.awaitTransactionSuccessAsync(TestValues.fiveEther, { from: accounts[1] });
+                    await treasury.deposit.awaitTransactionSuccessAsync(minimumBalance.plus(TestValues.fiveEther), { from: accounts[1] });
                     const { blockNumber } = await validatorRegistry.registerListing.awaitTransactionSuccessAsync(
                         tendermintPublicKey,
                         minimumBalance,
