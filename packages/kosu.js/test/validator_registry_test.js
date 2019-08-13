@@ -44,7 +44,7 @@ describe("ValidatorRegistry", () => {
 
         const resp = await kosu.validatorRegistry.registerListing(
             pubKey,
-            TestValues.oneEther,
+            await kosu.validatorRegistry.minimumBalance(),
             TestValues.zero,
             "string",
         );
