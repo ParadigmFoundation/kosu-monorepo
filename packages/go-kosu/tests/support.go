@@ -33,7 +33,7 @@ func startServer(t *testing.T, db db.DB) (*abci.App, func(), error) {
 	dir, err := ioutil.TempDir("/tmp", "/go-kosu-go-tests_")
 	require.NoError(t, err)
 	remover := func() {
-		require.NoError(t, os.RemoveAll(dir))
+		_ = os.RemoveAll(dir)
 	}
 
 	// Update block generation time to 100ms to make tests run fast
