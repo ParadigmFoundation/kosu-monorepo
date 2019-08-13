@@ -60,7 +60,7 @@ describe("ValidatorRegistry", () => {
         allListings.should.deep.contain(listing);
         const resp2 = await kosu.validatorRegistry.challengeListing(pubKey, "string");
         const decoded2 = decodeKosuEvents(resp2.logs);
-        const { challengeId, pollId } = decoded2[1];
+        const { challengeId } = decoded2[1];
         const challenge = await kosu.validatorRegistry.getChallenge(challengeId);
         const challenges = await kosu.validatorRegistry.getChallenges([challengeId]);
         const allChallenges = await kosu.validatorRegistry.getAllChallenges();
