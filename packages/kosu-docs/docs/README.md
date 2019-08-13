@@ -30,7 +30,7 @@ The core protocol is implemented as an event-driven, proof-of-stake based relay 
 
 ## Developer tools
 
-Paradigm Labs is also leading development of a variety of developer tools to enable rapid development on top of the Paradigm protocol and settlement platform. A non-exhaustive list is below.
+Paradigm Labs is also leading development of a variety of developer tools to enable rapid development on top of the Kosu protocol. A non-exhaustive list is below.
 
 -   [Kosu.js](./kosu.js/) (source code [here](https://github.com/ParadigmFoundation/kosu-monorepo))
     -   Primary library for interacting with the Kosu contract system and network

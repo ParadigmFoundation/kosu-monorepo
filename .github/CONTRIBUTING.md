@@ -20,7 +20,7 @@ Before removing the `[WIP]` tag and submitting a PR for review, make sure that:
 
 ### Branch structure & naming
 
-We have one main branch, `master`, which represents the current development state of the codebase. All pull requests should be opened against `master`.
+Our main branch, `master`, represents the current development state of the codebase. All pull requests should be opened against `master`.
 
 Name your branch with the format `{fix | feature | refactor }/{ description }`
 
@@ -30,4 +30,4 @@ Name your branch with the format `{fix | feature | refactor }/{ description }`
 
 ### Additional Details
 
-...
+If you have any questions, please feel free to reach out to [Henry Harder](mailto:henry@paradigm.market) (GitHub [@hrharder](https://github.com/hrharder)), or message us on any of our communication channels. We are always happy to help! If you have feedback, bugs, or feature requests, please shoot them our way.

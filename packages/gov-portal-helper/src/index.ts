@@ -101,6 +101,8 @@ interface Vote {
     value: string;
     salt: string;
     encoded: string;
+    commitTxHash?: string;
+    revealTxHash?: string;
 }
 
 // will be the global window object in browser
@@ -196,6 +198,8 @@ interface Map<T> {
  * @property {string} value the vote value (should be "1" or "0" for challenge votes)
  * @property {string} salt a secret string used to hash the vote; must use same salt in commit as reveal
  * @property {string} encoded the encoded vote, as passed to the contract system
+ * @property {string} commitTxHash the transaction hash of the commit transaction
+ * @property {string} revealTxHash the transaction hash of the reveal transaction
  */
 
 /**
@@ -438,7 +442,6 @@ class Gov {
      */
     async commitVote(challengeId: BigNumber, value: string, amount: BigNumber): Promise<string> {
         const vote = this._createVote(challengeId, value);
-        this._storeVote(vote);
 
         const { id, encoded } = vote;
         const pollId = new BigNumber(id);
@@ -447,10 +450,27 @@ class Gov {
         let receipt;
         try {
             receipt = await this.kosu.voting.commitVote(pollId, encoded, tokens);
+            vote.commitTxHash = receipt.tansactionHash;
+            this._storeVote(vote);
         } catch (error) {
             throw Error(`[gov] failed to commit vote: ${error.message}`);
         }
         return receipt.transactionHash;
+    }
+
+    /**
+     * Check for a previously committed vote, by challengeId (as a BigNumber).
+     *
+     * @param {BigNumber} challengeId the challenge to check for a stored commit vote for
+     * @returns {boolean} the boolean representing the presence of a commit vote
+     */
+    hasCommittedVote(challengeId: BigNumber): boolean {
+        try {
+            const vote = this._loadVote(challengeId.toString());
+            return vote.commitTxHash && vote.commitTxHash.startsWith("0x");
+        } catch (e) {
+            return false;
+        }
     }
 
     /**
@@ -481,11 +501,28 @@ class Gov {
         let receipt;
         try {
             receipt = await this.kosu.voting.revealVote(id, voteNum, saltNum);
+            vote.revealTxHash = receipt.tansactionHash;
+            this._storeVote(vote);
         } catch (error) {
             throw new Error(`[gov] failed to reveal vote: ${error.message}`);
         }
 
         return receipt.transactionHash;
+    }
+
+    /**
+     * Check for a previously revealed vote, by challengeId (as a BigNumber).
+     *
+     * @param {BigNumber} challengeId the challenge to check for a stored reveal vote for
+     * @returns {boolean} the boolean representing the presence of a reveal vote
+     */
+    hasRevealedVote(challengeId: BigNumber): boolean {
+        try {
+            const vote = this._loadVote(challengeId.toString());
+            return vote.revealTxHash && vote.revealTxHash.startsWith("0x");
+        } catch (e) {
+            return false;
+        }
     }
 
     /**
@@ -968,14 +1005,14 @@ class Gov {
     }
 
     _storeVote(vote: Vote): void {
-        const { id, value, salt } = vote;
-        const key = `gov_vote#${id}#${this.coinbase}`;
+        const { id } = vote;
+        const key = `gov_vote#${id}#${this.networkId}#${this.coinbase}`;
         const cookie = JSON.stringify(vote);
         cookies.set(key, cookie);
     }
 
-    _loadVote(id: string) {
-        const key = `gov_vote#${id}#${this.coinbase}`;
+    _loadVote(id: string): Vote {
+        const key = `gov_vote#${id}#${this.networkId}#${this.coinbase}`;
         const cookie = cookies.get(key);
         if (!cookie) {
             throw new Error("[gov] vote not stored for this pollId");

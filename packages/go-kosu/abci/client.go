@@ -113,6 +113,11 @@ func (c *Client) Subscribe(ctx context.Context, q string) (<-chan rpctypes.Resul
 	return ch, closer, nil
 }
 
+// Unsubscribe unsubscribes given subscriber from query.
+func (c *Client) Unsubscribe(ctx context.Context, query string) error {
+	return c.Client.Unsubscribe(ctx, "kosu", query)
+}
+
 // QueryRoundInfo performs a ABCIQuery to "/roundinfo"
 func (c *Client) QueryRoundInfo() (*types.RoundInfo, error) {
 	var pb types.RoundInfo
@@ -137,6 +142,16 @@ func (c *Client) QueryConsensusParams() (*types.ConsensusParams, error) {
 func (c *Client) QueryPoster(addr string) (*types.Poster, error) {
 	var pb types.Poster
 	if err := c.query("/poster/key", []byte(addr), &pb); err != nil {
+		return nil, err
+	}
+
+	return &pb, nil
+}
+
+// QueryValidator performs a ABCI Query to "/validator/<addr>"
+func (c *Client) QueryValidator(addr string) (*types.Validator, error) {
+	var pb types.Validator
+	if err := c.query("/validator/key", []byte(addr), &pb); err != nil {
 		return nil, err
 	}
 
