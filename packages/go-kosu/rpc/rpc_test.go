@@ -18,12 +18,10 @@ import (
 
 func newServerClient(t *testing.T) (*abci.App, *rpc.Client, func()) {
 	app, closer := tests.StartServer(t, db.NewMemDB())
-	key, err := abci.LoadPrivateKey(app.Config.RootDir)
+	appClient, err := app.NewClient()
 	require.NoError(t, err)
 	client := rpc.DialInProc(
-		NewServer(
-			abci.NewHTTPClient("http://localhost:26657", key),
-		),
+		NewServer(appClient),
 	)
 
 	return app, client, closer
@@ -101,4 +99,63 @@ func TestAddOrders(t *testing.T) {
 
 	assert.Len(t, result.Accepted, 1)
 	assert.Len(t, result.Rejected, 1)
+}
+
+func newTestRebalanceTx(number, starts uint64) *types.TransactionRebalance {
+	return &types.TransactionRebalance{
+		RoundInfo: &types.RoundInfo{
+			Number:   number,
+			StartsAt: starts,
+			EndsAt:   starts + uint64(abci.GenesisAppState.ConsensusParams.PeriodLength),
+		},
+	}
+}
+
+func TestRebalancePeriod(t *testing.T) {
+	app, rpc, closer := newServerClient(t)
+	defer closer()
+
+	client, err := app.NewClient()
+	require.NoError(t, err)
+
+	tx := newTestRebalanceTx(1, 10)
+	res, err := client.BroadcastTxCommit(tx)
+	require.NoError(t, err)
+	require.True(t, res.DeliverTx.IsOK())
+
+	var result types.RoundInfo
+	require.NoError(t,
+		rpc.Call(&result, "kosu_roundInfo"),
+	)
+
+	assert.Equal(t, tx.RoundInfo.String(), result.String())
+}
+
+func TestNewRebalances(t *testing.T) {
+	app, rpc, closer := newServerClient(t)
+	defer closer()
+
+	ctx, cancel := context.WithTimeout(context.Background(), 500*time.Millisecond)
+	defer cancel()
+
+	ch := make(chan *types.TransactionRebalance)
+	sub, err := rpc.Subscribe(ctx, "kosu", ch, "newRebalances")
+	require.NoError(t, err)
+
+	client, err := app.NewClient()
+	require.NoError(t, err)
+
+	tx := newTestRebalanceTx(1, 10)
+	res, err := client.BroadcastTxSync(tx)
+	require.NoError(t, err)
+	require.Zero(t, res.Code, res.Log)
+
+	select {
+	case <-ctx.Done():
+		t.Error(ctx.Err())
+	case err := <-sub.Err():
+		t.Error(err)
+	case e := <-ch:
+		assert.Equal(t, tx.String(), e.String())
+	}
 }
