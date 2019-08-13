@@ -32,11 +32,11 @@ describe("ValidatorRegistry", () => {
         await kosu.validatorRegistry
             .maxRewardRate()
             .then(x => x.toString())
-            .should.eventually.eq(TestValues.twoEther.toString());
+            .should.eventually.eq(TestValues.oneEther.div(10).toString());
         await kosu.validatorRegistry
             .minimumBalance()
             .then(x => x.toString())
-            .should.eventually.eq(TestValues.oneEther.toString());
+            .should.eventually.eq(TestValues.fiveHundredEther.toString());
     });
 
     it("should allow validator interactions", async () => {
