@@ -1423,11 +1423,7 @@ describe("ValidatorRegistry", async () => {
                 );
                 await testHelpers.skipApplicationPeriod(blockNumber);
                 const burn = await kosuToken.estimateEtherToToken.callAsync(reward.multipliedBy("-1"));
-                await kosuToken.approve.awaitTransactionSuccessAsync(
-                    treasury.address,
-                    burn,
-                    { from: accounts[1] },
-                );
+                await kosuToken.approve.awaitTransactionSuccessAsync(treasury.address, burn, { from: accounts[1] });
                 await treasury.deposit.awaitTransactionSuccessAsync(burn, {
                     from: accounts[1],
                 });
@@ -1491,11 +1487,17 @@ describe("ValidatorRegistry", async () => {
             it("should burn up to all the staked balance", async () => {
                 const burn = new BigNumber(TestValues.oneEther).times(new BigNumber("-1"));
                 const tokenBurnAmount = await kosuToken.estimateEtherToToken.callAsync(burn.multipliedBy("-1"));
-                await kosuToken.approve.awaitTransactionSuccessAsync(treasury.address, minimumBalance.plus(tokenBurnAmount), {
+                await kosuToken.approve.awaitTransactionSuccessAsync(
+                    treasury.address,
+                    minimumBalance.plus(tokenBurnAmount),
+                    {
+                        from: accounts[1],
+                    },
+                );
+                await kosuToken.transfer.awaitTransactionSuccessAsync(accounts[1], tokenBurnAmount);
+                await treasury.deposit.awaitTransactionSuccessAsync(minimumBalance.plus(tokenBurnAmount), {
                     from: accounts[1],
                 });
-                await kosuToken.transfer.awaitTransactionSuccessAsync(accounts[1], tokenBurnAmount);
-                await treasury.deposit.awaitTransactionSuccessAsync(minimumBalance.plus(tokenBurnAmount), { from: accounts[1] });
 
                 const preRegisterCurrentBalance = await treasury.currentBalance.callAsync(accounts[1]);
                 const preRegisterSystemBalance = await treasury.systemBalance.callAsync(accounts[1]);
@@ -1558,10 +1560,16 @@ describe("ValidatorRegistry", async () => {
 
             describe("funded", () => {
                 beforeEach(async () => {
-                    await kosuToken.approve.awaitTransactionSuccessAsync(treasury.address, minimumBalance.plus(TestValues.fiveEther), {
+                    await kosuToken.approve.awaitTransactionSuccessAsync(
+                        treasury.address,
+                        minimumBalance.plus(TestValues.fiveEther),
+                        {
+                            from: accounts[1],
+                        },
+                    );
+                    await treasury.deposit.awaitTransactionSuccessAsync(minimumBalance.plus(TestValues.fiveEther), {
                         from: accounts[1],
                     });
-                    await treasury.deposit.awaitTransactionSuccessAsync(minimumBalance.plus(TestValues.fiveEther), { from: accounts[1] });
                     const { blockNumber } = await validatorRegistry.registerListing.awaitTransactionSuccessAsync(
                         tendermintPublicKey,
                         minimumBalance,
@@ -1688,7 +1696,9 @@ describe("ValidatorRegistry", async () => {
                 });
                 await validatorRegistry.confirmListing.awaitTransactionSuccessAsync(key);
             } while (currentMax.lt(await validatorRegistry.maxRewardRate.callAsync()));
-            currentMax.toString().should.eq(await validatorRegistry.maxMaxGenerator.callAsync().then(x => x.toString()));
+            currentMax
+                .toString()
+                .should.eq(await validatorRegistry.maxMaxGenerator.callAsync().then(x => x.toString()));
             for (const key of keys) {
                 await testHelpers.exitListing(key);
             }
