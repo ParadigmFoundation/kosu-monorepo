@@ -505,10 +505,11 @@ contract ValidatorRegistry {
         if (hasRewardPending(l)) {
             uint rewardPeriods = block.number.sub(l.lastRewardBlock).div(rewardPeriod);
             if (l.rewardRate > 0) {
-                kosuToken.mintTo(l.owner, uint(l.rewardRate).mul(rewardPeriods));
+                //Converting reward rate from ether to tokens to mint
+                kosuToken.mintTo(l.owner, kosuToken.estimateEtherToToken(uint(l.rewardRate).mul(rewardPeriods)));
             } else {
-                //Tokens to pay up
-                uint tokensToBurn = uint(l.rewardRate * - 1).mul(rewardPeriods);
+                //Converting reward rate from ether to tokens to burn
+                uint tokensToBurn = kosuToken.estimateEtherToToken(uint(l.rewardRate * - 1).mul(rewardPeriods));
 
                 //Tokens remaining in the treasury
                 uint userTreasuryBalance = treasury.currentBalance(l.owner);

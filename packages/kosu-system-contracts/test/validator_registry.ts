@@ -608,7 +608,7 @@ describe("ValidatorRegistry", async () => {
     describe("challengeListing", () => {
         let stakedBalance;
         beforeEach(async () => {
-            stakedBalance = minimumBalance.plus(12);
+            stakedBalance = minimumBalance.plus(TestValues.oneEther);
             await testHelpers.prepareListing(tendermintPublicKey, {
                 reward: await validatorRegistry.maxRewardRate.callAsync(),
                 stake: stakedBalance,
@@ -734,10 +734,11 @@ describe("ValidatorRegistry", async () => {
                     from: accounts[1],
                 },
             ).should.eventually.be.fulfilled;
-            await kosuToken.approve.awaitTransactionSuccessAsync(treasury.address, new BigNumber("1"), {
+            const onePayout = await kosuToken.estimateEtherToToken.callAsync(new BigNumber("1"));
+            await kosuToken.approve.awaitTransactionSuccessAsync(treasury.address, onePayout, {
                 from: accounts[1],
             });
-            await treasury.deposit.awaitTransactionSuccessAsync(new BigNumber("1"), { from: accounts[1] });
+            await treasury.deposit.awaitTransactionSuccessAsync(onePayout, { from: accounts[1] });
             await testHelpers.skipApplicationPeriod(result.blockNumber);
             await validatorRegistry.confirmListing.awaitTransactionSuccessAsync(tendermintPublicKey, {
                 from: accounts[1],
@@ -1381,21 +1382,23 @@ describe("ValidatorRegistry", async () => {
             it("should reward the user after a reward block and multiples of reward blocks", async () => {
                 await testHelpers.skipRewardPeriods();
                 const startingBalance1 = await kosuToken.balanceOf.callAsync(accounts[1]);
+                const payout1 = await kosuToken.estimateEtherToToken.callAsync(reward);
                 await validatorRegistry.claimRewards.awaitTransactionSuccessAsync(tendermintPublicKey);
                 const endingBalance1 = await kosuToken.balanceOf.callAsync(accounts[1]);
                 endingBalance1
                     .minus(startingBalance1)
                     .toString()
-                    .should.eq(reward.toString());
+                    .should.eq(payout1.toString());
 
                 await testHelpers.skipRewardPeriods(undefined, 10);
                 const startingBalance2 = await kosuToken.balanceOf.callAsync(accounts[1]);
+                const payout2 = await kosuToken.estimateEtherToToken.callAsync(reward.times(new BigNumber("10")));
                 await validatorRegistry.claimRewards.awaitTransactionSuccessAsync(tendermintPublicKey);
                 const endingBalance2 = await kosuToken.balanceOf.callAsync(accounts[1]);
                 endingBalance2
                     .minus(startingBalance2)
                     .toString()
-                    .should.eq(reward.times(new BigNumber("10")).toString());
+                    .should.eq(payout2.toString());
 
                 await testHelpers.exitListing(tendermintPublicKey, accounts[1]);
             });
@@ -1419,12 +1422,13 @@ describe("ValidatorRegistry", async () => {
                     },
                 );
                 await testHelpers.skipApplicationPeriod(blockNumber);
+                const burn = await kosuToken.estimateEtherToToken.callAsync(reward.multipliedBy("-1"));
                 await kosuToken.approve.awaitTransactionSuccessAsync(
                     treasury.address,
-                    new BigNumber(new BigNumber("1000000")),
+                    burn,
                     { from: accounts[1] },
                 );
-                await treasury.deposit.awaitTransactionSuccessAsync(new BigNumber(new BigNumber("1000000")), {
+                await treasury.deposit.awaitTransactionSuccessAsync(burn, {
                     from: accounts[1],
                 });
                 await validatorRegistry.confirmListing.awaitTransactionSuccessAsync(tendermintPublicKey, {
@@ -1454,11 +1458,12 @@ describe("ValidatorRegistry", async () => {
                     },
                 );
                 await testHelpers.skipApplicationPeriod(blockNumber);
-                await kosuToken.transfer.awaitTransactionSuccessAsync(accounts[1], new BigNumber("1000000"));
-                await kosuToken.approve.awaitTransactionSuccessAsync(treasury.address, new BigNumber("1000000"), {
+                const burn = await kosuToken.estimateEtherToToken.callAsync(reward.multipliedBy("-1"));
+                await kosuToken.transfer.awaitTransactionSuccessAsync(accounts[1], burn);
+                await kosuToken.approve.awaitTransactionSuccessAsync(treasury.address, burn.multipliedBy("10"), {
                     from: accounts[1],
                 });
-                await treasury.deposit.awaitTransactionSuccessAsync(new BigNumber("1000000"), { from: accounts[1] });
+                await treasury.deposit.awaitTransactionSuccessAsync(burn, { from: accounts[1] });
                 await validatorRegistry.confirmListing.awaitTransactionSuccessAsync(tendermintPublicKey, {
                     from: accounts[1],
                 });
@@ -1466,6 +1471,7 @@ describe("ValidatorRegistry", async () => {
                 const initialSystemBalance = await treasury.systemBalance.callAsync(accounts[1]);
 
                 await testHelpers.skipRewardPeriods();
+                const burn2 = await kosuToken.estimateEtherToToken.callAsync(reward.multipliedBy("-1"));
                 await validatorRegistry.claimRewards.awaitTransactionSuccessAsync(tendermintPublicKey);
 
                 const finalCurrentBalance = await treasury.currentBalance.callAsync(accounts[1]);
@@ -1473,21 +1479,23 @@ describe("ValidatorRegistry", async () => {
 
                 initialSystemBalance
                     .minus(finalSystemBalance)
-                    .eq(reward.multipliedBy(-1))
+                    .eq(burn2)
                     .should.eq(true);
                 finalCurrentBalance
-                    .minus(reward)
+                    .plus(burn2)
                     .eq(minimumBalance)
                     .should.eq(true);
                 await testHelpers.clearTreasury(accounts[1]);
             });
 
             it("should burn up to all the staked balance", async () => {
-                const burnFive = new BigNumber(TestValues.fiveEther).times(new BigNumber("-1"));
-                await kosuToken.approve.awaitTransactionSuccessAsync(treasury.address, minimumBalance.plus(TestValues.sixEther), {
+                const burn = new BigNumber(TestValues.oneEther).times(new BigNumber("-1"));
+                const tokenBurnAmount = await kosuToken.estimateEtherToToken.callAsync(burn.multipliedBy("-1"));
+                await kosuToken.approve.awaitTransactionSuccessAsync(treasury.address, minimumBalance.plus(tokenBurnAmount), {
                     from: accounts[1],
                 });
-                await treasury.deposit.awaitTransactionSuccessAsync(minimumBalance.plus(TestValues.sixEther), { from: accounts[1] });
+                await kosuToken.transfer.awaitTransactionSuccessAsync(accounts[1], tokenBurnAmount);
+                await treasury.deposit.awaitTransactionSuccessAsync(minimumBalance.plus(tokenBurnAmount), { from: accounts[1] });
 
                 const preRegisterCurrentBalance = await treasury.currentBalance.callAsync(accounts[1]);
                 const preRegisterSystemBalance = await treasury.systemBalance.callAsync(accounts[1]);
@@ -1495,7 +1503,7 @@ describe("ValidatorRegistry", async () => {
                 const { blockNumber } = await validatorRegistry.registerListing.awaitTransactionSuccessAsync(
                     tendermintPublicKey,
                     minimumBalance,
-                    burnFive,
+                    burn,
                     paradigmMarket,
                     {
                         from: accounts[1],
@@ -1523,11 +1531,11 @@ describe("ValidatorRegistry", async () => {
 
                 preRegisterCurrentBalance
                     .minus(postConfirmCurrentBalance)
-                    .eq(minimumBalance.plus(TestValues.fiveEther))
+                    .eq(minimumBalance.plus(tokenBurnAmount))
                     .should.eq(true, "Confirmation burn failure");
                 preRegisterSystemBalance
                     .minus(postConfirmSystemBalance)
-                    .eq(TestValues.fiveEther)
+                    .eq(tokenBurnAmount)
                     .should.eq(true, "Burned the first time");
 
                 await testHelpers.skipRewardPeriods();
@@ -1538,11 +1546,11 @@ describe("ValidatorRegistry", async () => {
 
                 preRegisterCurrentBalance
                     .minus(postClaimCurrentBalance)
-                    .eq(TestValues.tenEther)
+                    .eq(tokenBurnAmount.plus(minimumBalance))
                     .should.eq(true, "Burned all the test tokens - Current");
                 preRegisterSystemBalance
                     .minus(postClaimSystemBalance)
-                    .eq(TestValues.tenEther)
+                    .eq(tokenBurnAmount.plus(minimumBalance))
                     .should.eq(true, "Burned all the test tokens - System");
 
                 await testHelpers.clearTreasury(accounts[1]);
@@ -1575,24 +1583,26 @@ describe("ValidatorRegistry", async () => {
 
                 it("should burn the users tokens after a reward block", async () => {
                     await testHelpers.skipRewardPeriods();
+                    const tokens = await kosuToken.estimateEtherToToken.callAsync(reward.times("-1"));
                     const startingBalance = await treasury.currentBalance.callAsync(accounts[1]);
                     await validatorRegistry.claimRewards.awaitTransactionSuccessAsync(tendermintPublicKey);
                     const endingBalance = await treasury.currentBalance.callAsync(accounts[1]);
                     startingBalance
                         .minus(endingBalance)
                         .toString()
-                        .should.eq(reward.times(new BigNumber("-1")).toString());
+                        .should.eq(tokens.toString());
                 });
 
                 it("should burn users tokens for all reward blocks passed", async () => {
                     await testHelpers.skipRewardPeriods(undefined, 10);
+                    const tokens = await kosuToken.estimateEtherToToken.callAsync(reward.times("-10"));
                     const startingBalance = await treasury.currentBalance.callAsync(accounts[1]);
                     await validatorRegistry.claimRewards.awaitTransactionSuccessAsync(tendermintPublicKey);
                     const endingBalance = await treasury.currentBalance.callAsync(accounts[1]);
                     startingBalance
                         .minus(endingBalance)
                         .toString()
-                        .should.eq(reward.times(new BigNumber("-10")).toString());
+                        .should.eq(tokens.toString());
                 });
             });
         });
