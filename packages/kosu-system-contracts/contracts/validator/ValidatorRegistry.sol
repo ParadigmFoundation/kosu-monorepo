@@ -610,9 +610,9 @@ contract ValidatorRegistry {
     }
 
     function emitValidatorTouchedAndRemoved(Listing storage l) internal {
-        bytes32[] memory data = new bytes32[](4);
+        bytes32[] memory data = new bytes32[](2);
         data[0] = l.tendermintPublicKey;
-        data[2] = bytes32(uint(l.owner));
+        data[1] = bytes32(uint(l.owner));
         eventEmitter.emitEvent("ValidatorTouchedAndRemoved", data, "");
     }
 
