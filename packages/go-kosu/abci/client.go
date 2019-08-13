@@ -148,6 +148,16 @@ func (c *Client) QueryPoster(addr string) (*types.Poster, error) {
 	return &pb, nil
 }
 
+// QueryValidator performs a ABCI Query to "/validator/<addr>"
+func (c *Client) QueryValidator(addr string) (*types.Validator, error) {
+	var pb types.Validator
+	if err := c.query("/validator/key", []byte(addr), &pb); err != nil {
+		return nil, err
+	}
+
+	return &pb, nil
+}
+
 func (c *Client) query(path string, data []byte, pb proto.Message) error {
 	out, err := c.ABCIQuery(path, data)
 	if err != nil {

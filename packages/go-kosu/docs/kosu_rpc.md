@@ -360,3 +360,213 @@ for {
   }
 }
 ```
+
+### _NewRebalances_
+
+NewRebalances subscribes to new Rebalance Transactions
+
+_Parameters:_
+
+-   `newRebalances` - _string_
+
+_Returns:_
+
+-   `Rebalance Transaction` - _[object]()_
+
+#### Go Example
+
+```go
+rs := make(chan types.TransactionRebalance) // imported from go-kosu/abci/types
+ctx := context.Background()
+sub, err := client.Subscribe(ctx, "kosu", orders, "subscribe", "newRebalances")
+if err != nil {
+	panic(err)
+}
+defer sub.Unsubscribe()
+
+for {
+	select {
+	case <-ctx.Done():
+		return
+	case <-sub.Err():
+		return
+	case e := <- rs:
+		fmt.Printf("event: %+v", e)
+	}
+}
+```
+
+#### Example payload
+
+```json
+// request
+{ "jsonrpc": "2.0", "method": "kosu_subscribe", "id": 123, "params": ["newRebalances"] }
+```
+
+```json
+// response
+{ "jsonrpc": "2.0", "id": 123, "result": "0x579f7e1ede3d6af7b951cb28fd6779f0" }
+{
+  "jsonrpc": "2.0",
+  "method": "kosu_subscription",
+  "params": {
+    "subscription":"0x579f7e1ede3d6af7b951cb28fd6779f0",
+    "result": {
+      "round_info": {
+        "number": 5,
+        "starts_at": 114,
+        "ends_at": 124,
+        "limit": 10
+      }
+    }
+  }
+}
+{
+  "jsonrpc": "2.0",
+  "method": "kosu_subscription",
+  "params": {
+    "subscription":"0x579f7e1ede3d6af7b951cb28fd6779f0",
+    "result": {
+      "round_info": {
+        "number": 6,
+        "starts_at": 134,
+        "ends_at": 144,
+        "limit": 10
+      }
+    }
+  }
+}
+```
+
+### _QueryPoster_
+
+QueryPoster returns a poster given its address.
+
+_Parameters:_
+
+-   `address` - _string_
+
+_Returns:_
+
+-   `Poster` - _[object]()_
+
+#### cURL Example
+
+```bash
+curl -X POST localhost:14341 \
+	--data '{"jsonrpc":"2.0", "id": 1, "method": "kosu_queryPoster", "params": ["e57a831e58cc03cf15f400c830a61fc1d53b3e03"]}' \
+	-H 'Content-Type: application/json'
+```
+
+```json
+{
+    "jsonrpc": "2.0",
+    "id": 1,
+    "result": {
+        "balance": 10,
+        "limit": 100
+    }
+}
+```
+
+### _QueryValidator_
+
+QueryValidator returns a validator given its address.
+Validator's address is case insensitive.
+
+_Parameters:_
+
+-   `address` - _string_
+
+_Returns:_
+
+-   `Validator` - _[object]()_
+
+#### cURL Example
+
+```bash
+curl -X POST localhost:14341 \
+	--data '{"jsonrpc":"2.0", "id": 1, "method": "kosu_queryValidator", "params": ["e57a831e58cc03cf15f400c830a61fc1d53b3e03"]}' \
+	-H 'Content-Type: application/json'
+```
+
+```json
+{
+    "jsonrpc": "2.0",
+    "id": 1,
+    "result": {
+        "balance": "value: 0",
+        "power": 10,
+        "publicKey": "fcwoxUljKYF83A4ep6ZE7pMFSrLc/DFRkEjdUISg5Ys=",
+        "firstVote": 2,
+        "lastVoted": 1915,
+        "lastProposed": 1916,
+        "totalVotes": 1915,
+        "active": true,
+        "applied": true
+    }
+}
+```
+
+### _RoundInfo_
+
+RoundInfo returns the current `RoundInfo`.
+The `RoundInfo` object tracks rebalance round information.
+It is used to maintain sync with the Ethereum chain,
+which is used to mark the beginning and end of each rebalance round.
+
+_Parameters:_
+
+_Returns:_
+
+-   `RoundInfo` - _[object]()_
+
+#### cURL example
+
+```bash
+curl -X POST localhost:14341 \
+	--data '{"jsonrpc":"2.0", "id": 1, "method": "kosu_roundInfo"}' \
+	-H 'Content-Type: application/json'
+```
+
+```json
+{ "jsonrpc": "2.0", "id": 1, "result": { "number": 48, "starts_at": 2613, "ends_at": 2623, "limit": 10 } }
+```
+
+### _Validators_
+
+Validators returns the full validator set
+
+_Parameters:_
+
+_Returns:_
+
+-   `Validator Set` - _Array([object]())_
+
+#### cURL example
+
+```bash
+curl -X POST localhost:14341 \
+	--data '{"jsonrpc":"2.0", "id": 1, "method": "kosu_validators"}' \
+	-H 'Content-Type: application/json'
+```
+
+```json
+{
+    "jsonrpc": "2.0",
+    "id": 1,
+    "result": [
+        {
+            "balance": "value: 0",
+            "power": 10,
+            "publicKey": "fcwoxUljKYF83A4ep6ZE7pMFSrLc/DFRkEjdUISg5Ys=",
+            "firstVote": 2,
+            "lastVoted": 1931,
+            "lastProposed": 1932,
+            "totalVotes": 1931,
+            "active": true,
+            "applied": true
+        }
+    ]
+}
+```
