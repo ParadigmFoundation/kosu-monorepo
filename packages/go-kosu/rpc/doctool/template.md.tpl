@@ -44,7 +44,42 @@ To subscribe to the `newBlocks` events we should:
 ## Methods
 
 {{- range .Types }}
-{{ range .Entries }}
+{{ range .Methods}}
+### _{{ .Method }}_
+
+{{ .Text }}
+{{- end -}}
+{{- end }}
+## Subscriptions
+
+Subscriptions allow you to subscribe to a particular resource or _topic_.
+In order to initiate a subscription you must call the `kosu_subscribe` method
+and pass the topic as the first argument.
+
+The response returns a subscription id followed by zero or more events
+
+Subscriptions are deleted when the user sends an unsubscribe request or when the connection which was used to create the subscription is closed.
+
+_Example_:
+
+```json
+// Create a subscription to `myTopic`
+>> { "jsonrpc": "2.0", "method": "kosu_subscribe", "id": 42, "params": ["myTopic"]  }
+<< { "jsonrpc": "2.0", "id":42, "result":"0xcd0c3e8af590364c09d0fa6a1210faf5" }
+
+// Incoming events
+<< {"jsonrpc":"2.0","method":"kosu_subscription","params":{"subscription":"0xcd0c3e8af590364c09d0fa6a1210faf5","result":{"event":"payload"}}}
+<< {"jsonrpc":"2.0","method":"kosu_subscription","params":{"subscription":"0xcd0c3e8af590364c09d0fa6a1210faf5","result":{"more":"data"}}}
+
+// Delete subscription
+>> {"id": 42, "method": "kosu_unsubscribe", "params": ["0xcd0c3e8af590364c09d0fa6a1210faf5"]}
+<< {"jsonrpc":"2.0","id":1,"result":true}
+```
+
+_note_: `<<` and `>>` are not part of the response, instead it denotes the flow of data.
+
+{{- range .Types }}
+{{ range .Subscriptions}}
 ### _{{ .Method }}_
 
 {{ .Text }}
