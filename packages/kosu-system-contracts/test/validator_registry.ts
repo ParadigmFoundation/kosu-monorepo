@@ -1718,8 +1718,9 @@ describe("ValidatorRegistry", async () => {
             "rewardPeriod",
             "minimumBalance",
             "stakeholderCut",
-            "maxGeneratorGrowth",
             "minMaxGenerator",
+            "maxGeneratorGrowth",
+            "maxMaxGenerator",
         ].forEach((method, index) => {
             it(`should correctly set a new ${method}`, async () => {
                 const originalValue = await validatorRegistry[method].callAsync();
