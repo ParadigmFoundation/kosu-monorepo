@@ -129,6 +129,167 @@ curl -X POST --data '{"jsonrpc":"2.0","method":"kosu_latestHeight", "id": 1}' lo
 { "jsonrpc": "2.0", "id": 1, "result": 260 }
 ```
 
+### _QueryPoster_
+
+QueryPoster returns a poster given its address.
+
+_Parameters:_
+
+-   `address` - _string_
+
+_Returns:_
+
+-   `Poster` - _[object]()_
+
+#### cURL Example
+
+```bash
+curl -X POST localhost:14341 \
+	--data '{"jsonrpc":"2.0", "id": 1, "method": "kosu_queryPoster", "params": ["e57a831e58cc03cf15f400c830a61fc1d53b3e03"]}' \
+	-H 'Content-Type: application/json'
+```
+
+```json
+{
+    "jsonrpc": "2.0",
+    "id": 1,
+    "result": {
+        "balance": 10,
+        "limit": 100
+    }
+}
+```
+
+### _QueryValidator_
+
+QueryValidator returns a validator given its address.
+Validator's address is case insensitive.
+
+_Parameters:_
+
+-   `address` - _string_
+
+_Returns:_
+
+-   `Validator` - _[object]()_
+
+#### cURL Example
+
+```bash
+curl -X POST localhost:14341 \
+	--data '{"jsonrpc":"2.0", "id": 1, "method": "kosu_queryValidator", "params": ["e57a831e58cc03cf15f400c830a61fc1d53b3e03"]}' \
+	-H 'Content-Type: application/json'
+```
+
+```json
+{
+    "jsonrpc": "2.0",
+    "id": 1,
+    "result": {
+        "balance": "value: 0",
+        "power": 10,
+        "publicKey": "fcwoxUljKYF83A4ep6ZE7pMFSrLc/DFRkEjdUISg5Ys=",
+        "firstVote": 2,
+        "lastVoted": 1915,
+        "lastProposed": 1916,
+        "totalVotes": 1915,
+        "active": true,
+        "applied": true
+    }
+}
+```
+
+### _RoundInfo_
+
+RoundInfo returns the current `RoundInfo`.
+The `RoundInfo` object tracks rebalance round information.
+It is used to maintain sync with the Ethereum chain,
+which is used to mark the beginning and end of each rebalance round.
+
+_Parameters:_
+
+_Returns:_
+
+-   `RoundInfo` - _[object]()_
+
+#### cURL example
+
+```bash
+curl -X POST localhost:14341 \
+	--data '{"jsonrpc":"2.0", "id": 1, "method": "kosu_roundInfo"}' \
+	-H 'Content-Type: application/json'
+```
+
+```json
+{ "jsonrpc": "2.0", "id": 1, "result": { "number": 48, "starts_at": 2613, "ends_at": 2623, "limit": 10 } }
+```
+
+### _Validators_
+
+Validators returns the full validator set
+
+_Parameters:_
+
+_Returns:_
+
+-   `Validator Set` - _Array([object]())_
+
+#### cURL example
+
+```bash
+curl -X POST localhost:14341 \
+	--data '{"jsonrpc":"2.0", "id": 1, "method": "kosu_validators"}' \
+	-H 'Content-Type: application/json'
+```
+
+```json
+{
+    "jsonrpc": "2.0",
+    "id": 1,
+    "result": [
+        {
+            "balance": "value: 0",
+            "power": 10,
+            "publicKey": "fcwoxUljKYF83A4ep6ZE7pMFSrLc/DFRkEjdUISg5Ys=",
+            "firstVote": 2,
+            "lastVoted": 1931,
+            "lastProposed": 1932,
+            "totalVotes": 1931,
+            "active": true,
+            "applied": true
+        }
+    ]
+}
+```
+
+## Subscriptions
+
+Subscriptions allow you to subscribe to a particular resource or _topic_.
+In order to initiate a subscription you must call the `kosu_subscribe` method
+and pass the topic as the first argument.
+
+The response returns a subscription id followed by zero or more events
+
+Subscriptions are deleted when the user sends an unsubscribe request or when the connection which was used to create the subscription is closed.
+
+_Example_:
+
+```json
+// Create a subscription to `myTopic`
+>> { "jsonrpc": "2.0", "method": "kosu_subscribe", "id": 42, "params": ["myTopic"]  }
+<< { "jsonrpc": "2.0", "id":42, "result":"0xcd0c3e8af590364c09d0fa6a1210faf5" }
+
+// Incoming events
+<< {"jsonrpc":"2.0","method":"kosu_subscription","params":{"subscription":"0xcd0c3e8af590364c09d0fa6a1210faf5","result":{"event":"payload"}}}
+<< {"jsonrpc":"2.0","method":"kosu_subscription","params":{"subscription":"0xcd0c3e8af590364c09d0fa6a1210faf5","result":{"more":"data"}}}
+
+// Delete subscription
+>> {"id": 42, "method": "kosu_unsubscribe", "params": ["0xcd0c3e8af590364c09d0fa6a1210faf5"]}
+<< {"jsonrpc":"2.0","id":1,"result":true}
+```
+
+_note_: `<<` and `>>` are not part of the response, instead it denotes the flow of data.
+
 ### _NewBlocks_
 
 NewBlocks subscribes to new blocks on the Kosu blockchain.
@@ -435,138 +596,5 @@ for {
       }
     }
   }
-}
-```
-
-### _QueryPoster_
-
-QueryPoster returns a poster given its address.
-
-_Parameters:_
-
--   `address` - _string_
-
-_Returns:_
-
--   `Poster` - _[object]()_
-
-#### cURL Example
-
-```bash
-curl -X POST localhost:14341 \
-	--data '{"jsonrpc":"2.0", "id": 1, "method": "kosu_queryPoster", "params": ["e57a831e58cc03cf15f400c830a61fc1d53b3e03"]}' \
-	-H 'Content-Type: application/json'
-```
-
-```json
-{
-    "jsonrpc": "2.0",
-    "id": 1,
-    "result": {
-        "balance": 10,
-        "limit": 100
-    }
-}
-```
-
-### _QueryValidator_
-
-QueryValidator returns a validator given its address.
-Validator's address is case insensitive.
-
-_Parameters:_
-
--   `address` - _string_
-
-_Returns:_
-
--   `Validator` - _[object]()_
-
-#### cURL Example
-
-```bash
-curl -X POST localhost:14341 \
-	--data '{"jsonrpc":"2.0", "id": 1, "method": "kosu_queryValidator", "params": ["e57a831e58cc03cf15f400c830a61fc1d53b3e03"]}' \
-	-H 'Content-Type: application/json'
-```
-
-```json
-{
-    "jsonrpc": "2.0",
-    "id": 1,
-    "result": {
-        "balance": "value: 0",
-        "power": 10,
-        "publicKey": "fcwoxUljKYF83A4ep6ZE7pMFSrLc/DFRkEjdUISg5Ys=",
-        "firstVote": 2,
-        "lastVoted": 1915,
-        "lastProposed": 1916,
-        "totalVotes": 1915,
-        "active": true,
-        "applied": true
-    }
-}
-```
-
-### _RoundInfo_
-
-RoundInfo returns the current `RoundInfo`.
-The `RoundInfo` object tracks rebalance round information.
-It is used to maintain sync with the Ethereum chain,
-which is used to mark the beginning and end of each rebalance round.
-
-_Parameters:_
-
-_Returns:_
-
--   `RoundInfo` - _[object]()_
-
-#### cURL example
-
-```bash
-curl -X POST localhost:14341 \
-	--data '{"jsonrpc":"2.0", "id": 1, "method": "kosu_roundInfo"}' \
-	-H 'Content-Type: application/json'
-```
-
-```json
-{ "jsonrpc": "2.0", "id": 1, "result": { "number": 48, "starts_at": 2613, "ends_at": 2623, "limit": 10 } }
-```
-
-### _Validators_
-
-Validators returns the full validator set
-
-_Parameters:_
-
-_Returns:_
-
--   `Validator Set` - _Array([object]())_
-
-#### cURL example
-
-```bash
-curl -X POST localhost:14341 \
-	--data '{"jsonrpc":"2.0", "id": 1, "method": "kosu_validators"}' \
-	-H 'Content-Type: application/json'
-```
-
-```json
-{
-    "jsonrpc": "2.0",
-    "id": 1,
-    "result": [
-        {
-            "balance": "value: 0",
-            "power": 10,
-            "publicKey": "fcwoxUljKYF83A4ep6ZE7pMFSrLc/DFRkEjdUISg5Ys=",
-            "firstVote": 2,
-            "lastVoted": 1931,
-            "lastProposed": 1932,
-            "totalVotes": 1931,
-            "active": true,
-            "applied": true
-        }
-    ]
 }
 ```
