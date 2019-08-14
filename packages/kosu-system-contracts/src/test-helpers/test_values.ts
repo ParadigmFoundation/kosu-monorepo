@@ -11,6 +11,7 @@ export const TestValues = {
     twoEther: new BigNumber(toWei("2")),
     fiveEther: new BigNumber(toWei("5")),
     sixEther: new BigNumber(toWei("6")),
+    tenEther: new BigNumber(toWei("10")),
     oneHundredEther: new BigNumber(toWei("100")),
     fiveHundredEther: new BigNumber(toWei("500")),
     maxUint: new BigNumber(2).pow(new BigNumber(256)).minus(new BigNumber(1)),

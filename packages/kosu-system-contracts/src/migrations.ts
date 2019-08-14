@@ -36,12 +36,19 @@ export async function migrations(
     try {
         const netId = await web3Wrapper.getNetworkIdAsync();
         const validatorValues = {
+            1: {
+                _applicationPeriod: 60000,
+                _commitPeriod: 20000,
+                _challengePeriod: 30000,
+                _exitPeriod: 60000,
+                _rewardPeriod: 6000,
+            },
             3: {
-                _applicationPeriod: 84000,
-                _commitPeriod: 40000,
-                _challengePeriod: 60000,
-                _exitPeriod: 20000,
-                _rewardPeriod: 168000,
+                _applicationPeriod: 60000,
+                _commitPeriod: 20000,
+                _challengePeriod: 30000,
+                _exitPeriod: 60000,
+                _rewardPeriod: 6000,
             },
             6174: {
                 _applicationPeriod: 10,
@@ -142,7 +149,7 @@ export async function migrations(
             .sendTransactionAsync({
                 ...txDefaults,
                 to: kosuToken.address,
-                value: toWei("1"),
+                value: toWei("0.2"),
             })
             .then(txHash =>
                 web3Wrapper.awaitTransactionSuccessAsync(txHash).then(() => {

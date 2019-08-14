@@ -49,13 +49,23 @@ contract ValidatorRegistry {
         Listing listingSnapshot;
     }
 
+    struct MaxList {
+        bytes32 next;
+        int value;
+        bytes32 self;
+        bytes32 previous;
+    }
+
     uint public applicationPeriod;
     uint public commitPeriod;
     uint public challengePeriod;
     uint public exitPeriod;
     uint public rewardPeriod;
-    uint public minimumBalance = 1 ether;
+    uint public minimumBalance = 500 ether;
     uint public stakeholderCut = 30; // Will be used as a percent so must be sub 100
+    uint public minMaxGenerator = 1 ether / 10;
+    uint public maxGeneratorGrowth = 5 ether / 1000;
+    uint public maxMaxGenerator = 2 ether / 10;
     Treasury public treasury;
     Voting public voting;
     KosuToken public kosuToken;
@@ -64,7 +74,8 @@ contract ValidatorRegistry {
     uint public nextChallenge = 1;
     bytes32[] public _listingKeys;
     EventEmitter private eventEmitter;
-    uint _maxGenerationSum = 2 ether;
+    bytes32 _maxGenerator;
+    mapping(bytes32 => MaxList)_generators;
 
     /** @dev Create a new ValidatorRegistry implementation
         @notice Create a new ValidatorRegistry implementation
@@ -103,7 +114,17 @@ contract ValidatorRegistry {
         @return Maximum KosuToken a validator can generate per period.
     */
     function maxRewardRate() public view returns (uint) {
-        return _maxGenerationSum;
+        uint currentMax = uint(_generators[_maxGenerator].value);
+        if (currentMax == 0) {
+            return minMaxGenerator;
+        }
+        uint max = currentMax.add(maxGeneratorGrowth);
+        if (max < minMaxGenerator) {
+            return minMaxGenerator;
+        } else if (max > maxMaxGenerator) {
+            return maxMaxGenerator;
+        }
+        return max;
     }
 
     /** @dev Expose listing data for given public key.
@@ -170,7 +191,7 @@ contract ValidatorRegistry {
         uint challengeCount = nextChallenge - 1;
         Challenge[] memory challenges = new Challenge[](challengeCount);
         for (uint i = 0; i < challengeCount; i++) {
-            challenges[i] = _challenges[i+1];
+            challenges[i] = _challenges[i + 1];
         }
         return challenges;
     }
@@ -405,8 +426,7 @@ contract ValidatorRegistry {
             listing.lastRewardBlock = block.number - rewardPeriod;
         } else {
             if (listing.rewardRate > 0) {
-                uint rewardRate = uint(listing.rewardRate);
-                _maxGenerationSum = _maxGenerationSum.add(sqrt(rewardRate));
+                addGeneratorToList(listing.rewardRate, listing.tendermintPublicKey);
             }
 
             listing.lastRewardBlock = block.number;
@@ -485,10 +505,11 @@ contract ValidatorRegistry {
         if (hasRewardPending(l)) {
             uint rewardPeriods = block.number.sub(l.lastRewardBlock).div(rewardPeriod);
             if (l.rewardRate > 0) {
-                kosuToken.mintTo(l.owner, uint(l.rewardRate).mul(rewardPeriods));
+                //Converting reward rate from ether to tokens to mint
+                kosuToken.mintTo(l.owner, kosuToken.estimateEtherToToken(uint(l.rewardRate).mul(rewardPeriods)));
             } else {
-                //Tokens to pay up
-                uint tokensToBurn = uint(l.rewardRate * - 1).mul(rewardPeriods);
+                //Converting reward rate from ether to tokens to burn
+                uint tokensToBurn = kosuToken.estimateEtherToToken(uint(l.rewardRate * - 1).mul(rewardPeriods));
 
                 //Tokens remaining in the treasury
                 uint userTreasuryBalance = treasury.currentBalance(l.owner);
@@ -555,7 +576,7 @@ contract ValidatorRegistry {
     function removeListing(Listing storage l) internal {
         if (l.rewardRate > 0 && l.confirmationBlock > 0) {
             uint rewardRate = uint(l.rewardRate);
-            _maxGenerationSum = _maxGenerationSum.sub(sqrt(rewardRate));
+            removeEntryFromList(l.tendermintPublicKey);
         }
 
         bytes32[] memory data = new bytes32[](1);
@@ -590,9 +611,9 @@ contract ValidatorRegistry {
     }
 
     function emitValidatorTouchedAndRemoved(Listing storage l) internal {
-        bytes32[] memory data = new bytes32[](4);
+        bytes32[] memory data = new bytes32[](2);
         data[0] = l.tendermintPublicKey;
-        data[2] = bytes32(uint(l.owner));
+        data[1] = bytes32(uint(l.owner));
         eventEmitter.emitEvent("ValidatorTouchedAndRemoved", data, "");
     }
 
@@ -610,5 +631,88 @@ contract ValidatorRegistry {
         bytes32[] memory data = new bytes32[](1);
         data[0] = l.tendermintPublicKey;
         eventEmitter.emitEvent("ValidatorChallengeResolved", data, "");
+    }
+
+    function findGeneratorPlaceInList(int value) internal returns (bytes32 previous, bytes32 next) {
+        if (_maxGenerator == 0x0) {
+            return (0x0, 0x0);
+        }
+        bytes32 nextGenerator = _maxGenerator;
+
+        while (true) {
+            MaxList memory gen = _generators[nextGenerator];
+            if (gen.value > value) {
+                if (gen.next != 0x0) {
+                    nextGenerator = gen.next;
+                    continue;
+                } else {
+                    return (gen.self, 0x0);
+                }
+
+            } else {
+                return (gen.previous, gen.self);
+            }
+        }
+    }
+
+    function addGeneratorToList(int rewardRate, bytes32 pubKey) internal {
+        MaxList storage newGenerator = _generators[pubKey];
+        newGenerator.value = rewardRate;
+        newGenerator.self = pubKey;
+
+        (bytes32 previous, bytes32 next) = findGeneratorPlaceInList(newGenerator.value);
+
+        if (previous == 0x0 && next == 0x0) {
+            _maxGenerator = newGenerator.self;
+            return;
+        } else if (previous == 0x0 && next == _maxGenerator) {
+            _maxGenerator = newGenerator.self;
+        }
+
+        if (previous != 0x0) {
+            MaxList storage entryBeforeNew = _generators[previous];
+            entryBeforeNew.next = newGenerator.self;
+            newGenerator.previous = entryBeforeNew.self;
+        }
+
+        if (next != 0x0) {
+            MaxList storage entryAfterNew = _generators[next];
+            entryAfterNew.previous = newGenerator.self;
+            newGenerator.next = entryAfterNew.self;
+        }
+    }
+
+    function removeEntryFromList(bytes32 entryKey) internal {
+        if (_maxGenerator == 0x0) {
+            return;
+        }
+
+        MaxList storage currentEntry = _generators[entryKey];
+
+        if (_maxGenerator == entryKey) {
+            _maxGenerator = currentEntry.next;
+            _generators[currentEntry.next].previous = 0x0;
+            delete _generators[entryKey];
+        }
+
+
+        while (true) {
+            if (currentEntry.self == 0x0) {
+                return;
+            } else if (currentEntry.self == entryKey) {
+                if (currentEntry.next != 0x0) {
+                    _generators[currentEntry.previous].next = currentEntry.next;
+                    _generators[currentEntry.next].previous = currentEntry.previous;
+                    delete _generators[currentEntry.self];
+                } else {
+                    _generators[currentEntry.previous].next = 0x0;
+                    delete _generators[currentEntry.self];
+                }
+
+
+            } else {
+                currentEntry = _generators[currentEntry.next];
+            }
+        }
     }
 }
