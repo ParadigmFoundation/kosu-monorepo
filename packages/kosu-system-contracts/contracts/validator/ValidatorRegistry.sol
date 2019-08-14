@@ -512,9 +512,11 @@ contract ValidatorRegistry is Ownable {
         } else if (index == 6) {
             stakeholderCut = value;
         } else if (index == 7) {
-            maxGeneratorGrowth = value;
-        } else if (index == 8) {
             minMaxGenerator = value;
+        } else if (index == 8) {
+            maxGeneratorGrowth = value;
+        } else if (index == 9) {
+            maxMaxGenerator = value;
         } else {
             revert("Index does not match a value");
         }
