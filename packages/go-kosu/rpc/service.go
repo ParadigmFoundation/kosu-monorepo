@@ -6,8 +6,11 @@ import (
 	"go-kosu/abci"
 	"go-kosu/abci/types"
 	"log"
+	"strings"
 
 	"github.com/ethereum/go-ethereum/rpc"
+
+	tmtypes "github.com/tendermint/tendermint/types"
 )
 
 // Service is a RPC service
@@ -20,6 +23,21 @@ func NewService(abci *abci.Client) *Service {
 	return &Service{
 		abci: abci,
 	}
+}
+
+func eventDecoder(event tmtypes.TMEventData) (interface{}, error) {
+	switch t := event.(type) {
+	case tmtypes.EventDataTx:
+		// decode the signed Transaction and return `oneOf` the underlying Tx
+		stx := &types.SignedTransaction{}
+		if err := types.DecodeTx(t.Tx, stx); err != nil {
+			return nil, err
+		}
+
+		tx := stx.Tx.GetOneOf()
+		return tx, nil
+	}
+	return event, nil
 }
 
 func (s *Service) subscribeTM(ctx context.Context, query string) (*rpc.Subscription, error) {
@@ -45,8 +63,13 @@ func (s *Service) subscribeTM(ctx context.Context, query string) (*rpc.Subscript
 			case <-notifier.Closed():
 				return
 			case e := <-events:
-				err := notifier.Notify(rpcSub.ID, e.Data)
+				dec, err := eventDecoder(e.Data)
 				if err != nil {
+					// as TM should return a valid transaction, this will never happen
+					panic(err)
+				}
+
+				if err := notifier.Notify(rpcSub.ID, dec); err != nil {
 					log.Printf("rpc: %+v", err)
 				}
 			}
@@ -57,13 +80,13 @@ func (s *Service) subscribeTM(ctx context.Context, query string) (*rpc.Subscript
 }
 
 /*
-NewBlocks subscribes to new blocks on the Kosu blockchain
+NewBlocks subscribes to new blocks on the Kosu blockchain.
 
-_Parameters_
+_Parameters:_
 
 -   `newBlocks` - _string_
 
-_Returns_
+_Returns:_
 
 -   `block` - _[object](https://godoc.org/github.com/tendermint/tendermint/types#Block)_
 
@@ -183,12 +206,11 @@ func (s *Service) NewBlocks(ctx context.Context) (*rpc.Subscription, error) {
 }
 
 /*
-NewOrders subscribes to new Order Transactions
+NewOrders subscribes to new Order Transactions.
 
-_Parameters_
-None
+_Parameters:_
 
-_Returns_
+_Returns:_
 
 -   `Order Transaction` - _[object]()_
 
@@ -298,16 +320,98 @@ func (s *Service) NewOrders(ctx context.Context) (*rpc.Subscription, error) {
 }
 
 /*
+NewRebalances subscribes to new Rebalance Transactions
+
+_Parameters:_
+
+-   `newRebalances` - _string_
+
+_Returns:_
+
+-   `Rebalance Transaction` - _[object]()_
+
+#### Go Example
+
+```go
+rs := make(chan types.TransactionRebalance) // imported from go-kosu/abci/types
+ctx := context.Background()
+sub, err := client.Subscribe(ctx, "kosu", orders, "subscribe", "newRebalances")
+if err != nil {
+	panic(err)
+}
+defer sub.Unsubscribe()
+
+for {
+	select {
+	case <-ctx.Done():
+		return
+	case <-sub.Err():
+		return
+	case e := <- rs:
+		fmt.Printf("event: %+v", e)
+	}
+}
+```
+
+#### Example payload
+
+```json
+// request
+{ "jsonrpc": "2.0", "method": "kosu_subscribe", "id": 123, "params": ["newRebalances"] }
+```
+
+```json
+// response
+{ "jsonrpc": "2.0", "id": 123, "result": "0x579f7e1ede3d6af7b951cb28fd6779f0" }
+{
+  "jsonrpc": "2.0",
+  "method": "kosu_subscription",
+  "params": {
+    "subscription":"0x579f7e1ede3d6af7b951cb28fd6779f0",
+    "result": {
+      "round_info": {
+        "number": 5,
+        "starts_at": 114,
+        "ends_at": 124,
+        "limit": 10
+      }
+    }
+  }
+}
+{
+  "jsonrpc": "2.0",
+  "method": "kosu_subscription",
+  "params": {
+    "subscription":"0x579f7e1ede3d6af7b951cb28fd6779f0",
+    "result": {
+      "round_info": {
+        "number": 6,
+        "starts_at": 134,
+        "ends_at": 144,
+        "limit": 10
+      }
+    }
+  }
+}
+```
+
+*/
+func (s *Service) NewRebalances(ctx context.Context) (*rpc.Subscription, error) {
+	query := "tm.event='Tx' AND tx.type='rebalance'"
+	return s.subscribeTM(ctx, query)
+}
+
+/*
 LatestHeight returns the height of the best known block.
 The `latestHeight` method will return the integer height of the latest block committed to the blockchain.
 
-_Parameters_
-None
+_Parameters:_
 
-_Returns_
-`latestHeight` - _int64_
+_Returns:_
 
-#### Examples
+-   `latestHeight` - _int64_
+
+#### cURL Example
 
 ```bash
 curl -X POST --data '{"jsonrpc":"2.0","method":"kosu_latestHeight", "id": 1}' localhost:14341 --header 'Content-Type: application/json'
@@ -330,9 +434,17 @@ func (s *Service) LatestHeight() (int64, error) {
 }
 
 /*
-AddOrders adds an array of Kosu orders to the network
+AddOrders adds an array of Kosu orders to the network.
 
-### cURL example
+_Parameters:_
+
+-   Order Transactions - `Array([order]())`
+
+_Returns:_
+
+-   Orders Result - `[object](AddOrdersResult)`
+
+#### cURL example
 
 ```bash
 curl -X POST localhost:14341 \
@@ -352,7 +464,7 @@ curl -X POST localhost:14341 \
 }
 ```
 
-### Payload example
+#### Payload example
 
 ```json
 [
@@ -416,4 +528,163 @@ type OrderRejection struct {
 type AddOrdersResult struct {
 	Accepted []string         `json:"accepted"`
 	Rejected []OrderRejection `json:"rejected"`
+}
+
+/*
+RoundInfo returns the current `RoundInfo`.
+The `RoundInfo` object tracks rebalance round information.
+It is used to maintain sync with the Ethereum chain,
+which is used to mark the beginning and end of each rebalance round.
+
+_Parameters:_
+
+_Returns:_
+
+-   `RoundInfo` - _[object]()_
+
+#### cURL example
+
+```bash
+curl -X POST localhost:14341 \
+	--data '{"jsonrpc":"2.0", "id": 1, "method": "kosu_roundInfo"}' \
+	-H 'Content-Type: application/json'
+```
+
+```json
+{ "jsonrpc": "2.0", "id": 1, "result": { "number": 48, "starts_at": 2613, "ends_at": 2623, "limit": 10 } }
+```
+
+*/
+func (s *Service) RoundInfo() (*types.RoundInfo, error) {
+	return s.abci.QueryRoundInfo()
+}
+
+/*
+QueryValidator returns a validator given its address.
+Validator's address is case insensitive.
+
+_Parameters:_
+
+-   `address` - _string_
+
+_Returns:_
+
+-   `Validator` - _[object]()_
+
+#### cURL Example
+
+```bash
+curl -X POST localhost:14341 \
+	--data '{"jsonrpc":"2.0", "id": 1, "method": "kosu_queryValidator", "params": ["e57a831e58cc03cf15f400c830a61fc1d53b3e03"]}' \
+	-H 'Content-Type: application/json'
+```
+
+```json
+{
+    "jsonrpc": "2.0",
+    "id": 1,
+    "result": {
+        "balance": "value: 0",
+        "power": 10,
+        "publicKey": "fcwoxUljKYF83A4ep6ZE7pMFSrLc/DFRkEjdUISg5Ys=",
+        "firstVote": 2,
+        "lastVoted": 1915,
+        "lastProposed": 1916,
+        "totalVotes": 1915,
+        "active": true,
+        "applied": true
+    }
+}
+```
+*/
+func (s *Service) QueryValidator(addr string) (*types.Validator, error) {
+	addr = strings.ToLower(addr)
+	return s.abci.QueryValidator(addr)
+}
+
+/*
+Validators returns the full validator set
+
+_Parameters:_
+
+_Returns:_
+
+-   `Validator Set` - _Array([object]())_
+
+#### cURL example
+
+```bash
+curl -X POST localhost:14341 \
+	--data '{"jsonrpc":"2.0", "id": 1, "method": "kosu_validators"}' \
+	-H 'Content-Type: application/json'
+```
+
+```json
+{
+    "jsonrpc": "2.0",
+    "id": 1,
+    "result": [
+        {
+            "balance": "value: 0",
+            "power": 10,
+            "publicKey": "fcwoxUljKYF83A4ep6ZE7pMFSrLc/DFRkEjdUISg5Ys=",
+            "firstVote": 2,
+            "lastVoted": 1931,
+            "lastProposed": 1932,
+            "totalVotes": 1931,
+            "active": true,
+            "applied": true
+        }
+    ]
+}
+```
+*/
+func (s *Service) Validators() ([]*types.Validator, error) {
+	res, err := s.abci.Validators(nil)
+	if err != nil {
+		return nil, err
+	}
+
+	var vs []*types.Validator
+	for _, r := range res.Validators {
+		v, err := s.QueryValidator(r.Address.String())
+		if err == nil && v != nil {
+			vs = append(vs, v)
+		}
+	}
+	return vs, nil
+}
+
+/*
+QueryPoster returns a poster given its address.
+
+_Parameters:_
+
+-   `address` - _string_
+
+_Returns:_
+
+-   `Poster` - _[object]()_
+
+#### cURL Example
+
+```bash
+curl -X POST localhost:14341 \
+	--data '{"jsonrpc":"2.0", "id": 1, "method": "kosu_queryPoster", "params": ["e57a831e58cc03cf15f400c830a61fc1d53b3e03"]}' \
+	-H 'Content-Type: application/json'
+```
+
+```json
+{
+    "jsonrpc": "2.0",
+    "id": 1,
+    "result": {
+        "balance": 10,
+        "limit": 100
+    }
+}
+```
+*/
+func (s *Service) QueryPoster(addr string) (*types.Poster, error) {
+	return s.abci.QueryPoster(addr)
 }

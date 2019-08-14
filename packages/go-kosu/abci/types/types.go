@@ -103,3 +103,17 @@ func NewValidator() *Validator {
 		Balance: NewBigIntFromInt(0),
 	}
 }
+
+// GetOneOf return the underlying `oneOf` Tx behind this tx
+func (tx *Transaction) GetOneOf() interface{} {
+	switch tx.GetData().(type) {
+	case *Transaction_Order:
+		return tx.GetOrder()
+	case *Transaction_Rebalance:
+		return tx.GetRebalance()
+	case *Transaction_Witness:
+		return tx.GetWitness()
+	}
+
+	return nil
+}

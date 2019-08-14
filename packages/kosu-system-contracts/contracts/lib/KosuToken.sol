@@ -106,7 +106,8 @@ contract KosuToken is ERC20, Authorizable {
     */
     function calculateEtherToToken(uint etherValue) internal view returns (uint) {
         if (_weiPaid == 0 && totalSupply() == 0) {
-            return 30 ether;
+            require(etherValue == (2 ether)/10);
+            return 10000 ether;
         } else {
             return Formula.calculatePurchaseReturn(totalSupply(), _weiPaid, r, etherValue);
         }

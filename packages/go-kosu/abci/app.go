@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"math"
 	"math/big"
+	"strings"
 
 	abci "github.com/tendermint/tendermint/abci/types"
 	"github.com/tendermint/tendermint/config"
@@ -62,6 +63,17 @@ func NewAppWithConfig(db db.DB, cfg *config.Config) *App {
 
 }
 
+// NewClient returns a new Cclient configured for this abci.App instance
+func (app *App) NewClient() (*Client, error) {
+	url := strings.Replace(app.Config.RPC.ListenAddress, "tcp://", "http://", 1)
+	key, err := LoadPrivateKey(app.Config.RootDir)
+	if err != nil {
+		return nil, err
+	}
+
+	return NewHTTPClient(url, key), nil
+}
+
 // Query queries the application state using the store.Query method
 func (app *App) Query(req abci.RequestQuery) abci.ResponseQuery {
 	return app.store.Query(req)
@@ -72,6 +84,7 @@ func (app *App) Store() store.Store { return app.store }
 
 // Info loads the state from the db.
 func (app *App) Info(req abci.RequestInfo) abci.ResponseInfo {
+
 	cID := app.store.LastCommitID()
 
 	res := abci.ResponseInfo{

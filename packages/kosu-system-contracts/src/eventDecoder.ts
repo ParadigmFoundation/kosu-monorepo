@@ -91,7 +91,13 @@ export const eventDecoder = (eventReturnValues: any): any => {
                 tendermintPublicKeyHex: data[0],
             });
             break;
-
+        case "ValidatorTouchedAndRemoved":
+            Object.assign(decoded, {
+                tendermintPublicKey: bytes32ToBase64(data[0]),
+                tendermintPublicKeyHex: data[0],
+                owner: bytes32ToAddressString(data[1]),
+            });
+            break;
         default:
             console.warn(`Unrecognized eventType: ${eventType}`);
     }

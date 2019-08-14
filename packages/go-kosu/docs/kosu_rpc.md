@@ -1,9 +1,9 @@
 # JSON RPC
 
-Kosu expses a JSON-RPC 2.0 API based on the [go-ethereum/rpc](https://godoc.org/github.com/ethereum/go-ethereum/rpc) package.
+Kosu exposes a JSON-RPC 2.0 API based on the [go-ethereum/rpc](https://godoc.org/github.com/ethereum/go-ethereum/rpc) package.
 
 JSON-RPC is a stateless, light-weight remote procedure call (RPC) protocol,
-the protocol specification can be found [here](https://www.jsonrpc.org/specification)
+the protocol specification can be found [here](https://www.jsonrpc.org/specification).
 
 ### Usage
 
@@ -15,7 +15,7 @@ kosud rpc
 
 For more information use `kosud rpc --help`.
 
-By default the HTTP and WS endpoints are binded to ports `14341` and `14342` repectively.
+By default the HTTP and WS endpoints are bound to ports `14341` and `14342` respectively.
 Note that the subscriptions operations are only available via WebSockets.
 
 The current API exposes all of its methods under the `kosu` namespace
@@ -29,7 +29,7 @@ To perform a request calling the `foo` method we should:
 { "jsonrpc": "2.0", "method": "kosu_foo", "params": [], "id": 1 }
 ```
 
-For subscriptions, we use the `kosu_subscribe` method, and the event name is specified within the first param
+For subscriptions, we use the `kosu_subscribe` method, and the event name is specified within the first parameter.
 
 #### Subscription example
 
@@ -45,9 +45,17 @@ To subscribe to the `newBlocks` events we should:
 
 ### _AddOrders_
 
-AddOrders adds an array of Kosu orders to the network
+AddOrders adds an array of Kosu orders to the network.
 
-### cURL example
+_Parameters:_
+
+-   Order Transactions - `Array([order]())`
+
+_Returns:_
+
+-   Orders Result - `[object](AddOrdersResult)`
+
+#### cURL example
 
 ```bash
 curl -X POST localhost:14341 \
@@ -67,7 +75,7 @@ curl -X POST localhost:14341 \
 }
 ```
 
-### Payload example
+#### Payload example
 
 ```json
 [
@@ -105,13 +113,13 @@ curl -X POST localhost:14341 \
 LatestHeight returns the height of the best known block.
 The `latestHeight` method will return the integer height of the latest block committed to the blockchain.
 
-_Parameters_
-None
+_Parameters:_
 
-_Returns_
-`latestHeight` - _int64_
+_Returns:_
 
-#### Examples
+-   `latestHeight` - _int64_
+
+#### cURL Example
 
 ```bash
 curl -X POST --data '{"jsonrpc":"2.0","method":"kosu_latestHeight", "id": 1}' localhost:14341 --header 'Content-Type: application/json'
@@ -121,15 +129,176 @@ curl -X POST --data '{"jsonrpc":"2.0","method":"kosu_latestHeight", "id": 1}' lo
 { "jsonrpc": "2.0", "id": 1, "result": 260 }
 ```
 
+### _QueryPoster_
+
+QueryPoster returns a poster given its address.
+
+_Parameters:_
+
+-   `address` - _string_
+
+_Returns:_
+
+-   `Poster` - _[object]()_
+
+#### cURL Example
+
+```bash
+curl -X POST localhost:14341 \
+	--data '{"jsonrpc":"2.0", "id": 1, "method": "kosu_queryPoster", "params": ["e57a831e58cc03cf15f400c830a61fc1d53b3e03"]}' \
+	-H 'Content-Type: application/json'
+```
+
+```json
+{
+    "jsonrpc": "2.0",
+    "id": 1,
+    "result": {
+        "balance": 10,
+        "limit": 100
+    }
+}
+```
+
+### _QueryValidator_
+
+QueryValidator returns a validator given its address.
+Validator's address is case insensitive.
+
+_Parameters:_
+
+-   `address` - _string_
+
+_Returns:_
+
+-   `Validator` - _[object]()_
+
+#### cURL Example
+
+```bash
+curl -X POST localhost:14341 \
+	--data '{"jsonrpc":"2.0", "id": 1, "method": "kosu_queryValidator", "params": ["e57a831e58cc03cf15f400c830a61fc1d53b3e03"]}' \
+	-H 'Content-Type: application/json'
+```
+
+```json
+{
+    "jsonrpc": "2.0",
+    "id": 1,
+    "result": {
+        "balance": "value: 0",
+        "power": 10,
+        "publicKey": "fcwoxUljKYF83A4ep6ZE7pMFSrLc/DFRkEjdUISg5Ys=",
+        "firstVote": 2,
+        "lastVoted": 1915,
+        "lastProposed": 1916,
+        "totalVotes": 1915,
+        "active": true,
+        "applied": true
+    }
+}
+```
+
+### _RoundInfo_
+
+RoundInfo returns the current `RoundInfo`.
+The `RoundInfo` object tracks rebalance round information.
+It is used to maintain sync with the Ethereum chain,
+which is used to mark the beginning and end of each rebalance round.
+
+_Parameters:_
+
+_Returns:_
+
+-   `RoundInfo` - _[object]()_
+
+#### cURL example
+
+```bash
+curl -X POST localhost:14341 \
+	--data '{"jsonrpc":"2.0", "id": 1, "method": "kosu_roundInfo"}' \
+	-H 'Content-Type: application/json'
+```
+
+```json
+{ "jsonrpc": "2.0", "id": 1, "result": { "number": 48, "starts_at": 2613, "ends_at": 2623, "limit": 10 } }
+```
+
+### _Validators_
+
+Validators returns the full validator set
+
+_Parameters:_
+
+_Returns:_
+
+-   `Validator Set` - _Array([object]())_
+
+#### cURL example
+
+```bash
+curl -X POST localhost:14341 \
+	--data '{"jsonrpc":"2.0", "id": 1, "method": "kosu_validators"}' \
+	-H 'Content-Type: application/json'
+```
+
+```json
+{
+    "jsonrpc": "2.0",
+    "id": 1,
+    "result": [
+        {
+            "balance": "value: 0",
+            "power": 10,
+            "publicKey": "fcwoxUljKYF83A4ep6ZE7pMFSrLc/DFRkEjdUISg5Ys=",
+            "firstVote": 2,
+            "lastVoted": 1931,
+            "lastProposed": 1932,
+            "totalVotes": 1931,
+            "active": true,
+            "applied": true
+        }
+    ]
+}
+```
+
+## Subscriptions
+
+Subscriptions allow you to subscribe to a particular resource or _topic_.
+In order to initiate a subscription you must call the `kosu_subscribe` method
+and pass the topic as the first argument.
+
+The response returns a subscription id followed by zero or more events
+
+Subscriptions are deleted when the user sends an unsubscribe request or when the connection which was used to create the subscription is closed.
+
+_Example_:
+
+```json
+// Create a subscription to `myTopic`
+>> { "jsonrpc": "2.0", "method": "kosu_subscribe", "id": 42, "params": ["myTopic"]  }
+<< { "jsonrpc": "2.0", "id":42, "result":"0xcd0c3e8af590364c09d0fa6a1210faf5" }
+
+// Incoming events
+<< {"jsonrpc":"2.0","method":"kosu_subscription","params":{"subscription":"0xcd0c3e8af590364c09d0fa6a1210faf5","result":{"event":"payload"}}}
+<< {"jsonrpc":"2.0","method":"kosu_subscription","params":{"subscription":"0xcd0c3e8af590364c09d0fa6a1210faf5","result":{"more":"data"}}}
+
+// Delete subscription
+>> {"id": 42, "method": "kosu_unsubscribe", "params": ["0xcd0c3e8af590364c09d0fa6a1210faf5"]}
+<< {"jsonrpc":"2.0","id":1,"result":true}
+```
+
+_note_: `<<` and `>>` are not part of the response, instead it denotes the flow of data.
+
 ### _NewBlocks_
 
-NewBlocks subscribes to new blocks on the Kosu blockchain
+NewBlocks subscribes to new blocks on the Kosu blockchain.
 
-_Parameters_
+_Parameters:_
 
 -   `newBlocks` - _string_
 
-_Returns_
+_Returns:_
 
 -   `block` - _[object](https://godoc.org/github.com/tendermint/tendermint/types#Block)_
 
@@ -245,12 +414,11 @@ for {
 
 ### _NewOrders_
 
-NewOrders subscribes to new Order Transactions
+NewOrders subscribes to new Order Transactions.
 
-_Parameters_
-None
+_Parameters:_
 
-_Returns_
+_Returns:_
 
 -   `Order Transaction` - _[object]()_
 
@@ -348,6 +516,83 @@ for {
         },
         "makerSignature": "0xbbc6600a2891b029d694027a6aed6a13e85e59ce4fcbed1210e66b5c1bbbb1ca19891490edf46877fb6a0ae548db3dc3dd83fa55a6f3c66596fe7f8740eb2c7e00",
         "posterSignature": "0x6c0684cb993dded088ea5e0bd9c5808c827a6bd2800beeaa9e1c4686049a16b30e2b0694e4c19647fb45c150e3b8e02ecd6f7a552099af98fec5c0c7d7ffb6d901"
+      }
+    }
+  }
+}
+```
+
+### _NewRebalances_
+
+NewRebalances subscribes to new Rebalance Transactions
+
+_Parameters:_
+
+-   `newRebalances` - _string_
+
+_Returns:_
+
+-   `Rebalance Transaction` - _[object]()_
+
+#### Go Example
+
+```go
+rs := make(chan types.TransactionRebalance) // imported from go-kosu/abci/types
+ctx := context.Background()
+sub, err := client.Subscribe(ctx, "kosu", orders, "subscribe", "newRebalances")
+if err != nil {
+	panic(err)
+}
+defer sub.Unsubscribe()
+
+for {
+	select {
+	case <-ctx.Done():
+		return
+	case <-sub.Err():
+		return
+	case e := <- rs:
+		fmt.Printf("event: %+v", e)
+	}
+}
+```
+
+#### Example payload
+
+```json
+// request
+{ "jsonrpc": "2.0", "method": "kosu_subscribe", "id": 123, "params": ["newRebalances"] }
+```
+
+```json
+// response
+{ "jsonrpc": "2.0", "id": 123, "result": "0x579f7e1ede3d6af7b951cb28fd6779f0" }
+{
+  "jsonrpc": "2.0",
+  "method": "kosu_subscription",
+  "params": {
+    "subscription":"0x579f7e1ede3d6af7b951cb28fd6779f0",
+    "result": {
+      "round_info": {
+        "number": 5,
+        "starts_at": 114,
+        "ends_at": 124,
+        "limit": 10
+      }
+    }
+  }
+}
+{
+  "jsonrpc": "2.0",
+  "method": "kosu_subscription",
+  "params": {
+    "subscription":"0x579f7e1ede3d6af7b951cb28fd6779f0",
+    "result": {
+      "round_info": {
+        "number": 6,
+        "starts_at": 134,
+        "ends_at": 144,
+        "limit": 10
       }
     }
   }

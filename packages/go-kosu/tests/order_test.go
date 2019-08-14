@@ -8,8 +8,6 @@ import (
 	"go-kosu/abci/types"
 	"go-kosu/rpc"
 
-	tmtypes "github.com/tendermint/tendermint/types"
-
 	. "github.com/smartystreets/goconvey/convey"
 	"github.com/stretchr/testify/require"
 )
@@ -52,7 +50,7 @@ func (s *Suite) TestOrderTx() {
 				ctx, cancel := context.WithCancel(context.Background())
 				defer cancel()
 
-				ch := make(chan tmtypes.EventDataTx)
+				ch := make(chan *types.TransactionOrder)
 				defer close(ch)
 
 				sub, err := client.Subscribe(ctx, "kosu", ch, "newOrders")
@@ -60,11 +58,11 @@ func (s *Suite) TestOrderTx() {
 				defer sub.Unsubscribe()
 
 				Convey("And a OrderTx is sent", func() {
-					res := BroadcastTxSync(t, s.client, tx)
+					BroadcastTxSync(t, s.client, tx)
 
-					Convey("Event should be sent and mathes the Broadcast response", func() {
+					Convey("Event should be sent and matches the Broadcasted Tx", func() {
 						event := <-ch
-						So(event.TxResult.Tx.Hash(), ShouldResemble, res.Hash.Bytes())
+						So(event.String(), ShouldEqual, tx.String())
 					})
 				})
 			})

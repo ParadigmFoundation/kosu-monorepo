@@ -62,10 +62,11 @@ contract ValidatorRegistry is Ownable {
     uint public challengePeriod;
     uint public exitPeriod;
     uint public rewardPeriod;
-    uint public minimumBalance = 1 ether;
-    uint public stakeholderCut = 30; // per 100
-    uint public maxGeneratorGrowth = 12000000000;
-    uint public minMaxGenerator = 2 ether;
+    uint public minimumBalance = 500 ether;
+    uint public stakeholderCut = 30; // Will be used as a percent so must be sub 100
+    uint public minMaxGenerator = 1 ether / 10;
+    uint public maxGeneratorGrowth = 5 ether / 1000;
+    uint public maxMaxGenerator = 2 ether / 10;
     Treasury public treasury;
     Voting public voting;
     KosuToken public kosuToken;
@@ -120,8 +121,10 @@ contract ValidatorRegistry is Ownable {
         uint max = currentMax.add(maxGeneratorGrowth);
         if (max < minMaxGenerator) {
             return minMaxGenerator;
+        } else if (max > maxMaxGenerator) {
+            return maxMaxGenerator;
         }
-        return max; //TODO: default / minimum?
+        return max;
     }
 
     /** @dev Expose listing data for given public key.
@@ -526,10 +529,11 @@ contract ValidatorRegistry is Ownable {
         if (hasRewardPending(l)) {
             uint rewardPeriods = block.number.sub(l.lastRewardBlock).div(rewardPeriod);
             if (l.rewardRate > 0) {
-                kosuToken.mintTo(l.owner, uint(l.rewardRate).mul(rewardPeriods));
+                //Converting reward rate from ether to tokens to mint
+                kosuToken.mintTo(l.owner, kosuToken.estimateEtherToToken(uint(l.rewardRate).mul(rewardPeriods)));
             } else {
-                //Tokens to pay up
-                uint tokensToBurn = uint(l.rewardRate * - 1).mul(rewardPeriods);
+                //Converting reward rate from ether to tokens to burn
+                uint tokensToBurn = kosuToken.estimateEtherToToken(uint(l.rewardRate * - 1).mul(rewardPeriods));
 
                 //Tokens remaining in the treasury
                 uint userTreasuryBalance = treasury.currentBalance(l.owner);
@@ -630,9 +634,9 @@ contract ValidatorRegistry is Ownable {
     }
 
     function emitValidatorTouchedAndRemoved(Listing storage l) internal {
-        bytes32[] memory data = new bytes32[](4);
+        bytes32[] memory data = new bytes32[](2);
         data[0] = l.tendermintPublicKey;
-        data[2] = bytes32(uint(l.owner));
+        data[1] = bytes32(uint(l.owner));
         eventEmitter.emitEvent("ValidatorTouchedAndRemoved", data, "");
     }
 
