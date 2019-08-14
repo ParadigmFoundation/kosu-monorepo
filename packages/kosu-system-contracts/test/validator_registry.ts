@@ -1705,7 +1705,7 @@ describe("ValidatorRegistry", async () => {
         });
     });
 
-    describe.only("updateConfigValue", () => {
+    describe("updateConfigValue", () => {
         it("should only let the owner act", async () => {
             await validatorRegistry.updateConfigValue.awaitTransactionSuccessAsync(TestValues.zero, TestValues.oneHundredEther, { from: accounts[9] }).should.eventually.be.rejected;
         });
