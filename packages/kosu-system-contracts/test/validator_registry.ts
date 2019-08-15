@@ -1707,7 +1707,11 @@ describe("ValidatorRegistry", async () => {
 
     describe("updateConfigValue", () => {
         it("should only let the owner act", async () => {
-            await validatorRegistry.updateConfigValue.awaitTransactionSuccessAsync(TestValues.zero, TestValues.oneHundredEther, { from: accounts[9] }).should.eventually.be.rejected;
+            await validatorRegistry.updateConfigValue.awaitTransactionSuccessAsync(
+                TestValues.zero,
+                TestValues.oneHundredEther,
+                { from: accounts[9] },
+            ).should.eventually.be.rejected;
         });
 
         [
@@ -1724,10 +1728,16 @@ describe("ValidatorRegistry", async () => {
         ].forEach((method, index) => {
             it(`should correctly set a new ${method}`, async () => {
                 const originalValue = await validatorRegistry[method].callAsync();
-                await validatorRegistry.updateConfigValue.awaitTransactionSuccessAsync(new BigNumber(index), TestValues.maxUint).should.eventually.be.fulfilled;
+                await validatorRegistry.updateConfigValue.awaitTransactionSuccessAsync(
+                    new BigNumber(index),
+                    TestValues.maxUint,
+                ).should.eventually.be.fulfilled;
                 const newValue = await validatorRegistry[method].callAsync();
                 newValue.toString().should.eq(TestValues.maxUint.toString());
-                await validatorRegistry.updateConfigValue.awaitTransactionSuccessAsync(new BigNumber(index), originalValue).should.eventually.be.fulfilled;
+                await validatorRegistry.updateConfigValue.awaitTransactionSuccessAsync(
+                    new BigNumber(index),
+                    originalValue,
+                ).should.eventually.be.fulfilled;
             });
         });
     });
