@@ -85,6 +85,11 @@ export class TestHelpers {
                 from: address,
                 value: approxDeposit,
             });
+        } else if (currentBalance.gt(desiredValue)) {
+            const overage = currentBalance.minus(desiredValue);
+            await this.migratedContracts.kosuToken.transfer.awaitTransactionSuccessAsync(this.accounts[0], overage, {
+                from: address,
+            });
         }
 
         if (await this.migratedContracts.kosuToken.balanceOf.callAsync(address).then(val => val.lt(desiredValue))) {
