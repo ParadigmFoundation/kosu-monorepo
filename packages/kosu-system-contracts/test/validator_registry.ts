@@ -100,7 +100,7 @@ describe("ValidatorRegistry", async () => {
                 TestValues.oneWei,
             );
 
-            txReceipt.gasUsed.should.be.lt(5000000);
+            txReceipt.gasUsed.should.be.lt(5100000);
         });
     });
 
