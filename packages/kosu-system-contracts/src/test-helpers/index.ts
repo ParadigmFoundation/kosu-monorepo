@@ -159,6 +159,19 @@ export class TestHelpers {
         await this.skipApplicationPeriod(result.blockNumber);
     }
 
+    public async prepareConfirmedListing(
+        tendermintPublicKey: string,
+        options: { stake?: BigNumber; reward?: BigNumber; details?: string } = {},
+    ): Promise<void> {
+        await this.prepareListing(tendermintPublicKey, options);
+        const listing = await this.migratedContracts.validatorRegistry.getListing.callAsync(tendermintPublicKey);
+        if (listing.rewardRate.lt(0)) {
+            const tokensNeeded = await this.migratedContracts.kosuToken.estimateEtherToToken.callAsync(listing.rewardRate.times(-1));
+            await this.ensureTreasuryBalance(this.accounts[0], tokensNeeded);
+        }
+        await this.migratedContracts.validatorRegistry.confirmListing.awaitTransactionSuccessAsync(tendermintPublicKey);
+    }
+
     public async exitListing(publicKey: string, from: string = this.accounts[0]): Promise<void> {
         await this.initializing;
         const { status } = await this.migratedContracts.validatorRegistry.getListing.callAsync(publicKey);
