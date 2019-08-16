@@ -76,31 +76,22 @@ export class TestHelpers {
 
     public async ensureTokenBalance(address: string, desiredValue: BigNumber): Promise<void> {
         await this.initializing;
-        const transactions = [];
-        await this.migratedContracts.kosuToken.balanceOf.callAsync(address).then(async balance => {
-            if (balance.gt(desiredValue)) {
-                transactions.push(
-                    this.migratedContracts.kosuToken.transfer.awaitTransactionSuccessAsync(
-                        this.accounts[0],
-                        balance.minus(desiredValue),
-                        {
-                            from: address,
-                        },
-                    ),
-                );
-            } else if (balance.lt(desiredValue)) {
-                transactions.push(
-                    this.migratedContracts.kosuToken.transfer.awaitTransactionSuccessAsync(
-                        address,
-                        desiredValue.minus(balance),
-                    ),
-                );
-            }
-        });
-        await Promise.all(transactions);
+        const currentBalance = await this.migratedContracts.kosuToken.balanceOf.callAsync(address);
+        if (currentBalance.lt(desiredValue)) {
+            const balanceNeeded = desiredValue.minus(currentBalance);
+            const approxRate = await this.migratedContracts.kosuToken.estimateEtherToToken.callAsync(TestValues.oneWei);
+            const approxDeposit = balanceNeeded.dividedToIntegerBy(approxRate).plus(1);
+            await this.migratedContracts.kosuToken.bondTokens.awaitTransactionSuccessAsync(
+                TestValues.zero,
+                {
+                    from: address,
+                    value: approxDeposit,
+                },
+            );
+        }
+
         if (
-            (await this.migratedContracts.kosuToken.balanceOf.callAsync(address).then(val => val.toString())) !==
-            desiredValue.toString()
+            await this.migratedContracts.kosuToken.balanceOf.callAsync(address).then(val => val.lt(desiredValue))
         ) {
             throw new Error(`Ensure ${address} has balanceOf ${desiredValue.toString()} failed`);
         }
