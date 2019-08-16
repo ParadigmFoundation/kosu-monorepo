@@ -28,13 +28,8 @@ func newServerClient(t *testing.T) (*abci.App, *rpc.Client, func()) {
 }
 
 func TestRPCLatestHeight(t *testing.T) {
-	_, closer := tests.StartServer(t, db.NewMemDB())
+	_, client, closer := newServerClient(t)
 	defer closer()
-	client := rpc.DialInProc(
-		NewServer(
-			abci.NewHTTPClient("http://localhost:26657", nil),
-		),
-	)
 
 	var latest uint64
 	// Get the initial (prior the first block is mined)

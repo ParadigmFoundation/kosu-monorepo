@@ -32,9 +32,13 @@ func NewClient(c client.Client, key []byte) *Client {
 }
 
 // NewHTTPClient calls NewClient using a HTTPClient as ABCClient
-func NewHTTPClient(addr string, key []byte) *Client {
+func NewHTTPClient(addr string, key []byte) (*Client, error) {
 	c := client.NewHTTP(addr, "/websocket")
-	return NewClient(c, key)
+	if err := c.Start(); err != nil {
+		return nil, err
+	}
+
+	return NewClient(c, key), nil
 }
 
 // BroadcastTxAsync will return right away without waiting to hear if the transaction is even valid
@@ -90,24 +94,13 @@ func (c *Client) Subscribe(ctx context.Context, q string) (<-chan rpctypes.Resul
 		return nil, nil, err
 	}
 
-	// Start WS if not yet
-	if httpC, ok := c.Client.(*client.HTTP); ok {
-		if !httpC.IsRunning() {
-			if err := httpC.Start(); err != nil {
-				return nil, nil, err
-			}
-		}
-	}
-
 	ch, err := c.Client.Subscribe(ctx, "kosu", q)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	closer := func() {
-		if httpC, ok := c.Client.(*client.HTTP); ok {
-			_ = httpC.Stop()
-		}
+		_ = c.Client.Unsubscribe(ctx, "kosu", q)
 	}
 
 	return ch, closer, nil
@@ -136,6 +129,27 @@ func (c *Client) QueryConsensusParams() (*types.ConsensusParams, error) {
 	}
 
 	return &pb, nil
+}
+
+// QueryLastEvent performs a ABCI Query to "/lastevent".
+// `lastevent` keeps track of the last block height recorded from the Ethereum chain
+func (c *Client) QueryLastEvent() (uint64, error) {
+	out, err := c.ABCIQuery("/chain/key", []byte("lastevent"))
+	if err != nil {
+		return 0, err
+	}
+	res := out.Response
+
+	if res.IsErr() {
+		return 0, errors.New(res.GetLog())
+	}
+
+	if len(res.Value) == 0 {
+		return 0, nil
+	}
+
+	buf := proto.NewBuffer(res.Value)
+	return buf.DecodeFixed64()
 }
 
 // QueryPoster performs a ABCI Query to "/posters/<addr>"

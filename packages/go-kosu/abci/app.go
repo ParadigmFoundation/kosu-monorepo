@@ -71,7 +71,7 @@ func (app *App) NewClient() (*Client, error) {
 		return nil, err
 	}
 
-	return NewHTTPClient(url, key), nil
+	return NewHTTPClient(url, key)
 }
 
 // Query queries the application state using the store.Query method
@@ -301,5 +301,5 @@ func (app *App) DeliverTx(req []byte) abci.ResponseDeliverTx {
 		fmt.Printf("Unknown Tx: %t", tx.GetData())
 	}
 
-	return abci.ResponseDeliverTx{Code: 1, Info: "Unknown Transaction type"}
+	return abci.ResponseDeliverTx{Code: 1, Log: "Unknown Transaction type"}
 }
