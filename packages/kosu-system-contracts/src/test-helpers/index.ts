@@ -81,18 +81,13 @@ export class TestHelpers {
             const balanceNeeded = desiredValue.minus(currentBalance);
             const approxRate = await this.migratedContracts.kosuToken.estimateEtherToToken.callAsync(TestValues.oneWei);
             const approxDeposit = balanceNeeded.dividedToIntegerBy(approxRate).plus(1);
-            await this.migratedContracts.kosuToken.bondTokens.awaitTransactionSuccessAsync(
-                TestValues.zero,
-                {
-                    from: address,
-                    value: approxDeposit,
-                },
-            );
+            await this.migratedContracts.kosuToken.bondTokens.awaitTransactionSuccessAsync(TestValues.zero, {
+                from: address,
+                value: approxDeposit,
+            });
         }
 
-        if (
-            await this.migratedContracts.kosuToken.balanceOf.callAsync(address).then(val => val.lt(desiredValue))
-        ) {
+        if (await this.migratedContracts.kosuToken.balanceOf.callAsync(address).then(val => val.lt(desiredValue))) {
             throw new Error(`Ensure ${address} has balanceOf ${desiredValue.toString()} failed`);
         }
     }
@@ -103,13 +98,17 @@ export class TestHelpers {
         if (currentBalance.lt(desiredValue)) {
             const balanceNeeded = desiredValue.minus(currentBalance);
             await this.ensureTokenBalance(address, balanceNeeded);
-            await this.migratedContracts.kosuToken.approve.awaitTransactionSuccessAsync(this.migratedContracts.treasury.address, balanceNeeded, { from: address });
-            await this.migratedContracts.treasury.deposit.awaitTransactionSuccessAsync(balanceNeeded, { from: address });
+            await this.migratedContracts.kosuToken.approve.awaitTransactionSuccessAsync(
+                this.migratedContracts.treasury.address,
+                balanceNeeded,
+                { from: address },
+            );
+            await this.migratedContracts.treasury.deposit.awaitTransactionSuccessAsync(balanceNeeded, {
+                from: address,
+            });
         }
 
-        if (
-            await this.migratedContracts.treasury.currentBalance.callAsync(address).then(val => val.lt(desiredValue))
-        ) {
+        if (await this.migratedContracts.treasury.currentBalance.callAsync(address).then(val => val.lt(desiredValue))) {
             throw new Error(`Ensure ${address} has treasury balance of ${desiredValue.toString()} failed`);
         }
     }
@@ -166,7 +165,9 @@ export class TestHelpers {
         await this.prepareListing(tendermintPublicKey, options);
         const listing = await this.migratedContracts.validatorRegistry.getListing.callAsync(tendermintPublicKey);
         if (listing.rewardRate.lt(0)) {
-            const tokensNeeded = await this.migratedContracts.kosuToken.estimateEtherToToken.callAsync(listing.rewardRate.times(-1));
+            const tokensNeeded = await this.migratedContracts.kosuToken.estimateEtherToToken.callAsync(
+                listing.rewardRate.times(-1),
+            );
             await this.ensureTreasuryBalance(this.accounts[0], tokensNeeded);
         }
         await this.migratedContracts.validatorRegistry.confirmListing.awaitTransactionSuccessAsync(tendermintPublicKey);
