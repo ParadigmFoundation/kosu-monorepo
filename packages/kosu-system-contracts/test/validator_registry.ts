@@ -1741,6 +1741,46 @@ describe("ValidatorRegistry", async () => {
         });
     });
 
+    describe("reduceReward", () => {
+        it("should emit an event", async () => {
+            await testHelpers.prepareConfirmedListing("0xffaabb", {
+                reward: TestValues.oneWei.plus(TestValues.oneWei),
+            });
+            const { logs } = await validatorRegistry.reduceReward.awaitTransactionSuccessAsync(
+                "0xffaabb",
+                TestValues.oneWei,
+            );
+            const decodedLogs = decodeKosuEvents(logs);
+            decodedLogs[0].eventType.should.eq("ValidatorReducedReward");
+            decodedLogs[0].tendermintPublicKeyHex.should.contain("0xffaabb");
+            decodedLogs[0].newRewardRate.should.eq(TestValues.oneWei.toString());
+            await testHelpers.exitListing("0xffaabb");
+        });
+
+        it("should not modify a negative reward", async () => {
+            await testHelpers.prepareConfirmedListing("0xffaabb", { reward: TestValues.oneWei.times("-1") });
+            await validatorRegistry.reduceReward.awaitTransactionSuccessAsync("0xffaabb", TestValues.zero).should
+                .eventually.be.rejected;
+            await testHelpers.exitListing("0xffaabb");
+        });
+
+        it("should not modify a zero reward", async () => {
+            await testHelpers.prepareConfirmedListing("0xffaabb");
+            await validatorRegistry.reduceReward.awaitTransactionSuccessAsync("0xffaabb", TestValues.oneWei).should
+                .eventually.be.rejected;
+            await testHelpers.exitListing("0xffaabb");
+        });
+
+        it("should not increase a reward", async () => {
+            await testHelpers.prepareConfirmedListing("0xffaabb", { reward: TestValues.oneWei });
+            await validatorRegistry.reduceReward.awaitTransactionSuccessAsync(
+                "0xffaabb",
+                TestValues.oneWei.plus(TestValues.oneWei),
+            ).should.eventually.be.rejected;
+            await testHelpers.exitListing("0xffaabb");
+        });
+    });
+
     describe("ValidatorRegistryUpdate", () => {
         beforeEach(async () => {
             await testHelpers.prepareListing(tendermintPublicKey);

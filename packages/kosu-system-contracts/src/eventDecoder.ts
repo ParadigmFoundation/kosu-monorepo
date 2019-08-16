@@ -98,6 +98,14 @@ export const eventDecoder = (eventReturnValues: any): any => {
                 owner: bytes32ToAddressString(data[1]),
             });
             break;
+        case "ValidatorReducedReward":
+            Object.assign(decoded, {
+                tendermintPublicKey: bytes32ToBase64(data[0]),
+                tendermintPublicKeyHex: data[0],
+                owner: bytes32ToAddressString(data[1]),
+                newRewardRate: hexToNumberString(data[2]),
+            });
+            break;
         default:
             console.warn(`Unrecognized eventType: ${eventType}`);
     }

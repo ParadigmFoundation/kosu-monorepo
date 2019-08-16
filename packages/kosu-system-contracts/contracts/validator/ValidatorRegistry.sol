@@ -496,6 +496,27 @@ contract ValidatorRegistry is Ownable {
         removeListing(listing);
     }
 
+    function reduceReward(bytes32 tendermintPublicKey, int newRate) public {
+        //Load the listing
+        Listing storage listing = _listings[tendermintPublicKey];
+
+        //Listing owner must call this method
+        require(listing.owner == msg.sender);
+        //Can only modify listing generating tokens
+        require(listing.rewardRate > 0);
+        //Can only reduce reward rate
+        require(listing.rewardRate > newRate);
+        //Must be below the maxRewardRate
+        require(uint(newRate) < maxRewardRate());
+        //Listing must be active and in good standing.
+        require(listing.status == Status.ACCEPTED);
+
+        processRewards(listing);
+        listing.rewardRate = newRate;
+
+        emitValidatorReducedReward(listing);
+    }
+
     function updateConfigValue(uint index, uint value) public onlyOwner {
         if (index == 0) {
             applicationPeriod = value;
@@ -640,6 +661,14 @@ contract ValidatorRegistry is Ownable {
         data[0] = l.tendermintPublicKey;
         data[1] = bytes32(uint(l.owner));
         eventEmitter.emitEvent("ValidatorTouchedAndRemoved", data, "");
+    }
+
+    function emitValidatorReducedReward(Listing storage l) internal {
+        bytes32[] memory data = new bytes32[](3);
+        data[0] = l.tendermintPublicKey;
+        data[1] = bytes32(uint(l.owner));
+        data[2] = bytes32(l.rewardRate);
+        eventEmitter.emitEvent("ValidatorReducedReward", data, "");
     }
 
     function emitValidatorChallenged(bytes32 tendermintPublicKey, address owner, address challenger, uint challengeId, uint pollId, string storage details) internal {
