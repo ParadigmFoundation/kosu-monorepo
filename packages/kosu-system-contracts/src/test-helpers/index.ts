@@ -97,6 +97,23 @@ export class TestHelpers {
         }
     }
 
+    public async ensureTreasuryBalance(address: string, desiredValue: BigNumber): Promise<void> {
+        await this.initializing;
+        const currentBalance = await this.migratedContracts.treasury.currentBalance.callAsync(address);
+        if (currentBalance.lt(desiredValue)) {
+            const balanceNeeded = desiredValue.minus(currentBalance);
+            await this.ensureTokenBalance(address, balanceNeeded);
+            await this.migratedContracts.kosuToken.approve.awaitTransactionSuccessAsync(this.migratedContracts.treasury.address, balanceNeeded, { from: address });
+            await this.migratedContracts.treasury.deposit.awaitTransactionSuccessAsync(balanceNeeded, { from: address });
+        }
+
+        if (
+            await this.migratedContracts.treasury.currentBalance.callAsync(address).then(val => val.lt(desiredValue))
+        ) {
+            throw new Error(`Ensure ${address} has treasury balance of ${desiredValue.toString()} failed`);
+        }
+    }
+
     public async clearTreasury(address: string): Promise<void> {
         const transactions = [];
         const systemBalance = await this.migratedContracts.treasury.systemBalance.callAsync(address);
