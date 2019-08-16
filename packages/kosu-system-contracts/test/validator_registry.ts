@@ -92,7 +92,6 @@ describe("ValidatorRegistry", async () => {
                 txDefaults,
                 treasury.address,
                 voting.address,
-                contracts.authorizedAddresses.address,
                 contracts.eventEmitter.address,
                 TestValues.oneWei,
                 TestValues.oneWei,
