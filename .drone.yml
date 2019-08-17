@@ -4,11 +4,19 @@ kind: pipeline
 name: tests
 
 steps:
+  - name: fetch
+    image: docker:git
+    commands:
+      - git fetch --tags
+
   - name: prettier-project
     image: gcr.io/kosu-io/node-lts:latest
     pull: always
     environment:
       WEB3_URI: http://kosu-geth:8545
+    volumes:
+      - name: deps
+        path: /go
     commands:
       - yarn prettier:ci
     depends_on:
@@ -24,6 +32,9 @@ steps:
       - yarn setup:ci
       - cd packages/kosu-system-contracts
       - yarn migrate:ci
+    volumes:
+      - name: deps
+        path: /go
     depends_on:
       - clone
 
@@ -34,6 +45,9 @@ steps:
       WEB3_URI: http://kosu-geth:8545
     commands:
       - yarn test:ci
+    volumes:
+      - name: deps
+        path: /go
     depends_on:
       - build-project
 
@@ -44,6 +58,9 @@ steps:
       WEB3_URI: http://kosu-geth:8545
     commands:
       - yarn contracts:test:ci
+    volumes:
+      - name: deps
+        path: /go
     depends_on:
       - build-project
 
@@ -52,11 +69,31 @@ steps:
     pull: always
     environment:
       WEB3_TEST_URI: ws://kosu-geth:8546
+    volumes:
+      - name: deps
+        path: /go
     commands:
       - cd packages/go-kosu
       - make ci
     depends_on:
       - build-project
+  
+  - name: release
+    image: golang
+    environment:
+      GITHUB_TOKEN:
+        from_secret: github_token
+    volumes:
+      - name: deps
+        path: /go
+    commands:
+      - curl -sL https://git.io/goreleaser | bash
+    when:
+      event: tag
+
+volumes:
+  - name: deps
+    temp: {}
 
 services:
   - name: kosu-geth
@@ -65,16 +102,3 @@ services:
     ports:
       - 8545
       - 8546
-
-trigger:
-  event:
-    - pull_request
-
-release:
-  image: golang:1.12
-  secrets: [github_token]
-  commands:
-    - cd packages/go-kosu
-    - curl -sL https://git.io/goreleaser | bash
-  when:
-    event: tag
