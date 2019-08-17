@@ -90,6 +90,8 @@ steps:
       - curl -sL https://git.io/goreleaser | bash
     when:
       event: tag
+    depends_on:
+      - build-project
 
 volumes:
   - name: deps
