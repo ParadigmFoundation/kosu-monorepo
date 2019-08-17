@@ -59,26 +59,26 @@ steps:
       - build-project
 
 services:
-    - name: kosu-geth
-      image: gcr.io/kosu-io/kosu-geth:0.1.1
-      pull: always
-      ports:
-          - 8545
-          - 8546
+  - name: kosu-geth
+    image: gcr.io/kosu-io/kosu-geth:0.1.1
+    pull: always
+    ports:
+      - 8545
+      - 8546
 
 trigger:
-    event:
-        - pull_request
+  event:
+    - pull_request
 
-# UNTESTED
-# ---
-# kind: pipeline
-# name: go-kosu-release
-#
-# release:
-#     image: golang:1.12
-#     secrets: [github_token]
-#     commands:
-#      curl -sL https://git.io/goreleaser | bash
-#     when:
-#       event: tag
+---
+kind: pipeline
+name: go-kosu-release
+
+release:
+  image: golang:1.12
+  secrets: [github_token]
+  commands:
+    - cd packages/go-kosu
+    - curl -sL https://git.io/goreleaser | bash
+  when:
+    event: tag
