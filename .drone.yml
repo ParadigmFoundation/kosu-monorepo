@@ -87,6 +87,7 @@ steps:
       - name: deps
         path: /go
     commands:
+      - cd packages/go-kosu
       - curl -sL https://git.io/goreleaser | bash
     when:
       event: tag
