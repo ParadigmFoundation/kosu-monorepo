@@ -70,10 +70,6 @@ trigger:
   event:
     - pull_request
 
----
-kind: pipeline
-name: go-kosu-release
-
 release:
   image: golang:1.12
   secrets: [github_token]
