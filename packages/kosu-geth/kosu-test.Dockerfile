@@ -8,7 +8,7 @@ RUN geth init genesis-kosu-test.json --datadir .
 
 ENTRYPOINT geth \
     --datadir . \
-    --networkid 6174 \
+    --networkid 6175 \
     --unlock="`cat accounts`" \
     --password=./passwords \
     --etherbase "0x54E60Bccc86A7Bad4BC68E36a8fde0F369aE849E" --mine \
