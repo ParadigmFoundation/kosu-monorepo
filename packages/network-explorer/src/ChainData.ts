@@ -238,7 +238,6 @@ export class ChainData {
                         last_voted: validatorData.firstVote.toString(),
                         power: validatorData.power.toString(),
                     };
-                    console.log(validator);
                     this.validators.push(validator);
                 }
             } catch (err) {
