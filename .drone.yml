@@ -87,6 +87,7 @@ steps:
       - name: deps
         path: /go
     commands:
+      - git checkout -- packages/kosu-system-contracts/src/deployedAddresses.json
       - cd packages/go-kosu
       - curl -sL https://git.io/goreleaser | bash
     when:
