@@ -1,0 +1,18 @@
+{
+    "extends": "@kosu/tsc-config",
+    "compilerOptions": {
+        "outDir": "dist",
+        "rootDir": "src",
+        "resolveJsonModule": true,
+        "sourceMap": true,
+        "moduleResolution": "node",
+        "typeRoots": [
+            "node_modules/@types",
+            "src/types.d.ts"
+        ]
+    },
+    "include": [
+        "./src/**/*",
+        "../kosu-system-contracts/src/types.d.ts"
+    ]
+}

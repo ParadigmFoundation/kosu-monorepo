@@ -1,0 +1,32 @@
+{
+  "name": "@kosu/network-explorer",
+  "version": "0.0.0",
+  "description": "Simple WebSocket and REST server for information about the Kosu network.",
+  "main": "dist/index.js",
+  "repository": "https://github.com/ParadigmFoundation/kosu-monorepo/blob/master/packages/network-explorer",
+  "license": "MIT",
+  "private": false,
+  "scripts": {
+    "build": "tsc",
+    "lint": "tslint -p .",
+    "lint:fix": "tslint -p . --fix",
+    "start:redis": "docker run -d --rm -p 6379:6379 --name redis redis",
+    "start:dev": "node dist/index.js",
+    "start:production": "NODE_ENV=production node dist/index.js",
+    "start": "yarn start:redis && yarn start:dev",
+    "stop:redis": "docker kill redis"
+  },
+  "dependencies": {
+    "@kosu/kosu.js": "^0.1.6",
+    "ioredis": "^4.14.0",
+    "lodash": "^4.17.15",
+    "uuid": "^3.3.3",
+    "web3": "^1.2.1",
+    "ws": "^7.1.2"
+  },
+  "devDependencies": {
+    "@types/ws": "^6.0.2",
+    "tslint": "^5.18.0",
+    "typescript": "^3.5.3"
+  }
+}

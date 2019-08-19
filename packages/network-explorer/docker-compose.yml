@@ -1,0 +1,18 @@
+version: '3'
+
+services: 
+  server:
+    container_name: network-explorer
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      REDIS_HOST=redis
+      REDIS_PORT=6379
+      ETHEREUM_JSONRPC_URL=
+    ports: 
+      - "8000:26657"
+  
+  redis:
+    container_name: redis
+    image: redis
