@@ -5,6 +5,7 @@ import ws from "ws";
 
 import { requestHandlerClosure } from "./requestHandler";
 import { safeSend } from "./utils";
+import { ChainData } from "./ChainData";
 
 const {
     REDIS_HOST = "localhost",
@@ -30,6 +31,7 @@ export function connectionHandlerClosure(
     clients: IClientMap,
     kosu: Kosu,
     kosuRpc: ws,
+    chain: ChainData,
 ): (s: ws, r: ws.Data) => void {
     const redis = new Redis(parseInt(REDIS_PORT), REDIS_HOST);
     return (socket: ws, request: ws.Data) => {

@@ -4,7 +4,9 @@ import Web3 from "web3";
 import ws, { Server } from "ws";
 
 import { blockHandlerClosure } from "./blockHandler";
+import { ChainData } from "./ChainData";
 import { connectionHandlerClosure } from "./connectionHandler";
+import { fields } from "./fieldDefinitions";
 
 const {
     HOST,
@@ -25,10 +27,20 @@ const server = new Server({
     host: HOST || HOSTNAME,
 });
 
+// main chain data manager
+const chain = new ChainData(
+    kosu,
+    KOSU_JSONRPC_URL,
+    fields,
+    10000,
+    10,
+    20,
+);
+
 const kosuSub = new ws(KOSU_JSONRPC_URL);
 const kosuRpc = new ws(KOSU_JSONRPC_URL);
 
-kosuSub.on("message", blockHandlerClosure(clients));
+kosuSub.on("message", blockHandlerClosure(clients, chain));
 kosuSub.on("open", () => {
     kosuSub.send(JSON.stringify({
         jsonrpc: "2.0",
@@ -51,4 +63,4 @@ kosuRpc.on("error", (err: any) => {
     console.error(`error in kosu node RPC connection: ${log}`);
 });
 
-server.on("connection", connectionHandlerClosure(clients, kosu, kosuRpc));
+server.on("connection", connectionHandlerClosure(clients, kosu, kosuRpc, chain));

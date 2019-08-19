@@ -1,3 +1,4 @@
+import { ChainData } from "./ChainData";
 import { IClientMap } from "./connectionHandler";
 import { safeSend } from "./utils";
 
@@ -8,8 +9,8 @@ import { safeSend } from "./utils";
  *
  * @param clients mapping of serverId's to connected client socket instances
  */
-export function blockHandlerClosure(clients: IClientMap): (msg: any) => void {
-    return (msg: any) => {
+export function blockHandlerClosure(clients: IClientMap, chain: ChainData): (msg: any) => Promise<void> {
+    return async (msg: any) => {
         const parsed = JSON.parse(msg.toString());
 
         if (parsed.id) {
@@ -24,11 +25,14 @@ export function blockHandlerClosure(clients: IClientMap): (msg: any) => void {
         const date = new Date(time);
         const timestamp = Math.floor(date.getTime() / 1000);
 
+        // store latest chain data
+        await chain.updateBlockData(height, timestamp);
+
         // update clients with new block data, and latest chain state
         let counter = 0;
+        const message = chain.getLatestData();
         Object.keys(clients).forEach((serverId: string) => {
-            const { client, id } = clients[serverId];
-            const message = { id, data: { height, time: timestamp } };
+            const { client } = clients[serverId];
             safeSend(client, message);
             counter++;
         });
