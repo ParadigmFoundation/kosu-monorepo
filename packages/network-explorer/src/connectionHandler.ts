@@ -3,9 +3,9 @@ import Redis from "ioredis";
 import uuid from "uuid/v4";
 import ws from "ws";
 
+import { ChainData } from "./ChainData";
 import { requestHandlerClosure } from "./requestHandler";
 import { safeSend } from "./utils";
-import { ChainData } from "./ChainData";
 
 const {
     REDIS_HOST = "localhost",
