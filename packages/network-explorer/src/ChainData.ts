@@ -246,45 +246,6 @@ export class ChainData {
         };
     }
 
-    /*
-    private async getValidatorInfo(id: string): Promise<IValidator> {
-        const validator = {};
-
-        const requests = createBatchQueryRequest([
-            `validators/${id}/totalVotes`,
-            `validators/${id}/firstVote`,
-            `validators/${id}/lastVoted`,
-            `validators/${id}/publicKey`,
-            `validators/${id}/power`,
-        ]);
-
-        const batchRes = await executeBatchQuery(this.conn, requests, 10000);
-
-        if (batchRes && batchRes.length > 0) {
-            const [total, first, last, key, power] = batchRes;
-
-            const currHeight = parseInt(this.getLatest("network/block_height"));
-            const firstBlock = parseInt(first);
-            const uptimePercent = Math.floor(100 * (total / ((currHeight - firstBlock))));
-
-            // assign values (raw and computed) to validator object
-            validator["public_key"] = key;
-            validator["uptime_percent"] = uptimePercent.toString();
-            validator["first_block"] = first;
-            validator["last_voted"] = last;
-            validator["power"] = power;
-
-            // @todo update
-            validator["reward"] = "0"; // temporary
-            validator["stake"] = power;
-
-            return validator as IValidator;
-        } else {
-            throw new Error("failed");
-        }
-    }
-    */
-
     public getLatest(key?: string): any {
         if (!key) {
             return cloneDeep(this.latest);
