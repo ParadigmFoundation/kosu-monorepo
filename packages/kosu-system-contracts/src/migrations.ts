@@ -72,7 +72,7 @@ export async function migrations(
                 _rewardPeriod: 4,
             },
         };
-        const zeroExAddresses = getContractAddressesForNetworkOrThrow(netId === 6174 ? 50 : netId);
+        const zeroExAddresses = getContractAddressesForNetworkOrThrow([6174, 6175].includes(netId) ? 50 : netId);
         const config = validatorValues[netId] || validatorValues.default;
 
         const orderGateway = await OrderGatewayContract.deployFrom0xArtifactAsync(

@@ -16,7 +16,7 @@ describe("ZeroExV2SubContract", () => {
         const kosuToken = contracts.kosuToken;
         const _arguments = JSON.parse(await contracts.zeroExV2SubContract.arguments.callAsync());
         const networkId = await web3Wrapper.getNetworkIdAsync();
-        const zeroExWrappers = new ContractWrappers(provider, { networkId: networkId === 6174 ? 50 : networkId });
+        const zeroExWrappers = new ContractWrappers(provider, { networkId: [6174, 6175].includes(networkId) ? 50 : networkId });
 
         const zeroExOrder = {
             makerAddress: accounts[0],
