@@ -99,6 +99,60 @@ export class ChainData {
         };
     }
 
+    public getLatest(key?: string): any {
+        if (!key) {
+            return cloneDeep(this.latest);
+        }
+        const [one, two] = key.split("/");
+        return this.latest[one][two];
+    }
+
+    public getLatestData(): INetworkData {
+        const data = cloneDeep(this.latest);
+        data.validators = cloneDeep(this.validators);
+        data.transactions = cloneDeep(this.orders);
+        return data;
+    }
+
+    public addOrder(order: any): void {
+        this.orders.push(order);
+        while (this.orders.length > this.orderAmount) {
+            this.orders.shift();
+        }
+    }
+
+    public async updateBlockData(height: number, time: number): Promise<void> {
+        if (this.lastBlockTimes.length === 0) {
+            this.lastTime = time;
+            this.addBlockTime(0);
+        } else {
+            const diff = time - this.lastTime;
+            this.addBlockTime(diff);
+        }
+
+        // update in-state last-time
+        this.lastTime = time;
+
+        // recalculate average interval
+        const avg = this.getAverageBlockTime();
+
+        // set new values and update from db
+        try {
+            await Promise.all([
+                this.redis.set("network/block_height", height),
+                this.redis.set("network/last_block_time", time),
+                this.redis.set("network/avg_block_interval", avg),
+            ]);
+            await this.setLatest();
+            console.log(`successfully updated all data for block '${height}'`);
+        } catch (err) {
+            console.error(`failed to update one or more block data values`);
+            console.error(`redis returned error: ${err}`);
+        }
+
+        return;
+    }
+
     private async setup(): Promise<void> {
         // clear the db
         await this.redis.purgeAll();
@@ -143,45 +197,6 @@ export class ChainData {
             console.error(`failed to update value for '${key}': ${err}`);
         }
         return res;
-    }
-
-    public getLatestData(): INetworkData {
-        const data = cloneDeep(this.latest);
-        data.validators = cloneDeep(this.validators);
-        data.transactions = cloneDeep(this.orders);
-        return data;
-    }
-
-    public async updateBlockData(height: number, time: number): Promise<void> {
-        if (this.lastBlockTimes.length === 0) {
-            this.lastTime = time;
-            this.addBlockTime(0);
-        } else {
-            const diff = time - this.lastTime;
-            this.addBlockTime(diff);
-        }
-
-        // update in-state last-time
-        this.lastTime = time;
-
-        // recalculate average interval
-        const avg = this.getAverageBlockTime();
-
-        // set new values and update from db
-        try {
-            await Promise.all([
-                this.redis.set("network/block_height", height),
-                this.redis.set("network/last_block_time", time),
-                this.redis.set("network/avg_block_interval", avg),
-            ]);
-            await this.setLatest();
-            console.log(`successfully updated all data for block '${height}'`);
-        } catch (err) {
-            console.error(`failed to update one or more block data values`);
-            console.error(`redis returned error: ${err}`);
-        }
-
-        return;
     }
 
     private addBlockTime(blockTime: number): void {
@@ -244,14 +259,6 @@ export class ChainData {
                 console.error(`unable to update validator info: ${err.message}`);
             }
         };
-    }
-
-    public getLatest(key?: string): any {
-        if (!key) {
-            return cloneDeep(this.latest);
-        }
-        const [one, two] = key.split("/");
-        return this.latest[one][two];
     }
 
     private async query(
