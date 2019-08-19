@@ -2,6 +2,7 @@ pragma solidity ^0.5.0;
 pragma experimental ABIEncoderV2;
 
 import "openzeppelin-solidity/contracts/math/SafeMath.sol";
+import "openzeppelin-solidity/contracts/ownership/Ownable.sol";
 import "../event/EventEmitter.sol";
 import "../treasury/Treasury.sol";
 import "../voting/Voting.sol";
@@ -10,7 +11,7 @@ import "../voting/Voting.sol";
     @author Freydal
     @dev Stores registry of validator listings and provides functionality to curate through proposals and challenges.
 */
-contract ValidatorRegistry {
+contract ValidatorRegistry is Ownable {
     using SafeMath for uint;
 
     enum Status {
@@ -77,11 +78,10 @@ contract ValidatorRegistry {
     bytes32 _maxGenerator;
     mapping(bytes32 => MaxList)_generators;
 
-    /** @dev Create a new ValidatorRegistry implementation
-        @notice Create a new ValidatorRegistry implementation
+    /** @dev Create a new ValidatorRegistry
+        @notice Create a new ValidatorRegistry
         @param _treasuryAddress Deployed Treasury address
         @param _votingAddress Deployed Voting address
-        @param auth AuthorizedAddresses deployed address
         @param _events Deployed EventEmitter address
         @param _applicationPeriod Initial application period (in blocks) for pending listings
         @param _commitPeriod Number of blocks after challenge initiated in which votes can be committed
@@ -89,7 +89,7 @@ contract ValidatorRegistry {
         @param _exitPeriod Number of blocks exiting listings must wait before claiming stake
         @param _rewardPeriod The frequency (in blocks) with which validator rewards may be issued
     */
-    constructor(address payable _treasuryAddress, address _votingAddress, address auth, address _events, uint _applicationPeriod, uint _commitPeriod, uint _challengePeriod, uint _exitPeriod, uint _rewardPeriod) public {
+    constructor(address payable _treasuryAddress, address _votingAddress, address _events, uint _applicationPeriod, uint _commitPeriod, uint _challengePeriod, uint _exitPeriod, uint _rewardPeriod) public Ownable() {
         treasury = Treasury(_treasuryAddress);
         voting = Voting(_votingAddress);
         kosuToken = treasury.kosuToken();
@@ -496,6 +496,53 @@ contract ValidatorRegistry {
         removeListing(listing);
     }
 
+    function reduceReward(bytes32 tendermintPublicKey, int newRate) public {
+        //Load the listing
+        Listing storage listing = _listings[tendermintPublicKey];
+
+        //Listing owner must call this method
+        require(listing.owner == msg.sender);
+        //Can only modify listing generating tokens
+        require(listing.rewardRate > 0);
+        //Can only reduce reward rate
+        require(listing.rewardRate > newRate);
+        //Must be below the maxRewardRate
+        require(uint(newRate) < maxRewardRate());
+        //Listing must be active and in good standing.
+        require(listing.status == Status.ACCEPTED);
+
+        processRewards(listing);
+        listing.rewardRate = newRate;
+
+        emitValidatorReducedReward(listing);
+    }
+
+    function updateConfigValue(uint index, uint value) public onlyOwner {
+        if (index == 0) {
+            applicationPeriod = value;
+        } else if (index == 1) {
+            commitPeriod = value;
+        } else if (index == 2) {
+            challengePeriod = value;
+        } else if (index == 3) {
+            exitPeriod = value;
+        } else if (index == 4) {
+            rewardPeriod = value;
+        } else if (index == 5) {
+            minimumBalance = value;
+        } else if (index == 6) {
+            stakeholderCut = value;
+        } else if (index == 7) {
+            minMaxGenerator = value;
+        } else if (index == 8) {
+            maxGeneratorGrowth = value;
+        } else if (index == 9) {
+            maxMaxGenerator = value;
+        } else {
+            revert("Index does not match a value");
+        }
+    }
+
     //INTERNAL
     function hasRewardPending(Listing storage l) internal view returns (bool) {
         return (l.status == Status.ACCEPTED && l.rewardRate != 0 && l.lastRewardBlock + rewardPeriod <= block.number);
@@ -575,7 +622,6 @@ contract ValidatorRegistry {
 
     function removeListing(Listing storage l) internal {
         if (l.rewardRate > 0 && l.confirmationBlock > 0) {
-            uint rewardRate = uint(l.rewardRate);
             removeEntryFromList(l.tendermintPublicKey);
         }
 
@@ -617,6 +663,14 @@ contract ValidatorRegistry {
         eventEmitter.emitEvent("ValidatorTouchedAndRemoved", data, "");
     }
 
+    function emitValidatorReducedReward(Listing storage l) internal {
+        bytes32[] memory data = new bytes32[](3);
+        data[0] = l.tendermintPublicKey;
+        data[1] = bytes32(uint(l.owner));
+        data[2] = bytes32(l.rewardRate);
+        eventEmitter.emitEvent("ValidatorReducedReward", data, "");
+    }
+
     function emitValidatorChallenged(bytes32 tendermintPublicKey, address owner, address challenger, uint challengeId, uint pollId, string storage details) internal {
         bytes32[] memory data = new bytes32[](5);
         data[0] = tendermintPublicKey;
@@ -633,7 +687,7 @@ contract ValidatorRegistry {
         eventEmitter.emitEvent("ValidatorChallengeResolved", data, "");
     }
 
-    function findGeneratorPlaceInList(int value) internal returns (bytes32 previous, bytes32 next) {
+    function findGeneratorPlaceInList(int value) internal view returns (bytes32 previous, bytes32 next) {
         if (_maxGenerator == 0x0) {
             return (0x0, 0x0);
         }

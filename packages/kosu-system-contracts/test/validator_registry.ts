@@ -92,7 +92,6 @@ describe("ValidatorRegistry", async () => {
                 txDefaults,
                 treasury.address,
                 voting.address,
-                contracts.authorizedAddresses.address,
                 contracts.eventEmitter.address,
                 TestValues.oneWei,
                 TestValues.oneWei,
@@ -101,7 +100,7 @@ describe("ValidatorRegistry", async () => {
                 TestValues.oneWei,
             );
 
-            txReceipt.gasUsed.should.be.lt(4700000);
+            txReceipt.gasUsed.should.be.lt(5100000);
         });
     });
 
@@ -1702,6 +1701,83 @@ describe("ValidatorRegistry", async () => {
             for (const key of keys) {
                 await testHelpers.exitListing(key);
             }
+        });
+    });
+
+    describe("updateConfigValue", () => {
+        it("should only let the owner act", async () => {
+            await validatorRegistry.updateConfigValue.awaitTransactionSuccessAsync(
+                TestValues.zero,
+                TestValues.oneHundredEther,
+                { from: accounts[9] },
+            ).should.eventually.be.rejected;
+        });
+
+        [
+            "applicationPeriod",
+            "commitPeriod",
+            "challengePeriod",
+            "exitPeriod",
+            "rewardPeriod",
+            "minimumBalance",
+            "stakeholderCut",
+            "minMaxGenerator",
+            "maxGeneratorGrowth",
+            "maxMaxGenerator",
+        ].forEach((method, index) => {
+            it(`should correctly set a new ${method}`, async () => {
+                const originalValue = await validatorRegistry[method].callAsync();
+                await validatorRegistry.updateConfigValue.awaitTransactionSuccessAsync(
+                    new BigNumber(index),
+                    TestValues.maxUint,
+                ).should.eventually.be.fulfilled;
+                const newValue = await validatorRegistry[method].callAsync();
+                newValue.toString().should.eq(TestValues.maxUint.toString());
+                await validatorRegistry.updateConfigValue.awaitTransactionSuccessAsync(
+                    new BigNumber(index),
+                    originalValue,
+                ).should.eventually.be.fulfilled;
+            });
+        });
+    });
+
+    describe("reduceReward", () => {
+        it("should emit an event", async () => {
+            await testHelpers.prepareConfirmedListing("0xffaabb", {
+                reward: TestValues.oneWei.plus(TestValues.oneWei),
+            });
+            const { logs } = await validatorRegistry.reduceReward.awaitTransactionSuccessAsync(
+                "0xffaabb",
+                TestValues.oneWei,
+            );
+            const decodedLogs = decodeKosuEvents(logs);
+            decodedLogs[0].eventType.should.eq("ValidatorReducedReward");
+            decodedLogs[0].tendermintPublicKeyHex.should.contain("0xffaabb");
+            decodedLogs[0].newRewardRate.should.eq(TestValues.oneWei.toString());
+            await testHelpers.exitListing("0xffaabb");
+        });
+
+        it("should not modify a negative reward", async () => {
+            await testHelpers.prepareConfirmedListing("0xffaabb", { reward: TestValues.oneWei.times("-1") });
+            await validatorRegistry.reduceReward.awaitTransactionSuccessAsync("0xffaabb", TestValues.zero).should
+                .eventually.be.rejected;
+            await testHelpers.exitListing("0xffaabb");
+        });
+
+        it("should not modify a zero reward", async () => {
+            await testHelpers.prepareConfirmedListing("0xffaabb");
+            await validatorRegistry.reduceReward.awaitTransactionSuccessAsync("0xffaabb", TestValues.oneWei).should
+                .eventually.be.rejected;
+            await testHelpers.exitListing("0xffaabb");
+        });
+
+        it("should not increase a reward", async () => {
+            await testHelpers.prepareConfirmedListing("0xffaabb", { reward: TestValues.oneWei });
+            await validatorRegistry.reduceReward.awaitTransactionSuccessAsync(
+                "0xffaabb",
+                TestValues.oneWei.plus(TestValues.oneWei),
+            ).should.eventually.be.rejected;
+            await testHelpers.exitListing("0xffaabb");
         });
     });
 
