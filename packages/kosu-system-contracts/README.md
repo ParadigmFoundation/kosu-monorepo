@@ -17,15 +17,15 @@ Below are the deployed addresses for the core Kosu protocol contract system on t
 
 | Contract Name                                                             | Last Deploy Date | Deployed Address                                                                                                              |
 | ------------------------------------------------------------------------- | ---------------- | ----------------------------------------------------------------------------------------------------------------------------- |
-| [OrderGateway](./contracts/external/OrderGateway.sol)                     | 07/31/19         | [0x8c8c650a4b794623402357df8956278f5333e002](https://ropsten.etherscan.io/address/0x8c8c650a4b794623402357df8956278f5333e002) |
-| [AuthorizedAddresses](./contracts/access_control/AuthorizedAddresses.sol) | 07/31/19         | [0x5281e5d8123e59857d99a78cbce96c021024ce46](https://ropsten.etherscan.io/address/0x5281e5d8123e59857d99a78cbce96c021024ce46) |
-| [EventEmitter](./contracts/event/EventEmitter.sol)                        | 07/31/19         | [0x5e0aa07df76d4903766edf29ac2597ded90a9cda](https://ropsten.etherscan.io/address/0x5e0aa07df76d4903766edf29ac2597ded90a9cda) |
-| [KosuToken](./contracts/lib/KosuToken.sol)                                | 07/31/19         | [0x99970336c078b5bebff7877d0b918937abe78633](https://ropsten.etherscan.io/address/0x99970336c078b5bebff7877d0b918937abe78633) |
-| [Treasury](./contracts/treasury/Treasury.sol)                             | 07/31/19         | [0x83bf1084c42f2e310a60406a1d8b0e518d26f497](https://ropsten.etherscan.io/address/0x83bf1084c42f2e310a60406a1d8b0e518d26f497) |
-| [Voting](./contracts/voting/Voting.sol)                                   | 07/31/19         | [0xd91175d24d25fc3a63a8fad9ae49a6ef381d37e3](https://ropsten.etherscan.io/address/0xd91175d24d25fc3a63a8fad9ae49a6ef381d37e3) |
-| [PosterRegistry](./contracts/poster/PosterRegistry.sol)                   | 07/31/19         | [0x339c8245af6a1bb23cb525a8c3b03639760ec006](https://ropsten.etherscan.io/address/0x339c8245af6a1bb23cb525a8c3b03639760ec006) |
-| [ValidatorRegistry](./contracts/validator/ValidatorRegistry.sol)          | 07/31/19         | [0x91a737e36a2cfd57f770971c7be9d33d4e790ed3](https://ropsten.etherscan.io/address/0x91a737e36a2cfd57f770971c7be9d33d4e790ed3) |
-| [ZeroExV2SubContract](./contracts/sub-contracts/ZeroExV2SubContract.sol)  | 07/31/19         | [0xe853c58ad71d10ae85cb65bfce7707f11e358e8b](https://ropsten.etherscan.io/address/0xe853c58ad71d10ae85cb65bfce7707f11e358e8b) |
+| [OrderGateway](./contracts/external/OrderGateway.sol)                     | 08/19/19         | [0x6923508ce23c055bc6dac56cd4fbe81991f3224c](https://ropsten.etherscan.io/address/0x6923508ce23c055bc6dac56cd4fbe81991f3224c) |
+| [AuthorizedAddresses](./contracts/access_control/AuthorizedAddresses.sol) | 08/19/19         | [0xe2476a0ffd3724f96bae24368922a512945997cf](https://ropsten.etherscan.io/address/0xe2476a0ffd3724f96bae24368922a512945997cf) |
+| [EventEmitter](./contracts/event/EventEmitter.sol)                        | 08/19/19         | [0x16cb1e2b3d22a784c26d2e06788bf54153344de6](https://ropsten.etherscan.io/address/0x16cb1e2b3d22a784c26d2e06788bf54153344de6) |
+| [KosuToken](./contracts/lib/KosuToken.sol)                                | 08/19/19         | [0xb47fd095e6387d78a0b72283e1aba18578506b51](https://ropsten.etherscan.io/address/0xb47fd095e6387d78a0b72283e1aba18578506b51) |
+| [Treasury](./contracts/treasury/Treasury.sol)                             | 08/19/19         | [0xb5416eace99f62f03d67f213978045e414237bea](https://ropsten.etherscan.io/address/0xb5416eace99f62f03d67f213978045e414237bea) |
+| [Voting](./contracts/voting/Voting.sol)                                   | 08/19/19         | [0x09b9fa1250b9aa7fe7908eb4639c8fb7c43e3bcc](https://ropsten.etherscan.io/address/0x09b9fa1250b9aa7fe7908eb4639c8fb7c43e3bcc) |
+| [PosterRegistry](./contracts/poster/PosterRegistry.sol)                   | 08/19/19         | [0xf293d08f3f642dd3aef8f219824cf8f553e347a3](https://ropsten.etherscan.io/address/0xf293d08f3f642dd3aef8f219824cf8f553e347a3) |
+| [ValidatorRegistry](./contracts/validator/ValidatorRegistry.sol)          | 08/19/19         | [0x6a1a5cb26e208e37f2a2c53fcc6e635857a348d6](https://ropsten.etherscan.io/address/0x6a1a5cb26e208e37f2a2c53fcc6e635857a348d6) |
+| [ZeroExV2SubContract](./contracts/sub-contracts/ZeroExV2SubContract.sol)  | 08/19/19         | [0xf2f7a7bb8984db3751333c895455f12825f2f9df](https://ropsten.etherscan.io/address/0xf2f7a7bb8984db3751333c895455f12825f2f9df) |
 
 ### Kosu Dev PoA
 
