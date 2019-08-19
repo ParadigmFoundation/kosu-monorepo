@@ -1,17 +1,20 @@
 import { Kosu } from "@kosu/kosu.js";
+import { BigNumber } from "@0x/utils";
 
 export const fields = {
     "token/total_supply": {
-        updateEvery: 3600000,
+        updateEvery: 60000,
         updateFunc: async (_this, kosu, query, db) => {
             const val = await kosu.kosuToken.totalSupply();
             return val.toString();
         },
     },
     "token/price": {
-        updateEvery: 3600000,
-        updateFunc: async (_this, kosu, query, db) => {
-            return "0";
+        updateEvery: 60000,
+        updateFunc: async (_this, kosu: Kosu, query, db) => {
+            const one = new BigNumber(1);
+            const val = await kosu.kosuToken.estimateEtherToToken(one);
+            return val.toFixed(5);
         },
     },
     "bandwidth/total_limit": {

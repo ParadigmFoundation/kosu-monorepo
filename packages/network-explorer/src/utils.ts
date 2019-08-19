@@ -18,10 +18,19 @@ export function safeSend(socket: ws, data: any): void {
 }
 
 /**
- * .
+ * Common socket error handler.
  */
-// tslint:disable promise-function-async
-export function nodeQuery(
+export function socketErrorHandlerClosure(prefixMessage: string): (e: any) => void {
+    return (error: any) => {
+        const log = error && error.message ? error.message : error;
+        console.error(`${prefixMessage}: ${log}`);
+    };
+}
+
+/**
+ * Abstraction over  JSONRPC query methods.
+ */
+export async function nodeQuery(
     socket: ws,
     method: string,
     params: any[],
