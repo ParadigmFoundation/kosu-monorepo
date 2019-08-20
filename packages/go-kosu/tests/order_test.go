@@ -12,6 +12,7 @@ import (
 )
 
 func NewOrderTx(t *testing.T) *types.TransactionOrder {
+	// nolint:lll
 	order := `{
 		"subContract":"0xebe8fdf63db77e3b41b0aec8208c49fa46569606",
 		"maker":"0xe3ec7592166d0145b9677f5f45dd1bd95ffe6596",
@@ -27,6 +28,7 @@ func NewOrderTx(t *testing.T) *types.TransactionOrder {
 		},
 		"makerSignature":"0xce84772cbbbe5a844c9002e6d54e53d72830b890ff1ea1521cbd86faada28aa136997b5cd3cafd85e887a9d6fc25bb2bfbe03fc6319d371b2c976f3374bcd8c300","posterSignature":"0xc3550b7ceab610e638dfb1b33e5cf7aaf9490854197328eadbe8ac049adef7510a07a0ea046fa1d410c5cc1048828152b9368a8d8925f8f0072192ebfe1bbb3101"}
 	`
+
 	tx := &types.TransactionOrder{}
 	err := json.Unmarshal([]byte(order), tx)
 	require.NoError(t, err)
