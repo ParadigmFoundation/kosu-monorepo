@@ -7,12 +7,6 @@ describe("EventEmitter", () => {
     });
 
     describe("getAddress", () => {
-        it("should return the configured address.", async () => {
-            await new EventEmitter({ web3Wrapper })
-                .getAddress()
-                .should.eventually.eq(DeployedAddresses["6174"].EventEmitter.contractAddress);
-        });
-
         it("throw when using an unknown network", async () => {
             await new EventEmitter({ web3Wrapper: nullWeb3Wrapper })
                 .getAddress()

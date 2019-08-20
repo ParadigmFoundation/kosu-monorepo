@@ -45,7 +45,7 @@ if (args["test-mnemonic"] || !mnemonic) {
 
     const networkId = await web3.eth.net.getId();
 
-    if (networkId === 6174) {
+    if ([6174, 6175].includes(networkId)) {
         // @ts-ignore
         await new BlockchainLifecycle(new Web3Wrapper(new Web3.providers.HttpProvider(args["rpc-url"]))).startAsync();
         if ((await web3.eth.getTransactionCount(normalizedFromAddress)) > 0) {
