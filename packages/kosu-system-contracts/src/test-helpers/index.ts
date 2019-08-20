@@ -76,33 +76,45 @@ export class TestHelpers {
 
     public async ensureTokenBalance(address: string, desiredValue: BigNumber): Promise<void> {
         await this.initializing;
-        const transactions = [];
-        await this.migratedContracts.kosuToken.balanceOf.callAsync(address).then(async balance => {
-            if (balance.gt(desiredValue)) {
-                transactions.push(
-                    this.migratedContracts.kosuToken.transfer.awaitTransactionSuccessAsync(
-                        this.accounts[0],
-                        balance.minus(desiredValue),
-                        {
-                            from: address,
-                        },
-                    ),
-                );
-            } else if (balance.lt(desiredValue)) {
-                transactions.push(
-                    this.migratedContracts.kosuToken.transfer.awaitTransactionSuccessAsync(
-                        address,
-                        desiredValue.minus(balance),
-                    ),
-                );
-            }
-        });
-        await Promise.all(transactions);
-        if (
-            (await this.migratedContracts.kosuToken.balanceOf.callAsync(address).then(val => val.toString())) !==
-            desiredValue.toString()
-        ) {
+        const currentBalance = await this.migratedContracts.kosuToken.balanceOf.callAsync(address);
+        if (currentBalance.lt(desiredValue)) {
+            const balanceNeeded = desiredValue.minus(currentBalance);
+            const approxRate = await this.migratedContracts.kosuToken.estimateEtherToToken.callAsync(TestValues.oneWei);
+            const approxDeposit = balanceNeeded.dividedToIntegerBy(approxRate).plus(1);
+            await this.migratedContracts.kosuToken.bondTokens.awaitTransactionSuccessAsync(TestValues.zero, {
+                from: address,
+                value: approxDeposit,
+            });
+        } else if (currentBalance.gt(desiredValue)) {
+            const overage = currentBalance.minus(desiredValue);
+            await this.migratedContracts.kosuToken.transfer.awaitTransactionSuccessAsync(this.accounts[0], overage, {
+                from: address,
+            });
+        }
+
+        if (await this.migratedContracts.kosuToken.balanceOf.callAsync(address).then(val => val.lt(desiredValue))) {
             throw new Error(`Ensure ${address} has balanceOf ${desiredValue.toString()} failed`);
+        }
+    }
+
+    public async ensureTreasuryBalance(address: string, desiredValue: BigNumber): Promise<void> {
+        await this.initializing;
+        const currentBalance = await this.migratedContracts.treasury.currentBalance.callAsync(address);
+        if (currentBalance.lt(desiredValue)) {
+            const balanceNeeded = desiredValue.minus(currentBalance);
+            await this.ensureTokenBalance(address, balanceNeeded);
+            await this.migratedContracts.kosuToken.approve.awaitTransactionSuccessAsync(
+                this.migratedContracts.treasury.address,
+                balanceNeeded,
+                { from: address },
+            );
+            await this.migratedContracts.treasury.deposit.awaitTransactionSuccessAsync(balanceNeeded, {
+                from: address,
+            });
+        }
+
+        if (await this.migratedContracts.treasury.currentBalance.callAsync(address).then(val => val.lt(desiredValue))) {
+            throw new Error(`Ensure ${address} has treasury balance of ${desiredValue.toString()} failed`);
         }
     }
 
@@ -149,6 +161,21 @@ export class TestHelpers {
             details || "details",
         );
         await this.skipApplicationPeriod(result.blockNumber);
+    }
+
+    public async prepareConfirmedListing(
+        tendermintPublicKey: string,
+        options: { stake?: BigNumber; reward?: BigNumber; details?: string } = {},
+    ): Promise<void> {
+        await this.prepareListing(tendermintPublicKey, options);
+        const listing = await this.migratedContracts.validatorRegistry.getListing.callAsync(tendermintPublicKey);
+        if (listing.rewardRate.lt(0)) {
+            const tokensNeeded = await this.migratedContracts.kosuToken.estimateEtherToToken.callAsync(
+                listing.rewardRate.times(-1),
+            );
+            await this.ensureTreasuryBalance(this.accounts[0], tokensNeeded);
+        }
+        await this.migratedContracts.validatorRegistry.confirmListing.awaitTransactionSuccessAsync(tendermintPublicKey);
     }
 
     public async exitListing(publicKey: string, from: string = this.accounts[0]): Promise<void> {

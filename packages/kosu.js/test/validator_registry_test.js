@@ -32,11 +32,11 @@ describe("ValidatorRegistry", () => {
         await kosu.validatorRegistry
             .maxRewardRate()
             .then(x => x.toString())
-            .should.eventually.eq(TestValues.twoEther.toString());
+            .should.eventually.eq(TestValues.oneEther.div(10).toString());
         await kosu.validatorRegistry
             .minimumBalance()
             .then(x => x.toString())
-            .should.eventually.eq(TestValues.oneEther.toString());
+            .should.eventually.eq(TestValues.fiveHundredEther.toString());
     });
 
     it("should allow validator interactions", async () => {
@@ -44,7 +44,7 @@ describe("ValidatorRegistry", () => {
 
         const resp = await kosu.validatorRegistry.registerListing(
             pubKey,
-            TestValues.oneEther,
+            await kosu.validatorRegistry.minimumBalance(),
             TestValues.zero,
             "string",
         );
@@ -60,7 +60,7 @@ describe("ValidatorRegistry", () => {
         allListings.should.deep.contain(listing);
         const resp2 = await kosu.validatorRegistry.challengeListing(pubKey, "string");
         const decoded2 = decodeKosuEvents(resp2.logs);
-        const { challengeId, pollId } = decoded2[1];
+        const { challengeId } = decoded2[1];
         const challenge = await kosu.validatorRegistry.getChallenge(challengeId);
         const challenges = await kosu.validatorRegistry.getChallenges([challengeId]);
         const allChallenges = await kosu.validatorRegistry.getAllChallenges();
