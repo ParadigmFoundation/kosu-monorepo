@@ -279,11 +279,17 @@ describe("Voting", () => {
             await kosuToken.transfer.awaitTransactionSuccessAsync(accounts[1], TestValues.fiveEther);
 
             // Prepare those tokens with 1 commit then send em back to 0
-            await kosuToken.approve.awaitTransactionSuccessAsync(treasury.address, TestValues.fiveEther, { from: accounts[1] });
+            await kosuToken.approve.awaitTransactionSuccessAsync(treasury.address, TestValues.fiveEther, {
+                from: accounts[1],
+            });
             await treasury.deposit.awaitTransactionSuccessAsync(TestValues.fiveEther, { from: accounts[1] });
-            await voting.commitVote.awaitTransactionSuccessAsync(pollId, secret1, TestValues.fiveEther, { from: accounts[1] });
+            await voting.commitVote.awaitTransactionSuccessAsync(pollId, secret1, TestValues.fiveEther, {
+                from: accounts[1],
+            });
             await treasury.withdraw.awaitTransactionSuccessAsync(TestValues.fiveEther, { from: accounts[1] });
-            await kosuToken.transfer.awaitTransactionSuccessAsync(accounts[0], TestValues.fiveEther, { from: accounts[1] });
+            await kosuToken.transfer.awaitTransactionSuccessAsync(accounts[0], TestValues.fiveEther, {
+                from: accounts[1],
+            });
 
             // Return tokens to vote ready state for 0
             await kosuToken.approve.awaitTransactionSuccessAsync(treasury.address, TestValues.fiveEther);
