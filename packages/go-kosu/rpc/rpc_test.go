@@ -159,3 +159,27 @@ func TestNewRebalances(t *testing.T) {
 		assert.Equal(t, tx.String(), e.String())
 	}
 }
+
+func TestNumberPosters(t *testing.T) {
+	app, rpc, closer := newServerClient(t)
+	defer closer()
+
+	addresses := []string{
+		"0x0000000000000000000000000000000000000001",
+		"0x0000000000000000000000000000000000000002",
+		"0x0000000000000000000000000000000000000003",
+		"0x0000000000000000000000000000000000000004",
+	}
+
+	for _, addr := range addresses {
+		app.Store().SetPoster(addr, types.Poster{
+			Balance: types.NewBigIntFromInt(100),
+		})
+	}
+
+	var num uint64
+	err := rpc.Call(&num, "kosu_numberPosters")
+	require.NoError(t, err)
+
+	assert.EqualValues(t, len(addresses), num)
+}

@@ -10,9 +10,9 @@ import (
 )
 
 func TestCosmosStore(t *testing.T) {
-	for _, cdc := range []Codec{
-		&ProtoCodec{},
-		&GobCodec{},
+	for _, cdc := range []store.Codec{
+		&store.ProtoCodec{},
+		&store.GobCodec{},
 	} {
 		t.Run(cdc.String(), func(t *testing.T) {
 			f := func() (store.Store, func()) {

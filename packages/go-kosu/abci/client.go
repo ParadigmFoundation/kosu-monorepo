@@ -158,6 +158,26 @@ func (c *Client) QueryValidator(addr string) (*types.Validator, error) {
 	return &pb, nil
 }
 
+// QueryTotalOrders performs a ABCI Query to "/chain/totalorders"
+func (c *Client) QueryTotalOrders() (uint64, error) {
+	out, err := c.ABCIQuery("/chain/key", []byte("totalorders"))
+	if err != nil {
+		return 0, err
+	}
+
+	res := out.Response
+	if res.IsErr() {
+		return 0, errors.New(res.GetLog())
+	}
+
+	if len(res.Value) == 0 {
+		return 0, errors.New("empty")
+	}
+
+	pb := proto.NewBuffer(res.Value)
+	return pb.DecodeFixed64()
+}
+
 func (c *Client) query(path string, data []byte, pb proto.Message) error {
 	out, err := c.ABCIQuery(path, data)
 	if err != nil {

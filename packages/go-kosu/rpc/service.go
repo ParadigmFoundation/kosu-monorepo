@@ -5,6 +5,7 @@ import (
 	"encoding/hex"
 	"go-kosu/abci"
 	"go-kosu/abci/types"
+	"go-kosu/store"
 	"log"
 	"strings"
 
@@ -687,4 +688,24 @@ curl -X POST localhost:14341 \
 */
 func (s *Service) QueryPoster(addr string) (*types.Poster, error) {
 	return s.abci.QueryPoster(addr)
+}
+
+// TotalOrders ...
+func (s *Service) TotalOrders() (uint64, error) {
+	return s.abci.QueryTotalOrders()
+}
+
+// NumberPosters ...
+func (s *Service) NumberPosters() (uint64, error) {
+	res, err := s.abci.ABCIQuery("/poster/number", nil)
+	if err != nil {
+		return 0, err
+	}
+
+	var num uint64
+	if err := store.DefaultCodec.Decode(res.Response.Value, &num); err != nil {
+		return 0, err
+	}
+
+	return num, nil
 }

@@ -43,7 +43,7 @@ func (s *Suite) TestOrderTx() {
 				})
 			})
 
-			Convey("When a RPC subscription is active", func() {
+			Convey("Given a RPC client", func() {
 				client := rpc.DialInProc(
 					rpc.NewServer(s.client),
 				)
@@ -58,13 +58,21 @@ func (s *Suite) TestOrderTx() {
 				defer sub.Unsubscribe()
 
 				Convey("And a OrderTx is sent", func() {
-					BroadcastTxSync(t, s.client, tx)
+					BroadcastTxCommit(t, s.client, tx)
 
 					Convey("Event should be sent and matches the Broadcasted Tx", func() {
 						event := <-ch
 						So(event.String(), ShouldEqual, tx.String())
 					})
+
+					Convey("TotalOrders is updated", func() {
+						var total uint64
+						err := client.Call(&total, "kosu_totalOrders")
+						require.NoError(t, err)
+						So(total, ShouldEqual, 1)
+					})
 				})
+
 			})
 
 			Convey("And a non existing poster", func() {
