@@ -17,6 +17,7 @@
     "stop:redis": "docker kill redis"
   },
   "dependencies": {
+    "@0x/utils": "^4.5.0",
     "@kosu/kosu.js": "^0.1.6",
     "ioredis": "^4.14.0",
     "lodash": "^4.17.15",
