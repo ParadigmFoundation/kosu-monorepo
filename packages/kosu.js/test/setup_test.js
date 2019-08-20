@@ -23,7 +23,7 @@ before(async () => {
     global.assert = chai.assert;
     chai.should();
 
-    const provider = new Web3ProviderEngine();
+    global.provider = new Web3ProviderEngine();
 
     if (useGeth) {
         const rpcSubprovider = new RPCSubprovider(process.env.WEB3_URI);
