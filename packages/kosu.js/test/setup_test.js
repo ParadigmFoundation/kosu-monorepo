@@ -55,7 +55,6 @@ before(async () => {
         from: accounts[0].toLowerCase(),
     };
 
-
     if (!useGeth) {
         config.migratedContracts = await migrations(provider, { from: accounts[0].toLowerCase() });
         config.votingAddress = config.migratedContracts.voting.address;
