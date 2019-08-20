@@ -25,11 +25,18 @@ function wrap(contract) {
         },
         approve: async function approve(spender, value, from = null) {
             if (from === null) from = await web3.eth.getCoinbase();
-            return contract.approve.awaitTransactionSuccessAsync(spender, new BigNumber(value.toString()), { from: from });
+            return contract.approve.awaitTransactionSuccessAsync(spender, new BigNumber(value.toString()), {
+                from: from,
+            });
         },
         transferFrom: async function transferFrom(fromAddress, to, value, from = null) {
             if (from === null) from = await web3.eth.getCoinbase();
-            return contract.transferFrom.awaitTransactionSuccessAsync(fromAddress, to, new BigNumber(value.toString()), { from: from });
+            return contract.transferFrom.awaitTransactionSuccessAsync(
+                fromAddress,
+                to,
+                new BigNumber(value.toString()),
+                { from: from },
+            );
         },
         transfer: async function transfer(to, value, from = null) {
             if (from === null) from = await web3.eth.getCoinbase();
@@ -39,9 +46,20 @@ function wrap(contract) {
 }
 
 module.exports = async () => {
-
-    const tkaContract = await TestTokenWrapper.deployFrom0xArtifactAsync(TestTokenArtifact, provider, { from: accounts[7] }, "Token A", "TKA");
-    const tkbContract = await TestTokenWrapper.deployFrom0xArtifactAsync(TestTokenArtifact, provider, { from: accounts[8] }, "Token B", "TKB");
+    const tkaContract = await TestTokenWrapper.deployFrom0xArtifactAsync(
+        TestTokenArtifact,
+        provider,
+        { from: accounts[7] },
+        "Token A",
+        "TKA",
+    );
+    const tkbContract = await TestTokenWrapper.deployFrom0xArtifactAsync(
+        TestTokenArtifact,
+        provider,
+        { from: accounts[8] },
+        "Token B",
+        "TKB",
+    );
 
     global.TKA = tkaContract.address;
     global.tka = wrap(tkaContract);
