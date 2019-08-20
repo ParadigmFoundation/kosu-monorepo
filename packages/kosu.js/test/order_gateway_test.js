@@ -39,8 +39,8 @@ describe("OrderGateway", () => {
             order.takerValues = { tokensToBuy: 500 };
             await orderGateway.participate(order, taker);
 
-            await tka.balanceOf(taker).should.eventually.eq("500");
-            await tkb.balanceOf(maker).should.eventually.eq("500");
+            await tka.balanceOf(taker).then(v => v.toString()).should.eventually.eq("500");
+            await tkb.balanceOf(maker).then(v => v.toString()).should.eventually.eq("500");
         });
     });
 
