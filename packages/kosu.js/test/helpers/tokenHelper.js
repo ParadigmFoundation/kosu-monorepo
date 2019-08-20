@@ -1,60 +1,51 @@
-const TokenContractInfo = require("./TestToken.json");
+const contracts = require("@kosu/system-contracts/dist/src");
+const TestTokenWrapper = contracts.TestTokenContract;
+const TestTokenArtifact = contracts.artifacts.TestToken;
+const BigNumber = require("@0x/utils").BigNumber;
 
 function wrap(contract) {
-    const methods = contract.methods;
-
     return {
         name: function name() {
-            return methods.name().call();
+            return contract.name.callAsync();
         },
         symbol: function symbol() {
-            return methods.symbol().call();
+            return contract.symbol.callAsync();
         },
         totalSupply: function totalSupply() {
-            return methods.totalSupply().call();
+            return contract.totalSupply.callAsync();
         },
         decimals: function decimals() {
-            return methods.decimals().call();
+            return contract.decimals.callAsync();
         },
         balanceOf: function balanceOf(owner) {
-            return methods.balanceOf(owner).call();
+            return contract.balanceOf.callAsync(owner);
         },
         allowance: function allowance(owner, spender) {
-            return methods.allowance(owner, spender).call();
+            return contract.allowance.callAsync(owner, spender);
         },
         approve: async function approve(spender, value, from = null) {
             if (from === null) from = await web3.eth.getCoinbase();
-            const tx = methods.approve(spender, value);
-            return tx.send({ from: from });
+            return contract.approve.awaitTransactionSuccessAsync(spender, new BigNumber(value.toString()), { from: from });
         },
         transferFrom: async function transferFrom(fromAddress, to, value, from = null) {
             if (from === null) from = await web3.eth.getCoinbase();
-            const tx = methods.transferFrom(fromAddress, to, value);
-            return tx.send({ from: from });
+            return contract.transferFrom.awaitTransactionSuccessAsync(fromAddress, to, new BigNumber(value.toString()), { from: from });
         },
         transfer: async function transfer(to, value, from = null) {
             if (from === null) from = await web3.eth.getCoinbase();
-            const tx = methods.transfer(to, value);
-            return tx.send({ from: from });
+            return contract.transfer.awaitTransactionSuccessAsync(to, new BigNumber(value.toString()), { from: from });
         },
     };
 }
 
 module.exports = async () => {
-    const TokenContract = new web3.eth.Contract(TokenContractInfo.abi);
 
-    const tkaContract = await TokenContract.deploy({
-        data: TokenContractInfo.bytecode,
-        arguments: ["Token A", "TKA"],
-    }).send({ from: accounts[7], gas: 4500000 });
-    const tkbContract = await TokenContract.deploy({
-        data: TokenContractInfo.bytecode,
-        arguments: ["Token B", "TKB"],
-    }).send({ from: accounts[8], gas: 4500000 });
+    const tkaContract = await TestTokenWrapper.deployFrom0xArtifactAsync(TestTokenArtifact, provider, { from: accounts[7] }, "Token A", "TKA");
+    const tkbContract = await TestTokenWrapper.deployFrom0xArtifactAsync(TestTokenArtifact, provider, { from: accounts[8] }, "Token B", "TKB");
 
-    global.TKA = tkaContract.options.address;
+    global.TKA = tkaContract.address;
     global.tka = wrap(tkaContract);
 
-    global.TKB = tkbContract.options.address;
+    global.TKB = tkbContract.address;
     global.tkb = wrap(tkbContract);
 };
