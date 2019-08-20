@@ -27,26 +27,6 @@ steps:
     depends_on:
       - clone
 
-  - name: npm-tests
-    image: gcr.io/kosu-io/node-lts:latest
-    pull: always
-    environment:
-      WEB3_URI: http://kosu-geth:8545
-    commands:
-      - yarn test:ci
-    depends_on:
-      - build-project
-
-  - name: solidity-tests
-    image: gcr.io/kosu-io/node-lts:latest
-    pull: always
-    environment:
-      WEB3_URI: http://kosu-geth:8545
-    commands:
-      - yarn contracts:test:ci
-    depends_on:
-      - build-project
-
   - name: go-kosu
     image: gcr.io/kosu-io/go-kosu-ci:latest
     pull: always
@@ -54,7 +34,7 @@ steps:
       WEB3_TEST_URI: ws://kosu-geth:8546
     commands:
       - cd packages/go-kosu
-      - make ci
+      - make testnet
     depends_on:
       - build-project
 
