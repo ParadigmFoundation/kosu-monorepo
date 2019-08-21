@@ -16,35 +16,45 @@ import (
 	"github.com/tendermint/tendermint/libs/db"
 )
 
-func newServerClient(t *testing.T) (*abci.App, *rpc.Client, func()) {
-	app, closer := tests.StartServer(t, db.NewMemDB())
-	appClient, err := app.NewClient()
-	require.NoError(t, err)
-	client := rpc.DialInProc(
-		NewServer(appClient),
-	)
+func TestRPC(t *testing.T) {
+	cases := []struct {
+		name string
+		run  func(*testing.T, *abci.App, *abci.Client, *rpc.Client)
+	}{
+		{"LatestHeight", LatestHeight},
+		{"AddOrders", AddOrders},
+		{"RebalancePeriod", RebalancePeriod},
+		{"NewRebalances", NewRebalances},
+		{"NumberPosters", NumberPosters},
+	}
 
-	return app, client, closer
+	for _, test := range cases {
+		t.Run(test.name, func(t *testing.T) {
+			app, closer := tests.StartServer(t, db.NewMemDB())
+			defer closer()
+
+			appClient, err := app.NewClient()
+			require.NoError(t, err)
+			defer appClient.Stop()
+
+			rpcClient := rpc.DialInProc(NewServer(appClient))
+			defer rpcClient.Close()
+
+			test.run(t, app, appClient, rpcClient)
+		})
+	}
 }
 
-func TestRPCLatestHeight(t *testing.T) {
-	_, closer := tests.StartServer(t, db.NewMemDB())
-	defer closer()
-	client := rpc.DialInProc(
-		NewServer(
-			abci.NewHTTPClient("http://localhost:26657", nil),
-		),
-	)
-
+func LatestHeight(t *testing.T, _ *abci.App, _ *abci.Client, rpcClient *rpc.Client) {
 	var latest uint64
 	// Get the initial (prior the first block is mined)
-	require.NoError(t, client.Call(&latest, "kosu_latestHeight"))
+	require.NoError(t, rpcClient.Call(&latest, "kosu_latestHeight"))
 	assert.EqualValues(t, 0, latest)
 
 	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
 	fn := func(_ interface{}) {
 		// this is invoked when a block is mined
-		require.NoError(t, client.Call(&latest, "kosu_latestHeight"))
+		require.NoError(t, rpcClient.Call(&latest, "kosu_latestHeight"))
 		assert.EqualValues(t, 1, latest)
 		cancel()
 	}
@@ -52,9 +62,9 @@ func TestRPCLatestHeight(t *testing.T) {
 	ch := make(chan interface{})
 	defer close(ch)
 
-	sub, err := client.Subscribe(ctx, "kosu", ch, "newBlocks")
-	defer sub.Unsubscribe()
+	sub, err := rpcClient.Subscribe(ctx, "kosu", ch, "newBlocks")
 	require.NoError(t, err)
+	defer sub.Unsubscribe()
 
 	for {
 		select {
@@ -68,10 +78,7 @@ func TestRPCLatestHeight(t *testing.T) {
 	}
 }
 
-func TestAddOrders(t *testing.T) {
-	app, client, closer := newServerClient(t)
-	defer closer()
-
+func AddOrders(t *testing.T, app *abci.App, appClient *abci.Client, rpcClient *rpc.Client) {
 	// nolint:lll
 	validTx := &types.TransactionOrder{
 		SubContract:     "0xebe8fdf63db77e3b41b0aec8208c49fa46569606",
@@ -94,7 +101,7 @@ func TestAddOrders(t *testing.T) {
 	params := []interface{}{validTx, invalidTx}
 	result := &AddOrdersResult{}
 
-	err := client.Call(result, "kosu_addOrders", params)
+	err := rpcClient.Call(result, "kosu_addOrders", params)
 	require.NoError(t, err)
 
 	assert.Len(t, result.Accepted, 1)
@@ -111,42 +118,33 @@ func newTestRebalanceTx(number, starts uint64) *types.TransactionRebalance {
 	}
 }
 
-func TestRebalancePeriod(t *testing.T) {
-	app, rpc, closer := newServerClient(t)
-	defer closer()
-
-	client, err := app.NewClient()
-	require.NoError(t, err)
-
+func RebalancePeriod(t *testing.T, _ *abci.App, appClient *abci.Client, rpcClient *rpc.Client) {
 	tx := newTestRebalanceTx(1, 10)
-	res, err := client.BroadcastTxCommit(tx)
+	res, err := appClient.BroadcastTxCommit(tx)
 	require.NoError(t, err)
 	require.True(t, res.DeliverTx.IsOK())
 
 	var result types.RoundInfo
 	require.NoError(t,
-		rpc.Call(&result, "kosu_roundInfo"),
+		rpcClient.Call(&result, "kosu_roundInfo"),
 	)
 
 	assert.Equal(t, tx.RoundInfo.String(), result.String())
 }
 
-func TestNewRebalances(t *testing.T) {
-	app, rpc, closer := newServerClient(t)
-	defer closer()
-
+func NewRebalances(t *testing.T, app *abci.App, appClient *abci.Client, rpcClient *rpc.Client) {
 	ctx, cancel := context.WithTimeout(context.Background(), 500*time.Millisecond)
 	defer cancel()
 
 	ch := make(chan *types.TransactionRebalance)
-	sub, err := rpc.Subscribe(ctx, "kosu", ch, "newRebalances")
+	sub, err := rpcClient.Subscribe(ctx, "kosu", ch, "newRebalances")
 	require.NoError(t, err)
+	defer sub.Unsubscribe()
 
-	client, err := app.NewClient()
 	require.NoError(t, err)
 
 	tx := newTestRebalanceTx(1, 10)
-	res, err := client.BroadcastTxSync(tx)
+	res, err := appClient.BroadcastTxSync(tx)
 	require.NoError(t, err)
 	require.Zero(t, res.Code, res.Log)
 
@@ -160,10 +158,7 @@ func TestNewRebalances(t *testing.T) {
 	}
 }
 
-func TestNumberPosters(t *testing.T) {
-	app, rpc, closer := newServerClient(t)
-	defer closer()
-
+func NumberPosters(t *testing.T, app *abci.App, _ *abci.Client, rpcClient *rpc.Client) {
 	addresses := []string{
 		"0x0000000000000000000000000000000000000001",
 		"0x0000000000000000000000000000000000000002",
@@ -178,7 +173,7 @@ func TestNumberPosters(t *testing.T) {
 	}
 
 	var num uint64
-	err := rpc.Call(&num, "kosu_numberPosters")
+	err := rpcClient.Call(&num, "kosu_numberPosters")
 	require.NoError(t, err)
 
 	assert.EqualValues(t, len(addresses), num)
