@@ -36,14 +36,28 @@ export async function migrations(
     try {
         const netId = await web3Wrapper.getNetworkIdAsync();
         const validatorValues = {
+            1: {
+                _applicationPeriod: 60000,
+                _commitPeriod: 20000,
+                _challengePeriod: 30000,
+                _exitPeriod: 60000,
+                _rewardPeriod: 6000,
+            },
             3: {
-                _applicationPeriod: 84000,
-                _commitPeriod: 40000,
-                _challengePeriod: 60000,
-                _exitPeriod: 20000,
-                _rewardPeriod: 168000,
+                _applicationPeriod: 60000,
+                _commitPeriod: 20000,
+                _challengePeriod: 30000,
+                _exitPeriod: 60000,
+                _rewardPeriod: 6000,
             },
             6174: {
+                _applicationPeriod: 600,
+                _commitPeriod: 600,
+                _challengePeriod: 400,
+                _exitPeriod: 600,
+                _rewardPeriod: 600,
+            },
+            6175: {
                 _applicationPeriod: 10,
                 _commitPeriod: 10,
                 _challengePeriod: 20,
@@ -58,7 +72,7 @@ export async function migrations(
                 _rewardPeriod: 4,
             },
         };
-        const zeroExAddresses = getContractAddressesForNetworkOrThrow(netId === 6174 ? 50 : netId);
+        const zeroExAddresses = getContractAddressesForNetworkOrThrow([6174, 6175].includes(netId) ? 50 : netId);
         const config = validatorValues[netId] || validatorValues.default;
 
         const orderGateway = await OrderGatewayContract.deployFrom0xArtifactAsync(
@@ -110,7 +124,6 @@ export async function migrations(
             txDefaults,
             treasury.address,
             voting.address,
-            authorizedAddresses.address,
             eventEmitter.address,
             config._applicationPeriod,
             config._commitPeriod,
@@ -142,7 +155,7 @@ export async function migrations(
             .sendTransactionAsync({
                 ...txDefaults,
                 to: kosuToken.address,
-                value: toWei("1"),
+                value: toWei("0.2"),
             })
             .then(txHash =>
                 web3Wrapper.awaitTransactionSuccessAsync(txHash).then(() => {

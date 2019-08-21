@@ -2,49 +2,12 @@ const DeployedAddresses = require("@kosu/system-contracts").DeployedAddresses[61
 const decodeKosuEvents = require("@kosu/system-contracts").decodeKosuEvents;
 
 describe("ValidatorRegistry", () => {
-    it("should be configured properly", async () => {
-        await kosu.validatorRegistry.kosuToken().should.eventually.eq(DeployedAddresses.KosuToken.contractAddress);
-        await kosu.validatorRegistry.voting().should.eventually.eq(DeployedAddresses.Voting.contractAddress);
-        await kosu.validatorRegistry
-            .applicationPeriod()
-            .then(x => x.toNumber())
-            .should.eventually.eq(10);
-        await kosu.validatorRegistry
-            .commitPeriod()
-            .then(x => x.toNumber())
-            .should.eventually.eq(10);
-        await kosu.validatorRegistry
-            .challengePeriod()
-            .then(x => x.toNumber())
-            .should.eventually.eq(20);
-        await kosu.validatorRegistry
-            .exitPeriod()
-            .then(x => x.toNumber())
-            .should.eventually.eq(5);
-        await kosu.validatorRegistry
-            .rewardPeriod()
-            .then(x => x.toNumber())
-            .should.eventually.eq(5);
-        await kosu.validatorRegistry
-            .stakeholderCut()
-            .then(x => x.toNumber())
-            .should.eventually.eq(30);
-        await kosu.validatorRegistry
-            .maxRewardRate()
-            .then(x => x.toString())
-            .should.eventually.eq(TestValues.twoEther.toString());
-        await kosu.validatorRegistry
-            .minimumBalance()
-            .then(x => x.toString())
-            .should.eventually.eq(TestValues.oneEther.toString());
-    });
-
     it("should allow validator interactions", async () => {
         const pubKey = "0x010203";
 
         const resp = await kosu.validatorRegistry.registerListing(
             pubKey,
-            TestValues.oneEther,
+            await kosu.validatorRegistry.minimumBalance(),
             TestValues.zero,
             "string",
         );
@@ -60,7 +23,7 @@ describe("ValidatorRegistry", () => {
         allListings.should.deep.contain(listing);
         const resp2 = await kosu.validatorRegistry.challengeListing(pubKey, "string");
         const decoded2 = decodeKosuEvents(resp2.logs);
-        const { challengeId, pollId } = decoded2[1];
+        const { challengeId } = decoded2[1];
         const challenge = await kosu.validatorRegistry.getChallenge(challengeId);
         const challenges = await kosu.validatorRegistry.getChallenges([challengeId]);
         const allChallenges = await kosu.validatorRegistry.getAllChallenges();

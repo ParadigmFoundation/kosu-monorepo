@@ -31,6 +31,7 @@
         "poster/PosterRegistry.sol",
         "sub-contracts/ZeroExV2SubContract.sol",
         "test/BasicTradeSubContract.sol",
+        "test/TestToken.sol",
         "treasury/Treasury.sol",
         "validator/ValidatorRegistry.sol",
         "voting/Voting.sol"

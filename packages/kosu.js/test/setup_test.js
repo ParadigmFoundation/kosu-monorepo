@@ -23,14 +23,14 @@ before(async () => {
     global.assert = chai.assert;
     chai.should();
 
-    const provider = new Web3ProviderEngine();
+    global.provider = new Web3ProviderEngine();
 
     if (useGeth) {
         const rpcSubprovider = new RPCSubprovider(process.env.WEB3_URI);
         provider.addProvider(rpcSubprovider);
     } else {
         const ganacheSubprovider = new GanacheSubprovider({
-            network_id: 6174,
+            network_id: 6175,
             mnemonic: process.env.npm_package_config_test_mnemonic,
         });
         provider.addProvider(ganacheSubprovider);
@@ -56,7 +56,14 @@ before(async () => {
     };
 
     if (!useGeth) {
-        await migrations(provider, { from: accounts[0].toLowerCase(), gas: "4500000" });
+        config.migratedContracts = await migrations(provider, { from: accounts[0].toLowerCase() });
+        config.votingAddress = config.migratedContracts.voting.address;
+        config.treasuryAddress = config.migratedContracts.treasury.address;
+        config.kosuTokenAddress = config.migratedContracts.kosuToken.address;
+        config.eventEmitterAddress = config.migratedContracts.eventEmitter.address;
+        config.orderGatewayAddress = config.migratedContracts.orderGateway.address;
+        config.posterRegistryAddress = config.migratedContracts.posterRegistry.address;
+        config.validatorRegistryAddress = config.migratedContracts.validatorRegistry.address;
     }
     global.basicTradeSubContract = await kosuSubContractHelper(provider, {
         from: accounts[0].toLowerCase(),
