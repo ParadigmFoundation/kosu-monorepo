@@ -78,10 +78,10 @@ steps:
       - make ci
     depends_on:
       - build-project
-      - node0
-      - node1
-      - node2
-      - node3
+      - kosu-node-0
+      - kosu-node-1
+      - kosu-node-2
+      - kosu-node-3
   
 
 services:
