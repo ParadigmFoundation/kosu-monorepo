@@ -72,7 +72,7 @@ steps:
     image: gcr.io/kosu-io/go-kosu-ci:latest
     pull: always
     environment:
-      WEB3_TEST_URI: ws://kosu-geth:8546
+      WEB3_TEST_URI: ws://go-kosu-ci-geth:8546
     commands:
       - cd packages/go-kosu
       - |
