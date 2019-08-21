@@ -59,14 +59,14 @@ steps:
       - ./kosud -H ./testnet/node2 -E ws://go-kosu-ci-geth:8546
 
   - name: kosu-node-3
-      image: gcr.io/kosu-io/go-kosu-ci:latest
-      pull: always
-      detach: true 
-      depends_on:
+    image: gcr.io/kosu-io/go-kosu-ci:latest
+    pull: always
+    detach: true 
+    depends_on:
       - build-project
-      commands:
-        - cd packages/go-kosu
-        - ./kosud -H ./testnet/node3 -E ws://go-kosu-ci-geth:8546
+    commands:
+      - cd packages/go-kosu
+      - ./kosud -H ./testnet/node3 -E ws://go-kosu-ci-geth:8546
 
   - name: go-kosu
     image: gcr.io/kosu-io/go-kosu-ci:latest
