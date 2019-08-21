@@ -1,4 +1,4 @@
-GOTEST_FLAGS ?=
+GOTEST_FLAGS ?= -v
 GOTEST_TAGS  ?= integration
 GOTEST = go test ./... ${GOTEST_FLAGS}
 
