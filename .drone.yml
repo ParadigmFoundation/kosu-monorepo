@@ -27,6 +27,46 @@ steps:
     depends_on:
       - clone
 
+  - name: kosu-node-0
+    image: gcr.io/kosu-io/go-kosu-ci:latest
+    pull: always
+    detach: true
+    depends_on:
+      - build-project
+    commands:
+      - cd packages/go-kosu
+      - ./kosud -H ./testnet/node0 -E ws://go-kosu-ci-geth:8546
+
+  - name: kosu-node-1
+    image: gcr.io/kosu-io/go-kosu-ci:latest
+    pull: always
+    detach: true 
+    depends_on:
+      - build-project
+    commands:
+      - cd packages/go-kosu
+      - ./kosud -H ./testnet/node1 -E ws://go-kosu-ci-geth:8546
+  
+  - name: kosu-node-2
+    image: gcr.io/kosu-io/go-kosu-ci:latest
+    pull: always
+    detach: true
+    depends_on:
+      - build-project
+    commands:
+      - cd packages/go-kosu
+      - ./kosud -H ./testnet/node2 -E ws://go-kosu-ci-geth:8546
+
+  - name: kosu-node-3
+      image: gcr.io/kosu-io/go-kosu-ci:latest
+      pull: always
+      detach: true 
+      depends_on:
+      - build-project
+      commands:
+        - cd packages/go-kosu
+        - ./kosud -H ./testnet/node3 -E ws://go-kosu-ci-geth:8546
+
   - name: go-kosu
     image: gcr.io/kosu-io/go-kosu-ci:latest
     pull: always
@@ -34,17 +74,28 @@ steps:
       WEB3_TEST_URI: ws://kosu-geth:8546
     commands:
       - cd packages/go-kosu
-      - make testnet
+      - make ci
     depends_on:
       - build-project
+      - node0
+      - node1
+      - node2
+      - node3
+  
 
 services:
-    - name: kosu-geth
-      image: gcr.io/kosu-io/kosu-geth:0.1.1
-      pull: always
-      ports:
-          - 8545
-          - 8546
+  - name: kosu-geth
+    image: gcr.io/kosu-io/kosu-geth:0.1.1
+    pull: always
+    ports:
+      - 8545
+      - 8546
+  
+  - name: go-kosu-ci-geth
+    image: gcr.io/kosu-io/kosu-geth:0.1.1
+    pull: always
+    ports:
+      - 8546
 
 trigger:
     event:
