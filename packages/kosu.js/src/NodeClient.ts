@@ -8,10 +8,10 @@ export class NodeClient {
     private readonly _heartbeatInterval: number;
     private readonly _subscriptionIdMap: { [uuid: string]: string };
 
-    private static _convertValidatorData(rawValidators: any[]): Validator[] {
+    private static _convertValidatorData(...rawValidators: any[]): Validator[] {
         const validators = [];
         for (const validator of rawValidators) {
-            const balance = parseInt(validator.balance.split(": "));
+            const balance = parseInt(validator.balance.split(": ")[1]);
             validators.push({ ...validator, balance });
         }
         return validators;
@@ -42,14 +42,13 @@ export class NodeClient {
     }
 
     public async queryValidator(nodeId: string): Promise<Validator> {
-        if (/^[a-fA-F0-9]{40}$/.test(nodeId)) {
+        if (!/^[a-fA-F0-9]{40}$/.test(nodeId)) {
             throw new Error("invalid validator node ID string");
         }
 
         // hack: dealing with protobuf decoding issues
         const raw = await this._call("kosu_queryValidator", nodeId);
-        const balance = parseInt(raw.balance.split(": "));
-        return { ...raw, balance };
+        return NodeClient._convertValidatorData(raw)[0];
     }
 
     public async remainingLimit(): Promise<number> {
@@ -72,7 +71,7 @@ export class NodeClient {
 
     public async validators(): Promise<Validator[]> {
         const rawValidators = await this._call("kosu_validators");
-        return NodeClient._convertValidatorData(rawValidators as unknown as any[]);
+        return NodeClient._convertValidatorData(...rawValidators);
     }
 
     public async subscribeToOrders(cb: (orders: any[]) => void): Promise<string> {
