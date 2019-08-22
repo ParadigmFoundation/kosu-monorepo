@@ -83,7 +83,6 @@ steps:
       - kosu-node-1
       - kosu-node-2
       - kosu-node-3
-  
 
 services:
   - name: kosu-geth
