@@ -6,7 +6,7 @@ import "./Formula.sol";
 
 /** @title KosuToken
     @author Freydal
-    @dev KosuToken (KOSU) is an implentation of the ERC-20 interface and supporting bonding curve for mints and burns.
+    @dev KosuToken (KOSU) is an implementation of the ERC-20 interface and supporting bonding curve for mints and burns.
 */
 contract KosuToken is ERC20, Authorizable {
 
@@ -16,21 +16,21 @@ contract KosuToken is ERC20, Authorizable {
     uint private _weiPaid = 0;
     uint32 constant private r = 850000; // ppm
 
-    /** @dev Deploy a new ERC20 Token
-        @notice Deploy a new ERC20 Token
+    /** @dev Initializes KosuToken with the authorizedAddresses shared permission contract to protect functions.
+        @notice Initializes KosuToken with the authorizedAddresses shared permission contract to protect functions.
     */
     constructor(address _auth) Authorizable(_auth) public {
     }
 
-    /** @dev Fallback payable method to allow contract to accept ether being sent directly to the address.
-        @notice Fallback payable method to allow contract to accept ether being sent directly to the address.
+    /** @dev Fallback payable function to allow the contract address to directly accept ether to be forwarded to the bonding function.
+        @notice Fallback payable function to allow the contract address to directly accept ether to be forwarded to the bonding function.
     */
     function () external payable {
         bondTokens(0);
     }
 
-    /** @dev Uses the ether paid to calculate and mint tokens.
-        @notice Uses the ether paid to calculate and mint tokens.
+    /** @dev Receives ether as a backing currency to be used against the bonding curve to mint tokens.
+        @notice Receives ether as a backing currency to be used against the bonding curve to mint tokens.
         @param minPayout The minimum number of tokens to mint otherwise the transaction is reverted. This should prevent a front runner modifying the output.
     */
     function bondTokens(uint minPayout) payable public returns (uint) {
@@ -45,9 +45,9 @@ contract KosuToken is ERC20, Authorizable {
         return tokensToMint;
     }
 
-    /** @dev Burns the input amount of tokens returning the calculated amount of ether.
-        @notice Burns the input amount of tokens returning the calculated amount of ether.
-        @param tokensToBurn The number of tokens to burn
+    /** @dev Burns the input tokens and releases the calculated amount of ether backing the tokens destroyed.
+        @notice Burns the input tokens and releases the calculated amount of ether backing the tokens destroyed.
+        @param tokensToBurn The number of the users tokens to burn.
     */
     function releaseTokens(uint tokensToBurn) public {
         if (tokensToBurn == 0) return;
@@ -59,27 +59,27 @@ contract KosuToken is ERC20, Authorizable {
         _weiPaid = _weiPaid.sub(etherToRelease);
     }
 
-    /** @dev Estimates the number of tokens to generate with the input ether at the current state.
-        @notice Estimates the number of tokens to generate with the input ether at the current state.
-        @param input The amount of ether to contribute
-        @return Number of tokens that would be generated
+    /** @dev Estimates the number of tokens that would be minted with the input ether at the current ether and token balances.
+        @notice Estimates the number of tokens that would be minted with the input ether at the current ether and token balances.
+        @param input The amount of ether to contribute.
+        @return Number of tokens that would be minted.
     */
     function estimateEtherToToken(uint input) public view returns (uint) {
         return calculateEtherToToken(input);
     }
 
-    /** @dev Estimates the amount of ether to return with the input number of tokens to burn.
-        @notice Estimates the amount of ether to return with the input number of tokens to burn.
-        @param input The number of tokens to burn
-        @return Amount of ether to receive
+    /** @dev Estimates the amount of ether to be released with the input number of tokens to burn.
+        @notice Estimates the amount of ether to be released with the input number of tokens to burn.
+        @param input The number of tokens to burn.
+        @return Amount of ether to release.
     */
     function estimateTokenToEther(uint input) public view returns (uint) {
         return calculateTokenToEther(input);
     }
 
-    /** @dev Burn tokens
-        @notice Burn tokens
-        @param amount Number of tokens to destroy
+    /** @dev Voluntarily burn tokens.
+        @notice Voluntarily burn tokens.
+        @param amount Number of tokens to burn.
     */
     function burn(uint amount) public isAuthorized {
         _burn(msg.sender, amount);
@@ -92,17 +92,16 @@ contract KosuToken is ERC20, Authorizable {
     function mint(uint amount) public isAuthorized {
         _mint(msg.sender, amount);
     }
-
-    /** @dev Mint tokens to specified address
-        @notice Mint tokens to specified address
-        @param _address Address to receive tokens
-        @param amount Number of tokens to create.
+    /** @dev Authorized addresses (mostly contract systems) may manually mint new tokens to desired addresses.
+        @notice Authorized addresses (mostly contract systems) may manually mint new tokens to desired addresses.
+        @param _address Address to mint tokens to.
+        @param amount Number of tokens to mint.
     */
     function mintTo(address _address, uint amount) public isAuthorized {
         _mint(_address, amount);
     }
 
-    /** @dev Uses a modified BancorFormula to calculate the number of tokens to generate input parameters.
+    /** @dev Uses a modified BancorFormula to calculate the number of tokens to mint for input ether value.
     */
     function calculateEtherToToken(uint etherValue) internal view returns (uint) {
         if (_weiPaid == 0 && totalSupply() == 0) {
@@ -113,7 +112,7 @@ contract KosuToken is ERC20, Authorizable {
         }
     }
 
-    /** @dev Uses a modified BancorFormula to calculate the amount of ether to release with input parameters.
+    /** @dev Uses a modified BancorFormula to calculate the amount of ether to release for input token value.
     */
     function calculateTokenToEther(uint numberOfTokens) internal view returns (uint) {
         return Formula.calculateSaleReturn(totalSupply(), _weiPaid, r, numberOfTokens);

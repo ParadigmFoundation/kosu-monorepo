@@ -6,7 +6,7 @@ import "openzeppelin-solidity/contracts/math/SafeMath.sol";
 
 /** @title Voting
     @author Freydal
-    @dev Voting manages polls and votes on governance matters within the Kosu system.
+    @dev Voting manages polls and votes on governance matters within the Kosu system.  Poll resolution logic will be the responsibility of the contract utilizing this service.
 */
 contract Voting {
     using SafeMath for uint;
@@ -37,10 +37,10 @@ contract Voting {
         uint voteOption;
     }
 
-    /** @dev Create a new voting engine
-        @notice Create a new voting engine
-        @param treasuryAddress Deployed Treasury address
-        @param _emitterAddress Deployed EventEmitter address
+    /** @dev Initializes the voting contract with the shared event emitter and treasury contracts.
+        @notice Initializes the voting contract with the shared event emitter and treasury contracts.
+        @param treasuryAddress Deployed Treasury address.
+        @param _emitterAddress Deployed EventEmitter address.
     */
     constructor(address payable treasuryAddress, address _emitterAddress) public {
         emitter = EventEmitter(_emitterAddress);
