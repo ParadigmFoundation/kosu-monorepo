@@ -3,7 +3,8 @@ local Image(name, image) = {
 	image: "gcr.io/kosu-io/" + image,
 	pull: "always",
 	environment: {
-		WEB3_URI: "http://kosu-geth:8545"
+		WEB3_URI: "http://kosu-geth:8545",
+		WEB3_URI_WS: "ws://kosu-geth:8546",
 	}
 };
 

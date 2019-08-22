@@ -12,7 +12,7 @@ import (
 )
 
 func TestEth(t *testing.T) {
-	env := "WEB3_URI"
+	env := "WEB3_URI_WS"
 	addr := os.Getenv(env)
 	if addr == "" {
 		t.Skipf("%s env not declared", env)
@@ -28,6 +28,7 @@ func TestEth(t *testing.T) {
 		fn := func(e *EventEmitterKosuEvent) {
 			log.Printf("type(%-30s) @#%d", e.EventType, e.Raw.BlockNumber)
 		}
+
 		err := eth.WatchEvents(ctx, fn)
 		require.Equal(t, context.DeadlineExceeded, err)
 	})
