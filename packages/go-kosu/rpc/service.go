@@ -5,7 +5,6 @@ import (
 	"encoding/hex"
 	"go-kosu/abci"
 	"go-kosu/abci/types"
-	"go-kosu/store"
 	"log"
 	"strings"
 
@@ -690,20 +689,55 @@ func (s *Service) QueryPoster(addr string) (*types.Poster, error) {
 	return s.abci.QueryPoster(addr)
 }
 
-// TotalOrders ...
+/*
+TotalOrders returns the total number of orders in the system.
+This number is incremented each time one submits a new valid order
+
+_Parameters:_
+
+_Returns:_
+
+-   `number` - _uint64_
+
+*/
 func (s *Service) TotalOrders() (uint64, error) {
 	return s.abci.QueryTotalOrders()
 }
 
-// NumberPosters ...
+/*
+NumberPosters returns the number of poster accounts
+
+_Parameters:_
+
+_Returns:_
+
+-   `number` - _uint64_
+
+*/
 func (s *Service) NumberPosters() (uint64, error) {
-	res, err := s.abci.ABCIQuery("/poster/number", nil)
-	if err != nil {
+	var num uint64
+
+	if err := s.abci.Query("/poster/number", nil, &num); err != nil {
 		return 0, err
 	}
 
+	return num, nil
+}
+
+/*
+RemainingLimit returns the sum of all the poster's limit.
+
+_Parameters:_
+
+_Returns:_
+
+-   `number` - _uint64_
+
+*/
+func (s *Service) RemainingLimit() (uint64, error) {
 	var num uint64
-	if err := store.DefaultCodec.Decode(res.Response.Value, &num); err != nil {
+
+	if err := s.abci.Query("/poster/remaininglimit", nil, &num); err != nil {
 		return 0, err
 	}
 

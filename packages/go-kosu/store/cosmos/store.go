@@ -106,9 +106,13 @@ func (s *Store) LastCommitID() cosmos.CommitID { return s.cms.LastCommitID() }
 
 // Query wrap the rootmulti.Query method
 func (s *Store) Query(req abci.RequestQuery) abci.ResponseQuery {
+	// TODO: move the switch to a sensible place (perhaps ./store or ./abci)
+	// this should not be local to the store implementation
 	switch req.Path {
 	case "/poster/number":
 		return s.queryPosterNumber()
+	case "/poster/remaininglimit":
+		return s.queryPosterRemainingLimit()
 	}
 	return s.cms.Query(req)
 }
@@ -117,6 +121,23 @@ func (s *Store) queryPosterNumber() (resp abci.ResponseQuery) {
 	var num uint64
 	s.All(s.posterKey, func(_ string, _ []byte) {
 		num++
+	})
+
+	buf, err := s.codec.Encode(num)
+	if err != nil {
+		resp.Code = 1
+		resp.Log = err.Error()
+	} else {
+		resp.Value = buf
+	}
+
+	return resp
+}
+
+func (s *Store) queryPosterRemainingLimit() (resp abci.ResponseQuery) {
+	var num uint64
+	s.IteratePosters(func(_ string, p *types.Poster) {
+		num += p.Limit
 	})
 
 	buf, err := s.codec.Encode(num)

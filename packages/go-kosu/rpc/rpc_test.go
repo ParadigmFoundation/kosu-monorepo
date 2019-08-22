@@ -16,6 +16,21 @@ import (
 	"github.com/tendermint/tendermint/libs/db"
 )
 
+func waitForNewBlock(t *testing.T, client *rpc.Client) {
+	ch := make(chan interface{})
+	defer close(ch)
+
+	sub, err := client.Subscribe(context.Background(), "kosu", ch, "newBlocks")
+	require.NoError(t, err)
+	defer sub.Unsubscribe()
+
+	select {
+	case err := <-sub.Err():
+		t.Error(err)
+	case <-ch:
+	}
+}
+
 func TestRPC(t *testing.T) {
 	cases := []struct {
 		name string
@@ -35,7 +50,7 @@ func TestRPC(t *testing.T) {
 
 			appClient, err := app.NewClient()
 			require.NoError(t, err)
-			defer appClient.Stop()
+			defer appClient.Stop() // nolint:errcheck
 
 			rpcClient := rpc.DialInProc(NewServer(appClient))
 			defer rpcClient.Close()
@@ -51,31 +66,9 @@ func LatestHeight(t *testing.T, _ *abci.App, _ *abci.Client, rpcClient *rpc.Clie
 	require.NoError(t, rpcClient.Call(&latest, "kosu_latestHeight"))
 	assert.EqualValues(t, 0, latest)
 
-	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
-	fn := func(_ interface{}) {
-		// this is invoked when a block is mined
-		require.NoError(t, rpcClient.Call(&latest, "kosu_latestHeight"))
-		assert.EqualValues(t, 1, latest)
-		cancel()
-	}
-
-	ch := make(chan interface{})
-	defer close(ch)
-
-	sub, err := rpcClient.Subscribe(ctx, "kosu", ch, "newBlocks")
-	require.NoError(t, err)
-	defer sub.Unsubscribe()
-
-	for {
-		select {
-		case <-ctx.Done():
-			return
-		case err := <-sub.Err():
-			t.Error(err)
-		case e := <-ch:
-			fn(e)
-		}
-	}
+	waitForNewBlock(t, rpcClient)
+	require.NoError(t, rpcClient.Call(&latest, "kosu_latestHeight"))
+	assert.EqualValues(t, 1, latest)
 }
 
 func AddOrders(t *testing.T, app *abci.App, appClient *abci.Client, rpcClient *rpc.Client) {
@@ -94,18 +87,35 @@ func AddOrders(t *testing.T, app *abci.App, appClient *abci.Client, rpcClient *r
 	}
 
 	// this poster address is generated out of the validTx
-	app.Store().SetPoster("0x02fbf1aa49bc3b9631e8e96572935a5894879724", types.Poster{
+	poster := types.Poster{
 		Balance: types.NewBigIntFromInt(100),
-	})
+		Limit:   10,
+	}
+	app.Store().SetPoster("0x02fbf1aa49bc3b9631e8e96572935a5894879724", poster)
+
+	var remaining uint64
+	err := rpcClient.Call(&remaining, "kosu_remainingLimit")
+	require.NoError(t, err)
+	assert.Equal(t, poster.Limit, remaining)
 
 	params := []interface{}{validTx, invalidTx}
 	result := &AddOrdersResult{}
 
-	err := rpcClient.Call(result, "kosu_addOrders", params)
+	err = rpcClient.Call(result, "kosu_addOrders", params)
 	require.NoError(t, err)
 
 	assert.Len(t, result.Accepted, 1)
 	assert.Len(t, result.Rejected, 1)
+
+	waitForNewBlock(t, rpcClient)
+	var total uint64
+	err = rpcClient.Call(&total, "kosu_totalOrders")
+	require.NoError(t, err)
+	assert.EqualValues(t, 1, total)
+
+	err = rpcClient.Call(&remaining, "kosu_remainingLimit")
+	require.NoError(t, err)
+	assert.Equal(t, poster.Limit-1, remaining)
 }
 
 func newTestRebalanceTx(number, starts uint64) *types.TransactionRebalance {
