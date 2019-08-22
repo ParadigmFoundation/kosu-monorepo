@@ -149,19 +149,6 @@ contract Treasury is Authorizable {
         }
     }
 
-    /** @dev Allows contracts to change balance.
-        @notice Allows contracts to change balance.
-        @param account User to modify tokens for
-        @param amount Change to token balance
-    */
-    function adjustBalance(address account, int amount) isAuthorized public {
-        //Changes balance by the provided amount
-        if(amount < 0) {
-            _withdraw(account, uint(amount * -1));
-        } else if (amount > 0) {
-            _deposit(account, uint(amount));
-        }
-    }
     /** @dev Allows contracts to burn an accounts held tokens.
         @notice Allows contracts to burn an accounts held tokens.
         @param account Account to burn tokens for.
