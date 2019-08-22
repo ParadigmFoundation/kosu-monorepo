@@ -6,6 +6,11 @@ import (
 	"github.com/ethereum/go-ethereum/rpc"
 )
 
+const (
+	// Version indicates the RPC-API version
+	Version = "1.0"
+)
+
 // NewServer returns a new Server which holds the registered rpc service
 func NewServer(abci *abci.Client) *rpc.Server {
 	srv := rpc.NewServer()

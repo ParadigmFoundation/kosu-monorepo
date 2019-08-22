@@ -13,6 +13,7 @@ import (
 
 	"go-kosu/abci"
 	"go-kosu/rpc"
+	"go-kosu/version"
 	"go-kosu/witness"
 )
 
@@ -128,6 +129,7 @@ func main() {
 	rootCmd.PersistentFlags().BoolVarP(&cfg.Debug, "debug", "d", false, "enable debuging")
 	rootCmd.Flags().StringVarP(&cfg.Web3, "web3", "E", "ws://localhost:8546", "URL of an Ethereum JSONRPC provider")
 
+	rootCmd.AddCommand(version.NewCommand())
 	rootCmd.AddCommand(rpc.NewCommand())
 	rootCmd.AddCommand(initCmd)
 
