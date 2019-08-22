@@ -60,7 +60,7 @@ steps:
 
 services:
     - name: kosu-geth
-      image: gcr.io/kosu-io/kosu-geth:0.1.1
+      image: gcr.io/kosu-io/kosu-test-geth:latest
       pull: always
       ports:
           - 8545

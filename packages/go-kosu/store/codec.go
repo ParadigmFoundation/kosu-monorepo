@@ -1,4 +1,4 @@
-package cosmos
+package store
 
 import (
 	"bytes"
@@ -98,3 +98,6 @@ func (c *ProtoCodec) Decode(bs []byte, s interface{}) error {
 	msg := s.(proto.Message)
 	return buf.Unmarshal(msg)
 }
+
+// DefaultCodec is the default codec to be used
+var DefaultCodec = new(ProtoCodec)
