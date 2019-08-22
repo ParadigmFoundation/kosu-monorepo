@@ -3,7 +3,7 @@ interface KosuOptions {
     networkId?: number | string;
     web3?: Web3;
     web3Wrapper?: Web3Wrapper;
-    orderStreamURL?: string;
+    kosuNodeUrl?: string;
     votingAddress?: string;
     treasuryAddress?: string;
     kosuTokenAddress?: string;

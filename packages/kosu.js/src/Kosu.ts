@@ -12,6 +12,7 @@ import { Treasury } from "./Treasury";
 import { NULL_ADDRESS, toBytes32 } from "./utils";
 import { ValidatorRegistry } from "./ValidatorRegistry";
 import { Voting } from "./Voting";
+import { NodeClient } from "./NodeClient";
 
 // tslint:disable-next-line: no-var-requires
 const version = process.env.npm_package_version || require("../package.json").version;
@@ -45,6 +46,16 @@ export class Kosu {
      * manage the various deployed contracts ABI's.
      */
     public readonly web3Wrapper: Web3Wrapper;
+
+    // KOSU NODE CLIENT
+
+    /**
+     * A JSONRPC client for a Kosu node, enabled if a `kosuNodeUrl` is provided
+     * to the Kosu constructor (as part of the options object).
+     *
+     * Enables access to the `go-kosu` JSONRPC-API, including subscriptions.
+     */
+    public readonly node: NodeClient;
 
     // KOSU CONTRACTS
 
@@ -157,6 +168,11 @@ export class Kosu {
         this.validatorRegistry = new ValidatorRegistry(options, this.treasury);
         this.orderHelper = new OrderHelper(this.web3, this.orderGateway);
         this.eventEmitter = new EventEmitter(options);
+
+        // Setup Kosu node JSONRPC client if url is provided
+        if (options.kosuNodeUrl) {
+            this.node = new NodeClient(options.kosuNodeUrl);
+        }
 
         // Utilities
         this.utils = { toBytes32, NULL_ADDRESS };

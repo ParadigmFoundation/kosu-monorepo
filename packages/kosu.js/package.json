@@ -37,6 +37,7 @@
         "ethereumjs-abi": "^0.6.6",
         "ethereumjs-util": "^5.2.0",
         "isomorphic-ws": "^4.0.1",
+        "lodash": "^4.17.15",
         "node-fetch": "^2.2.0",
         "uuid": "^3.3.3",
         "web3": "1.2.0",
