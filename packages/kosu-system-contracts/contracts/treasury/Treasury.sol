@@ -87,7 +87,9 @@ contract Treasury is Authorizable {
     function claimTokens(address account, uint amount) isAuthorized public {
         //Attempt to get more balance if balance is insufficient
         if(getCurrentBalance(account) < amount) {
-          updateBalance(account, amount);
+            uint currentBalance = getCurrentBalance(account);
+            uint amountToDeposit = amount.sub(currentBalance);
+            _deposit(account, amountToDeposit);
         }
 
         //Transfer to requesting contract and update balance held in contract
@@ -130,23 +132,6 @@ contract Treasury is Authorizable {
         setCurrentBalance(account, getCurrentBalance(account).add(amount));
         //Increase systemBalance these tokens are new to the account
         setSystemBalance(account, getSystemBalance(account).add(amount));
-    }
-
-    /** @dev Allows contracts to set balance.
-        @notice Allows contracts to set balance.
-        @param account User to modify tokens for
-        @param amount Number of tokens to set to current balance
-    */
-    function updateBalance(address account, uint amount) isAuthorized public {
-        //Adjust balance to requested value.  Increase or decrease based on current balance
-        uint currentBalance = getCurrentBalance(account);
-        if(currentBalance > amount) {
-            uint amountToWithdraw = currentBalance.sub(amount);
-            _withdraw(account, amountToWithdraw);
-        } else if (currentBalance < amount) {
-            uint amountToDeposit = amount.sub(currentBalance);
-            _deposit(account, amountToDeposit);
-        }
     }
 
     /** @dev Allows contracts to burn an accounts held tokens.
