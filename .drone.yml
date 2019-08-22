@@ -61,7 +61,7 @@ steps:
   environment:
     WEB3_URI: http://kosu-geth:8545
   depends_on:
-  - build_project
+  - build-project
 
 - name: kosu-node-1
   pull: always
@@ -73,7 +73,7 @@ steps:
   environment:
     WEB3_URI: http://kosu-geth:8545
   depends_on:
-  - build_project
+  - build-project
 
 - name: kosu-node-2
   pull: always
@@ -85,7 +85,7 @@ steps:
   environment:
     WEB3_URI: http://kosu-geth:8545
   depends_on:
-  - build_project
+  - build-project
 
 - name: kosu-node-3
   pull: always
@@ -97,14 +97,14 @@ steps:
   environment:
     WEB3_URI: http://kosu-geth:8545
   depends_on:
-  - build_project
+  - build-project
 
 - name: go-kosu
   pull: always
   image: gcr.io/kosu-io/go-kosu-ci:latest
   commands:
   - cd packages/go-kosu
-  - export KOSU_TEST_NODES=$(pwd)/testnet/node0@kosu-node-1:26657,$(pwd)/testnet/node1@kosu-node-1:26657,$(pwd)/testnet/node2@kosu-node-1:26657,$(pwd)/testnet/node3@kosu-node-1:26657
+  - "export KOSU_TEST_NODES=$(pwd)/testnet/node0@kosu-node-1:26657,$(pwd)/testnet/node1@kosu-node-1:26657,$(pwd)/testnet/node2@kosu-node-1:26657,$(pwd)/testnet/node3@kosu-node-1:26657"
   - make ci
   environment:
     WEB3_URI: http://kosu-geth:8545

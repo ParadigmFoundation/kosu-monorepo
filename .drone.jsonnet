@@ -9,14 +9,14 @@ local Image(name, image) = {
 
 local KosuNode(id) = Image("kosu-node-"+id, "go-kosu-ci:latest") {
 	detach: true,
-	depends_on: ["build_project"],
+	depends_on: ["build-project"],
 	commands: [
 		"cd packages/go-kosu",
 		'./kosud -H ./testnet/node%(id)s -E ws://go-kosu-ci-geth:8546' %id,
 	]
 };
 
-local KosuGEth(name) = Image(name, "kosu-geth:0.1.1") {
+local KosuGeth(name) = Image(name, "kosu-geth:0.1.1") {
 	ports: [8545, 8546]
 };
 
@@ -62,8 +62,8 @@ local KosuGEth(name) = Image(name, "kosu-geth:0.1.1") {
 	],
 
 	"services": [
-		KosuGEth("kosu-geth"),
-		KosuGEth("go-kosu-ci-geth"),
+		KosuGeth("kosu-geth"),
+		KosuGeth("go-kosu-ci-geth"),
 	],
 
 	"trigger": {
