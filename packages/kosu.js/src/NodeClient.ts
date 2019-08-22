@@ -71,7 +71,7 @@ export class NodeClient {
     }
 
     public async validators(): Promise<Validator[]> {
-        const rawValidators = this._call("kosu_validators");
+        const rawValidators = await this._call("kosu_validators");
         return NodeClient._convertValidatorData(rawValidators as unknown as any[]);
     }
 
