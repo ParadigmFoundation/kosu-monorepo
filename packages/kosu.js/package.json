@@ -12,6 +12,7 @@
         "test:ganache_detached": "docker run --rm -d -p 8545:8545 ${npm_package_config_ganache_image_uri}",
         "build": "tsc",
         "lint": "tslint -p .",
+        "lint:fix": "tslint -p . --fix",
         "docs": "typedoc ./src"
     },
     "repository": {
