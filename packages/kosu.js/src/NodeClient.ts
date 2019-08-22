@@ -1,5 +1,6 @@
 import { WebsocketProvider, WebsocketProviderOptions } from "@0x/web3-providers-fork";
 import uuid from "uuid/v4";
+import { createHash } from "crypto";
 
 export class NodeClient {
     public static DEFAULT_OPTIONS: WebsocketProviderOptions = { timeout: 3000 };
@@ -7,6 +8,12 @@ export class NodeClient {
     private readonly _provider: WebsocketProvider;
     private readonly _heartbeatInterval: number;
     private readonly _subscriptionIdMap: { [uuid: string]: string };
+
+    public static publicKeyToNodeId(publicKey: string): string {
+        const hash = createHash("SHA256");
+        const pub = Buffer.from(publicKey, "base64");
+        return hash.update(pub).digest().slice(0, 20).toString("hex");
+    }
 
     private static _convertValidatorData(...rawValidators: any[]): Validator[] {
         const validators = [];
