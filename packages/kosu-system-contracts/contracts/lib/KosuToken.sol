@@ -85,13 +85,6 @@ contract KosuToken is ERC20, Authorizable {
         _burn(msg.sender, amount);
     }
 
-    /** @dev Mint tokens
-        @notice Mint tokens
-        @param amount Number of tokens to create
-    */
-    function mint(uint amount) public isAuthorized {
-        _mint(msg.sender, amount);
-    }
     /** @dev Authorized addresses (mostly contract systems) may manually mint new tokens to desired addresses.
         @notice Authorized addresses (mostly contract systems) may manually mint new tokens to desired addresses.
         @param _address Address to mint tokens to.
