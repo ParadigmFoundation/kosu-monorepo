@@ -1,10 +1,10 @@
 FROM ethereum/client-go:v1.8.27
 
-COPY genesis.json accounts passwords ./
+COPY genesis-kosu.json accounts passwords ./
 RUN mkdir keystore/
 COPY keystore/* keystore/
 
-RUN geth init genesis.json --datadir .
+RUN geth init genesis-kosu.json --datadir .
 
 ENTRYPOINT geth \
     --datadir . \

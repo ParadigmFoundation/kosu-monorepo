@@ -13,6 +13,7 @@ type Store interface {
 	Commit() store.CommitID
 	LastCommitID() store.CommitID
 	Query(abci.RequestQuery) abci.ResponseQuery
+	Codec() Codec
 
 	RoundInfo() types.RoundInfo
 	SetRoundInfo(types.RoundInfo)
@@ -22,6 +23,9 @@ type Store interface {
 
 	LastEvent() uint64
 	SetLastEvent(uint64)
+
+	TotalOrders() uint64
+	SetTotalOrders(uint64)
 
 	WitnessTxExists([]byte) bool
 	WitnessTx([]byte) *types.TransactionWitness

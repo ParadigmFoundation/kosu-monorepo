@@ -7,8 +7,10 @@
         "geth:clean": "geth removedb --datadir .",
         "geth:init": "yarn geth:clean && geth init genesis.json --datadir .",
         "geth:start:old": "geth --datadir . --networkid 6174 --rpc  --rpcaddr '0.0.0.0' --unlock=\"`cat accounts`\" --password=./passwords --etherbase \"0x54E60Bccc86A7Bad4BC68E36a8fde0F369aE849E\" --mine --rpccorsdomain '*' --rpcapi 'personal,db,eth,net,web3,txpool,miner,debug' console",
-        "geth:start": "docker-compose up --force-recreate --build",
-        "build:geth": "scripts/build-and-push-geth-image.sh ${npm_package_config_image_host} kosu-geth ${npm_package_version}"
+        "kosu:start": "docker-compose up --force-recreate --build",
+        "build:kosu": "scripts/build-and-push-geth-image.sh kosu.Dockerfile ${npm_package_config_image_host} kosu-geth ${npm_package_version}",
+        "build:kosu-test": "scripts/build-and-push-geth-image.sh kosu-test.Dockerfile ${npm_package_config_image_host} kosu-test-geth ${npm_package_version}",
+        "build_and_push": "yarn build:kosu && yarn build:kosu-test"
     },
     "config": {
         "image_host": "gcr.io/kosu-io"
