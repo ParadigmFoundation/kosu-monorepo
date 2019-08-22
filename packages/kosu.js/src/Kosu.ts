@@ -4,6 +4,7 @@ import Web3 from "web3";
 
 import { EventEmitter } from "./EventEmitter";
 import { KosuToken } from "./KosuToken";
+import { NodeClient } from "./NodeClient";
 import { OrderGateway } from "./OrderGateway";
 import { OrderHelper } from "./OrderHelper";
 import { PosterRegistry } from "./PosterRegistry";
@@ -12,7 +13,6 @@ import { Treasury } from "./Treasury";
 import { NULL_ADDRESS, toBytes32 } from "./utils";
 import { ValidatorRegistry } from "./ValidatorRegistry";
 import { Voting } from "./Voting";
-import { NodeClient } from "./NodeClient";
 
 // tslint:disable-next-line: no-var-requires
 const version = process.env.npm_package_version || require("../package.json").version;
