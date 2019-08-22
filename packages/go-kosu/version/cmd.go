@@ -7,7 +7,7 @@ import (
 )
 
 // NewCommand returns a new version subcommand.
-// This should be embeded in any kosu command that want to display the version info.
+// This should be embedded in any kosu command that want to display the version info.
 func NewCommand() *cobra.Command {
 	return &cobra.Command{
 		Use:   "version",
