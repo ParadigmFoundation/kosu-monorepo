@@ -1,5 +1,4 @@
 GOTEST_FLAGS ?= -v
-GOTEST_TAGS  ?= integration
 GOTEST = go test ./... ${GOTEST_FLAGS}
 
 GOLINT = golangci-lint run --enable-all \
@@ -23,7 +22,7 @@ test-fast:
 	$(GOTEST) -failfast
 
 test:
-	$(GOTEST) -race -tags=$(GOTEST_TAGS)
+	$(GOTEST) -race
 
 lint:
 	$(GOLINT)

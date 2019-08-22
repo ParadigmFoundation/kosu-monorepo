@@ -54,7 +54,7 @@ func NewAppWithConfig(db db.DB, cfg *config.Config) *App {
 	}
 
 	app := &App{
-		store:  cosmos.NewStore(db, new(cosmos.ProtoCodec)),
+		store:  cosmos.NewStore(db, store.DefaultCodec),
 		Config: cfg,
 		log:    logger.With("module", "app"),
 	}
