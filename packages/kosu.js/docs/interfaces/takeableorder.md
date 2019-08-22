@@ -31,7 +31,7 @@
 
 _Inherited from [Order](order.md).[arguments](order.md#optional-arguments)_
 
-_Defined in [types.d.ts:22](https://github.com/ParadigmFoundation/kosu-monorepo/blob/c134674/packages/kosu.js/src/types.d.ts#L22)_
+_Defined in [types.d.ts:22](https://github.com/ParadigmFoundation/kosu-monorepo/blob/6f2e797/packages/kosu.js/src/types.d.ts#L22)_
 
 ---
 
@@ -41,7 +41,7 @@ _Defined in [types.d.ts:22](https://github.com/ParadigmFoundation/kosu-monorepo/
 
 _Inherited from [Order](order.md).[id](order.md#id)_
 
-_Defined in [types.d.ts:23](https://github.com/ParadigmFoundation/kosu-monorepo/blob/c134674/packages/kosu.js/src/types.d.ts#L23)_
+_Defined in [types.d.ts:23](https://github.com/ParadigmFoundation/kosu-monorepo/blob/6f2e797/packages/kosu.js/src/types.d.ts#L23)_
 
 ---
 
@@ -51,7 +51,7 @@ _Defined in [types.d.ts:23](https://github.com/ParadigmFoundation/kosu-monorepo/
 
 _Inherited from [Order](order.md).[maker](order.md#maker)_
 
-_Defined in [types.d.ts:18](https://github.com/ParadigmFoundation/kosu-monorepo/blob/c134674/packages/kosu.js/src/types.d.ts#L18)_
+_Defined in [types.d.ts:18](https://github.com/ParadigmFoundation/kosu-monorepo/blob/6f2e797/packages/kosu.js/src/types.d.ts#L18)_
 
 ---
 
@@ -61,7 +61,7 @@ _Defined in [types.d.ts:18](https://github.com/ParadigmFoundation/kosu-monorepo/
 
 _Inherited from [Order](order.md).[makerSignature](order.md#optional-makersignature)_
 
-_Defined in [types.d.ts:21](https://github.com/ParadigmFoundation/kosu-monorepo/blob/c134674/packages/kosu.js/src/types.d.ts#L21)_
+_Defined in [types.d.ts:21](https://github.com/ParadigmFoundation/kosu-monorepo/blob/6f2e797/packages/kosu.js/src/types.d.ts#L21)_
 
 ---
 
@@ -71,7 +71,7 @@ _Defined in [types.d.ts:21](https://github.com/ParadigmFoundation/kosu-monorepo/
 
 _Inherited from [Order](order.md).[makerValues](order.md#makervalues)_
 
-_Defined in [types.d.ts:19](https://github.com/ParadigmFoundation/kosu-monorepo/blob/c134674/packages/kosu.js/src/types.d.ts#L19)_
+_Defined in [types.d.ts:19](https://github.com/ParadigmFoundation/kosu-monorepo/blob/6f2e797/packages/kosu.js/src/types.d.ts#L19)_
 
 ---
 
@@ -81,7 +81,7 @@ _Defined in [types.d.ts:19](https://github.com/ParadigmFoundation/kosu-monorepo/
 
 _Inherited from [Order](order.md).[poster](order.md#poster)_
 
-_Defined in [types.d.ts:24](https://github.com/ParadigmFoundation/kosu-monorepo/blob/c134674/packages/kosu.js/src/types.d.ts#L24)_
+_Defined in [types.d.ts:24](https://github.com/ParadigmFoundation/kosu-monorepo/blob/6f2e797/packages/kosu.js/src/types.d.ts#L24)_
 
 ---
 
@@ -91,7 +91,7 @@ _Defined in [types.d.ts:24](https://github.com/ParadigmFoundation/kosu-monorepo/
 
 _Inherited from [Order](order.md).[subContract](order.md#subcontract)_
 
-_Defined in [types.d.ts:17](https://github.com/ParadigmFoundation/kosu-monorepo/blob/c134674/packages/kosu.js/src/types.d.ts#L17)_
+_Defined in [types.d.ts:17](https://github.com/ParadigmFoundation/kosu-monorepo/blob/6f2e797/packages/kosu.js/src/types.d.ts#L17)_
 
 ---
 
@@ -101,4 +101,4 @@ _Defined in [types.d.ts:17](https://github.com/ParadigmFoundation/kosu-monorepo/
 
 _Overrides [Order](order.md).[takerValues](order.md#optional-takervalues)_
 
-_Defined in [types.d.ts:32](https://github.com/ParadigmFoundation/kosu-monorepo/blob/c134674/packages/kosu.js/src/types.d.ts#L32)_
+_Defined in [types.d.ts:32](https://github.com/ParadigmFoundation/kosu-monorepo/blob/6f2e797/packages/kosu.js/src/types.d.ts#L32)_
