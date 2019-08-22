@@ -10,9 +10,16 @@ import "../lib/KosuToken.sol";
 contract Treasury is Authorizable {
     using SafeMath for uint;
 
+    struct PollLock {
+        uint value;
+        uint pollId;
+        bool invalidated;
+    }
+
     KosuToken public kosuToken;
     mapping(address => uint) private currentBalances;
     mapping(address => uint) private systemBalances;
+    mapping(address => PollLock[]) private userVotes;
 
     /** @dev Creates a new Treasury.
         @notice Creates a new Treasury.
@@ -168,6 +175,48 @@ contract Treasury is Authorizable {
         setSystemBalance(account, getSystemBalance(account).sub(amount));
     }
 
+    /** @dev Allows voting contract to register a poll to ensure tokens aren't removed
+        @notice Allows voting contract to register a poll to ensure tokens aren't removed
+        @param account The user voting
+        @param pollId The poll the user is voting on
+        @param amount Number of tokens contributed
+    */
+    function registerVote(address account, uint pollId, uint amount) isAuthorized public returns (bool) {
+        if(systemBalances[account] < amount) {
+            return false;
+        }
+
+        userVotes[account].push(PollLock(amount, pollId, false));
+
+        return true;
+    }
+
+    /** @dev Allows voting contract to release lock for selected poll
+        @notice Allows voting contract to release lock for selected poll
+        @param account The user voting
+        @param pollId The poll the user is voting on
+    */
+    function completeVote(address account, uint pollId) isAuthorized public returns (bool) {
+        for(uint i = 0; i < userVotes[account].length; i++) {
+            PollLock storage v = userVotes[account][i];
+            if(v.pollId == pollId) {
+                bool notInvalidated = !v.invalidated;
+
+                if(i == userVotes[account].length) {
+                    delete userVotes[account][i];
+                    userVotes[account].length = userVotes[account].length - 1;
+                } else {
+                    userVotes[account][i] = userVotes[account][userVotes[account].length - 1];
+                    delete userVotes[account][userVotes[account].length - 1];
+                    userVotes[account].length = userVotes[account].length - 1;
+                }
+
+                return notInvalidated;
+            }
+        }
+
+        return false;
+    }
 
     /** @dev Reports the balance within the contract system for a user.
         @notice Reports the balance within the contract system for a user.
@@ -221,6 +270,14 @@ contract Treasury is Authorizable {
 
     function setSystemBalance(address account, uint amount) internal {
         //Updates the systemBalance for the user
+        if (systemBalances[account] > amount) {
+            for(uint i = 0; i < userVotes[account].length; i++) {
+                if(userVotes[account][i].value > amount) {
+                    userVotes[account][i].invalidated = true;
+                }
+            }
+        }
+
         systemBalances[account] = amount;
     }
 
