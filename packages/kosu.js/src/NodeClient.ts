@@ -179,12 +179,7 @@ export class NodeClient {
      * @returns Information about the current rebalance period.
      */
     public async roundInfo(): Promise<RoundInfo> {
-        const {
-            number: num,
-            limit: lim,
-            starts_at: startsAt,
-            ends_at: endsAt,
-        } = await this._call("kosu_roundInfo");
+        const { number: num, limit: lim, starts_at: startsAt, ends_at: endsAt } = await this._call("kosu_roundInfo");
         return { number: num, limit: lim, startsAt, endsAt };
     }
 

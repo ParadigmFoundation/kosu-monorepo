@@ -49,7 +49,7 @@ interface Signature {
     sign(web3: Web3, messageHex: string, signer: string): Promise<string>;
 }
 
-interface DecodedKosuLogArgs { }
+interface DecodedKosuLogArgs {}
 
 interface LogWithDecodedKosuArgs<A, B> extends LogWithDecodedArgs {
     event: string;
