@@ -49,10 +49,44 @@ interface Signature {
     sign(web3: Web3, messageHex: string, signer: string): Promise<string>;
 }
 
-interface DecodedKosuLogArgs {}
+interface DecodedKosuLogArgs { }
 
 interface LogWithDecodedKosuArgs<A, B> extends LogWithDecodedArgs {
     event: string;
     args: A;
     decodedArgs: B;
+}
+
+interface OrderValidationResult {
+    accepted: string[];
+    rejected: OrderRejectionInfo[];
+}
+
+interface OrderRejectionInfo {
+    order: string;
+    reason: string;
+}
+
+interface Poster {
+    balance: number;
+    limit: number;
+}
+
+interface Validator {
+    balance: number;
+    power: number;
+    publicKey: string;
+    firstVote: number;
+    lastVoted: number;
+    lastProposed: number;
+    totalVotes: number;
+    active: number;
+    applied: number;
+}
+
+interface RoundInfo {
+    number: number;
+    startsAt: number;
+    endsAt: number;
+    limit: number;
 }
