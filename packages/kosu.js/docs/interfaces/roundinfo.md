@@ -23,7 +23,7 @@
 
 • **endsAt**: _number_
 
-_Defined in [types.d.ts:90](https://github.com/ParadigmFoundation/kosu-monorepo/blob/6f2e797/packages/kosu.js/src/types.d.ts#L90)_
+_Defined in [types.d.ts:90](https://github.com/ParadigmFoundation/kosu-monorepo/blob/4048650/packages/kosu.js/src/types.d.ts#L90)_
 
 ---
 
@@ -31,7 +31,7 @@ _Defined in [types.d.ts:90](https://github.com/ParadigmFoundation/kosu-monorepo/
 
 • **limit**: _number_
 
-_Defined in [types.d.ts:91](https://github.com/ParadigmFoundation/kosu-monorepo/blob/6f2e797/packages/kosu.js/src/types.d.ts#L91)_
+_Defined in [types.d.ts:91](https://github.com/ParadigmFoundation/kosu-monorepo/blob/4048650/packages/kosu.js/src/types.d.ts#L91)_
 
 ---
 
@@ -39,7 +39,7 @@ _Defined in [types.d.ts:91](https://github.com/ParadigmFoundation/kosu-monorepo/
 
 • **number**: _number_
 
-_Defined in [types.d.ts:88](https://github.com/ParadigmFoundation/kosu-monorepo/blob/6f2e797/packages/kosu.js/src/types.d.ts#L88)_
+_Defined in [types.d.ts:88](https://github.com/ParadigmFoundation/kosu-monorepo/blob/4048650/packages/kosu.js/src/types.d.ts#L88)_
 
 ---
 
@@ -47,4 +47,4 @@ _Defined in [types.d.ts:88](https://github.com/ParadigmFoundation/kosu-monorepo/
 
 • **startsAt**: _number_
 
-_Defined in [types.d.ts:89](https://github.com/ParadigmFoundation/kosu-monorepo/blob/6f2e797/packages/kosu.js/src/types.d.ts#L89)_
+_Defined in [types.d.ts:89](https://github.com/ParadigmFoundation/kosu-monorepo/blob/4048650/packages/kosu.js/src/types.d.ts#L89)_
