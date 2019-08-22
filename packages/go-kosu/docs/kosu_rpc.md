@@ -129,6 +129,16 @@ curl -X POST --data '{"jsonrpc":"2.0","method":"kosu_latestHeight", "id": 1}' lo
 { "jsonrpc": "2.0", "id": 1, "result": 260 }
 ```
 
+### _NumberPosters_
+
+NumberPosters returns the number of poster accounts
+
+_Parameters:_
+
+_Returns:_
+
+-   `number` - _uint64_
+
 ### _QueryPoster_
 
 QueryPoster returns a poster given its address.
@@ -199,6 +209,16 @@ curl -X POST localhost:14341 \
 }
 ```
 
+### _RemainingLimit_
+
+RemainingLimit returns the sum of all the poster's limit.
+
+_Parameters:_
+
+_Returns:_
+
+-   `number` - _uint64_
+
 ### _RoundInfo_
 
 RoundInfo returns the current `RoundInfo`.
@@ -223,6 +243,17 @@ curl -X POST localhost:14341 \
 ```json
 { "jsonrpc": "2.0", "id": 1, "result": { "number": 48, "starts_at": 2613, "ends_at": 2623, "limit": 10 } }
 ```
+
+### _TotalOrders_
+
+TotalOrders returns the total number of orders in the system.
+This number is incremented each time one submits a new valid order
+
+_Parameters:_
+
+_Returns:_
+
+-   `number` - _uint64_
 
 ### _Validators_
 
