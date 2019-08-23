@@ -1,5 +1,5 @@
-import { WebsocketProvider, WebsocketProviderOptions } from "@0x/web3-providers-fork";
 import { BigNumber } from "@0x/utils";
+import { WebsocketProvider, WebsocketProviderOptions } from "@0x/web3-providers-fork";
 import assert from "assert";
 import { createHash } from "crypto";
 import { isFunction, isString } from "lodash";
@@ -134,7 +134,11 @@ export class NodeClient {
      */
     public async queryPoster(address: string): Promise<Poster> {
         assert(/^0x[a-fA-F0-9]{40}$/.test(address), "invalid Ethereum address string");
-        return this._call("kosu_queryPoster", address.toLowerCase());
+        const raw = await this._call("kosu_queryPoster", address.toLowerCase());
+
+        // HACK: dealing with protobuf `balance: 'value: N'` encoding
+        const balance = new BigNumber(raw.balance.split(": ")[1]);
+        return { ...raw, balance };
     }
 
     /**
