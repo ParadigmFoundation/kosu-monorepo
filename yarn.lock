@@ -1914,6 +1914,30 @@
   version "0.1.3"
   resolved "https://registry.yarnpkg.com/@istanbuljs/nyc-config-typescript/-/nyc-config-typescript-0.1.3.tgz#944d15b3ebdb71f963a628daffaa25ade981bb86"
 
+"@kosu/system-contracts@^0.1.0-alpha.1", "@kosu/system-contracts@^0.1.5":
+  version "0.1.6"
+  resolved "https://registry.yarnpkg.com/@kosu/system-contracts/-/system-contracts-0.1.6.tgz#82199e2e528c89ac079fce0c69259ea4d98488a3"
+  integrity sha512-OYdK8Au5cvsWWgDZ5OEhTiY68WcP+ql7GjITCqGVolqSxfzIQ/UPmVWk+0IOHN0eVS4NTZMKKaxDowNa6hWadg==
+  dependencies:
+    "@0x/base-contract" "^5.0.5"
+    "@0x/contract-addresses" "^3.0.2"
+    "@0x/contracts-exchange" "^2.1.5"
+    "@0x/dev-utils" "^2.2.2"
+    "@0x/subproviders" "^4.1.0"
+    "@0x/utils" "^4.3.1"
+    "@0x/web3-wrapper" "^6.0.5"
+    "@kosu/subcontract-sdk" "0.1.1"
+    "@kosu/tsc-config" "^0.1.0"
+    "@kosu/tslint-config" "^0.0.4"
+    ethereum-types "^2.1.2"
+    ethers "~4.0.4"
+    openzeppelin-solidity "2.1.2"
+    safe-node-require "^1.0.0"
+    web3 "1.2.0"
+    web3-eth-abi "1.2.0"
+    web3-provider-engine "^15.0.0"
+    web3-utils "1.2.0"
+
 "@ledgerhq/devices@^4.68.2":
   version "4.68.2"
   resolved "https://registry.yarnpkg.com/@ledgerhq/devices/-/devices-4.68.2.tgz#73206d526ec3cd34eec49eddb31d8c0086bde518"
