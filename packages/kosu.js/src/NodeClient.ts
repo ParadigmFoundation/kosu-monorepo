@@ -1,4 +1,5 @@
 import { WebsocketProvider, WebsocketProviderOptions } from "@0x/web3-providers-fork";
+import { BigNumber } from "@0x/utils";
 import assert from "assert";
 import { createHash } from "crypto";
 import { isFunction, isString } from "lodash";
@@ -61,8 +62,7 @@ export class NodeClient {
         const validators = [];
         for (const validator of rawValidators) {
             // HACK: protobuf nests the balance as `balance: "value: N"`
-            const balance = parseInt(validator.balance.split(": ")[1]);
-
+            const balance = new BigNumber(validator.balance.split(": ")[1]);
             validators.push({ ...validator, balance });
         }
         return validators;
@@ -220,7 +220,7 @@ export class NodeClient {
      * @returns A UUID that can be used to cancel the new subscription (see `node.unsubscribe()`).
      */
     public async subscribeToOrders(cb: (order: any) => void): Promise<string> {
-        return this._subscribe("newOrders", cb);
+        return this._subscribe("newOrders", (res: any) => cb(res.result.transaction_order));
     }
 
     /**
@@ -235,7 +235,7 @@ export class NodeClient {
      * @returns A UUID that can be used to cancel the new subscription (see `node.unsubscribe()`).
      */
     public async subscribeToBlocks(cb: (block: any) => void): Promise<string> {
-        return this._subscribe("newBlocks", cb);
+        return this._subscribe("newBlocks", (res: any) => cb(res.result.block));
     }
 
     /**
@@ -250,7 +250,7 @@ export class NodeClient {
      * @returns A UUID that can be used to cancel the new subscription (see `node.unsubscribe()`).
      */
     public async subscribeToRebalances(cb: (roundInfo: RoundInfo) => void): Promise<string> {
-        return this._subscribe("newRebalances", cb);
+        return this._subscribe("newRebalances", (res: any) => cb(res.result.round_info));
     }
 
     /**
@@ -260,8 +260,7 @@ export class NodeClient {
      */
     public async unsubscribe(subscriptionId: string): Promise<void> {
         assert(isString(subscriptionId), "subscriptionId must be a string");
-        const kosuSubscriptionId = this._subscriptionIdMap[subscriptionId];
-        await this._call("kosu_unsubscribe", kosuSubscriptionId);
+        await this._call("kosu_unsubscribe", this._subscriptionIdMap[subscriptionId]);
     }
 
     private async _call(method: string, ...params: any[]): Promise<any> {
