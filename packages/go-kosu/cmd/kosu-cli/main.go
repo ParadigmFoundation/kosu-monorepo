@@ -12,6 +12,7 @@ import (
 
 	"go-kosu/abci"
 	"go-kosu/abci/cli"
+	"go-kosu/version"
 )
 
 func main() {
@@ -71,6 +72,7 @@ func main() {
 	)
 
 	rootCmd.AddCommand(
+		version.NewCommand(),
 		tx,
 		query,
 	)

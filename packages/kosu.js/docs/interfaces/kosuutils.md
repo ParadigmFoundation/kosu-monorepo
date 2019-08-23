@@ -24,7 +24,7 @@
 
 • **NULL_ADDRESS**: _string_
 
-_Defined in [types.d.ts:42](https://github.com/ParadigmFoundation/kosu-monorepo/blob/c134674/packages/kosu.js/src/types.d.ts#L42)_
+_Defined in [types.d.ts:42](https://github.com/ParadigmFoundation/kosu-monorepo/blob/4048650/packages/kosu.js/src/types.d.ts#L42)_
 
 ## Methods
 
@@ -32,7 +32,7 @@ _Defined in [types.d.ts:42](https://github.com/ParadigmFoundation/kosu-monorepo/
 
 ▸ **toBytes32**(`value`: string): _number | string | `BN`_
 
-_Defined in [types.d.ts:41](https://github.com/ParadigmFoundation/kosu-monorepo/blob/c134674/packages/kosu.js/src/types.d.ts#L41)_
+_Defined in [types.d.ts:41](https://github.com/ParadigmFoundation/kosu-monorepo/blob/4048650/packages/kosu.js/src/types.d.ts#L41)_
 
 **Parameters:**
 
