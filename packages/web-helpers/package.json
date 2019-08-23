@@ -1,6 +1,6 @@
 {
     "name": "@kosu/web-helpers",
-    "version": "0.1.1",
+    "version": "0.2.0",
     "private": false,
     "license": "MIT",
     "homepage": "https://portal.kosu.io/",
@@ -11,7 +11,7 @@
         "deploy": "yarn compile:assets && gsutil -m rsync -d ./public gs://portal.kosu.io"
     },
     "dependencies": {
-        "@kosu/kosu.js": "^0.1.5",
+        "@kosu/kosu.js": "^0.2.0",
         "uuid": "^3.3.2"
     },
     "repository": {
