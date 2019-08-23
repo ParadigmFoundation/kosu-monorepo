@@ -1,14 +1,12 @@
 import { Kosu } from "@kosu/kosu.js";
-import uuid from "uuid/v4";
 import Web3 from "web3";
-import ws, { Server } from "ws";
+import { Server } from "ws";
 
 import { blockHandlerClosure } from "./blockHandler";
 import { ChainData } from "./ChainData";
 import { connectionHandlerClosure } from "./connectionHandler";
 import { fields } from "./fieldDefinitions";
 import { orderHandlerClosure } from "./orderHandler";
-import { nodeQuery, socketErrorHandlerClosure } from "./utils";
 
 const {
     HOST,
@@ -23,7 +21,7 @@ const {
 const clients: any = {};
 
 const web3 = new Web3(ETHEREUM_JSONRPC_URL);
-const kosu = new Kosu({ provider: web3.currentProvider, kosuRpcUrl: KOSU_JSONRPC_URL });
+const kosu = new Kosu({ provider: web3.currentProvider, kosuNodeUrl: KOSU_JSONRPC_URL });
 const server = new Server({
     port: parseInt(PORT),
     host: HOST || HOSTNAME,
