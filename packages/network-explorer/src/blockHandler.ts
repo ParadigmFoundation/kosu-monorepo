@@ -13,15 +13,7 @@ export function blockHandlerClosure(clients: IClientMap, chain: ChainData): (msg
     return async (msg: any) => {
         const parsed = JSON.parse(msg.toString());
 
-        if (parsed.id) {
-            console.log(`new subscription ID: '${parsed.id}'`);
-            return;
-        }
-
-        const { result } = parsed.params;
-        const { block } = result;
-
-        const { height, time } = block.header;
+        const { height, time } = parsed;
         const date = new Date(time);
         const timestamp = Math.floor(date.getTime() / 1000);
 

@@ -31,5 +31,6 @@ export function orderHandlerClosure(chain: ChainData): (message: any) => void {
         if (message.id) {
             console.log(`new orders subscription with ID: ${message.id}`);
         }
+        console.log(`new orders`);
     };
 }

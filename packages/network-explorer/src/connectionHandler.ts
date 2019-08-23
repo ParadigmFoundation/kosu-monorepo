@@ -30,8 +30,6 @@ export interface IClientMap {
 export function connectionHandlerClosure(
     clients: IClientMap,
     kosu: Kosu,
-    kosuRpc: ws,
-    chain: ChainData,
 ): (s: ws, r: ws.Data) => void {
     const redis = new Redis(parseInt(REDIS_PORT), REDIS_HOST);
     return (socket: ws, request: ws.Data) => {
@@ -53,6 +51,6 @@ export function connectionHandlerClosure(
         safeSend(socket, { message: subscriptionId });
 
         // handle requests for values
-        socket.on("message", requestHandlerClosure(socket, serverSecret, kosu, kosuRpc));
+        socket.on("message", requestHandlerClosure(socket, serverSecret, kosu));
     };
 }

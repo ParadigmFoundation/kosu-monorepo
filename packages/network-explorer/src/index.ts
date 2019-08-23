@@ -23,7 +23,7 @@ const {
 const clients: any = {};
 
 const web3 = new Web3(ETHEREUM_JSONRPC_URL);
-const kosu = new Kosu({ provider: web3.currentProvider });
+const kosu = new Kosu({ provider: web3.currentProvider, kosuRpcUrl: KOSU_JSONRPC_URL });
 const server = new Server({
     port: parseInt(PORT),
     host: HOST || HOSTNAME,
@@ -39,27 +39,11 @@ const chain = new ChainData(
     20,
 );
 
-// open three sockets 1) subscribe to new blocks 2) rpc connection 3) new orders
-const kosuSub = new ws(KOSU_JSONRPC_URL);
-const kosuRpc = new ws(KOSU_JSONRPC_URL);
-const kosuOrders = new ws(KOSU_JSONRPC_URL);
+(async () => {
+    const ordersSubId = await kosu.node.subscribeToOrders(orderHandlerClosure(chain));
+    const blocksSubId = await kosu.node.subscribeToBlocks(blockHandlerClosure(clients, chain));
 
-kosuOrders.on("error", socketErrorHandlerClosure("error in kosu node order subscription connection"));
-kosuOrders.on("message", orderHandlerClosure(chain));
-kosuOrders.on("open", async () => {
-    const id = await nodeQuery(kosuOrders, "kosu_subscribe", ["newOrders"]);
-    console.log(`subscribed to orders stream (${id})`);
-});
+    server.on("connection", connectionHandlerClosure(clients, kosu));
 
-kosuSub.on("error", socketErrorHandlerClosure("error in kosu node subscription connection"));
-kosuSub.on("message", blockHandlerClosure(clients, chain));
-kosuSub.on("open", async () => {
-    const id = await nodeQuery(kosuSub, "kosu_subscribe", ["newBlocks"]);
-    console.log(`subscribed to block stream (${id})`);
-});
-
-kosuSub.on("error", socketErrorHandlerClosure("error in kosu node RPC connection"));
-server.on("connection", connectionHandlerClosure(clients, kosu, kosuRpc, chain));
-kosuRpc.on("open", () => {
-    console.log("connected to kosu node");
-});
+    console.log(`started with:\n\t - orders subscription ID: ${ordersSubId}\n\t - blocks subscription ID: ${blocksSubId}`);
+})().catch((e: any) => console.log(e));

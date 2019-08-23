@@ -15,7 +15,6 @@ export function requestHandlerClosure(
     socket: ws,
     serverId: string,
     kosu: Kosu,
-    kosuRpc: ws,
 ): (m: ws.Data) => Promise<void> {
     return async (msg: ws.Data) => {
         let parsed: IWsRequest;
@@ -42,8 +41,7 @@ export function requestHandlerClosure(
                 const raw = await kosu.kosuToken.balanceOf(param.toLowerCase());
                 resp = raw.toString();
             } else if (method === "limit") {
-                const params = [param];
-                resp = await nodeQuery(kosuRpc, "kosu_queryPoster", params);
+                resp = await kosu.node.queryPoster(param);
             }
 
             if (resp) {

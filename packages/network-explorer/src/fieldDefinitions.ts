@@ -1,5 +1,5 @@
-import { Kosu } from "@kosu/kosu.js";
 import { BigNumber } from "@0x/utils";
+import { Kosu } from "@kosu/kosu.js";
 
 export const fields = {
     "token/total_supply": {
@@ -14,42 +14,45 @@ export const fields = {
         updateFunc: async (_this, kosu: Kosu, query, db) => {
             const one = new BigNumber(1);
             const val = await kosu.kosuToken.estimateEtherToToken(one);
-            return val.toFixed(5);
+            return one.div(val).toFixed(5);
         },
     },
     "bandwidth/total_limit": {
         updateEvery: 1800000,
-        updateFunc: async (_this, _, query, __) => {
-            const roundInfo = await query.call(_this, "kosu_roundInfo");
-            return roundInfo.limit;
+        updateFunc: async (_this, kosu: Kosu, query, __) => {
+            const roundInfo = await kosu.node.roundInfo();
+            return roundInfo.limit.toString();
         },
     },
     "bandwidth/total_orders": {
         updateEvery: 3000,
-        updateFunc: async (_this, _, __, ___) => {
-            return "not implemented";
+        updateFunc: async (_this, kosu: Kosu, __, ___) => {
+            const orders = await kosu.node.totalOrders();
+            return orders.toString();
         },
     },
     "bandwidth/remaining_limit": {
         updateEvery: 4000,
-        updateFunc: async (_this, _, __, ___) => {
-            return "not implemented";
+        updateFunc: async (_this, kosu: Kosu, __, ___) => {
+            const limit = await kosu.node.remainingLimit();
+            return limit.toString();
         },
     },
     "bandwidth/number_posters": {
-        updateEvery: 60000,
-        updateFunc: async (_this, _, __, ___) => {
-            return "not implemented";
+        updateEvery: 5000,
+        updateFunc: async (_this, kosu: Kosu, __, ___) => {
+            const posters = await kosu.node.numberPosters();
+            return posters.toString();
         },
     },
     "bandwidth/sec_to_next_period": {
         updateEvery: 3500,
         updateFunc: async (_this, kosu: Kosu, query, db) => {
             // initial query
-            const roundInfo = await query.call(_this, "kosu_roundInfo");
+            const roundInfo = await kosu.node.roundInfo();
 
             const ethBlock = await kosu.web3.eth.getBlockNumber();
-            const roundEnd = roundInfo.ends_at.toString();
+            const roundEnd = roundInfo.endsAt.toString();
 
             // set values while we have them
             await db.set("bandwidth/current_eth_block", ethBlock);
@@ -67,15 +70,15 @@ export const fields = {
     },
     "bandwidth/rebalance_period_number": {
         updateEvery: 10000,
-        updateFunc: async (_this, _, query, __) => {
-            const roundInfo = await query.call(_this, "kosu_roundInfo");
+        updateFunc: async (_this, kosu: Kosu, _, __) => {
+            const roundInfo = await kosu.node.roundInfo();
             return roundInfo.number;
         },
     },
     "network/number_validators": {
         updateEvery: 5000,
-        updateFunc: async (_this, _, query, __) => {
-            const validators = await query.call(_this, "kosu_validators");
+        updateFunc: async (_this, kosu: Kosu, query, __) => {
+            const validators = await kosu.node.validators();
             return validators.length.toString();
         },
     },
