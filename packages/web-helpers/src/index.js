@@ -308,7 +308,7 @@ const activateForms = async () => {
     document.getElementById("validator-claim-button").onclick = async () => {
         const challengeId = document.getElementById("validator-claim-challenge-id").value;
 
-        validatorRegistry.claimWinnigs(challengeId).then(async () => {
+        validatorRegistry.claimWinnings(challengeId).then(async () => {
             resetValues();
             console.log(`Successfully claimed winnigs from challenge ${challengeId}.`);
         });
@@ -318,7 +318,7 @@ const activateForms = async () => {
         const votingWinningOptionHTML = document.getElementById("voting-winning-option");
         if (typeof votingWinningOptionHTML !== "undefined") {
             const val = await voting.winningOption(event.target.value);
-            votingWinningOptionHTML.innerText = trim(val);
+            votingWinningOptionHTML.innerText = val;
         }
 
         const votingTotalWinningTokensHTML = document.getElementById("voting-total-winning-tokens");
