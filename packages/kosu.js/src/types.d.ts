@@ -68,12 +68,12 @@ interface OrderRejectionInfo {
 }
 
 interface Poster {
-    balance: number;
+    balance: BigNumber;
     limit: number;
 }
 
 interface Validator {
-    balance: number;
+    balance: BigNumber;
     power: number;
     publicKey: string;
     firstVote: number;
