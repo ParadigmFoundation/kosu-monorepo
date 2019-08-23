@@ -54,6 +54,7 @@ module.exports = {
                     "/kosu.js/classes/kosu",
                     "/kosu.js/classes/kosutoken",
                     "/kosu.js/classes/eventemitter",
+                    "/kosu.js/classes/nodeclient",
                     "/kosu.js/classes/ordergateway",
                     "/kosu.js/classes/orderhelper",
                     "/kosu.js/classes/posterregistry",
