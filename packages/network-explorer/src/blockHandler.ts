@@ -10,10 +10,8 @@ import { safeSend } from "./utils";
  * @param clients mapping of serverId's to connected client socket instances
  */
 export function blockHandlerClosure(clients: IClientMap, chain: ChainData): (msg: any) => Promise<void> {
-    return async (msg: any) => {
-        const parsed = JSON.parse(msg.toString());
-
-        const { height, time } = parsed;
+    return async (block: any) => {
+        const { height, time } = block;
         const date = new Date(time);
         const timestamp = Math.floor(date.getTime() / 1000);
 
