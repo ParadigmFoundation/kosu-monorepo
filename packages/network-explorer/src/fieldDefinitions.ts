@@ -4,7 +4,7 @@ import { Kosu } from "@kosu/kosu.js";
 export const fields = {
     "token/total_supply": {
         updateEvery: 60000,
-        updateFunc: async (_this, kosu, query, db) => {
+        updateFunc: async (_this, kosu: Kosu, query, db) => {
             const val = await kosu.kosuToken.totalSupply();
             return val.toString();
         },
