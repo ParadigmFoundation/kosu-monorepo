@@ -3,7 +3,7 @@ interface KosuOptions {
     networkId?: number | string;
     web3?: Web3;
     web3Wrapper?: Web3Wrapper;
-    orderStreamURL?: string;
+    kosuNodeUrl?: string;
     votingAddress?: string;
     treasuryAddress?: string;
     kosuTokenAddress?: string;
@@ -55,4 +55,38 @@ interface LogWithDecodedKosuArgs<A, B> extends LogWithDecodedArgs {
     event: string;
     args: A;
     decodedArgs: B;
+}
+
+interface OrderValidationResult {
+    accepted: string[];
+    rejected: OrderRejectionInfo[];
+}
+
+interface OrderRejectionInfo {
+    order: string;
+    reason: string;
+}
+
+interface Poster {
+    balance: BigNumber;
+    limit: number;
+}
+
+interface Validator {
+    balance: BigNumber;
+    power: number;
+    publicKey: string;
+    firstVote: number;
+    lastVoted: number;
+    lastProposed: number;
+    totalVotes: number;
+    active: number;
+    applied: number;
+}
+
+interface RoundInfo {
+    number: number;
+    startsAt: number;
+    endsAt: number;
+    limit: number;
 }
