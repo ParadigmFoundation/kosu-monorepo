@@ -264,11 +264,11 @@ function find(page, items, offset) {
     padding-top: 15px;
     padding-left: 14px;
     padding-right: 10px;
-    border-radius: 4px;
-    opacity: 0.5;
-    box-shadow: 0px 5px 15px 0 rgba(0, 0, 0, 0.07);
-    border: solid 1px #ededed;
-    background-color: #ffffff;
+    // border-radius: 4px;
+    opacity: 0.7;
+    // box-shadow: 0px 5px 15px 0 rgba(0, 0, 0, 0.07);
+    // border: solid 1px #ededed;
+    // background-color: #ffffff;
     padding-left: 20px;
     padding-right: 20px;
     padding-top: 33px;
@@ -289,7 +289,7 @@ function find(page, items, offset) {
       line-height: 1.19;
       letter-spacing: normal;
       text-align: left;
-      color: #404040;
+      color: #4A4A4A;
 
       @media (max-width: $MQMobile) {
         font-size: 15px;
