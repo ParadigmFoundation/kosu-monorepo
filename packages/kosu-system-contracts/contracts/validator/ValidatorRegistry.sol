@@ -129,7 +129,7 @@ contract ValidatorRegistry is Ownable {
 
     /** @dev Expose listing data for given public key.
         @notice Expose listing data for given public key.
-        @param pubKey Hex encoded tendermint public key
+        @param pubKey Hex encoded tendermint public key.
         @return The listing structure corresponding to the provided key.
     */
     function getListing(bytes32 pubKey) public view returns (Listing memory) {
@@ -139,7 +139,7 @@ contract ValidatorRegistry is Ownable {
 
     /** @dev Expose several listings provided multiple public keys.
         @notice Expose several listings provided multiple public keys.
-        @param pubKeys Hex encoded Tendermint public keys to retrieve
+        @param pubKeys Hex encoded Tendermint public keys to retrieve.
         @return The array of listing structures corresponding to the provided keys.
     */
     function getListings(bytes32[] memory pubKeys) public view returns (Listing[] memory) {
@@ -164,7 +164,7 @@ contract ValidatorRegistry is Ownable {
 
     /** @dev Expose challenge data for a given ID.
         @notice Expose challenge data for a given ID.
-        @param challengeId The ID to retrieve challenge data for
+        @param challengeId The ID to retrieve challenge data for.
         @return The challenge indicated by the provided ID.
     */
     function getChallenge(uint challengeId) public view returns (Challenge memory) {
@@ -172,9 +172,9 @@ contract ValidatorRegistry is Ownable {
 
     }
 
-    /** @dev Expose multiple challenges by is
-        @notice Expose multiple challenges by is
-        @param challengeIds challenge ids to read
+    /** @dev Expose multiple challenges by ids.
+        @notice Expose multiple challenges by ids.
+        @param challengeIds challenge ids to read.
         @return Array of requested challenges
     */
     function getChallenges(uint[] memory challengeIds) public view returns (Challenge[] memory) {
