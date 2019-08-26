@@ -1,6 +1,6 @@
 # EventEmitter
 
-A shared contract for all Kosu system contracts to trigger event logs through.
+A central event emitting contract supporting the Kosu contract system.
 
 ## Contents
 
@@ -28,7 +28,7 @@ constructor(auth address) public
 
 ### emitEvent
 
-Emit generic events which can have decoding exposed though javascript library.
+Emits a standard event from the Kosu contract system. The events can be decoded though the javascript library.
 
 #### Signature
 
@@ -38,8 +38,8 @@ function emitEvent(eventType string, data bytes32[], stringData string) public
 
 #### Parameters:
 
-| Parameter    | Type        | Description                                                    |
-| ------------ | ----------- | -------------------------------------------------------------- |
-| `eventType`  | `string`    | String name/type of event                                      |
-| `data`       | `bytes32[]` | Bytes32 encoded data to be emitted from a centralized location |
-| `stringData` | `string`    | String containing optional additonal information               |
+| Parameter    | Type        | Description                                        |
+| ------------ | ----------- | -------------------------------------------------- |
+| `eventType`  | `string`    | String name/type of event.                         |
+| `data`       | `bytes32[]` | Bytes32 encoded data to be emitted.                |
+| `stringData` | `string`    | String containing optional additional information. |
