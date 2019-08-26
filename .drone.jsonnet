@@ -17,7 +17,7 @@ local KosuNode(id) = Image("kosu-node-"+id, "go-kosu-ci:latest") {
 	]
 };
 
-local KosuGeth(name) = Image(name, "kosu-geth:0.1.1") {
+local KosuGeth(name) = Image(name, "kosu-test-geth:latest") {
 	ports: [8545, 8546]
 };
 

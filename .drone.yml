@@ -127,7 +127,7 @@ steps:
 services:
 - name: kosu-geth
   pull: always
-  image: gcr.io/kosu-io/kosu-geth:0.1.1
+  image: gcr.io/kosu-io/kosu-test-geth:latest
   environment:
     WEB3_URI: http://kosu-geth:8545
     WEB3_URI_WS: ws://kosu-geth:8546
@@ -137,7 +137,7 @@ services:
 
 - name: go-kosu-ci-geth
   pull: always
-  image: gcr.io/kosu-io/kosu-geth:0.1.1
+  image: gcr.io/kosu-io/kosu-test-geth:latest
   environment:
     WEB3_URI: http://kosu-geth:8545
     WEB3_URI_WS: ws://kosu-geth:8546
