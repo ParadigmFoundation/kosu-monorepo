@@ -47,13 +47,13 @@ contract Voting {
         treasury = Treasury(treasuryAddress);
     }
 
-    /** @dev Create a new poll to accept votes based on the configuration
-        @notice Create a new poll to accept votes based on the configuration
-        @param _commitEndBlock Block number when commit phase ends
-        @param _revealEndBlock Block number when reveal phase ends
+    /** @dev Create a new poll. The commit and reveal periods must be provided. The creation of the poll is notified with an event from the shared EventEmitter.
+        @notice Create a new poll. The commit and reveal periods must be provided. The creation of the poll is notified with an event from the shared EventEmitter.
+        @param _commitEndBlock Block number when commit phase ends.
+        @param _revealEndBlock Block number when reveal phase ends.
         @return Poll index number. Will be used as the key for interacting with a vote.
     */
-    function createPoll(uint _commitEndBlock, uint _revealEndBlock) public returns (uint) {
+    function createPoll(uint _commitEndBlock, uint _revealEndBlock) public returns (uint) {//TODO is it a concern that polls could be created by anyone freely?
         // Reveal end after commit
         require(_commitEndBlock < _revealEndBlock);
 
@@ -79,11 +79,11 @@ contract Voting {
         return p.id;
     }
 
-    /** @dev Commit a vote in a poll to be later revealed
-        @notice Commit a vote in a poll to be later revealed
-        @param _pollId Poll index to act upon
-        @param _vote Hash encoded vote
-        @param _tokensToCommit Number of tokens to commit to vote
+    /** @dev Commit a vote in a poll to be later revealed. The salt and option must be retained for a successful reveal.
+        @notice Commit a vote in a poll to be later revealed. The salt and option must be retained for a successful reveal.
+        @param _pollId Poll id to commit vote to.
+        @param _vote Hash encoded vote option with salt.
+        @param _tokensToCommit Number of tokens to commit to vote.
     */
     function commitVote(uint _pollId, bytes32 _vote, uint _tokensToCommit) public {
         //load Poll and Vote
@@ -104,11 +104,11 @@ contract Voting {
         p.didCommit[msg.sender] = true;
     }
 
-    /** @dev Reveal a previously committed vote
-        @notice Reveal a previously committed vote
-        @param _pollId Poll index to act upon
-        @param _voteOption User vote option
-        @param _voteSalt Salt used to in hash to obfuscate vote option
+    /** @dev Reveal a previously committed vote by providing the vote option and salt used to generate the vote hash.
+        @notice Reveal a previously committed vote by providing the vote option and salt used to generate the vote hash.
+        @param _pollId Poll id to commit vote to.
+        @param _voteOption Vote option used to generate vote hash.
+        @param _voteSalt Salt used to generate vote hash.
     */
     function revealVote(uint _pollId, uint _voteOption, uint _voteSalt) public {
         Poll storage p = polls[_pollId];
@@ -140,9 +140,9 @@ contract Voting {
         p.leadingTokens = p.voteValues[p.currentLeadingOption];
     }
 
-    /** @dev Retreive the winning outcome for a finalized poll.
-        @param _pollId Poll index to check winning option for
-        @return The uint value of the winning outcome
+    /** @dev Retrieve the winning option for a finalized poll.
+        @param _pollId Poll index to check winning option for.
+        @return The winning option.
     */
     function winningOption(uint _pollId) public view returns (uint) {
         Poll memory p = polls[_pollId];
@@ -150,9 +150,9 @@ contract Voting {
         return p.currentLeadingOption;
     }
 
-    /** @dev Retreive the total number of tokens that voted on the winning side of a finalized poll.
-        @param _pollId Poll index to check winning tokens for
-        @return The uint number of tokens revealed for the winning option.
+    /** @dev Retrieve the total number of tokens that supported the winning option of a finalized poll.
+        @param _pollId Poll index to check winning tokens for.
+        @return The uint number of tokens supporting the winning option.
     */
     function totalWinningTokens(uint _pollId) public view returns (uint) {
         Poll memory p = polls[_pollId];
@@ -160,9 +160,9 @@ contract Voting {
         return p.leadingTokens;
     }
 
-    /** @dev Retreive the total number of tokens revealed for a finalized poll.
-        @param _pollId Poll index to check total revealed tokens for
-        @return The total number of tokens reveled in the poll.
+    /** @dev Retrieve the total number of tokens revealed for a finalized poll.
+        @param _pollId Poll index to check total revealed tokens for.
+        @return The total number of tokens revealed in the poll.
     */
     function totalRevealedTokens(uint _pollId) public view returns (uint) {
         Poll memory p = polls[_pollId];
@@ -170,8 +170,8 @@ contract Voting {
         return p.totalRevealedTokens;
     }
 
-    /** @dev Retreive the number of tokens committed by a user for the winning option.
-        @param _pollId Poll index to check winning tokens for
+    /** @dev Retrieve the number of tokens committed by a user for the winning option.
+        @param _pollId Poll index to check winning tokens for.
         @param _user Address of user to check winning tokens.
     */
     function userWinningTokens(uint _pollId, address _user) public view returns (uint tokens) {
