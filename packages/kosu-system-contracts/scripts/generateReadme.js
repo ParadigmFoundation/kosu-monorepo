@@ -17,6 +17,10 @@ const NETWORKS = {
         name: "Kosu Dev PoA",
         endpoint: "https://ethnet.zaidan.io/kosu",
     },
+    "6175": {
+        name: "Kosu CI Test",
+        endpoint: "http://kosu-geth:8545",
+    },
 };
 
 const PATHS = {
