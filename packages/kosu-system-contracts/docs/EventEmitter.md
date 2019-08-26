@@ -28,7 +28,7 @@ constructor(auth address) public
 
 ### emitEvent
 
-Emits a standard event from the Kosu contract system. The events can be decoded though the javascript library.
+Emits a standard event from the Kosu contract system. The events can be decoded though the Kosu.js library.
 
 #### Signature
 

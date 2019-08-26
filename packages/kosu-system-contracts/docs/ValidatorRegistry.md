@@ -140,9 +140,9 @@ function getChallenge(challengeId uint256) public view (tuple)
 
 #### Parameters:
 
-| Parameter     | Type      | Description                           |
-| ------------- | --------- | ------------------------------------- |
-| `challengeId` | `uint256` | The ID to retrieve challenge data for |
+| Parameter     | Type      | Description                            |
+| ------------- | --------- | -------------------------------------- |
+| `challengeId` | `uint256` | The ID to retrieve challenge data for. |
 
 #### Returns:
 
@@ -150,7 +150,7 @@ The challenge indicated by the provided ID.
 
 ### getChallenges
 
-Expose multiple challenges by is
+Expose multiple challenges by ids.
 
 #### Signature
 
@@ -160,9 +160,9 @@ function getChallenges(challengeIds uint256[]) public view (tuple[])
 
 #### Parameters:
 
-| Parameter      | Type        | Description           |
-| -------------- | ----------- | --------------------- |
-| `challengeIds` | `uint256[]` | challenge ids to read |
+| Parameter      | Type        | Description            |
+| -------------- | ----------- | ---------------------- |
+| `challengeIds` | `uint256[]` | challenge ids to read. |
 
 #### Returns:
 
@@ -180,9 +180,9 @@ function getListing(pubKey bytes32) public view (tuple)
 
 #### Parameters:
 
-| Parameter | Type      | Description                       |
-| --------- | --------- | --------------------------------- |
-| `pubKey`  | `bytes32` | Hex encoded tendermint public key |
+| Parameter | Type      | Description                        |
+| --------- | --------- | ---------------------------------- |
+| `pubKey`  | `bytes32` | Hex encoded tendermint public key. |
 
 #### Returns:
 
@@ -200,9 +200,9 @@ function getListings(pubKeys bytes32[]) public view (tuple[])
 
 #### Parameters:
 
-| Parameter | Type        | Description                                    |
-| --------- | ----------- | ---------------------------------------------- |
-| `pubKeys` | `bytes32[]` | Hex encoded Tendermint public keys to retrieve |
+| Parameter | Type        | Description                                     |
+| --------- | ----------- | ----------------------------------------------- |
+| `pubKeys` | `bytes32[]` | Hex encoded Tendermint public keys to retrieve. |
 
 #### Returns:
 
