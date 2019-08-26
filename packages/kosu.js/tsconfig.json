@@ -6,7 +6,7 @@
         "resolveJsonModule": true,
         "sourceMap": true,
         "moduleResolution": "node",
-        "typeRoots": ["node_modules/@types"]
+        "typeRoots": ["node_modules/@types", "node_modules/@0x/typescript-typings/types"]
     },
     "include": ["./src/**/*", "../kosu-system-contracts/src/types.d.ts"]
 }
