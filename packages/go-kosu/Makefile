@@ -26,7 +26,7 @@ test-fast:
 	$(GOTEST) -failfast
 
 test:
-	$(GOTEST) -race
+	$(GOTEST)
 
 lint:
 	$(GOLINT)
