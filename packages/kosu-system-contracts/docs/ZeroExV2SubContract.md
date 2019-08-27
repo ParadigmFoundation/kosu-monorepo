@@ -1,6 +1,6 @@
 # ZeroExV2SubContract
 
-Implementation of a sub contract that forwards a 0x - kosu order to the zero ex contract system
+Implementation of a SubContract that forwards kosu orders with 0x resolution to the 0x exchange contract.
 
 ## Contents
 
@@ -34,7 +34,7 @@ Tokens remaining to fill.
 
 ### constructor
 
-Constructor
+Initialize subContract with arguments json 0x Exchange address and the 0x erc20 proxy address.
 
 #### Signature
 
@@ -72,7 +72,7 @@ Validity of order.
 
 ### participate
 
-De-serializes ksou order data to 0x order and submits to the 0x exchange.
+De-serializes ksou order data to 0x order and submits to the 0x exchange for final resolution. Finalizes by forwarding along any successfully exchanged tokens.
 
 #### Signature
 

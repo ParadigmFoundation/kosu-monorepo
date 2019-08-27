@@ -1,6 +1,6 @@
 # AuthorizedAddresses
 
-Common registry of system contract addresses authrorized to access internal methods.
+Common registry of system contract addresses authorized to access internal methods.
 
 ## Contents
 
@@ -30,7 +30,7 @@ function authorizeAddress(a address) public
 
 ### isAddressAuthorized
 
-Verify if address is authorized by reading contract mapping
+Verify address authorization.
 
 #### Signature
 
@@ -40,13 +40,13 @@ function isAddressAuthorized(a address) public view (bool)
 
 #### Parameters:
 
-| Parameter | Type      | Description                      |
-| --------- | --------- | -------------------------------- |
-| `a`       | `address` | Address to get authorized value. |
+| Parameter | Type      | Description           |
+| --------- | --------- | --------------------- |
+| `a`       | `address` | Address to authorize. |
 
 #### Returns:
 
-True if the address is authorized, false otherwise.
+Address authorization
 
 ### transferOwnership
 
@@ -66,7 +66,7 @@ function transferOwnership(newOwner address) public
 
 ### unauthorizeAddress
 
-Unauthorizes the address by setting the mapping value to false.
+Disables the address previous authorization by setting the mapping value to false.
 
 #### Signature
 
