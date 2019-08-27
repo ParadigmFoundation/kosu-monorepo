@@ -11,6 +11,7 @@ import (
 
 	"go-kosu/abci"
 	"go-kosu/abci/types"
+	"go-kosu/store"
 )
 
 // EventHandler is a callback that handles EventEmitterKosuEvent
@@ -160,11 +161,17 @@ func (w *Witness) broadcastTxSync(tx interface{}, args []interface{}) {
 }
 
 func (w *Witness) handlePosterRegistryUpdate(e *EventEmitterKosuEvent) {
+	// offset by 12 because the 20 byte address is packed into 32 bytes
+	address, err := store.NewAddress(e.Data[0][12:])
+	if err != nil {
+		panic(err)
+	}
+
 	tx := &types.TransactionWitness{
 		Subject: types.TransactionWitness_POSTER,
 		Amount:  types.NewBigInt(e.Data[1][:]),
 		Block:   e.Raw.BlockNumber,
-		Address: e.Raw.Address.String(),
+		Address: address.String(),
 	}
 
 	w.broadcastTxSync(tx, []interface{}{
@@ -174,11 +181,14 @@ func (w *Witness) handlePosterRegistryUpdate(e *EventEmitterKosuEvent) {
 }
 
 func (w *Witness) handleValidatorRegistryUpdate(e *EventEmitterKosuEvent) {
+	// offset by 12 because the 20 byte address is packed into 32 bytes
+	address, _ := store.NewAddress(e.Data[1][12:])
+
 	tx := &types.TransactionWitness{
 		Subject:   types.TransactionWitness_VALIDATOR,
 		Block:     e.Raw.BlockNumber,
 		PublicKey: e.Data[0][:],
-		Address:   hex.EncodeToString(e.Data[1][:]),
+		Address:   address.String(),
 		Amount:    types.NewBigInt(e.Data[2][:]),
 	}
 
@@ -198,7 +208,7 @@ func (w *Witness) handleBlocks(ctx context.Context) error {
 
 		// If it's the first block || round has ended
 		if (num == 0 && (cur > w.initHeight)) || mat >= w.roundInfo.EndsAt {
-			if err := w.rebalance(num, cur); err != nil {
+			if err := w.rebalance(num, mat); err != nil {
 				w.log.Error("rebalance", "err", err)
 			}
 		}
