@@ -1,5 +1,4 @@
-GOTEST_FLAGS ?=
-GOTEST_TAGS  ?= integration
+GOTEST_FLAGS ?= -v
 GOTEST = go test ./... ${GOTEST_FLAGS}
 
 KOSU_VERSION ?= $(shell jq -r .version package.json)
@@ -27,7 +26,7 @@ test-fast:
 	$(GOTEST) -failfast
 
 test:
-	$(GOTEST) -race -tags=$(GOTEST_TAGS)
+	$(GOTEST)
 
 lint:
 	$(GOLINT)

@@ -33,8 +33,8 @@ func (app *App) deliverWitnessTx(tx *types.TransactionWitness, nodeID []byte) ab
 }
 
 func (app *App) pruneWitnessTxs(block uint64) {
+	params := app.store.ConsensusParams()
 	fn := func(tx *types.TransactionWitness) {
-		params := app.store.ConsensusParams()
 		if block-tx.Block >= params.BlocksBeforePruning {
 			app.log.Debug("Pruning tx", "id", hex.EncodeToString(tx.Id))
 			app.store.DeleteWitnessTx(tx.Id)
