@@ -162,7 +162,10 @@ func (w *Witness) broadcastTxSync(tx interface{}, args []interface{}) {
 
 func (w *Witness) handlePosterRegistryUpdate(e *EventEmitterKosuEvent) {
 	// offset by 12 because the 20 byte address is packed into 32 bytes
-	address, _ := store.NewAddress(e.Data[0][12:])
+	address, err := store.NewAddress(e.Data[0][12:])
+	if err != nil {
+		panic(err)
+	}
 
 	tx := &types.TransactionWitness{
 		Subject: types.TransactionWitness_POSTER,
