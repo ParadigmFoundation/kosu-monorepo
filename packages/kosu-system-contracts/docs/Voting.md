@@ -1,6 +1,6 @@
 # Voting
 
-Voting manages polls and votes on governance matters within the Kosu system.
+Voting manages polls and votes on governance matters within the Kosu system. Poll resolution logic will be the responsibility of the contract utilizing this service.
 
 ## Contents
 
@@ -18,7 +18,7 @@ Voting manages polls and votes on governance matters within the Kosu system.
 
 ### commitVote
 
-Commit a vote in a poll to be later revealed
+Commit a vote in a poll to be later revealed. The salt and option must be retained for a successful reveal.
 
 #### Signature
 
@@ -28,15 +28,15 @@ function commitVote(_pollId uint256, _vote bytes32, _tokensToCommit uint256) pub
 
 #### Parameters:
 
-| Parameter         | Type      | Description                        |
-| ----------------- | --------- | ---------------------------------- |
-| `_pollId`         | `uint256` | Poll index to act upon             |
-| `_vote`           | `bytes32` | Hash encoded vote                  |
-| `_tokensToCommit` | `uint256` | Number of tokens to commit to vote |
+| Parameter         | Type      | Description                         |
+| ----------------- | --------- | ----------------------------------- |
+| `_pollId`         | `uint256` | Poll id to commit vote to.          |
+| `_vote`           | `bytes32` | Hash encoded vote option with salt. |
+| `_tokensToCommit` | `uint256` | Number of tokens to commit to vote. |
 
 ### constructor
 
-Create a new voting engine
+Initializes the voting contract with the shared event emitter and treasury contracts.
 
 #### Signature
 
@@ -46,14 +46,14 @@ constructor(treasuryAddress address, _emitterAddress address) public
 
 #### Parameters:
 
-| Parameter         | Type      | Description                   |
-| ----------------- | --------- | ----------------------------- |
-| `treasuryAddress` | `address` | Deployed Treasury address     |
-| `_emitterAddress` | `address` | Deployed EventEmitter address |
+| Parameter         | Type      | Description                    |
+| ----------------- | --------- | ------------------------------ |
+| `treasuryAddress` | `address` | Deployed Treasury address.     |
+| `_emitterAddress` | `address` | Deployed EventEmitter address. |
 
 ### createPoll
 
-Create a new poll to accept votes based on the configuration
+Create a new poll. The commit and reveal periods must be provided. The creation of the poll is notified with an event from the shared EventEmitter.
 
 #### Signature
 
@@ -63,10 +63,10 @@ function createPoll(_commitEndBlock uint256, _revealEndBlock uint256) public (ui
 
 #### Parameters:
 
-| Parameter         | Type      | Description                         |
-| ----------------- | --------- | ----------------------------------- |
-| `_commitEndBlock` | `uint256` | Block number when commit phase ends |
-| `_revealEndBlock` | `uint256` | Block number when reveal phase ends |
+| Parameter         | Type      | Description                          |
+| ----------------- | --------- | ------------------------------------ |
+| `_commitEndBlock` | `uint256` | Block number when commit phase ends. |
+| `_revealEndBlock` | `uint256` | Block number when reveal phase ends. |
 
 #### Returns:
 
@@ -74,7 +74,7 @@ Poll index number. Will be used as the key for interacting with a vote.
 
 ### revealVote
 
-Reveal a previously committed vote
+Reveal a previously committed vote by providing the vote option and salt used to generate the vote hash.
 
 #### Signature
 
@@ -84,15 +84,15 @@ function revealVote(_pollId uint256, _voteOption uint256, _voteSalt uint256) pub
 
 #### Parameters:
 
-| Parameter     | Type      | Description                                   |
-| ------------- | --------- | --------------------------------------------- |
-| `_pollId`     | `uint256` | Poll index to act upon                        |
-| `_voteOption` | `uint256` | User vote option                              |
-| `_voteSalt`   | `uint256` | Salt used to in hash to obfuscate vote option |
+| Parameter     | Type      | Description                             |
+| ------------- | --------- | --------------------------------------- |
+| `_pollId`     | `uint256` | Poll id to commit vote to.              |
+| `_voteOption` | `uint256` | Vote option used to generate vote hash. |
+| `_voteSalt`   | `uint256` | Salt used to generate vote hash.        |
 
 ### totalRevealedTokens
 
-Retreive the total number of tokens revealed for a finalized poll.
+Retrieve the total number of tokens revealed for a finalized poll.
 
 #### Signature
 
@@ -102,17 +102,17 @@ function totalRevealedTokens(_pollId uint256) public view (uint256)
 
 #### Parameters:
 
-| Parameter | Type      | Description                                   |
-| --------- | --------- | --------------------------------------------- |
-| `_pollId` | `uint256` | Poll index to check total revealed tokens for |
+| Parameter | Type      | Description                                    |
+| --------- | --------- | ---------------------------------------------- |
+| `_pollId` | `uint256` | Poll index to check total revealed tokens for. |
 
 #### Returns:
 
-The total number of tokens reveled in the poll.
+The total number of tokens revealed in the poll.
 
 ### totalWinningTokens
 
-Retreive the total number of tokens that voted on the winning side of a finalized poll.
+Retrieve the total number of tokens that supported the winning option of a finalized poll.
 
 #### Signature
 
@@ -122,17 +122,17 @@ function totalWinningTokens(_pollId uint256) public view (uint256)
 
 #### Parameters:
 
-| Parameter | Type      | Description                            |
-| --------- | --------- | -------------------------------------- |
-| `_pollId` | `uint256` | Poll index to check winning tokens for |
+| Parameter | Type      | Description                             |
+| --------- | --------- | --------------------------------------- |
+| `_pollId` | `uint256` | Poll index to check winning tokens for. |
 
 #### Returns:
 
-The uint number of tokens revealed for the winning option.
+The uint number of tokens supporting the winning option.
 
 ### userWinningTokens
 
-Retreive the number of tokens committed by a user for the winning option.
+Retrieve the number of tokens committed by a user for the winning option.
 
 #### Signature
 
@@ -144,12 +144,12 @@ function userWinningTokens(_pollId uint256, _user address) public view (uint256)
 
 | Parameter | Type      | Description                              |
 | --------- | --------- | ---------------------------------------- |
-| `_pollId` | `uint256` | Poll index to check winning tokens for   |
+| `_pollId` | `uint256` | Poll index to check winning tokens for.  |
 | `_user`   | `address` | Address of user to check winning tokens. |
 
 ### winningOption
 
-Retreive the winning outcome for a finalized poll.
+Retrieve the winning option for a finalized poll.
 
 #### Signature
 
@@ -159,10 +159,10 @@ function winningOption(_pollId uint256) public view (uint256)
 
 #### Parameters:
 
-| Parameter | Type      | Description                            |
-| --------- | --------- | -------------------------------------- |
-| `_pollId` | `uint256` | Poll index to check winning option for |
+| Parameter | Type      | Description                             |
+| --------- | --------- | --------------------------------------- |
+| `_pollId` | `uint256` | Poll index to check winning option for. |
 
 #### Returns:
 
-The uint value of the winning outcome
+The winning option.

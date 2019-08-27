@@ -1,6 +1,6 @@
 # PosterRegistry
 
-Implementation contract for the PosterRegistry, allowing users to bond and un-bond tokens.
+The PosterRegistry allows accounts to manage tokens registered rewarding permission to post orders to the kosu network.
 
 ## Contents
 
@@ -14,7 +14,7 @@ Implementation contract for the PosterRegistry, allowing users to bond and un-bo
 
 ### constructor
 
-Creates a new PosterRegistry
+Initializes the PosterRegistry with the treasury and EventEmitter addresses.
 
 #### Signature
 
@@ -24,14 +24,14 @@ constructor(_treasuryAddress address, _events address) public
 
 #### Parameters:
 
-| Parameter          | Type      | Description                        |
-| ------------------ | --------- | ---------------------------------- |
-| `_treasuryAddress` | `address` | Deployed Treasury contract address |
-| `_events`          | `address` | Deployed Events contract address   |
+| Parameter          | Type      | Description                       |
+| ------------------ | --------- | --------------------------------- |
+| `_treasuryAddress` | `address` | Treasury contract address.        |
+| `_events`          | `address` | Deployed Events contract address. |
 
 ### registerTokens
 
-Register tokens.
+Register tokens for posting permissions.
 
 #### Signature
 
@@ -41,9 +41,9 @@ function registerTokens(amount uint256) public
 
 #### Parameters:
 
-| Parameter | Type      | Description                  |
-| --------- | --------- | ---------------------------- |
-| `amount`  | `uint256` | Number of tokens to register |
+| Parameter | Type      | Description                   |
+| --------- | --------- | ----------------------------- |
+| `amount`  | `uint256` | Number of tokens to register. |
 
 ### releaseTokens
 
@@ -57,13 +57,13 @@ function releaseTokens(amount uint256) public
 
 #### Parameters:
 
-| Parameter | Type      | Description                 |
-| --------- | --------- | --------------------------- |
-| `amount`  | `uint256` | Number of tokens to release |
+| Parameter | Type      | Description                  |
+| --------- | --------- | ---------------------------- |
+| `amount`  | `uint256` | Number of tokens to release. |
 
 ### tokensRegisteredFor
 
-Tokens registered for a user.
+Tokens registered for an account.
 
 #### Signature
 
@@ -73,9 +73,9 @@ function tokensRegisteredFor(a address) public view (uint256)
 
 #### Parameters:
 
-| Parameter | Type      | Description              |
-| --------- | --------- | ------------------------ |
-| `a`       | `address` | Address to get value for |
+| Parameter | Type      | Description               |
+| --------- | --------- | ------------------------- |
+| `a`       | `address` | Address to get value for. |
 
 #### Returns:
 
