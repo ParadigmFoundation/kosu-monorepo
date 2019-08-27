@@ -14,7 +14,7 @@ export const fields = {
         updateFunc: async (_this, kosu: Kosu, query, db) => {
             const one = new BigNumber(kosu.web3.utils.toWei("1"));
             const val = await kosu.kosuToken.estimateTokenToEther(one);
-            return kosu.web3.utils.fromWei(val.toString());
+            return val.toString();
         },
     },
     "bandwidth/total_limit": {
