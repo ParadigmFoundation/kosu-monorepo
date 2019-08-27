@@ -12,9 +12,6 @@ steps:
   image: gcr.io/kosu-io/node-lts:latest
   commands:
   - yarn prettier:ci
-  environment:
-    WEB3_URI: http://kosu-geth:8545
-    WEB3_URI_WS: ws://kosu-geth:8546
   depends_on:
   - clone
 
@@ -27,9 +24,6 @@ steps:
   - cd packages/kosu-system-contracts
   - yarn migrate:ci
   - WEB3_URI=http://go-kosu-ci-geth:8545 yarn migrate:ci
-  environment:
-    WEB3_URI: http://kosu-geth:8545
-    WEB3_URI_WS: ws://kosu-geth:8546
   depends_on:
   - clone
 
@@ -62,9 +56,6 @@ steps:
   commands:
   - cd packages/go-kosu
   - ./kosud -H ./testnet/node0 -E ws://go-kosu-ci-geth:8546
-  environment:
-    WEB3_URI: http://kosu-geth:8545
-    WEB3_URI_WS: ws://kosu-geth:8546
   depends_on:
   - build-project
 
@@ -75,9 +66,6 @@ steps:
   commands:
   - cd packages/go-kosu
   - ./kosud -H ./testnet/node1 -E ws://go-kosu-ci-geth:8546
-  environment:
-    WEB3_URI: http://kosu-geth:8545
-    WEB3_URI_WS: ws://kosu-geth:8546
   depends_on:
   - build-project
 
@@ -88,9 +76,6 @@ steps:
   commands:
   - cd packages/go-kosu
   - ./kosud -H ./testnet/node2 -E ws://go-kosu-ci-geth:8546
-  environment:
-    WEB3_URI: http://kosu-geth:8545
-    WEB3_URI_WS: ws://kosu-geth:8546
   depends_on:
   - build-project
 
@@ -101,9 +86,6 @@ steps:
   commands:
   - cd packages/go-kosu
   - ./kosud -H ./testnet/node3 -E ws://go-kosu-ci-geth:8546
-  environment:
-    WEB3_URI: http://kosu-geth:8545
-    WEB3_URI_WS: ws://kosu-geth:8546
   depends_on:
   - build-project
 
@@ -114,9 +96,6 @@ steps:
   - cd packages/go-kosu
   - export KOSU_TEST_NODES=$(pwd)/testnet/node0@kosu-node-1:26657,$(pwd)/testnet/node1@kosu-node-1:26657,$(pwd)/testnet/node2@kosu-node-1:26657,$(pwd)/testnet/node3@kosu-node-1:26657
   - make ci
-  environment:
-    WEB3_URI: http://kosu-geth:8545
-    WEB3_URI_WS: ws://kosu-geth:8546
   depends_on:
   - build-project
   - kosu-node-0
@@ -128,9 +107,6 @@ services:
 - name: kosu-geth
   pull: always
   image: gcr.io/kosu-io/kosu-test-geth:latest
-  environment:
-    WEB3_URI: http://kosu-geth:8545
-    WEB3_URI_WS: ws://kosu-geth:8546
   ports:
   - 8545
   - 8546
@@ -138,9 +114,6 @@ services:
 - name: go-kosu-ci-geth
   pull: always
   image: gcr.io/kosu-io/kosu-test-geth:latest
-  environment:
-    WEB3_URI: http://kosu-geth:8545
-    WEB3_URI_WS: ws://kosu-geth:8546
   ports:
   - 8545
   - 8546
