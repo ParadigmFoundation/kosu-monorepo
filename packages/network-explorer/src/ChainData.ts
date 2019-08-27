@@ -1,3 +1,4 @@
+import { BigNumber } from "0x.js";
 import { Kosu } from "@kosu/kosu.js";
 import { cloneDeep } from "lodash";
 import uuid from "uuid/v4";
@@ -239,15 +240,23 @@ export class ChainData {
                     const firstBlock = parseInt(validatorData.firstVote);
                     const uptimePercent = Math.floor((validatorData.totalVotes / ((currHeight - firstBlock))) * 100);
 
+                    const listing = await this.kosu.validatorRegistry.getListing(validatorData.publicKey);
+
+                    let reward: string;
+                    if (listing.status === 0) {
+                        reward = "0";
+                    } else {
+                        const raw = new BigNumber(listing.rewardRate);
+                        reward = this.kosu.web3.utils.fromWei(raw.toString());
+                    }
+
                     const validator: IValidator = {
                         public_key: validatorData.publicKey,
 
                         // HACK: balance encoded as { balance: 'value: 0' }
                         stake: validatorData.balance.split(": ")[1],
 
-                        // TODO: load from contract system
-                        reward: "not implemented",
-
+                        reward,
                         uptime_percent: uptimePercent.toString(),
                         first_block: firstBlock.toString(),
                         last_voted: validatorData.firstVote.toString(),
