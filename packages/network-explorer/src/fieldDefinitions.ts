@@ -92,7 +92,7 @@ export const fields = {
             let totalStake = new BigNumber(0);
             const validators = await kosu.node.validators();
             for (const validator of validators) {
-                totalStake = totalStake.plus(validator.balances);
+                totalStake = totalStake.plus(validator.balance);
             }
             return totalStake.toString();
         },
