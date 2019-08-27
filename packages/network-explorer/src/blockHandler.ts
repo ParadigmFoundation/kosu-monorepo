@@ -11,7 +11,7 @@ import { safeSend } from "./utils";
  */
 export function blockHandlerClosure(clients: IClientMap, chain: ChainData): (msg: any) => Promise<void> {
     return async (block: any) => {
-        const { height, time } = block;
+        const { height, time } = block.header;
         const date = new Date(time);
         const timestamp = Math.floor(date.getTime() / 1000);
 
