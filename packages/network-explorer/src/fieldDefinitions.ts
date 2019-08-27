@@ -3,14 +3,14 @@ import { Kosu } from "@kosu/kosu.js";
 
 export const fields = {
     "token/total_supply": {
-        updateEvery: 60000,
+        updateEvery: 30000,
         updateFunc: async (_this, kosu: Kosu, query, db) => {
             const val = await kosu.kosuToken.totalSupply();
             return val.toString();
         },
     },
     "token/price": {
-        updateEvery: 60000,
+        updateEvery: 30000,
         updateFunc: async (_this, kosu: Kosu, query, db) => {
             const one = new BigNumber(1);
             const val = await kosu.kosuToken.estimateEtherToToken(one);
@@ -27,8 +27,12 @@ export const fields = {
     "bandwidth/total_orders": {
         updateEvery: 3000,
         updateFunc: async (_this, kosu: Kosu, __, ___) => {
-            const orders = await kosu.node.totalOrders();
-            return orders.toString();
+            try {
+                const orders = await kosu.node.totalOrders();
+                return orders.toString();
+            } catch (error) {
+                return "0";
+            }
         },
     },
     "bandwidth/remaining_limit": {
@@ -84,8 +88,13 @@ export const fields = {
     },
     "network/total_validator_stake": {
         updateEvery: 3600000,
-        updateFunc: async (_this, _, __, ___) => {
-            return "0";
+        updateFunc: async (_this, kosu: Kosu, __, ___) => {
+            let totalStake = new BigNumber(0);
+            const validators = await kosu.node.validators();
+            for (const validator of validators) {
+                totalStake = totalStake.plus(validator.balances);
+            }
+            return totalStake.toString();
         },
     },
     "network/total_poster_stake": {
