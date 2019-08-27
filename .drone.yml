@@ -24,6 +24,9 @@ steps:
   - cd packages/kosu-system-contracts
   - yarn migrate:ci
   - WEB3_URI=http://go-kosu-ci-geth:8545 yarn migrate:ci
+  environment:
+    WEB3_URI: http://kosu-geth:8545
+    WEB3_URI_WS: ws://kosu-geth:8546
   depends_on:
   - clone
 

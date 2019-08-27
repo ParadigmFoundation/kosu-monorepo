@@ -33,7 +33,7 @@ local KosuGeth(name) = Image(name, "kosu-test-geth:latest") {
 		 	"depends_on": ["clone"],
 		},
 
-	    Image("build-project", "node-lts:latest") {
+	    Image("build-project", "node-lts:latest") + GethConfig() {
 			"commands": [
 				"yarn",
 				"yarn setup:ci",
