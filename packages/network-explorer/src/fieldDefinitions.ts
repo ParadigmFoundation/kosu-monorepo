@@ -12,9 +12,9 @@ export const fields = {
     "token/price": {
         updateEvery: 30000,
         updateFunc: async (_this, kosu: Kosu, query, db) => {
-            const one = new BigNumber(1);
-            const val = await kosu.kosuToken.estimateEtherToToken(one);
-            return one.div(val).toFixed(5);
+            const one = new BigNumber(kosu.web3.utils.toWei("1"));
+            const val = await kosu.kosuToken.estimateTokenToEther(one);
+            return kosu.web3.utils.fromWei(val.toString());
         },
     },
     "bandwidth/total_limit": {
