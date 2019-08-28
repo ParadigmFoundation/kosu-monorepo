@@ -19,6 +19,10 @@ import (
 	"go-kosu/witness"
 )
 
+const (
+	dbName   = "kosu"
+)
+
 // Config holds the program execution arguments
 type Config struct {
 	Home  string
@@ -28,7 +32,7 @@ type Config struct {
 }
 
 func newDB(dir string, debug bool) (db.DB, error) {
-	gdb, err := db.NewGoLevelDB("kosu", dir)
+	gdb, err := db.NewGoLevelDB(dbName, dir)
 	if err != nil {
 		return nil, err
 	}
@@ -157,11 +161,10 @@ func main() {
 				return err
 			}
 
-			if err := abci.ResetAll(kosuCfg, os.Stdout); err != nil {
-				return err
-			}
+			abci.ResetAll(kosuCfg, os.Stdout)
 
-			return abci.InitTendermint(cfg.Home)
+			dbdir := path.Join(kosuCfg.RootDir, dbName+".db")
+			return os.RemoveAll(dbdir)
 		},
 	}
 

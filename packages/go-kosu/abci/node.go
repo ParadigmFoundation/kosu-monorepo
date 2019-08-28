@@ -2,11 +2,11 @@ package abci
 
 import (
 	"encoding/hex"
-	"fmt"
 	"io"
 	"io/ioutil"
 	"os"
 
+	"github.com/tendermint/tendermint/cmd/tendermint/commands"
 	"github.com/tendermint/tendermint/config"
 	tmflags "github.com/tendermint/tendermint/libs/cli/flags"
 	log "github.com/tendermint/tendermint/libs/log"
@@ -89,37 +89,12 @@ func ShowNodeInfo(cfg *config.Config) (*NodeInfo, error) {
 // ResetAll wipes the kosu home represented by cfg, keeping only the config and the genesis files
 // ResetAll is idempotent, which means that running reset twice, should have no effect
 // All the output will be written to w
-func ResetAll(cfg *config.Config, w io.Writer) error {
+func ResetAll(cfg *config.Config, w io.Writer) {
 	if w == nil {
 		w = ioutil.Discard
 	}
 
-	files := []string{
-		cfg.P2P.AddrBookFile(),
-		cfg.PrivValidatorKeyFile(),
-		cfg.PrivValidatorStateFile(),
-	}
-
-	if err := removeFiles(w, files...); err != nil {
-		return err
-	}
-
-	fmt.Fprintf(w, "Deleting directory %s", cfg.DBDir())
-	if err := os.RemoveAll(cfg.DBDir()); err != nil {
-		return err
-	}
-
-	return nil
-}
-
-func removeFiles(w io.Writer, files ...string) error {
-	for _, file := range files {
-		fmt.Fprintf(w, "Deleting %s\n", file)
-		if err := os.Remove(file); err != nil {
-			if !os.IsNotExist(err) {
-				return err
-			}
-		}
-	}
-	return nil
+	logger := log.NewTMLogger(w)
+	commands.ResetAll(cfg.DBDir(), cfg.P2P.AddrBookFile(), cfg.PrivValidatorKeyFile(),
+		cfg.PrivValidatorStateFile(), logger)
 }
