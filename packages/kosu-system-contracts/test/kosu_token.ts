@@ -19,8 +19,8 @@ describe("KosuToken", () => {
 
     describe("parameterization", () => {
         it("should fail with incorrect initial deposit", async () => {
-            await web3Wrapper
-                .sendTransactionAsync({ to: token.address, value: TestValues.twoEther, from }).should.eventually.be.rejected;
+            await web3Wrapper.sendTransactionAsync({ to: token.address, value: TestValues.twoEther, from }).should
+                .eventually.be.rejected;
         });
 
         it("should have expected initial output with parameterization", async () => {
@@ -48,25 +48,24 @@ describe("KosuToken", () => {
 
         it("should have expected tokens balance at given ether balance", async () => {
             await web3Wrapper
-                .sendTransactionAsync({ to: token.address, value: TestValues.fourHundredEther.minus(await web3Wrapper.getBalanceInWeiAsync(token.address)), from })
+                .sendTransactionAsync({
+                    to: token.address,
+                    value: TestValues.fourHundredEther.minus(await web3Wrapper.getBalanceInWeiAsync(token.address)),
+                    from,
+                })
                 .then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash));
 
             const finalBalance = await token.balanceOf.callAsync(from);
             const finalSupply = await token.totalSupply.callAsync();
             const endingEther = await web3Wrapper.getBalanceInWeiAsync(token.address);
 
-            "90635575928012811022820"
-                .should.eq(finalBalance.toString());
-            "90635575928012811022820"
-                .should.eq(finalSupply.toString());
-            TestValues.fourHundredEther
-                .toString()
-                .should.eq(endingEther.toString());
+            "90635575928012811022820".should.eq(finalBalance.toString());
+            "90635575928012811022820".should.eq(finalSupply.toString());
+            TestValues.fourHundredEther.toString().should.eq(endingEther.toString());
         });
     });
 
     describe("bonding", () => {
-
         describe("fallback", () => {
             it("should generate tokens with fallback function", async () => {
                 const startingBalance = await kosuToken.balanceOf.callAsync(from);
@@ -104,7 +103,9 @@ describe("KosuToken", () => {
                 const startingEther = await web3Wrapper.getBalanceInWeiAsync(kosuToken.address);
                 const estimate = await kosuToken.estimateEtherToToken.callAsync(TestValues.oneEther);
 
-                await kosuToken.bondTokens.awaitTransactionSuccessAsync(TestValues.zero, { value: TestValues.oneEther });
+                await kosuToken.bondTokens.awaitTransactionSuccessAsync(TestValues.zero, {
+                    value: TestValues.oneEther,
+                });
 
                 const finalBalance = await kosuToken.balanceOf.callAsync(from);
                 const finalSupply = await kosuToken.totalSupply.callAsync();
@@ -123,14 +124,6 @@ describe("KosuToken", () => {
                     .toString()
                     .should.eq(endingEther.toString());
             });
-
-            // it("should fail with payout below minPayout", async () => {
-            //     const estimate = await kosuToken.estimateEtherToToken.callAsync(TestValues.oneEther);
-            //
-            //     const error = (await kosuToken.bondTokens.awaitTransactionSuccessAsync(estimate.plus(TestValues.oneEther), { value: TestValues.oneEther }).should.eventually.be.rejected)//.message.should.contains("payout below requested minimum");
-            //     console.log(error.message);
-            //     console.log(await web3Wrapper.getTransactionReceiptIfExistsAsync(error.message.split(":")[1].trim()));
-            // });
         });
 
         describe("releaseTokens", () => {
