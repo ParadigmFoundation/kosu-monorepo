@@ -59,6 +59,7 @@ before(async () => {
         const ganacheSubprovider = new GanacheSubprovider({
             mnemonic: process.env.npm_package_config_test_mnemonic,
             network_id: 6175,
+            default_balance_ether: TestValues.fiveHundredEther.multipliedBy(10),
         });
         provider.addProvider(ganacheSubprovider);
     }
