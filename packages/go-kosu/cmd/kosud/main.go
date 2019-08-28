@@ -2,7 +2,9 @@ package main
 
 import (
 	"context"
+	"fmt"
 	stdlog "log"
+	"os"
 	"os/user"
 	"path/filepath"
 	"strings"
@@ -125,13 +127,58 @@ func main() {
 		},
 	}
 
+	showNodeInfoCmd := &cobra.Command{
+		Use:   "show_node_info",
+		Short: "Show this node's information",
+		Long:  "Displays information unique to this node",
+		RunE: func(cmd *cobra.Command, _ []string) error {
+			kosuCfg, err := abci.LoadConfig(cfg.Home)
+			if err != nil {
+				return err
+			}
+
+			info, err := abci.ShowNodeInfo(kosuCfg)
+			if err != nil {
+				return err
+			}
+
+			fmt.Printf("Public Key: %s\n", info.PublicKey)
+			fmt.Printf("Node ID:    %s\n", info.NodeID)
+			fmt.Printf("Peer ID:    %s\n", info.PeerID)
+			fmt.Printf("Moniker:    %s\n", info.Moniker)
+			return nil
+		},
+	}
+
+	unsafeResetCmd := &cobra.Command{
+		Use:   "reset",
+		Short: "Reset this node to genesis state",
+		Long:  "Reset will wipe all the data and WAL, keeping only the config and the genesis file",
+		RunE: func(cmd *cobra.Command, _ []string) error {
+			kosuCfg, err := abci.LoadConfig(cfg.Home)
+			if err != nil {
+				return err
+			}
+
+			if err := abci.ResetAll(kosuCfg, os.Stdout); err != nil {
+				return err
+			}
+
+			return abci.InitTendermint(cfg.Home)
+		},
+	}
+
 	rootCmd.PersistentFlags().StringVarP(&cfg.Home, "home", "H", "~/.kosu", "directory for config and data")
 	rootCmd.PersistentFlags().BoolVarP(&cfg.Debug, "debug", "d", false, "enable debuging")
 	rootCmd.Flags().StringVarP(&cfg.Web3, "web3", "E", "ws://localhost:8546", "URL of an Ethereum JSONRPC provider")
 
-	rootCmd.AddCommand(version.NewCommand())
-	rootCmd.AddCommand(rpc.NewCommand())
-	rootCmd.AddCommand(initCmd)
+	rootCmd.AddCommand(
+		version.NewCommand(),
+		rpc.NewCommand(),
+		initCmd,
+		showNodeInfoCmd,
+		unsafeResetCmd,
+	)
 
 	if err := rootCmd.Execute(); err != nil {
 		stdlog.Fatal(err)
