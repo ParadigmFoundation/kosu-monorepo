@@ -8,12 +8,6 @@ import "@kosu/subcontract-sdk/contracts/SubContract.sol";
 */
 contract OrderGateway {
 
-    /** @dev Creates a new OrderGateway
-        @notice Creates a new OrderGateway
-    */
-    constructor() public {
-    }
-
     /** @dev Forwards function calls of participate to the provided subContract address.
         @notice Forwards function calls of participate to the provided subContract address.
         @param subContract Address of contract implementing the SubContract interface.
