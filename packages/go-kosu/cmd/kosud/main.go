@@ -6,6 +6,7 @@ import (
 	stdlog "log"
 	"os"
 	"os/user"
+	"path"
 	"path/filepath"
 	"strings"
 
@@ -20,7 +21,7 @@ import (
 )
 
 const (
-	dbName   = "kosu"
+	dbName = "kosu"
 )
 
 // Config holds the program execution arguments
