@@ -14,7 +14,7 @@ contract KosuToken is ERC20, Authorizable {
     string public symbol = "KOSU";
     uint8 public decimals = 18;
     uint private _weiPaid = 0;
-    uint32 constant private r = 850000; // ppm
+    uint32 constant private r = 290000; // ppm
 
     /** @dev Deploy a new ERC20 Token
         @notice Deploy a new ERC20 Token
