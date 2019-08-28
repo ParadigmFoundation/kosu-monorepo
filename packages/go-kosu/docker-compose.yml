@@ -2,7 +2,7 @@ version: '3'
 
 services: 
   node0:
-    container_name: node0
+    container_name: kosu-node-0
     build:
       context: .
       dockerfile: Dockerfile.compose
@@ -14,7 +14,7 @@ services:
         ipv4_address: 192.167.10.2
 
   node1:
-    container_name: node1
+    container_name: kosu-node-1
     build:
       context: .
       dockerfile: Dockerfile.compose
@@ -26,7 +26,7 @@ services:
         ipv4_address: 192.167.10.3
 
   node2:
-    container_name: node2
+    container_name: kosu-node-2
     build:
       context: .
       dockerfile: Dockerfile.compose
@@ -38,7 +38,7 @@ services:
         ipv4_address: 192.167.10.4
 
   node3:
-    container_name: node3
+    container_name: kosu-node-3
     build:
       context: .
       dockerfile: Dockerfile.compose
@@ -55,5 +55,4 @@ networks:
     ipam:
       driver: default
       config:
-      -
-        subnet: 192.167.10.0/16
+      - subnet: 192.167.10.0/16

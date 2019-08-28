@@ -2,6 +2,7 @@ package abci
 
 import (
 	"encoding/json"
+	"io/ioutil"
 
 	abci "github.com/tendermint/tendermint/abci/types"
 
@@ -21,6 +22,23 @@ func NewGenesisFromRequest(req abci.RequestInitChain) (*Genesis, error) {
 		return nil, err
 	}
 	return gen, nil
+}
+
+// NewGenesisFromFile returns a new Genesis object given a path to the genesis gile
+func NewGenesisFromFile(file string) (*Genesis, error) {
+	gen := &struct {
+		AppState *Genesis `json:"app_state"`
+	}{}
+
+	data, err := ioutil.ReadFile(file) // nolint:gosec
+	if err != nil {
+		return nil, err
+	}
+
+	if err := json.Unmarshal(data, gen); err != nil {
+		return nil, err
+	}
+	return gen.AppState, nil
 }
 
 // JSON returns the json representation of the Genesis

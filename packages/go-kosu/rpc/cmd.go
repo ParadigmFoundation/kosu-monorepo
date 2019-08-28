@@ -49,8 +49,11 @@ func NewCommand() *cobra.Command {
 
 			return nil
 		},
-		Run: func(cmd *cobra.Command, args []string) {
-			client := abci.NewHTTPClient(url, key)
+		RunE: func(cmd *cobra.Command, args []string) error {
+			client, err := abci.NewHTTPClient(url, key)
+			if err != nil {
+				return err
+			}
 			srv := NewServer(client)
 
 			wg := sync.WaitGroup{}
@@ -74,6 +77,7 @@ func NewCommand() *cobra.Command {
 				}()
 			}
 			wg.Wait()
+			return nil
 		},
 	}
 
