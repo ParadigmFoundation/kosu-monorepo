@@ -118,7 +118,7 @@ export default {
       max-width: 35rem;
       font-size: 15px;
       line-height: 1.5;
-      color: #404040;
+      color: #4A4A4A;
     }
 
     .action-button {
@@ -182,13 +182,13 @@ export default {
       font-weight: 500;
       border-bottom: none;
       padding-bottom: 0;
-      color: #404040;
+      color: #4A4A4A;
     }
 
     p {
       margin-top: 5px;
       margin-bottom 0;
-      color: #404040;
+      color: #4A4A4A;
       line-height: 1.2;
 
       font-weight: 400;

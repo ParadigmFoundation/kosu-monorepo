@@ -78,16 +78,16 @@ contract ValidatorRegistry is Ownable {
     bytes32 _maxGenerator;
     mapping(bytes32 => MaxList)_generators;
 
-    /** @dev Create a new ValidatorRegistry
-        @notice Create a new ValidatorRegistry
-        @param _treasuryAddress Deployed Treasury address
-        @param _votingAddress Deployed Voting address
-        @param _events Deployed EventEmitter address
-        @param _applicationPeriod Initial application period (in blocks) for pending listings
-        @param _commitPeriod Number of blocks after challenge initiated in which votes can be committed
-        @param _challengePeriod Number of blocks a challenge lasts before being finalized
-        @param _exitPeriod Number of blocks exiting listings must wait before claiming stake
-        @param _rewardPeriod The frequency (in blocks) with which validator rewards may be issued
+    /** @dev Initializes the ValidatorRegistry with chain based configuration for pacing and deployed addresses.
+        @notice Initializes the ValidatorRegistry with chain based configuration for pacing and deployed addresses.
+        @param _treasuryAddress Deployed Treasury address.
+        @param _votingAddress Deployed Voting address.
+        @param _events Deployed EventEmitter address.
+        @param _applicationPeriod Initial application period (in blocks) for pending listings.
+        @param _commitPeriod Number of blocks after challenge initiated in which votes can be committed.
+        @param _challengePeriod Number of blocks a challenge lasts before being finalized.
+        @param _exitPeriod Number of blocks exiting listings must wait before claiming stake.
+        @param _rewardPeriod The frequency (in blocks) with which validator rewards may be issued.
     */
     constructor(address payable _treasuryAddress, address _votingAddress, address _events, uint _applicationPeriod, uint _commitPeriod, uint _challengePeriod, uint _exitPeriod, uint _rewardPeriod) public Ownable() {
         treasury = Treasury(_treasuryAddress);
@@ -129,7 +129,7 @@ contract ValidatorRegistry is Ownable {
 
     /** @dev Expose listing data for given public key.
         @notice Expose listing data for given public key.
-        @param pubKey Hex encoded tendermint public key
+        @param pubKey Hex encoded tendermint public key.
         @return The listing structure corresponding to the provided key.
     */
     function getListing(bytes32 pubKey) public view returns (Listing memory) {
@@ -139,7 +139,7 @@ contract ValidatorRegistry is Ownable {
 
     /** @dev Expose several listings provided multiple public keys.
         @notice Expose several listings provided multiple public keys.
-        @param pubKeys Hex encoded Tendermint public keys to retreive
+        @param pubKeys Hex encoded Tendermint public keys to retrieve.
         @return The array of listing structures corresponding to the provided keys.
     */
     function getListings(bytes32[] memory pubKeys) public view returns (Listing[] memory) {
@@ -164,7 +164,7 @@ contract ValidatorRegistry is Ownable {
 
     /** @dev Expose challenge data for a given ID.
         @notice Expose challenge data for a given ID.
-        @param challengeId The ID to retreive challenge data for
+        @param challengeId The ID to retrieve challenge data for.
         @return The challenge indicated by the provided ID.
     */
     function getChallenge(uint challengeId) public view returns (Challenge memory) {
@@ -172,9 +172,10 @@ contract ValidatorRegistry is Ownable {
 
     }
 
-    /** @dev Expose challenge data
-        @notice Expose challenge data
-        @param challengeIds challenge id
+    /** @dev Expose multiple challenges by ids.
+        @notice Expose multiple challenges by ids.
+        @param challengeIds challenge ids to read.
+        @return Array of requested challenges
     */
     function getChallenges(uint[] memory challengeIds) public view returns (Challenge[] memory) {
         Challenge[] memory challenges = new Challenge[](challengeIds.length);
@@ -186,6 +187,7 @@ contract ValidatorRegistry is Ownable {
 
     /** @dev Expose all challenges
         @notice Expose all challenges
+        @return Array of all challenges
     */
     function getAllChallenges() public view returns (Challenge[] memory) {
         uint challengeCount = nextChallenge - 1;
@@ -196,12 +198,12 @@ contract ValidatorRegistry is Ownable {
         return challenges;
     }
 
-    /** @dev Register a listing
-        @notice Register a listing
-        @param tendermintPublicKey Hex encoded tendermint public key
-        @param tokensToStake The number of tokes at stake if the order is challenged
-        @param rewardRate The rate tokens are minted or destroyed over the active listings reward periods
-        @param details A string value to represent support for claim (commonly an external link)
+    /** @dev Register a listing.  The listing will require the deposit of the at least the minimum stake balance.  The tokens will now be vulnerable to be challenged but are not providing any valdator power.
+        @notice Register a listing.  The listing will require the deposit of the at least the minimum stake balance.  The tokens will now be vulnerable to be challenged but are not providing any valdator power.
+        @param tendermintPublicKey Hex encoded tendermint public key.
+        @param tokensToStake The number of tokes at stake if the order is challenged.
+        @param rewardRate The rate tokens are minted or destroyed over the active listings reward periods (ether/rewardPeriod).
+        @param details A string value to represent support for claim (commonly an external link).
     */
     function registerListing(bytes32 tendermintPublicKey, uint tokensToStake, int rewardRate, string calldata details) external {
         //tokensToStake must be greater than or equal to _minimumBalance
@@ -232,13 +234,13 @@ contract ValidatorRegistry is Ownable {
         _listingKeys.push(tendermintPublicKey);
 
         //Emit event
-        emitValidatorRegistered(listing.applicationBlock, listing.tendermintPublicKey, listing.owner, rewardRate, listing.details);
+        _emitValidatorRegistered(listing.applicationBlock, listing.tendermintPublicKey, listing.owner, rewardRate, listing.details);
     }
 
-    /** @dev Challenge a registered listing
-        @notice Challenge a registered listing
-        @param tendermintPublicKey Hex encoded tendermint public key
-        @param details A string value to represent support for claim (commonly an external link)
+    /** @dev Challenge a registered listing.  Stakes a balance of tokens matching the validator being challenged.  Creates a poll through the voting contract of tokens holders to determine a winner.
+        @notice Challenge a registered listing.  Stakes a balance of tokens matching the validator being challenged.  Creates a poll through the voting contract of tokens holders to determine a winner.
+        @param tendermintPublicKey Hex encoded tendermint public key.
+        @param details A string value to represent support for claim (commonly an external link).
     */
     function challengeListing(bytes32 tendermintPublicKey, string memory details) public {
         //Load listing
@@ -248,13 +250,8 @@ contract ValidatorRegistry is Ownable {
         require(listing.status == Status.PENDING || listing.status == Status.ACCEPTED || listing.status == Status.EXITING);
 
         //Ensure earns and burns are up to date  return if a touch and remove was executed
-        processRewards(listing);
+        _processRewards(listing);
         if (listing.status == Status.NULL) return;
-
-        if (listing.stakedBalance < minimumBalance) {
-            touchAndRemoveListing(listing);
-            return;
-        }
 
         //Create challenge
         Challenge storage challenge = _challenges[nextChallenge];
@@ -279,16 +276,16 @@ contract ValidatorRegistry is Ownable {
         nextChallenge++;
 
         //Emit challenged event
-        emitValidatorChallenged(listing.tendermintPublicKey, listing.owner, challenge.challenger, listing.currentChallenge, challenge.pollId, challenge.details);
+        _emitValidatorChallenged(listing.tendermintPublicKey, listing.owner, challenge.challenger, listing.currentChallenge, challenge.pollId, challenge.details);
     }
 
-    /** @dev Resolve a challenge
-        @notice Resolve a challenge
-        @param pubKey Hex encoded tendermint public key
+    /** @dev Resolve a challenge.  Pays out tokens to the winning staked party. Captures information to facilitate voter payout.
+        @notice Resolve a challenge.  Pays out tokens to the winning staked party. Captures information to facilitate voter payout.
+        @param tendermintPublicKey Hex encoded tendermint public key.
     */
-    function resolveChallenge(bytes32 pubKey) public {
+    function resolveChallenge(bytes32 tendermintPublicKey) public {
         //Load listing
-        Listing storage listing = _listings[pubKey];
+        Listing storage listing = _listings[tendermintPublicKey];
         Challenge storage challenge = _challenges[listing.currentChallenge];
 
         //Must be currently challenged and after the end block but not finalized
@@ -321,9 +318,9 @@ contract ValidatorRegistry is Ownable {
             challenge.balance = challenge.balance.sub(holderCut);
 
             //Emit event removing power
-            emitValidatorRegistryUpdate(listing.tendermintPublicKey, listing.owner, 0);
+            _emitValidatorRegistryUpdate(listing.tendermintPublicKey, listing.owner, 0);
 
-            removeListing(listing);
+            _removeListing(listing);
         } else {
             challenge.passed = false;
             challenge.finalized = true;
@@ -350,15 +347,15 @@ contract ValidatorRegistry is Ownable {
                 treasury.releaseTokens(listing.owner, listing.stakedBalance);
 
                 //Clear listing data and remove from tracking array
-                removeListing(listing);
+                _removeListing(listing);
             } else if (listing.confirmationBlock > 0) {//Confirmed challenge is returned to accepted
                 listing.status = Status.ACCEPTED;
                 listing.currentChallenge = 0;
-                emitValidatorChallengeResolved(listing);
+                _emitValidatorChallengeResolved(listing);
             } else {//Pending challege returned to pending
                 listing.status = Status.PENDING;
                 listing.currentChallenge = 0;
-                emitValidatorChallengeResolved(listing);
+                _emitValidatorChallengeResolved(listing);
             }
 
             //ensure the ending state is correct
@@ -366,8 +363,8 @@ contract ValidatorRegistry is Ownable {
         }
     }
 
-    /** @dev Claims winnings from a challenge
-        @notice Claims winnings from a challenge
+    /** @dev Claims winnings from a challenge that has been completed.  Accounts are rewarded for voting in support of the winning resolution proportionally to their vote contribution.
+        @notice Claims winnings from a challenge that has been completed.  Accounts are rewarded for voting in support of the winning resolution proportionally to their vote contribution.
         @param challengeId Challenge id to claim rewards from.
     */
     function claimWinnings(uint challengeId) public {
@@ -395,21 +392,21 @@ contract ValidatorRegistry is Ownable {
         treasury.award(msg.sender, voterCut);
     }
 
-    /** @dev Claims rewards for a listing
-        @notice Claims rewards for a listing
-        @param pubKey Public key for the listing to have rewards claimed
+    /** @dev Claims rewards for a listing.  Positive reward rate will have new tokens minted.  Negative reward rates will burn tokens and have risk of being removed immediately through a TouchAndRemove when insufficient tokens are available.
+        @notice Claims rewards for a listing.  Positive reward rate will have new tokens minted.  Negative reward rates will burn tokens and have risk of being removed immediately through a TouchAndRemove when insufficient tokens are available.
+        @param tendermintPublicKey Public key for the listing to have rewards claimed.
     */
-    function claimRewards(bytes32 pubKey) public {
+    function claimRewards(bytes32 tendermintPublicKey) public {
         //Load listing
-        Listing storage listing = _listings[pubKey];
+        Listing storage listing = _listings[tendermintPublicKey];
 
         //Call process rewards with loaded listing
-        processRewards(listing);
+        _processRewards(listing);
     }
 
-    /** @dev Confirm a listing registration
-        @notice Confirm a listing registration
-        @param tendermintPublicKey Hex encoded tendermint public key
+    /** @dev Confirm a listing registration after the confirmation period. Perform initial token burn for a burning listing.
+        @notice Confirm a listing registration after the confirmation period. Perform initial token burn for a burning listing.
+        @param tendermintPublicKey Hex encoded tendermint public key.
     */
     function confirmListing(bytes32 tendermintPublicKey) public {
         //Load listing
@@ -426,23 +423,23 @@ contract ValidatorRegistry is Ownable {
             listing.lastRewardBlock = block.number - rewardPeriod;
         } else {
             if (listing.rewardRate > 0) {
-                addGeneratorToList(listing.rewardRate, listing.tendermintPublicKey);
+                _addGeneratorToList(listing.rewardRate, listing.tendermintPublicKey);
             }
 
             listing.lastRewardBlock = block.number;
         }
-        processRewards(listing);
+        _processRewards(listing);
 
         if (listing.status != Status.NULL) {
             //Emit update event if listing wasn't removed
-            emitValidatorConfirmed(listing);
-            emitValidatorRegistryUpdate(listing.tendermintPublicKey, listing.owner, listing.stakedBalance);
+            _emitValidatorConfirmed(listing);
+            _emitValidatorRegistryUpdate(listing.tendermintPublicKey, listing.owner, listing.stakedBalance);
         }
     }
 
-    /** @dev Initiate a listing exit
-        @notice Initiate a listing exit
-        @param tendermintPublicKey Hex encoded tendermint public key
+    /** @dev Initiate a listing exit. Immediately exit a pending listing or start the exit delay and remove validator power of the listing.
+        @notice Initiate a listing exit. Immediately exit a pending listing or start the exit delay and remove validator power of the listing.
+        @param tendermintPublicKey Hex encoded tendermint public key.
     */
     function initExit(bytes32 tendermintPublicKey) public {
         //Load the listing
@@ -458,7 +455,7 @@ contract ValidatorRegistry is Ownable {
             treasury.releaseTokens(msg.sender, listing.stakedBalance);
 
             //Clear listing data and remove from tracking array
-            removeListing(listing);
+            _removeListing(listing);
 
             return;
         }
@@ -470,12 +467,12 @@ contract ValidatorRegistry is Ownable {
         listing.exitBlock = block.number + exitPeriod;
 
         //Emit event
-        emitValidatorRegistryUpdate(listing.tendermintPublicKey, listing.owner, 0);
+        _emitValidatorRegistryUpdate(listing.tendermintPublicKey, listing.owner, 0);
     }
 
-    /** @dev Complete a listing exit
-        @notice Complete a listing exit
-        @param tendermintPublicKey Hex encoded tendermint public key
+    /** @dev Finalize a listings exit.  Allowing the account to safely remove the staked tokens and nullify the listing.
+        @notice Finalize a listings exit.  Allowing the account to safely remove the staked tokens and nullify the listing.
+        @param tendermintPublicKey Hex encoded tendermint public key.
     */
     function finalizeExit(bytes32 tendermintPublicKey) public {
         //Load the listing
@@ -493,9 +490,14 @@ contract ValidatorRegistry is Ownable {
         treasury.releaseTokens(msg.sender, listing.stakedBalance);
 
         //Clear listing data and remove from tracking array
-        removeListing(listing);
+        _removeListing(listing);
     }
 
+    /** @dev Reduces the generating reward rate of a listing.  This prevents the listing from needing to reapply when they amount of tokens they are generating is to high.
+        @notice Reduces the generating reward rate of a listing.  This prevents the listing from needing to reapply when they amount of tokens they are generating is to high.
+        @param tendermintPublicKey Hex encoded tendermint public key.
+        @param newRate New reward rate in the units of ether/period.
+    */
     function reduceReward(bytes32 tendermintPublicKey, int newRate) public {
         //Load the listing
         Listing storage listing = _listings[tendermintPublicKey];
@@ -511,12 +513,17 @@ contract ValidatorRegistry is Ownable {
         //Listing must be active and in good standing.
         require(listing.status == Status.ACCEPTED);
 
-        processRewards(listing);
+        _processRewards(listing);
         listing.rewardRate = newRate;
 
-        emitValidatorReducedReward(listing);
+        _emitValidatorReducedReward(listing);
     }
 
+    /** @dev Updates the contract configuration.
+        @notice Updates the contract configuration.
+        @param index The index of the parameter you wish to update.
+        @param value The new value for the parameter.
+    */
     function updateConfigValue(uint index, uint value) public onlyOwner {
         if (index == 0) {
             applicationPeriod = value;
@@ -544,12 +551,12 @@ contract ValidatorRegistry is Ownable {
     }
 
     //INTERNAL
-    function hasRewardPending(Listing storage l) internal view returns (bool) {
+    function _hasRewardPending(Listing storage l) internal view returns (bool) {
         return (l.status == Status.ACCEPTED && l.rewardRate != 0 && l.lastRewardBlock + rewardPeriod <= block.number);
     }
 
-    function processRewards(Listing storage l) internal {
-        if (hasRewardPending(l)) {
+    function _processRewards(Listing storage l) internal {
+        if (_hasRewardPending(l)) {
             uint rewardPeriods = block.number.sub(l.lastRewardBlock).div(rewardPeriod);
             if (l.rewardRate > 0) {
                 //Converting reward rate from ether to tokens to mint
@@ -578,7 +585,7 @@ contract ValidatorRegistry is Ownable {
                     uint totalTokensToBurn = userTreasuryBalance.add(tokensRemaining);
                     treasury.burnFrom(l.owner, totalTokensToBurn);
 
-                    touchAndRemoveListing(l);
+                    _touchAndRemoveListing(l);
                 } else {
                     treasury.burnFrom(l.owner, tokensToBurn);
                 }
@@ -587,20 +594,20 @@ contract ValidatorRegistry is Ownable {
         }
     }
 
-    function touchAndRemoveListing(Listing storage l) internal {
+    function _touchAndRemoveListing(Listing storage l) internal {
         //Emit events to signal listing was to and removed, and voting power has been lost
-        emitValidatorTouchedAndRemoved(l);
-        emitValidatorRegistryUpdate(l.tendermintPublicKey, l.owner, 0);
+        _emitValidatorTouchedAndRemoved(l);
+        _emitValidatorRegistryUpdate(l.tendermintPublicKey, l.owner, 0);
 
         //Approve and release tokens to treasury
         kosuToken.approve(address(treasury), l.stakedBalance);
         treasury.releaseTokens(l.owner, l.stakedBalance);
 
         //Clear listing data and remove from tracking array
-        removeListing(l);
+        _removeListing(l);
     }
 
-    function removeListingKey(bytes32 key) internal {
+    function _removeListingKey(bytes32 key) internal {
         //Removes the listing by key and shortens the array
         for (uint i = 0; i < _listingKeys.length; i++) {
             if (_listingKeys[i] == key) {
@@ -611,29 +618,20 @@ contract ValidatorRegistry is Ownable {
         }
     }
 
-    function sqrt(uint x) internal pure returns (uint y) {
-        uint z = (x + 1) / 2;
-        y = x;
-        while (z < y) {
-            y = z;
-            z = (x / z + z) / 2;
-        }
-    }
-
-    function removeListing(Listing storage l) internal {
+    function _removeListing(Listing storage l) internal {
         if (l.rewardRate > 0 && l.confirmationBlock > 0) {
-            removeEntryFromList(l.tendermintPublicKey);
+            _removeEntryFromList(l.tendermintPublicKey);
         }
 
         bytes32[] memory data = new bytes32[](1);
         data[0] = l.tendermintPublicKey;
         eventEmitter.emitEvent("ValidatorRemoved", data, "");
 
-        removeListingKey(l.tendermintPublicKey);
+        _removeListingKey(l.tendermintPublicKey);
         delete _listings[l.tendermintPublicKey];
     }
 
-    function emitValidatorRegistryUpdate(bytes32 tendermintPublicKey, address owner, uint stake) internal {
+    function _emitValidatorRegistryUpdate(bytes32 tendermintPublicKey, address owner, uint stake) internal {
         bytes32[] memory data = new bytes32[](3);
         data[0] = tendermintPublicKey;
         data[1] = bytes32(uint(owner));
@@ -641,7 +639,7 @@ contract ValidatorRegistry is Ownable {
         eventEmitter.emitEvent("ValidatorRegistryUpdate", data, "");
     }
 
-    function emitValidatorRegistered(uint applicationBlock, bytes32 tendermintPublicKey, address owner, int rewardRate, string storage details) internal {
+    function _emitValidatorRegistered(uint applicationBlock, bytes32 tendermintPublicKey, address owner, int rewardRate, string storage details) internal {
         bytes32[] memory data = new bytes32[](4);
         data[0] = tendermintPublicKey;
         data[1] = bytes32(applicationBlock);
@@ -650,20 +648,20 @@ contract ValidatorRegistry is Ownable {
         eventEmitter.emitEvent("ValidatorRegistered", data, details);
     }
 
-    function emitValidatorConfirmed(Listing storage l) internal {
+    function _emitValidatorConfirmed(Listing storage l) internal {
         bytes32[] memory data = new bytes32[](1);
         data[0] = l.tendermintPublicKey;
         eventEmitter.emitEvent("ValidatorConfirmed", data, "");
     }
 
-    function emitValidatorTouchedAndRemoved(Listing storage l) internal {
+    function _emitValidatorTouchedAndRemoved(Listing storage l) internal {
         bytes32[] memory data = new bytes32[](2);
         data[0] = l.tendermintPublicKey;
         data[1] = bytes32(uint(l.owner));
         eventEmitter.emitEvent("ValidatorTouchedAndRemoved", data, "");
     }
 
-    function emitValidatorReducedReward(Listing storage l) internal {
+    function _emitValidatorReducedReward(Listing storage l) internal {
         bytes32[] memory data = new bytes32[](3);
         data[0] = l.tendermintPublicKey;
         data[1] = bytes32(uint(l.owner));
@@ -671,7 +669,7 @@ contract ValidatorRegistry is Ownable {
         eventEmitter.emitEvent("ValidatorReducedReward", data, "");
     }
 
-    function emitValidatorChallenged(bytes32 tendermintPublicKey, address owner, address challenger, uint challengeId, uint pollId, string storage details) internal {
+    function _emitValidatorChallenged(bytes32 tendermintPublicKey, address owner, address challenger, uint challengeId, uint pollId, string storage details) internal {
         bytes32[] memory data = new bytes32[](5);
         data[0] = tendermintPublicKey;
         data[1] = bytes32(uint(owner));
@@ -681,13 +679,13 @@ contract ValidatorRegistry is Ownable {
         eventEmitter.emitEvent("ValidatorChallenged", data, details);
     }
 
-    function emitValidatorChallengeResolved(Listing storage l) internal {
+    function _emitValidatorChallengeResolved(Listing storage l) internal {
         bytes32[] memory data = new bytes32[](1);
         data[0] = l.tendermintPublicKey;
         eventEmitter.emitEvent("ValidatorChallengeResolved", data, "");
     }
 
-    function findGeneratorPlaceInList(int value) internal view returns (bytes32 previous, bytes32 next) {
+    function _findGeneratorPlaceInList(int value) internal view returns (bytes32 previous, bytes32 next) {
         if (_maxGenerator == 0x0) {
             return (0x0, 0x0);
         }
@@ -709,12 +707,12 @@ contract ValidatorRegistry is Ownable {
         }
     }
 
-    function addGeneratorToList(int rewardRate, bytes32 pubKey) internal {
-        MaxList storage newGenerator = _generators[pubKey];
+    function _addGeneratorToList(int rewardRate, bytes32 tendermintPublicKey) internal {
+        MaxList storage newGenerator = _generators[tendermintPublicKey];
         newGenerator.value = rewardRate;
-        newGenerator.self = pubKey;
+        newGenerator.self = tendermintPublicKey;
 
-        (bytes32 previous, bytes32 next) = findGeneratorPlaceInList(newGenerator.value);
+        (bytes32 previous, bytes32 next) = _findGeneratorPlaceInList(newGenerator.value);
 
         if (previous == 0x0 && next == 0x0) {
             _maxGenerator = newGenerator.self;
@@ -736,7 +734,7 @@ contract ValidatorRegistry is Ownable {
         }
     }
 
-    function removeEntryFromList(bytes32 entryKey) internal {
+    function _removeEntryFromList(bytes32 entryKey) internal {
         if (_maxGenerator == 0x0) {
             return;
         }

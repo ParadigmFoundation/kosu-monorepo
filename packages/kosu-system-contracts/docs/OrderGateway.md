@@ -1,6 +1,6 @@
 # OrderGateway
 
-Access SubContract implementation's methods to participate in trades and check order status.
+Serves as a message router for SubContract implementations. Passing SubContract method calls through the gateway allows for a single watch point for incoming participate transactions.
 
 ## Contents
 
@@ -14,7 +14,7 @@ Access SubContract implementation's methods to participate in trades and check o
 
 ### amountRemaining
 
-Calls amountRemaining on provided subContract.
+Forwards function calls of amountRemaining to the provided subContract address.
 
 #### Signature
 
@@ -24,18 +24,18 @@ function amountRemaining(subContract address, data bytes) public view (uint256)
 
 #### Parameters:
 
-| Parameter     | Type      | Description                                                         |
-| ------------- | --------- | ------------------------------------------------------------------- |
-| `subContract` | `address` | Address of contract implementing the SubContract interface.         |
-| `data`        | `bytes`   | Encoded maker values for Order encoded based on the makerArguments. |
+| Parameter     | Type      | Description                                                                                          |
+| ------------- | --------- | ---------------------------------------------------------------------------------------------------- |
+| `subContract` | `address` | Address of contract implementing the SubContract interface.                                          |
+| `data`        | `bytes`   | Encoded values for Order encoded in accordance to the arguments exposed by the provided subContract. |
 
 #### Returns:
 
-Quantity of available asset for Order encoded in makerData.
+Quantity of available asset for Order encoded in data.
 
 ### arguments
 
-Calls arguments on provided subContract.
+Forwards function calls of arguments to the provided subContract address.
 
 #### Signature
 
@@ -51,11 +51,11 @@ function arguments(subContract address) public view (string)
 
 #### Returns:
 
-String encoded JSON representation of subContract maker arguments.
+JSON string providing expected structure of subContract input data.
 
 ### isValid
 
-Calls isValid on provided subContract.
+Forwards function calls of isValid to the provided subContract address.
 
 #### Signature
 
@@ -65,18 +65,18 @@ function isValid(subContract address, data bytes) public view (bool)
 
 #### Parameters:
 
-| Parameter     | Type      | Description                                                         |
-| ------------- | --------- | ------------------------------------------------------------------- |
-| `subContract` | `address` | Address of contract implementing the SubContract interface.         |
-| `data`        | `bytes`   | Encoded maker values for Order encoded based on the makerArguments. |
+| Parameter     | Type      | Description                                                                                          |
+| ------------- | --------- | ---------------------------------------------------------------------------------------------------- |
+| `subContract` | `address` | Address of contract implementing the SubContract interface.                                          |
+| `data`        | `bytes`   | Encoded values for Order encoded in accordance to the arguments exposed by the provided subContract. |
 
 #### Returns:
 
-Boolean representing the validity of makerData.
+Boolean representing the validity of data.
 
 ### participate
 
-Calls participate on the provided subContract.
+Forwards function calls of participate to the provided subContract address.
 
 #### Signature
 
@@ -86,11 +86,11 @@ function participate(subContract address, data bytes) public (bool)
 
 #### Parameters:
 
-| Parameter     | Type      | Description                                                    |
-| ------------- | --------- | -------------------------------------------------------------- |
-| `subContract` | `address` | Address of contract implementing the SubContract interface.    |
-| `data`        | `bytes`   | Encoded maker values for Order encoded based on the arguments. |
+| Parameter     | Type      | Description                                                                                          |
+| ------------- | --------- | ---------------------------------------------------------------------------------------------------- |
+| `subContract` | `address` | Address of contract implementing the SubContract interface.                                          |
+| `data`        | `bytes`   | Encoded values for Order encoded in accordance to the arguments exposed by the provided subContract. |
 
 #### Returns:
 
-Boolean representing success of transaction.
+Boolean representing result of transaction.
