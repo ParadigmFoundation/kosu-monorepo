@@ -107,6 +107,8 @@ func scaleBalance(balance *big.Int) int64 {
 	scaled.Set(balance)
 
 	// scale balance by 10**18 (base units for KOSU)
+	// linter disabled for outdated gosec rule
+	// nolint:gosec
 	ether.Exp(big.NewInt(10), big.NewInt(18), big.NewInt(0))
 	scaled.Div(balance, ether)
 
