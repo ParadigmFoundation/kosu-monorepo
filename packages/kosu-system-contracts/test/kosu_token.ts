@@ -19,7 +19,8 @@ describe("KosuToken", () => {
 
     describe("parameterization", () => {
         it("should fail with incorrect initial deposit", async () => {
-            (await web3Wrapper.sendTransactionAsync({ to: token.address, value: TestValues.twoEther, from })
+            (await web3Wrapper
+                .sendTransactionAsync({ to: token.address, value: TestValues.twoEther, from })
                 .then(txHash => web3Wrapper.awaitTransactionMinedAsync(txHash))).status.should.eq(0);
         });
 
