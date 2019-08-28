@@ -7,10 +7,7 @@ import { ChainData } from "./ChainData";
 import { requestHandlerClosure } from "./requestHandler";
 import { safeSend } from "./utils";
 
-const {
-    REDIS_HOST = "localhost",
-    REDIS_PORT = "6379",
-} = process.env;
+const { REDIS_HOST = "localhost", REDIS_PORT = "6379" } = process.env;
 
 export interface IClientMap {
     [id: string]: {
@@ -27,10 +24,7 @@ export interface IClientMap {
  * @param kosu instantiated kosu.js instance
  * @param kosuRpc socket connection to kosu JSONRPC server
  */
-export function connectionHandlerClosure(
-    clients: IClientMap,
-    kosu: Kosu,
-): (s: ws, r: ws.Data) => void {
+export function connectionHandlerClosure(clients: IClientMap, kosu: Kosu): (s: ws, r: ws.Data) => void {
     const redis = new Redis(parseInt(REDIS_PORT), REDIS_HOST);
     return (socket: ws, request: ws.Data) => {
         const subscriptionId = uuid();

@@ -11,11 +11,7 @@ import { nodeQuery, safeSend } from "./utils";
  * @param kosu instantiated kosu.js instance
  * @param kosuRpc socket connection to kosu node JSONRPC server
  */
-export function requestHandlerClosure(
-    socket: ws,
-    serverId: string,
-    kosu: Kosu,
-): (m: ws.Data) => Promise<void> {
+export function requestHandlerClosure(socket: ws, serverId: string, kosu: Kosu): (m: ws.Data) => Promise<void> {
     return async (msg: ws.Data) => {
         let parsed: IWsRequest;
         const res: IWsResponse = { id: null, code: 1 };

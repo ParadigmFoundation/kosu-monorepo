@@ -2,7 +2,7 @@ interface INetworkData {
     token: {
         total_supply?: string;
         price?: string;
-    }
+    };
     bandwidth: {
         total_limit?: string;
         total_orders?: string;
@@ -12,7 +12,7 @@ interface INetworkData {
         rebalance_period_number?: string;
         period_end_eth_block?: string;
         current_eth_block?: string;
-    }
+    };
     network: {
         block_height?: string;
         last_block_time?: string;
@@ -20,7 +20,7 @@ interface INetworkData {
         number_validators?: string;
         total_validator_stake?: string;
         total_poster_stake?: string;
-    }
+    };
     transactions?: IOrder[];
     validators?: IValidator[];
 }

@@ -30,12 +30,7 @@ export function socketErrorHandlerClosure(prefixMessage: string): (e: any) => vo
 /**
  * Abstraction over  JSONRPC query methods.
  */
-export async function nodeQuery(
-    socket: ws,
-    method: string,
-    params: any[],
-    timeout: number = 4000,
-): Promise<any> {
+export async function nodeQuery(socket: ws, method: string, params: any[], timeout: number = 4000): Promise<any> {
     return new Promise((resolve, reject) => {
         const requestId = uuid();
         let handler: (m: any) => void;
@@ -56,12 +51,14 @@ export async function nodeQuery(
         };
 
         socket.on("message", handler);
-        socket.send(JSON.stringify({
-            jsonrpc: "2.0",
-            id: requestId,
-            method,
-            params,
-        }));
+        socket.send(
+            JSON.stringify({
+                jsonrpc: "2.0",
+                id: requestId,
+                method,
+                params,
+            }),
+        );
     }).catch((err: any) => {
         console.error(`failed node query: ${err}`);
     });

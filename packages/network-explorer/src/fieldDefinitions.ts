@@ -69,7 +69,7 @@ export const fields = {
             if (diff <= 0) {
                 return "15";
             } else {
-                const sec = (diff * 15) + 15;
+                const sec = diff * 15 + 15;
                 return sec.toString();
             }
         },

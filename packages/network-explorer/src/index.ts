@@ -28,14 +28,7 @@ const server = new Server({
 });
 
 // main chain data manager
-const chain = new ChainData(
-    kosu,
-    KOSU_JSONRPC_URL,
-    fields,
-    10000,
-    10,
-    20,
-);
+const chain = new ChainData(kosu, KOSU_JSONRPC_URL, fields, 10000, 10, 20);
 
 (async () => {
     const ordersSubId = await kosu.node.subscribeToOrders(orderHandlerClosure(chain));
@@ -43,5 +36,7 @@ const chain = new ChainData(
 
     server.on("connection", connectionHandlerClosure(clients, kosu));
 
-    console.log(`started with:\n\t - orders subscription ID: ${ordersSubId}\n\t - blocks subscription ID: ${blocksSubId}`);
+    console.log(
+        `started with:\n\t - orders subscription ID: ${ordersSubId}\n\t - blocks subscription ID: ${blocksSubId}`,
+    );
 })().catch((e: any) => console.log(e));

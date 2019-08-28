@@ -1,9 +1,6 @@
 import Redis from "ioredis";
 
-const {
-    REDIS_PORT = "6379",
-    REDIS_HOST = "localhost",
-} = process.env;
+const { REDIS_PORT = "6379", REDIS_HOST = "localhost" } = process.env;
 
 export class RedisWrapper {
     private readonly db: Redis;

@@ -7,10 +7,7 @@ import { ChainData } from "./ChainData";
 import { requestHandlerClosure } from "./requestHandler";
 import { safeSend } from "./utils";
 
-const {
-    REDIS_HOST = "localhost",
-    REDIS_PORT = "6379",
-} = process.env;
+const { REDIS_HOST = "localhost", REDIS_PORT = "6379" } = process.env;
 
 export interface IClientMap {
     [id: string]: {

@@ -8,11 +8,7 @@ import { RedisWrapper } from "./RedisWrapper";
 interface QueryDefinition {
     [key: string]: {
         updateEvery: number;
-        updateFunc: (
-            _this: ChainData,
-            kosu: Kosu,
-            db: RedisWrapper,
-        ) => Promise<string>;
+        updateFunc: (_this: ChainData, kosu: Kosu, db: RedisWrapper) => Promise<string>;
         timer?: NodeJS.Timer;
     };
 }
@@ -210,7 +206,7 @@ export class ChainData {
     private getAverageBlockTime(): number {
         let sum = 0;
         const length = this.lastBlockTimes.length;
-        this.lastBlockTimes.forEach(diff => sum += diff);
+        this.lastBlockTimes.forEach(diff => (sum += diff));
         return Number((sum / length).toFixed(4));
     }
 
@@ -231,7 +227,7 @@ export class ChainData {
 
                     const currHeight = parseInt(this.getLatest("network/block_height"));
                     const firstBlock = parseInt(validatorData.firstVote);
-                    const uptimePercent = Math.floor((validatorData.totalVotes / ((currHeight - firstBlock))) * 100);
+                    const uptimePercent = Math.floor((validatorData.totalVotes / (currHeight - firstBlock)) * 100);
 
                     const listing = await this.kosu.validatorRegistry.getListing(validatorData.publicKey);
 
