@@ -1484,7 +1484,7 @@ describe("ValidatorRegistry", async () => {
             });
 
             it("should burn up to all the staked balance", async () => {
-                const burn = new BigNumber(TestValues.oneEther).times(new BigNumber("-1"));
+                const burn = new BigNumber(TestValues.oneEther).times(new BigNumber("-5"));
                 const tokenBurnAmount = await kosuToken.estimateEtherToToken.callAsync(burn.multipliedBy("-1"));
                 await kosuToken.approve.awaitTransactionSuccessAsync(
                     treasury.address,
