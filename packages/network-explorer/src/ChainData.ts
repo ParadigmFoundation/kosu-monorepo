@@ -1,4 +1,4 @@
-import { BigNumber } from "0x.js";
+import { BigNumber } from "@0x/utils";
 import { Kosu } from "@kosu/kosu.js";
 import { cloneDeep } from "lodash";
 import uuid from "uuid/v4";
@@ -12,11 +12,6 @@ interface QueryDefinition {
         updateFunc: (
             _this: ChainData,
             kosu: Kosu,
-            query: (
-                method: string,
-                params: any[],
-                timeout: number,
-            ) => Promise<any>,
             db: RedisWrapper,
         ) => Promise<string>;
         timer?: NodeJS.Timer;
@@ -193,7 +188,7 @@ export class ChainData {
             const val = this.defs[key];
 
             // tslint:disable no-unbound-method
-            res = await val.updateFunc(this, this.kosu, this.query, this.redis);
+            res = await val.updateFunc(this, this.kosu, this.redis);
         } catch (err) {
             console.error(`failed to update value for '${key}': ${err}`);
         }
@@ -230,7 +225,7 @@ export class ChainData {
             this.validators = [];
             try {
                 // get the current list of validator IDs
-                const valListArr = await this.query("kosu_validators", null, 5000);
+                const valListArr = await this.kosu.node.validators();
 
                 // tslint:disable-next-line
                 for (let i = 0; i < valListArr.length; i++) {
@@ -254,7 +249,7 @@ export class ChainData {
                         public_key: validatorData.publicKey,
 
                         // HACK: balance encoded as { balance: 'value: 0' }
-                        stake: validatorData.balance.split(": ")[1],
+                        stake: validatorData.balance.toString(),
 
                         reward,
                         uptime_percent: uptimePercent.toString(),
@@ -268,42 +263,6 @@ export class ChainData {
                 console.error(`unable to update validator info: ${err.message}`);
             }
         };
-    }
-
-    private async query(
-        method: string,
-        params: any[],
-        timeout: number = 4000,
-    ): Promise<any> {
-        return new Promise((resolve, reject) => {
-            const requestId = uuid();
-            let handler: (m: any) => void;
-
-            const timer = setTimeout(() => {
-                this.socket.off("message", handler);
-                clearInterval(timer);
-                reject(`timeout: failed query with method: "${method}"`);
-            }, timeout);
-
-            handler = (msg: any) => {
-                const parsed = JSON.parse(msg.toString());
-                if (parsed.id === requestId) {
-                    this.socket.off("message", handler);
-                    clearInterval(timer);
-                    resolve(parsed.result);
-                }
-            };
-
-            this.socket.on("message", handler);
-            this.socket.send(JSON.stringify({
-                jsonrpc: "2.0",
-                id: requestId,
-                method,
-                params,
-            }));
-        }).catch((err: any) => {
-            console.error(`failed node query: ${err}`);
-        });
     }
 
     public async setLatest(): Promise<void> {
