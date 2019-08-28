@@ -96,7 +96,7 @@ before(async () => {
         JSON.stringify(argumentsJson),
     );
     contracts.kosuToken.bondTokens.awaitTransactionSuccessAsync(TestValues.zero, {
-        value: TestValues.oneEther.times(85),
+        value: TestValues.oneEther.times(200),
     });
     if (!useGeth) {
         web3.eth.personal.importRawKey(
