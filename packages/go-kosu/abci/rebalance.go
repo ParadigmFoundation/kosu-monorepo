@@ -77,7 +77,7 @@ func posterIterator(app *App, totalBalance *big.Int) func(string, *types.Poster)
 // calculates a poster's period limit based on their balance and the total poster balance
 func posterLimit(periodLimit uint64, posterBalance, totalBalance *big.Int) uint64 {
 	// copy periodLimit (pl), posterBalance (pb), totalBalance (tb)
-	var pl, pb, tb *big.Int
+	pl, pb, tb := &big.Int{}, &big.Int{}, &big.Int{}
 	pl.SetUint64(periodLimit)
 	pb.Set(posterBalance)
 	tb.Set(totalBalance)
