@@ -171,7 +171,6 @@ export class ChainData {
                 console.log(`not updating because we got null value for key '${key}' as '${value}'`);
             } else {
                 await this.redis.set(key, value);
-                console.log(`set new value for '${key}' as '${value}'`);
             }
             return;
         };
@@ -246,8 +245,6 @@ export class ChainData {
 
                     const validator: IValidator = {
                         public_key: validatorData.publicKey,
-
-                        // HACK: balance encoded as { balance: 'value: 0' }
                         stake: validatorData.balance.toString(),
 
                         reward,
@@ -258,6 +255,7 @@ export class ChainData {
                     };
                     this.validators.push(validator);
                 }
+                console.log(`validator data updated`);
             } catch (err) {
                 console.error(`unable to update validator info: ${err.message}`);
             }
