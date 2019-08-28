@@ -1,7 +1,10 @@
 local Image(name, image) = {
 	name: name,
 	image: "gcr.io/kosu-io/" + image,
-	pull: "always",
+	pull: "always"
+};
+
+local GethConfig() = {
 	environment: {
 		WEB3_URI: "http://kosu-geth:8545",
 		WEB3_URI_WS: "ws://kosu-geth:8546",
@@ -30,7 +33,7 @@ local KosuGeth(name) = Image(name, "kosu-test-geth:latest") {
 		 	"depends_on": ["clone"],
 		},
 
-	    Image("build-project", "node-lts:latest") {
+	    Image("build-project", "node-lts:latest") + GethConfig() {
 			"commands": [
 				"yarn",
 				"yarn setup:ci",
@@ -41,12 +44,12 @@ local KosuGeth(name) = Image(name, "kosu-test-geth:latest") {
 			"depends_on": ["clone"]
 		},
 
-		Image("npm-tests", "node-lts:latest") {
+		Image("npm-tests", "node-lts:latest") + GethConfig() {
 			"commands": [ "yarn test:ci" ],
 			"depends_on": [ "build-project" ],
 		},
 
-		Image("solidity", "node-lts:latest") {
+		Image("solidity", "node-lts:latest") + GethConfig() {
 			"commands": [ "yarn contracts:test:ci" ],
 			"depends_on": [ "build-project" ],
 		},
