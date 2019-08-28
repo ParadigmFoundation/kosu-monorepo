@@ -17,10 +17,6 @@ import (
 	"go-kosu/witness"
 )
 
-const (
-	nodeAddr = "tcp://0.0.0.0:26657"
-)
-
 // Config holds the program execution arguments
 type Config struct {
 	Home  string
@@ -42,10 +38,10 @@ func newDB(dir string, debug bool) (db.DB, error) {
 	return gdb, nil
 }
 
-func startWitness(ctx context.Context, ethAddr string, nodeAddr string, key []byte, logger log.Logger) error {
-	client, err := abci.NewHTTPClient(nodeAddr, key)
+func startWitness(ctx context.Context, app *abci.App, ethAddr string, logger log.Logger) error {
+	client, err := app.NewClient()
 	if err != nil {
-		return nil
+		return err
 	}
 
 	p, err := witness.NewEthereumProvider(ethAddr)
@@ -53,11 +49,19 @@ func startWitness(ctx context.Context, ethAddr string, nodeAddr string, key []by
 		return err
 	}
 
-	w := witness.New(client, p, witness.DefaultOptions)
+	gen, err := abci.NewGenesisFromFile(app.Config.GenesisFile())
+	if err != nil {
+		return err
+	}
+
+	opts := witness.DefaultOptions
+	opts.PeriodLimit = int(gen.ConsensusParams.PeriodLimit)
+	opts.PeriodLength = int(gen.ConsensusParams.PeriodLength)
+	w := witness.New(client, p, opts)
 	return w.WithLogger(logger).Start(ctx)
 }
 
-func run(cfg *Config, key []byte) error {
+func run(cfg *Config) error {
 	db, err := newDB(cfg.Home, cfg.Debug)
 	if err != nil {
 		return err
@@ -78,7 +82,7 @@ func run(cfg *Config, key []byte) error {
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
 
-	if err := startWitness(ctx, cfg.Web3, nodeAddr, key, logger); err != nil {
+	if err := startWitness(ctx, app, cfg.Web3, logger); err != nil {
 		return err
 	}
 
@@ -89,7 +93,6 @@ func run(cfg *Config, key []byte) error {
 func main() {
 	var (
 		cfg Config
-		key []byte
 	)
 
 	cobra.OnInitialize(func() {
@@ -101,13 +104,7 @@ func main() {
 		Short: "Starts the kosu node",
 		Long:  "Main entrypoint for Kosu validators and full nodes.\nPrior to use, 'kosud init' must be run.",
 		Run: func(cmd *cobra.Command, args []string) {
-			var err error
-			key, err = abci.LoadPrivateKey(cfg.Home)
-			if err != nil {
-				stdlog.Fatal(err)
-			}
-
-			if err = run(&cfg, key); err != nil {
+			if err := run(&cfg); err != nil {
 				stdlog.Fatal(err)
 			}
 		},
