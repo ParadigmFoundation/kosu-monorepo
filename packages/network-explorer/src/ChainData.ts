@@ -1,7 +1,6 @@
 import { BigNumber } from "@0x/utils";
 import { Kosu } from "@kosu/kosu.js";
 import { cloneDeep } from "lodash";
-import uuid from "uuid/v4";
 import ws from "ws";
 
 import { RedisWrapper } from "./RedisWrapper";
