@@ -155,11 +155,14 @@ describe("KosuToken", () => {
             });
 
             it("should empty the contract", async () => {
-                await kosuToken.releaseTokens.awaitTransactionSuccessAsync(await kosuToken.balanceOf.callAsync(from));
+                if ((await token.balanceOf.callAsync(from)).eq("0")) {
+                    throw new Error(".only issue");
+                }
+                await token.releaseTokens.awaitTransactionSuccessAsync(await token.balanceOf.callAsync(from));
 
-                const finalBalance = await kosuToken.balanceOf.callAsync(from);
-                const finalSupply = await kosuToken.totalSupply.callAsync();
-                const endingEther = await web3Wrapper.getBalanceInWeiAsync(kosuToken.address);
+                const finalBalance = await token.balanceOf.callAsync(from);
+                const finalSupply = await token.totalSupply.callAsync();
+                const endingEther = await web3Wrapper.getBalanceInWeiAsync(token.address);
 
                 "0".should.eq(finalBalance.toString());
                 "0".should.eq(finalSupply.toString());
