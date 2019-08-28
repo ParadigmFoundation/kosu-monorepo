@@ -102,15 +102,16 @@ func scaleBalance(balance *big.Int) int64 {
 		return int64(0)
 	}
 
-	scaled := &big.Rat{}
-	divisor := &big.Int{}
+	scaled := &big.Int{}
+	ether := &big.Int{}
+	scaled.Set(balance)
 
 	// scale balance by 10**18 (base units for KOSU)
-	// nolint:gosec
-	divisor = divisor.Exp(big.NewInt(10), big.NewInt(18), nil)
-	scaled.SetFrac(balance, divisor)
+	ether.Exp(big.NewInt(10), big.NewInt(18), big.NewInt(0))
+	scaled.Div(balance, ether)
 
-	res, _ := scaled.Float64()
-	power := math.Floor(res)
-	return int64(power)
+	if scaled.IsInt64() {
+		return scaled.Int64()
+	}
+	return math.MaxInt64
 }
