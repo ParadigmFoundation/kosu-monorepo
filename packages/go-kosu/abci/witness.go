@@ -112,8 +112,8 @@ func scaleBalance(balance *big.Int) int64 {
 	ether.Exp(big.NewInt(10), big.NewInt(18), big.NewInt(0))
 	scaled.Div(balance, ether)
 
-	if scaled.IsInt64() {
-		return scaled.Int64()
+	if !scaled.IsInt64() {
+		return math.MaxInt64
 	}
-	return math.MaxInt64
+	return scaled.Int64()
 }
