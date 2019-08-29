@@ -1,6 +1,43 @@
 # Tool: `network-explorer`
 
-The network summary API provides a simple WebSocket subscription for various statistics about the Paradigm OrderStream network and token system. It also provides a set of simple REST methods to assist the creation of a network summary front-end.
+The network summary API provides a simple WebSocket subscription for various statistics about the Kosu network and contract system. It also provides a set of simple REST methods to assist the creation of a network summary front-end.
+
+It is purpose-built for `explore.kosu.io`, and likely has limited utility outside of that purpose, but it also stands to serve as an example of using `kosu.js` to connect with the Kosu network.
+
+## Develop
+
+### Configure
+To run for development purposes, set the following environment variables (defaults shown):
+
+```bash
+# tcp port to bind ws server to
+PORT="4242"
+
+# host to bind to (defaults to hostname)
+HOST=$(hostname)
+
+# order stream JSONRPC url to source data from (don's use the default)
+ETHEREUM_JSONRPC_URL="https://ropsten.infura.io"
+
+# kosu node serving JSONRPC API/WebSocket
+KOSU_JSONRPC_URL="ws://localhost:14342"
+
+# redis config
+REDIS_HOST="localhost"
+REDIS_PORT="6379"
+```
+
+### Clone and build
+
+Get started with the server (must have `docker` and `yarn`):
+
+1. Clone: `git clone git@github.com:ParadigmFoundation/kosu-monorepo`
+1. Install deps: `yarn` (not `npm i`)
+1. Go to package: `cd pacakges/network-explorer`
+1. Set environment vars described above (or place and source a `.env` file)
+1. Build with `yarn build`
+1. Start with `yarn start` (will start a detached `redis` docker container)
+
 
 ## Specification
 
@@ -86,18 +123,15 @@ Use the same socket connection as the subscription to send messages of the follo
 
 For the user's `coinbase` (Ethereum address, pulled via MetaMask injection), two requests will need to be made, exactly like the `balance` and `limit` examples above.
 
-The `limit` method returns an integer that will be rendered in the `"Your Bandwidth Limit"` box on the front-end (see [design mockup](./mockup.png)) representing the number of orders a user may post in a given period.
+The `balance` method returns the number of Kosu tokens a user has (unlocked, un-staked) in their wallet (Ethereum address). It will return a value in the smallest unit of KOSU (a `wei` = 1*10^-18 KOSU) so a conversion will need to be made (multiply by `1*10^18`). The `Web3` library has utilities to make this conversion simple.
 
-The `balance` method returns the number of DIGM tokens a user has (unlocked, un-staked) in their wallet (Ethereum address). It will return a value in the smallest unit of DIGM (a `wei` = 1*10^-18 DIGM) so a conversion will need to be made (multiply by `1*10^18`). For more info, Google "wei to ether conversion".
-
-The balance should be rendered in the top-right corner of the screen (see mockup) if present, or show 0 for a user with no balance.
 
 ### Browser example
 
 Very simple example that demonstrates connection and parsing various messages. Primarily useful to demonstrate boolean conditions for various parsed message structures.
 
 ```js
-const ws = new WebSocket("wss://network-api.paradigm.market/");
+const ws = new WebSocket("wss://explore-api.kosu.io/");
 
 // will be sent upon connect as `message`, and in each subscription as `id`
 let subId;
@@ -173,47 +207,48 @@ _**Note:** every value (except for parent objects) is sent as a string, so conve
     */
     "data": {
         "token": {
-            "total_supply": "111111111",        // 1
-            "price": "0"                        // 2
+            "totalSupply": "111111111",        // 1
+            "price": "0"                       // 2
         },
         "bandwidth": {
-            "total_limit": "75000",             // 3
-            "total_orders": "1210351",          // 4
-            "remaining_limit": "73125",         // 5
-            "number_posters": "1514",           // 6
-            "sec_to_next_period": "60",         // 7
-            "current_eth_block": "5230840",     // 8
-            "period_end_eth_block": "5230844",  // 9
-            "rebalance_period_number": "27940"  // 10
+            "totalLimit": "75000",             // 3
+            "totalOrders": "1210351",          // 4
+            "remainingLimit": "73125",         // 5
+            "numberPosters": "1514",           // 6
+            "secToNextPeriod": "60",           // 7
+            "currentEthBlock": "5230840",      // 8
+            "periodEndEthBlock": "5230844",    // 9
+            "rebalancePeriodNumber": "27940"   // 10
         },
         "network": {
-            "block_height": "1327413",                  // 11
-            "last_block_time": "1551727994832",         // 12
-            "avg_block_interval": "1492",               // 13
-            "number_validators": "32",                  // 14
-            "total_validator_stake": "65314806500000",  // 15
-            "total_poster_stake": "421806500030"        // 16
+            "blockHeight": "1327413",                  // 11
+            "lastBlock_time": "1551727994832",         // 12
+            "avgBlock_interval": "1492",               // 13
+            "numberValidators": "32",                  // 14
+            "totalValidatorStake": "65314806500000",   // 15
+            "totalPosterStake": "421806500030"         // 16
         },
         "transactions": [                   // 17
             // ...
             {
-                "order_id": "...",          // 17 (a)
-                "poster_address": "0x....", // 17 (b)
-                "maker_address": "0x...",   // 17 (c)
-                "order_type": "0x"          // 17 (d)
+                "orderId": "...",          // 17 (a)
+                "posterAddress": "0x....", // 17 (b)
+                "makerAddress": "0x...",   // 17 (c)
+                "orderType": "0x"          // 17 (d)
             }
             // ...
         ],
         "validators": [                     // 18
             // ...
             {
-                "public_key": "...",        // 18 (a)
+                "publicBey": "...",         // 18 (a)
                 "stake": "1345600000000",   // 18 (b)
                 "reward": "1200000000",     // 18 (c)
-                "uptime_percent": "11",     // 18 (d)
-                "first_block": "45102",     // 18 (e)
-                "last_voted": "1327413",    // 18 (f)
-                "power":"10"                // 18 (g)
+                "uptimePercent": "11",      // 18 (d)
+                "firstVote": "45102",       // 18 (e)
+                "lastVoted": "1327413",     // 18 (f)
+                "totalVotes": "1282014",    // 18 (g)
+                "power":"10"                // 18 (h)
             }
             // ...
         ]
@@ -225,91 +260,65 @@ _**Note:** every value (except for parent objects) is sent as a string, so conve
 
 _*Note: All values are strings (double-quoted) in the JSON sent to the client with each new block.*_ Convert to JS `number` type in the browser where necessary.
 
-1. **DIGM token supply** (`data.token.total_supply`): the total number of DIGM tokens in circulation. Keep in mind this number will be in units of `wei` (smallest divisible unit) so for the actual "quantity" of full DIGM tokens, this value will need to be multiplied by `1 * 10^18`.
+1. **Kosu token supply** (`data.token.totalSupply`): the total number of Kosu tokens in circulation. Keep in mind this number will be in units of `wei` (smallest divisible unit) so for the actual "quantity" of full KOSU tokens, this value will need to be multiplied by `1 * 10^18`.
 
-1. **DIGM token price** (`data.token.price`): there is currently no concept of DIGM "price", so for now, this value can be ignored.
+1. **Kosu token price** (`data.token.price`): the price of one Kosu in Ether, based on the real-time price from the Kosu bonding contract.
 
-1. **Total limit** (`data.bandwidth.total_limit`): this value is the current network-agreed-upon value for the total number of `order` transactions that can be accepted per rebalance period. It is a consensus-critical parameter that is unlikely to change very often.
+1. **Total limit** (`data.bandwidth.totalLimit`): this value is the current network-agreed-upon value for the total number of `order` transactions that can be accepted per rebalance period. It is a consensus-critical parameter that is unlikely to change very often.
 
-1. **Total orders** (`data.bandwidth.total_orders`): this incremental value simply counts the total number of `order` transactions accepted on the network since genesis. It is independent of any individual period.
+1. **Total orders** (`data.bandwidth.totalOrders`): this incremental value simply counts the total number of `order` transactions accepted on the network since genesis. It is independent of any individual period.
 
-1. **Remaining limit** (`data.bandwidth.remaining_limit`): the number of remaining (unused) allocated orders for the current period. It will count down during each period as orders are accepted, and will reset to the `total_limit` upon each rebalance event.
+1. **Remaining limit** (`data.bandwidth.remainingLimit`): the number of remaining (unused) allocated orders for the current period. It will count down during each period as orders are accepted, and will reset to the `total_limit` upon each rebalance event.
 
-1. **Number of posters** (`data.bandwidth.number_posters`): the total number of `poster` accounts; the number of addresses with DIGM registered to post order's to the OS network.
+1. **Number of posters** (`data.bandwidth.numberPosters`): the total number of `poster` accounts; the number of addresses with KOSU registered to post order's to the OS network.
 
-1. **Seconds to next period** (`data.bandwidth.sec_to_next_period`): a (very) rough estimation of the number of seconds to the next rebalance period. Taken by counting the number of Ethereum blocks until the next period, multiplied by the average Ethereum block-time.
+1. **Seconds to next period** (`data.bandwidth.secToNextPeriod`): a (very) rough estimation of the number of seconds to the next rebalance period. Taken by counting the number of Ethereum blocks until the next period, multiplied by the average Ethereum block-time.
 
-1. **Current Ethereum block** (`data.bandwidth.current_eth_block`): the best-known (highest) Ethereum block number. Updated each time an OrderStream block is committed.
+1. **Current Ethereum block** (`data.bandwidth.currentEthBlock`): the best-known (highest) Ethereum block number. Updated each time an Kosu block is committed.
 
-1. **Period end Ethereum block** (`data.bandwidth.period_end_eth_block`): the Ethereum block number at which the current rebalance period ends.
+1. **Period end Ethereum block** (`data.bandwidth.periodEndEthBlock`): the Ethereum block number at which the current rebalance period ends.
 
-1. **Rebalance period number** (`data.bandwidth.rebalance_period_number`): an incremental counter that tracks the number of rebalance periods that have occurred. Displays the number of the currently active period (not the last completed).
+1. **Rebalance period number** (`data.bandwidth.rebalancePeriodNumber`): an incremental counter that tracks the number of rebalance periods that have occurred. Displays the number of the currently active period (not the last completed).
 
-1. **Block height** (`data.network.block_height`): updates with each new committed block, the `block_height` increases by 1. It tracks the current height of the OrderStream blockchain.
+1. **Block height** (`data.network.blockHeight`): updates with each new committed block, the `block_height` increases by 1. It tracks the current height of the Kosu blockchain.
 
-1. **Last block time** (`data.network.last_block_time`): the UNIX timestamp (in milliseconds) of the most recently committed block.
+1. **Last block time** (`data.network.lastBlockTime`): the UNIX timestamp (in milliseconds) of the most recently committed block.
 
-1. **Average interval** (`data.network.avg_block_interval`): the `average_block_interval` tracks the arithmetic moving average (over a server-configurable number of blocks) of the interval in milliseconds between each block. Commonly referred to as the "block-time", it can be shown in seconds by dividing the number by 1000.
+1. **Average interval** (`data.network.avgBlockInterval`): the `average_block_interval` tracks the arithmetic moving average (over a server-configurable number of blocks) of the interval in milliseconds between each block. Commonly referred to as the "block-time", it can be shown in seconds by dividing the number by 1000.
 
-1. **Validator counter** (`data.network.number_validators`): simply tracks the number of validators in the active validator set. It will change only when a new validator is added, or a current one is removed via governance processes.
+1. **Validator counter** (`data.network.numberValidators`): simply tracks the number of validators in the active validator set. It will change only when a new validator is added, or a current one is removed via governance processes.
 
-1. **Total validator stake** (`data.network.total_validator_stake`): the total number of DIGM (in `wei`) staked in the `ValidatorRegistry` contract by active validators. Also an important metric for determining network security and value.
+1. **Total validator stake** (`data.network.totalValidatorStake`): the total number of KOSU (in `wei`) staked in the `ValidatorRegistry` contract by active validators. Also an important metric for determining network security and value.
 
-1. **Total poster stake** (`data.network.total_poster_stake`): the total number of DIGM (in `wei`) staked in the `PosterRegistry` contract by poster accounts.
+1. **Total poster stake** (`data.network.totalPosterStake`): the total number of KOSU (in `wei`) staked in the `PosterRegistry` contract by poster accounts.
 
 1. **Transactions** (`data.transactions`): an array of objects (defined below) with some data representing the most recent 20 order transactions from the network.
 
-    a. **Order ID** (`data.transactions[N].order_id`): a hash of the Paradigm order object, used to identify orders.
+    a. **Order ID** (`data.transactions[N].orderId`): a hash of the Paradigm order object, used to identify orders.
 
-    b. **Poster address** (`data.transactions[N].poster_address`): the Ethereum address of the `poster` entity who signed and submitted the order.
+    b. **Poster address** (`data.transactions[N].posterAddress`): the Ethereum address of the `poster` entity who signed and submitted the order.
 
-    c. **Maker address** (`data.transactions[N].maker_address`): the Ethereum address of the `maker` entity who originated the order message.
+    c. **Maker address** (`data.transactions[N].makerAddress`): the Ethereum address of the `maker` entity who originated the order message.
 
-    d. **Order type** (`data.transactions[N].order_type`): if the `subContract` for a given order is known, the `order_type` field will be a short string of the name of the settlement logic (such as "0x", or "Dharma") and will be `null` if unknown.
+    d. **Order type** (`data.transactions[N].orderType`): if the `subContract` for a given order is known, the `orderType` field will be a short string of the name of the settlement logic (such as "0x", or "Dharma") and will be `null` if unknown.
 
 1. **Validators** (`data.validators`): an array of objects (defined below) for each active validator on the network.
 
-    a. **Public Key** (`data.validators[N].public_key`): the validators active tendermint public key, which corresponds to a current validating private key. Hashed in multiple ways to generate `node_id`, etc. Also used to query the `ValidatorRegistry` contract.
+    a. **Public Key** (`data.validators[N].publicKey`): the validators active tendermint public key, which corresponds to a current validating private key. Hashed in multiple ways to generate `node_id`, etc. Also used to query the `ValidatorRegistry` contract.
 
-    b. **Stake** (`data.validators[N].stake`): a specific validators DIGM stake (in `wei`) currently held in the `ValidatorRegistry` contract.
+    b. **Stake** (`data.validators[N].stake`): a specific validators KOSU stake (in `wei`) currently held in the `ValidatorRegistry` contract.
 
-    c. **Reward** (`data.validators[N].reward`): the number of DIGM tokens (in `wei`) the validator has specified to receive (or burn, if negative) for each reward period.
+    c. **Reward** (`data.validators[N].reward`): the number of Kosu tokens (in `wei`) the validator has specified to receive (or burn, if negative) for each reward period.
 
-    d. **Uptime percent** (`data.validators[N].uptime_percent`): a number between 0 and 100 that represents that validators uptime: the percentage of time they have been online (voting on blocks) since they were added as a validator.
+    d. **Uptime percent** (`data.validators[N].uptimePercent`): a number between 0 and 100 that represents that validators uptime: the percentage of time they have been online (voting on blocks) since they were added as a validator.
 
-    e. **First block** (`data.validators[N].first_block`): the height of the first OrderStream block that a given validator voted on. Used as, or to calculate a validators "age" in the network.
+    e. **First block** (`data.validators[N].firstVote`): the height of the first Kosu block that a given validator voted on. Used as, or to calculate a validators "age" in the network.
 
-    f. **Last voted** (`data.validators[N].last_voted`): the height of OrderStream network at which a given validator voted (or proposed) a block.
+    f. **Last voted** (`data.validators[N].lastVoted`): the height of OrderStream network at which a given validator voted (or proposed) a block.
+    
+    g. **Total votes** (`data.validators[N].totalVotes`): the total number of blocks a given validator has voted on.
 
-    g. **Vote power** (`data.validators[N].power`): the vote power the validator has on the Tendermint chain. Also affects how often a given validator is selected as block proposer.
-
-# Develop
-
-The actual `server` implementation is a WIP. To run for development purposes, set the following environment variables:
-
-```bash
-# tcp port to bind ws server to
-PORT=
-
-# order stream JSONRPC url to source data from
-ORDERSTREAM_NODE_URL=""
-
-# number of blocks to average block interval over
-AVERAGE_OVER=50
-
-# web3 provider URL (to support Ethereum queries)
-WEB3_URL=""
-```
-
-1. Clone with `git clone git@github.com:ParadigmFoundation/network-explorer`
-
-1. Set environment vars described above (or place in `.env` file)
-
-1. Build with `yarn build`
-
-1. Start with `yarn start`
-
-_A hosted version of this server will be deployed soon, and its URL included here._
+    h. **Vote power** (`data.validators[N].power`): the vote power the validator has on the Tendermint chain. Also affects how often a given validator is selected as block proposer.
 
 # Notes
 
