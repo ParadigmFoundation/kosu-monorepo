@@ -1,13 +1,14 @@
 package abci
 
 import (
-	"encoding/hex"
+	"fmt"
 	"io"
 	"io/ioutil"
 	"os"
 
 	"github.com/tendermint/tendermint/cmd/tendermint/commands"
 	"github.com/tendermint/tendermint/config"
+	"github.com/tendermint/tendermint/crypto/ed25519"
 	tmflags "github.com/tendermint/tendermint/libs/cli/flags"
 	log "github.com/tendermint/tendermint/libs/log"
 	"github.com/tendermint/tendermint/node"
@@ -73,15 +74,16 @@ func ShowNodeInfo(cfg *config.Config) (*NodeInfo, error) {
 		return nil, err
 	}
 
-	priv := privval.LoadFilePV(
+	priv := privval.LoadFilePVEmptyState(
 		cfg.PrivValidatorKeyFile(),
 		cfg.PrivValidatorStateFile(),
 	).Key
 
+	key := priv.PubKey.(ed25519.PubKeyEd25519)
 	return &NodeInfo{
 		PeerID:    string(nodeKey.ID()),
 		NodeID:    priv.Address.String(),
-		PublicKey: hex.EncodeToString(priv.PubKey.Bytes()),
+		PublicKey: fmt.Sprintf("%X", key[:]),
 		Moniker:   cfg.Moniker,
 	}, nil
 }
