@@ -1,45 +1,46 @@
 interface INetworkData {
     token: {
-        total_supply?: string;
+        totalSupply?: string;
         price?: string;
     };
     bandwidth: {
-        total_limit?: string;
-        total_orders?: string;
-        remaining_limit?: string;
-        number_posters?: string;
-        sec_to_next_period?: string;
-        rebalance_period_number?: string;
-        period_end_eth_block?: string;
-        current_eth_block?: string;
+        totalLimit?: string;
+        totalOrders?: string;
+        remainingLimit?: string;
+        numberPosters?: string;
+        secToNextPeriod?: string;
+        rebalancePeriodNumber?: string;
+        periodEndEthBlock?: string;
+        currentEthBlock?: string;
     };
     network: {
-        block_height?: string;
-        last_block_time?: string;
-        avg_block_interval?: string;
-        number_validators?: string;
-        total_validator_stake?: string;
-        total_poster_stake?: string;
+        blockHeight?: string;
+        lastBlockTime?: string;
+        avgBlockInterval?: string;
+        numberValidators?: string;
+        totalValidatorStake?: string;
+        totalPosterStake?: string;
     };
     transactions?: IOrder[];
     validators?: IValidator[];
 }
 
 interface IOrder {
-    order_id: string;
-    poster_address: string;
-    maker_address: string;
-    subcontract_address: string;
-    order_type: string;
+    orderId: string;
+    posterAddress: string;
+    makerAddress: string;
+    subcontractAddress: string;
+    orderType: string;
 }
 
 interface IValidator {
-    public_key: string;
+    publicKey: string;
     stake: string;
     reward: string;
-    uptime_percent: string;
-    first_block: string;
-    last_voted: string;
+    uptimePercent: string;
+    firstVote: string;
+    lastVoted: string;
+    totalVotes: string;
     power: string;
 }
 
@@ -56,9 +57,9 @@ interface IWsResponse {
 }
 
 interface OrderData {
-    order_id: string;
-    poster_address: string;
-    maker_address: string;
-    subcontract_address: string;
-    order_type: string;
+    orderId: string;
+    posterAddress: string;
+    makerAddress: string;
+    subContractAddress: string;
+    orderType: string;
 }

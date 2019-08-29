@@ -66,26 +66,26 @@ export class ChainData {
 
         this.latest = {
             token: {
-                total_supply: "-1",
+                totalSupply: "-1",
                 price: "-1",
             },
             bandwidth: {
-                total_limit: "-1",
-                total_orders: "-1",
-                remaining_limit: "-1",
-                number_posters: "-1",
-                sec_to_next_period: "-1",
-                current_eth_block: "-1",
-                period_end_eth_block: "-1",
-                rebalance_period_number: "-1",
+                totalLimit: "-1",
+                totalOrders: "-1",
+                remainingLimit: "-1",
+                numberPosters: "-1",
+                secToNextPeriod: "-1",
+                currentEthBlock: "-1",
+                periodEndEthBlock: "-1",
+                rebalancePeriodNumber: "-1",
             },
             network: {
-                block_height: "-1",
-                last_block_time: "-1",
-                avg_block_interval: "-1",
-                number_validators: "-1",
-                total_poster_stake: "-1",
-                total_validator_stake: "-1",
+                blockHeight: "-1",
+                lastBlockTime: "-1",
+                avgBlockInterval: "-1",
+                numberValidators: "-1",
+                totalPosterStake: "-1",
+                totalValidatorStake: "-1",
             },
         };
     }
@@ -226,11 +226,10 @@ export class ChainData {
                     const validatorData = valListArr[i];
 
                     const currHeight = parseInt(this.getLatest("network/block_height"));
-                    const firstBlock = parseInt(validatorData.firstVote);
-                    const uptimePercent = Math.floor((validatorData.totalVotes / (currHeight - firstBlock)) * 100);
+                    const firstBlock = validatorData.firstVote;
+                    const uptimePercent = Math.floor((validatorData.totalVotes / (currHeight - firstBlock)) * 100).toString();
 
                     const listing = await this.kosu.validatorRegistry.getListing(validatorData.publicKey);
-
                     let reward: string;
                     if (listing.status === 0) {
                         reward = "0";
@@ -239,15 +238,18 @@ export class ChainData {
                         reward = this.kosu.web3.utils.fromWei(raw.toString());
                     }
 
+                    const { publicKey, firstVote, lastVoted, power, totalVotes, balance } = validatorData;
+                    Object.keys(validatorData).forEach(k => validatorData[k] = validatorData[k].toString());
                     const validator: IValidator = {
-                        public_key: validatorData.publicKey,
-                        stake: validatorData.balance.toString(),
+                        publicKey,
+                        stake: balance,
 
                         reward,
-                        uptime_percent: uptimePercent.toString(),
-                        first_block: firstBlock.toString(),
-                        last_voted: validatorData.firstVote.toString(),
-                        power: validatorData.power.toString(),
+                        uptimePercent,
+                        firstVote,
+                        lastVoted,
+                        totalVotes,
+                        power,
                     };
                     this.validators.push(validator);
                 }
@@ -260,22 +262,22 @@ export class ChainData {
 
     public async setLatest(): Promise<void> {
         const [
-            total_supply,
+            totalSupply,
             price,
-            total_limit,
-            total_orders,
-            remaining_limit,
-            number_posters,
-            sec_to_next_period,
-            current_eth_block,
-            period_end_eth_block,
-            rebalance_period_number,
-            block_height,
-            last_block_time,
-            avg_block_interval,
-            number_validators,
-            total_poster_stake,
-            total_validator_stake,
+            totalLimit,
+            totalOrders,
+            remainingLimit,
+            numberPosters,
+            secToNextPeriod,
+            currentEthBlock,
+            periodEndEthBlock,
+            rebalancePeriodNumber,
+            blockHeight,
+            lastBlockTime,
+            avgBlockInterval,
+            numberValidators,
+            totalPosterStake,
+            totalValidatorStake,
         ] = await Promise.all([
             this.getValue("token/total_supply"),
             this.getValue("token/price"),
@@ -295,24 +297,24 @@ export class ChainData {
             this.getValue("network/total_validator_stake"),
         ]);
         this.latest = {
-            token: { total_supply, price },
+            token: { totalSupply, price },
             bandwidth: {
-                total_limit,
-                total_orders,
-                remaining_limit,
-                number_posters,
-                sec_to_next_period,
-                current_eth_block,
-                period_end_eth_block,
-                rebalance_period_number,
+                totalLimit,
+                totalOrders,
+                remainingLimit,
+                numberPosters,
+                secToNextPeriod,
+                currentEthBlock,
+                periodEndEthBlock,
+                rebalancePeriodNumber,
             },
             network: {
-                block_height,
-                last_block_time,
-                avg_block_interval,
-                number_validators,
-                total_poster_stake,
-                total_validator_stake,
+                blockHeight,
+                lastBlockTime,
+                avgBlockInterval,
+                numberValidators,
+                totalPosterStake,
+                totalValidatorStake,
             },
             validators: cloneDeep(this.validators),
             transactions: cloneDeep(this.orders),
