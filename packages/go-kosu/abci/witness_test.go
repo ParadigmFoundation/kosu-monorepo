@@ -7,8 +7,9 @@ import (
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
+	abci "github.com/tendermint/tendermint/abci/types"
 	"github.com/tendermint/tendermint/crypto/tmhash"
-	"github.com/tendermint/tendermint/libs/db"
+	db "github.com/tendermint/tm-db"
 )
 
 func TestDeliverWitnessTx(t *testing.T) {
@@ -39,7 +40,7 @@ func TestDeliverWitnessTx(t *testing.T) {
 	buf, err := types.EncodeTx(tx)
 	require.NoError(t, err)
 
-	res := app.DeliverTx(buf)
+	res := app.DeliverTx(abci.RequestDeliverTx{Tx: buf})
 
 	log.Printf("res = %+v\n", res)
 	assert.EqualValues(t, 0, res.Code, res.Log)
