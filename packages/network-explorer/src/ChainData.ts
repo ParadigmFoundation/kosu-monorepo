@@ -226,8 +226,9 @@ export class ChainData {
                     const validatorData = valListArr[i];
 
                     const currHeight = parseInt(this.getLatest("network/block_height"));
-                    const firstBlock = validatorData.firstVote;
-                    const uptimePercent = Math.floor((validatorData.totalVotes / (currHeight - firstBlock)) * 100).toString();
+                    const firstBlock = parseInt(validatorData.firstVote);
+                    const total = parseInt(validatorData.totalVotes);
+                    const uptimePercent = Math.floor((total / (currHeight - firstBlock)) * 100).toString();
 
                     const listing = await this.kosu.validatorRegistry.getListing(validatorData.publicKey);
                     let reward: string;
@@ -239,7 +240,6 @@ export class ChainData {
                     }
 
                     const { publicKey, firstVote, lastVoted, power, totalVotes, balance } = validatorData;
-                    Object.keys(validatorData).forEach(k => validatorData[k] = validatorData[k].toString());
                     const validator: IValidator = {
                         publicKey,
                         stake: balance,
@@ -251,6 +251,7 @@ export class ChainData {
                         totalVotes,
                         power,
                     };
+                    Object.keys(validator).forEach(key => validator[key] = validator[key].toString());
                     this.validators.push(validator);
                 }
                 console.log(`validator data updated`);
