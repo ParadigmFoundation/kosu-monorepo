@@ -8,4 +8,4 @@ RUN yarn build
 
 EXPOSE 4242
 
-CMD yarn start:prouduction
+CMD yarn start:production
