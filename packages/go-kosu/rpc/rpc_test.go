@@ -13,7 +13,7 @@ import (
 	"go-kosu/abci/types"
 	"go-kosu/tests"
 
-	"github.com/tendermint/tendermint/libs/db"
+	db "github.com/tendermint/tm-db"
 )
 
 func waitForNewBlock(t *testing.T, client *rpc.Client) {

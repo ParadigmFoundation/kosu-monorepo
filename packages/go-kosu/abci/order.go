@@ -69,6 +69,8 @@ func (app *App) deliverOrderTx(tx *types.TransactionOrder) abci.ResponseDeliverT
 
 	return abci.ResponseDeliverTx{
 		Code: 0,
-		Tags: NewTagsFromOrderInfo(orderID, posterAddress, poster.Limit),
+		Events: []abci.Event{
+			{Type: "tags", Attributes: NewTagsFromOrderInfo(orderID, posterAddress, poster.Limit)},
+		},
 	}
 }

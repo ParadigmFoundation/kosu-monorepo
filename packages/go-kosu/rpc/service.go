@@ -323,7 +323,7 @@ for {
 ```
 */
 func (s *Service) NewOrders(ctx context.Context) (*rpc.Subscription, error) {
-	query := "tm.event='Tx' AND tx.type='order'"
+	query := "tm.event='Tx' AND tags.tx.type='order'"
 	return s.subscribeTM(ctx, query)
 }
 
@@ -409,7 +409,7 @@ for {
 
 */
 func (s *Service) NewRebalances(ctx context.Context) (*rpc.Subscription, error) {
-	query := "tm.event='Tx' AND tx.type='rebalance'"
+	query := "tm.event='Tx' AND tags.tx.type='rebalance'"
 	return s.subscribeTM(ctx, query)
 }
 
