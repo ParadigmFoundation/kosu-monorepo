@@ -104,14 +104,14 @@ func (w *Witness) Start(ctx context.Context) error {
 
 func (w *Witness) subscribe(ctx context.Context) error {
 	// Subscribe to rebalance events and synchronize
-	sub, _, err := w.client.Subscribe(ctx, "tm.event = 'Tx' AND tx.type = 'rebalance'")
+	sub, _, err := w.client.Subscribe(ctx, "tm.event = 'Tx' AND tags.tx.type = 'rebalance'")
 	if err != nil {
 		return err
 	}
 
 	go func() {
 		for e := range sub {
-			info, err := abci.NewRoundInfoFromTags(e.Tags)
+			info, err := abci.NewRoundInfoFromEvents(e.Events)
 			if err != nil {
 				w.log.Error("subscribe: invalid tags", "err", err)
 				continue

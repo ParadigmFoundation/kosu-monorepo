@@ -11,8 +11,8 @@ import (
 	"strings"
 
 	"github.com/spf13/cobra"
-	"github.com/tendermint/tendermint/libs/db"
 	"github.com/tendermint/tendermint/libs/log"
+	db "github.com/tendermint/tm-db"
 
 	"go-kosu/abci"
 	"go-kosu/rpc"
@@ -32,14 +32,10 @@ type Config struct {
 	Web3  string
 }
 
-func newDB(dir string, debug bool) (db.DB, error) {
+func newDB(dir string) (db.DB, error) {
 	gdb, err := db.NewGoLevelDB(dbName, dir)
 	if err != nil {
 		return nil, err
-	}
-
-	if debug {
-		return db.NewDebugDB("db", gdb), nil
 	}
 
 	return gdb, nil
@@ -69,7 +65,7 @@ func startWitness(ctx context.Context, app *abci.App, ethAddr string, logger log
 }
 
 func run(cfg *Config) error {
-	db, err := newDB(cfg.Home, cfg.Debug)
+	db, err := newDB(cfg.Home)
 	if err != nil {
 		return err
 	}
