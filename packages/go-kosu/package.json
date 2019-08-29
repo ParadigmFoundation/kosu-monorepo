@@ -1,12 +1,13 @@
 {
     "name": "@kosu/go-kosu",
     "private": true,
-    "version": "0.0.1",
+    "version": "0.1.0-beta.1",
     "description": "Development and CI docker images and supporting scripts for Kosu.",
     "repository": "https://github.com/ParadigmFoundation/kosu-monorepo.git",
     "license": "MIT",
     "scripts": {
-        "build": "yarn abigen && make",
+        "build": "yarn abigen && yarn bindata &&make",
+        "bindata": "go generate ./witness",
         "abigen": "jq '.compilerOutput.abi' node_modules/@kosu/system-contracts/generated-artifacts/EventEmitter.json |  abigen --abi - --pkg witness --type EventEmitter -out witness/event_emitter.go",
         "docs": "yarn docs:clean && yarn docs:setup && yarn docs:rpc",
         "docs:clean": "rm -rf ./docs/",
@@ -15,6 +16,6 @@
     },
     "config": {},
     "dependencies": {
-        "@kosu/system-contracts": "^0.1.5"
+        "@kosu/system-contracts": "0.2.1"
     }
 }
