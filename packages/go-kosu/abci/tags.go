@@ -48,7 +48,7 @@ func NewRoundInfoFromEvents(events map[string][]string) (*types.RoundInfo, error
 	return &info, nil
 }
 
-// NewTagsFromOrderInfo returns the KVPairs necessary to make up Order transaction tags
+// NewKVPairFromOrderInfo returns the KVPairs necessary to make up Order transaction tags
 func NewKVPairFromOrderInfo(orderID []byte, posterAddress store.Address, newLimit uint64) []common.KVPair {
 	return []common.KVPair{
 		{Key: []byte("tx.type"), Value: []byte("order")},
