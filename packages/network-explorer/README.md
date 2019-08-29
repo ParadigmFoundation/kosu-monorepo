@@ -1,6 +1,6 @@
-# Tool: `network-explorer`
+# Example: `network-explorer`
 
-The network summary API provides a simple WebSocket subscription for various statistics about the Kosu network and contract system. It also provides a set of simple REST methods to assist the creation of a network summary front-end.
+The network summary API provides an example of a simple WebSocket subscription for various statistics about the Kosu network and contract system. It also provides a set of simple REST methods to assist the creation of a network summary front-end.
 
 It is purpose-built for `explore.kosu.io`, and likely has limited utility outside of that purpose, but it also stands to serve as an example of using `kosu.js` to connect with the Kosu network.
 
