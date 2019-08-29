@@ -90,14 +90,6 @@ export class ChainData {
         };
     }
 
-    public getLatest(key?: string): any {
-        if (!key) {
-            return cloneDeep(this.latest);
-        }
-        const [one, two] = key.split("/");
-        return this.latest[one][two];
-    }
-
     public getLatestData(): INetworkData {
         const data = cloneDeep(this.latest);
         data.validators = cloneDeep(this.validators);
@@ -225,7 +217,7 @@ export class ChainData {
                 for (let i = 0; i < valListArr.length; i++) {
                     const validatorData = valListArr[i];
 
-                    const currHeight = parseInt(this.getLatest("network/block_height"));
+                    const currHeight = parseInt(await this.getValue("network/block_height"));
                     const firstBlock = parseInt(validatorData.firstVote);
                     const total = parseInt(validatorData.totalVotes);
                     const uptimePercent = Math.floor((total / (currHeight - firstBlock)) * 100).toString();
