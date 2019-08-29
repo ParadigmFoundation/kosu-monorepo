@@ -3,7 +3,6 @@ package witness
 import (
 	"context"
 	"encoding/hex"
-	"fmt"
 	"os"
 	"sync"
 
@@ -112,15 +111,11 @@ func (w *Witness) subscribe(ctx context.Context) error {
 
 	go func() {
 		for e := range sub {
-			fmt.Printf("e.Events = %+v\n", e.Events)
-			/*
-				info, err := abci.NewRoundInfoFromTags(e.Events["tags"])
-				if err != nil {
-					w.log.Error("subscribe: invalid tags", "err", err)
-					continue
-				}
-			*/
-			info := &types.RoundInfo{}
+			info, err := abci.NewRoundInfoFromEvents(e.Events)
+			if err != nil {
+				w.log.Error("subscribe: invalid tags", "err", err)
+				continue
+			}
 
 			// TODO: validate that n == this.round + 1
 			w.roundMutex.Lock()
