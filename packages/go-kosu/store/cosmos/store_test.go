@@ -6,7 +6,7 @@ import (
 	"go-kosu/store"
 	"go-kosu/store/storetest"
 
-	"github.com/tendermint/tendermint/libs/db"
+	db "github.com/tendermint/tm-db"
 )
 
 func TestCosmosStore(t *testing.T) {

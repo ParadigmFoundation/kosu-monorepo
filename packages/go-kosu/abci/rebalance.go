@@ -38,7 +38,9 @@ func (app *App) deliverRebalance(tx *types.TransactionRebalance) abci.ResponseDe
 
 	return abci.ResponseDeliverTx{
 		Code: 0,
-		Tags: NewTagsFromRoundInfo(info),
+		Events: []abci.Event{
+			{Type: "tags", Attributes: NewTagsFromRoundInfo(info)},
+		},
 	}
 }
 

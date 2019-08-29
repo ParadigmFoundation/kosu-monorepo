@@ -11,8 +11,8 @@ import (
 	"github.com/stretchr/testify/require"
 
 	abci "github.com/tendermint/tendermint/abci/types"
-	"github.com/tendermint/tendermint/libs/db"
 	tmtypes "github.com/tendermint/tendermint/types"
+	db "github.com/tendermint/tm-db"
 
 	"go-kosu/abci/types"
 )
@@ -54,7 +54,7 @@ func TestCheckTxSignature(t *testing.T) {
 	buf, err := types.EncodeTx(tx)
 	require.NoError(t, err)
 
-	res := app.CheckTx(buf)
+	res := app.CheckTx(abci.RequestCheckTx{Tx: buf})
 	assert.True(t, res.IsErr())
 	assert.Contains(t, res.Log, "signature")
 }

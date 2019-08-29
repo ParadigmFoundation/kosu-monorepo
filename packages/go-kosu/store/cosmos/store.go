@@ -4,7 +4,7 @@ import (
 	"encoding/hex"
 
 	abci "github.com/tendermint/tendermint/abci/types"
-	"github.com/tendermint/tendermint/libs/db"
+	db "github.com/tendermint/tm-db"
 
 	cosmos "github.com/cosmos/cosmos-sdk/store"
 	"github.com/cosmos/cosmos-sdk/store/rootmulti"

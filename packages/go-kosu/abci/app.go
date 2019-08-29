@@ -13,8 +13,8 @@ import (
 	"github.com/tendermint/tendermint/config"
 	cfg "github.com/tendermint/tendermint/config"
 	"github.com/tendermint/tendermint/crypto/tmhash"
-	"github.com/tendermint/tendermint/libs/db"
 	"github.com/tendermint/tendermint/libs/log"
+	db "github.com/tendermint/tm-db"
 
 	"go-kosu/abci/types"
 	"go-kosu/store"
@@ -240,9 +240,9 @@ func (app *App) EndBlock(req abci.RequestEndBlock) abci.ResponseEndBlock {
 }
 
 // CheckTx .
-func (app *App) CheckTx(req []byte) abci.ResponseCheckTx {
+func (app *App) CheckTx(req abci.RequestCheckTx) abci.ResponseCheckTx {
 	stx := &types.SignedTransaction{}
-	if err := types.DecodeTx(req, stx); err != nil {
+	if err := types.DecodeTx(req.Tx, stx); err != nil {
 		return abci.ResponseCheckTx{Code: 1, Log: err.Error()}
 	}
 	tx := stx.Tx
@@ -282,9 +282,9 @@ func (app *App) CheckTx(req []byte) abci.ResponseCheckTx {
 }
 
 // DeliverTx .
-func (app *App) DeliverTx(req []byte) abci.ResponseDeliverTx {
+func (app *App) DeliverTx(req abci.RequestDeliverTx) abci.ResponseDeliverTx {
 	stx := &types.SignedTransaction{}
-	if err := types.DecodeTx(req, stx); err != nil {
+	if err := types.DecodeTx(req.Tx, stx); err != nil {
 		return abci.ResponseDeliverTx{Code: 1, Info: err.Error()}
 	}
 	tx := stx.Tx
