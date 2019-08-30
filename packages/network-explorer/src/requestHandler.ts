@@ -37,7 +37,12 @@ export function requestHandlerClosure(socket: ws, serverId: string, kosu: Kosu):
                 const raw = await kosu.kosuToken.balanceOf(param.toLowerCase());
                 resp = raw.toString();
             } else if (method === "limit") {
-                resp = await kosu.node.queryPoster(param);
+                try {
+                    const raw = await kosu.node.queryPoster(param);
+                    resp = raw.limit.toString();
+                } catch {
+                    resp = "0";
+                }
             }
 
             if (resp) {
