@@ -65,12 +65,13 @@ func (sig *Signature) RecoverSigner(hash []byte) (Address, error) {
 	messageHash := hashEthereumMessage(hash)
 
 	// deals with differences in JS signing libraries
-	cp := sig[:]
+	var cp Signature
+	copy(cp[:], sig[:])
 	if cp[64] > 27 {
 		cp[64] -= 27
 	}
 
-	recoveredKey, err := crypto.Ecrecover(messageHash, cp)
+	recoveredKey, err := crypto.Ecrecover(messageHash, cp[:])
 	if err != nil {
 		return Address{}, err
 
