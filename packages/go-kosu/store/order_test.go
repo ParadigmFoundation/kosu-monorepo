@@ -4,10 +4,12 @@ package store
 import (
 	"encoding/hex"
 	"encoding/json"
+	"fmt"
 	"go-kosu/abci/types"
 	"strings"
 	"testing"
 
+	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
 
@@ -36,6 +38,13 @@ var testCases = []struct {
 		desc:   "Mock order #3",
 		poster: "0x8B3FFFbA0560cFD16caC017cad7120E356CbB98a",
 		order:  `{"subContract":"0x38a4d7865b3f265093fcbf4d7bc5e7e00713c8e6","maker":"0x7e8614e53cb79c7a5d95b957f1bcce291eab248d","arguments":{"maker":[{"datatype":"address","name":"signer"},{"datatype":"address","name":"signerToken"},{"datatype":"uint","name":"signerTokenCount"},{"datatype":"address","name":"buyerToken"},{"datatype":"uint","name":"buyerTokenCount"},{"datatype":"signature","name":"signature","signatureFields":[0,1,2,3,4]}],"taker":[{"datatype":"uint","name":"tokensToBuy"}]},"makerValues":{"signer":"0x7e8614e53cb79c7a5d95b957f1bcce291eab248d","signerToken":"0x56613e252163DAd4276E8b4Cd34a4021eaA1B14B","signerTokenCount":"1000","buyer":"0xf72c35151f8c86a5ac73f213da8164df89b690b7","buyerToken":"0x743102BD6fD1f9452cbF0512AA44041B52c81530","buyerTokenCount":"1000","signature":"0xbbc6600a2891b029d694027a6aed6a13e85e59ce4fcbed1210e66b5c1bbbb1ca19891490edf46877fb6a0ae548db3dc3dd83fa55a6f3c66596fe7f8740eb2c7e00"},"makerSignature":"0xbbc6600a2891b029d694027a6aed6a13e85e59ce4fcbed1210e66b5c1bbbb1ca19891490edf46877fb6a0ae548db3dc3dd83fa55a6f3c66596fe7f8740eb2c7e00","posterSignature":"0x6c0684cb993dded088ea5e0bd9c5808c827a6bd2800beeaa9e1c4686049a16b30e2b0694e4c19647fb45c150e3b8e02ecd6f7a552099af98fec5c0c7d7ffb6d901"}`,
+		hex:    "0x7e8614e53cb79c7a5d95b957f1bcce291eab248d56613e252163DAd4276E8b4Cd34a4021eaA1B14B00000000000000000000000000000000000000000000000000000000000003e8743102BD6fD1f9452cbF0512AA44041B52c8153000000000000000000000000000000000000000000000000000000000000003e8bbc6600a2891b029d694027a6aed6a13e85e59ce4fcbed1210e66b5c1bbbb1ca19891490edf46877fb6a0ae548db3dc3dd83fa55a6f3c66596fe7f8740eb2c7e00",
+		hash:   "0x32a96ba931b5a20c807c1e8088d56000b8f04c53da89d1a059c779a050c74cb9",
+	},
+	{
+		desc:   "Mock order #3",
+		poster: "0xe0421e1bd84c6dabfc7601305a294e5d05001ee5",
+		order:  `{"subContract":"0x38a4d7865b3f265093fcbf4d7bc5e7e00713c8e6","maker":"0xe0421e1bd84c6dabfc7601305a294e5d05001ee5","arguments":{"maker":[{"datatype":"address","name":"signer"},{"datatype":"address","name":"signerToken"},{"datatype":"uint","name":"signerTokenCount"},{"datatype":"address","name":"buyerToken"},{"datatype":"uint","name":"buyerTokenCount"},{"datatype":"signature","name":"signature","signatureFields":[0,1,2,3,4]}],"taker":[{"datatype":"uint","name":"tokensToBuy"}]},"makerValues":{"signer":"0x7e8614e53cb79c7a5d95b957f1bcce291eab248d","signerToken":"0x56613e252163DAd4276E8b4Cd34a4021eaA1B14B","signerTokenCount":"1000","buyer":"0xf72c35151f8c86a5ac73f213da8164df89b690b7","buyerToken":"0x743102BD6fD1f9452cbF0512AA44041B52c81530","buyerTokenCount":"1000","signature":"0xbbc6600a2891b029d694027a6aed6a13e85e59ce4fcbed1210e66b5c1bbbb1ca19891490edf46877fb6a0ae548db3dc3dd83fa55a6f3c66596fe7f8740eb2c7e00"},"makerSignature":"0xbbc6600a2891b029d694027a6aed6a13e85e59ce4fcbed1210e66b5c1bbbb1ca19891490edf46877fb6a0ae548db3dc3dd83fa55a6f3c66596fe7f8740eb2c7e00","posterSignature":"0x199a2837c72e0ec30f70977bf8ed18e2eb0df7fce7329a8476e2bd82626dd51260ccbfa79b52bad0d246d6bb5cc7848f86088c27188175a6b3d0b30bfafaa7121c"}`,
 		hex:    "0x7e8614e53cb79c7a5d95b957f1bcce291eab248d56613e252163DAd4276E8b4Cd34a4021eaA1B14B00000000000000000000000000000000000000000000000000000000000003e8743102BD6fD1f9452cbF0512AA44041B52c8153000000000000000000000000000000000000000000000000000000000000003e8bbc6600a2891b029d694027a6aed6a13e85e59ce4fcbed1210e66b5c1bbbb1ca19891490edf46877fb6a0ae548db3dc3dd83fa55a6f3c66596fe7f8740eb2c7e00",
 		hash:   "0x32a96ba931b5a20c807c1e8088d56000b8f04c53da89d1a059c779a050c74cb9",
 	},
@@ -100,10 +109,26 @@ func TestFromProto(t *testing.T) {
 			order, err := NewOrderFromProto(orderTransaction)
 			require.NoError(t, err, "Expected no error converting to Order type")
 
-			expectedPoster, _ := NewAddressFromString(tC.poster)
+			expectedPoster := MustNewAddressString(tC.poster)
 			recoveredPoster, err := order.RecoverPoster()
 			require.NoError(t, err, "Expected no error recovering poster")
 			require.EqualValues(t, expectedPoster, recoveredPoster, "Expected recovered poster to match test case")
 		})
 	}
+}
+
+func TestManualOrder(t *testing.T) {
+	tx := &types.TransactionOrder{
+		SubContract:     "0xebe8fdf63db77e3b41b0aec8208c49fa46569606",
+		Maker:           "0xe3ec7592166d0145b9677f5f45dd1bd95ffe6596",
+		MakerSignature:  "0xce84772cbbbe5a844c9002e6d54e53d72830b890ff1ea1521cbd86faada28aa136997b5cd3cafd85e887a9d6fc25bb2bfbe03fc6319d371b2c976f3374bcd8c300",
+		PosterSignature: "0xc3550b7ceab610e638dfb1b33e5cf7aaf9490854197328eadbe8ac049adef7510a07a0ea046fa1d410c5cc1048828152b9368a8d8925f8f0072192ebfe1bbb3101",
+	}
+
+	order, err := NewOrderFromProto(tx)
+	assert.NoError(t, err, "should not be error creating order")
+
+	hx, err := order.PosterHex()
+	fmt.Println(hex.EncodeToString(hx))
+	assert.NoError(t, err, "should not be error generating hex")
 }
