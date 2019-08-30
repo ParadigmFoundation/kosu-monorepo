@@ -224,7 +224,7 @@ export class NodeClient {
      * @returns A UUID that can be used to cancel the new subscription (see `node.unsubscribe()`).
      */
     public async subscribeToOrders(cb: (order: any) => void): Promise<string> {
-        return this._subscribe("newOrders", (res: any) => cb(res.result.transaction_order));
+        return this._subscribe("newOrders", (res: any) => cb(res.result));
     }
 
     /**
