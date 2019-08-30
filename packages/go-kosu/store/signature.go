@@ -64,7 +64,13 @@ func (sig *Signature) MarshalJSON() ([]byte, error) { return HexBytes(sig[:]).Ma
 func (sig *Signature) RecoverSigner(hash []byte) (Address, error) {
 	messageHash := hashEthereumMessage(hash)
 
-	recoveredKey, err := crypto.Ecrecover(messageHash, sig.Bytes())
+	// deals with differences in JS signing libraries
+	cp := sig[:]
+	if cp[64] > 27 {
+		cp[64] -= 27
+	}
+
+	recoveredKey, err := crypto.Ecrecover(messageHash, cp)
 	if err != nil {
 		return Address{}, err
 
@@ -84,7 +90,6 @@ func (sig *Signature) RecoverSigner(hash []byte) (Address, error) {
 	}
 
 	return signer, nil
-
 }
 
 // hashEthereumMessage implements eth_sign style personal message hashing (used in ecrecover)
