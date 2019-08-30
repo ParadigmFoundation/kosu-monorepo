@@ -20,10 +20,10 @@ export function blockHandlerClosure(clients: IClientMap, chain: ChainData): (msg
 
         // update clients with new block data, and latest chain state
         let counter = 0;
-        const message = chain.getLatestData();
+        const data = chain.getLatestData();
         Object.keys(clients).forEach((serverId: string) => {
-            const { client } = clients[serverId];
-            safeSend(client, message);
+            const { client, id } = clients[serverId];
+            safeSend(client, { id, data });
             counter++;
         });
         console.log(`finished sending updated network data to clients (${counter})`);
