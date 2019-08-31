@@ -16,7 +16,7 @@ interface QueryDefinition {
 export class ChainData {
     private readonly redis: RedisWrapper;
     private readonly socket: ws;
-    private readonly kosu: Kosu;
+    public readonly kosu: Kosu;
 
     public latest: INetworkData;
     public validators: IValidator[];
