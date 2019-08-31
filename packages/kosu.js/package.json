@@ -1,6 +1,6 @@
 {
     "name": "@kosu/kosu.js",
-    "version": "0.2.1",
+    "version": "0.2.2",
     "description": "JavaScript module for connecting with Kosu.",
     "main": "dist/index.js",
     "license": "MIT",
