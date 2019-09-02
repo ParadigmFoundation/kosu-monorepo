@@ -120,6 +120,26 @@ const activateForms = async () => {
         });
     };
 
+    document.getElementById("eth-bond-button").onclick = async () => {
+        const value = document.getElementById("eth-bond-value").value;
+        const wei = toWei(value);
+        console.log(`Bonding ${value} ETH with KosuToken(${kosuToken.address}) for KOSU`);
+        kosuToken.pay(wei).then(() => {
+            resetValues();
+            console.log(`Successfuly bonded ${value} ETH`);
+        });
+    };
+
+    document.getElementById("kosu-bond-button").onclick = async () => {
+        const value = document.getElementById("kosu-bond-value").value;
+        const wei = toWei(value);
+        console.log(`Bonding ${value} KOSU with KosuToken(${kosuToken.address}) for ETH`);
+        kosuToken.releaseTokens(wei).then(() => {
+            resetValues();
+            console.log(`Successfuly bonded ${value} KOSU`);
+        });
+    };
+
     document.getElementById("transfer-button").onclick = async () => {
         const recipient = document.getElementById("transfer-recipient").value;
         const value = document.getElementById("transfer-value").value;
