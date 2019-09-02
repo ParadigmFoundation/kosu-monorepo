@@ -120,6 +120,26 @@ const activateForms = async () => {
         });
     };
 
+    document.getElementById("eth-bond-button").onclick = async () => {
+        const value = document.getElementById("eth-bond-value").value;
+        const wei = toWei(value);
+        console.log(`Bonding ${value} ETH with KosuToken(${kosuToken.address}) for KOSU`);
+        kosuToken.pay(wei).then(() => {
+            resetValues();
+            console.log(`Successfuly bonded ${value} ETH`);
+        });
+    };
+
+    document.getElementById("kosu-bond-button").onclick = async () => {
+        const value = document.getElementById("kosu-bond-value").value;
+        const wei = toWei(value);
+        console.log(`Bonding ${value} KOSU with KosuToken(${kosuToken.address}) for ETH`);
+        kosuToken.releaseTokens(wei).then(() => {
+            resetValues();
+            console.log(`Successfuly bonded ${value} KOSU`);
+        });
+    };
+
     document.getElementById("transfer-button").onclick = async () => {
         const recipient = document.getElementById("transfer-recipient").value;
         const value = document.getElementById("transfer-value").value;
@@ -308,7 +328,7 @@ const activateForms = async () => {
     document.getElementById("validator-claim-button").onclick = async () => {
         const challengeId = document.getElementById("validator-claim-challenge-id").value;
 
-        validatorRegistry.claimWinnigs(challengeId).then(async () => {
+        validatorRegistry.claimWinnings(challengeId).then(async () => {
             resetValues();
             console.log(`Successfully claimed winnigs from challenge ${challengeId}.`);
         });
@@ -318,7 +338,7 @@ const activateForms = async () => {
         const votingWinningOptionHTML = document.getElementById("voting-winning-option");
         if (typeof votingWinningOptionHTML !== "undefined") {
             const val = await voting.winningOption(event.target.value);
-            votingWinningOptionHTML.innerText = trim(val);
+            votingWinningOptionHTML.innerText = val;
         }
 
         const votingTotalWinningTokensHTML = document.getElementById("voting-total-winning-tokens");

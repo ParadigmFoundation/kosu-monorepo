@@ -14,7 +14,7 @@ import (
 	"github.com/stretchr/testify/require"
 	abci "github.com/tendermint/tendermint/abci/types"
 	"github.com/tendermint/tendermint/libs/common"
-	"github.com/tendermint/tendermint/libs/db"
+	db "github.com/tendermint/tm-db"
 )
 
 var testCases = []struct {
@@ -60,7 +60,9 @@ func TestDeliverOrderTx(t *testing.T) {
 		buf, err := types.EncodeTx(tx)
 		require.NoError(t, err)
 
-		res := app.DeliverTx(buf)
+		res := app.DeliverTx(
+			abci.RequestDeliverTx{Tx: buf},
+		)
 
 		t.Run("AssertCode", func(t *testing.T) {
 			assert.Equal(t, uint32(1), res.Code,
@@ -91,7 +93,9 @@ func TestDeliverOrderTx(t *testing.T) {
 		buf, err := types.EncodeTx(tx)
 		require.NoError(t, err)
 
-		res := app.DeliverTx(buf)
+		res := app.DeliverTx(
+			abci.RequestDeliverTx{Tx: buf},
+		)
 
 		t.Run("AssertCode", func(t *testing.T) {
 			assert.Equal(t, abci.CodeTypeOK, res.Code,
@@ -114,7 +118,10 @@ func TestDeliverOrderTx(t *testing.T) {
 				{Key: []byte("order.poster"), Value: expectedPoster.Bytes()},
 				{Key: []byte("poster.limit"), Value: []byte("33332")},
 			}
-			assert.Equal(t, expectedTags, res.Tags)
+			expectedEvents := []abci.Event{
+				{Type: "tags", Attributes: expectedTags},
+			}
+			assert.Equal(t, expectedEvents, res.Events)
 		})
 	}
 }

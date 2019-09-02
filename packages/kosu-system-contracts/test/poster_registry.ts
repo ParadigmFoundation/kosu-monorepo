@@ -164,9 +164,9 @@ describe("PosterRegistry", () => {
         });
     });
 
-    describe("token", () => {
+    describe("kosuToken", () => {
         it("should have a token token configured", async () => {
-            posterRegistry.token.callAsync().should.eventually.eq(token.address);
+            posterRegistry.kosuToken.callAsync().should.eventually.eq(token.address);
         });
     });
 

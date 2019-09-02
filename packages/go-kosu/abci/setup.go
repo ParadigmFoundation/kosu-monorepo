@@ -44,14 +44,26 @@ func createConfig(homedir string, logger log.Logger) error {
 	} else {
 		config.SetRoot(homedir)
 	}
+
+	// we first check if the config existed
+	needUpdate := false
+	cfgFile := config.RootDir + "/config/config.toml"
+	if _, err := os.Stat(cfgFile); os.IsNotExist(err) {
+		needUpdate = true
+	}
+
+	// this will create a confir if it does not exists with default values
 	cfg.EnsureRoot(config.RootDir)
 
-	// Update default config values
-	config.LogLevel = strings.Join(
-		[]string{"app:info,witness:info", config.LogLevel}, ",",
-	)
-	// WriteConfigFile will overwrite the default config written by .EnsureRoot
-	cfg.WriteConfigFile(config.RootDir+"/config/config.toml", config)
+	// update the cfg only if it didn't exist
+	if needUpdate {
+		config.LogLevel = strings.Join(
+			[]string{"app:info,witness:info", config.LogLevel}, ",",
+		)
+
+		// WriteConfigFile will overwrite the default config written by .EnsureRoot
+		cfg.WriteConfigFile(cfgFile, config)
+	}
 
 	// private validator
 	privValKeyFile := config.PrivValidatorKeyFile()

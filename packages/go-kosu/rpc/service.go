@@ -82,6 +82,10 @@ func (s *Service) subscribeTM(ctx context.Context, query string) (*rpc.Subscript
 /*
 NewBlocks subscribes to new blocks on the Kosu blockchain.
 
+_Method:_
+
+-   `kosu_subscribe`
+
 _Parameters:_
 
 -   `newBlocks` - _string_
@@ -208,6 +212,10 @@ func (s *Service) NewBlocks(ctx context.Context) (*rpc.Subscription, error) {
 /*
 NewOrders subscribes to new Order Transactions.
 
+_Method:_
+
+-   `kosu_subscribe`
+
 _Parameters:_
 
 _Returns:_
@@ -315,12 +323,16 @@ for {
 ```
 */
 func (s *Service) NewOrders(ctx context.Context) (*rpc.Subscription, error) {
-	query := "tm.event='Tx' AND tx.type='order'"
+	query := "tm.event='Tx' AND tags.tx.type='order'"
 	return s.subscribeTM(ctx, query)
 }
 
 /*
 NewRebalances subscribes to new Rebalance Transactions
+
+_Method:_
+
+-   `kosu_subscribe`
 
 _Parameters:_
 
@@ -397,13 +409,17 @@ for {
 
 */
 func (s *Service) NewRebalances(ctx context.Context) (*rpc.Subscription, error) {
-	query := "tm.event='Tx' AND tx.type='rebalance'"
+	query := "tm.event='Tx' AND tags.tx.type='rebalance'"
 	return s.subscribeTM(ctx, query)
 }
 
 /*
 LatestHeight returns the height of the best known block.
 The `latestHeight` method will return the integer height of the latest block committed to the blockchain.
+
+_Method:_
+
+-   `kosu_latestHeight`
 
 _Parameters:_
 
@@ -435,6 +451,10 @@ func (s *Service) LatestHeight() (int64, error) {
 
 /*
 AddOrders adds an array of Kosu orders to the network.
+
+_Method:_
+
+-   `kosu_addOrders`
 
 _Parameters:_
 
@@ -536,6 +556,10 @@ The `RoundInfo` object tracks rebalance round information.
 It is used to maintain sync with the Ethereum chain,
 which is used to mark the beginning and end of each rebalance round.
 
+_Method:_
+
+-   `kosu_roundInfo`
+
 _Parameters:_
 
 _Returns:_
@@ -562,6 +586,10 @@ func (s *Service) RoundInfo() (*types.RoundInfo, error) {
 /*
 QueryValidator returns a validator given its address.
 Validator's address is case insensitive.
+
+_Method:_
+
+-   `kosu_queryValidator`
 
 _Parameters:_
 
@@ -604,6 +632,10 @@ func (s *Service) QueryValidator(addr string) (*types.Validator, error) {
 
 /*
 Validators returns the full validator set
+
+_Method:_
+
+-   `kosu_validators`
 
 _Parameters:_
 
@@ -658,6 +690,10 @@ func (s *Service) Validators() ([]*types.Validator, error) {
 /*
 QueryPoster returns a poster given its address.
 
+_Method:_
+
+-   `kosu_queryPoster`
+
 _Parameters:_
 
 -   `address` - _string_
@@ -687,4 +723,71 @@ curl -X POST localhost:14341 \
 */
 func (s *Service) QueryPoster(addr string) (*types.Poster, error) {
 	return s.abci.QueryPoster(addr)
+}
+
+/*
+TotalOrders returns the total number of orders in the system.
+This number is incremented each time one submits a new valid order
+
+_Method:_
+
+-   `kosu_totalOrders`
+
+_Parameters:_
+
+_Returns:_
+
+-   `number` - _uint64_
+
+*/
+func (s *Service) TotalOrders() (uint64, error) {
+	return s.abci.QueryTotalOrders()
+}
+
+/*
+NumberPosters returns the number of poster accounts
+
+_Method:_
+
+-   `kosu_numberPosters`
+
+_Parameters:_
+
+_Returns:_
+
+-   `number` - _uint64_
+
+*/
+func (s *Service) NumberPosters() (uint64, error) {
+	var num uint64
+
+	if err := s.abci.Query("/poster/number", nil, &num); err != nil {
+		return 0, err
+	}
+
+	return num, nil
+}
+
+/*
+RemainingLimit returns the sum of all the poster's limit.
+
+_Method:_
+
+-   `kosu_remainingLimit`
+
+_Parameters:_
+
+_Returns:_
+
+-   `number` - _uint64_
+
+*/
+func (s *Service) RemainingLimit() (uint64, error) {
+	var num uint64
+
+	if err := s.abci.Query("/poster/remaininglimit", nil, &num); err != nil {
+		return 0, err
+	}
+
+	return num, nil
 }

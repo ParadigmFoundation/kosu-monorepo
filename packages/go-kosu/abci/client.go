@@ -11,6 +11,7 @@ import (
 	tmtypes "github.com/tendermint/tendermint/types"
 
 	"go-kosu/abci/types"
+	"go-kosu/store"
 )
 
 var (
@@ -23,18 +24,23 @@ var (
 type Client struct {
 	client.Client
 	key []byte
+	cdc store.Codec
 }
 
 // NewClient returns a new Client type.
 // Key is the private key used to sign transactions.
 func NewClient(c client.Client, key []byte) *Client {
-	return &Client{Client: c, key: key}
+	return &Client{Client: c, key: key, cdc: store.DefaultCodec}
 }
 
 // NewHTTPClient calls NewClient using a HTTPClient as ABCClient
-func NewHTTPClient(addr string, key []byte) *Client {
+func NewHTTPClient(addr string, key []byte) (*Client, error) {
 	c := client.NewHTTP(addr, "/websocket")
-	return NewClient(c, key)
+	if err := c.Start(); err != nil {
+		return nil, err
+	}
+
+	return NewClient(c, key), nil
 }
 
 // BroadcastTxAsync will return right away without waiting to hear if the transaction is even valid
@@ -90,24 +96,13 @@ func (c *Client) Subscribe(ctx context.Context, q string) (<-chan rpctypes.Resul
 		return nil, nil, err
 	}
 
-	// Start WS if not yet
-	if httpC, ok := c.Client.(*client.HTTP); ok {
-		if !httpC.IsRunning() {
-			if err := httpC.Start(); err != nil {
-				return nil, nil, err
-			}
-		}
-	}
-
 	ch, err := c.Client.Subscribe(ctx, "kosu", q)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	closer := func() {
-		if httpC, ok := c.Client.(*client.HTTP); ok {
-			_ = httpC.Stop()
-		}
+		_ = c.Client.Unsubscribe(ctx, "kosu", q)
 	}
 
 	return ch, closer, nil
@@ -121,7 +116,7 @@ func (c *Client) Unsubscribe(ctx context.Context, query string) error {
 // QueryRoundInfo performs a ABCIQuery to "/roundinfo"
 func (c *Client) QueryRoundInfo() (*types.RoundInfo, error) {
 	var pb types.RoundInfo
-	if err := c.query("/chain/key", []byte("roundinfo"), &pb); err != nil {
+	if err := c.Query("/chain/key", []byte("roundinfo"), &pb); err != nil {
 		return nil, err
 	}
 
@@ -131,17 +126,38 @@ func (c *Client) QueryRoundInfo() (*types.RoundInfo, error) {
 // QueryConsensusParams performs a ABCI Query to "/consensusparams"
 func (c *Client) QueryConsensusParams() (*types.ConsensusParams, error) {
 	var pb types.ConsensusParams
-	if err := c.query("/chain/key", []byte("consensusparams"), &pb); err != nil {
+	if err := c.Query("/chain/key", []byte("consensusparams"), &pb); err != nil {
 		return nil, err
 	}
 
 	return &pb, nil
 }
 
+// QueryLastEvent performs a ABCI Query to "/lastevent".
+// `lastevent` keeps track of the last block height recorded from the Ethereum chain
+func (c *Client) QueryLastEvent() (uint64, error) {
+	out, err := c.ABCIQuery("/chain/key", []byte("lastevent"))
+	if err != nil {
+		return 0, err
+	}
+	res := out.Response
+
+	if res.IsErr() {
+		return 0, errors.New(res.GetLog())
+	}
+
+	if len(res.Value) == 0 {
+		return 0, nil
+	}
+
+	buf := proto.NewBuffer(res.Value)
+	return buf.DecodeFixed64()
+}
+
 // QueryPoster performs a ABCI Query to "/posters/<addr>"
 func (c *Client) QueryPoster(addr string) (*types.Poster, error) {
 	var pb types.Poster
-	if err := c.query("/poster/key", []byte(addr), &pb); err != nil {
+	if err := c.Query("/poster/key", []byte(addr), &pb); err != nil {
 		return nil, err
 	}
 
@@ -151,14 +167,26 @@ func (c *Client) QueryPoster(addr string) (*types.Poster, error) {
 // QueryValidator performs a ABCI Query to "/validator/<addr>"
 func (c *Client) QueryValidator(addr string) (*types.Validator, error) {
 	var pb types.Validator
-	if err := c.query("/validator/key", []byte(addr), &pb); err != nil {
+	if err := c.Query("/validator/key", []byte(addr), &pb); err != nil {
 		return nil, err
 	}
 
 	return &pb, nil
 }
 
-func (c *Client) query(path string, data []byte, pb proto.Message) error {
+// QueryTotalOrders performs a ABCI Query to "/chain/totalorders"
+func (c *Client) QueryTotalOrders() (uint64, error) {
+	var num uint64
+	if err := c.Query("/chain/key", []byte("totalorders"), &num); err != nil {
+		return 0, err
+	}
+
+	return num, nil
+}
+
+// Query is a generic query interface.
+// It will use the store.DefaultCodec codec to decode the `response.Value`.
+func (c *Client) Query(path string, data []byte, v interface{}) error {
 	out, err := c.ABCIQuery(path, data)
 	if err != nil {
 		return err
@@ -173,5 +201,5 @@ func (c *Client) query(path string, data []byte, pb proto.Message) error {
 		return ErrNotFound
 	}
 
-	return proto.Unmarshal(res.Value, pb)
+	return c.cdc.Decode(res.Value, v)
 }

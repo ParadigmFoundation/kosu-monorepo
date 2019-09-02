@@ -33,8 +33,8 @@ func (app *App) deliverWitnessTx(tx *types.TransactionWitness, nodeID []byte) ab
 }
 
 func (app *App) pruneWitnessTxs(block uint64) {
+	params := app.store.ConsensusParams()
 	fn := func(tx *types.TransactionWitness) {
-		params := app.store.ConsensusParams()
 		if block-tx.Block >= params.BlocksBeforePruning {
 			app.log.Debug("Pruning tx", "id", hex.EncodeToString(tx.Id))
 			app.store.DeleteWitnessTx(tx.Id)
@@ -102,15 +102,18 @@ func scaleBalance(balance *big.Int) int64 {
 		return int64(0)
 	}
 
-	scaled := &big.Rat{}
-	divisor := &big.Int{}
+	scaled := &big.Int{}
+	ether := &big.Int{}
+	scaled.Set(balance)
 
 	// scale balance by 10**18 (base units for KOSU)
+	// linter disabled for outdated gosec rule
 	// nolint:gosec
-	divisor = divisor.Exp(big.NewInt(10), big.NewInt(18), nil)
-	scaled.SetFrac(balance, divisor)
+	ether.Exp(big.NewInt(10), big.NewInt(18), big.NewInt(0))
+	scaled.Div(balance, ether)
 
-	res, _ := scaled.Float64()
-	power := math.Floor(res)
-	return int64(power)
+	if !scaled.IsInt64() {
+		return math.MaxInt64
+	}
+	return scaled.Int64()
 }

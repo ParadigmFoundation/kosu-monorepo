@@ -19,8 +19,8 @@ func NewTagsFromRoundInfo(info *types.RoundInfo) []common.KVPair {
 	}
 }
 
-// NewRoundInfoFromTags parses a set of tags and returns a state.RoundInfo
-func NewRoundInfoFromTags(tags map[string]string) (*types.RoundInfo, error) {
+// NewRoundInfoFromEvents parses a set of tags and returns a state.RoundInfo
+func NewRoundInfoFromEvents(events map[string][]string) (*types.RoundInfo, error) {
 	var info types.RoundInfo
 	var err error
 
@@ -28,13 +28,18 @@ func NewRoundInfoFromTags(tags map[string]string) (*types.RoundInfo, error) {
 		tag string
 		val *uint64
 	}{
-		{"round.number", &info.Number},
-		{"round.start", &info.StartsAt},
-		{"round.end", &info.EndsAt},
+		{"tags.round.number", &info.Number},
+		{"tags.round.start", &info.StartsAt},
+		{"tags.round.end", &info.EndsAt},
 	}
 
 	for _, field := range fields {
-		*field.val, err = strconv.ParseUint(tags[field.tag], 10, 64)
+		tags := events[field.tag]
+		if len(tags) == 0 {
+			continue
+		}
+
+		*field.val, err = strconv.ParseUint(tags[0], 10, 64)
 		if err != nil {
 			return nil, err
 		}
@@ -43,8 +48,8 @@ func NewRoundInfoFromTags(tags map[string]string) (*types.RoundInfo, error) {
 	return &info, nil
 }
 
-// NewTagsFromOrderInfo returns the KVPairs necessary to make up Order transaction tags
-func NewTagsFromOrderInfo(orderID []byte, posterAddress store.Address, newLimit uint64) []common.KVPair {
+// NewKVPairFromOrderInfo returns the KVPairs necessary to make up Order transaction tags
+func NewKVPairFromOrderInfo(orderID []byte, posterAddress store.Address, newLimit uint64) []common.KVPair {
 	return []common.KVPair{
 		{Key: []byte("tx.type"), Value: []byte("order")},
 		{Key: []byte("order.id"), Value: orderID},

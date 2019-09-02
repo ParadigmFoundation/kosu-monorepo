@@ -237,7 +237,7 @@ export class TestHelpers {
         await this.skipTo(target);
     }
 
-    private async skipTo(endBlock: number): Promise<void> {
+    public async skipTo(endBlock: number): Promise<void> {
         await this.initializing;
         while ((await this.web3Wrapper.getBlockNumberAsync()) < endBlock) {
             await this.skipBlocks(1);

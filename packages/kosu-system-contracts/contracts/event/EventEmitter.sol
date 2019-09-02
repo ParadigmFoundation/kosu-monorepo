@@ -4,11 +4,11 @@ import "../base/Authorizable.sol";
 
 /** @title EventEmitter
     @author Freydal
-    @dev A shared contract for all Kosu system contracts to trigger event logs through.
+    @dev A central event emitting contract supporting the Kosu contract system.
 */
 contract EventEmitter is Authorizable {
 
-    /// Generic event which can be decoded in Javascript via internal library.
+    // Generic Kosu Event
     event KosuEvent(string eventType, bytes32[] data, string stringData);
 
     /** @dev Event emitter instantiated with Authorizable.
@@ -18,11 +18,11 @@ contract EventEmitter is Authorizable {
     constructor(address auth) Authorizable(auth) public {
     }
 
-    /** @dev Emit generic events which can have decoding exposed though javascript library.
-        @notice Emit generic events which can have decoding exposed though javascript library.
-        @param eventType String name/type of event
-        @param data Bytes32 encoded data to be emitted from a centralized location
-        @param stringData String containing optional additonal information
+    /** @dev Emits a standard event from the Kosu contract system.  The events can be decoded though the Kosu.js library.
+        @notice Emits a standard event from the Kosu contract system.  The events can be decoded though the Kosu.js library.
+        @param eventType String name/type of event.
+        @param data Bytes32 encoded data to be emitted.
+        @param stringData String containing optional additional information.
     */
     function emitEvent(string calldata eventType, bytes32[] calldata data, string calldata stringData) external isAuthorized {
         emit KosuEvent(eventType, data, stringData);
