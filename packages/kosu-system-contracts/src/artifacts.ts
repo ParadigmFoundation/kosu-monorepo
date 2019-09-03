@@ -7,11 +7,11 @@ import { CompilerOpts, ContractAbi, ContractNetworks, EvmOutput } from "ethereum
 
 import * as AuthorizedAddresses from "../generated-artifacts/AuthorizedAddresses.json";
 import * as BasicTradeSubContract from "../generated-artifacts/BasicTradeSubContract.json";
-import * as SignatureValidatorSubContract from "../generated-artifacts/SignatureValidatorSubContract.json";
 import * as EventEmitter from "../generated-artifacts/EventEmitter.json";
 import * as KosuToken from "../generated-artifacts/KosuToken.json";
 import * as OrderGateway from "../generated-artifacts/OrderGateway.json";
 import * as PosterRegistry from "../generated-artifacts/PosterRegistry.json";
+import * as SignatureValidatorSubContract from "../generated-artifacts/SignatureValidatorSubContract.json";
 import * as TestToken from "../generated-artifacts/TestToken.json";
 import * as Treasury from "../generated-artifacts/Treasury.json";
 import * as ValidatorRegistry from "../generated-artifacts/ValidatorRegistry.json";
