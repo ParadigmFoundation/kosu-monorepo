@@ -41,4 +41,20 @@ describe("OrderSerializer", () => {
         const hexWithoutTakerArgs = OrderSerializer.posterSignatureHex(order, order.arguments);
         hexWithTakerArgs.should.eq(hexWithoutTakerArgs);
     });
+
+    it("should generate and validate an test order with each datatype", async () => {
+        const order = {
+            makerValues: {
+                testAddress: signatureValidatorSubContract.address,
+                testUint: 1,
+                testInt: -1,
+                twoBytes: "0x1122",
+                fiveBytes: "0xaabbccddee",
+            },
+            subContract: signatureValidatorSubContract.address,
+        };
+        await kosu.orderHelper.makeOrder(order);
+
+        await kosu.orderGateway.isValid(order).should.eventually.eq(true);
+    });
 });
