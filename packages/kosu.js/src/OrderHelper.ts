@@ -77,6 +77,7 @@ export class OrderHelper {
         if (order.arguments === undefined) {
             order.arguments = await this.orderGateway.arguments(order.subContract);
         }
+
         return {
             ...order,
             posterSignature: await Signature.generate(
@@ -85,7 +86,7 @@ export class OrderHelper {
                     order,
                     order.arguments,
                 ),
-                poster,
+                poster || await this.web3.eth.getCoinbase(),
             ),
         };
     }
