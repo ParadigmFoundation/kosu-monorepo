@@ -117,4 +117,14 @@ export class OrderHelper {
         const _arguments = order.arguments || (await this.orderGateway.arguments(order.subContract));
         return OrderSerializer.recoverPoster(order, _arguments);
     }
+
+    /**
+     * Generates the contract submission bytes from the arguments of provided order.
+     *
+     * @param order Order to generate contract input bytes for.
+     */
+    public async serialize(order: Order): Promise<string> {
+        const _arguments = order.arguments || (await this.orderGateway.arguments(order.subContract));
+        return OrderSerializer.serialize(_arguments, order);
+    }
 }
