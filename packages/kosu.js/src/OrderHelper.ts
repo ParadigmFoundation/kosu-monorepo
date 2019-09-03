@@ -42,6 +42,9 @@ export class OrderHelper {
      * @returns The supplied maker order with an appended `makerSignature`.
      */
     public async makeOrder(order: Order): Promise<Order> {
+        if (order.maker === undefined) {
+            order.maker = await this.web3.eth.getCoinbase();
+        }
         order.makerSignature = await Signature.generate(this.web3, await this.makerHex(order), order.maker);
         order.makerValues.signature = order.makerSignature;
 
@@ -71,17 +74,26 @@ export class OrderHelper {
      * @returns The maker order now signed and prepared for post with an appended `posterSignature`.
      */
     public async prepareForPost(order: Order, poster: string = order.maker): Promise<PostableOrder> {
-        return {
+        if (order.arguments === undefined) {
+            order.arguments = await this.orderGateway.arguments(order.subContract);
+        }
+
+        const preparedOrder = {
             ...order,
             posterSignature: await Signature.generate(
                 this.web3,
-                OrderSerializer.posterSignatureHex(
-                    order,
-                    order.arguments || (await this.orderGateway.arguments(order.subContract)),
-                ),
-                poster,
+                OrderSerializer.posterSignatureHex(order, order.arguments),
+                poster || (await this.web3.eth.getCoinbase()),
             ),
         };
+
+        for (const [key, value] of Object.entries(preparedOrder.makerValues)) {
+            if (typeof value === "number") {
+                preparedOrder.makerValues[key] = value.toString();
+            }
+        }
+
+        return preparedOrder;
     }
 
     /**
@@ -113,5 +125,15 @@ export class OrderHelper {
     public async recoverPoster(order: PostableOrder): Promise<string> {
         const _arguments = order.arguments || (await this.orderGateway.arguments(order.subContract));
         return OrderSerializer.recoverPoster(order, _arguments);
+    }
+
+    /**
+     * Generates the contract submission bytes from the arguments of provided order.
+     *
+     * @param order Order to generate contract input bytes for.
+     */
+    public async serialize(order: Order): Promise<string> {
+        const _arguments = order.arguments || (await this.orderGateway.arguments(order.subContract));
+        return OrderSerializer.serialize(_arguments, order);
     }
 }
