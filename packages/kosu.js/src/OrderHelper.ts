@@ -42,6 +42,9 @@ export class OrderHelper {
      * @returns The supplied maker order with an appended `makerSignature`.
      */
     public async makeOrder(order: Order): Promise<Order> {
+        if (order.maker === undefined) {
+            order.maker = await this.web3.eth.getCoinbase();
+        }
         order.makerSignature = await Signature.generate(this.web3, await this.makerHex(order), order.maker);
         order.makerValues.signature = order.makerSignature;
 
