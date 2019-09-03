@@ -1,4 +1,8 @@
-# Kosu Token Model
+---
+title: Token Mechanics
+---
+
+# Token Mechanics
 
 ## Introduction
 
@@ -6,11 +10,11 @@ The Kosu network uses a bonded proof-of-stake security model implemented with Te
 
 ## Validators
 
-Kosu validators are required to run full Ethereum nodes and are responsible for submitting special attestations, or “witness” transactions, to the Kosu network about specific state changes to the protocol’s contract system. Specifically, the network must reflect updates to users’ bonded token balances and updates to the dynamic registry contract containing the curated list of validators.
+Kosu validators are required to run full Ethereum nodes and are responsible for submitting special attestations, or “witness” transactions, to the Kosu network about specific state changes to the protocol’s contract system. Specifically, the network must reflect updates to user's bonded token balances and updates to the dynamic registry contract containing the curated list of validators.
 
 The Kosu network uses a bonded proof-of-stake security model wherein validators stake (by locking) KOSU into a contract proportional to the amount of vote power they wish to receive on the network. The number of tokens they associate with their stake are locked for the duration that the entity wishes to validate. The validator may be stripped of their power at any time at the discretion of voting KOSU holders, and if voted out, their tokens are distributed to the individuals responsible for raising – and voting in – the successful challenge. ([More info](https://docs.kosu.io/overview/governance.html#challenges) on the challenge process).
 
-During the continuous validator governance and curation process, individuals wishing to become validators submit proposals in which they specify a positive or negative reward schedule. If this value is positive, the validator will be rewarded newly minted KOSU that inflates the existing supply (and changes the bonding curve equation). If the value is negative, validators will be required to constantly collateralize their listing at the rate specified so their tokens may be burned, deflating the existing supply. The ability for validators to specify both negative and positive reward rates is a crucial component of the overall system design.
+During the continuous validator governance and curation process, individuals wishing to become validators submit proposals in which they specify a positive or negative reward schedule. If this value is positive, the validator will be rewarded newly minted KOSU that inflates the existing supply (and changes the bonding curve parameterization). If the value is negative, validators will be required to constantly collateralize their listing at the rate specified so their tokens may be burned, deflating the existing supply. The ability for validators to specify both negative and positive reward rates is a crucial component of the overall system design, because it introduces an additional parameter upon which individuals wishing to join as validators may compete with. Voters may prefer to elect a validator that requires a lower, or negative, annual payout, thus validators can compete by requesting less and less payout for services (more on this later).
 
 For the nascent network, validators will be able to extract little value from the act of validating alone, and thus will require inflationary rewards that justify the costs of managing validator infrastructure. However, in a mature state the Kosu network could present implicit value capture opportunities to validators in the form of positional information advantages. More generally, validator reward schedules are market-driven and account for both implicit and explicit reward capture.
 
