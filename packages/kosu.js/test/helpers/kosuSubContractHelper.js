@@ -1,6 +1,8 @@
-const BasicTradeSubContract = require("@kosu/system-contracts/dist/generated-wrappers/basic_trade_sub_contract.js")
-    .BasicTradeSubContractContract;
-const BasicTradeSubContractArtifact = require("@kosu/system-contracts/generated-artifacts/BasicTradeSubContract.json");
+const systemContracts = require("@kosu/system-contracts");
+const BasicTradeSubContract = systemContracts.BasicTradeSubContractContract;
+const SignatureValidatorSubContract = systemContracts.SignatureValidatorSubContractContract;
+const BasicTradeSubContractArtifact = systemContracts.artifacts.BasicTradeSubContract;
+const signatureValidatorSubContractArtifact = systemContracts.artifacts.SignatureValidatorSubContract;
 const BasicTradeSubContractConfig = require("./BasicTradeSubContractConfig.json");
 
 module.exports = async (provider, options) => {
@@ -9,5 +11,10 @@ module.exports = async (provider, options) => {
         provider,
         options,
         JSON.stringify(BasicTradeSubContractConfig),
+    );
+    global.signatureValidatorSubContract = await SignatureValidatorSubContract.deployFrom0xArtifactAsync(
+        signatureValidatorSubContractArtifact,
+        provider,
+        options,
     );
 };
