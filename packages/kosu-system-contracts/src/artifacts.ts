@@ -7,6 +7,7 @@ import { CompilerOpts, ContractAbi, ContractNetworks, EvmOutput } from "ethereum
 
 import * as AuthorizedAddresses from "../generated-artifacts/AuthorizedAddresses.json";
 import * as BasicTradeSubContract from "../generated-artifacts/BasicTradeSubContract.json";
+import * as SignatureValidatorSubContract from "../generated-artifacts/SignatureValidatorSubContract.json";
 import * as EventEmitter from "../generated-artifacts/EventEmitter.json";
 import * as KosuToken from "../generated-artifacts/KosuToken.json";
 import * as OrderGateway from "../generated-artifacts/OrderGateway.json";
@@ -28,6 +29,7 @@ export const artifacts = {
     Voting: Voting as KosuContractArtifact,
     ZeroExV2SubContract: ZeroExV2SubContract as KosuContractArtifact,
     BasicTradeSubContract: BasicTradeSubContract as KosuContractArtifact,
+    SignatureValidatorSubContract: SignatureValidatorSubContract as KosuContractArtifact,
     TestToken: TestToken as KosuContractArtifact,
 };
 
