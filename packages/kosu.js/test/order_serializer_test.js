@@ -2,7 +2,6 @@ const NULL_ADDRESS = require("../src/utils").NULL_ADDRESS;
 const { OrderSerializer } = require("../src/OrderSerializer");
 
 describe("OrderSerializer", () => {
-
     it("should generate the same poster hex with and without takerArguments", async () => {
         const orderGateway = kosu.orderGateway;
         const orderHelper = kosu.orderHelper;

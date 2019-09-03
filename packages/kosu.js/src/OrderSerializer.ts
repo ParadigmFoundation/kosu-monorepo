@@ -102,7 +102,10 @@ export const OrderSerializer = {
             if (argument.name.includes("signature") && argument.signatureFields) {
                 argument.signatureFields.forEach(i => {
                     datatypes.push(_arguments.maker[i].datatype);
-                    if (_arguments.maker[i].datatype === "bytes" && typeof order.makerValues[_arguments.maker[i].name] === "string" ) {
+                    if (
+                        _arguments.maker[i].datatype === "bytes" &&
+                        typeof order.makerValues[_arguments.maker[i].name] === "string"
+                    ) {
                         values.push(toBuffer(order.makerValues[_arguments.maker[i].name]));
                     } else {
                         values.push(order.makerValues[_arguments.maker[i].name]);
