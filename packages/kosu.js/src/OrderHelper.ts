@@ -78,7 +78,7 @@ export class OrderHelper {
             order.arguments = await this.orderGateway.arguments(order.subContract);
         }
 
-        return {
+        const preparedOrder = {
             ...order,
             posterSignature: await Signature.generate(
                 this.web3,
@@ -86,6 +86,14 @@ export class OrderHelper {
                 poster || (await this.web3.eth.getCoinbase()),
             ),
         };
+
+        for (const [key, value] of Object.entries(preparedOrder.makerValues)) {
+            if (typeof value === "number") {
+                preparedOrder.makerValues[key] = value.toString();
+            }
+        }
+
+        return preparedOrder;
     }
 
     /**
