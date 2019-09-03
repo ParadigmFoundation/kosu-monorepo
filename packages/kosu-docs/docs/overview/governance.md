@@ -38,7 +38,7 @@ Any participant with KOSU deposited in the Treasury may create a proposal that i
 
 -   `tendermintPublicKey`: Hex encoded Tendermint public key
 -   `tokensToStake`: the amount of KOSU at stake if challenged
--   `rewardRate`: the rate at which tokens are minted or destroyed over the active listings reward period
+-   `rewardRate`: the rate at which tokens are minted or destroyed over the active listings reward period (denominated in reserve currency (ETH), distributed in corresponding quantity of KOSU)
 -   `details`: external link with validator information for voters
 
 ### Proposal filter (minimum stake)
@@ -47,9 +47,9 @@ Proposals must include a stake (`tokenToStake`) of KOSU greater than or equal to
 
 ### Reward rate
 
-All validator proposals must include a reward (`rewardRate`) to be executed to the validator on a periodic basis. This reward may be positive (tokens minted as inflation), negative (tokens burned), or zero. If a listing with a negative reward rate is proposed and accepted, the validator must continually collateralize a treasury balance sufficient to cover the burn rate. If the validator is unable to cover a burn, they may be removed from the listing without a full challenge ("touch-and-remove"). If a listing owner's available balance (number of tokens deposited in treasury) falls below their stake size, they may also be touched-and-removed. An example of the previously described scenario would be a validator withdrawing their staked KOSU.
+All validator proposals must include a reward (`rewardRate`) to be executed to the validator on a periodic basis. This reward is denominated in ETH but paid in Kosu. The rate may be positive (tokens minted as inflation), negative (tokens burned), or zero. If a listing with a negative reward rate is proposed and accepted, the validator must continually collateralize a treasury balance sufficient to cover the burn rate. If the validator is unable to cover a burn, they may be removed from the listing without a full challenge ("touch-and-remove"). If a listing owner's available balance (number of tokens deposited in treasury) falls below their stake size, they may also be touched-and-removed. An example of the previously described scenario would be a validator withdrawing their staked KOSU.
 
-There is also a specified `maxRewardRate` which is the maximum amount of KOSU a validator can propose to mint per period. This `maxRewardRate` constriction on proposals is equal to 1.2x the current maximum validator reward rate. For example, if the highest reward rate in the current validator set is 10 KOSU per period, the maximum reward rate that may be proposed by an intended validator is 12 KOSU per period.
+There is also a specified `maxRewardRate` which is the maximum rate a validator can propose to mint per period. This `maxRewardRate` constriction on proposals is equal to 1.2x the current maximum validator reward rate. For example, if the highest reward rate in the current validator set is .1 ETH worth of KOSU per period, the maximum reward rate that may be proposed by an intended validator is .12 ETH worth of KOSU per period.
 
 ### Unchallenged listings
 
