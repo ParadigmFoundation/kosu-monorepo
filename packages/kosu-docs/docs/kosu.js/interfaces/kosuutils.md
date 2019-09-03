@@ -1,4 +1,4 @@
-> ## [kosu.js](../README.md)
+> **[kosu.js](../README.md)**
 
 [Globals](../globals.md) / [KosuUtils](kosuutils.md) /
 
@@ -8,13 +8,13 @@
 
 -   **KosuUtils**
 
-### Index
+## Index
 
-#### Properties
+### Properties
 
 -   [NULL_ADDRESS](kosuutils.md#null_address)
 
-#### Methods
+### Methods
 
 -   [toBytes32](kosuutils.md#tobytes32)
 
@@ -22,11 +22,9 @@
 
 ### NULL_ADDRESS
 
-● **NULL_ADDRESS**: _string_
+• **NULL_ADDRESS**: _string_
 
 Defined in types.d.ts:42
-
----
 
 ## Methods
 
@@ -43,5 +41,3 @@ Defined in types.d.ts:41
 | `value` | string |
 
 **Returns:** _number | string | `BN`_
-
----
