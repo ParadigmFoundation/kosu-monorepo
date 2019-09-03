@@ -1,4 +1,4 @@
-> ## [kosu.js](../README.md)
+> **[kosu.js](../README.md)**
 
 [Globals](../globals.md) / [Order](order.md) /
 
@@ -12,9 +12,9 @@
 
     -   [TakeableOrder](takeableorder.md)
 
-### Index
+## Index
 
-#### Properties
+### Properties
 
 -   [arguments](order.md#optional-arguments)
 -   [id](order.md#id)
@@ -29,7 +29,7 @@
 
 ### `Optional` arguments
 
-● **arguments**? : _any_
+• **arguments**? : _any_
 
 Defined in types.d.ts:22
 
@@ -37,7 +37,7 @@ Defined in types.d.ts:22
 
 ### id
 
-● **id**: _any_
+• **id**: _any_
 
 Defined in types.d.ts:23
 
@@ -45,7 +45,7 @@ Defined in types.d.ts:23
 
 ### maker
 
-● **maker**: _string_
+• **maker**: _string_
 
 Defined in types.d.ts:18
 
@@ -53,7 +53,7 @@ Defined in types.d.ts:18
 
 ### `Optional` makerSignature
 
-● **makerSignature**? : _any_
+• **makerSignature**? : _any_
 
 Defined in types.d.ts:21
 
@@ -61,7 +61,7 @@ Defined in types.d.ts:21
 
 ### makerValues
 
-● **makerValues**: _any_
+• **makerValues**: _any_
 
 Defined in types.d.ts:19
 
@@ -69,7 +69,7 @@ Defined in types.d.ts:19
 
 ### poster
 
-● **poster**: _string_
+• **poster**: _string_
 
 Defined in types.d.ts:24
 
@@ -77,7 +77,7 @@ Defined in types.d.ts:24
 
 ### subContract
 
-● **subContract**: _string_
+• **subContract**: _string_
 
 Defined in types.d.ts:17
 
@@ -85,8 +85,6 @@ Defined in types.d.ts:17
 
 ### `Optional` takerValues
 
-● **takerValues**? : _any_
+• **takerValues**? : _any_
 
 Defined in types.d.ts:20
-
----

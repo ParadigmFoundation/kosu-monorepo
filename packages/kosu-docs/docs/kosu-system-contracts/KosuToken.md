@@ -1,22 +1,23 @@
 # KosuToken
 
-KosuToken (KOSU) is an implentation of the ERC-20 interface, supporting mints and burns.
+KosuToken (KOSU) is an implementation of the ERC-20 interface and supporting bonding curve for mints and burns.
 
 ## Contents
 
 -   [Methods](undefined)
     -   [allowance](#allowance)
     -   [approve](#approve)
-    -   [balanceOf](#balanceOf)
+    -   [balanceOf](#balanceof)
+    -   [bondTokens](#bondtokens)
     -   [burn](#burn)
-    -   [constructor](#constructor)
-    -   [decreaseAllowance](#decreaseAllowance)
-    -   [increaseAllowance](#increaseAllowance)
-    -   [mint](#mint)
-    -   [mintTo](#mintTo)
-    -   [totalSupply](#totalSupply)
+    -   [decreaseAllowance](#decreaseallowance)
+    -   [estimateEtherToToken](#estimateethertotoken)
+    -   [estimateTokenToEther](#estimatetokentoether)
+    -   [increaseAllowance](#increaseallowance)
+    -   [mintTo](#mintto)
+    -   [releaseTokens](#releasetokens)
     -   [transfer](#transfer)
-    -   [transferFrom](#transferFrom)
+    -   [transferFrom](#transferfrom)
 
 ## Methods
 
@@ -27,7 +28,7 @@ Function to check the amount of tokens that an owner allowed to a spender.
 #### Signature
 
 ```solidity
-function allowance(owner address, spender address)
+function allowance(owner address, spender address) public view (uint256)
 ```
 
 #### Parameters:
@@ -48,7 +49,7 @@ Approve the passed address to spend the specified amount of tokens on behalf of 
 #### Signature
 
 ```solidity
-function approve(spender address, value uint256)
+function approve(spender address, value uint256) public (bool)
 ```
 
 #### Parameters:
@@ -65,7 +66,7 @@ Gets the balance of the specified address.
 #### Signature
 
 ```solidity
-function balanceOf(owner address)
+function balanceOf(owner address) public view (uint256)
 ```
 
 #### Parameters:
@@ -78,31 +79,37 @@ function balanceOf(owner address)
 
 An uint256 representing the amount owned by the passed address.
 
-### burn
+### bondTokens
 
-Burn tokens
+Receives ether as a backing currency to be used against the bonding curve to mint tokens.
 
 #### Signature
 
 ```solidity
-function burn(amount uint256)
+function bondTokens(minPayout uint256) public (uint256)
 ```
 
 #### Parameters:
 
-| Parameter | Type      | Description                 |
-| --------- | --------- | --------------------------- |
-| `amount`  | `uint256` | Number of tokens to destroy |
+| Parameter   | Type      | Description                                                                                                                          |
+| ----------- | --------- | ------------------------------------------------------------------------------------------------------------------------------------ |
+| `minPayout` | `uint256` | The minimum number of tokens to mint otherwise the transaction is reverted. This should prevent a front runner modifying the output. |
 
-### constructor
+### burn
 
-Deploy a new ERC20 Token
+Voluntarily burn tokens.
 
 #### Signature
 
 ```solidity
-constructor()
+function burn(amount uint256) public
 ```
+
+#### Parameters:
+
+| Parameter | Type      | Description               |
+| --------- | --------- | ------------------------- |
+| `amount`  | `uint256` | Number of tokens to burn. |
 
 ### decreaseAllowance
 
@@ -111,7 +118,7 @@ Decrease the amount of tokens that an owner allowed to a spender. approve should
 #### Signature
 
 ```solidity
-function decreaseAllowance(spender address, subtractedValue uint256)
+function decreaseAllowance(spender address, subtractedValue uint256) public (bool)
 ```
 
 #### Parameters:
@@ -121,6 +128,46 @@ function decreaseAllowance(spender address, subtractedValue uint256)
 | `spender`         | `address` | The address which will spend the funds.            |
 | `subtractedValue` | `uint256` | The amount of tokens to decrease the allowance by. |
 
+### estimateEtherToToken
+
+Estimates the number of tokens that would be minted with the input ether at the current ether and token balances.
+
+#### Signature
+
+```solidity
+function estimateEtherToToken(input uint256) public view (uint256)
+```
+
+#### Parameters:
+
+| Parameter | Type      | Description                        |
+| --------- | --------- | ---------------------------------- |
+| `input`   | `uint256` | The amount of ether to contribute. |
+
+#### Returns:
+
+Number of tokens that would be minted.
+
+### estimateTokenToEther
+
+Estimates the amount of ether to be released with the input number of tokens to burn.
+
+#### Signature
+
+```solidity
+function estimateTokenToEther(input uint256) public view (uint256)
+```
+
+#### Parameters:
+
+| Parameter | Type      | Description                   |
+| --------- | --------- | ----------------------------- |
+| `input`   | `uint256` | The number of tokens to burn. |
+
+#### Returns:
+
+Amount of ether to release.
+
 ### increaseAllowance
 
 Increase the amount of tokens that an owner allowed to a spender. approve should be called when allowed\_[_spender] == 0. To increment allowed value is better to use this function to avoid 2 calls (and wait until the first transaction is mined) From MonolithDAO Token.sol Emits an Approval event.
@@ -128,58 +175,48 @@ Increase the amount of tokens that an owner allowed to a spender. approve should
 #### Signature
 
 ```solidity
-function increaseAllowance(addedValue address, spender uint256)
+function increaseAllowance(spender address, addedValue uint256) public (bool)
 ```
 
 #### Parameters:
 
 | Parameter    | Type      | Description                                        |
 | ------------ | --------- | -------------------------------------------------- |
-| `addedValue` | `address` | The amount of tokens to increase the allowance by. |
-| `spender`    | `uint256` | The address which will spend the funds.            |
-
-### mint
-
-Mint tokens
-
-#### Signature
-
-```solidity
-function mint(amount uint256)
-```
-
-#### Parameters:
-
-| Parameter | Type      | Description                |
-| --------- | --------- | -------------------------- |
-| `amount`  | `uint256` | Number of tokens to create |
+| `spender`    | `address` | The address which will spend the funds.            |
+| `addedValue` | `uint256` | The amount of tokens to increase the allowance by. |
 
 ### mintTo
 
-Mint tokens to specified address
+Authorized addresses (mostly contract systems) may manually mint new tokens to desired addresses.
 
 #### Signature
 
 ```solidity
-function mintTo(_address address, amount uint256)
+function mintTo(_address address, amount uint256) public
 ```
 
 #### Parameters:
 
-| Parameter  | Type      | Description                 |
-| ---------- | --------- | --------------------------- |
-| `_address` | `address` | Address to receive tokens   |
-| `amount`   | `uint256` | Number of tokens to create. |
+| Parameter  | Type      | Description                |
+| ---------- | --------- | -------------------------- |
+| `_address` | `address` | Address to mint tokens to. |
+| `amount`   | `uint256` | Number of tokens to mint.  |
 
-### totalSupply
+### releaseTokens
 
-Total number of tokens in existence
+Burns the input tokens and releases the calculated amount of ether backing the tokens destroyed.
 
 #### Signature
 
 ```solidity
-function totalSupply()
+function releaseTokens(tokensToBurn uint256) public
 ```
+
+#### Parameters:
+
+| Parameter      | Type      | Description                             |
+| -------------- | --------- | --------------------------------------- |
+| `tokensToBurn` | `uint256` | The number of the users tokens to burn. |
 
 ### transfer
 
@@ -188,7 +225,7 @@ Transfer token for a specified address
 #### Signature
 
 ```solidity
-function transfer(to address, value uint256)
+function transfer(to address, value uint256) public (bool)
 ```
 
 #### Parameters:
@@ -205,7 +242,7 @@ Transfer tokens from one address to another. Note that while this function emits
 #### Signature
 
 ```solidity
-function transferFrom(from address, to address, value uint256)
+function transferFrom(from address, to address, value uint256) public (bool)
 ```
 
 #### Parameters:
