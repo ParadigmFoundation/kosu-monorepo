@@ -74,13 +74,16 @@ export class OrderHelper {
      * @returns The maker order now signed and prepared for post with an appended `posterSignature`.
      */
     public async prepareForPost(order: Order, poster: string = order.maker): Promise<PostableOrder> {
+        if (order.arguments === undefined) {
+            order.arguments = await this.orderGateway.arguments(order.subContract);
+        }
         return {
             ...order,
             posterSignature: await Signature.generate(
                 this.web3,
                 OrderSerializer.posterSignatureHex(
                     order,
-                    order.arguments || (await this.orderGateway.arguments(order.subContract)),
+                    order.arguments,
                 ),
                 poster,
             ),
