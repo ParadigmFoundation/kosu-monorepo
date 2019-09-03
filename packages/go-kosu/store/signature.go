@@ -67,7 +67,7 @@ func (sig *Signature) RecoverSigner(hash []byte) (Address, error) {
 	// deals with differences in JS signing libraries
 	var cp Signature
 	copy(cp[:], sig[:])
-	if cp[64] > 27 {
+	if cp[64] >= 27 {
 		cp[64] -= 27
 	}
 
