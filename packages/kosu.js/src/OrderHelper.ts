@@ -82,11 +82,8 @@ export class OrderHelper {
             ...order,
             posterSignature: await Signature.generate(
                 this.web3,
-                OrderSerializer.posterSignatureHex(
-                    order,
-                    order.arguments,
-                ),
-                poster || await this.web3.eth.getCoinbase(),
+                OrderSerializer.posterSignatureHex(order, order.arguments),
+                poster || (await this.web3.eth.getCoinbase()),
             ),
         };
     }
