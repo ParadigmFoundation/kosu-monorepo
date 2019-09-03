@@ -1,4 +1,4 @@
-> ## [kosu.js](../README.md)
+> **[kosu.js](../README.md)**
 
 [Globals](../globals.md) / [DecodedKosuLogArgs](decodedkosulogargs.md) /
 

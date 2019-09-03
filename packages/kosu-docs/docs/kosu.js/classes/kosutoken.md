@@ -1,4 +1,4 @@
-> ## [kosu.js](../README.md)
+> **[kosu.js](../README.md)**
 
 [Globals](../globals.md) / [KosuToken](kosutoken.md) /
 
@@ -15,25 +15,22 @@ If instantiated outside the `Kosu` class, an instance of `web3` and of the
 
 -   **KosuToken**
 
-### Index
+## Index
 
-#### Constructors
+### Constructors
 
 -   [constructor](kosutoken.md#constructor)
 
-#### Properties
-
--   [address](kosutoken.md#private-address)
--   [contract](kosutoken.md#private-contract)
--   [web3](kosutoken.md#private-web3)
--   [web3Wrapper](kosutoken.md#private-web3wrapper)
-
-#### Methods
+### Methods
 
 -   [allowance](kosutoken.md#allowance)
 -   [approve](kosutoken.md#approve)
 -   [balanceOf](kosutoken.md#balanceof)
--   [getContract](kosutoken.md#private-getcontract)
+-   [bondTokens](kosutoken.md#bondtokens)
+-   [estimateEtherToToken](kosutoken.md#estimateethertotoken)
+-   [estimateTokenToEther](kosutoken.md#estimatetokentoether)
+-   [pay](kosutoken.md#pay)
+-   [releaseTokens](kosutoken.md#releasetokens)
 -   [totalSupply](kosutoken.md#totalsupply)
 -   [transfer](kosutoken.md#transfer)
 -   [transferFrom](kosutoken.md#transferfrom)
@@ -65,53 +62,6 @@ const kosuToken = new KosuToken(options);
 | `options` | [KosuOptions](../interfaces/kosuoptions.md) | initialization options object (incl. `web3` and `web3wrapper`) |
 
 **Returns:** _[KosuToken](kosutoken.md)_
-
----
-
-## Properties
-
-### `Private` address
-
-● **address**: _string_
-
-Defined in KosuToken.ts:37
-
-The current KosuToken deployed address, loaded based on the detected
-`networkId` from a mapping of known deployed addresses.
-
----
-
-### `Private` contract
-
-● **contract**: _`KosuTokenContract`_
-
-Defined in KosuToken.ts:31
-
-An instance of the lower-level contract wrapper for the Kosu token, auto-
-generated from the Solidity source code.
-
----
-
-### `Private` web3
-
-● **web3**: _`Web3`_
-
-Defined in KosuToken.ts:19
-
-An instance of `web3` used to interact with the Ethereum blockchain.
-
----
-
-### `Private` web3Wrapper
-
-● **web3Wrapper**: _`Web3Wrapper`_
-
-Defined in KosuToken.ts:25
-
-An instance of a 0x `Web3Wrapper` used for some RPC calls and for certain
-methods.
-
----
 
 ## Methods
 
@@ -177,17 +127,104 @@ The `owner`'s KOSU balance in wei.
 
 ---
 
-### `Private` getContract
+### bondTokens
 
-▸ **getContract**(): _`Promise<KosuTokenContract>`_
+▸ **bondTokens**(`value`: `BigNumber`, `minPayout`: `BigNumber`): _`Promise<TransactionReceiptWithDecodedLogs>`_
 
-Defined in KosuToken.ts:63
+Defined in KosuToken.ts:185
 
-Asynchronously initializes the contract instance or returns it from cache.
+Sends ether to the contract to bond tokens.
 
-**Returns:** _`Promise<KosuTokenContract>`_
+**Parameters:**
 
-The low-level KosuToken contract wrapper instance.
+| Name        | Type        | Description                                                                           |
+| ----------- | ----------- | ------------------------------------------------------------------------------------- |
+| `value`     | `BigNumber` | Amount of wei to deposit                                                              |
+| `minPayout` | `BigNumber` | Minimum amount of tokens required to be minted to prevent transaction from reverting. |
+
+**Returns:** _`Promise<TransactionReceiptWithDecodedLogs>`_
+
+Logs from the transaction block.
+
+---
+
+### estimateEtherToToken
+
+▸ **estimateEtherToToken**(`etherInput`: `BigNumber`): _`Promise<BigNumber>`_
+
+Defined in KosuToken.ts:162
+
+Calculated tokens to be minted from deposited ether.
+
+**Parameters:**
+
+| Name         | Type        | Description                                         |
+| ------------ | ----------- | --------------------------------------------------- |
+| `etherInput` | `BigNumber` | Amount of ether to be submitted to generate tokens. |
+
+**Returns:** _`Promise<BigNumber>`_
+
+Estimation of tokens to be minted.
+
+---
+
+### estimateTokenToEther
+
+▸ **estimateTokenToEther**(`tokensToBurn`: `BigNumber`): _`Promise<BigNumber>`_
+
+Defined in KosuToken.ts:173
+
+Calculates ether to be returned for burning tokens.
+
+**Parameters:**
+
+| Name           | Type        | Description                                  |
+| -------------- | ----------- | -------------------------------------------- |
+| `tokensToBurn` | `BigNumber` | Amount of tokens to burn for returned ether. |
+
+**Returns:** _`Promise<BigNumber>`_
+
+Estimation of ether to be returned.
+
+---
+
+### pay
+
+▸ **pay**(`value`: `BigNumber`): _`Promise<TransactionReceiptWithDecodedLogs>`_
+
+Defined in KosuToken.ts:209
+
+Sends ether to the contract to bond tokens.
+
+**Parameters:**
+
+| Name    | Type        | Description              |
+| ------- | ----------- | ------------------------ |
+| `value` | `BigNumber` | Amount of wei to deposit |
+
+**Returns:** _`Promise<TransactionReceiptWithDecodedLogs>`_
+
+Logs from the transaction block.
+
+---
+
+### releaseTokens
+
+▸ **releaseTokens**(`tokensToBurn`: `BigNumber`): _`Promise<TransactionReceiptWithDecodedLogs>`_
+
+Defined in KosuToken.ts:198
+
+Releases tokens to be burned and return bonded ether.
+
+**Parameters:**
+
+| Name           | Type        | Description                                  |
+| -------------- | ----------- | -------------------------------------------- |
+| `tokensToBurn` | `BigNumber` | Amount of tokens to burn for returned ether. |
+
+**Returns:** _`Promise<TransactionReceiptWithDecodedLogs>`_
+
+Logs from the transaction block.
 
 ---
 
@@ -246,5 +283,3 @@ Transfers token from an address to a destination address.
 **Returns:** _`Promise<TransactionReceiptWithDecodedLogs>`_
 
 The transaction receipt after it has been included in a block.
-
----

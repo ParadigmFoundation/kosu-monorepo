@@ -1,4 +1,4 @@
-> ## [kosu.js](../README.md)
+> **[kosu.js](../README.md)**
 
 [Globals](../globals.md) / [LogWithDecodedKosuArgs](logwithdecodedkosuargs.md) /
 
@@ -6,9 +6,9 @@
 
 ## Type parameters
 
-■`A`
+▪ **A**
 
-■`B`
+▪ **B**
 
 ## Hierarchy
 
@@ -16,9 +16,9 @@
 
     -   **LogWithDecodedKosuArgs**
 
-### Index
+## Index
 
-#### Properties
+### Properties
 
 -   [args](logwithdecodedkosuargs.md#args)
 -   [decodedArgs](logwithdecodedkosuargs.md#decodedargs)
@@ -28,7 +28,7 @@
 
 ### args
 
-● **args**: _`A`_
+• **args**: _`A`_
 
 Defined in types.d.ts:56
 
@@ -36,7 +36,7 @@ Defined in types.d.ts:56
 
 ### decodedArgs
 
-● **decodedArgs**: _`B`_
+• **decodedArgs**: _`B`_
 
 Defined in types.d.ts:57
 
@@ -44,8 +44,6 @@ Defined in types.d.ts:57
 
 ### event
 
-● **event**: _string_
+• **event**: _string_
 
 Defined in types.d.ts:55
-
----

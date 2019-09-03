@@ -1,4 +1,4 @@
-> ## [kosu.js](../README.md)
+> **[kosu.js](../README.md)**
 
 [Globals](../globals.md) / [PosterRegistry](posterregistry.md) /
 
@@ -14,23 +14,15 @@ and to view their balance, as well as the cumulative lockup.
 
 -   **PosterRegistry**
 
-### Index
+## Index
 
-#### Constructors
+### Constructors
 
 -   [constructor](posterregistry.md#constructor)
 
-#### Properties
+### Methods
 
--   [address](posterregistry.md#private-address)
--   [contract](posterregistry.md#private-contract)
--   [treasury](posterregistry.md#private-treasury)
--   [web3](posterregistry.md#private-web3)
--   [web3Wrapper](posterregistry.md#private-web3wrapper)
-
-#### Methods
-
--   [getContract](posterregistry.md#private-getcontract)
+-   [pay](posterregistry.md#pay)
 -   [registerTokens](posterregistry.md#registertokens)
 -   [releaseTokens](posterregistry.md#releasetokens)
 -   [tokensContributed](posterregistry.md#tokenscontributed)
@@ -55,74 +47,25 @@ Create a new PosterRegistry instance.
 
 **Returns:** _[PosterRegistry](posterregistry.md)_
 
----
-
-## Properties
-
-### `Private` address
-
-● **address**: _string_
-
-Defined in PosterRegistry.ts:41
-
-The address of the deployed PosterRegistry proxy contract.
-
----
-
-### `Private` contract
-
-● **contract**: _`PosterRegistryProxyContract`_
-
-Defined in PosterRegistry.ts:36
-
-A lower-level, auto-generated contract wrapper for the PosterRegistry
-proxy contract. Generated from solidity source code.
-
----
-
-### `Private` treasury
-
-● **treasury**: _[Treasury](treasury.md)_
-
-Defined in PosterRegistry.ts:30
-
-An instantiated Treasury contract wrapper.
-
----
-
-### `Private` web3
-
-● **web3**: _`Web3`_
-
-Defined in PosterRegistry.ts:20
-
-An instance of `web3` used to interact with the Ethereum blockchain.
-
----
-
-### `Private` web3Wrapper
-
-● **web3Wrapper**: _`Web3Wrapper`_
-
-Defined in PosterRegistry.ts:25
-
-The `web3Wrapper` instance with the contract's ABI loaded.
-
----
-
 ## Methods
 
-### `Private` getContract
+### pay
 
-▸ **getContract**(): _`Promise<PosterRegistryProxyContract>`_
+▸ **pay**(`value`: `BigNumber`): _`Promise<TransactionReceiptWithDecodedLogs>`_
 
-Defined in PosterRegistry.ts:61
+Defined in PosterRegistry.ts:149
 
-Asynchronously initializes the contract instance or returns it from cache.
+Sends ether to the contract to bond and register tokens for posting.
 
-**Returns:** _`Promise<PosterRegistryProxyContract>`_
+**Parameters:**
 
-The contract wrapper instance.
+| Name    | Type        | Description              |
+| ------- | ----------- | ------------------------ |
+| `value` | `BigNumber` | Amount of wei to deposit |
+
+**Returns:** _`Promise<TransactionReceiptWithDecodedLogs>`_
+
+Logs from the transaction block.
 
 ---
 
@@ -130,7 +73,7 @@ The contract wrapper instance.
 
 ▸ **registerTokens**(`amount`: `BigNumber`): _`Promise<TransactionReceiptWithDecodedLogs>`_
 
-Defined in PosterRegistry.ts:110
+Defined in PosterRegistry.ts:107
 
 Register tokens into the PosterRegistry contract by bonding KOSU tokens.
 
@@ -150,7 +93,7 @@ A transaction receipt from the mined `register` transaction.
 
 ▸ **releaseTokens**(`amount`: `BigNumber`): _`Promise<TransactionReceiptWithDecodedLogs>`_
 
-Defined in PosterRegistry.ts:141
+Defined in PosterRegistry.ts:138
 
 Release tokens from the PosterRegistry for the `coinbase` address (un-bond).
 
@@ -170,7 +113,7 @@ A transaction receipt from the mined `register` transaction.
 
 ▸ **tokensContributed**(): _`Promise<BigNumber>`_
 
-Defined in PosterRegistry.ts:88
+Defined in PosterRegistry.ts:85
 
 Reads total KOSU tokens contributed to registry.
 
@@ -184,7 +127,7 @@ The total pool of locked KOSU tokens in units of wei.
 
 ▸ **tokensRegisteredFor**(`address`: string): _`Promise<BigNumber>`_
 
-Defined in PosterRegistry.ts:99
+Defined in PosterRegistry.ts:96
 
 Reads number of tokens registered for a given address.
 
@@ -197,5 +140,3 @@ Reads number of tokens registered for a given address.
 **Returns:** _`Promise<BigNumber>`_
 
 The number of tokens bonded by the supplied user's address in wei.
-
----
