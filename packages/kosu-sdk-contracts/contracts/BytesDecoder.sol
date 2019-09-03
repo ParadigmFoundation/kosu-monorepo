@@ -13,6 +13,12 @@ library BytesDecoder {
         }
     }
 
+    function getInt(bytes memory this, uint index) internal pure returns (int i) {
+        assembly {
+            i := mload(add(add(this, index), 32))
+        }
+    }
+
     function getBytes(bytes memory this, uint start, uint length) internal pure returns (bytes memory) {
         bytes memory result = new bytes(length);
         for(uint i = start; i < length + start; i++) {

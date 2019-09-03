@@ -65,7 +65,7 @@ before(async () => {
         config.posterRegistryAddress = config.migratedContracts.posterRegistry.address;
         config.validatorRegistryAddress = config.migratedContracts.validatorRegistry.address;
     }
-    global.basicTradeSubContract = await kosuSubContractHelper(provider, {
+    await kosuSubContractHelper(provider, {
         from: accounts[0].toLowerCase(),
         gas: "4500000",
     });
