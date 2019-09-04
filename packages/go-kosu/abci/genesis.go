@@ -6,7 +6,7 @@ import (
 
 	abci "github.com/tendermint/tendermint/abci/types"
 
-	"go-kosu/abci/types"
+	"github.com/ParadigmFoundation/kosu-monorepo/packages/go-kosu/abci/types"
 )
 
 // Genesis is the initial chain state
