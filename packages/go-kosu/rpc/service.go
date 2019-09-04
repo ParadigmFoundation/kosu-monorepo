@@ -1,3 +1,9 @@
+// Package rpc provides remote proceedural call functionality for go-kosu, serving
+// a JSONRPC API over WebSockets and HTTP. It provides the primary means for interacting
+// with a Kosu node.
+//
+// Generated and formatted API documentation is hosted at https://docs.kosu.io/go-kosu.
+// It is rendered in godoc as well, but the mardown syntax is not parsed.
 package rpc
 
 import (
