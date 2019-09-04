@@ -93,7 +93,7 @@ _Parameters:_
 
 _Returns:_
 
--   `block` - _[object](https://godoc.org/github.com/tendermint/tendermint/types#Block)_
+-   `block` - _[`Block`](https://godoc.org/github.com/tendermint/tendermint/types#Block)_
 
 #### Go example
 
@@ -217,11 +217,11 @@ _Method:_
 
 -   `kosu_subscribe`
 
-_Parameters:_
+_Parameters:_ None
 
 _Returns:_
 
--   `Order Transaction` - _[object]()_
+-   `Order Transaction` - _[`TransactionOrder`](https://godoc.org/github.com/ParadigmFoundation/kosu-monorepo/packages/go-kosu/abci/types#TransactionOrder)_
 
 #### Go Example
 
@@ -391,7 +391,7 @@ _Parameters:_
 
 _Returns:_
 
--   `Rebalance Transaction` - _[object]()_
+-   `Rebalance Transaction` - _[`TransactionRebalance`](https://godoc.org/github.com/ParadigmFoundation/kosu-monorepo/packages/go-kosu/abci/types#TransactionRebalance)_
 
 #### Go Example
 
@@ -472,7 +472,7 @@ _Method:_
 
 -   `kosu_latestHeight`
 
-_Parameters:_
+_Parameters:_ None
 
 _Returns:_
 
@@ -509,11 +509,11 @@ _Method:_
 
 _Parameters:_
 
--   Order Transactions - `Array([order]())`
+-   `Order Transactions` - `Array`([TransactionOrder](https://godoc.org/github.com/ParadigmFoundation/kosu-monorepo/packages/go-kosu/abci/types#TransactionOrder))
 
 _Returns:_
 
--   Orders Result - `[object](AddOrdersResult)`
+-   `Orders Result` - [`AddOrdersResult`](https://godoc.org/github.com/ParadigmFoundation/kosu-monorepo/packages/go-kosu/rpc#AddOrdersResult)
 
 #### cURL example
 
@@ -611,11 +611,11 @@ _Method:_
 
 -   `kosu_roundInfo`
 
-_Parameters:_
+_Parameters:_ None
 
 _Returns:_
 
--   `RoundInfo` - _[object]()_
+-   `RoundInfo` - _[`RoundInfo`](https://godoc.org/github.com/ParadigmFoundation/kosu-monorepo/packages/go-kosu/abci/types#RoundInfo)_
 
 #### cURL example
 
@@ -648,7 +648,7 @@ _Parameters:_
 
 _Returns:_
 
--   `Validator` - _[object]()_
+-   `Validator` - _[`Validator`](https://godoc.org/github.com/ParadigmFoundation/kosu-monorepo/packages/go-kosu/abci/types#Validator)_
 
 #### cURL Example
 
@@ -688,11 +688,11 @@ _Method:_
 
 -   `kosu_validators`
 
-_Parameters:_
+_Parameters:_ None
 
 _Returns:_
 
--   `Validator Set` - _Array([object]())_
+-   `Validator Set` - _`Array`([Validator](https://godoc.org/github.com/ParadigmFoundation/kosu-monorepo/packages/go-kosu/abci/types#Validator))_
 
 #### cURL example
 
@@ -751,7 +751,7 @@ _Parameters:_
 
 _Returns:_
 
--   `Poster` - _[object]()_
+-   `Poster` - _[`Poster`](https://godoc.org/github.com/ParadigmFoundation/kosu-monorepo/packages/go-kosu/abci/types#Poster)_
 
 #### cURL Example
 
@@ -784,7 +784,7 @@ _Method:_
 
 -   `kosu_totalOrders`
 
-_Parameters:_
+_Parameters:_ None
 
 _Returns:_
 
@@ -802,7 +802,7 @@ _Method:_
 
 -   `kosu_numberPosters`
 
-_Parameters:_
+_Parameters:_ None
 
 _Returns:_
 
@@ -826,7 +826,7 @@ _Method:_
 
 -   `kosu_remainingLimit`
 
-_Parameters:_
+_Parameters:_ None
 
 _Returns:_
 
