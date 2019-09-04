@@ -1,9 +1,10 @@
 GOTEST_FLAGS ?= -v
 GOTEST = go test ./... ${GOTEST_FLAGS}
 
+BASE_PATH = github.com/ParadigmFoundation/kosu-monorepo/packages/go-kosu
 KOSU_VERSION ?= $(shell jq -r .version package.json)
-GOBUILD_LDFLAGS = "-X go-kosu/version.Version=$(KOSU_VERSION) \
-                   -X go-kosu/version.GitCommit=$(shell git rev-parse --short HEAD)"
+GOBUILD_LDFLAGS = "-X ${BASE_PATH}/version.Version=$(KOSU_VERSION) \
+                   -X ${BASE_PATH}/version.GitCommit=$(shell git rev-parse --short HEAD)"
 
 GOLINT = golangci-lint run --enable-all \
 		--disable=gochecknoglobals \
