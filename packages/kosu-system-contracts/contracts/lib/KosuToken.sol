@@ -38,7 +38,7 @@ contract KosuToken is ERC20, Authorizable {
 
         uint tokensToMint = calculateEtherToToken(msg.value);
 
-        require(tokensToMint >= minPayout);
+        require(tokensToMint >= minPayout, "payout below requested minimum");
 
         _weiPaid = _weiPaid.add(msg.value);
         _mint(msg.sender, tokensToMint);
@@ -98,7 +98,7 @@ contract KosuToken is ERC20, Authorizable {
     */
     function calculateEtherToToken(uint etherValue) internal view returns (uint) {
         if (_weiPaid == 0 && totalSupply() == 0) {
-            require(etherValue == (2 ether)/10);
+            require(etherValue == (2 ether)/10, "First transaction must be .2 ether");
             return 10000 ether;
         } else {
             return Formula.calculatePurchaseReturn(totalSupply(), _weiPaid, r, etherValue);

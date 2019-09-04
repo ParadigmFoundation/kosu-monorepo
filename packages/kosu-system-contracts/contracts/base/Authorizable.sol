@@ -23,7 +23,7 @@ contract Authorizable {
         @notice Ensures msg.sender is authorized within the AuthorizedAddresses contract
     */
     modifier isAuthorized() {
-        require(authorizedAddress.isAddressAuthorized(msg.sender));
+        require(authorizedAddress.isAddressAuthorized(msg.sender), "Unauthorized");
         _;
     }
 }
