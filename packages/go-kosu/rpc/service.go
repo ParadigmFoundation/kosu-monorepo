@@ -323,8 +323,58 @@ for {
 ```
 */
 func (s *Service) NewOrders(ctx context.Context) (*rpc.Subscription, error) {
-	query := "tm.event='Tx' AND tags.tx.type='order'"
-	return s.subscribeTM(ctx, query)
+	notifier, supported := rpc.NotifierFromContext(ctx)
+	if !supported {
+		return nil, rpc.ErrNotificationsUnsupported
+	}
+
+	query := "tm.event='NewBlock'"
+	events, closer, err := s.abci.Subscribe(ctx, query)
+	if err != nil {
+		return nil, err
+	}
+
+	rpcSub := notifier.CreateSubscription()
+	blocks := make(chan *tmtypes.Block, 1024)
+	go func() {
+		defer s.abci.Unsubscribe(ctx, query) // nolint
+		defer close(blocks)
+
+		for {
+			select {
+			case <-ctx.Done():
+				log.Printf("ctx.Err() = %+v\n", ctx.Err())
+				return
+			case <-rpcSub.Err():
+				closer()
+				return
+			case <-notifier.Closed():
+				return
+			case e := <-events:
+				block := e.Data.(tmtypes.EventDataNewBlock).Block
+				blocks <- block
+			}
+		}
+	}()
+
+	go func() {
+		for block := range blocks {
+			for _, tx := range block.Txs {
+				stx := &types.SignedTransaction{}
+				if err := types.DecodeTx(tx, stx); err != nil {
+					continue
+				}
+
+				if order := stx.GetTx().GetOrder(); order != nil {
+					if err := notifier.Notify(rpcSub.ID, order); err != nil {
+						log.Printf("err = %+v\n", err)
+					}
+				}
+			}
+		}
+	}()
+
+	return rpcSub, nil
 }
 
 /*
