@@ -3,8 +3,9 @@ package witness
 import (
 	"errors"
 	"fmt"
-	"go-kosu/store"
 	"math/big"
+
+	"github.com/ParadigmFoundation/kosu-monorepo/packages/go-kosu/store"
 )
 
 // EventPosterRegistryUpdate represent a decoded PosterRegistryUpdate event

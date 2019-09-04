@@ -14,10 +14,10 @@ import (
 	"github.com/tendermint/tendermint/libs/log"
 	db "github.com/tendermint/tm-db"
 
-	"go-kosu/abci"
-	"go-kosu/rpc"
-	"go-kosu/version"
-	"go-kosu/witness"
+	"github.com/ParadigmFoundation/kosu-monorepo/packages/go-kosu/abci"
+	"github.com/ParadigmFoundation/kosu-monorepo/packages/go-kosu/rpc"
+	"github.com/ParadigmFoundation/kosu-monorepo/packages/go-kosu/version"
+	"github.com/ParadigmFoundation/kosu-monorepo/packages/go-kosu/witness"
 )
 
 const (

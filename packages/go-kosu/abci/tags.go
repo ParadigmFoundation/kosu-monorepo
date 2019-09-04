@@ -5,8 +5,8 @@ import (
 
 	"github.com/tendermint/tendermint/libs/common"
 
-	"go-kosu/abci/types"
-	"go-kosu/store"
+	"github.com/ParadigmFoundation/kosu-monorepo/packages/go-kosu/abci/types"
+	"github.com/ParadigmFoundation/kosu-monorepo/packages/go-kosu/store"
 )
 
 // NewTagsFromRoundInfo returns a set of KVPair tags given a state.RoundInfo

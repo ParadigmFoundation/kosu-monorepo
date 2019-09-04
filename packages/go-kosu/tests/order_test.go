@@ -5,8 +5,8 @@ import (
 	"encoding/json"
 	"testing"
 
-	"go-kosu/abci/types"
-	"go-kosu/rpc"
+	"github.com/ParadigmFoundation/kosu-monorepo/packages/go-kosu/abci/types"
+	"github.com/ParadigmFoundation/kosu-monorepo/packages/go-kosu/rpc"
 
 	"github.com/stretchr/testify/require"
 )

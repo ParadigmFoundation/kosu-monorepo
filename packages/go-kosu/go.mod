@@ -1,4 +1,4 @@
-module go-kosu
+module github.com/ParadigmFoundation/kosu-monorepo/packages/go-kosu
 
 go 1.12
 

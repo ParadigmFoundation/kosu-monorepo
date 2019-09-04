@@ -3,8 +3,8 @@ package cosmos
 import (
 	"testing"
 
-	"go-kosu/store"
-	"go-kosu/store/storetest"
+	"github.com/ParadigmFoundation/kosu-monorepo/packages/go-kosu/store"
+	"github.com/ParadigmFoundation/kosu-monorepo/packages/go-kosu/store/storetest"
 
 	db "github.com/tendermint/tm-db"
 )

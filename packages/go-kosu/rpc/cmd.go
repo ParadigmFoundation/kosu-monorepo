@@ -3,10 +3,11 @@ package rpc
 import (
 	"errors"
 	"fmt"
-	"go-kosu/abci"
 	"log"
 	"net/http"
 	"sync"
+
+	"github.com/ParadigmFoundation/kosu-monorepo/packages/go-kosu/abci"
 
 	"github.com/ethereum/go-ethereum/rpc"
 	"github.com/spf13/cobra"
