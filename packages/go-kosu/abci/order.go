@@ -70,7 +70,7 @@ func (app *App) deliverOrderTx(tx *types.TransactionOrder) abci.ResponseDeliverT
 	return abci.ResponseDeliverTx{
 		Code: 0,
 		Events: []abci.Event{
-			{Type: "tags", Attributes: NewTagsFromOrderInfo(orderID, posterAddress, poster.Limit)},
+			{Type: "tags", Attributes: NewKVPairFromOrderInfo(orderID, posterAddress, poster.Limit)},
 		},
 	}
 }

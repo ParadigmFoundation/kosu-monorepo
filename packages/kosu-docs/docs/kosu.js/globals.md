@@ -1,16 +1,17 @@
-> ## [kosu.js](README.md)
+> **[kosu.js](README.md)**
 
 [Globals](globals.md) /
 
 # kosu.js
 
-### Index
+## Index
 
-#### Classes
+### Classes
 
 -   [EventEmitter](classes/eventemitter.md)
 -   [Kosu](classes/kosu.md)
 -   [KosuToken](classes/kosutoken.md)
+-   [NodeClient](classes/nodeclient.md)
 -   [OrderGateway](classes/ordergateway.md)
 -   [OrderHelper](classes/orderhelper.md)
 -   [PosterRegistry](classes/posterregistry.md)
@@ -18,7 +19,7 @@
 -   [ValidatorRegistry](classes/validatorregistry.md)
 -   [Voting](classes/voting.md)
 
-#### Interfaces
+### Interfaces
 
 -   [DecodedKosuLogArgs](interfaces/decodedkosulogargs.md)
 -   [KosuOptions](interfaces/kosuoptions.md)
@@ -26,20 +27,25 @@
 -   [LogWithDecodedKosuArgs](interfaces/logwithdecodedkosuargs.md)
 -   [Order](interfaces/order.md)
 -   [OrderArgument](interfaces/orderargument.md)
+-   [OrderRejectionInfo](interfaces/orderrejectioninfo.md)
+-   [OrderValidationResult](interfaces/ordervalidationresult.md)
 -   [PostableOrder](interfaces/postableorder.md)
+-   [Poster](interfaces/poster.md)
+-   [RoundInfo](interfaces/roundinfo.md)
 -   [TakeableOrder](interfaces/takeableorder.md)
+-   [Validator](interfaces/validator.md)
 
-#### Variables
+### Variables
 
 -   [NULL_ADDRESS](globals.md#const-null_address)
 -   [version](globals.md#const-version)
 
-#### Functions
+### Functions
 
 -   [\_serialize](globals.md#_serialize)
 -   [toBytes32](globals.md#tobytes32)
 
-#### Object literals
+### Object literals
 
 -   [KosuEndpoints](globals.md#const-kosuendpoints)
 -   [OrderSerializer](globals.md#const-orderserializer)
@@ -49,7 +55,7 @@
 
 ### `Const` NULL_ADDRESS
 
-● **NULL_ADDRESS**: _string_ = "0x0000000000000000000000000000000000000000"
+• **NULL_ADDRESS**: _string_ = "0x0000000000000000000000000000000000000000"
 
 Defined in utils.ts:12
 
@@ -57,11 +63,9 @@ Defined in utils.ts:12
 
 ### `Const` version
 
-● **version**: _any_ = process.env.npm_package_version || require("../package.json").version
+• **version**: _any_ = process.env.npm_package_version || require("../package.json").version
 
-Defined in index.ts:17
-
----
+Defined in Kosu.ts:18
 
 ## Functions
 
@@ -98,17 +102,15 @@ Convert an arbitrary string to a `bytes32` version.
 
 **Returns:** _string_
 
----
-
 ## Object literals
 
 ### `Const` KosuEndpoints
 
-### ■ **KosuEndpoints**: _object_
+### ▪ **KosuEndpoints**: _object_
 
 Defined in EventEmitter.ts:7
 
-■ **1**: _object_
+▪ **1**: _object_
 
 Defined in EventEmitter.ts:8
 
@@ -116,7 +118,7 @@ Defined in EventEmitter.ts:8
 
 -   **ws**: _string_ = `wss://ethnet.zaidan.io/ws/mainnet`
 
-■ **3**: _object_
+▪ **3**: _object_
 
 Defined in EventEmitter.ts:12
 
@@ -124,7 +126,7 @@ Defined in EventEmitter.ts:12
 
 -   **ws**: _string_ = `wss://ethnet.zaidan.io/ws/ropsten`
 
-■ **42**: _object_
+▪ **42**: _object_
 
 Defined in EventEmitter.ts:16
 
@@ -132,13 +134,21 @@ Defined in EventEmitter.ts:16
 
 -   **ws**: _string_ = `wss://ethnet.zaidan.io/ws/kovan`
 
+▪ **6174**: _object_
+
+Defined in EventEmitter.ts:20
+
+-   **http**: _string_ = `https://ethnet.zaidan.io/kosu`
+
+-   **ws**: _string_ = `wss://ethnet.zaidan.io/ws/kosu`
+
 ---
 
 ### `Const` OrderSerializer
 
-### ■ **OrderSerializer**: _object_
+### ▪ **OrderSerializer**: _object_
 
-Defined in OrderSerializer.ts:42
+Defined in OrderSerializer.ts:51
 
 could add to utils (or create order-utils pacakge)
 
@@ -146,7 +156,7 @@ could add to utils (or create order-utils pacakge)
 
 ▸ **makerHex**(`order`: [Order](interfaces/order.md), `_arguments`: any): _string_
 
-Defined in OrderSerializer.ts:84
+Defined in OrderSerializer.ts:97
 
 Generate the maker hex from order
 
@@ -163,7 +173,7 @@ Generate the maker hex from order
 
 ▸ **posterSignatureHex**(`order`: [Order](interfaces/order.md), `_arguments`: any): _string_
 
-Defined in OrderSerializer.ts:64
+Defined in OrderSerializer.ts:73
 
 Generates hex to be used for the poster signing process
 
@@ -180,7 +190,7 @@ Generates hex to be used for the poster signing process
 
 ▸ **recoverMaker**(`order`: [Order](interfaces/order.md), `_arguments`: any[]): _string_
 
-Defined in OrderSerializer.ts:105
+Defined in OrderSerializer.ts:125
 
 Recovers the maker from the signed information
 
@@ -197,7 +207,7 @@ Recovers the maker from the signed information
 
 ▸ **recoverPoster**(`order`: [PostableOrder](interfaces/postableorder.md), `_arguments`: any[]): _string_
 
-Defined in OrderSerializer.ts:74
+Defined in OrderSerializer.ts:87
 
 Recovers the poster from the poster signature
 
@@ -214,7 +224,7 @@ Recovers the poster from the poster signature
 
 ▸ **serialize**(`_arguments`: any, `order`: [Order](interfaces/order.md)): _string_
 
-Defined in OrderSerializer.ts:49
+Defined in OrderSerializer.ts:58
 
 Serializes the data into bytes
 
@@ -231,7 +241,7 @@ Serializes the data into bytes
 
 ### `Const` Signature
 
-### ■ **Signature**: _object_
+### ▪ **Signature**: _object_
 
 Defined in Signature.ts:7
 
@@ -366,5 +376,3 @@ Defined in types.d.ts:47
 | `signer`     | string |
 
 **Returns:** _boolean_
-
----

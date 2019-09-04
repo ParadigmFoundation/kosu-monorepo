@@ -1,54 +1,49 @@
 # PosterRegistry
 
-Implementation contract for the PosterRegistry, allowing users to bond and un-bond tokens.
+The PosterRegistry allows accounts to manage tokens registered rewarding permission to post orders to the kosu network.
 
 ## Contents
 
 -   [Methods](undefined)
     -   [constructor](#constructor)
-    -   [registerTokens](#registerTokens)
-    -   [releaseTokens](#releaseTokens)
-    -   [token](#token)
-    -   [tokensContributed](#tokensContributed)
-    -   [tokensRegisteredFor](#tokensRegisteredFor)
-    -   [treasury](#treasury)
+    -   [registerTokens](#registertokens)
+    -   [releaseTokens](#releasetokens)
+    -   [tokensRegisteredFor](#tokensregisteredfor)
 
 ## Methods
 
 ### constructor
 
-Creates a new PosterRegistry
+Initializes the PosterRegistry with the treasury and EventEmitter addresses.
 
 #### Signature
 
 ```solidity
-constructor(_auth, _events, _treasuryAddress)
+constructor(_treasuryAddress address, _events address) public
 ```
 
 #### Parameters:
 
-| Parameter          | Type        | Description                                   |
-| ------------------ | ----------- | --------------------------------------------- |
-| `_auth`            | `undefined` | Deployed AuthorizedAddresses contract address |
-| `_events`          | `undefined` | Deployed Events contract address              |
-| `_treasuryAddress` | `undefined` | Deployed Treasury contract address            |
+| Parameter          | Type      | Description                       |
+| ------------------ | --------- | --------------------------------- |
+| `_treasuryAddress` | `address` | Treasury contract address.        |
+| `_events`          | `address` | Deployed Events contract address. |
 
 ### registerTokens
 
-Register tokens.
+Register tokens for posting permissions.
 
 #### Signature
 
 ```solidity
-function registerTokens(amount address, msgSender uint256)
+function registerTokens(amount uint256) public
 ```
 
 #### Parameters:
 
-| Parameter   | Type      | Description                   |
-| ----------- | --------- | ----------------------------- |
-| `amount`    | `address` | Number of tokens to register  |
-| `msgSender` | `uint256` | Address that called the proxy |
+| Parameter | Type      | Description                   |
+| --------- | --------- | ----------------------------- |
+| `amount`  | `uint256` | Number of tokens to register. |
 
 ### releaseTokens
 
@@ -57,74 +52,31 @@ Release tokens from the registry.
 #### Signature
 
 ```solidity
-function releaseTokens(amount address, msgSender uint256)
+function releaseTokens(amount uint256) public
 ```
 
 #### Parameters:
 
-| Parameter   | Type      | Description                   |
-| ----------- | --------- | ----------------------------- |
-| `amount`    | `address` | Number of tokens to release   |
-| `msgSender` | `uint256` | Address that called the proxy |
-
-### token
-
-The token address.
-
-#### Signature
-
-```solidity
-function token()
-```
-
-#### Returns:
-
-KosuToken address.
-
-### tokensContributed
-
-The number of tokens that have been contributed to the contract
-
-#### Signature
-
-```solidity
-function tokensContributed()
-```
-
-#### Returns:
-
-Total number of tokens contributed.
+| Parameter | Type      | Description                  |
+| --------- | --------- | ---------------------------- |
+| `amount`  | `uint256` | Number of tokens to release. |
 
 ### tokensRegisteredFor
 
-Tokens registered for a user.
+Tokens registered for an account.
 
 #### Signature
 
 ```solidity
-function tokensRegisteredFor(a address)
+function tokensRegisteredFor(a address) public view (uint256)
 ```
 
 #### Parameters:
 
-| Parameter | Type      | Description              |
-| --------- | --------- | ------------------------ |
-| `a`       | `address` | Address to get value for |
+| Parameter | Type      | Description               |
+| --------- | --------- | ------------------------- |
+| `a`       | `address` | Address to get value for. |
 
 #### Returns:
 
 Tokens registered for address.
-
-### treasury
-
-The Treasury address.
-
-#### Signature
-
-```solidity
-function treasury()
-```
-
-#### Returns:
-
-Deployed Treasury address.

@@ -1,4 +1,4 @@
-> ## [kosu.js](../README.md)
+> **[kosu.js](../README.md)**
 
 [Globals](../globals.md) / [ValidatorRegistry](validatorregistry.md) /
 
@@ -10,22 +10,13 @@ Integration with ValidatorRegistry contract on an Ethereum blockchain.
 
 -   **ValidatorRegistry**
 
-### Index
+## Index
 
-#### Constructors
+### Constructors
 
 -   [constructor](validatorregistry.md#constructor)
 
-#### Properties
-
--   [address](validatorregistry.md#private-address)
--   [coinbase](validatorregistry.md#private-coinbase)
--   [contract](validatorregistry.md#private-contract)
--   [treasury](validatorregistry.md#private-treasury)
--   [web3](validatorregistry.md#private-web3)
--   [web3Wrapper](validatorregistry.md#private-web3wrapper)
-
-#### Methods
+### Methods
 
 -   [applicationPeriod](validatorregistry.md#applicationperiod)
 -   [challengeListing](validatorregistry.md#challengelisting)
@@ -41,7 +32,6 @@ Integration with ValidatorRegistry contract on an Ethereum blockchain.
 -   [getAllListings](validatorregistry.md#getalllistings)
 -   [getChallenge](validatorregistry.md#getchallenge)
 -   [getChallenges](validatorregistry.md#getchallenges)
--   [getContract](validatorregistry.md#private-getcontract)
 -   [getListing](validatorregistry.md#getlisting)
 -   [getListings](validatorregistry.md#getlistings)
 -   [hexToBase64](validatorregistry.md#hextobase64)
@@ -75,65 +65,13 @@ Create a new ValidatorRegistry instance.
 
 **Returns:** _[ValidatorRegistry](validatorregistry.md)_
 
----
-
-## Properties
-
-### `Private` address
-
-● **address**: _string_
-
-Defined in ValidatorRegistry.ts:18
-
----
-
-### `Private` coinbase
-
-● **coinbase**: _string_
-
-Defined in ValidatorRegistry.ts:16
-
----
-
-### `Private` contract
-
-● **contract**: _`ValidatorRegistryContract`_
-
-Defined in ValidatorRegistry.ts:15
-
----
-
-### `Private` treasury
-
-● **treasury**: _[Treasury](treasury.md)_
-
-Defined in ValidatorRegistry.ts:14
-
----
-
-### `Private` web3
-
-● **web3**: _`Web3`_
-
-Defined in ValidatorRegistry.ts:13
-
----
-
-### `Private` web3Wrapper
-
-● **web3Wrapper**: _`Web3Wrapper`_
-
-Defined in ValidatorRegistry.ts:17
-
----
-
 ## Methods
 
 ### applicationPeriod
 
 ▸ **applicationPeriod**(): _`Promise<BigNumber>`_
 
-Defined in ValidatorRegistry.ts:63
+Defined in ValidatorRegistry.ts:64
 
 Reads the application period
 
@@ -145,7 +83,7 @@ Reads the application period
 
 ▸ **challengeListing**(`_pubKey`: string, `_details`: string): _`Promise<TransactionReceiptWithDecodedLogs>`_
 
-Defined in ValidatorRegistry.ts:250
+Defined in ValidatorRegistry.ts:256
 
 Starts a challenge of a listing
 
@@ -164,7 +102,7 @@ Starts a challenge of a listing
 
 ▸ **challengePeriod**(): _`Promise<BigNumber>`_
 
-Defined in ValidatorRegistry.ts:79
+Defined in ValidatorRegistry.ts:80
 
 Reads the challenge period
 
@@ -176,7 +114,7 @@ Reads the challenge period
 
 ▸ **claimRewards**(`_pubKey`: string): _`Promise<TransactionReceiptWithDecodedLogs>`_
 
-Defined in ValidatorRegistry.ts:279
+Defined in ValidatorRegistry.ts:285
 
 Claims the rewards of a generating/burning listing
 
@@ -194,7 +132,7 @@ Claims the rewards of a generating/burning listing
 
 ▸ **claimWinnings**(`challengeId`: `BigNumber`): _`Promise<TransactionReceiptWithDecodedLogs>`_
 
-Defined in ValidatorRegistry.ts:309
+Defined in ValidatorRegistry.ts:315
 
 Claims winnings from complete challenge
 
@@ -212,7 +150,7 @@ Claims winnings from complete challenge
 
 ▸ **commitPeriod**(): _`Promise<BigNumber>`_
 
-Defined in ValidatorRegistry.ts:71
+Defined in ValidatorRegistry.ts:72
 
 Reads the commit period
 
@@ -224,7 +162,7 @@ Reads the commit period
 
 ▸ **confirmListing**(`_pubKey`: string): _`Promise<TransactionReceiptWithDecodedLogs>`_
 
-Defined in ValidatorRegistry.ts:239
+Defined in ValidatorRegistry.ts:245
 
 Confirms listing after application period
 
@@ -242,7 +180,7 @@ Confirms listing after application period
 
 ▸ **convertPubKey**(`_pubKey`: string): _string_
 
-Defined in ValidatorRegistry.ts:320
+Defined in ValidatorRegistry.ts:326
 
 Converts public key to hex if input is not currently in hex
 
@@ -262,7 +200,7 @@ hex encoded tendermint public key
 
 ▸ **exitPeriod**(): _`Promise<BigNumber>`_
 
-Defined in ValidatorRegistry.ts:87
+Defined in ValidatorRegistry.ts:88
 
 Reads the exit period
 
@@ -274,7 +212,7 @@ Reads the exit period
 
 ▸ **finalizeExit**(`_pubKey`: string): _`Promise<TransactionReceiptWithDecodedLogs>`_
 
-Defined in ValidatorRegistry.ts:299
+Defined in ValidatorRegistry.ts:305
 
 Finalizes the exit of a listing
 
@@ -292,7 +230,7 @@ Finalizes the exit of a listing
 
 ▸ **getAllChallenges**(): _`Promise<Challenge[]>`_
 
-Defined in ValidatorRegistry.ts:198
+Defined in ValidatorRegistry.ts:199
 
 Reads all challenges
 
@@ -304,7 +242,7 @@ Reads all challenges
 
 ▸ **getAllListings**(): _`Promise<Listing[]>`_
 
-Defined in ValidatorRegistry.ts:161
+Defined in ValidatorRegistry.ts:162
 
 Reads the registered listings
 
@@ -316,7 +254,7 @@ Reads the registered listings
 
 ▸ **getChallenge**(`challengeId`: `BigNumber`): _`Promise<Challenge>`_
 
-Defined in ValidatorRegistry.ts:179
+Defined in ValidatorRegistry.ts:180
 
 Reads the challenge by challengeId
 
@@ -334,7 +272,7 @@ Reads the challenge by challengeId
 
 ▸ **getChallenges**(`challengeIds`: `BigNumber`[]): _`Promise<Challenge[]>`_
 
-Defined in ValidatorRegistry.ts:189
+Defined in ValidatorRegistry.ts:190
 
 Reads the challenges by challengeIds
 
@@ -348,25 +286,11 @@ Reads the challenges by challengeIds
 
 ---
 
-### `Private` getContract
-
-▸ **getContract**(): _`Promise<ValidatorRegistryContract>`_
-
-Defined in ValidatorRegistry.ts:38
-
-Asynchronously initializes the contract instance or returns it from cache
-
-**Returns:** _`Promise<ValidatorRegistryContract>`_
-
-The contract
-
----
-
 ### getListing
 
 ▸ **getListing**(`_pubKey`: string): _`Promise<Listing>`_
 
-Defined in ValidatorRegistry.ts:145
+Defined in ValidatorRegistry.ts:146
 
 Reads the listing for public key
 
@@ -384,7 +308,7 @@ Reads the listing for public key
 
 ▸ **getListings**(`_pubKeys`: string[]): _`Promise<Listing[]>`_
 
-Defined in ValidatorRegistry.ts:153
+Defined in ValidatorRegistry.ts:154
 
 Reads the requested listings
 
@@ -402,7 +326,7 @@ Reads the requested listings
 
 ▸ **hexToBase64**(`_pubKey`: string): _string_
 
-Defined in ValidatorRegistry.ts:344
+Defined in ValidatorRegistry.ts:350
 
 Converts hex encoded public key back to tendermint base64
 
@@ -422,7 +346,7 @@ Base64 tendermint public key
 
 ▸ **initExit**(`_pubKey`: string): _`Promise<TransactionReceiptWithDecodedLogs>`_
 
-Defined in ValidatorRegistry.ts:289
+Defined in ValidatorRegistry.ts:295
 
 Initializes an exit of a listing from the registry
 
@@ -440,7 +364,7 @@ Initializes an exit of a listing from the registry
 
 ▸ **kosuToken**(): _`Promise<string>`_
 
-Defined in ValidatorRegistry.ts:127
+Defined in ValidatorRegistry.ts:128
 
 Reads the kosuToken address
 
@@ -452,7 +376,7 @@ Reads the kosuToken address
 
 ▸ **listingKeys**(): _`Promise<string[]>`_
 
-Defined in ValidatorRegistry.ts:135
+Defined in ValidatorRegistry.ts:136
 
 Reads the current listing keys
 
@@ -464,7 +388,7 @@ Reads the current listing keys
 
 ▸ **maxRewardRate**(): _`Promise<BigNumber>`_
 
-Defined in ValidatorRegistry.ts:169
+Defined in ValidatorRegistry.ts:170
 
 Reads the max reward rate
 
@@ -476,7 +400,7 @@ Reads the max reward rate
 
 ▸ **minimumBalance**(): _`Promise<BigNumber>`_
 
-Defined in ValidatorRegistry.ts:103
+Defined in ValidatorRegistry.ts:104
 
 Reads the minimum balance
 
@@ -488,7 +412,7 @@ Reads the minimum balance
 
 ▸ **registerListing**(`_pubKey`: string, `_tokensToStake`: `BigNumber`, `_rewardRate`: `BigNumber`, `_details`: string): _`Promise<TransactionReceiptWithDecodedLogs>`_
 
-Defined in ValidatorRegistry.ts:211
+Defined in ValidatorRegistry.ts:212
 
 Register a new listing
 
@@ -509,7 +433,7 @@ Register a new listing
 
 ▸ **resolveChallenge**(`_pubKey`: string): _`Promise<TransactionReceiptWithDecodedLogs>`_
 
-Defined in ValidatorRegistry.ts:269
+Defined in ValidatorRegistry.ts:275
 
 Resolves challenge of a listing
 
@@ -527,7 +451,7 @@ Resolves challenge of a listing
 
 ▸ **rewardPeriod**(): _`Promise<BigNumber>`_
 
-Defined in ValidatorRegistry.ts:95
+Defined in ValidatorRegistry.ts:96
 
 Reads the reward period
 
@@ -539,7 +463,7 @@ Reads the reward period
 
 ▸ **stakeholderCut**(): _`Promise<BigNumber>`_
 
-Defined in ValidatorRegistry.ts:111
+Defined in ValidatorRegistry.ts:112
 
 Reads the stakeholder cut
 
@@ -551,10 +475,8 @@ Reads the stakeholder cut
 
 ▸ **voting**(): _`Promise<string>`_
 
-Defined in ValidatorRegistry.ts:119
+Defined in ValidatorRegistry.ts:120
 
 Reads the Voting contract address
 
 **Returns:** _`Promise<string>`_
-
----
