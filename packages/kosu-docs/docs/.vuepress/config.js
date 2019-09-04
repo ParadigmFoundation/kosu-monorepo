@@ -37,12 +37,9 @@ module.exports = {
                 children: [
                     "/",
                     "/overview/",
-                    "/overview/governance",
+                    "/overview/token-mechanics",
+                    "/overview/validator-curation",
                     "/overview/contributing",
-                    "/overview/token-model",
-                    //"/overview/terminology",
-                    //"/overview/architecture",
-                    //"/overview/examples"
                 ],
             },
             {

@@ -20,6 +20,15 @@ function _serialize(_arguments: any, values: any): string {
             case "uint":
                 bytes += toBytes32(values[arg.name]).substr(2);
                 break;
+            case "int":
+                bytes += toBytes32(values[arg.name]).substr(2);
+                break;
+            case "bytes":
+                if (!values[arg.name].startsWith("0x")) {
+                    throw new Error(`${arg.name} is not valid hex bytes`);
+                }
+                bytes += values[arg.name].substr(2);
+                break;
             case "signature":
                 const sig = values[arg.name];
                 if (!sig || sig.length !== 132) {
@@ -93,7 +102,14 @@ export const OrderSerializer = {
             if (argument.name.includes("signature") && argument.signatureFields) {
                 argument.signatureFields.forEach(i => {
                     datatypes.push(_arguments.maker[i].datatype);
-                    values.push(order.makerValues[_arguments.maker[i].name]);
+                    if (
+                        _arguments.maker[i].datatype === "bytes" &&
+                        typeof order.makerValues[_arguments.maker[i].name] === "string"
+                    ) {
+                        values.push(toBuffer(order.makerValues[_arguments.maker[i].name]));
+                    } else {
+                        values.push(order.makerValues[_arguments.maker[i].name]);
+                    }
                 });
             }
         });

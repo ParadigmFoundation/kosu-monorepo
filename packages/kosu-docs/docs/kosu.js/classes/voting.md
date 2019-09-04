@@ -1,4 +1,4 @@
-> ## [kosu.js](../README.md)
+> **[kosu.js](../README.md)**
 
 [Globals](../globals.md) / [Voting](voting.md) /
 
@@ -10,26 +10,16 @@ Integration with Voting contract on an Ethereum blockchain.
 
 -   **Voting**
 
-### Index
+## Index
 
-#### Constructors
+### Constructors
 
 -   [constructor](voting.md#constructor)
 
-#### Properties
-
--   [address](voting.md#private-address)
--   [coinbase](voting.md#private-coinbase)
--   [contract](voting.md#private-contract)
--   [treasury](voting.md#private-treasury)
--   [web3](voting.md#private-web3)
--   [web3Wrapper](voting.md#private-web3wrapper)
-
-#### Methods
+### Methods
 
 -   [commitVote](voting.md#commitvote)
 -   [encodeVote](voting.md#encodevote)
--   [getContract](voting.md#private-getcontract)
 -   [revealVote](voting.md#revealvote)
 -   [totalRevealedTokens](voting.md#totalrevealedtokens)
 -   [totalWinningTokens](voting.md#totalwinningtokens)
@@ -54,58 +44,6 @@ Create a new Voting instance.
 | `treasury` | [Treasury](treasury.md)                     | treasury integration instance |
 
 **Returns:** _[Voting](voting.md)_
-
----
-
-## Properties
-
-### `Private` address
-
-● **address**: _string_
-
-Defined in Voting.ts:16
-
----
-
-### `Private` coinbase
-
-● **coinbase**: _string_
-
-Defined in Voting.ts:18
-
----
-
-### `Private` contract
-
-● **contract**: _any_
-
-Defined in Voting.ts:17
-
----
-
-### `Private` treasury
-
-● **treasury**: _[Treasury](treasury.md)_
-
-Defined in Voting.ts:14
-
----
-
-### `Private` web3
-
-● **web3**: _`Web3`_
-
-Defined in Voting.ts:13
-
----
-
-### `Private` web3Wrapper
-
-● **web3Wrapper**: _`Web3Wrapper`_
-
-Defined in Voting.ts:15
-
----
 
 ## Methods
 
@@ -133,7 +71,7 @@ Commits vote to voting contract
 
 ▸ **encodeVote**(`_voteOption`: string, `_voteSalt`: string): _string_
 
-Defined in Voting.ts:150
+Defined in Voting.ts:158
 
 Encodes a vote by hashing the option and salt
 
@@ -150,25 +88,11 @@ Encoded vote
 
 ---
 
-### `Private` getContract
-
-▸ **getContract**(): _`Promise<VotingContract>`_
-
-Defined in Voting.ts:38
-
-Asynchronously initializes the contract instance or returns it from cache
-
-**Returns:** _`Promise<VotingContract>`_
-
-The contract
-
----
-
 ### revealVote
 
 ▸ **revealVote**(`_pollId`: `BigNumber`, `_voteOption`: `BigNumber`, `_voteSalt`: `BigNumber`): _`Promise<TransactionReceiptWithDecodedLogs>`_
 
-Defined in Voting.ts:92
+Defined in Voting.ts:96
 
 Reveals vote on voting contract
 
@@ -188,7 +112,7 @@ Reveals vote on voting contract
 
 ▸ **totalRevealedTokens**(`_pollId`: `BigNumber`): _`Promise<BigNumber>`_
 
-Defined in Voting.ts:126
+Defined in Voting.ts:134
 
 Reads the total winning tokens for poll
 
@@ -206,7 +130,7 @@ Reads the total winning tokens for poll
 
 ▸ **totalWinningTokens**(`_pollId`: `BigNumber`): _`Promise<BigNumber>`_
 
-Defined in Voting.ts:116
+Defined in Voting.ts:124
 
 Reads the total winning tokens for poll
 
@@ -224,13 +148,13 @@ Reads the total winning tokens for poll
 
 ▸ **userWinningTokens**(`_pollId`: `BigNumber`, `_userAddress`: string): _`Promise<BigNumber>`_
 
-Defined in Voting.ts:137
+Defined in Voting.ts:145
 
 Reads users winning tokens committed for poll
 
 **Parameters:**
 
-| Name           | Type        | Default value | Description                                   |
+| Name           | Type        | Default       | Description                                   |
 | -------------- | ----------- | ------------- | --------------------------------------------- |
 | `_pollId`      | `BigNumber` | -             | uint poll index                               |
 | `_userAddress` | string      | this.coinbase | address of user whose winning contribution is |
@@ -243,7 +167,7 @@ Reads users winning tokens committed for poll
 
 ▸ **winningOption**(`_pollId`: `BigNumber`): _`Promise<BigNumber>`_
 
-Defined in Voting.ts:106
+Defined in Voting.ts:114
 
 Reads the winning option for poll
 
@@ -254,5 +178,3 @@ Reads the winning option for poll
 | `_pollId` | `BigNumber` | uint poll index |
 
 **Returns:** _`Promise<BigNumber>`_
-
----
