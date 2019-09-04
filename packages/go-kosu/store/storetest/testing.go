@@ -1,10 +1,11 @@
 package storetest
 
 import (
-	"go-kosu/abci/types"
-	"go-kosu/store"
 	"math"
 	"testing"
+
+	"github.com/ParadigmFoundation/kosu-monorepo/packages/go-kosu/abci/types"
+	"github.com/ParadigmFoundation/kosu-monorepo/packages/go-kosu/store"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
