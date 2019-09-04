@@ -3,10 +3,11 @@ package rpc
 import (
 	"context"
 	"encoding/hex"
-	"go-kosu/abci"
-	"go-kosu/abci/types"
 	"log"
 	"strings"
+
+	"github.com/ParadigmFoundation/kosu-monorepo/packages/go-kosu/abci"
+	"github.com/ParadigmFoundation/kosu-monorepo/packages/go-kosu/abci/types"
 
 	"github.com/ethereum/go-ethereum/rpc"
 
@@ -225,7 +226,7 @@ _Returns:_
 #### Go Example
 
 ```go
-orders := make(chan types.TransactionOrder) // imported from go-kosu/abci/types
+orders := make(chan types.TransactionOrder) // imported from github.com/ParadigmFoundation/kosu-monorepo/packages/go-kosu/abci/types
 ctx := context.Background()
 sub, err := client.Subscribe(ctx, "kosu", orders, "subscribe", "newOrders")
 if err != nil {
@@ -345,7 +346,7 @@ _Returns:_
 #### Go Example
 
 ```go
-rs := make(chan types.TransactionRebalance) // imported from go-kosu/abci/types
+rs := make(chan types.TransactionRebalance) // imported from github.com/ParadigmFoundation/kosu-monorepo/packages/go-kosu/abci/types
 ctx := context.Background()
 sub, err := client.Subscribe(ctx, "kosu", orders, "subscribe", "newRebalances")
 if err != nil {

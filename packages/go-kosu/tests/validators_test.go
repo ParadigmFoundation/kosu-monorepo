@@ -2,7 +2,8 @@ package tests
 
 import (
 	"encoding/hex"
-	"go-kosu/abci/types"
+
+	"github.com/ParadigmFoundation/kosu-monorepo/packages/go-kosu/abci/types"
 )
 
 func (suite *IntegrationTestSuite) TestValidators() {

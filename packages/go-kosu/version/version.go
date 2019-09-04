@@ -2,15 +2,16 @@ package version
 
 import (
 	"fmt"
-	"go-kosu/rpc"
 	"runtime"
+
+	"github.com/ParadigmFoundation/kosu-monorepo/packages/go-kosu/rpc"
 
 	"github.com/tendermint/tendermint/version"
 )
 
 // These flags are passed at compile time as follows:
-//   go build -ldflags "-X go-kosu/version.Version=1.0 \
-//                      -X go-kosu/version.GitCommit=sha"
+//   go build -ldflags "-X github.com/ParadigmFoundation/kosu-monorepo/packages/go-kosu/version.Version=1.0 \
+//                      -X github.com/ParadigmFoundation/kosu-monorepo/packages/go-kosu/version.GitCommit=sha"
 var (
 	Version   = "<dev>"
 	GitCommit = "<N/A>"

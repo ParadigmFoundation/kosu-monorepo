@@ -1,9 +1,10 @@
 package abci
 
 import (
-	"go-kosu/abci/types"
 	"math"
 	"math/big"
+
+	"github.com/ParadigmFoundation/kosu-monorepo/packages/go-kosu/abci/types"
 
 	abci "github.com/tendermint/tendermint/abci/types"
 )
