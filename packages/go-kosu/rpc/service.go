@@ -607,6 +607,14 @@ type AddOrdersResult struct {
 	Rejected []OrderRejection `json:"rejected"`
 }
 
+// newQueryError is used to mask ErrNotFound
+func newQueryError(err error) error {
+	if err != nil && err != abci.ErrNotFound {
+		return err
+	}
+	return nil
+}
+
 /*
 RoundInfo returns the current `RoundInfo`.
 The `RoundInfo` object tracks rebalance round information.
@@ -637,7 +645,8 @@ curl -X POST localhost:14341 \
 
 */
 func (s *Service) RoundInfo() (*types.RoundInfo, error) {
-	return s.abci.QueryRoundInfo()
+	v, err := s.abci.QueryRoundInfo()
+	return v, newQueryError(err)
 }
 
 /*
@@ -684,7 +693,8 @@ curl -X POST localhost:14341 \
 */
 func (s *Service) QueryValidator(addr string) (*types.Validator, error) {
 	addr = strings.ToLower(addr)
-	return s.abci.QueryValidator(addr)
+	v, err := s.abci.QueryValidator(addr)
+	return v, err
 }
 
 /*
@@ -779,7 +789,8 @@ curl -X POST localhost:14341 \
 ```
 */
 func (s *Service) QueryPoster(addr string) (*types.Poster, error) {
-	return s.abci.QueryPoster(addr)
+	v, err := s.abci.QueryPoster(addr)
+	return v, newQueryError(err)
 }
 
 /*
@@ -798,7 +809,8 @@ _Returns:_
 
 */
 func (s *Service) TotalOrders() (uint64, error) {
-	return s.abci.QueryTotalOrders()
+	v, err := s.abci.QueryTotalOrders()
+	return v, newQueryError(err)
 }
 
 /*
@@ -819,7 +831,7 @@ func (s *Service) NumberPosters() (uint64, error) {
 	var num uint64
 
 	if err := s.abci.Query("/poster/number", nil, &num); err != nil {
-		return 0, err
+		return 0, newQueryError(err)
 	}
 
 	return num, nil
@@ -843,7 +855,7 @@ func (s *Service) RemainingLimit() (uint64, error) {
 	var num uint64
 
 	if err := s.abci.Query("/poster/remaininglimit", nil, &num); err != nil {
-		return 0, err
+		return 0, newQueryError(err)
 	}
 
 	return num, nil
