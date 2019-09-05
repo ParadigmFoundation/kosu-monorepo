@@ -3,12 +3,13 @@ package abci
 
 import (
 	"encoding/json"
-	"go-kosu/store"
 	"math/big"
 	"strings"
 	"testing"
 
-	"go-kosu/abci/types"
+	"github.com/ParadigmFoundation/kosu-monorepo/packages/go-kosu/store"
+
+	"github.com/ParadigmFoundation/kosu-monorepo/packages/go-kosu/abci/types"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"

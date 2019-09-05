@@ -13,7 +13,7 @@ import (
 	tmtypes "github.com/tendermint/tendermint/types"
 	tmtime "github.com/tendermint/tendermint/types/time"
 
-	"go-kosu/abci/types"
+	"github.com/ParadigmFoundation/kosu-monorepo/packages/go-kosu/abci/types"
 )
 
 var chainIDPrefix = "kosu-chain-%v"

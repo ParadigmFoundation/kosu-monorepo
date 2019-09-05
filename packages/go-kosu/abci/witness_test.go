@@ -1,9 +1,10 @@
 package abci
 
 import (
-	"go-kosu/abci/types"
 	"log"
 	"testing"
+
+	"github.com/ParadigmFoundation/kosu-monorepo/packages/go-kosu/abci/types"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"

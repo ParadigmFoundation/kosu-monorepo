@@ -1,7 +1,7 @@
 {
     "name": "@kosu/go-kosu",
     "private": true,
-    "version": "0.1.1-beta.3",
+    "version": "0.1.2",
     "description": "Development and CI docker images and supporting scripts for Kosu.",
     "repository": "https://github.com/ParadigmFoundation/kosu-monorepo/blob/master/packages/go-kosu",
     "license": "MIT",

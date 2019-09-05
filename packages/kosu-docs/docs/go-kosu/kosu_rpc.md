@@ -53,11 +53,11 @@ _Method:_
 
 _Parameters:_
 
--   `Order Transactions` - `Array`([TransactionOrder](https://godoc.org/github.com/ParadigmFoundation/kosu-monorepo/packages/go-kosu/abci/types#TransactionOrder))
+-   Order Transactions - `Array([order]())`
 
 _Returns:_
 
--   `Orders Result` - [`AddOrdersResult`](https://godoc.org/github.com/ParadigmFoundation/kosu-monorepo/packages/go-kosu/rpc#AddOrdersResult)
+-   Orders Result - `[object](AddOrdersResult)`
 
 #### cURL example
 
@@ -121,7 +121,7 @@ _Method:_
 
 -   `kosu_latestHeight`
 
-_Parameters:_ None
+_Parameters:_
 
 _Returns:_
 
@@ -145,7 +145,7 @@ _Method:_
 
 -   `kosu_numberPosters`
 
-_Parameters:_ None
+_Parameters:_
 
 _Returns:_
 
@@ -165,7 +165,7 @@ _Parameters:_
 
 _Returns:_
 
--   `Poster` - _[`Poster`](https://godoc.org/github.com/ParadigmFoundation/kosu-monorepo/packages/go-kosu/abci/types#Poster)_
+-   `Poster` - _[object]()_
 
 #### cURL Example
 
@@ -201,7 +201,7 @@ _Parameters:_
 
 _Returns:_
 
--   `Validator` - _[`Validator`](https://godoc.org/github.com/ParadigmFoundation/kosu-monorepo/packages/go-kosu/abci/types#Validator)_
+-   `Validator` - _[object]()_
 
 #### cURL Example
 
@@ -237,7 +237,7 @@ _Method:_
 
 -   `kosu_remainingLimit`
 
-_Parameters:_ None
+_Parameters:_
 
 _Returns:_
 
@@ -254,11 +254,11 @@ _Method:_
 
 -   `kosu_roundInfo`
 
-_Parameters:_ None
+_Parameters:_
 
 _Returns:_
 
--   `RoundInfo` - _[`RoundInfo`](https://godoc.org/github.com/ParadigmFoundation/kosu-monorepo/packages/go-kosu/abci/types#RoundInfo)_
+-   `RoundInfo` - _[object]()_
 
 #### cURL example
 
@@ -281,7 +281,7 @@ _Method:_
 
 -   `kosu_totalOrders`
 
-_Parameters:_ None
+_Parameters:_
 
 _Returns:_
 
@@ -295,11 +295,11 @@ _Method:_
 
 -   `kosu_validators`
 
-_Parameters:_ None
+_Parameters:_
 
 _Returns:_
 
--   `Validator Set` - _`Array`([Validator](https://godoc.org/github.com/ParadigmFoundation/kosu-monorepo/packages/go-kosu/abci/types#Validator))_
+-   `Validator Set` - _Array([object]())_
 
 #### cURL example
 
@@ -371,7 +371,7 @@ _Parameters:_
 
 _Returns:_
 
--   `block` - _[`Block`](https://godoc.org/github.com/tendermint/tendermint/types#Block)_
+-   `block` - _[object](https://godoc.org/github.com/tendermint/tendermint/types#Block)_
 
 #### Go example
 
@@ -491,11 +491,11 @@ _Method:_
 
 -   `kosu_subscribe`
 
-_Parameters:_ None
+_Parameters:_
 
 _Returns:_
 
--   `Order Transaction` - _[`TransactionOrder`](https://godoc.org/github.com/ParadigmFoundation/kosu-monorepo/packages/go-kosu/abci/types#TransactionOrder)_
+-   `Order Transaction` - _[object]()_
 
 #### Go Example
 
@@ -611,7 +611,7 @@ _Parameters:_
 
 _Returns:_
 
--   `Rebalance Transaction` - _[`TransactionRebalance`](https://godoc.org/github.com/ParadigmFoundation/kosu-monorepo/packages/go-kosu/abci/types#TransactionRebalance)_
+-   `Rebalance Transaction` - _[object]()_
 
 #### Go Example
 

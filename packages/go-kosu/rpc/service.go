@@ -1,12 +1,19 @@
+// Package rpc provides remote proceedural call functionality for go-kosu, serving
+// a JSONRPC API over WebSockets and HTTP. It provides the primary means for interacting
+// with a Kosu node.
+//
+// Generated and formatted API documentation is hosted at https://docs.kosu.io/go-kosu.
+// It is rendered in godoc as well, but the mardown syntax is not parsed.
 package rpc
 
 import (
 	"context"
 	"encoding/hex"
-	"go-kosu/abci"
-	"go-kosu/abci/types"
 	"log"
 	"strings"
+
+	"github.com/ParadigmFoundation/kosu-monorepo/packages/go-kosu/abci"
+	"github.com/ParadigmFoundation/kosu-monorepo/packages/go-kosu/abci/types"
 
 	"github.com/ethereum/go-ethereum/rpc"
 
@@ -92,7 +99,7 @@ _Parameters:_
 
 _Returns:_
 
--   `block` - _[object](https://godoc.org/github.com/tendermint/tendermint/types#Block)_
+-   `block` - _[`Block`](https://godoc.org/github.com/tendermint/tendermint/types#Block)_
 
 #### Go example
 
@@ -216,16 +223,16 @@ _Method:_
 
 -   `kosu_subscribe`
 
-_Parameters:_
+_Parameters:_ None
 
 _Returns:_
 
--   `Order Transaction` - _[object]()_
+-   `Order Transaction` - _[`TransactionOrder`](https://godoc.org/github.com/ParadigmFoundation/kosu-monorepo/packages/go-kosu/abci/types#TransactionOrder)_
 
 #### Go Example
 
 ```go
-orders := make(chan types.TransactionOrder) // imported from go-kosu/abci/types
+orders := make(chan types.TransactionOrder) // imported from github.com/ParadigmFoundation/kosu-monorepo/packages/go-kosu/abci/types
 ctx := context.Background()
 sub, err := client.Subscribe(ctx, "kosu", orders, "subscribe", "newOrders")
 if err != nil {
@@ -323,8 +330,58 @@ for {
 ```
 */
 func (s *Service) NewOrders(ctx context.Context) (*rpc.Subscription, error) {
-	query := "tm.event='Tx' AND tags.tx.type='order'"
-	return s.subscribeTM(ctx, query)
+	notifier, supported := rpc.NotifierFromContext(ctx)
+	if !supported {
+		return nil, rpc.ErrNotificationsUnsupported
+	}
+
+	query := "tm.event='NewBlock'"
+	events, closer, err := s.abci.Subscribe(ctx, query)
+	if err != nil {
+		return nil, err
+	}
+
+	rpcSub := notifier.CreateSubscription()
+	blocks := make(chan *tmtypes.Block, 1024)
+	go func() {
+		defer s.abci.Unsubscribe(ctx, query) // nolint
+		defer close(blocks)
+
+		for {
+			select {
+			case <-ctx.Done():
+				log.Printf("ctx.Err() = %+v\n", ctx.Err())
+				return
+			case <-rpcSub.Err():
+				closer()
+				return
+			case <-notifier.Closed():
+				return
+			case e := <-events:
+				block := e.Data.(tmtypes.EventDataNewBlock).Block
+				blocks <- block
+			}
+		}
+	}()
+
+	go func() {
+		for block := range blocks {
+			for _, tx := range block.Txs {
+				stx := &types.SignedTransaction{}
+				if err := types.DecodeTx(tx, stx); err != nil {
+					continue
+				}
+
+				if order := stx.GetTx().GetOrder(); order != nil {
+					if err := notifier.Notify(rpcSub.ID, order); err != nil {
+						log.Printf("err = %+v\n", err)
+					}
+				}
+			}
+		}
+	}()
+
+	return rpcSub, nil
 }
 
 /*
@@ -340,12 +397,12 @@ _Parameters:_
 
 _Returns:_
 
--   `Rebalance Transaction` - _[object]()_
+-   `Rebalance Transaction` - _[`TransactionRebalance`](https://godoc.org/github.com/ParadigmFoundation/kosu-monorepo/packages/go-kosu/abci/types#TransactionRebalance)_
 
 #### Go Example
 
 ```go
-rs := make(chan types.TransactionRebalance) // imported from go-kosu/abci/types
+rs := make(chan types.TransactionRebalance) // imported from github.com/ParadigmFoundation/kosu-monorepo/packages/go-kosu/abci/types
 ctx := context.Background()
 sub, err := client.Subscribe(ctx, "kosu", orders, "subscribe", "newRebalances")
 if err != nil {
@@ -421,7 +478,7 @@ _Method:_
 
 -   `kosu_latestHeight`
 
-_Parameters:_
+_Parameters:_ None
 
 _Returns:_
 
@@ -458,11 +515,11 @@ _Method:_
 
 _Parameters:_
 
--   Order Transactions - `Array([order]())`
+-   `Order Transactions` - `Array`([TransactionOrder](https://godoc.org/github.com/ParadigmFoundation/kosu-monorepo/packages/go-kosu/abci/types#TransactionOrder))
 
 _Returns:_
 
--   Orders Result - `[object](AddOrdersResult)`
+-   `Orders Result` - [`AddOrdersResult`](https://godoc.org/github.com/ParadigmFoundation/kosu-monorepo/packages/go-kosu/rpc#AddOrdersResult)
 
 #### cURL example
 
@@ -550,6 +607,14 @@ type AddOrdersResult struct {
 	Rejected []OrderRejection `json:"rejected"`
 }
 
+// newQueryError is used to mask ErrNotFound
+func newQueryError(err error) error {
+	if err != nil && err != abci.ErrNotFound {
+		return err
+	}
+	return nil
+}
+
 /*
 RoundInfo returns the current `RoundInfo`.
 The `RoundInfo` object tracks rebalance round information.
@@ -560,11 +625,11 @@ _Method:_
 
 -   `kosu_roundInfo`
 
-_Parameters:_
+_Parameters:_ None
 
 _Returns:_
 
--   `RoundInfo` - _[object]()_
+-   `RoundInfo` - _[`RoundInfo`](https://godoc.org/github.com/ParadigmFoundation/kosu-monorepo/packages/go-kosu/abci/types#RoundInfo)_
 
 #### cURL example
 
@@ -580,7 +645,8 @@ curl -X POST localhost:14341 \
 
 */
 func (s *Service) RoundInfo() (*types.RoundInfo, error) {
-	return s.abci.QueryRoundInfo()
+	v, err := s.abci.QueryRoundInfo()
+	return v, newQueryError(err)
 }
 
 /*
@@ -597,7 +663,7 @@ _Parameters:_
 
 _Returns:_
 
--   `Validator` - _[object]()_
+-   `Validator` - _[`Validator`](https://godoc.org/github.com/ParadigmFoundation/kosu-monorepo/packages/go-kosu/abci/types#Validator)_
 
 #### cURL Example
 
@@ -627,7 +693,8 @@ curl -X POST localhost:14341 \
 */
 func (s *Service) QueryValidator(addr string) (*types.Validator, error) {
 	addr = strings.ToLower(addr)
-	return s.abci.QueryValidator(addr)
+	v, err := s.abci.QueryValidator(addr)
+	return v, err
 }
 
 /*
@@ -637,11 +704,11 @@ _Method:_
 
 -   `kosu_validators`
 
-_Parameters:_
+_Parameters:_ None
 
 _Returns:_
 
--   `Validator Set` - _Array([object]())_
+-   `Validator Set` - _`Array`([Validator](https://godoc.org/github.com/ParadigmFoundation/kosu-monorepo/packages/go-kosu/abci/types#Validator))_
 
 #### cURL example
 
@@ -700,7 +767,7 @@ _Parameters:_
 
 _Returns:_
 
--   `Poster` - _[object]()_
+-   `Poster` - _[`Poster`](https://godoc.org/github.com/ParadigmFoundation/kosu-monorepo/packages/go-kosu/abci/types#Poster)_
 
 #### cURL Example
 
@@ -722,7 +789,8 @@ curl -X POST localhost:14341 \
 ```
 */
 func (s *Service) QueryPoster(addr string) (*types.Poster, error) {
-	return s.abci.QueryPoster(addr)
+	v, err := s.abci.QueryPoster(addr)
+	return v, newQueryError(err)
 }
 
 /*
@@ -733,7 +801,7 @@ _Method:_
 
 -   `kosu_totalOrders`
 
-_Parameters:_
+_Parameters:_ None
 
 _Returns:_
 
@@ -741,7 +809,8 @@ _Returns:_
 
 */
 func (s *Service) TotalOrders() (uint64, error) {
-	return s.abci.QueryTotalOrders()
+	v, err := s.abci.QueryTotalOrders()
+	return v, newQueryError(err)
 }
 
 /*
@@ -751,7 +820,7 @@ _Method:_
 
 -   `kosu_numberPosters`
 
-_Parameters:_
+_Parameters:_ None
 
 _Returns:_
 
@@ -762,7 +831,7 @@ func (s *Service) NumberPosters() (uint64, error) {
 	var num uint64
 
 	if err := s.abci.Query("/poster/number", nil, &num); err != nil {
-		return 0, err
+		return 0, newQueryError(err)
 	}
 
 	return num, nil
@@ -775,7 +844,7 @@ _Method:_
 
 -   `kosu_remainingLimit`
 
-_Parameters:_
+_Parameters:_ None
 
 _Returns:_
 
@@ -786,7 +855,7 @@ func (s *Service) RemainingLimit() (uint64, error) {
 	var num uint64
 
 	if err := s.abci.Query("/poster/remaininglimit", nil, &num); err != nil {
-		return 0, err
+		return 0, newQueryError(err)
 	}
 
 	return num, nil

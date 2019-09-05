@@ -1,4 +1,4 @@
-> ## [kosu.js](../README.md)
+> **[kosu.js](../README.md)**
 
 [Globals](../globals.md) / [OrderArgument](orderargument.md) /
 
@@ -8,9 +8,9 @@
 
 -   **OrderArgument**
 
-### Index
+## Index
 
-#### Properties
+### Properties
 
 -   [datatype](orderargument.md#datatype)
 -   [name](orderargument.md#name)
@@ -19,7 +19,7 @@
 
 ### datatype
 
-● **datatype**: _string_
+• **datatype**: _string_
 
 Defined in types.d.ts:37
 
@@ -27,8 +27,6 @@ Defined in types.d.ts:37
 
 ### name
 
-● **name**: _string_
+• **name**: _string_
 
 Defined in types.d.ts:36
-
----

@@ -1,7 +1,7 @@
 package rpc
 
 import (
-	"go-kosu/abci"
+	"github.com/ParadigmFoundation/kosu-monorepo/packages/go-kosu/abci"
 
 	"github.com/ethereum/go-ethereum/rpc"
 )

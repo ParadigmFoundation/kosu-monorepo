@@ -1,4 +1,4 @@
-> ## [kosu.js](../README.md)
+> **[kosu.js](../README.md)**
 
 [Globals](../globals.md) / [OrderHelper](orderhelper.md) /
 
@@ -15,24 +15,20 @@ of transactions.
 
 -   **OrderHelper**
 
-### Index
+## Index
 
-#### Constructors
+### Constructors
 
 -   [constructor](orderhelper.md#constructor)
 
-#### Properties
-
--   [orderGateway](orderhelper.md#private-ordergateway)
--   [web3](orderhelper.md#private-web3)
-
-#### Methods
+### Methods
 
 -   [makeOrder](orderhelper.md#makeorder)
 -   [makerHex](orderhelper.md#makerhex)
 -   [prepareForPost](orderhelper.md#prepareforpost)
 -   [recoverMaker](orderhelper.md#recovermaker)
 -   [recoverPoster](orderhelper.md#recoverposter)
+-   [serialize](orderhelper.md#serialize)
 -   [takeOrder](orderhelper.md#takeorder)
 
 ## Constructors
@@ -54,30 +50,6 @@ instance).
 | `orderGateway` | [OrderGateway](ordergateway.md) | An instantiated `OrderGateway` wrapper.             |
 
 **Returns:** _[OrderHelper](orderhelper.md)_
-
----
-
-## Properties
-
-### `Private` orderGateway
-
-● **orderGateway**: _[OrderGateway](ordergateway.md)_
-
-Defined in OrderHelper.ts:24
-
-Instance of the `OrderGateway` wrapper.
-
----
-
-### `Private` web3
-
-● **web3**: _`Web3`_
-
-Defined in OrderHelper.ts:19
-
-An instance of `web3` used to interact with the Ethereum blockchain.
-
----
 
 ## Methods
 
@@ -105,7 +77,7 @@ The supplied maker order with an appended `makerSignature`.
 
 ▸ **makerHex**(`order`: [Order](../interfaces/order.md)): _`Promise<string>`_
 
-Defined in OrderHelper.ts:92
+Defined in OrderHelper.ts:104
 
 Generate the maker hex (serialized `makerValues`).
 
@@ -123,17 +95,17 @@ Generate the maker hex (serialized `makerValues`).
 
 ▸ **prepareForPost**(`order`: [Order](../interfaces/order.md), `poster`: string): _`Promise<PostableOrder>`_
 
-Defined in OrderHelper.ts:73
+Defined in OrderHelper.ts:76
 
 Sign and order as a poster and append the poster signature to an order
 prior to submission to the Kosu relay network.
 
 **Parameters:**
 
-| Name     | Type                            | Default value | Description                                                       |
-| -------- | ------------------------------- | ------------- | ----------------------------------------------------------------- |
-| `order`  | [Order](../interfaces/order.md) | -             | Order to prepare (by appending a poster signature).               |
-| `poster` | string                          | order.maker   | Poster address to sign order with, defaults to the order's maker. |
+| Name     | Type                            | Default     | Description                                                       |
+| -------- | ------------------------------- | ----------- | ----------------------------------------------------------------- |
+| `order`  | [Order](../interfaces/order.md) | -           | Order to prepare (by appending a poster signature).               |
+| `poster` | string                          | order.maker | Poster address to sign order with, defaults to the order's maker. |
 
 **Returns:** _`Promise<PostableOrder>`_
 
@@ -145,7 +117,7 @@ The maker order now signed and prepared for post with an appended `posterSignatu
 
 ▸ **recoverMaker**(`order`: [Order](../interfaces/order.md)): _`Promise<string>`_
 
-Defined in OrderHelper.ts:102
+Defined in OrderHelper.ts:114
 
 Recover the maker address from a signed order.
 
@@ -163,7 +135,7 @@ Recover the maker address from a signed order.
 
 ▸ **recoverPoster**(`order`: [PostableOrder](../interfaces/postableorder.md)): _`Promise<string>`_
 
-Defined in OrderHelper.ts:113
+Defined in OrderHelper.ts:125
 
 Recover the poster address from a maker order that has been signed from a
 poster.
@@ -178,11 +150,29 @@ poster.
 
 ---
 
+### serialize
+
+▸ **serialize**(`order`: [Order](../interfaces/order.md)): _`Promise<string>`_
+
+Defined in OrderHelper.ts:135
+
+Generates the contract submission bytes from the arguments of provided order.
+
+**Parameters:**
+
+| Name    | Type                            | Description                                 |
+| ------- | ------------------------------- | ------------------------------------------- |
+| `order` | [Order](../interfaces/order.md) | Order to generate contract input bytes for. |
+
+**Returns:** _`Promise<string>`_
+
+---
+
 ### takeOrder
 
 ▸ **takeOrder**(`order`: [TakeableOrder](../interfaces/takeableorder.md), `taker`: string): _`Promise<any>`_
 
-Defined in OrderHelper.ts:61
+Defined in OrderHelper.ts:64
 
 Take a signed maker order on the Ethereum blockchain via the order's
 specified SubContract, from the supplied taker address (should be available
@@ -199,5 +189,3 @@ via configured `web` provider).
 
 The value defined by the order's SubContract implementation, usually `true`
 for successfully filled orders, and `false` for failed fills.
-
----

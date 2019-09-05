@@ -5,7 +5,7 @@ import (
 
 	"github.com/cosmos/cosmos-sdk/store"
 
-	"go-kosu/abci/types"
+	"github.com/ParadigmFoundation/kosu-monorepo/packages/go-kosu/abci/types"
 )
 
 // Store stores the application state

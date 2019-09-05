@@ -16,9 +16,9 @@ import (
 	"github.com/tendermint/tendermint/libs/log"
 	db "github.com/tendermint/tm-db"
 
-	"go-kosu/abci/types"
-	"go-kosu/store"
-	"go-kosu/store/cosmos"
+	"github.com/ParadigmFoundation/kosu-monorepo/packages/go-kosu/abci/types"
+	"github.com/ParadigmFoundation/kosu-monorepo/packages/go-kosu/store"
+	"github.com/ParadigmFoundation/kosu-monorepo/packages/go-kosu/store/cosmos"
 )
 
 var (

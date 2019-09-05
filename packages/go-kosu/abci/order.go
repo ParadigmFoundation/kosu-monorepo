@@ -1,8 +1,8 @@
 package abci
 
 import (
-	"go-kosu/abci/types"
-	"go-kosu/store"
+	"github.com/ParadigmFoundation/kosu-monorepo/packages/go-kosu/abci/types"
+	"github.com/ParadigmFoundation/kosu-monorepo/packages/go-kosu/store"
 
 	abci "github.com/tendermint/tendermint/abci/types"
 )
