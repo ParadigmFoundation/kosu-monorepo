@@ -62,6 +62,7 @@ contract ValidatorRegistry is Ownable {
     uint public challengePeriod;
     uint public exitPeriod;
     uint public rewardPeriod;
+    uint public exitLockPeriod = 100; //TODO add to update method
     uint public minimumBalance = 500 ether;
     uint public stakeholderCut = 30; // Will be used as a percent so must be sub 100
     uint public minMaxGenerator = 1 ether / 10;
@@ -488,6 +489,7 @@ contract ValidatorRegistry is Ownable {
         //Approve and release tokens to treasury
         kosuToken.approve(address(treasury), listing.stakedBalance);
         treasury.releaseTokens(msg.sender, listing.stakedBalance);
+        treasury.validatorLock(msg.sender, listing.stakedBalance, block.number + exitLockPeriod);
 
         //Clear listing data and remove from tracking array
         _removeListing(listing);

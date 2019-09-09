@@ -492,4 +492,29 @@ describe("Treasury", async () => {
                 .should.eq(finalCurrentBalance.toString());
         });
     });
+
+    describe("TokenLocks", () => {
+        it("should lock a validator after exit", async () => {
+            await testHelpers.prepareListing("0x010203", {
+                reward: await contracts.validatorRegistry.maxRewardRate.callAsync(),
+            });
+            await contracts.validatorRegistry.confirmListing.awaitTransactionSuccessAsync("0x010203");
+
+            const result = await contracts.validatorRegistry.initExit.awaitTransactionSuccessAsync("0x010203");
+
+            await testHelpers.skipExitPeriod(result.blockNumber);
+
+            const result2 = await contracts.validatorRegistry.finalizeExit.awaitTransactionSuccessAsync("0x010203");
+
+            const lockDuration = await contracts.validatorRegistry.exitLockPeriod.callAsync();
+            const lock = await contracts.treasury.tokenLocksExpire.callAsync(accounts[0]);
+
+            lockDuration.plus(result2.blockNumber).toString().should.eq(lock.toString());
+
+            await testHelpers.clearTreasury(accounts[0]);
+        });
+
+        it("should lock a voter after commit until after the poll ends + winning side");
+        it("should lock a voter after commit until after the poll ends + loosing side");
+    });
 });

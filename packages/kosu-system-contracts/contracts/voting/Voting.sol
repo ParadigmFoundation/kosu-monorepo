@@ -93,7 +93,7 @@ contract Voting {
         //Ensure commit phase hasn't ended, the user has not committed and has adequate balance in the treasury
         require(block.number <= p.commitEndBlock);
         require(!p.didCommit[msg.sender]);
-        require(treasury.registerVote(msg.sender, _pollId, _tokensToCommit));
+        require(treasury.registerVote(msg.sender, _pollId, _tokensToCommit, block.number + 100)); //TODO parameterize the 100
         require(_tokensToCommit > 0);
 
         //Set the tokens committed hidden vote data
@@ -119,7 +119,6 @@ contract Voting {
         require(block.number <= p.revealEndBlock);
         require(p.didCommit[msg.sender]);
         require(!p.didReveal[msg.sender]);
-        require(treasury.completeVote(msg.sender, _pollId));
 
         // Calculate and compare the commited vote
         bytes32 exposedVote = keccak256(abi.encodePacked(_voteOption, _voteSalt));

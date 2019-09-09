@@ -121,6 +121,8 @@ export class TestHelpers {
     public async clearTreasury(address: string): Promise<void> {
         const transactions = [];
         const systemBalance = await this.migratedContracts.treasury.systemBalance.callAsync(address);
+        const unlockBlock = await this.migratedContracts.treasury.tokenLocksExpire.callAsync(address);
+        await this.skipTo(unlockBlock);
         if (systemBalance.gt(0)) {
             const currentBalance = await this.migratedContracts.treasury.currentBalance.callAsync(address);
             if (systemBalance.gt(currentBalance)) {
