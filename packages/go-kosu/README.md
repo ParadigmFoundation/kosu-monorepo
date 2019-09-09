@@ -6,6 +6,8 @@ Automated per-commit builds are available for `Linux/amd64` architectures, publi
 
 Stable release builds will be available from the GitHub releases page after an initial beta release.
 
+Usage and RPC documentation is hosted at [`docs.kosu.io`](https://docs.kosu.io/go-kosu), and package documentation is hosted on [`godoc.org`](https://godoc.org/github.com/ParadigmFoundation/kosu-monorepo).
+
 ## Building from source
 
 Binaries from `go-kosu` must be build alongside the rest of the `kosu-monorepo` due to the Kosu client implementation's dependency on contract system build artifacts. See [the top-level README for full build instructions.](https://github.com/ParadigmFoundation/kosu-monorepo/blob/master/README.md#install-instructions)
@@ -19,6 +21,7 @@ In order to build the full monorepo, the following is required:
 -   [jq](https://stedolan.github.io/jq/download/) (`^1.6`)
 -   [golang](https://golang.org/dl/) (`^1.12`)
 -   [go-ethereum](https://github.com/ethereum/go-ethereum/wiki/Building-Ethereum) (`^1.8`)
+-   [go-bindata](https://github.com/go-bindata/go-bindata) (`^3.1`)
 
 ### Clone monorepo
 

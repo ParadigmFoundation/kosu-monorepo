@@ -1,8 +1,8 @@
 package tests
 
 import (
-	"go-kosu/abci"
-	"go-kosu/abci/types"
+	"github.com/ParadigmFoundation/kosu-monorepo/packages/go-kosu/abci"
+	"github.com/ParadigmFoundation/kosu-monorepo/packages/go-kosu/abci/types"
 )
 
 func (suite *IntegrationTestSuite) TestWitness() {

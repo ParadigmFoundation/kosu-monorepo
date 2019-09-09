@@ -11,7 +11,7 @@ import (
 	"github.com/tendermint/tendermint/libs/log"
 	db "github.com/tendermint/tm-db"
 
-	"go-kosu/abci"
+	"github.com/ParadigmFoundation/kosu-monorepo/packages/go-kosu/abci"
 )
 
 // StartServer starts a kosud test server.

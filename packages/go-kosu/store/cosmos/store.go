@@ -10,8 +10,8 @@ import (
 	"github.com/cosmos/cosmos-sdk/store/rootmulti"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 
-	"go-kosu/abci/types"
-	"go-kosu/store"
+	"github.com/ParadigmFoundation/kosu-monorepo/packages/go-kosu/abci/types"
+	"github.com/ParadigmFoundation/kosu-monorepo/packages/go-kosu/store"
 )
 
 // Store stores the application state

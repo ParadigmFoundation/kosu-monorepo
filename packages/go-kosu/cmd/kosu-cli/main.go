@@ -10,9 +10,9 @@ import (
 
 	"github.com/spf13/cobra"
 
-	"go-kosu/abci"
-	"go-kosu/abci/cli"
-	"go-kosu/version"
+	"github.com/ParadigmFoundation/kosu-monorepo/packages/go-kosu/abci"
+	"github.com/ParadigmFoundation/kosu-monorepo/packages/go-kosu/abci/cli"
+	"github.com/ParadigmFoundation/kosu-monorepo/packages/go-kosu/version"
 )
 
 func main() {

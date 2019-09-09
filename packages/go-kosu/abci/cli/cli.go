@@ -4,10 +4,11 @@ import (
 	"context"
 	"encoding/base64"
 	"fmt"
-	"go-kosu/abci"
-	"go-kosu/abci/types"
 	"os"
 	"strconv"
+
+	"github.com/ParadigmFoundation/kosu-monorepo/packages/go-kosu/abci"
+	"github.com/ParadigmFoundation/kosu-monorepo/packages/go-kosu/abci/types"
 
 	"github.com/spf13/cobra"
 )

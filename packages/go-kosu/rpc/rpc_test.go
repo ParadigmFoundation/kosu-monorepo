@@ -9,9 +9,9 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	"go-kosu/abci"
-	"go-kosu/abci/types"
-	"go-kosu/tests"
+	"github.com/ParadigmFoundation/kosu-monorepo/packages/go-kosu/abci"
+	"github.com/ParadigmFoundation/kosu-monorepo/packages/go-kosu/abci/types"
+	"github.com/ParadigmFoundation/kosu-monorepo/packages/go-kosu/tests"
 
 	db "github.com/tendermint/tm-db"
 )
