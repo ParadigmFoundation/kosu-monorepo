@@ -66,7 +66,6 @@ export class DB {
             makerAssetData = '${makerAssetData}' AND \
             takerAssetData = '${takerAssetData}' \
             LIMIT ${page},${perPage}`;
-        console.log(qs);
         return this._query(qs);
     }
 

@@ -22,7 +22,6 @@ export function searchClosure(db: DB): AsyncHandlerFunction {
         }
 
         const orders = await db.getOrdersForPair(baseAsset, quoteAsset, side, perPage, page);
-        console.log(orders)
         const quotes = parseQuotesFromOrders(orders, side);
         return res.status(200).send({ side, baseAsset, quoteAsset, page, perPage, quotes });
     };
