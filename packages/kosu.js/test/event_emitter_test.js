@@ -1,5 +1,4 @@
 const { EventEmitter } = require("../src/EventEmitter");
-const DeployedAddresses = require("@kosu/system-contracts").DeployedAddresses;
 
 describe("EventEmitter", () => {
     it("should allow constructor to configured with a custom address", async () => {
