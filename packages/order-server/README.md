@@ -6,7 +6,7 @@ The `order-server` is a simple order indexer for 0x orders relayed through the K
 
 The server opens a connection to a Kosu JSONRPC/WebSocket API server and subscribes to new order messages, filtering out non-0x orders.
 
-It adds all 0x orders to a MySQL database and provides a REST API (see below) for querying order's based on a currency pair, maker address, or a known order ID. 
+It adds all 0x orders to a MySQL database and provides a REST API (see below) for querying order's based on a currency pair, maker address, or a known order ID.
 
 ## Usage
 
@@ -29,6 +29,7 @@ yarn build
 ```
 
 Start the API server and subscription connection (change environment variable as necessary):
+
 ```
 KOSU_JSONRPC_URL=ws://localhost:14342 yarn start
 ```
@@ -48,29 +49,33 @@ Load and paginate an order-book snapshot of quotes rom the Kosu network by suppl
 The returned quote snapshots include `orderId` values which can be used to load the full executable order with the [`/order` method.](#order-by-id)
 
 #### Request format
-- **API Endpoint:** `/search`
-- **Query Parameters:**
 
-    | Name | Required | Default | Description |
-    | :--: | :------: | :-----: | :---------- |
-    |`baseAsset`|`true`|-|Base asset token address.|
-    |`quoteAsset`|`true`|-|Quote asset token address.|
-    |`side`|`true`|-|Specify to retrieve `bid` or `ask` orders for the pair.|
-    |`page`|`false`|`1`| The page number to retrieve (based on `perPage`).| 
-    |`perPage`|`false`|`10`|The number of order stubs to load per page.|
-- **Example:**
+-   **API Endpoint:** `/search`
+-   **Query Parameters:**
+
+    |     Name     | Required | Default | Description                                             |
+    | :----------: | :------: | :-----: | :------------------------------------------------------ |
+    | `baseAsset`  |  `true`  |    -    | Base asset token address.                               |
+    | `quoteAsset` |  `true`  |    -    | Quote asset token address.                              |
+    |    `side`    |  `true`  |    -    | Specify to retrieve `bid` or `ask` orders for the pair. |
+    |    `page`    | `false`  |   `1`   | The page number to retrieve (based on `perPage`).       |
+    |  `perPage`   | `false`  |  `10`   | The number of order stubs to load per page.             |
+
+-   **Example:**
     ```bash
     curl 'localhost:8000/search?baseAsset=0x9f8f72aa9304c8b593d555f12ef6589cc3a579a2&quoteAsset=0x89d24a6b4ccb1b6faa2625fe562bdd9a23260359&side=ask&perPage=2'
     ```
+
 #### Response format
-- **Headers:**
-    - Content-Type: `application/json`
-- **Body:**
+
+-   **Headers:**
+    -   Content-Type: `application/json`
+-   **Body:**
     ```json
     {
         "side": "ask",
         "quoteAssetAddress": "0x9f8f72aa9304c8b593d555f12ef6589cc3a579a2",
-        "baseAssetAddress": "0x89d24a6b4ccb1b6faa2625fe562bdd9a23260359", 
+        "baseAssetAddress": "0x89d24a6b4ccb1b6faa2625fe562bdd9a23260359",
         "page": 1,
         "perPage": 2,
         "quotes": [
@@ -89,32 +94,36 @@ The returned quote snapshots include `orderId` values which can be used to load 
         ]
     }
     ```
-- **Notes:**
-    - Expiration times are UNIX timestamps (seconds).
-    - Prices and sizes (`price` and `size`) are in base units (wei) of the quote asset.
-    - Prices and order sizes should be converted to `BigNumbers` for storage/processing (for precision).
-    - The `orderId` for an quote can be used in the [`/order`](#order-by-id) method to get the full order.
+-   **Notes:**
+    -   Expiration times are UNIX timestamps (seconds).
+    -   Prices and sizes (`price` and `size`) are in base units (wei) of the quote asset.
+    -   Prices and order sizes should be converted to `BigNumbers` for storage/processing (for precision).
+    -   The `orderId` for an quote can be used in the [`/order`](#order-by-id) method to get the full order.
 
 ### GET `/order`
+
 Load a full 0x order object from the Kosu network, provided an `orderId` string.
 
 #### Request format
-- **API Endpoint:** `/order`
-- **HTTP Method:** `GET`
-- **Query Parameters:**
 
-    | Name | Required | Default | Description |
-    |:---: | :------: | :-----: | :---------- |
-    |`id`| `true` | - | The hex-encoded transaction ID of the order to fetch.|
-- **Example:**
+-   **API Endpoint:** `/order`
+-   **HTTP Method:** `GET`
+-   **Query Parameters:**
+
+    | Name | Required | Default | Description                                           |
+    | :--: | :------: | :-----: | :---------------------------------------------------- |
+    | `id` |  `true`  |    -    | The hex-encoded transaction ID of the order to fetch. |
+
+-   **Example:**
     ```bash
     curl 'https://search.zaidan.io/api/v1/order?id=0x3b5d97f1a8d0eb833fe1954f87ec3e8099a1d012f5aac397c987b414060546af'
     ```
 
 #### Response format
-- **Headers:**
-    - Content-Type: `application/json`
-- **Body:**
+
+-   **Headers:**
+    -   Content-Type: `application/json`
+-   **Body:**
     ```json
     {
         "id": "0x3b5d97f1a8d0eb833fe1954f87ec3e8099a1d012f5aac397c987b414060546af",
@@ -138,26 +147,30 @@ Load a full 0x order object from the Kosu network, provided an `orderId` string.
     ```
 
 ### GET `/orders`
+
 Load all (or some) orders published by a given `makerAddress`.
 
 #### Request format
-- **API Endpoint:** `/orders`
-- **HTTP Method:** `GET`
-- **Query Parameters:**
 
-    | Name | Required | Default | Description |
-    |:---: | :------: | :-----: | :---------- |
-    |`makerAddress`| `true` | - | The address of the 0x order's signing maker.|
-    |`limit`| `false` | `10` | The number of recent orders to fetch.|
-- **Example:**
+-   **API Endpoint:** `/orders`
+-   **HTTP Method:** `GET`
+-   **Query Parameters:**
+
+    |      Name      | Required | Default | Description                                  |
+    | :------------: | :------: | :-----: | :------------------------------------------- |
+    | `makerAddress` |  `true`  |    -    | The address of the 0x order's signing maker. |
+    |    `limit`     | `false`  |  `10`   | The number of recent orders to fetch.        |
+
+-   **Example:**
     ```bash
     curl 'localhost:8000/orders?makerAddress=0x4f833a24e1f95d70f028921e27040ca56e09ab0b'
     ```
 
 #### Response format
-- **Headers:**
-    - Content-Type: `application/json`
-- **Body:**
+
+-   **Headers:**
+    -   Content-Type: `application/json`
+-   **Body:**
     ```json
     [
         {

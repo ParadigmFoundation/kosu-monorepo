@@ -5,10 +5,10 @@ export type HandlerFunction = (req: Request, res: Response, next: NextFunction) 
 export type AsyncHandlerFunction = (req: Request, res: Response, next: NextFunction) => Promise<Response>;
 
 export interface Quote {
-    price: string,
-    size: string,
-    expiration: string,
-    orderId: string,
+    price: string;
+    size: string;
+    expiration: string;
+    orderId: string;
 }
 
 export interface SignedOrderWithID extends SignedOrder {

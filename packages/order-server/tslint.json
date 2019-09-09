@@ -1,7 +1,5 @@
 {
-    "extends": [
-        "@kosu/tslint-config"
-    ],
+    "extends": ["@kosu/tslint-config"],
     "rules": {
         "completed-docs": false
     }

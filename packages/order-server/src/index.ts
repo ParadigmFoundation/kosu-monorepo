@@ -44,6 +44,6 @@ node.subscribeToOrders(orderInsertionHandler(db)).catch(err => {
 });
 
 export const server = app.listen(PORT, () => {
-    const { address, port } = (server.address() as AddressInfo);
+    const { address, port } = server.address() as AddressInfo;
     console.log(`order-server started on: ${address}:${port}`);
 });

@@ -8,12 +8,7 @@
         "moduleResolution": "node",
         "removeComments": false,
         "esModuleInterop": true,
-        "typeRoots": [
-            "node_modules/@types",
-            "node_modules/@0x/typescript-typings/types"
-        ]
+        "typeRoots": ["node_modules/@types", "node_modules/@0x/typescript-typings/types"]
     },
-    "include": [
-        "src/"
-    ]
+    "include": ["src/"]
 }

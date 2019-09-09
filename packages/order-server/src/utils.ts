@@ -7,8 +7,7 @@ import { Quote, SignedOrderWithID } from "./types";
 /**
  * Returns a generic internal error handler (500)
  */
-export function genericErrorHandler():
-    (e: Error, r: Request, re: Response, n: NextFunction) => Response {
+export function genericErrorHandler(): (e: Error, r: Request, re: Response, n: NextFunction) => Response {
     return (err: Error, _: Request, res: Response, __: NextFunction) => {
         const message = err.message || "internal server error, try again later";
         console.error("[%o] internal error: %s", new Date(), err);
@@ -45,13 +44,12 @@ export function parseQuotesFromOrders(orders: SignedOrderWithID[], side: "bid" |
         const makerAssetAmount = new BigNumber(order.makerAssetAmount);
         const takerAssetAmount = new BigNumber(order.takerAssetAmount);
 
-        const price = side === "bid"
-            ? takerAssetAmount.div(makerAssetAmount).toFixed(8)
-            : makerAssetAmount.div(takerAssetAmount).toFixed(8);
+        const price =
+            side === "bid"
+                ? takerAssetAmount.div(makerAssetAmount).toFixed(8)
+                : makerAssetAmount.div(takerAssetAmount).toFixed(8);
 
-        const size = side === "bid"
-            ? takerAssetAmount.toString()
-            : makerAssetAmount.toString();
+        const size = side === "bid" ? takerAssetAmount.toString() : makerAssetAmount.toString();
 
         const orderId = order.id;
         const expiration = order.expirationTimeSeconds.toString();

@@ -7,13 +7,7 @@ import { parseQuotesFromOrders } from "../utils";
 export function searchClosure(db: DB): AsyncHandlerFunction {
     return async (req: Request, res: Response, next: NextFunction) => {
         await db.initializing;
-        const {
-            baseAsset,
-            quoteAsset,
-            side,
-            page = 0,
-            perPage = 10,
-        } = req.query;
+        const { baseAsset, quoteAsset, side, page = 0, perPage = 10 } = req.query;
 
         const orders = await db.getOrdersForPair(baseAsset, quoteAsset, side, perPage, page);
         const quotes = parseQuotesFromOrders(orders, side);

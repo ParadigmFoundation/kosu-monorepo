@@ -8,7 +8,6 @@ import { SignedOrderWithID } from "./types";
  * Abstraction over a MySQL database for 0x orders.
  */
 export class DB {
-
     /** Underlying mysql connection. */
     private readonly _db: mysql.Connection;
 
