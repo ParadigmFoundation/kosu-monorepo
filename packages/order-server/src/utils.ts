@@ -2,7 +2,7 @@ import { BigNumber, orderHashUtils } from "0x.js";
 import { NextFunction, Request, Response } from "express";
 
 import { DB } from "./db";
-import { Quote, SignedOrderWithID } from "./types";
+import { Quote, SignedOrderWithID, Snippet } from "./types";
 
 /**
  * Returns a generic internal error handler (500)
@@ -83,4 +83,19 @@ export function orderInsertionHandler(db: DB): (order: any) => Promise<void> {
             console.log("[%o] unable to insert order: %s", new Date(), error);
         }
     };
+}
+
+/**
+ * Parse order snippets (order ID + expiration) from full 0x orders.
+ *
+ * @param orders raw signed 0x orders
+ */
+export function parseSnippetsFromOrders(orders: SignedOrderWithID[]): Snippet[] {
+    const snippets: Snippet[] = [];
+    for (const order of orders) {
+        const orderId = order.id;
+        const expiration = parseInt(order.expirationTimeSeconds.toString(), 10);
+        snippets.push({ orderId, expiration });
+    }
+    return snippets;
 }
