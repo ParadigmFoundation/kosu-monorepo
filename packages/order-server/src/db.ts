@@ -156,6 +156,10 @@ export class DB {
                 if (error) {
                     reject(error);
                 }
+                if (!results) {
+                    resolve([]);
+                }
+
                 const res = [];
                 results.forEach(result => {
                     res.push({ ...result });
