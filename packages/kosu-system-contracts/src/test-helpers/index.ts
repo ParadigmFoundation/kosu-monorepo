@@ -262,20 +262,17 @@ export class TestHelpers {
     }
 
     public async cleanAccounts(): Promise<void> {
-        const transactions = [];
         for (const account of this.accounts) {
             await this.clearTreasury(account);
             if (account !== this.accounts[0]) {
                 await this.ensureTokenBalance(account, TestValues.zero);
             }
-            transactions.push(
-                this.migratedContracts.kosuToken.approve.awaitTransactionSuccessAsync(
-                    this.migratedContracts.treasury.address,
-                    TestValues.zero,
-                    {
-                        from: account,
-                    },
-                ),
+            await this.migratedContracts.kosuToken.approve.awaitTransactionSuccessAsync(
+                this.migratedContracts.treasury.address,
+                TestValues.zero,
+                {
+                    from: account,
+                },
             );
         }
     }
