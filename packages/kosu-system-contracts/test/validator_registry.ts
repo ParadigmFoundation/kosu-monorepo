@@ -200,7 +200,7 @@ describe("ValidatorRegistry", async () => {
                 .then(x => x.toString())
                 .should.eventually.eq("0", "currentBalance");
 
-            await validatorRegistry.registerListing.sendTransactionAsync(
+            await validatorRegistry.registerListing.awaitTransactionSuccessAsync(
                 tendermintPublicKey,
                 minimumBalance,
                 TestValues.zero,
