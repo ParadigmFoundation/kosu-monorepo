@@ -11,12 +11,6 @@ export function ordersClosure(db: DB): AsyncHandlerFunction {
             limit,
         } = req.query;
 
-        if (!makerAddress) {
-            return res.status(400).send({
-                error: "missing required 'makerAddress' parameter",
-            });
-        }
-
         const orders = await db.getOrdersByMaker(makerAddress, limit);
         return res.status(200).send(orders);
     };

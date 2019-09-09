@@ -1,6 +1,7 @@
-import { BigNumber } from "0x.js";
+import { BigNumber, orderHashUtils } from "0x.js";
 import { NextFunction, Request, Response } from "express";
 
+import { DB } from "./db";
 import { Quote, SignedOrderWithID } from "./types";
 
 /**
@@ -57,4 +58,31 @@ export function parseQuotesFromOrders(orders: SignedOrderWithID[], side: "bid" |
         quotes.push({ price, size, orderId, expiration });
     }
     return quotes;
+}
+
+/**
+ * Main order handler (from Kosu node RPC).
+ */
+export function orderInsertionHandler(db: DB): (order: any) => Promise<void> {
+    return async (order: any) => {
+        const { makerValues } = order;
+        if (!makerValues) {
+            console.log(`skipping empty order`);
+            return;
+        }
+
+        try {
+            orderHashUtils.getOrderHashHex(makerValues);
+        } catch (_) {
+            console.log("skipping non-0x order");
+            return;
+        }
+
+        // insert 0x order (makerValues) into db
+        try {
+            return db.addOrder(makerValues);
+        } catch (error) {
+            console.log("[%o] unable to insert order: %s", new Date(), error);
+        }
+    };
 }

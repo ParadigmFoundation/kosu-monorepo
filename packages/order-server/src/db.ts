@@ -46,6 +46,7 @@ export class DB {
         perPage: number = 10,
         page: number = 0,
     ): Promise<SignedOrderWithID[]> {
+        assert(baseAsset && quoteAsset && side, "missing required search parameters");
         assert(/^0x[a-fA-F0-9]{40}$/.test(baseAsset), "invalid base asset address");
         assert(/^0x[a-fA-F0-9]{40}$/.test(quoteAsset), "invalid quote asset address");
         assert(side === "ask" || side === "bid", "invalid side: must be bid or ask");
@@ -93,7 +94,7 @@ export class DB {
      * @returns an array of signed orders from the provided maker
      */
     public async getOrdersByMaker(makerAddress: string, limit: number = 10): Promise<SignedOrderWithID[]> {
-        assert(/^0x[a-fA-F0-9]{40}$/, "invalid maker's Ethereum address");
+        assert(/^0x[a-fA-F0-9]{40}$/.test(makerAddress), "invalid maker's Ethereum address");
         const qs = `SELECT * FROM orders WHERE makerAddress = '${makerAddress.toLowerCase()}' LIMIT ${limit}`;
         return this._query(qs);
     }
