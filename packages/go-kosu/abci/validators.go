@@ -66,7 +66,7 @@ func UnifyValidators(updates abci.ValidatorUpdates, state GenesisValidatorSet) (
 		s := state[i]
 
 		// key verification
-		if bytes.Compare(v.PublicKey, s.PublicKey) != 0 {
+		if !bytes.Equal(v.PublicKey, s.PublicKey) {
 			return nil, NewPublicKeyMismatchError(
 				v.PublicKey, s.PublicKey,
 			)

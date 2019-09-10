@@ -97,6 +97,7 @@ func (app *App) pushTransactionWitness(tx *types.TransactionWitness, nodeID []by
 	return nil
 }
 
+// ScaleBalance scales a balance down to a consensus Power representation
 func ScaleBalance(balance *big.Int) int64 {
 	if balance.Cmp(big.NewInt(0)) == 0 {
 		return int64(0)
