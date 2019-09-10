@@ -19,7 +19,7 @@ func NewKeyPair() ([]byte, []byte, error) {
 	return ed25519.GenerateKey(randReader)
 }
 
-// NewSignedTransactionFromBytes decodes and verify a raw Tx, usually comming from a TM request.
+// NewSignedTransactionFromBytes decodes and verify a raw Tx, usually coming from a TM request.
 func NewSignedTransactionFromBytes(raw []byte) (*SignedTransaction, error) {
 	stx := &SignedTransaction{}
 	if err := DecodeTx(raw, stx); err != nil {
