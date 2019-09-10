@@ -127,6 +127,9 @@ func (c *Client) QueryRoundInfo() (*types.RoundInfo, error) {
 func (c *Client) QueryConsensusParams() (*types.ConsensusParams, error) {
 	var pb types.ConsensusParams
 	if err := c.Query("/chain/key", []byte("consensusparams"), &pb); err != nil {
+		if err == ErrNotFound {
+			return &types.ConsensusParams{}, nil
+		}
 		return nil, err
 	}
 
