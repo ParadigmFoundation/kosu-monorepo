@@ -37,6 +37,8 @@ var (
 	ErrPubKeyExpected = errors.New("expected publicKey for validator witnesses")
 	// ErrInvalidID occurs when the tx.ID and the computed Hash does not match.
 	ErrInvalidID = errors.New("invalid ID")
+	// ErrInvalidSignature occurs when the SignedTransaction's validation fails
+	ErrInvalidSignature = errors.New("invalid signature validation")
 )
 
 // Validate validates a TransactionWitness format and values

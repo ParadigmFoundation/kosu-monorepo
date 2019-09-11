@@ -241,27 +241,31 @@ func (app *App) EndBlock(req abci.RequestEndBlock) abci.ResponseEndBlock {
 
 // CheckTx .
 func (app *App) CheckTx(req abci.RequestCheckTx) abci.ResponseCheckTx {
-	stx := &types.SignedTransaction{}
-	if err := types.DecodeTx(req.Tx, stx); err != nil {
-		return abci.ResponseCheckTx{Code: 1, Log: err.Error()}
-	}
-	tx := stx.Tx
-	valid, err := stx.Verify()
+	stx, err := types.NewSignedTransactionFromBytes(req.Tx)
 	if err != nil {
 		return abci.ResponseCheckTx{Code: 1, Log: err.Error()}
 	}
 
-	if !valid {
-		return abci.ResponseCheckTx{Code: 1, Log: "Invalid signature"}
-	}
-
+	nodeID := tmhash.SumTruncated(stx.Proof.PublicKey)
+	tx := stx.Tx
+	// TODO(gchaincl) refactor the validator verification
 	switch tx.GetData().(type) {
 	case *types.Transaction_Rebalance:
+		if !app.store.ValidatorExists(nodeID) {
+			msg := fmt.Sprintf("NodeID %s does not belong to a validator", hex.EncodeToString(nodeID))
+			return abci.ResponseCheckTx{Code: 1, Log: msg}
+		}
+
 		if err := app.checkRebalanceTx(tx.GetRebalance()); err != nil {
 			return abci.ResponseCheckTx{Code: 1, Log: err.Error()}
 		}
 		return abci.ResponseCheckTx{}
 	case *types.Transaction_Witness:
+		if !app.store.ValidatorExists(nodeID) {
+			msg := fmt.Sprintf("NodeID %s does not belong to a validator", hex.EncodeToString(nodeID))
+			return abci.ResponseCheckTx{Code: 1, Log: msg}
+		}
+
 		w := tx.GetWitness()
 		// .Confirmations should not be defined in the request
 		w.Confirmations = 0
@@ -288,12 +292,13 @@ func (app *App) CheckTx(req abci.RequestCheckTx) abci.ResponseCheckTx {
 
 // DeliverTx .
 func (app *App) DeliverTx(req abci.RequestDeliverTx) abci.ResponseDeliverTx {
-	stx := &types.SignedTransaction{}
-	if err := types.DecodeTx(req.Tx, stx); err != nil {
-		return abci.ResponseDeliverTx{Code: 1, Info: err.Error()}
+	stx, err := types.NewSignedTransactionFromBytes(req.Tx)
+	if err != nil {
+		// If verification passes CheckTx it MUST pass here
+		panic(err)
 	}
-	tx := stx.Tx
 
+	tx := stx.Tx
 	switch tx.GetData().(type) {
 	case *types.Transaction_Rebalance:
 		return app.deliverRebalance(tx.GetRebalance())
