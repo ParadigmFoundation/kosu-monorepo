@@ -100,7 +100,7 @@ describe("ValidatorRegistry", async () => {
                 TestValues.oneWei,
             );
 
-            txReceipt.gasUsed.should.be.lt(5100000);
+            txReceipt.gasUsed.should.be.lt(5200000);
         });
     });
 
@@ -1724,6 +1724,9 @@ describe("ValidatorRegistry", async () => {
             "minMaxGenerator",
             "maxGeneratorGrowth",
             "maxMaxGenerator",
+            "exitLockPeriod",
+            "winningVoteLockPeriod",
+            "losingVoteLockPeriod",
         ].forEach((method, index) => {
             it(`should correctly set a new ${method}`, async () => {
                 const originalValue = await validatorRegistry[method].callAsync();

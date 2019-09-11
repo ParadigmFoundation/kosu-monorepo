@@ -139,6 +139,7 @@ export async function migrations(
             zeroExAddresses.exchange,
             zeroExAddresses.erc20Proxy,
         );
+
         await authorizedAddresses.authorizeAddress.awaitTransactionSuccessAsync(treasury.address).then(() => {
             console.log(`Authorized address: ${treasury.address}`);
         });
@@ -151,6 +152,12 @@ export async function migrations(
             console.log(`Authorized address: ${posterRegistry.address}`);
         });
 
+        await authorizedAddresses.authorizeAddress.awaitTransactionSuccessAsync(validatorRegistry.address).then(() => {
+            console.log(`Authorized address: ${validatorRegistry.address}`);
+        });
+
+        await treasury.setVoting.awaitTransactionSuccessAsync(voting.address);
+
         await web3Wrapper
             .sendTransactionAsync({
                 ...txDefaults,
@@ -162,10 +169,6 @@ export async function migrations(
                     console.log("Submitted initial bonding transaction.");
                 }),
             );
-
-        await authorizedAddresses.authorizeAddress.awaitTransactionSuccessAsync(validatorRegistry.address).then(() => {
-            console.log(`Authorized address: ${validatorRegistry.address}`);
-        });
 
         if (options.noLogs) {
             console = _console;

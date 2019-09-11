@@ -2,6 +2,7 @@ pragma solidity ^0.5.0;
 
 import "../base/Authorizable.sol";
 import "../lib/KosuToken.sol";
+import "../voting/IVoting.sol";
 
 /** @title Treasury
     @author Freydal
@@ -10,10 +11,13 @@ import "../lib/KosuToken.sol";
 contract Treasury is Authorizable {
     using SafeMath for uint;
 
+    IVoting voting;
+
     struct TokenLock {
         uint value;
         uint pollId;
         uint tokenLockEnd;
+        uint pollEarlyUnlock;
     }
 
     KosuToken public kosuToken;
@@ -28,6 +32,10 @@ contract Treasury is Authorizable {
     */
     constructor(address payable kosuTokenAddress, address auth) Authorizable(auth) public {
         kosuToken = KosuToken(kosuTokenAddress);
+    }
+
+    function setVoting(address votingAddress) isAuthorized public {
+        voting = IVoting(votingAddress);
     }
 
     /** @dev Fallback payable function to allow ether but be bonded and directly deposit tokens into the Treasury.
@@ -155,12 +163,12 @@ contract Treasury is Authorizable {
         @param pollId The poll the account is voting on.
         @param amount Number of tokens contributed.
     */
-    function registerVote(address account, uint pollId, uint amount, uint endBlock) isAuthorized public returns (bool) {
+    function registerVote(address account, uint pollId, uint amount, uint endBlock, uint losingEndBlock) isAuthorized public returns (bool) {
         if(systemBalances[account] < amount) {
             return false;
         }
 
-        addressTokenLocks[account].push(TokenLock(amount, pollId, endBlock));
+        addressTokenLocks[account].push(TokenLock(amount, pollId, endBlock, losingEndBlock));
 
         return true;
     }
@@ -169,7 +177,8 @@ contract Treasury is Authorizable {
         addressTokenLocks[account].push(TokenLock(
             amount,
             0,
-            endBlock
+            endBlock,
+            0
         ));
     }
 
@@ -238,6 +247,10 @@ contract Treasury is Authorizable {
     function _removeInactiveTokenLocks(address account) internal {
         for(uint i = addressTokenLocks[account].length; i > 0; i--) {
             TokenLock storage v = addressTokenLocks[account][i - 1];
+            (bool finished, uint winningTokens) = voting.userWinningTokens(v.pollId, msg.sender);
+            if(v.pollId > 0 && finished && winningTokens == 0) {
+                v.tokenLockEnd = v.pollEarlyUnlock;
+            }
             if(v.tokenLockEnd < block.number) {
                 if(i == addressTokenLocks[account].length) {
                     delete addressTokenLocks[account][i - 1];
@@ -256,6 +269,7 @@ contract Treasury is Authorizable {
     function _getLockedTokens(address account) internal view returns (uint) {
         //Updates the systemBalance for the account
         uint totalLocked;
+        uint maxVoteLock;//todo
         for(uint i = 0; i < addressTokenLocks[account].length; i++) {
             totalLocked = totalLocked.add(addressTokenLocks[account][i].value);
         }

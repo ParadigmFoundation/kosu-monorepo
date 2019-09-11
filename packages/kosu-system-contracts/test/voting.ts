@@ -51,7 +51,7 @@ describe("Voting", () => {
     describe("createPoll", () => {
         it("should allow a poll to be created", async () => {
             const nextPoll = await voting.nextPollId.callAsync();
-            const result = await voting.createPoll.awaitTransactionSuccessAsync(block1, block2).should.eventually.be
+            const result = await voting.createPoll.awaitTransactionSuccessAsync(block1, block2, TestValues.zero, TestValues.zero).should.eventually.be
                 .fulfilled;
             const decodedLogs = decodeKosuEvents(result.logs)[0];
 
@@ -66,11 +66,11 @@ describe("Voting", () => {
         });
 
         it("should not allow the commit end to be before reveal end", async () => {
-            await voting.createPoll.awaitTransactionSuccessAsync(block2, block1).should.eventually.be.rejected;
+            await voting.createPoll.awaitTransactionSuccessAsync(block2, block1, TestValues.zero, TestValues.zero).should.eventually.be.rejected;
         });
 
         it("should not allow the commit end to be equal to reveal end", async () => {
-            await voting.createPoll.awaitTransactionSuccessAsync(block1, block1).should.eventually.be.rejected;
+            await voting.createPoll.awaitTransactionSuccessAsync(block1, block1, TestValues.zero, TestValues.zero).should.eventually.be.rejected;
         });
     });
 
@@ -241,7 +241,7 @@ describe("Voting", () => {
             await voting.userWinningTokens
                 .callAsync(pollId, accounts[0])
                 .then(x => x.toString())
-                .should.eventually.eq("0");
+                .should.eventually.eq("true,0");
         });
 
         it("should report the correct number of tokens", async () => {
@@ -262,7 +262,7 @@ describe("Voting", () => {
             await voting.userWinningTokens
                 .callAsync(pollId, accounts[1])
                 .then(x => x.toString())
-                .should.eventually.eq(TestValues.fiveEther.toString());
+                .should.eventually.eq([true, TestValues.fiveEther].toString());
         });
     });
 });

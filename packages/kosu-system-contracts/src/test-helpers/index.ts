@@ -290,6 +290,8 @@ export class TestHelpers {
         const { logs, blockNumber } = await this.migratedContracts.voting.createPoll.awaitTransactionSuccessAsync(
             new BigNumber(commitEnd),
             new BigNumber(revealEnd),
+            new BigNumber(0),
+            new BigNumber(0),
         );
         const { pollId } = decodeKosuEvents(logs)[0];
         return { blockNumber, pollId: new BigNumber(pollId) };

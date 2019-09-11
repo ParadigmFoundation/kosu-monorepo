@@ -3,12 +3,13 @@ pragma solidity ^0.5.0;
 import "../treasury/Treasury.sol";
 import "../event/EventEmitter.sol";
 import "openzeppelin-solidity/contracts/math/SafeMath.sol";
+import "./IVoting.sol";
 
 /** @title Voting
     @author Freydal
     @dev Voting manages polls and votes on governance matters within the Kosu system.  Poll resolution logic will be the responsibility of the contract utilizing this service.
 */
-contract Voting {
+contract Voting is IVoting {
     using SafeMath for uint;
 
     Treasury private treasury;
@@ -21,6 +22,8 @@ contract Voting {
         address creator;
         uint commitEndBlock;
         uint revealEndBlock;
+        uint winnerLockEnd;
+        uint loserLockEnd;
         uint currentLeadingOption;
         uint leadingTokens;
         uint totalRevealedTokens;
@@ -51,9 +54,11 @@ contract Voting {
         @notice Create a new poll. The commit and reveal periods must be provided. The creation of the poll is notified with an event from the shared EventEmitter.
         @param _commitEndBlock Block number when commit phase ends.
         @param _revealEndBlock Block number when reveal phase ends.
+        @param _winnerLock Blocks after poll winning voters' tokens are locked.
+        @param _loserLock Blocks after poll losing voters' tokens are locked.
         @return Poll index number. Will be used as the key for interacting with a vote.
     */
-    function createPoll(uint _commitEndBlock, uint _revealEndBlock) public returns (uint) {//TODO is it a concern that polls could be created by anyone freely?
+    function createPoll(uint _commitEndBlock, uint _revealEndBlock, uint _winnerLock, uint _loserLock) public returns (uint) {//TODO is it a concern that polls could be created by anyone freely?
         // Reveal end after commit
         require(_commitEndBlock < _revealEndBlock);
 
@@ -63,6 +68,8 @@ contract Voting {
         p.creator = msg.sender;
         p.commitEndBlock = _commitEndBlock;
         p.revealEndBlock = _revealEndBlock;
+        p.winnerLockEnd = _revealEndBlock + _winnerLock;
+        p.loserLockEnd = _revealEndBlock + _loserLock;
 
         // Increase next poll index
         nextPollId++;
@@ -93,7 +100,7 @@ contract Voting {
         //Ensure commit phase hasn't ended, the user has not committed and has adequate balance in the treasury
         require(block.number <= p.commitEndBlock);
         require(!p.didCommit[msg.sender]);
-        require(treasury.registerVote(msg.sender, _pollId, _tokensToCommit, block.number + 100)); //TODO parameterize the 100
+        require(treasury.registerVote(msg.sender, _pollId, _tokensToCommit, p.winnerLockEnd, p.loserLockEnd)); //TODO parameterize the 100
         require(_tokensToCommit > 0);
 
         //Set the tokens committed hidden vote data
@@ -173,15 +180,19 @@ contract Voting {
         @param _pollId Poll index to check winning tokens for.
         @param _user Address of user to check winning tokens.
     */
-    function userWinningTokens(uint _pollId, address _user) public view returns (uint tokens) {
+    function userWinningTokens(uint _pollId, address _user) public view returns (bool ended, uint tokens) {
         Poll memory p = polls[_pollId];
-        require(p.revealEndBlock < block.number);
+
+        if(p.revealEndBlock > block.number) {
+            return (false, 0);
+        }
+
         Vote memory v = polls[_pollId].votes[_user];
 
         if(p.currentLeadingOption == v.voteOption) {
             tokens = v.tokensCommitted;
         }
 
-        return tokens;
+        return (true, tokens);
     }
 }

@@ -63,6 +63,8 @@ contract ValidatorRegistry is Ownable {
     uint public exitPeriod;
     uint public rewardPeriod;
     uint public exitLockPeriod = 100; //TODO add to update method
+    uint public winningVoteLockPeriod = 100;
+    uint public losingVoteLockPeriod = 50;
     uint public minimumBalance = 500 ether;
     uint public stakeholderCut = 30; // Will be used as a percent so must be sub 100
     uint public minMaxGenerator = 1 ether / 10;
@@ -265,7 +267,7 @@ contract ValidatorRegistry is Ownable {
         challenge.challenger = msg.sender;
         challenge.listingKey = listing.tendermintPublicKey;
         challenge.challengeEnd = block.number + challengePeriod;
-        challenge.pollId = voting.createPoll(block.number + commitPeriod, block.number + challengePeriod);
+        challenge.pollId = voting.createPoll(block.number + commitPeriod, block.number + challengePeriod, winningVoteLockPeriod, losingVoteLockPeriod);
         challenge.details = details;
         challenge.listingSnapshot = listing;
 
@@ -383,7 +385,7 @@ contract ValidatorRegistry is Ownable {
         require(challenge.finalized);
 
         //Get vote info
-        uint winningTokens = voting.userWinningTokens(challenge.pollId, msg.sender);
+        (bool _x, uint winningTokens) = voting.userWinningTokens(challenge.pollId, msg.sender);
         uint totalWinningTokens = voting.totalWinningTokens(challenge.pollId);
 
         //Approve and release tokens to treasury for the listing holder Remaning tokens
@@ -547,6 +549,12 @@ contract ValidatorRegistry is Ownable {
             maxGeneratorGrowth = value;
         } else if (index == 9) {
             maxMaxGenerator = value;
+        } else if (index == 10) {
+            exitLockPeriod = value;
+        } else if (index == 11) {
+            winningVoteLockPeriod = value;
+        } else if (index == 12) {
+            losingVoteLockPeriod = value;
         } else {
             revert("Index does not match a value");
         }
