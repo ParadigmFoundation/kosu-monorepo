@@ -166,7 +166,6 @@ export class DB {
                     resolve(null);
                 } else {
                     const res = [];
-                    console.log(fields);
                     results.forEach(result => {
                         res.push({ ...result });
                     });
