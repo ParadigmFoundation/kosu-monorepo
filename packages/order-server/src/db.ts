@@ -42,15 +42,15 @@ export class DB {
         baseAsset: string,
         quoteAsset: string,
         side: "bid" | "ask",
-        perPage: number = 10,
-        page: number = 0,
+        perPage: string = "10",
+        page: string = "0",
     ): Promise<SignedOrderWithID[]> {
         assert(baseAsset && quoteAsset && side, "missing required search parameters");
         assert(/^0x[a-fA-F0-9]{40}$/.test(baseAsset), "invalid base asset address");
         assert(/^0x[a-fA-F0-9]{40}$/.test(quoteAsset), "invalid quote asset address");
+        assert(/^\d*$/.test(perPage), "value for 'perPage' must be a number");
+        assert(/^\d*$/.test(page), "value for 'page' must be a number");
         assert(side === "ask" || side === "bid", "invalid side: must be bid or ask");
-        assert(typeof perPage === "number", "value for 'perPage' must be a number");
-        assert(typeof page === "number", "value for 'page' must be a number");
 
         let makerAssetData;
         let takerAssetData;
@@ -152,19 +152,21 @@ export class DB {
 
     private async _query(qs: string): Promise<any> {
         return new Promise((resolve, reject) => {
-            this._db.query(qs, (error, results, _) => {
+            this._db.query(qs, (error, results, fields) => {
                 if (error) {
                     reject(error);
-                }
-                if (!results) {
+                } else if (!results || results.length === 0) {
                     resolve([]);
+                } else if (!Array.isArray(results)) {
+                    resolve(null);
+                } else {
+                    const res = [];
+                    console.log(fields);
+                    results.forEach(result => {
+                        res.push({ ...result });
+                    });
+                    resolve(res);
                 }
-
-                const res = [];
-                results.forEach(result => {
-                    res.push({ ...result });
-                });
-                resolve(res);
             });
         });
     }
