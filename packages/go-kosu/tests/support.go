@@ -3,6 +3,7 @@ package tests
 import (
 	"io/ioutil"
 	"os"
+	"strings"
 	"testing"
 	"time"
 
@@ -20,6 +21,10 @@ func StartServer(t *testing.T, db db.DB) (*abci.App, func()) {
 	for {
 		app, closer, err := startServer(t, db)
 		if err != nil {
+			if strings.Contains(err.Error(), "address already in use") {
+				t.Fatal(err)
+			}
+
 			closer()
 			time.Sleep(100 * time.Millisecond)
 			continue

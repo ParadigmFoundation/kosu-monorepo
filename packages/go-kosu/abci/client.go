@@ -101,16 +101,8 @@ func (c *Client) Subscribe(ctx context.Context, q string) (<-chan rpctypes.Resul
 		return nil, nil, err
 	}
 
-	closer := func() {
-		_ = c.Client.Unsubscribe(ctx, "kosu", q)
-	}
-
+	closer := func() { _ = c.Client.Unsubscribe(ctx, "kosu", q) }
 	return ch, closer, nil
-}
-
-// Unsubscribe unsubscribes given subscriber from query.
-func (c *Client) Unsubscribe(ctx context.Context, query string) error {
-	return c.Client.Unsubscribe(ctx, "kosu", query)
 }
 
 // QueryRoundInfo performs a ABCIQuery to "/roundinfo"
@@ -127,6 +119,9 @@ func (c *Client) QueryRoundInfo() (*types.RoundInfo, error) {
 func (c *Client) QueryConsensusParams() (*types.ConsensusParams, error) {
 	var pb types.ConsensusParams
 	if err := c.Query("/chain/key", []byte("consensusparams"), &pb); err != nil {
+		if err == ErrNotFound {
+			return &types.ConsensusParams{}, nil
+		}
 		return nil, err
 	}
 
