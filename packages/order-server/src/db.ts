@@ -105,7 +105,12 @@ export class DB {
      */
     public async addOrder(order: SignedOrder): Promise<void> {
         // get order hash and validate order
-        const id = orderHashUtils.getOrderHashHex(order);
+        let id: string;
+        try {
+            id = orderHashUtils.getOrderHashHex(order);
+        } catch {
+            console.log("[%o] skipping invalid 0x order", new Date());
+        }
 
         // remove any and all address checksums
         Object.keys(order).forEach(key => {
