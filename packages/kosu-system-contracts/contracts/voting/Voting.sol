@@ -55,7 +55,7 @@ contract Voting {
     */
     function createPoll(uint _commitEndBlock, uint _revealEndBlock) public returns (uint) {//TODO is it a concern that polls could be created by anyone freely?
         // Reveal end after commit
-        require(_commitEndBlock < _revealEndBlock);
+        require(_commitEndBlock < _revealEndBlock, "commit must end before reveal");
 
         // Set poll data
         Poll storage p = polls[nextPollId];
@@ -91,10 +91,10 @@ contract Voting {
         Vote storage v = p.votes[msg.sender];
 
         //Ensure commit phase hasn't ended, the user has not committed and has adequate balance in the treasury
-        require(block.number <= p.commitEndBlock);
-        require(!p.didCommit[msg.sender]);
-        require(treasury.registerVote(msg.sender, _pollId, _tokensToCommit));
-        require(_tokensToCommit > 0);
+        require(block.number <= p.commitEndBlock, "commit has ended");
+        require(!p.didCommit[msg.sender], "address committed");
+        require(treasury.registerVote(msg.sender, _pollId, _tokensToCommit), "insufficient tokens");
+        require(_tokensToCommit > 0, "must commit tokens to lock");
 
         //Set the tokens committed hidden vote data
         v.tokensCommitted = _tokensToCommit;
@@ -115,15 +115,15 @@ contract Voting {
         Vote storage v = p.votes[msg.sender];
 
         // Ensure commit phase has passed,  reveal phase has not.  User has commited but not revealed.  User has adequate balance in the treasury.
-        require(block.number > p.commitEndBlock);
-        require(block.number <= p.revealEndBlock);
-        require(p.didCommit[msg.sender]);
-        require(!p.didReveal[msg.sender]);
-        require(treasury.completeVote(msg.sender, _pollId));
+        require(block.number > p.commitEndBlock, "commit hasn't ended");
+        require(block.number <= p.revealEndBlock, "reveal has ended");
+        require(p.didCommit[msg.sender], "address hasn't committed");
+        require(!p.didReveal[msg.sender], "address has revealed");
+        require(treasury.completeVote(msg.sender, _pollId), "token's broke lock");
 
         // Calculate and compare the commited vote
         bytes32 exposedVote = keccak256(abi.encodePacked(_voteOption, _voteSalt));
-        require(v.hiddenVote == exposedVote);
+        require(v.hiddenVote == exposedVote, "vote doesn't match");
 
         // Store info from a valid revealed vote. Remove the pending vote.
         v.salt = _voteSalt;
@@ -146,7 +146,7 @@ contract Voting {
     */
     function winningOption(uint _pollId) public view returns (uint) {
         Poll memory p = polls[_pollId];
-        require(p.revealEndBlock < block.number);
+        require(p.revealEndBlock < block.number, "poll hasn't ended");
         return p.currentLeadingOption;
     }
 
@@ -156,7 +156,7 @@ contract Voting {
     */
     function totalWinningTokens(uint _pollId) public view returns (uint) {
         Poll memory p = polls[_pollId];
-        require(p.revealEndBlock < block.number);
+        require(p.revealEndBlock < block.number, "poll hasn't ended");
         return p.leadingTokens;
     }
 
@@ -166,7 +166,7 @@ contract Voting {
     */
     function totalRevealedTokens(uint _pollId) public view returns (uint) {
         Poll memory p = polls[_pollId];
-        require(p.revealEndBlock < block.number);
+        require(p.revealEndBlock < block.number, "poll hasn't ended");
         return p.totalRevealedTokens;
     }
 
@@ -176,7 +176,7 @@ contract Voting {
     */
     function userWinningTokens(uint _pollId, address _user) public view returns (uint tokens) {
         Poll memory p = polls[_pollId];
-        require(p.revealEndBlock < block.number);
+        require(p.revealEndBlock < block.number, "poll hasn't ended");
         Vote memory v = polls[_pollId].votes[_user];
 
         if(p.currentLeadingOption == v.voteOption) {

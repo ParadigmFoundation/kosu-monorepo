@@ -29,8 +29,7 @@ local KosuGeth(name) = Image(name, "kosu-test-geth:latest") {
 	"name": "tests",
 	"steps": [
 		Image("prettier_project", "node-lts:latest") {
-			"commands": ["yarn prettier:ci"],
-		 	"depends_on": ["clone"],
+			"commands": ["yarn prettier:ci"]
 		},
 
 	    Image("build-project", "node-lts:latest") + GethConfig() {
@@ -40,8 +39,7 @@ local KosuGeth(name) = Image(name, "kosu-test-geth:latest") {
 				"cd packages/kosu-system-contracts",
 				"yarn migrate:ci",
 				"WEB3_URI=http://go-kosu-ci-geth:8545 yarn migrate:ci"
-			],
-			"depends_on": ["clone"]
+			]
 		},
 
 		Image("npm-tests", "node-lts:latest") + GethConfig() {

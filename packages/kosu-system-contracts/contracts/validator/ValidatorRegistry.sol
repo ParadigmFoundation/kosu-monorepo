@@ -207,7 +207,7 @@ contract ValidatorRegistry is Ownable {
     */
     function registerListing(bytes32 tendermintPublicKey, uint tokensToStake, int rewardRate, string calldata details) external {
         //tokensToStake must be greater than or equal to _minimumBalance
-        require(tokensToStake >= minimumBalance);
+        require(tokensToStake >= minimumBalance, "must register with at least minimum balance");
 
         //Claim tokens from the treasury
         treasury.claimTokens(msg.sender, tokensToStake);
@@ -216,9 +216,10 @@ contract ValidatorRegistry is Ownable {
         Listing storage listing = _listings[tendermintPublicKey];
 
         //Must not overwrite an existing listing
-        require(listing.status == Status.NULL);
+        require(listing.status == Status.NULL, "listing with public key exists");
+
         if (rewardRate > 0) {
-            require(uint(rewardRate) <= maxRewardRate());
+            require(uint(rewardRate) <= maxRewardRate(), "reward rate exceeds max");
         }
 
         //Set listing values
@@ -247,7 +248,7 @@ contract ValidatorRegistry is Ownable {
         Listing storage listing = _listings[tendermintPublicKey];
 
         //Challenge pending and accepted listings.  -- More valid status may be added.
-        require(listing.status == Status.PENDING || listing.status == Status.ACCEPTED || listing.status == Status.EXITING);
+        require(listing.status == Status.PENDING || listing.status == Status.ACCEPTED || listing.status == Status.EXITING, "listing is not pending, accepted or exiting");
 
         //Ensure earns and burns are up to date  return if a touch and remove was executed
         _processRewards(listing);
@@ -289,10 +290,10 @@ contract ValidatorRegistry is Ownable {
         Challenge storage challenge = _challenges[listing.currentChallenge];
 
         //Must be currently challenged and after the end block but not finalized
-        require(listing.status == Status.CHALLENGED);
-        require(block.number > challenge.challengeEnd);
-        require(!challenge.finalized);
-        require(challenge.balance == listing.stakedBalance);
+        require(listing.status == Status.CHALLENGED, "listing is not challenged");
+        require(block.number > challenge.challengeEnd, "challenge has not ended");
+        require(!challenge.finalized, "challenge has been finalized");
+        require(challenge.balance == listing.stakedBalance, "challenge balance has changed");
 
         uint winningOption = voting.winningOption(challenge.pollId);
 
@@ -357,9 +358,6 @@ contract ValidatorRegistry is Ownable {
                 listing.currentChallenge = 0;
                 _emitValidatorChallengeResolved(listing);
             }
-
-            //ensure the ending state is correct
-            require(challenge.balance == challenge.voterTotal);
         }
     }
 
@@ -371,15 +369,12 @@ contract ValidatorRegistry is Ownable {
         Challenge storage challenge = _challenges[challengeId];
 
         //Must be after challenge period
-        require(block.number > challenge.challengeEnd);
+        require(block.number > challenge.challengeEnd, "challenge hasn't ended");
 
         //Finalize the challenge
         if (!challenge.finalized) {
             resolveChallenge(challenge.listingKey);
         }
-
-        //Ensure finalize has been completed
-        require(challenge.finalized);
 
         //Get vote info
         uint winningTokens = voting.userWinningTokens(challenge.pollId, msg.sender);
@@ -413,8 +408,9 @@ contract ValidatorRegistry is Ownable {
         Listing storage listing = _listings[tendermintPublicKey];
 
         //Must be called by owner after application period
-        require(listing.owner == msg.sender);
-        require(listing.status == Status.PENDING && listing.applicationBlock.add(applicationPeriod) <= block.number);
+        require(listing.owner == msg.sender, "not listing owner");
+        require(listing.status == Status.PENDING, "listing not pending");
+        require(listing.applicationBlock.add(applicationPeriod) <= block.number, "application period active");
 
         //Listing is now accepted
         listing.status = Status.ACCEPTED;
@@ -446,7 +442,7 @@ contract ValidatorRegistry is Ownable {
         Listing storage listing = _listings[tendermintPublicKey];
 
         //Listing owner must call this method
-        require(listing.owner == msg.sender);
+        require(listing.owner == msg.sender, "not listing owner");
 
         //Exit immediately if the listing is still in pending status.
         if (listing.status == Status.PENDING) {
@@ -461,7 +457,7 @@ contract ValidatorRegistry is Ownable {
         }
 
         //Ensure listing is in accepted
-        require(listing.status == Status.ACCEPTED);
+        require(listing.status == Status.ACCEPTED, "listing not accepted");
 
         listing.status = Status.EXITING;
         listing.exitBlock = block.number + exitPeriod;
@@ -479,11 +475,11 @@ contract ValidatorRegistry is Ownable {
         Listing storage listing = _listings[tendermintPublicKey];
 
         //Listing owner must call this method
-        require(listing.owner == msg.sender);
+        require(listing.owner == msg.sender, "not listing owner");
 
         //The listing must be exiting and past the exit block challenge interrupts this process
-        require(listing.status == Status.EXITING);
-        require(listing.exitBlock <= block.number);
+        require(listing.status == Status.EXITING, "listing not exiting");
+        require(listing.exitBlock <= block.number, "exiting cool off period active");
 
         //Approve and release tokens to treasury
         kosuToken.approve(address(treasury), listing.stakedBalance);
@@ -503,15 +499,15 @@ contract ValidatorRegistry is Ownable {
         Listing storage listing = _listings[tendermintPublicKey];
 
         //Listing owner must call this method
-        require(listing.owner == msg.sender);
+        require(listing.owner == msg.sender, "not listing owner");
         //Can only modify listing generating tokens
-        require(listing.rewardRate > 0);
+        require(listing.rewardRate > 0, "listing is not generating tokens");
         //Can only reduce reward rate
-        require(listing.rewardRate > newRate);
+        require(listing.rewardRate > newRate, "not reducing reward rate");
         //Must be below the maxRewardRate
-        require(uint(newRate) < maxRewardRate());
+        require(uint(newRate) < maxRewardRate(), "exceeds maximum reward rate");
         //Listing must be active and in good standing.
-        require(listing.status == Status.ACCEPTED);
+        require(listing.status == Status.ACCEPTED, "listing is not accepted");
 
         _processRewards(listing);
         listing.rewardRate = newRate;
