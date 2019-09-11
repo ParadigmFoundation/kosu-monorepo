@@ -41,10 +41,10 @@
     ],
     "app_hash": "",
     "app_state": {
-        "ConsensusParams": {
-            "PeriodLimit": 100000,
-            "PeriodLength": 10,
-            "BlocksBeforePruning": 10
+        "consensus_params": {
+            "period_limit": 100000,
+            "period_length": 10,
+            "blocks_before_pruning": 10
         }
     }
 }

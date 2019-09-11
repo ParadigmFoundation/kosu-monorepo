@@ -30,12 +30,12 @@ message RoundInfo {
  * ConsensusParams
  */
 message ConsensusParams {
-  uint32 FinalityThreshold = 1;
-  uint64 PeriodLimit = 2;
-  uint32 PeriodLength = 3;
-  uint32 MaxOrderBytes = 4;
-  uint64 ConfirmationThreshold = 5;
-  uint64 BlocksBeforePruning = 6;
+  uint32 finality_threshold = 1;
+  uint64 period_limit = 2;
+  uint32 period_length = 3;
+  uint32 max_order_bytes = 4;
+  uint64 confirmation_threshold = 5;
+  uint64 blocks_before_pruning = 6;
 }
 
 /**
