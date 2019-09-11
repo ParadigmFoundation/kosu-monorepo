@@ -22,14 +22,21 @@ import (
 
 // Service is a RPC service
 type Service struct {
-	abci *abci.Client
+	abci      *abci.Client
+	newClient ClientFactory
 }
 
 // NewService returns a new service given a abci client
-func NewService(abci *abci.Client) *Service {
-	return &Service{
-		abci: abci,
+func NewService(fn ClientFactory) (*Service, error) {
+	c, err := fn()
+	if err != nil {
+		return nil, err
 	}
+
+	return &Service{
+		abci:      c,
+		newClient: fn,
+	}, nil
 }
 
 func eventDecoder(event tmtypes.TMEventData) (interface{}, error) {
@@ -48,24 +55,29 @@ func eventDecoder(event tmtypes.TMEventData) (interface{}, error) {
 }
 
 func (s *Service) subscribeTM(ctx context.Context, query string) (*rpc.Subscription, error) {
+	client, err := s.newClient()
+	if err != nil {
+		return nil, err
+	}
+
 	notifier, supported := rpc.NotifierFromContext(ctx)
 	if !supported {
 		return nil, rpc.ErrNotificationsUnsupported
 	}
 
-	events, closer, err := s.abci.Subscribe(ctx, query)
+	events, closer, err := client.Subscribe(ctx, query)
 	if err != nil {
 		return nil, err
 	}
 
 	rpcSub := notifier.CreateSubscription()
 	go func() {
-		defer s.abci.Unsubscribe(ctx, query) // nolint
+		defer closer()
+		defer client.Stop() // nolint
 
 		for {
 			select {
 			case <-rpcSub.Err():
-				closer()
 				return
 			case <-notifier.Closed():
 				return
@@ -330,13 +342,18 @@ for {
 ```
 */
 func (s *Service) NewOrders(ctx context.Context) (*rpc.Subscription, error) {
+	client, err := s.newClient()
+	if err != nil {
+		return nil, err
+	}
+
 	notifier, supported := rpc.NotifierFromContext(ctx)
 	if !supported {
 		return nil, rpc.ErrNotificationsUnsupported
 	}
 
 	query := "tm.event='NewBlock'"
-	events, closer, err := s.abci.Subscribe(ctx, query)
+	events, closer, err := client.Subscribe(ctx, query)
 	if err != nil {
 		return nil, err
 	}
@@ -344,7 +361,7 @@ func (s *Service) NewOrders(ctx context.Context) (*rpc.Subscription, error) {
 	rpcSub := notifier.CreateSubscription()
 	blocks := make(chan *tmtypes.Block, 1024)
 	go func() {
-		defer s.abci.Unsubscribe(ctx, query) // nolint
+		defer closer()
 		defer close(blocks)
 
 		for {
@@ -353,7 +370,6 @@ func (s *Service) NewOrders(ctx context.Context) (*rpc.Subscription, error) {
 				log.Printf("ctx.Err() = %+v\n", ctx.Err())
 				return
 			case <-rpcSub.Err():
-				closer()
 				return
 			case <-notifier.Closed():
 				return
