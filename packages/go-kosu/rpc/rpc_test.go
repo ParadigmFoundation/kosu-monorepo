@@ -52,7 +52,10 @@ func TestRPC(t *testing.T) {
 			require.NoError(t, err)
 			defer appClient.Stop() // nolint:errcheck
 
-			rpcClient := rpc.DialInProc(NewServer(appClient))
+			srv, err := NewServer(app.NewClient)
+			require.NoError(t, err)
+
+			rpcClient := rpc.DialInProc(srv)
 			defer rpcClient.Close()
 
 			test.run(t, app, appClient, rpcClient)
