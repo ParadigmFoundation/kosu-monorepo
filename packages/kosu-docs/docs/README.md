@@ -14,7 +14,7 @@ For market makers, Kosu provides an unrestricted venue for order message broadca
 
 Developers, applications, and businesses can leverage Kosu for a variety of use cases, finance-related or otherwise.
 
--   [Tap into a global liquidity source](./overview/readme.md#protocol-design) from anywhere in the world, without restriction.]
+-   [Tap into a global liquidity source](./overview/readme.md#protocol-design) from anywhere in the world, without restriction.
 -   Complement [0x-mesh](https://github.com/0xProject/0x-mesh) by providing an aggregated view of the p2p mesh network (decentralized relayer) or by providing new peers an additional bootstrapping solution.
 -   Build a "matcher" – an exchange system build atop Kosu
 -   Trade fully client-side with a Kosu network node, and an Ethereum client

@@ -12,8 +12,6 @@ import (
 	"github.com/tendermint/tendermint/privval"
 	tmtypes "github.com/tendermint/tendermint/types"
 	tmtime "github.com/tendermint/tendermint/types/time"
-
-	"github.com/ParadigmFoundation/kosu-monorepo/packages/go-kosu/abci/types"
 )
 
 var chainIDPrefix = "kosu-chain-%v"
@@ -115,13 +113,4 @@ func createConfig(homedir string, logger log.Logger) error {
 	}
 
 	return nil
-}
-
-// GenesisAppState is the initial (genesis) Application state
-var GenesisAppState = &Genesis{
-	ConsensusParams: types.ConsensusParams{
-		PeriodLength:        10,
-		PeriodLimit:         100000,
-		BlocksBeforePruning: 10,
-	},
 }

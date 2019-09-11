@@ -1,3 +1,9 @@
+// Package rpc provides remote proceedural call functionality for go-kosu, serving
+// a JSONRPC API over WebSockets and HTTP. It provides the primary means for interacting
+// with a Kosu node.
+//
+// Generated and formatted API documentation is hosted at https://docs.kosu.io/go-kosu.
+// It is rendered in godoc as well, but the mardown syntax is not parsed.
 package rpc
 
 import (
@@ -16,14 +22,21 @@ import (
 
 // Service is a RPC service
 type Service struct {
-	abci *abci.Client
+	abci      *abci.Client
+	newClient ClientFactory
 }
 
 // NewService returns a new service given a abci client
-func NewService(abci *abci.Client) *Service {
-	return &Service{
-		abci: abci,
+func NewService(fn ClientFactory) (*Service, error) {
+	c, err := fn()
+	if err != nil {
+		return nil, err
 	}
+
+	return &Service{
+		abci:      c,
+		newClient: fn,
+	}, nil
 }
 
 func eventDecoder(event tmtypes.TMEventData) (interface{}, error) {
@@ -42,24 +55,28 @@ func eventDecoder(event tmtypes.TMEventData) (interface{}, error) {
 }
 
 func (s *Service) subscribeTM(ctx context.Context, query string) (*rpc.Subscription, error) {
+	client, err := s.newClient()
+	if err != nil {
+		return nil, err
+	}
+
 	notifier, supported := rpc.NotifierFromContext(ctx)
 	if !supported {
 		return nil, rpc.ErrNotificationsUnsupported
 	}
 
-	events, closer, err := s.abci.Subscribe(ctx, query)
+	events, closer, err := client.Subscribe(ctx, query)
 	if err != nil {
 		return nil, err
 	}
 
 	rpcSub := notifier.CreateSubscription()
 	go func() {
-		defer s.abci.Unsubscribe(ctx, query) // nolint
+		defer closer()
 
 		for {
 			select {
 			case <-rpcSub.Err():
-				closer()
 				return
 			case <-notifier.Closed():
 				return
@@ -324,13 +341,18 @@ for {
 ```
 */
 func (s *Service) NewOrders(ctx context.Context) (*rpc.Subscription, error) {
+	client, err := s.newClient()
+	if err != nil {
+		return nil, err
+	}
+
 	notifier, supported := rpc.NotifierFromContext(ctx)
 	if !supported {
 		return nil, rpc.ErrNotificationsUnsupported
 	}
 
 	query := "tm.event='NewBlock'"
-	events, closer, err := s.abci.Subscribe(ctx, query)
+	events, closer, err := client.Subscribe(ctx, query)
 	if err != nil {
 		return nil, err
 	}
@@ -338,8 +360,8 @@ func (s *Service) NewOrders(ctx context.Context) (*rpc.Subscription, error) {
 	rpcSub := notifier.CreateSubscription()
 	blocks := make(chan *tmtypes.Block, 1024)
 	go func() {
-		defer s.abci.Unsubscribe(ctx, query) // nolint
 		defer close(blocks)
+		defer closer()
 
 		for {
 			select {
@@ -347,7 +369,6 @@ func (s *Service) NewOrders(ctx context.Context) (*rpc.Subscription, error) {
 				log.Printf("ctx.Err() = %+v\n", ctx.Err())
 				return
 			case <-rpcSub.Err():
-				closer()
 				return
 			case <-notifier.Closed():
 				return
@@ -601,6 +622,14 @@ type AddOrdersResult struct {
 	Rejected []OrderRejection `json:"rejected"`
 }
 
+// newQueryError is used to mask ErrNotFound
+func newQueryError(err error) error {
+	if err != nil && err != abci.ErrNotFound {
+		return err
+	}
+	return nil
+}
+
 /*
 RoundInfo returns the current `RoundInfo`.
 The `RoundInfo` object tracks rebalance round information.
@@ -631,7 +660,8 @@ curl -X POST localhost:14341 \
 
 */
 func (s *Service) RoundInfo() (*types.RoundInfo, error) {
-	return s.abci.QueryRoundInfo()
+	v, err := s.abci.QueryRoundInfo()
+	return v, newQueryError(err)
 }
 
 /*
@@ -678,7 +708,8 @@ curl -X POST localhost:14341 \
 */
 func (s *Service) QueryValidator(addr string) (*types.Validator, error) {
 	addr = strings.ToLower(addr)
-	return s.abci.QueryValidator(addr)
+	v, err := s.abci.QueryValidator(addr)
+	return v, err
 }
 
 /*
@@ -773,7 +804,8 @@ curl -X POST localhost:14341 \
 ```
 */
 func (s *Service) QueryPoster(addr string) (*types.Poster, error) {
-	return s.abci.QueryPoster(addr)
+	v, err := s.abci.QueryPoster(addr)
+	return v, newQueryError(err)
 }
 
 /*
@@ -792,7 +824,8 @@ _Returns:_
 
 */
 func (s *Service) TotalOrders() (uint64, error) {
-	return s.abci.QueryTotalOrders()
+	v, err := s.abci.QueryTotalOrders()
+	return v, newQueryError(err)
 }
 
 /*
@@ -813,7 +846,7 @@ func (s *Service) NumberPosters() (uint64, error) {
 	var num uint64
 
 	if err := s.abci.Query("/poster/number", nil, &num); err != nil {
-		return 0, err
+		return 0, newQueryError(err)
 	}
 
 	return num, nil
@@ -837,7 +870,7 @@ func (s *Service) RemainingLimit() (uint64, error) {
 	var num uint64
 
 	if err := s.abci.Query("/poster/remaininglimit", nil, &num); err != nil {
-		return 0, err
+		return 0, newQueryError(err)
 	}
 
 	return num, nil
