@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"testing"
 
+	"github.com/ParadigmFoundation/kosu-monorepo/packages/go-kosu/abci"
 	"github.com/ParadigmFoundation/kosu-monorepo/packages/go-kosu/abci/types"
 	"github.com/ParadigmFoundation/kosu-monorepo/packages/go-kosu/rpc"
 
@@ -78,9 +79,11 @@ func (suite *IntegrationTestSuite) TestOrders() {
 
 	suite.Run("RPCEvents", func() {
 		tx := NewOrderTx(suite.T())
-		rpcClient := rpc.DialInProc(
-			rpc.NewServer(suite.Client()),
-		)
+
+		srv, err := rpc.NewServer(func() (*abci.Client, error) { return suite.Client(), nil })
+		suite.Require().NoError(err)
+
+		rpcClient := rpc.DialInProc(srv)
 
 		ctx, cancel := context.WithCancel(context.Background())
 		defer cancel()
