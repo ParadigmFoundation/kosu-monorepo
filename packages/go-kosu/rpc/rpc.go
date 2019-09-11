@@ -11,13 +11,23 @@ const (
 	Version = "1.0"
 )
 
+// ClientFactory is a function that returns a new abci.Client
+// It is invoked by the Server each time we subscribe to an event.
+type ClientFactory func() (*abci.Client, error)
+
 // NewServer returns a new Server which holds the registered rpc service
-func NewServer(abci *abci.Client) *rpc.Server {
-	srv := rpc.NewServer()
-	if err := srv.RegisterName("kosu", &Service{abci: abci}); err != nil {
-		panic(err)
+func NewServer(fn ClientFactory) (*rpc.Server, error) {
+	server := rpc.NewServer()
+	service, err := NewService(fn)
+	if err != nil {
+		return nil, err
 	}
-	return srv
+
+	if err := server.RegisterName("kosu", service); err != nil {
+		return nil, err
+	}
+
+	return server, nil
 }
 
 // DialInProc wraps rpc.DialInProc constructor
