@@ -47,12 +47,15 @@ func startWitness(ctx context.Context, app *abci.App, ethAddr string, logger log
 		return err
 	}
 
-	p, err := witness.NewEthereumProvider(ethAddr)
+	gen, err := abci.NewGenesisFromFile(app.Config.GenesisFile())
 	if err != nil {
 		return err
 	}
 
-	gen, err := abci.NewGenesisFromFile(app.Config.GenesisFile())
+	ethOpts := witness.EthereumProviderOpts{
+		SnapshotBlock: gen.SnapshotBlock,
+	}
+	p, err := witness.NewEthereumProviderWithOpts(ethAddr, ethOpts)
 	if err != nil {
 		return err
 	}

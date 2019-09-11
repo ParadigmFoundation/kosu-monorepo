@@ -31,6 +31,8 @@ func (s GenesisValidatorSet) Swap(i, j int) { s[i], s[j] = s[j], s[i] }
 type Genesis struct {
 	ConsensusParams      types.ConsensusParams `json:"consensus_params"`
 	InitialValidatorInfo GenesisValidatorSet   `json:"initial_validator_info"`
+	// SnapshotBlock indicates the first Ethereum block we will subscribe to
+	SnapshotBlock uint64 `json:"snapshot_block"`
 }
 
 // NewGenesisFromRequest returnsa a new Genesis object given a RequestInitChain
@@ -79,4 +81,5 @@ var GenesisAppState = &Genesis{
 		BlocksBeforePruning: 10,
 	},
 	InitialValidatorInfo: nil,
+	SnapshotBlock:        0,
 }
