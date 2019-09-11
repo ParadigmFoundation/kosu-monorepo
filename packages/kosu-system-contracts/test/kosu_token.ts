@@ -125,6 +125,15 @@ describe("KosuToken", () => {
                     .toString()
                     .should.eq(endingEther.toString());
             });
+
+            it("should fail with payout below minPayout", async () => {
+                const estimate = await kosuToken.estimateEtherToToken.callAsync(TestValues.oneEther);
+
+                await kosuToken.bondTokens
+                    .callAsync(estimate.plus(TestValues.oneEther), { value: TestValues.oneEther })
+                    .should.eventually.be.rejected.and.have.property("message")
+                    .that.includes("payout below requested minimum");
+            });
         });
 
         describe("releaseTokens", () => {
