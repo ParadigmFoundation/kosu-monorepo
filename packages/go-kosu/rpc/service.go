@@ -73,7 +73,6 @@ func (s *Service) subscribeTM(ctx context.Context, query string) (*rpc.Subscript
 	rpcSub := notifier.CreateSubscription()
 	go func() {
 		defer closer()
-		defer client.Stop() // nolint
 
 		for {
 			select {
@@ -361,8 +360,8 @@ func (s *Service) NewOrders(ctx context.Context) (*rpc.Subscription, error) {
 	rpcSub := notifier.CreateSubscription()
 	blocks := make(chan *tmtypes.Block, 1024)
 	go func() {
-		defer closer()
 		defer close(blocks)
+		defer closer()
 
 		for {
 			select {
