@@ -51,11 +51,11 @@ func NewCommand() *cobra.Command {
 			return nil
 		},
 		RunE: func(cmd *cobra.Command, args []string) error {
-			client, err := abci.NewHTTPClient(url, key)
+			fn := func() (*abci.Client, error) { return abci.NewHTTPClient(url, key) }
+			srv, err := NewServer(fn)
 			if err != nil {
 				return err
 			}
-			srv := NewServer(client)
 
 			wg := sync.WaitGroup{}
 			if http {
