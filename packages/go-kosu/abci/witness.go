@@ -88,7 +88,7 @@ func (app *App) pushTransactionWitness(tx *types.TransactionWitness, nodeID []by
 		id := tmhash.SumTruncated(tx.PublicKey)
 		app.store.SetValidator(id, &types.Validator{
 			Balance:    tx.Amount,
-			Power:      scaleBalance(tx.Amount.BigInt()),
+			Power:      ScaleBalance(tx.Amount.BigInt()),
 			PublicKey:  tx.PublicKey,
 			EthAccount: tx.Address,
 			Applied:    false,
@@ -97,7 +97,8 @@ func (app *App) pushTransactionWitness(tx *types.TransactionWitness, nodeID []by
 	return nil
 }
 
-func scaleBalance(balance *big.Int) int64 {
+// ScaleBalance scales a balance down to a consensus Power representation
+func ScaleBalance(balance *big.Int) int64 {
 	if balance.Cmp(big.NewInt(0)) == 0 {
 		return int64(0)
 	}

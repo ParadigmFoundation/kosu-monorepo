@@ -114,29 +114,26 @@ func (app *App) InitChain(req abci.RequestInitChain) abci.ResponseInitChain {
 		panic("Using a non-zero state when initializing the chain")
 	}
 
-	// load genesis state from request (which is defined in config/genesis.json)
-	// if appState == nil we the defaults
-	var gen *Genesis
-	if len(req.AppStateBytes) == 0 {
-		gen = GenesisAppState
-	} else {
-		var err error
-		gen, err = NewGenesisFromRequest(req)
-		if err != nil {
-			panic(err)
-		}
+	gen, err := NewGenesisFromRequest(req)
+	if err != nil {
+		panic(err)
 	}
+	if gen == nil {
+		gen = GenesisAppState
+	}
+
+	set, err := UnifyValidators(req.Validators, gen.InitialValidatorInfo)
+	if err != nil {
+		panic(err)
+	}
+
+	for _, v := range set {
+		nodeID := tmhash.SumTruncated(v.PublicKey)
+		app.store.SetValidator(nodeID, &v)
+	}
+
 	app.store.SetConsensusParams(gen.ConsensusParams)
 	app.log.Info("Loaded Genesis State", "gen", gen)
-
-	for _, v := range req.Validators {
-		nodeID := tmhash.SumTruncated(v.PubKey.Data)
-		app.store.SetValidator(nodeID, &types.Validator{
-			Balance:   types.NewBigIntFromInt(0),
-			Power:     v.Power,
-			PublicKey: v.PubKey.Data,
-		})
-	}
 
 	return abci.ResponseInitChain{}
 }
@@ -274,6 +271,11 @@ func (app *App) CheckTx(req abci.RequestCheckTx) abci.ResponseCheckTx {
 		}
 		return abci.ResponseCheckTx{}
 	case *types.Transaction_Order:
+		if max := app.store.ConsensusParams().MaxOrderBytes; max > 0 {
+			if uint32(len(req.Tx)) > max {
+				return abci.ResponseCheckTx{Code: 1, Log: fmt.Sprintf("Tx size exceeds %d", max)}
+			}
+		}
 		if err := app.checkOrderTx(tx.GetOrder()); err != nil {
 			return abci.ResponseCheckTx{Code: 1, Log: err.Error()}
 		}

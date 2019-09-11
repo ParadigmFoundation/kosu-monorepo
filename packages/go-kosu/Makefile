@@ -1,4 +1,4 @@
-GOTEST_FLAGS ?= -v
+GOTEST_FLAGS ?=
 GOTEST = go test ./... ${GOTEST_FLAGS}
 
 BASE_PATH = github.com/ParadigmFoundation/kosu-monorepo/packages/go-kosu
