@@ -126,3 +126,31 @@ func TestDeliverOrderTx(t *testing.T) {
 		})
 	}
 }
+
+func TestCheckOrderSize(t *testing.T) {
+	db := db.NewMemDB()
+	done, app := newTestApp(t, db)
+	defer done()
+
+	_, priv, err := types.NewKeyPair()
+	require.NoError(t, err)
+
+	tx := &types.TransactionOrder{}
+	stx, err := types.WrapTx(tx).SignedTransaction(priv)
+	require.NoError(t, err)
+
+	buf, err := types.EncodeTx(stx)
+	require.NoError(t, err)
+
+	// Set MaxOrderBytes limit smaller than the Tx len
+	cp := app.store.ConsensusParams()
+	cp.MaxOrderBytes = uint32(len(buf) - 1)
+	app.store.SetConsensusParams(cp)
+
+	res := app.CheckTx(
+		abci.RequestCheckTx{Tx: buf},
+	)
+
+	assert.True(t, res.IsErr(), "Response should Err.")
+	assert.Contains(t, res.Log, "Tx size exceeds")
+}

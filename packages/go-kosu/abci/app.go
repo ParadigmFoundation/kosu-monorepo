@@ -274,6 +274,11 @@ func (app *App) CheckTx(req abci.RequestCheckTx) abci.ResponseCheckTx {
 		}
 		return abci.ResponseCheckTx{}
 	case *types.Transaction_Order:
+		if max := app.store.ConsensusParams().MaxOrderBytes; max > 0 {
+			if uint32(len(req.Tx)) > max {
+				return abci.ResponseCheckTx{Code: 1, Log: fmt.Sprintf("Tx size exceeds %d", max)}
+			}
+		}
 		if err := app.checkOrderTx(tx.GetOrder()); err != nil {
 			return abci.ResponseCheckTx{Code: 1, Log: err.Error()}
 		}
