@@ -1,6 +1,6 @@
 {
     "name": "@kosu/create-portal-helper",
-    "version": "0.1.4",
+    "version": "0.1.2",
     "description": "Abstraction library for simplifying web-portal interactions.",
     "main": "index.js",
     "repository": "https://github.com/ParadigmFoundation/kosu-monorepo",
@@ -15,7 +15,7 @@
     "dependencies": {
         "0x.js": "^6.0.9",
         "@0x/subproviders": "^4.0.6",
-        "@kosu/kosu.js": "^0.2.2",
+        "@kosu/kosu.js": "^0.3.0",
         "@kosu/tsc-config": "^0.1.0",
         "web3": "1.2.0"
     },

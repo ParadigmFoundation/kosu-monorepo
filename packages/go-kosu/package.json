@@ -1,8 +1,8 @@
 {
     "name": "@kosu/go-kosu",
     "private": true,
-    "version": "0.1.2",
-    "description": "Development and CI docker images and supporting scripts for Kosu.",
+    "version": "0.3.0",
+    "description": "Package file used to configure go-kosu builds with up-to-date contract addresses",
     "repository": "https://github.com/ParadigmFoundation/kosu-monorepo/blob/master/packages/go-kosu",
     "license": "MIT",
     "scripts": {
@@ -16,6 +16,6 @@
     },
     "config": {},
     "dependencies": {
-        "@kosu/system-contracts": "0.2.1"
+        "@kosu/system-contracts": "0.3.0"
     }
 }
