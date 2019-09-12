@@ -80,7 +80,11 @@ func (suite *IntegrationTestSuite) TestOrders() {
 	suite.Run("RPCEvents", func() {
 		tx := NewOrderTx(suite.T())
 
-		srv, err := rpc.NewServer(func() (*abci.Client, error) { return suite.Client(), nil })
+		fn := func() (*abci.Client, error) {
+			node := suite.Nodes[0]
+			return newClient(suite.T(), node.Config.RootDir, node.URL), nil
+		}
+		srv, err := rpc.NewServer(fn)
 		suite.Require().NoError(err)
 
 		rpcClient := rpc.DialInProc(srv)
@@ -98,5 +102,4 @@ func (suite *IntegrationTestSuite) TestOrders() {
 		event := <-ch
 		suite.Equal(tx.String(), event.String())
 	})
-
 }
