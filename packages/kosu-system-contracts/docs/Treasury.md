@@ -1,14 +1,14 @@
 # Treasury
 
-The Kosu Treasury is the central balance management contract with the Kosu system.
+The Kosu Treasury manages KosuToken balances to allow tokens in use within the contract system to be available for voting operations.
 
 ## Contents
 
 -   [Methods](undefined)
-    -   [adjustBalance](#adjustbalance)
     -   [award](#award)
     -   [burnFrom](#burnfrom)
     -   [claimTokens](#claimtokens)
+    -   [completeVote](#completevote)
     -   [confiscate](#confiscate)
     -   [constructor](#constructor)
     -   [contractBond](#contractbond)
@@ -16,33 +16,16 @@ The Kosu Treasury is the central balance management contract with the Kosu syste
     -   [contractWithdraw](#contractwithdraw)
     -   [currentBalance](#currentbalance)
     -   [deposit](#deposit)
+    -   [registerVote](#registervote)
     -   [releaseTokens](#releasetokens)
     -   [systemBalance](#systembalance)
-    -   [updateBalance](#updatebalance)
     -   [withdraw](#withdraw)
 
 ## Methods
 
-### adjustBalance
-
-Allows contracts to change balance.
-
-#### Signature
-
-```solidity
-function adjustBalance(account address, amount int256) public
-```
-
-#### Parameters:
-
-| Parameter | Type      | Description               |
-| --------- | --------- | ------------------------- |
-| `account` | `address` | User to modify tokens for |
-| `amount`  | `int256`  | Change to token balance   |
-
 ### award
 
-Allows contracts to be rewarded with new tokens.
+Allows accounts to be rewarded with tokens. These tokens were previously obtained by the calling contract and are now being redistributed to the provided account.
 
 #### Signature
 
@@ -52,14 +35,14 @@ function award(account address, amount uint256) public
 
 #### Parameters:
 
-| Parameter | Type      | Description               |
-| --------- | --------- | ------------------------- |
-| `account` | `address` | User to award tokens to   |
-| `amount`  | `uint256` | Number of tokens to award |
+| Parameter | Type      | Description                 |
+| --------- | --------- | --------------------------- |
+| `account` | `address` | Account to award tokens to. |
+| `amount`  | `uint256` | Number of tokens to award.  |
 
 ### burnFrom
 
-Allows contracts to burn tokens.
+Allows contracts to burn an accounts held tokens.
 
 #### Signature
 
@@ -69,14 +52,14 @@ function burnFrom(account address, amount uint256) public
 
 #### Parameters:
 
-| Parameter | Type      | Description                          |
-| --------- | --------- | ------------------------------------ |
-| `account` | `address` | User to modify tokens for by burning |
-| `amount`  | `uint256` | Number of tokens to burn             |
+| Parameter | Type      | Description                 |
+| --------- | --------- | --------------------------- |
+| `account` | `address` | Account to burn tokens for. |
+| `amount`  | `uint256` | Number of tokens to burn.   |
 
 ### claimTokens
 
-Allows contracts to claim tokens.
+Allows contracts to claim tokens. Claimed tokens are not available for other system contract and leave the treasury under control of the calling contract. These tokens are still available for voting.
 
 #### Signature
 
@@ -86,14 +69,31 @@ function claimTokens(account address, amount uint256) public
 
 #### Parameters:
 
-| Parameter | Type      | Description               |
-| --------- | --------- | ------------------------- |
-| `account` | `address` | User to claim tokens from |
-| `amount`  | `uint256` | Number of tokens to claim |
+| Parameter | Type      | Description                   |
+| --------- | --------- | ----------------------------- |
+| `account` | `address` | Account to claim tokens from. |
+| `amount`  | `uint256` | Number of tokens to claim.    |
+
+### completeVote
+
+Releases lock on tokens for account after vote is revealed. No longer tracks the revealed poll.
+
+#### Signature
+
+```solidity
+function completeVote(account address, pollId uint256) public (bool)
+```
+
+#### Parameters:
+
+| Parameter | Type      | Description                        |
+| --------- | --------- | ---------------------------------- |
+| `account` | `address` | The account voting.                |
+| `pollId`  | `uint256` | The poll the account is voting on. |
 
 ### confiscate
 
-Allows contracts to confiscate tokens the user has lost access to.
+Allows contracts to confiscate tokens the account has lost access to. These previously claimed tokens are no longer owned by the account.
 
 #### Signature
 
@@ -103,14 +103,14 @@ function confiscate(account address, amount uint256) public
 
 #### Parameters:
 
-| Parameter | Type      | Description                    |
-| --------- | --------- | ------------------------------ |
-| `account` | `address` | User to confiscate tokens from |
-| `amount`  | `uint256` | Number of tokens to confiscate |
+| Parameter | Type      | Description                        |
+| --------- | --------- | ---------------------------------- |
+| `account` | `address` | Account to confiscate tokens from. |
+| `amount`  | `uint256` | Number of tokens to confiscate.    |
 
 ### constructor
 
-Creates a new Treasury.
+Initializes the treasury with the kosuToken and authorizedAddresses contracts.
 
 #### Signature
 
@@ -120,30 +120,30 @@ constructor(kosuTokenAddress address, auth address) public
 
 #### Parameters:
 
-| Parameter          | Type      | Description                             |
-| ------------------ | --------- | --------------------------------------- |
-| `kosuTokenAddress` | `address` | The deployed KosuToken contract address |
-| `auth`             | `address` | AuthorizedAddresses deployed address.   |
+| Parameter          | Type      | Description                              |
+| ------------------ | --------- | ---------------------------------------- |
+| `kosuTokenAddress` | `address` | The deployed KosuToken contract address. |
+| `auth`             | `address` | AuthorizedAddresses deployed address.    |
 
 ### contractBond
 
-Allows Kosu contracts to bond for the user.
+Allows Kosu contracts to bond ether on on the accounts behalf.
 
 #### Signature
 
 ```solidity
-function contractBond(user address) public (uint256)
+function contractBond(account address) public (uint256)
 ```
 
 #### Parameters:
 
-| Parameter | Type      | Description                                           |
-| --------- | --------- | ----------------------------------------------------- |
-| `user`    | `address` | The user the calling contract is acting on behalf of. |
+| Parameter | Type      | Description                                              |
+| --------- | --------- | -------------------------------------------------------- |
+| `account` | `address` | The address the calling contract is acting on behalf of. |
 
 ### contractDeposit
 
-Allows contracts to deposit.
+Allows contracts to deposit tokens from an accounts balance.
 
 #### Signature
 
@@ -153,14 +153,14 @@ function contractDeposit(account address, amount uint256) public
 
 #### Parameters:
 
-| Parameter | Type      | Description                 |
-| --------- | --------- | --------------------------- |
-| `account` | `address` | User to deposit tokens for  |
-| `amount`  | `uint256` | Number of tokens to deposit |
+| Parameter | Type      | Description                                        |
+| --------- | --------- | -------------------------------------------------- |
+| `account` | `address` | Account address the tokens will be deposited from. |
+| `amount`  | `uint256` | Number of tokens to deposit.                       |
 
 ### contractWithdraw
 
-Allows contracts to withdraw.
+Allows contracts to withdraw tokens back to an account address.
 
 #### Signature
 
@@ -170,14 +170,14 @@ function contractWithdraw(account address, amount uint256) public
 
 #### Parameters:
 
-| Parameter | Type      | Description                  |
-| --------- | --------- | ---------------------------- |
-| `account` | `address` | User to withdraw tokens for  |
-| `amount`  | `uint256` | Number of tokens to withdraw |
+| Parameter | Type      | Description                     |
+| --------- | --------- | ------------------------------- |
+| `account` | `address` | Address to withdraw tokens for. |
+| `amount`  | `uint256` | Number of tokens to withdraw.   |
 
 ### currentBalance
 
-Reports the balance held within the contract for a user.
+Reports the available balance held within the treasury for an account.
 
 #### Signature
 
@@ -187,13 +187,13 @@ function currentBalance(account address) public view (uint256)
 
 #### Parameters:
 
-| Parameter | Type      | Description                  |
-| --------- | --------- | ---------------------------- |
-| `account` | `address` | Account to report balance on |
+| Parameter | Type      | Description                   |
+| --------- | --------- | ----------------------------- |
+| `account` | `address` | Account to report balance on. |
 
 #### Returns:
 
-Number of tokens this contract holds for the user.
+Number of available tokens the treasury holds for the account.
 
 ### deposit
 
@@ -207,13 +207,31 @@ function deposit(amount uint256) public
 
 #### Parameters:
 
-| Parameter | Type      | Description                 |
-| --------- | --------- | --------------------------- |
-| `amount`  | `uint256` | Number of tokens to deposit |
+| Parameter | Type      | Description                  |
+| --------- | --------- | ---------------------------- |
+| `amount`  | `uint256` | Number of tokens to deposit. |
+
+### registerVote
+
+Allows voting contract to register a poll to ensure tokens aren't removed.
+
+#### Signature
+
+```solidity
+function registerVote(account address, pollId uint256, amount uint256) public (bool)
+```
+
+#### Parameters:
+
+| Parameter | Type      | Description                        |
+| --------- | --------- | ---------------------------------- |
+| `account` | `address` | The account voting.                |
+| `pollId`  | `uint256` | The poll the account is voting on. |
+| `amount`  | `uint256` | Number of tokens contributed.      |
 
 ### releaseTokens
 
-Allows contracts to release tokens.
+Allows contracts to release claimed tokens. Allowing them to be used elsewhere by the user again.
 
 #### Signature
 
@@ -223,14 +241,14 @@ function releaseTokens(account address, amount uint256) public
 
 #### Parameters:
 
-| Parameter | Type      | Description                 |
-| --------- | --------- | --------------------------- |
-| `account` | `address` | User to release tokens to   |
-| `amount`  | `uint256` | Number of tokens to release |
+| Parameter | Type      | Description                   |
+| --------- | --------- | ----------------------------- |
+| `account` | `address` | Account to release tokens to. |
+| `amount`  | `uint256` | Number of tokens to release.  |
 
 ### systemBalance
 
-Reports the balance within the contract system for a user.
+Reports the total balance within the entire contract system for an account.
 
 #### Signature
 
@@ -240,30 +258,13 @@ function systemBalance(account address) public view (uint256)
 
 #### Parameters:
 
-| Parameter | Type      | Description                  |
-| --------- | --------- | ---------------------------- |
-| `account` | `address` | Account to report balance on |
+| Parameter | Type      | Description                   |
+| --------- | --------- | ----------------------------- |
+| `account` | `address` | Account to report balance on. |
 
 #### Returns:
 
-The number of tokens within the total contract system.
-
-### updateBalance
-
-Allows contracts to set balance.
-
-#### Signature
-
-```solidity
-function updateBalance(account address, amount uint256) public
-```
-
-#### Parameters:
-
-| Parameter | Type      | Description                                |
-| --------- | --------- | ------------------------------------------ |
-| `account` | `address` | User to modify tokens for                  |
-| `amount`  | `uint256` | Number of tokens to set to current balance |
+The number of tokens within the entire contract system.
 
 ### withdraw
 
@@ -277,6 +278,6 @@ function withdraw(amount uint256) public
 
 #### Parameters:
 
-| Parameter | Type      | Description                  |
-| --------- | --------- | ---------------------------- |
-| `amount`  | `uint256` | Number of tokens to withdraw |
+| Parameter | Type      | Description                   |
+| --------- | --------- | ----------------------------- |
+| `amount`  | `uint256` | Number of tokens to withdraw. |

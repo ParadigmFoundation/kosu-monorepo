@@ -2,22 +2,26 @@ package main
 
 import (
 	"context"
+	"fmt"
 	stdlog "log"
+	"os"
 	"os/user"
+	"path"
 	"path/filepath"
 	"strings"
 
 	"github.com/spf13/cobra"
-	"github.com/tendermint/tendermint/libs/db"
 	"github.com/tendermint/tendermint/libs/log"
+	db "github.com/tendermint/tm-db"
 
-	"go-kosu/abci"
-	"go-kosu/rpc"
-	"go-kosu/witness"
+	"github.com/ParadigmFoundation/kosu-monorepo/packages/go-kosu/abci"
+	"github.com/ParadigmFoundation/kosu-monorepo/packages/go-kosu/rpc"
+	"github.com/ParadigmFoundation/kosu-monorepo/packages/go-kosu/version"
+	"github.com/ParadigmFoundation/kosu-monorepo/packages/go-kosu/witness"
 )
 
 const (
-	nodeAddr = "tcp://0.0.0.0:26657"
+	dbName = "kosu"
 )
 
 // Config holds the program execution arguments
@@ -28,33 +32,40 @@ type Config struct {
 	Web3  string
 }
 
-func newDB(dir string, debug bool) (db.DB, error) {
-	gdb, err := db.NewGoLevelDB("kosu", dir)
+func newDB(dir string) (db.DB, error) {
+	gdb, err := db.NewGoLevelDB(dbName, dir)
 	if err != nil {
 		return nil, err
-	}
-
-	if debug {
-		return db.NewDebugDB("db", gdb), nil
 	}
 
 	return gdb, nil
 }
 
-func startWitness(ctx context.Context, ethAddr string, nodeAddr string, key []byte, logger log.Logger) error {
-	client := abci.NewHTTPClient(nodeAddr, key)
-	p, err := witness.NewEthereumProvider(ethAddr)
-
+func startWitness(ctx context.Context, app *abci.App, ethAddr string, logger log.Logger) error {
+	client, err := app.NewClient()
 	if err != nil {
 		return err
 	}
 
-	w := witness.New(client, p, witness.DefaultOptions)
+	p, err := witness.NewEthereumProvider(ethAddr)
+	if err != nil {
+		return err
+	}
+
+	gen, err := abci.NewGenesisFromFile(app.Config.GenesisFile())
+	if err != nil {
+		return err
+	}
+
+	opts := witness.DefaultOptions
+	opts.PeriodLimit = int(gen.ConsensusParams.PeriodLimit)
+	opts.PeriodLength = int(gen.ConsensusParams.PeriodLength)
+	w := witness.New(client, p, opts)
 	return w.WithLogger(logger).Start(ctx)
 }
 
-func run(cfg *Config, key []byte) error {
-	db, err := newDB(cfg.Home, cfg.Debug)
+func run(cfg *Config) error {
+	db, err := newDB(cfg.Home)
 	if err != nil {
 		return err
 	}
@@ -74,7 +85,7 @@ func run(cfg *Config, key []byte) error {
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
 
-	if err := startWitness(ctx, cfg.Web3, nodeAddr, key, logger); err != nil {
+	if err := startWitness(ctx, app, cfg.Web3, logger); err != nil {
 		return err
 	}
 
@@ -85,7 +96,6 @@ func run(cfg *Config, key []byte) error {
 func main() {
 	var (
 		cfg Config
-		key []byte
 	)
 
 	cobra.OnInitialize(func() {
@@ -97,13 +107,7 @@ func main() {
 		Short: "Starts the kosu node",
 		Long:  "Main entrypoint for Kosu validators and full nodes.\nPrior to use, 'kosud init' must be run.",
 		Run: func(cmd *cobra.Command, args []string) {
-			var err error
-			key, err = abci.LoadPrivateKey(cfg.Home)
-			if err != nil {
-				stdlog.Fatal(err)
-			}
-
-			if err = run(&cfg, key); err != nil {
+			if err := run(&cfg); err != nil {
 				stdlog.Fatal(err)
 			}
 		},
@@ -121,12 +125,57 @@ func main() {
 		},
 	}
 
+	showNodeInfoCmd := &cobra.Command{
+		Use:   "show_node_info",
+		Short: "Show this node's information",
+		Long:  "Displays information unique to this node",
+		RunE: func(cmd *cobra.Command, _ []string) error {
+			kosuCfg, err := abci.LoadConfig(cfg.Home)
+			if err != nil {
+				return err
+			}
+
+			info, err := abci.ShowNodeInfo(kosuCfg)
+			if err != nil {
+				return err
+			}
+
+			fmt.Printf("Public Key: %s\n", info.PublicKey)
+			fmt.Printf("Node ID:    %s\n", info.NodeID)
+			fmt.Printf("Peer ID:    %s\n", info.PeerID)
+			fmt.Printf("Moniker:    %s\n", info.Moniker)
+			return nil
+		},
+	}
+
+	unsafeResetCmd := &cobra.Command{
+		Use:   "reset",
+		Short: "Reset this node to genesis state",
+		Long:  "Reset will wipe all the data and WAL, keeping only the config and the genesis file",
+		RunE: func(cmd *cobra.Command, _ []string) error {
+			kosuCfg, err := abci.LoadConfig(cfg.Home)
+			if err != nil {
+				return err
+			}
+
+			abci.ResetAll(kosuCfg, os.Stdout)
+
+			dbdir := path.Join(kosuCfg.RootDir, dbName+".db")
+			return os.RemoveAll(dbdir)
+		},
+	}
+
 	rootCmd.PersistentFlags().StringVarP(&cfg.Home, "home", "H", "~/.kosu", "directory for config and data")
 	rootCmd.PersistentFlags().BoolVarP(&cfg.Debug, "debug", "d", false, "enable debuging")
 	rootCmd.Flags().StringVarP(&cfg.Web3, "web3", "E", "ws://localhost:8546", "URL of an Ethereum JSONRPC provider")
 
-	rootCmd.AddCommand(rpc.NewCommand())
-	rootCmd.AddCommand(initCmd)
+	rootCmd.AddCommand(
+		version.NewCommand(),
+		rpc.NewCommand(),
+		initCmd,
+		showNodeInfoCmd,
+		unsafeResetCmd,
+	)
 
 	if err := rootCmd.Execute(); err != nil {
 		stdlog.Fatal(err)

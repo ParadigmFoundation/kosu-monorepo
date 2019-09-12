@@ -92,7 +92,6 @@ describe("ValidatorRegistry", async () => {
                 txDefaults,
                 treasury.address,
                 voting.address,
-                contracts.authorizedAddresses.address,
                 contracts.eventEmitter.address,
                 TestValues.oneWei,
                 TestValues.oneWei,
@@ -101,7 +100,7 @@ describe("ValidatorRegistry", async () => {
                 TestValues.oneWei,
             );
 
-            txReceipt.gasUsed.should.be.lt(4700000);
+            txReceipt.gasUsed.should.be.lt(5500000);
         });
     });
 
@@ -185,12 +184,22 @@ describe("ValidatorRegistry", async () => {
         it("should require a balance greater or equal to the minimumBalance", async () => {
             const from = accounts[1];
             const idleBalance = await kosuToken.balanceOf.callAsync(from);
+            await testHelpers.clearTreasury(from);
             await kosuToken.transfer.awaitTransactionSuccessAsync(accounts[0], idleBalance, { from });
 
             await kosuToken.balanceOf
                 .callAsync(from)
                 .then(x => x.toString())
                 .should.eventually.eq("0");
+            await treasury.systemBalance
+                .callAsync(from)
+                .then(x => x.toString())
+                .should.eventually.eq(minimumBalance.times(2).toString(), "systemBalance");
+            await treasury.currentBalance
+                .callAsync(from)
+                .then(x => x.toString())
+                .should.eventually.eq("0", "currentBalance");
+
             await validatorRegistry.registerListing.awaitTransactionSuccessAsync(
                 tendermintPublicKey,
                 minimumBalance,
@@ -199,7 +208,7 @@ describe("ValidatorRegistry", async () => {
                 { from },
             ).should.eventually.be.rejected;
 
-            kosuToken.transfer.awaitTransactionSuccessAsync(from, idleBalance, { from: accounts[0] });
+            await kosuToken.transfer.awaitTransactionSuccessAsync(from, idleBalance, { from: accounts[0] });
         });
 
         it("should require an approval greater or equal to the minimumBalance", async () => {
@@ -248,12 +257,13 @@ describe("ValidatorRegistry", async () => {
                     TestValues.zero,
                     paradigmMarket,
                 ).should.eventually.be.fulfilled;
-                await validatorRegistry.registerListing.awaitTransactionSuccessAsync(
-                    tendermintPublicKey,
-                    minimumBalance,
-                    TestValues.zero,
-                    paradigmMarket,
-                ).should.eventually.be.rejected;
+
+                await kosuToken.approve.awaitTransactionSuccessAsync(treasury.address, minimumBalance);
+
+                await validatorRegistry.registerListing
+                    .callAsync(tendermintPublicKey, minimumBalance, TestValues.zero, paradigmMarket)
+                    .should.eventually.be.rejected.and.have.property("message")
+                    .that.includes("listing with public key exists");
             });
 
             it("should set the listing status to pending", async () => {
@@ -324,12 +334,10 @@ describe("ValidatorRegistry", async () => {
 
             it("should fail with less tokens than minimum", async () => {
                 const minimum = await validatorRegistry.minimumBalance.callAsync();
-                await validatorRegistry.registerListing.awaitTransactionSuccessAsync(
-                    tendermintPublicKey,
-                    minimum.minus(new BigNumber("1")),
-                    TestValues.zero,
-                    paradigmMarket,
-                ).should.eventually.be.rejected;
+                await validatorRegistry.registerListing
+                    .callAsync(tendermintPublicKey, minimum.minus(new BigNumber("1")), TestValues.zero, paradigmMarket)
+                    .should.eventually.be.rejected.and.have.property("message")
+                    .that.includes("must register with at least minimum balance");
                 await validatorRegistry.registerListing.awaitTransactionSuccessAsync(
                     tendermintPublicKey,
                     minimum,
@@ -340,12 +348,10 @@ describe("ValidatorRegistry", async () => {
 
             it("should fail when you try to generate too many tokens", async () => {
                 const max = await validatorRegistry.maxRewardRate.callAsync();
-                await validatorRegistry.registerListing.awaitTransactionSuccessAsync(
-                    tendermintPublicKey,
-                    minimumBalance,
-                    max.plus(new BigNumber("1")),
-                    paradigmMarket,
-                ).should.eventually.be.rejected;
+                await validatorRegistry.registerListing
+                    .callAsync(tendermintPublicKey, minimumBalance, max.plus(new BigNumber("1")), paradigmMarket)
+                    .should.eventually.be.rejected.and.have.property("message")
+                    .that.includes("reward rate exceeds max");
                 await validatorRegistry.registerListing.awaitTransactionSuccessAsync(
                     tendermintPublicKey,
                     minimumBalance,
@@ -404,8 +410,10 @@ describe("ValidatorRegistry", async () => {
 
     describe("confirmListing", () => {
         it("should not confirm a null listing", async () => {
-            await validatorRegistry.confirmListing.awaitTransactionSuccessAsync(tendermintPublicKey).should.eventually
-                .be.rejected;
+            await validatorRegistry.confirmListing
+                .callAsync(tendermintPublicKey)
+                .should.eventually.be.rejected.and.have.property("message")
+                .that.includes("not listing owner");
         });
 
         it("should require sufficient blocks to pass before confirmation", async () => {
@@ -417,8 +425,10 @@ describe("ValidatorRegistry", async () => {
                 paradigmMarket,
             );
             const appBlock = decodeKosuEvents(result.logs)[0].applicationBlockNumber;
-            await validatorRegistry.confirmListing.awaitTransactionSuccessAsync(tendermintPublicKey).should.eventually
-                .be.rejected;
+            await validatorRegistry.confirmListing
+                .callAsync(tendermintPublicKey)
+                .should.eventually.be.rejected.and.have.property("message")
+                .that.includes("application period active");
 
             await testHelpers.skipApplicationPeriod(appBlock);
 
@@ -452,8 +462,10 @@ describe("ValidatorRegistry", async () => {
                     tendermintPublicKey,
                     paradigmMarket,
                 ).should.eventually.be.fulfilled;
-                await validatorRegistry.confirmListing.awaitTransactionSuccessAsync(tendermintPublicKey).should
-                    .eventually.be.rejected;
+                await validatorRegistry.confirmListing
+                    .callAsync(tendermintPublicKey)
+                    .should.eventually.be.rejected.and.have.property("message")
+                    .that.includes("listing not pending");
 
                 await testHelpers.skipChallengePeriod(result.blockNumber);
                 await validatorRegistry.resolveChallenge.awaitTransactionSuccessAsync(tendermintPublicKey).should
@@ -464,9 +476,12 @@ describe("ValidatorRegistry", async () => {
             });
 
             it("should only let the listing owner confirm the listing", async () => {
-                await validatorRegistry.confirmListing.awaitTransactionSuccessAsync(tendermintPublicKey, {
-                    from: accounts[1],
-                }).should.eventually.be.rejected;
+                await validatorRegistry.confirmListing
+                    .callAsync(tendermintPublicKey, {
+                        from: accounts[1],
+                    })
+                    .should.eventually.be.rejected.and.have.property("message")
+                    .that.includes("not listing owner");
                 await validatorRegistry.confirmListing.awaitTransactionSuccessAsync(tendermintPublicKey).should
                     .eventually.be.fulfilled;
                 await testHelpers.exitListing(tendermintPublicKey);
@@ -517,8 +532,10 @@ describe("ValidatorRegistry", async () => {
                 { from: accounts[1] },
             ).should.eventually.be.fulfilled;
 
-            await validatorRegistry.initExit.awaitTransactionSuccessAsync(tendermintPublicKey).should.eventually.be
-                .rejected;
+            await validatorRegistry.initExit
+                .callAsync(tendermintPublicKey)
+                .should.eventually.be.rejected.and.have.property("message")
+                .that.includes("listing not accepted");
 
             await testHelpers.finishChallenge(tendermintPublicKey, result.blockNumber);
             await testHelpers.exitListing(tendermintPublicKey);
@@ -529,9 +546,12 @@ describe("ValidatorRegistry", async () => {
                 .be.fulfilled;
 
             // should only let the owner initExit
-            await validatorRegistry.initExit.awaitTransactionSuccessAsync(tendermintPublicKey, {
-                from: accounts[1],
-            }).should.eventually.be.rejected;
+            await validatorRegistry.initExit
+                .callAsync(tendermintPublicKey, {
+                    from: accounts[1],
+                })
+                .should.eventually.be.rejected.and.have.property("message")
+                .that.includes("not listing owner");
 
             const iniitalMaxRewardRate = await validatorRegistry.maxRewardRate.callAsync();
 
@@ -566,15 +586,20 @@ describe("ValidatorRegistry", async () => {
                 .eventually.be.fulfilled;
 
             // should not allow a listing to exit until after the exit period
-            await validatorRegistry.finalizeExit.awaitTransactionSuccessAsync(tendermintPublicKey).should.eventually.be
-                .rejected;
+            await validatorRegistry.finalizeExit
+                .callAsync(tendermintPublicKey)
+                .should.eventually.be.rejected.and.have.property("message")
+                .that.includes("exiting cool off period active");
 
             await testHelpers.skipExitPeriod(result.blockNumber);
 
             // should only let the owner finalizeExit
-            await validatorRegistry.finalizeExit.awaitTransactionSuccessAsync(tendermintPublicKey, {
-                from: accounts[1],
-            }).should.eventually.be.rejected;
+            await validatorRegistry.finalizeExit
+                .callAsync(tendermintPublicKey, {
+                    from: accounts[1],
+                })
+                .should.eventually.be.rejected.and.have.property("message")
+                .that.includes("not listing owner");
 
             const oldReward = await validatorRegistry.maxRewardRate.callAsync();
 
@@ -787,8 +812,10 @@ describe("ValidatorRegistry", async () => {
             });
 
             // should require challenge to be ended
-            await validatorRegistry.resolveChallenge.awaitTransactionSuccessAsync(tendermintPublicKey).should.eventually
-                .be.rejected;
+            await validatorRegistry.resolveChallenge
+                .callAsync(tendermintPublicKey)
+                .should.eventually.be.rejected.and.have.property("message")
+                .that.includes("challenge has not ended");
 
             await testHelpers.skipChallengePeriod(blockNumber);
             const initialListingHolderSystemBalance = await treasury.systemBalance.callAsync(accounts[0]);
@@ -800,8 +827,10 @@ describe("ValidatorRegistry", async () => {
                 .should.eventually.be.fulfilled;
 
             // should fail if called a second time
-            await validatorRegistry.resolveChallenge.awaitTransactionSuccessAsync(tendermintPublicKey).should.eventually
-                .be.rejected;
+            await validatorRegistry.resolveChallenge
+                .callAsync(tendermintPublicKey)
+                .should.eventually.be.rejected.and.have.property("message")
+                .that.includes("listing is not challenged");
 
             const decodedLogs = decodeKosuEvents(result.logs);
             decodedLogs[1].eventType.should.eq("ValidatorRemoved");
@@ -1339,9 +1368,12 @@ describe("ValidatorRegistry", async () => {
                 from: accounts[5],
             });
 
-            await validatorRegistry.claimWinnings.awaitTransactionSuccessAsync(new BigNumber(challengeId), {
-                from: accounts[5],
-            }).should.eventually.be.rejected;
+            await validatorRegistry.claimWinnings
+                .callAsync(new BigNumber(challengeId), {
+                    from: accounts[5],
+                })
+                .should.eventually.be.rejected.and.have.property("message")
+                .that.includes("challenge hasn't ended");
 
             await testHelpers.skipChallengePeriod(blockNumber);
             await validatorRegistry.claimWinnings.awaitTransactionSuccessAsync(new BigNumber(challengeId), {
@@ -1485,7 +1517,7 @@ describe("ValidatorRegistry", async () => {
             });
 
             it("should burn up to all the staked balance", async () => {
-                const burn = new BigNumber(TestValues.oneEther).times(new BigNumber("-1"));
+                const burn = new BigNumber(TestValues.oneEther).times(new BigNumber("-5"));
                 const tokenBurnAmount = await kosuToken.estimateEtherToToken.callAsync(burn.multipliedBy("-1"));
                 await kosuToken.approve.awaitTransactionSuccessAsync(
                     treasury.address,
@@ -1702,6 +1734,87 @@ describe("ValidatorRegistry", async () => {
             for (const key of keys) {
                 await testHelpers.exitListing(key);
             }
+        });
+    });
+
+    describe("updateConfigValue", () => {
+        it("should only let the owner act", async () => {
+            await validatorRegistry.updateConfigValue.awaitTransactionSuccessAsync(
+                TestValues.zero,
+                TestValues.oneHundredEther,
+                { from: accounts[9] },
+            ).should.eventually.be.rejected;
+        });
+
+        [
+            "applicationPeriod",
+            "commitPeriod",
+            "challengePeriod",
+            "exitPeriod",
+            "rewardPeriod",
+            "minimumBalance",
+            "stakeholderCut",
+            "minMaxGenerator",
+            "maxGeneratorGrowth",
+            "maxMaxGenerator",
+        ].forEach((method, index) => {
+            it(`should correctly set a new ${method}`, async () => {
+                const originalValue = await validatorRegistry[method].callAsync();
+                await validatorRegistry.updateConfigValue.awaitTransactionSuccessAsync(
+                    new BigNumber(index),
+                    TestValues.maxUint,
+                ).should.eventually.be.fulfilled;
+                const newValue = await validatorRegistry[method].callAsync();
+                newValue.toString().should.eq(TestValues.maxUint.toString());
+                await validatorRegistry.updateConfigValue.awaitTransactionSuccessAsync(
+                    new BigNumber(index),
+                    originalValue,
+                ).should.eventually.be.fulfilled;
+            });
+        });
+    });
+
+    describe("reduceReward", () => {
+        it("should emit an event", async () => {
+            await testHelpers.prepareConfirmedListing("0xffaabb", {
+                reward: TestValues.oneWei.plus(TestValues.oneWei),
+            });
+            const { logs } = await validatorRegistry.reduceReward.awaitTransactionSuccessAsync(
+                "0xffaabb",
+                TestValues.oneWei,
+            );
+            const decodedLogs = decodeKosuEvents(logs);
+            decodedLogs[0].eventType.should.eq("ValidatorReducedReward");
+            decodedLogs[0].tendermintPublicKeyHex.should.contain("0xffaabb");
+            decodedLogs[0].newRewardRate.should.eq(TestValues.oneWei.toString());
+            await testHelpers.exitListing("0xffaabb");
+        });
+
+        it("should not modify a negative reward", async () => {
+            await testHelpers.prepareConfirmedListing("0xffaabb", { reward: TestValues.oneWei.times("-1") });
+            await validatorRegistry.reduceReward
+                .callAsync("0xffaabb", TestValues.zero)
+                .should.eventually.be.rejected.and.have.property("message")
+                .that.includes("listing is not generating tokens");
+            await testHelpers.exitListing("0xffaabb");
+        });
+
+        it("should not modify a zero reward", async () => {
+            await testHelpers.prepareConfirmedListing("0xffaabb");
+            await validatorRegistry.reduceReward
+                .callAsync("0xffaabb", TestValues.oneWei)
+                .should.eventually.be.rejected.and.have.property("message")
+                .that.includes("listing is not generating tokens");
+            await testHelpers.exitListing("0xffaabb");
+        });
+
+        it("should not increase a reward", async () => {
+            await testHelpers.prepareConfirmedListing("0xffaabb", { reward: TestValues.oneWei });
+            await validatorRegistry.reduceReward
+                .callAsync("0xffaabb", TestValues.oneWei.plus(TestValues.oneWei))
+                .should.eventually.be.rejected.and.have.property("message")
+                .that.includes("not reducing reward rate");
+            await testHelpers.exitListing("0xffaabb");
         });
     });
 

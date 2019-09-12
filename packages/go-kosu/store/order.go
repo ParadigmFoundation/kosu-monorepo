@@ -5,9 +5,10 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"go-kosu/abci/types"
 	"math/big"
 	"strings"
+
+	"github.com/ParadigmFoundation/kosu-monorepo/packages/go-kosu/abci/types"
 
 	"github.com/ethereum/go-ethereum/accounts/abi"
 	"github.com/ethereum/go-ethereum/crypto"
@@ -83,6 +84,22 @@ func (o *Order) Serialize() ([]byte, error) {
 			// pad as a 256 bit integer, as EVM does
 			slice := abi.U256(bigInt)
 			orderBytes = append(orderBytes, slice...)
+		case "int":
+			bigInt := big.NewInt(0)
+			stringVal := o.MakerValues[m.Name].(string)
+			if _, ok := bigInt.SetString(stringVal, 10); !ok {
+				return nil, ErrOrderSerialize
+			}
+			// pad as a 256 bit integer, as EVM does
+			slice := abi.U256(bigInt)
+			orderBytes = append(orderBytes, slice...)
+		case "bytes":
+			// strip '0x' prefix
+			bytes, err := hex.DecodeString(o.MakerValues[m.Name].(string)[2:])
+			if err != nil {
+				return nil, ErrOrderSerialize
+			}
+			orderBytes = append(orderBytes, bytes...)
 		case "signature":
 			// strip '0x' prefix
 			bytes, err := hex.DecodeString(o.MakerValues[m.Name].(string)[2:])

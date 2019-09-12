@@ -9,8 +9,8 @@ import (
 	eth "github.com/ethereum/go-ethereum/core/types"
 	"github.com/tendermint/tendermint/libs/log"
 
-	"go-kosu/abci"
-	"go-kosu/abci/types"
+	"github.com/ParadigmFoundation/kosu-monorepo/packages/go-kosu/abci"
+	"github.com/ParadigmFoundation/kosu-monorepo/packages/go-kosu/abci/types"
 )
 
 // EventHandler is a callback that handles EventEmitterKosuEvent
@@ -104,14 +104,14 @@ func (w *Witness) Start(ctx context.Context) error {
 
 func (w *Witness) subscribe(ctx context.Context) error {
 	// Subscribe to rebalance events and synchronize
-	sub, _, err := w.client.Subscribe(ctx, "tm.event = 'Tx' AND tx.type = 'rebalance'")
+	sub, _, err := w.client.Subscribe(ctx, "tm.event = 'Tx' AND tags.tx.type = 'rebalance'")
 	if err != nil {
 		return err
 	}
 
 	go func() {
 		for e := range sub {
-			info, err := abci.NewRoundInfoFromTags(e.Tags)
+			info, err := abci.NewRoundInfoFromEvents(e.Events)
 			if err != nil {
 				w.log.Error("subscribe: invalid tags", "err", err)
 				continue
@@ -160,11 +160,18 @@ func (w *Witness) broadcastTxSync(tx interface{}, args []interface{}) {
 }
 
 func (w *Witness) handlePosterRegistryUpdate(e *EventEmitterKosuEvent) {
+	w.log.Info("poster update event", "e", e)
+
+	event := &EventPosterRegistryUpdate{}
+	if err := DecodeKosuEvent(e, event); err != nil {
+		panic(err)
+	}
+
 	tx := &types.TransactionWitness{
 		Subject: types.TransactionWitness_POSTER,
-		Amount:  types.NewBigInt(e.Data[1][:]),
+		Amount:  types.NewBigInt(event.Amount.Bytes()),
 		Block:   e.Raw.BlockNumber,
-		Address: e.Raw.Address.String(),
+		Address: event.Address.String(),
 	}
 
 	w.broadcastTxSync(tx, []interface{}{
@@ -174,12 +181,19 @@ func (w *Witness) handlePosterRegistryUpdate(e *EventEmitterKosuEvent) {
 }
 
 func (w *Witness) handleValidatorRegistryUpdate(e *EventEmitterKosuEvent) {
+	w.log.Info("validator update event", "e", e)
+
+	event := &EventValidatorRegistryUpdate{}
+	if err := DecodeKosuEvent(e, event); err != nil {
+		panic(err)
+	}
+
 	tx := &types.TransactionWitness{
 		Subject:   types.TransactionWitness_VALIDATOR,
 		Block:     e.Raw.BlockNumber,
-		PublicKey: e.Data[0][:],
-		Address:   hex.EncodeToString(e.Data[1][:]),
-		Amount:    types.NewBigInt(e.Data[2][:]),
+		PublicKey: event.PublicKey,
+		Address:   event.Address.String(),
+		Amount:    types.NewBigInt(event.Amount.Bytes()),
 	}
 
 	w.broadcastTxSync(tx, []interface{}{
@@ -198,7 +212,7 @@ func (w *Witness) handleBlocks(ctx context.Context) error {
 
 		// If it's the first block || round has ended
 		if (num == 0 && (cur > w.initHeight)) || mat >= w.roundInfo.EndsAt {
-			if err := w.rebalance(num, cur); err != nil {
+			if err := w.rebalance(num, mat); err != nil {
 				w.log.Error("rebalance", "err", err)
 			}
 		}

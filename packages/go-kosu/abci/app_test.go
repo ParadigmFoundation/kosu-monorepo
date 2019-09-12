@@ -11,30 +11,40 @@ import (
 	"github.com/stretchr/testify/require"
 
 	abci "github.com/tendermint/tendermint/abci/types"
-	"github.com/tendermint/tendermint/libs/db"
 	tmtypes "github.com/tendermint/tendermint/types"
+	db "github.com/tendermint/tm-db"
 
-	"go-kosu/abci/types"
+	"github.com/ParadigmFoundation/kosu-monorepo/packages/go-kosu/abci/types"
 )
 
-func newTestApp(t *testing.T, db db.DB) (func(), *App) {
+func initTendermint(t *testing.T) string {
 	dir, err := ioutil.TempDir("", ".kosu_tests_")
 	require.NoError(t, err)
 
 	err = InitTendermint(dir)
 	require.NoError(t, err)
 
-	fn := func() { _ = os.RemoveAll(dir) }
+	return dir
+}
+
+func newTestApp(t *testing.T, db db.DB) (func(), *App) {
+	dir := initTendermint(t)
+	closer := func() { _ = os.RemoveAll(dir) }
 
 	app := NewApp(db, dir)
 	doc, err := tmtypes.GenesisDocFromFile(app.Config.GenesisFile())
 	require.NoError(t, err)
 
 	if app.Store().LastCommitID().Version == 0 {
-		app.InitChain(abci.RequestInitChain{AppStateBytes: doc.AppState})
+		app.InitChain(abci.RequestInitChain{
+			Validators: abci.ValidatorUpdates{
+				abci.Ed25519ValidatorUpdate([]byte("some_pub_key"), 10),
+			},
+			AppStateBytes: doc.AppState,
+		})
 	}
 
-	return fn, app
+	return closer, app
 }
 
 func TestCheckTxSignature(t *testing.T) {
@@ -54,7 +64,7 @@ func TestCheckTxSignature(t *testing.T) {
 	buf, err := types.EncodeTx(tx)
 	require.NoError(t, err)
 
-	res := app.CheckTx(buf)
+	res := app.CheckTx(abci.RequestCheckTx{Tx: buf})
 	assert.True(t, res.IsErr())
 	assert.Contains(t, res.Log, "signature")
 }

@@ -1,10 +1,11 @@
 package storetest
 
 import (
-	"go-kosu/abci/types"
-	"go-kosu/store"
 	"math"
 	"testing"
+
+	"github.com/ParadigmFoundation/kosu-monorepo/packages/go-kosu/abci/types"
+	"github.com/ParadigmFoundation/kosu-monorepo/packages/go-kosu/store"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -23,6 +24,7 @@ func TestSuite(t *testing.T, f Factory) {
 		{"RoundInfo", TestRoundInfo},
 		{"ConsensusParams", TestConsensusParams},
 		{"LastEvent", TestLastEvent},
+		{"TotalOrders", TestTotalOrders},
 		{"Witness", TestWitness},
 		{"Poster", TestPoster},
 		{"Validator", TestValidator},
@@ -62,6 +64,16 @@ func TestLastEvent(t *testing.T, s store.Store) {
 	s.SetLastEvent(lastEvent)
 
 	assert.Equal(t, lastEvent, s.LastEvent())
+}
+
+// TestTotalOrders verifies the LastTotalOrders storage behavior
+func TestTotalOrders(t *testing.T, s store.Store) {
+	s.SetTotalOrders(1)
+	s.SetTotalOrders(2)
+	s.SetTotalOrders(3)
+	s.SetTotalOrders(4)
+
+	assert.Equal(t, uint64(4), s.TotalOrders())
 }
 
 // TestWitness verifies the Witness storage behavior

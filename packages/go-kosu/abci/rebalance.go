@@ -1,9 +1,10 @@
 package abci
 
 import (
-	"go-kosu/abci/types"
 	"math"
 	"math/big"
+
+	"github.com/ParadigmFoundation/kosu-monorepo/packages/go-kosu/abci/types"
 
 	abci "github.com/tendermint/tendermint/abci/types"
 )
@@ -38,7 +39,9 @@ func (app *App) deliverRebalance(tx *types.TransactionRebalance) abci.ResponseDe
 
 	return abci.ResponseDeliverTx{
 		Code: 0,
-		Tags: NewTagsFromRoundInfo(info),
+		Events: []abci.Event{
+			{Type: "tags", Attributes: NewTagsFromRoundInfo(info)},
+		},
 	}
 }
 
@@ -77,15 +80,15 @@ func posterIterator(app *App, totalBalance *big.Int) func(string, *types.Poster)
 // calculates a poster's period limit based on their balance and the total poster balance
 func posterLimit(periodLimit uint64, posterBalance, totalBalance *big.Int) uint64 {
 	// copy periodLimit (pl), posterBalance (pb), totalBalance (tb)
-	var pl, pb, tb big.Int
+	pl, pb, tb := &big.Int{}, &big.Int{}, &big.Int{}
 	pl.SetUint64(periodLimit)
 	pb.Set(posterBalance)
 	tb.Set(totalBalance)
 
 	// limit = (posterBalance / totalBalance) * periodLimit
 	limit := big.NewInt(0)
-	limit.Mul(&pl, &pb)
-	limit.Div(limit, &tb)
+	limit.Mul(pl, pb)
+	limit.Div(limit, tb)
 
 	if !limit.IsUint64() {
 		return math.MaxUint64

@@ -13,12 +13,12 @@ import (
 	"github.com/tendermint/tendermint/config"
 	cfg "github.com/tendermint/tendermint/config"
 	"github.com/tendermint/tendermint/crypto/tmhash"
-	"github.com/tendermint/tendermint/libs/db"
 	"github.com/tendermint/tendermint/libs/log"
+	db "github.com/tendermint/tm-db"
 
-	"go-kosu/abci/types"
-	"go-kosu/store"
-	"go-kosu/store/cosmos"
+	"github.com/ParadigmFoundation/kosu-monorepo/packages/go-kosu/abci/types"
+	"github.com/ParadigmFoundation/kosu-monorepo/packages/go-kosu/store"
+	"github.com/ParadigmFoundation/kosu-monorepo/packages/go-kosu/store/cosmos"
 )
 
 var (
@@ -54,7 +54,7 @@ func NewAppWithConfig(db db.DB, cfg *config.Config) *App {
 	}
 
 	app := &App{
-		store:  cosmos.NewStore(db, new(cosmos.ProtoCodec)),
+		store:  cosmos.NewStore(db, store.DefaultCodec),
 		Config: cfg,
 		log:    logger.With("module", "app"),
 	}
@@ -71,7 +71,7 @@ func (app *App) NewClient() (*Client, error) {
 		return nil, err
 	}
 
-	return NewHTTPClient(url, key), nil
+	return NewHTTPClient(url, key)
 }
 
 // Query queries the application state using the store.Query method
@@ -114,29 +114,26 @@ func (app *App) InitChain(req abci.RequestInitChain) abci.ResponseInitChain {
 		panic("Using a non-zero state when initializing the chain")
 	}
 
-	// load genesis state from request (which is defined in config/genesis.json)
-	// if appState == nil we the defaults
-	var gen *Genesis
-	if len(req.AppStateBytes) == 0 {
-		gen = GenesisAppState
-	} else {
-		var err error
-		gen, err = NewGenesisFromRequest(req)
-		if err != nil {
-			panic(err)
-		}
+	gen, err := NewGenesisFromRequest(req)
+	if err != nil {
+		panic(err)
 	}
+	if gen == nil {
+		gen = GenesisAppState
+	}
+
+	set, err := UnifyValidators(req.Validators, gen.InitialValidatorInfo)
+	if err != nil {
+		panic(err)
+	}
+
+	for _, v := range set {
+		nodeID := tmhash.SumTruncated(v.PublicKey)
+		app.store.SetValidator(nodeID, &v)
+	}
+
 	app.store.SetConsensusParams(gen.ConsensusParams)
 	app.log.Info("Loaded Genesis State", "gen", gen)
-
-	for _, v := range req.Validators {
-		nodeID := tmhash.SumTruncated(v.PubKey.Data)
-		app.store.SetValidator(nodeID, &types.Validator{
-			Balance:   types.NewBigIntFromInt(0),
-			Power:     v.Power,
-			PublicKey: v.PubKey.Data,
-		})
-	}
 
 	return abci.ResponseInitChain{}
 }
@@ -240,28 +237,32 @@ func (app *App) EndBlock(req abci.RequestEndBlock) abci.ResponseEndBlock {
 }
 
 // CheckTx .
-func (app *App) CheckTx(req []byte) abci.ResponseCheckTx {
-	stx := &types.SignedTransaction{}
-	if err := types.DecodeTx(req, stx); err != nil {
-		return abci.ResponseCheckTx{Code: 1, Log: err.Error()}
-	}
-	tx := stx.Tx
-	valid, err := stx.Verify()
+func (app *App) CheckTx(req abci.RequestCheckTx) abci.ResponseCheckTx {
+	stx, err := types.NewSignedTransactionFromBytes(req.Tx)
 	if err != nil {
 		return abci.ResponseCheckTx{Code: 1, Log: err.Error()}
 	}
 
-	if !valid {
-		return abci.ResponseCheckTx{Code: 1, Log: "Invalid signature"}
-	}
-
+	nodeID := tmhash.SumTruncated(stx.Proof.PublicKey)
+	tx := stx.Tx
+	// TODO(gchaincl) refactor the validator verification
 	switch tx.GetData().(type) {
 	case *types.Transaction_Rebalance:
+		if !app.store.ValidatorExists(nodeID) {
+			msg := fmt.Sprintf("NodeID %s does not belong to a validator", hex.EncodeToString(nodeID))
+			return abci.ResponseCheckTx{Code: 1, Log: msg}
+		}
+
 		if err := app.checkRebalanceTx(tx.GetRebalance()); err != nil {
 			return abci.ResponseCheckTx{Code: 1, Log: err.Error()}
 		}
 		return abci.ResponseCheckTx{}
 	case *types.Transaction_Witness:
+		if !app.store.ValidatorExists(nodeID) {
+			msg := fmt.Sprintf("NodeID %s does not belong to a validator", hex.EncodeToString(nodeID))
+			return abci.ResponseCheckTx{Code: 1, Log: msg}
+		}
+
 		w := tx.GetWitness()
 		// .Confirmations should not be defined in the request
 		w.Confirmations = 0
@@ -270,6 +271,11 @@ func (app *App) CheckTx(req []byte) abci.ResponseCheckTx {
 		}
 		return abci.ResponseCheckTx{}
 	case *types.Transaction_Order:
+		if max := app.store.ConsensusParams().MaxOrderBytes; max > 0 {
+			if uint32(len(req.Tx)) > max {
+				return abci.ResponseCheckTx{Code: 1, Log: fmt.Sprintf("Tx size exceeds %d", max)}
+			}
+		}
 		if err := app.checkOrderTx(tx.GetOrder()); err != nil {
 			return abci.ResponseCheckTx{Code: 1, Log: err.Error()}
 		}
@@ -282,13 +288,14 @@ func (app *App) CheckTx(req []byte) abci.ResponseCheckTx {
 }
 
 // DeliverTx .
-func (app *App) DeliverTx(req []byte) abci.ResponseDeliverTx {
-	stx := &types.SignedTransaction{}
-	if err := types.DecodeTx(req, stx); err != nil {
-		return abci.ResponseDeliverTx{Code: 1, Info: err.Error()}
+func (app *App) DeliverTx(req abci.RequestDeliverTx) abci.ResponseDeliverTx {
+	stx, err := types.NewSignedTransactionFromBytes(req.Tx)
+	if err != nil {
+		// If verification passes CheckTx it MUST pass here
+		panic(err)
 	}
-	tx := stx.Tx
 
+	tx := stx.Tx
 	switch tx.GetData().(type) {
 	case *types.Transaction_Rebalance:
 		return app.deliverRebalance(tx.GetRebalance())
@@ -301,5 +308,5 @@ func (app *App) DeliverTx(req []byte) abci.ResponseDeliverTx {
 		fmt.Printf("Unknown Tx: %t", tx.GetData())
 	}
 
-	return abci.ResponseDeliverTx{Code: 1, Info: "Unknown Transaction type"}
+	return abci.ResponseDeliverTx{Code: 1, Log: "Unknown Transaction type"}
 }

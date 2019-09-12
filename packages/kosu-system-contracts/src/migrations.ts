@@ -51,6 +51,13 @@ export async function migrations(
                 _rewardPeriod: 6000,
             },
             6174: {
+                _applicationPeriod: 600,
+                _commitPeriod: 600,
+                _challengePeriod: 1000,
+                _exitPeriod: 600,
+                _rewardPeriod: 600,
+            },
+            6175: {
                 _applicationPeriod: 10,
                 _commitPeriod: 10,
                 _challengePeriod: 20,
@@ -65,7 +72,7 @@ export async function migrations(
                 _rewardPeriod: 4,
             },
         };
-        const zeroExAddresses = getContractAddressesForNetworkOrThrow(netId === 6174 ? 50 : netId);
+        const zeroExAddresses = getContractAddressesForNetworkOrThrow([6174, 6175].includes(netId) ? 50 : netId);
         const config = validatorValues[netId] || validatorValues.default;
 
         const orderGateway = await OrderGatewayContract.deployFrom0xArtifactAsync(
@@ -117,7 +124,6 @@ export async function migrations(
             txDefaults,
             treasury.address,
             voting.address,
-            authorizedAddresses.address,
             eventEmitter.address,
             config._applicationPeriod,
             config._commitPeriod,

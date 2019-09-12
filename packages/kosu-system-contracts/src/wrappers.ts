@@ -12,3 +12,6 @@ export * from "../generated-wrappers/treasury";
 export * from "../generated-wrappers/validator_registry";
 export * from "../generated-wrappers/voting";
 export * from "../generated-wrappers/zero_ex_v2_sub_contract";
+export * from "../generated-wrappers/basic_trade_sub_contract";
+export * from "../generated-wrappers/signature_validator_sub_contract";
+export * from "../generated-wrappers/test_token";

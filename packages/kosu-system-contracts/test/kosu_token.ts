@@ -4,7 +4,7 @@ import { fromWei } from "web3-utils";
 import { artifacts, KosuTokenContract } from "..";
 
 describe("KosuToken", () => {
-    let token, from;
+    let token, from, kosuToken;
 
     before(async () => {
         token = await KosuTokenContract.deployFrom0xArtifactAsync(
@@ -14,9 +14,16 @@ describe("KosuToken", () => {
             "0x0000000000000000000000000000000000000000",
         );
         from = accounts[0];
+        kosuToken = contracts.kosuToken;
     });
 
-    describe("bonding", () => {
+    describe("parameterization", () => {
+        it("should fail with incorrect initial deposit", async () => {
+            await web3Wrapper
+                .sendTransactionAsync({ to: token.address, value: TestValues.twoEther, from })
+                .then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash)).should.eventually.be.rejected;
+        });
+
         it("should have expected initial output with parameterization", async () => {
             await web3Wrapper
                 .sendTransactionAsync({ to: token.address, value: TestValues.twoEther.div("10"), from })
@@ -40,20 +47,40 @@ describe("KosuToken", () => {
                 .should.eq(endingEther.toString());
         });
 
+        it("should have expected tokens balance at given ether balance", async () => {
+            await web3Wrapper
+                .sendTransactionAsync({
+                    to: token.address,
+                    value: TestValues.fourHundredEther.minus(await web3Wrapper.getBalanceInWeiAsync(token.address)),
+                    from,
+                })
+                .then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash));
+
+            const finalBalance = await token.balanceOf.callAsync(from);
+            const finalSupply = await token.totalSupply.callAsync();
+            const endingEther = await web3Wrapper.getBalanceInWeiAsync(token.address);
+
+            "90635575928012811022820".should.eq(finalBalance.toString());
+            "90635575928012811022820".should.eq(finalSupply.toString());
+            TestValues.fourHundredEther.toString().should.eq(endingEther.toString());
+        });
+    });
+
+    describe("bonding", () => {
         describe("fallback", () => {
             it("should generate tokens with fallback function", async () => {
-                const startingBalance = await token.balanceOf.callAsync(from);
-                const startingSupply = await token.totalSupply.callAsync();
-                const startingEther = await web3Wrapper.getBalanceInWeiAsync(token.address);
-                const estimate = await token.estimateEtherToToken.callAsync(TestValues.oneEther);
+                const startingBalance = await kosuToken.balanceOf.callAsync(from);
+                const startingSupply = await kosuToken.totalSupply.callAsync();
+                const startingEther = await web3Wrapper.getBalanceInWeiAsync(kosuToken.address);
+                const estimate = await kosuToken.estimateEtherToToken.callAsync(TestValues.oneEther);
 
                 await web3Wrapper
-                    .sendTransactionAsync({ to: token.address, value: TestValues.oneEther, from })
+                    .sendTransactionAsync({ to: kosuToken.address, value: TestValues.oneEther, from })
                     .then(txHash => web3Wrapper.awaitTransactionSuccessAsync(txHash));
 
-                const finalBalance = await token.balanceOf.callAsync(from);
-                const finalSupply = await token.totalSupply.callAsync();
-                const endingEther = await web3Wrapper.getBalanceInWeiAsync(token.address);
+                const finalBalance = await kosuToken.balanceOf.callAsync(from);
+                const finalSupply = await kosuToken.totalSupply.callAsync();
+                const endingEther = await web3Wrapper.getBalanceInWeiAsync(kosuToken.address);
 
                 startingBalance
                     .plus(estimate)
@@ -71,17 +98,19 @@ describe("KosuToken", () => {
         });
 
         describe("bondTokens", () => {
-            it("should generate tokens with fallback function", async () => {
-                const startingBalance = await token.balanceOf.callAsync(from);
-                const startingSupply = await token.totalSupply.callAsync();
-                const startingEther = await web3Wrapper.getBalanceInWeiAsync(token.address);
-                const estimate = await token.estimateEtherToToken.callAsync(TestValues.oneEther);
+            it("should generate tokens with bondTokens", async () => {
+                const startingBalance = await kosuToken.balanceOf.callAsync(from);
+                const startingSupply = await kosuToken.totalSupply.callAsync();
+                const startingEther = await web3Wrapper.getBalanceInWeiAsync(kosuToken.address);
+                const estimate = await kosuToken.estimateEtherToToken.callAsync(TestValues.oneEther);
 
-                await token.bondTokens.awaitTransactionSuccessAsync(TestValues.zero, { value: TestValues.oneEther });
+                await kosuToken.bondTokens.awaitTransactionSuccessAsync(TestValues.zero, {
+                    value: TestValues.oneEther,
+                });
 
-                const finalBalance = await token.balanceOf.callAsync(from);
-                const finalSupply = await token.totalSupply.callAsync();
-                const endingEther = await web3Wrapper.getBalanceInWeiAsync(token.address);
+                const finalBalance = await kosuToken.balanceOf.callAsync(from);
+                const finalSupply = await kosuToken.totalSupply.callAsync();
+                const endingEther = await web3Wrapper.getBalanceInWeiAsync(kosuToken.address);
 
                 startingBalance
                     .plus(estimate)
@@ -96,20 +125,29 @@ describe("KosuToken", () => {
                     .toString()
                     .should.eq(endingEther.toString());
             });
+
+            it("should fail with payout below minPayout", async () => {
+                const estimate = await kosuToken.estimateEtherToToken.callAsync(TestValues.oneEther);
+
+                await kosuToken.bondTokens
+                    .callAsync(estimate.plus(TestValues.oneEther), { value: TestValues.oneEther })
+                    .should.eventually.be.rejected.and.have.property("message")
+                    .that.includes("payout below requested minimum");
+            });
         });
 
         describe("releaseTokens", () => {
             it("should sell tokens on the curve", async () => {
-                const startingBalance = await token.balanceOf.callAsync(from);
-                const startingSupply = await token.totalSupply.callAsync();
-                const startingEther = await web3Wrapper.getBalanceInWeiAsync(token.address);
-                const estimate = await token.estimateTokenToEther.callAsync(TestValues.oneEther);
+                const startingBalance = await kosuToken.balanceOf.callAsync(from);
+                const startingSupply = await kosuToken.totalSupply.callAsync();
+                const startingEther = await web3Wrapper.getBalanceInWeiAsync(kosuToken.address);
+                const estimate = await kosuToken.estimateTokenToEther.callAsync(TestValues.oneEther);
 
-                await token.releaseTokens.awaitTransactionSuccessAsync(TestValues.oneEther);
+                await kosuToken.releaseTokens.awaitTransactionSuccessAsync(TestValues.oneEther);
 
-                const finalBalance = await token.balanceOf.callAsync(from);
-                const finalSupply = await token.totalSupply.callAsync();
-                const endingEther = await web3Wrapper.getBalanceInWeiAsync(token.address);
+                const finalBalance = await kosuToken.balanceOf.callAsync(from);
+                const finalSupply = await kosuToken.totalSupply.callAsync();
+                const endingEther = await web3Wrapper.getBalanceInWeiAsync(kosuToken.address);
 
                 startingBalance
                     .minus(TestValues.oneEther)
@@ -126,6 +164,9 @@ describe("KosuToken", () => {
             });
 
             it("should empty the contract", async () => {
+                if ((await token.balanceOf.callAsync(from)).eq("0")) {
+                    throw new Error(".only issue");
+                }
                 await token.releaseTokens.awaitTransactionSuccessAsync(await token.balanceOf.callAsync(from));
 
                 const finalBalance = await token.balanceOf.callAsync(from);

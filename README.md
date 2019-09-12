@@ -39,6 +39,12 @@ Smart-contract packages (Solidity) including the core Kosu system contracts and 
 | [`@kosu/system-contracts`](./packages/kosu-system-contracts) | ![npm](https://img.shields.io/npm/v/@kosu/system-contracts.svg) | The core Kosu contract system and test suite, implemented in Solidity. |
 | [`@kosu/subcontract-sdk`](./packages/kosu-sdk-contracts)     | ![npm](https://img.shields.io/npm/v/@kosu/subcontract-sdk.svg)  | The Kosu `SubContract` interface and example implementations.          |
 
+### Client packages
+
+| Package                         | Version                                                     | Description                                                                       |
+| :------------------------------ | :---------------------------------------------------------- | :-------------------------------------------------------------------------------- |
+| [`go-kosu`](./packages/go-kosu) | ![version](https://img.shields.io/badge/version-0.1.2-blue) | The reference implementation of the Kosu network in Go, built on Tendermint Core. |
+
 ### Library packages
 
 Client/server libraries for interacting with the Kosu network and contract system.
@@ -46,12 +52,6 @@ Client/server libraries for interacting with the Kosu network and contract syste
 | Package &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; | Version                                                | Description                                                                   |
 | :------------------------------------------------ | :----------------------------------------------------- | :---------------------------------------------------------------------------- |
 | [`@kosu/kosu.js`](./packages/kosu.js)             | ![npm](https://img.shields.io/npm/v/@kosu/kosu.js.svg) | TypeScript library for interacting with the Kosu network and contract system. |
-
-### Client packages
-
-| Package                           | Version                                                          | Description                                                                       |
-| :-------------------------------- | :--------------------------------------------------------------- | :-------------------------------------------------------------------------------- |
-| [`kosu-core`](./packages/go-kosu) | ![version](https://img.shields.io/badge/version-0.0.0-green.svg) | The reference implementation of the Kosu network in Go, built on Tendermint Core. |
 
 ### Utility/development packages
 
@@ -72,6 +72,7 @@ In order to build the full monorepo, the following is required:
 -   [Yarn](https://yarnpkg.com/lang/en/docs/install/#mac-stable) (`^1.15`)
 -   [jq](https://stedolan.github.io/jq/download/) (`^1.6`)
 -   [golang](https://golang.org/dl/) (`^1.12`)
+-   [go-bindata](https://github.com/go-bindata/go-bindata) (`^3.1`)
 -   [go-ethereum](https://github.com/ethereum/go-ethereum/wiki/Building-Ethereum) (`^1.8`)
     -   Only the `abigen` binary is required to build the monorepo.
 

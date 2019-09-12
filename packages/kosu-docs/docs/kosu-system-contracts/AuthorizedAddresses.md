@@ -1,18 +1,14 @@
 # AuthorizedAddresses
 
-Common registry of system contract addresses authrorized to access internal methods.
+Common registry of system contract addresses authorized to access internal methods.
 
 ## Contents
 
 -   [Methods](undefined)
-    -   [authorizeAddress](#authorizeAddress)
-    -   [constructor](#constructor)
-    -   [isAddressAuthorized](#isAddressAuthorized)
-    -   [isOwner](#isOwner)
-    -   [owner](#owner)
-    -   [renounceOwnership](#renounceOwnership)
-    -   [transferOwnership](#transferOwnership)
-    -   [unauthorizeAddress](#unauthorizeAddress)
+    -   [authorizeAddress](#authorizeaddress)
+    -   [isAddressAuthorized](#isaddressauthorized)
+    -   [transferOwnership](#transferownership)
+    -   [unauthorizeAddress](#unauthorizeaddress)
 
 ## Methods
 
@@ -23,7 +19,7 @@ Authorizes the address by setting the mapping value to true.
 #### Signature
 
 ```solidity
-function authorizeAddress(a address)
+function authorizeAddress(a address) public
 ```
 
 #### Parameters:
@@ -32,45 +28,25 @@ function authorizeAddress(a address)
 | --------- | --------- | -------------------- |
 | `a`       | `address` | Address to authorize |
 
-### constructor
-
-Constructor initializes with the creator permission set to true.
-
-#### Signature
-
-```solidity
-constructor()
-```
-
 ### isAddressAuthorized
 
-Verify if address is authorized by reading contract mapping
+Verify address authorization.
 
 #### Signature
 
 ```solidity
-function isAddressAuthorized(a address)
+function isAddressAuthorized(a address) public view (bool)
 ```
 
 #### Parameters:
 
-| Parameter | Type      | Description                      |
-| --------- | --------- | -------------------------------- |
-| `a`       | `address` | Address to get authorized value. |
+| Parameter | Type      | Description           |
+| --------- | --------- | --------------------- |
+| `a`       | `address` | Address to authorize. |
 
 #### Returns:
 
-True if the address is authorized, false otherwise.
-
-### renounceOwnership
-
-Allows the current owner to relinquish control of the contract.
-
-#### Signature
-
-```solidity
-function renounceOwnership()
-```
+Address authorization
 
 ### transferOwnership
 
@@ -79,7 +55,7 @@ Allows the current owner to transfer control of the contract to a newOwner.
 #### Signature
 
 ```solidity
-function transferOwnership(newOwner address)
+function transferOwnership(newOwner address) public
 ```
 
 #### Parameters:
@@ -90,12 +66,12 @@ function transferOwnership(newOwner address)
 
 ### unauthorizeAddress
 
-Unauthorizes the address by setting the mapping value to false.
+Disables the address previous authorization by setting the mapping value to false.
 
 #### Signature
 
 ```solidity
-function unauthorizeAddress(a address)
+function unauthorizeAddress(a address) public
 ```
 
 #### Parameters:

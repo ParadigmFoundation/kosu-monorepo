@@ -1,8 +1,8 @@
 package abci
 
 import (
-	"go-kosu/abci/types"
-	"go-kosu/store"
+	"github.com/ParadigmFoundation/kosu-monorepo/packages/go-kosu/abci/types"
+	"github.com/ParadigmFoundation/kosu-monorepo/packages/go-kosu/store"
 
 	abci "github.com/tendermint/tendermint/abci/types"
 )
@@ -62,10 +62,15 @@ func (app *App) deliverOrderTx(tx *types.TransactionOrder) abci.ResponseDeliverT
 	// begin state modification
 	poster.Limit--
 	app.store.SetPoster(posterAddress.String(), *poster)
+
+	total := app.store.TotalOrders()
+	app.store.SetTotalOrders(total + 1)
 	// end state modification
 
 	return abci.ResponseDeliverTx{
 		Code: 0,
-		Tags: NewTagsFromOrderInfo(orderID, posterAddress, poster.Limit),
+		Events: []abci.Event{
+			{Type: "tags", Attributes: NewKVPairFromOrderInfo(orderID, posterAddress, poster.Limit)},
+		},
 	}
 }

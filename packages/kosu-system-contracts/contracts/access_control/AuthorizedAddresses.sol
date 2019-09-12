@@ -4,31 +4,31 @@ import "openzeppelin-solidity/contracts/ownership/Ownable.sol";
 
 /** @title AuthorizedAddresses
     @author Freydal
-    @dev Common registry of system contract addresses authrorized to access internal methods.
+    @dev Common registry of system contract addresses authorized to access internal methods.
 */
 contract AuthorizedAddresses is Ownable {
 
     // Mapping storing address permissions
     mapping(address => bool) private authorizedAddresses;
 
-    /** @dev Constructor initializes with the creator permission set to true.
-        @notice Constructor initializes with the creator permission set to true.
+    /** @dev Initializes contract with the creators permissions set to true.
+        @notice Initializes contract with the creators permissions set to true.
     */
     constructor() Ownable() public {
         authorizedAddresses[owner()] = true;
     }
 
     /** @dev Authorizes the address by setting the mapping value to true.
-        @notice Authorizes the address by setting the mapping value to true
+        @notice Authorizes the address by setting the mapping value to true.
         @param a Address to authorize
     */
     function authorizeAddress(address a) public {
-        require(authorizedAddresses[msg.sender]);
+        require(authorizedAddresses[msg.sender], "unauthorized");
         authorizedAddresses[a] = true;
     }
 
-    /** @dev Unauthorizes the address by setting the mapping value to false.
-        @notice Unauthorizes the address by setting the mapping value to false
+    /** @dev Disables the address previous authorization by setting the mapping value to false.
+        @notice Disables the address previous authorization by setting the mapping value to false
         @param a Address to unauthorize
     */
     function unauthorizeAddress(address a) public {
@@ -36,10 +36,10 @@ contract AuthorizedAddresses is Ownable {
         authorizedAddresses[a] = false;
     }
 
-    /** @dev Verify if address is authorized by reading contract mapping
-        @notice Verify if address is authorized by reading contract mapping
-        @param a Address to get authorized value.
-        @return True if the address is authorized, false otherwise.
+    /** @dev Verify address authorization.
+        @notice Verify address authorization.
+        @param a Address to authorize.
+        @return Address authorization
     */
     function isAddressAuthorized(address a) public view returns (bool) {
         return authorizedAddresses[a];

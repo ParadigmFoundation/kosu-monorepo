@@ -4,33 +4,32 @@ title: What is Kosu?
 
 # What is Kosu?
 
-The Kosu protocol is a **relay protocol for smart contract-based financial primitives.** The **Kosu network** is a decentralized, event-based, and super-peer network with proof-of-stake based sybil tolerance with access control managed by an Ethereum contract system.
+Kosu is a decentralized network and protocol that functions to provide an **aggregated order book** for virtual settlement systems. More specifically, the Kosu network, a bonded proof-of-stake blockchain built on Tendermint Consensus, coacts with the Kosu system contracts, a set of Ethereum-based contracts, to align shareholder incentives and manage the overall network state. The result is a curated, verifiable, public set of order messages.
 
-The Kosu network provides a venue for order message broadcast and price discovery for any type of Ethereum-based financial primitive that meets the following criteria. They must 1) allow arbitrary "off-chain" methods for broadcast and discovery of signed, executable order messages, and 2) implement some type of settlement or execution "on-chain", where the transfer of assets and validation of balances takes place via protocol-independent Ethereum contracts.
+For market makers, Kosu provides an unrestricted venue for order message broadcast. For traders, Kosu offers a highly accessible liquidity source for a tremendous variety of virtual assets.
 
-[Click here](./overview/) for a complete technical introduction to the Kosu protocol.
+[Click here](./overview/) for a technical introduction to the Kosu protocol.
 
 ## Use cases
 
-Developers, applications, and businesses can leverage the core protocol (contract system and OrderStream network) for a variety of use cases, finance-related or otherwise.
+Developers, applications, and businesses can leverage Kosu for a variety of use cases, finance-related or otherwise.
 
--   [Derive and serve an order book](https://github.com/ParadigmFoundation/OrderStream-SRA) from the OrderStream
--   [Tap into on-demand liquidity](./overview/readme.md#protocol-design) from anywhere in the world, without restriction
--   Build a "matcher" – an exchange build atop the decentralized OrderStream liquidity network
--   Trade fully client-side with an OrderStream node, and an Ethereum client
--   Use the OrderStream as infrastructure and an API to run an open order book relayer
--   Experiment with the OrderStream event-based API for new types of decentralized applications
+-   [Tap into a global liquidity source](./overview/readme.md#protocol-design) from anywhere in the world, without restriction.
+-   Complement [0x-mesh](https://github.com/0xProject/0x-mesh) by providing an aggregated view of the p2p mesh network (decentralized relayer) or by providing new peers an additional bootstrapping solution.
+-   Build a "matcher" – an exchange system build atop Kosu
+-   Trade fully client-side with a Kosu network node, and an Ethereum client
+-   Experiment with Kosu event-based API for new types of decentralized applications
 -   ...
 
 ## Core protocol
 
-The core protocol is implemented as an event-driven, proof-of-stake based relay network, supported by a system of Ethereum contracts. The network itself is currently built on [Tendermint](https://tendermint.com/).
+The core protocol is implemented as a bonded proof-of-stake aggregation network, supported by a system of Ethereum contracts. The network itself is currently built on [Tendermint Consensus](https://tendermint.com/).
 
-[Click here](./overview/governance.md) to read about governance of the Kosu protocol.
+[Click here](./overview/) to read a system overview, or about [token mechanics](./overview/token-mechanics) or [validator curation.](./overview/validator-curation)
 
 ## Developer tools
 
-Paradigm Labs is also leading development of a variety of developer tools to enable rapid development on top of the Kosu protocol. A non-exhaustive list is below.
+Paradigm Labs is also leading development of a variety of developer tools to enable rapid development on top of Kosu. A non-exhaustive list is below.
 
 -   [Kosu.js](./kosu.js/) (source code [here](https://github.com/ParadigmFoundation/kosu-monorepo))
     -   Primary library for interacting with the Kosu contract system and network
@@ -44,6 +43,6 @@ Paradigm Labs is committed to developing Kosu as open-source software. Connect w
 
 -   Documentation at [docs.kosu.io](https://docs.kosu.io)
 -   Source code hosted and developed [on GitHub](https://github.com/ParadigmFoundation)
--   Subscribe to [our subeddit](https://reddit.com/r/ParadigmFoundation)
--   Follow us [on Twitter](https://twitter.com/paradigmfdn), and [on Medium](https://medium.com/paradigm-foundation)
+-   Subscribe to [our subreddit](https://reddit.com/r/ParadigmFoundation)
+-   Follow us [on Twitter](https://twitter.com/paradigm_io), and [on Medium](https://medium.com/paradigm-foundation)
 -   Ask for help on [our chat server](https://chat.paradigm.market)

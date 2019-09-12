@@ -6,7 +6,7 @@ import (
 	"math"
 	"math/big"
 
-	"go-kosu/abci/types"
+	"github.com/ParadigmFoundation/kosu-monorepo/packages/go-kosu/abci/types"
 
 	abci "github.com/tendermint/tendermint/abci/types"
 	"github.com/tendermint/tendermint/crypto/tmhash"
@@ -33,8 +33,8 @@ func (app *App) deliverWitnessTx(tx *types.TransactionWitness, nodeID []byte) ab
 }
 
 func (app *App) pruneWitnessTxs(block uint64) {
+	params := app.store.ConsensusParams()
 	fn := func(tx *types.TransactionWitness) {
-		params := app.store.ConsensusParams()
 		if block-tx.Block >= params.BlocksBeforePruning {
 			app.log.Debug("Pruning tx", "id", hex.EncodeToString(tx.Id))
 			app.store.DeleteWitnessTx(tx.Id)
@@ -88,7 +88,7 @@ func (app *App) pushTransactionWitness(tx *types.TransactionWitness, nodeID []by
 		id := tmhash.SumTruncated(tx.PublicKey)
 		app.store.SetValidator(id, &types.Validator{
 			Balance:    tx.Amount,
-			Power:      scaleBalance(tx.Amount.BigInt()),
+			Power:      ScaleBalance(tx.Amount.BigInt()),
 			PublicKey:  tx.PublicKey,
 			EthAccount: tx.Address,
 			Applied:    false,
@@ -97,20 +97,24 @@ func (app *App) pushTransactionWitness(tx *types.TransactionWitness, nodeID []by
 	return nil
 }
 
-func scaleBalance(balance *big.Int) int64 {
+// ScaleBalance scales a balance down to a consensus Power representation
+func ScaleBalance(balance *big.Int) int64 {
 	if balance.Cmp(big.NewInt(0)) == 0 {
 		return int64(0)
 	}
 
-	scaled := &big.Rat{}
-	divisor := &big.Int{}
+	scaled := &big.Int{}
+	ether := &big.Int{}
+	scaled.Set(balance)
 
 	// scale balance by 10**18 (base units for KOSU)
+	// linter disabled for outdated gosec rule
 	// nolint:gosec
-	divisor = divisor.Exp(big.NewInt(10), big.NewInt(18), nil)
-	scaled.SetFrac(balance, divisor)
+	ether.Exp(big.NewInt(10), big.NewInt(18), big.NewInt(0))
+	scaled.Div(balance, ether)
 
-	res, _ := scaled.Float64()
-	power := math.Floor(res)
-	return int64(power)
+	if !scaled.IsInt64() {
+		return math.MaxInt64
+	}
+	return scaled.Int64()
 }

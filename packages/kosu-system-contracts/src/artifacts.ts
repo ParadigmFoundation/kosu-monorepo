@@ -11,10 +11,13 @@ import * as EventEmitter from "../generated-artifacts/EventEmitter.json";
 import * as KosuToken from "../generated-artifacts/KosuToken.json";
 import * as OrderGateway from "../generated-artifacts/OrderGateway.json";
 import * as PosterRegistry from "../generated-artifacts/PosterRegistry.json";
+import * as SignatureValidatorSubContract from "../generated-artifacts/SignatureValidatorSubContract.json";
+import * as TestToken from "../generated-artifacts/TestToken.json";
 import * as Treasury from "../generated-artifacts/Treasury.json";
 import * as ValidatorRegistry from "../generated-artifacts/ValidatorRegistry.json";
 import * as Voting from "../generated-artifacts/Voting.json";
 import * as ZeroExV2SubContract from "../generated-artifacts/ZeroExV2SubContract.json";
+
 export const artifacts = {
     AuthorizedAddresses: AuthorizedAddresses as KosuContractArtifact,
     EventEmitter: EventEmitter as KosuContractArtifact,
@@ -26,6 +29,8 @@ export const artifacts = {
     Voting: Voting as KosuContractArtifact,
     ZeroExV2SubContract: ZeroExV2SubContract as KosuContractArtifact,
     BasicTradeSubContract: BasicTradeSubContract as KosuContractArtifact,
+    SignatureValidatorSubContract: SignatureValidatorSubContract as KosuContractArtifact,
+    TestToken: TestToken as KosuContractArtifact,
 };
 
 // The below avoids compiler errors due to mis-matched types from devDoc output.

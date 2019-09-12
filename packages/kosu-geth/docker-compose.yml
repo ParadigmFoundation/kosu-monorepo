@@ -3,6 +3,7 @@ services:
   kosu:
     build:
       context: .
+      dockerfile: kosu.Dockerfile
     ports:
       - 8545:8545
       - 8546:8546

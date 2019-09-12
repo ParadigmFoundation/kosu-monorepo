@@ -1,0 +1,27 @@
+version: '3'
+
+services:
+  order-server:
+    container_name: order-server
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - '8000:8000'
+    environment:
+      - KOSU_JSONRPC_URL=
+
+      - PORT=8000
+      - MYSQL_HOST=mysql
+      - MYSQL_PORT=3306
+      - MYSQL_DATABASE=order_db
+      - MYSQL_USER=root
+      - MYSQL_PASSWORD=root
+  
+  mysql:
+    container_name: mysql
+    image: mariadb
+    restart: always
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=order_db

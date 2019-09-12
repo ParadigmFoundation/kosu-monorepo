@@ -1,108 +1,124 @@
-# Kosu monorepo CI config file (last updated: 24 June 2019)
-
+---
 kind: pipeline
 name: tests
 
+platform:
+  os: linux
+  arch: amd64
+
 steps:
-  - name: fetch
-    image: docker:git
-    commands:
-      - git fetch --tags
+- name: prettier_project
+  pull: always
+  image: gcr.io/kosu-io/node-lts:latest
+  commands:
+  - yarn prettier:ci
 
-  - name: prettier-project
-    image: gcr.io/kosu-io/node-lts:latest
-    pull: always
-    environment:
-      WEB3_URI: http://kosu-geth:8545
-    volumes:
-      - name: deps
-        path: /go
-    commands:
-      - yarn prettier:ci
-    depends_on:
-      - clone
+- name: build-project
+  pull: always
+  image: gcr.io/kosu-io/node-lts:latest
+  commands:
+  - yarn
+  - yarn setup:ci
+  - cd packages/kosu-system-contracts
+  - yarn migrate:ci
+  - WEB3_URI=http://go-kosu-ci-geth:8545 yarn migrate:ci
+  environment:
+    WEB3_URI: http://kosu-geth:8545
+    WEB3_URI_WS: ws://kosu-geth:8546
 
-  - name: build-project
-    image: gcr.io/kosu-io/node-lts:latest
-    pull: always
-    environment:
-      WEB3_URI: http://kosu-geth:8545
-    commands:
-      - yarn
-      - yarn setup:ci
-      - cd packages/kosu-system-contracts
-      - yarn migrate:ci
-    volumes:
-      - name: deps
-        path: /go
-    depends_on:
-      - clone
+- name: npm-tests
+  pull: always
+  image: gcr.io/kosu-io/node-lts:latest
+  commands:
+  - yarn test:ci
+  environment:
+    WEB3_URI: http://kosu-geth:8545
+    WEB3_URI_WS: ws://kosu-geth:8546
+  depends_on:
+  - build-project
 
-  - name: npm-tests
-    image: gcr.io/kosu-io/node-lts:latest
-    pull: always
-    environment:
-      WEB3_URI: http://kosu-geth:8545
-    commands:
-      - yarn test:ci
-    volumes:
-      - name: deps
-        path: /go
-    depends_on:
-      - build-project
+- name: solidity
+  pull: always
+  image: gcr.io/kosu-io/node-lts:latest
+  commands:
+  - yarn contracts:test:ci
+  environment:
+    WEB3_URI: http://kosu-geth:8545
+    WEB3_URI_WS: ws://kosu-geth:8546
+  depends_on:
+  - build-project
 
-  - name: solidity-tests
-    image: gcr.io/kosu-io/node-lts:latest
-    pull: always
-    environment:
-      WEB3_URI: http://kosu-geth:8545
-    commands:
-      - yarn contracts:test:ci
-    volumes:
-      - name: deps
-        path: /go
-    depends_on:
-      - build-project
+- name: kosu-node-0
+  pull: always
+  image: gcr.io/kosu-io/go-kosu-ci:latest
+  detach: true
+  commands:
+  - cd packages/go-kosu
+  - ./kosud -H ./testnet/node0 -E ws://go-kosu-ci-geth:8546
+  depends_on:
+  - build-project
 
-  - name: go-kosu
-    image: gcr.io/kosu-io/go-kosu-ci:latest
-    pull: always
-    environment:
-      WEB3_TEST_URI: ws://kosu-geth:8546
-    volumes:
-      - name: deps
-        path: /go
-    commands:
-      - cd packages/go-kosu
-      - make ci
-    depends_on:
-      - build-project
-  
-  - name: release
-    image: golang
-    environment:
-      GITHUB_TOKEN:
-        from_secret: github_token
-    volumes:
-      - name: deps
-        path: /go
-    commands:
-      - git checkout -- packages/kosu-system-contracts/src/deployedAddresses.json
-      - cd packages/go-kosu
-      - curl -sL https://git.io/goreleaser | bash
-    when:
-      event: tag
-    depends_on:
-      - build-project
+- name: kosu-node-1
+  pull: always
+  image: gcr.io/kosu-io/go-kosu-ci:latest
+  detach: true
+  commands:
+  - cd packages/go-kosu
+  - ./kosud -H ./testnet/node1 -E ws://go-kosu-ci-geth:8546
+  depends_on:
+  - build-project
 
-volumes:
-  - name: deps
-    temp: {}
+- name: kosu-node-2
+  pull: always
+  image: gcr.io/kosu-io/go-kosu-ci:latest
+  detach: true
+  commands:
+  - cd packages/go-kosu
+  - ./kosud -H ./testnet/node2 -E ws://go-kosu-ci-geth:8546
+  depends_on:
+  - build-project
+
+- name: kosu-node-3
+  pull: always
+  image: gcr.io/kosu-io/go-kosu-ci:latest
+  detach: true
+  commands:
+  - cd packages/go-kosu
+  - ./kosud -H ./testnet/node3 -E ws://go-kosu-ci-geth:8546
+  depends_on:
+  - build-project
+
+- name: go-kosu
+  pull: always
+  image: gcr.io/kosu-io/go-kosu-ci:latest
+  commands:
+  - cd packages/go-kosu
+  - export KOSU_TEST_NODES=$(pwd)/testnet/node0@kosu-node-1:26657,$(pwd)/testnet/node1@kosu-node-1:26657,$(pwd)/testnet/node2@kosu-node-1:26657,$(pwd)/testnet/node3@kosu-node-1:26657
+  - make ci
+  depends_on:
+  - build-project
+  - kosu-node-0
+  - kosu-node-1
+  - kosu-node-2
+  - kosu-node-3
 
 services:
-  - name: kosu-geth
-    image: gcr.io/kosu-io/kosu-geth:0.1.1
-    pull: always
-    ports:
-      - 8545
-      - 8546
+- name: kosu-geth
+  pull: always
+  image: gcr.io/kosu-io/kosu-test-geth:latest
+  ports:
+  - 8545
+  - 8546
+
+- name: go-kosu-ci-geth
+  pull: always
+  image: gcr.io/kosu-io/kosu-test-geth:latest
+  ports:
+  - 8545
+  - 8546
+
+trigger:
+  event:
+  - pull_request
+
+...

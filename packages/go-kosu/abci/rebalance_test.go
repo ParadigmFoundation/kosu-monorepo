@@ -4,13 +4,13 @@ import (
 	"math/big"
 	"testing"
 
-	"go-kosu/abci/types"
+	"github.com/ParadigmFoundation/kosu-monorepo/packages/go-kosu/abci/types"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 	abci "github.com/tendermint/tendermint/abci/types"
 	"github.com/tendermint/tendermint/libs/common"
-	"github.com/tendermint/tendermint/libs/db"
+	db "github.com/tendermint/tm-db"
 )
 
 func TestDeliverRebalanceTx(t *testing.T) {
@@ -35,7 +35,9 @@ func TestDeliverRebalanceTx(t *testing.T) {
 	buf, err := types.EncodeTx(tx)
 	require.NoError(t, err)
 
-	res := app.DeliverTx(buf)
+	res := app.DeliverTx(
+		abci.RequestDeliverTx{Tx: buf},
+	)
 
 	t.Run("AssertCode", func(t *testing.T) {
 		assert.Equal(t, abci.CodeTypeOK, res.Code,
@@ -49,7 +51,10 @@ func TestDeliverRebalanceTx(t *testing.T) {
 			{Key: []byte("round.start"), Value: []byte("100")},
 			{Key: []byte("round.end"), Value: []byte("110")},
 		}
-		assert.Equal(t, expectedTags, res.Tags)
+		expectedEvents := []abci.Event{
+			{Type: "tags", Attributes: expectedTags},
+		}
+		assert.Equal(t, expectedEvents, res.Events)
 	})
 }
 
@@ -165,7 +170,7 @@ func deliverRebalance(t *testing.T, app *App, priv []byte, number, start, end ui
 	buf, err := types.EncodeTx(tx)
 	require.NoError(t, err)
 
-	res := app.DeliverTx(buf)
+	res := app.DeliverTx(abci.RequestDeliverTx{Tx: buf})
 
 	t.Run("AssertCode", func(t *testing.T) {
 		assert.Equal(t, abci.CodeTypeOK, res.Code,

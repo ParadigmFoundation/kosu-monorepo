@@ -7,7 +7,7 @@ module.exports = {
             },
         ],
     ],
-    title: "Paradigm Docs",
+    title: "Kosu Docs",
     head: [
         ["link", { rel: "apple-touch-icon", sizes: "180x180", href: "/apple-touch-icon.png" }],
         ["link", { rel: "icon", type: "image/png", sizes: "32x32", href: "/favicon-32x32.png" }],
@@ -18,7 +18,7 @@ module.exports = {
         ["meta", { name: "msapplication-TileColor", content: "#2b5797" }],
         ["meta", { name: "theme-color", content: "#ffffff" }],
     ],
-    description: "Paradigm Documentation and Reference",
+    description: "Kosu Documentation and Reference",
     base: "/",
     themeConfig: {
         logo: "/docs-logo.png",
@@ -37,12 +37,9 @@ module.exports = {
                 children: [
                     "/",
                     "/overview/",
-                    "/overview/governance",
+                    "/overview/token-mechanics",
+                    "/overview/validator-curation",
                     "/overview/contributing",
-                    "/overview/token-model",
-                    //"/overview/terminology",
-                    //"/overview/architecture",
-                    //"/overview/examples"
                 ],
             },
             {
@@ -54,6 +51,7 @@ module.exports = {
                     "/kosu.js/classes/kosu",
                     "/kosu.js/classes/kosutoken",
                     "/kosu.js/classes/eventemitter",
+                    "/kosu.js/classes/nodeclient",
                     "/kosu.js/classes/ordergateway",
                     "/kosu.js/classes/orderhelper",
                     "/kosu.js/classes/posterregistry",

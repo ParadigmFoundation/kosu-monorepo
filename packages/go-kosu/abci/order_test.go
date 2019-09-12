@@ -3,18 +3,19 @@ package abci
 
 import (
 	"encoding/json"
-	"go-kosu/store"
 	"math/big"
 	"strings"
 	"testing"
 
-	"go-kosu/abci/types"
+	"github.com/ParadigmFoundation/kosu-monorepo/packages/go-kosu/store"
+
+	"github.com/ParadigmFoundation/kosu-monorepo/packages/go-kosu/abci/types"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 	abci "github.com/tendermint/tendermint/abci/types"
 	"github.com/tendermint/tendermint/libs/common"
-	"github.com/tendermint/tendermint/libs/db"
+	db "github.com/tendermint/tm-db"
 )
 
 var testCases = []struct {
@@ -60,7 +61,9 @@ func TestDeliverOrderTx(t *testing.T) {
 		buf, err := types.EncodeTx(tx)
 		require.NoError(t, err)
 
-		res := app.DeliverTx(buf)
+		res := app.DeliverTx(
+			abci.RequestDeliverTx{Tx: buf},
+		)
 
 		t.Run("AssertCode", func(t *testing.T) {
 			assert.Equal(t, uint32(1), res.Code,
@@ -91,7 +94,9 @@ func TestDeliverOrderTx(t *testing.T) {
 		buf, err := types.EncodeTx(tx)
 		require.NoError(t, err)
 
-		res := app.DeliverTx(buf)
+		res := app.DeliverTx(
+			abci.RequestDeliverTx{Tx: buf},
+		)
 
 		t.Run("AssertCode", func(t *testing.T) {
 			assert.Equal(t, abci.CodeTypeOK, res.Code,
@@ -114,7 +119,38 @@ func TestDeliverOrderTx(t *testing.T) {
 				{Key: []byte("order.poster"), Value: expectedPoster.Bytes()},
 				{Key: []byte("poster.limit"), Value: []byte("33332")},
 			}
-			assert.Equal(t, expectedTags, res.Tags)
+			expectedEvents := []abci.Event{
+				{Type: "tags", Attributes: expectedTags},
+			}
+			assert.Equal(t, expectedEvents, res.Events)
 		})
 	}
+}
+
+func TestCheckOrderSize(t *testing.T) {
+	db := db.NewMemDB()
+	done, app := newTestApp(t, db)
+	defer done()
+
+	_, priv, err := types.NewKeyPair()
+	require.NoError(t, err)
+
+	tx := &types.TransactionOrder{}
+	stx, err := types.WrapTx(tx).SignedTransaction(priv)
+	require.NoError(t, err)
+
+	buf, err := types.EncodeTx(stx)
+	require.NoError(t, err)
+
+	// Set MaxOrderBytes limit smaller than the Tx len
+	cp := app.store.ConsensusParams()
+	cp.MaxOrderBytes = uint32(len(buf) - 1)
+	app.store.SetConsensusParams(cp)
+
+	res := app.CheckTx(
+		abci.RequestCheckTx{Tx: buf},
+	)
+
+	assert.True(t, res.IsErr(), "Response should Err.")
+	assert.Contains(t, res.Log, "Tx size exceeds")
 }

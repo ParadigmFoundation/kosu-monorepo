@@ -47,13 +47,17 @@ To subscribe to the `newBlocks` events we should:
 
 AddOrders adds an array of Kosu orders to the network.
 
+_Method:_
+
+-   `kosu_addOrders`
+
 _Parameters:_
 
--   Order Transactions - `Array([order]())`
+-   `Order Transactions` - `Array`([TransactionOrder](https://godoc.org/github.com/ParadigmFoundation/kosu-monorepo/packages/go-kosu/abci/types#TransactionOrder))
 
 _Returns:_
 
--   Orders Result - `[object](AddOrdersResult)`
+-   `Orders Result` - [`AddOrdersResult`](https://godoc.org/github.com/ParadigmFoundation/kosu-monorepo/packages/go-kosu/rpc#AddOrdersResult)
 
 #### cURL example
 
@@ -113,7 +117,11 @@ curl -X POST localhost:14341 \
 LatestHeight returns the height of the best known block.
 The `latestHeight` method will return the integer height of the latest block committed to the blockchain.
 
-_Parameters:_
+_Method:_
+
+-   `kosu_latestHeight`
+
+_Parameters:_ None
 
 _Returns:_
 
@@ -129,9 +137,27 @@ curl -X POST --data '{"jsonrpc":"2.0","method":"kosu_latestHeight", "id": 1}' lo
 { "jsonrpc": "2.0", "id": 1, "result": 260 }
 ```
 
+### _NumberPosters_
+
+NumberPosters returns the number of poster accounts
+
+_Method:_
+
+-   `kosu_numberPosters`
+
+_Parameters:_ None
+
+_Returns:_
+
+-   `number` - _uint64_
+
 ### _QueryPoster_
 
 QueryPoster returns a poster given its address.
+
+_Method:_
+
+-   `kosu_queryPoster`
 
 _Parameters:_
 
@@ -139,7 +165,7 @@ _Parameters:_
 
 _Returns:_
 
--   `Poster` - _[object]()_
+-   `Poster` - _[`Poster`](https://godoc.org/github.com/ParadigmFoundation/kosu-monorepo/packages/go-kosu/abci/types#Poster)_
 
 #### cURL Example
 
@@ -165,13 +191,17 @@ curl -X POST localhost:14341 \
 QueryValidator returns a validator given its address.
 Validator's address is case insensitive.
 
+_Method:_
+
+-   `kosu_queryValidator`
+
 _Parameters:_
 
 -   `address` - _string_
 
 _Returns:_
 
--   `Validator` - _[object]()_
+-   `Validator` - _[`Validator`](https://godoc.org/github.com/ParadigmFoundation/kosu-monorepo/packages/go-kosu/abci/types#Validator)_
 
 #### cURL Example
 
@@ -199,6 +229,20 @@ curl -X POST localhost:14341 \
 }
 ```
 
+### _RemainingLimit_
+
+RemainingLimit returns the sum of all the poster's limit.
+
+_Method:_
+
+-   `kosu_remainingLimit`
+
+_Parameters:_ None
+
+_Returns:_
+
+-   `number` - _uint64_
+
 ### _RoundInfo_
 
 RoundInfo returns the current `RoundInfo`.
@@ -206,11 +250,15 @@ The `RoundInfo` object tracks rebalance round information.
 It is used to maintain sync with the Ethereum chain,
 which is used to mark the beginning and end of each rebalance round.
 
-_Parameters:_
+_Method:_
+
+-   `kosu_roundInfo`
+
+_Parameters:_ None
 
 _Returns:_
 
--   `RoundInfo` - _[object]()_
+-   `RoundInfo` - _[`RoundInfo`](https://godoc.org/github.com/ParadigmFoundation/kosu-monorepo/packages/go-kosu/abci/types#RoundInfo)_
 
 #### cURL example
 
@@ -224,15 +272,34 @@ curl -X POST localhost:14341 \
 { "jsonrpc": "2.0", "id": 1, "result": { "number": 48, "starts_at": 2613, "ends_at": 2623, "limit": 10 } }
 ```
 
+### _TotalOrders_
+
+TotalOrders returns the total number of orders in the system.
+This number is incremented each time one submits a new valid order
+
+_Method:_
+
+-   `kosu_totalOrders`
+
+_Parameters:_ None
+
+_Returns:_
+
+-   `number` - _uint64_
+
 ### _Validators_
 
 Validators returns the full validator set
 
-_Parameters:_
+_Method:_
+
+-   `kosu_validators`
+
+_Parameters:_ None
 
 _Returns:_
 
--   `Validator Set` - _Array([object]())_
+-   `Validator Set` - _`Array`([Validator](https://godoc.org/github.com/ParadigmFoundation/kosu-monorepo/packages/go-kosu/abci/types#Validator))_
 
 #### cURL example
 
@@ -294,13 +361,17 @@ _note_: `<<` and `>>` are not part of the response, instead it denotes the flow 
 
 NewBlocks subscribes to new blocks on the Kosu blockchain.
 
+_Method:_
+
+-   `kosu_subscribe`
+
 _Parameters:_
 
 -   `newBlocks` - _string_
 
 _Returns:_
 
--   `block` - _[object](https://godoc.org/github.com/tendermint/tendermint/types#Block)_
+-   `block` - _[`Block`](https://godoc.org/github.com/tendermint/tendermint/types#Block)_
 
 #### Go example
 
@@ -416,11 +487,15 @@ for {
 
 NewOrders subscribes to new Order Transactions.
 
-_Parameters:_
+_Method:_
+
+-   `kosu_subscribe`
+
+_Parameters:_ None
 
 _Returns:_
 
--   `Order Transaction` - _[object]()_
+-   `Order Transaction` - _[`TransactionOrder`](https://godoc.org/github.com/ParadigmFoundation/kosu-monorepo/packages/go-kosu/abci/types#TransactionOrder)_
 
 #### Go Example
 
@@ -526,13 +601,17 @@ for {
 
 NewRebalances subscribes to new Rebalance Transactions
 
+_Method:_
+
+-   `kosu_subscribe`
+
 _Parameters:_
 
 -   `newRebalances` - _string_
 
 _Returns:_
 
--   `Rebalance Transaction` - _[object]()_
+-   `Rebalance Transaction` - _[`TransactionRebalance`](https://godoc.org/github.com/ParadigmFoundation/kosu-monorepo/packages/go-kosu/abci/types#TransactionRebalance)_
 
 #### Go Example
 

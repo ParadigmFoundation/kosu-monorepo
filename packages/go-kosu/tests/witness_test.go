@@ -1,147 +1,73 @@
 package tests
 
 import (
-	"context"
-	"testing"
-
-	. "github.com/smartystreets/goconvey/convey"
-	"github.com/stretchr/testify/require"
-
-	"github.com/tendermint/tendermint/config"
-	"github.com/tendermint/tendermint/privval"
-	tmtypes "github.com/tendermint/tendermint/types"
-
-	"go-kosu/abci"
-	"go-kosu/abci/types"
+	"github.com/ParadigmFoundation/kosu-monorepo/packages/go-kosu/abci"
+	"github.com/ParadigmFoundation/kosu-monorepo/packages/go-kosu/abci/types"
 )
 
-func buildWitnessTx(cfg *config.Config, tx *types.TransactionWitness) *types.TransactionWitness {
-	priv := privval.LoadFilePV(
-		cfg.PrivValidatorKeyFile(),
-		cfg.PrivValidatorStateFile(),
-	).Key
+func (suite *IntegrationTestSuite) TestWitness() {
+	newTx := func() *types.TransactionWitness {
+		last, err := suite.Client().QueryLastEvent()
+		suite.Require().NoError(err)
 
-	tx.Address = priv.Address.String()
-	tx.PublicKey = priv.PubKey.Bytes()[5:]
-	return tx
-}
-
-func (s *Suite) TestWitnessTxPoster() {
-	GivenABCIServer(s.T(), s, func(t *testing.T) {
-		tx := buildWitnessTx(s.config, &types.TransactionWitness{
+		return &types.TransactionWitness{
 			Subject: types.TransactionWitness_POSTER,
-			Block:   10,
+			Block:   last,
 			Amount:  types.NewBigIntFromString("1000000000000000000", 10),
-		})
+			Address: randomHex(40),
+		}
+	}
 
-		ctx, cancel := context.WithCancel(context.Background())
-		defer cancel()
+	suite.Run("WithEnoughConfirmations", func() {
+		tx := newTx()
+		suite.WithConfirmations(tx)
+		suite.WaitForNewBlock()
 
-		ch, closer, err := s.client.Subscribe(ctx, "tm.event = 'Tx'")
-		So(err, ShouldBeNil)
-		defer closer()
+		poster, err := suite.Client().QueryPoster(tx.Address)
+		suite.Require().NoError(err)
 
-		Convey("Broadcasting a Witness Tx with enough confirmations", func() {
-			BroadcastTxSync(t, s.client, tx)
-
-			Convey("Querying Poster by Tx.Address should be found after N confirmations", func() {
-				<-ch
-
-				p, err := s.client.QueryPoster(tx.Address)
-				So(err, ShouldBeNil)
-				require.EqualValues(t, p.Balance.BigInt(), tx.Amount.BigInt())
-			})
-
-			Convey("Broadcasting a Witness Tx with smaller block number should error", func() {
-				tx.Block--
-
-				BroadcastTxSync(t, s.client, tx)
-
-				<-ch // discard the first tx
-				e := <-ch
-				txEvent := e.Data.(tmtypes.EventDataTx)
-				So(txEvent.Result.IsErr(), ShouldBeTrue)
-			})
-		})
-
-		Convey("Broadcasting a Witness Tx without required confirmations", func() {
-			BroadcastTxSync(t, s.client, tx)
-
-			Convey("Querying Poster by Tx.Address should NOT be found after N confirmations", func() {
-				//	<-ch
-
-				p, err := s.client.QueryPoster(tx.Address)
-				So(err, ShouldNotBeNil)
-				So(p, ShouldBeNil)
-			})
-		})
+		suite.NotNil(poster)
+		suite.Equal(tx.Amount.String(), poster.Balance.String())
 	})
-}
 
-func (s *Suite) TestWitnessValidator() {
-	GivenABCIServer(s.T(), s, func(t *testing.T) {
-		tx := buildWitnessTx(s.config, &types.TransactionWitness{
-			Subject: types.TransactionWitness_VALIDATOR,
-			Block:   10,
-			Amount:  types.NewBigIntFromString("1000000000000000000", 10),
-		})
+	suite.Run("WithoutEnoughConfirmations", func() {
+		tx := newTx()
+		res, err := suite.Client().BroadcastTxCommit(tx)
+		suite.Require().NoError(err)
+		suite.Require().True(res.DeliverTx.IsOK(), res.DeliverTx.Log)
 
-		ctx, cancel := context.WithCancel(context.Background())
-		defer cancel()
+		poster, err := suite.Client().QueryPoster(tx.Address)
+		suite.Require().Equal(abci.ErrNotFound, err, "got: %+v (%s)", poster, tx.Address)
+		suite.Nil(poster)
 
-		ch, closer, err := s.client.Subscribe(ctx, "tm.event = 'NewBlock'")
-		So(err, ShouldBeNil)
-		defer closer()
-
-		Convey("And an initial number of validators", func() {
-			res, err := s.client.Validators(nil)
-			require.NoError(t, err)
-			So(res.Validators[0].VotingPower, ShouldEqual, 10)
-
-			Convey("When a Tx is broadcasted", func() {
-				BroadcastTxSync(t, s.client, tx)
-				Convey("Validator's voting power should be updated", func() {
-					// Wait for 2 blocks for validator set to be updated
-					<-ch
-					<-ch
-
-					res, err := s.client.Validators(nil)
-					require.NoError(t, err)
-
-					So(res.Validators[0].VotingPower, ShouldEqual, 1)
-
-				})
-			})
-		})
 	})
-}
 
-func (s *Suite) TestWitnessTxPruning() {
-	GivenABCIServer(s.T(), s, func(t *testing.T) {
-		Convey("When a Tx#1 is broadcasted", func() {
-			tx := buildWitnessTx(s.config, &types.TransactionWitness{
-				Subject: types.TransactionWitness_VALIDATOR,
-				Block:   10,
-				Amount:  types.NewBigIntFromString("1000000000000000000", 10),
-			})
-			txID := tx.Hash()
+	suite.Run("WithSmallerBlock", func() {
+		tx := newTx()
+		tx.Block--
 
-			BroadcastTxCommit(t, s.client, tx)
-			res, err := s.client.ABCIQuery("/witness/key", txID)
-			require.NoError(t, err)
-			require.Zero(t, res.Response.Code)
-			require.NotNil(t, res.Response.Value)
+		res, err := suite.Client().BroadcastTxSync(tx)
+		suite.Require().NoError(err)
 
-			Convey("And Tx#2 is broadcasted `BlocksBeforePruning` Ethereum blocks later", func() {
-				tx.Block += abci.GenesisAppState.ConsensusParams.BlocksBeforePruning
-				BroadcastTxCommit(t, s.client, tx)
+		suite.NotEqual(0, res.Code)
+	})
 
-				Convey("Tx#1 should not exist", func() {
-					res, err := s.client.ABCIQuery("/witness/key", txID)
-					require.NoError(t, err)
-					require.Zero(t, res.Response.Code)
-				})
-			})
-		})
+	suite.Run("Prunning", func() {
+		tx1 := newTx()
+		suite.BroadcastTxCommit(tx1)
+
+		res, err := suite.Client().ABCIQuery("/witness/key", tx1.Hash())
+		suite.Require().NoError(err)
+		suite.Require().NotNil(res.Response.Value)
+		suite.Require().NotEmpty(res.Response.Value)
+
+		tx2 := newTx()
+		tx2.Block = abci.GenesisAppState.ConsensusParams.BlocksBeforePruning + tx1.Block
+		suite.BroadcastTxCommit(tx2)
+
+		res, err = suite.Client().ABCIQuery("/witness/key", tx1.Hash())
+		suite.Require().NoError(err)
+
+		suite.Empty(res.Response.Value)
 	})
 }

@@ -10,12 +10,13 @@ import (
 
 	"github.com/spf13/cobra"
 
-	"go-kosu/abci"
-	"go-kosu/abci/cli"
+	"github.com/ParadigmFoundation/kosu-monorepo/packages/go-kosu/abci"
+	"github.com/ParadigmFoundation/kosu-monorepo/packages/go-kosu/abci/cli"
+	"github.com/ParadigmFoundation/kosu-monorepo/packages/go-kosu/version"
 )
 
 func main() {
-	var client abci.Client
+	var client *abci.Client
 
 	rootCmd := &cobra.Command{
 		Use:   "kosu-cli",
@@ -45,11 +46,11 @@ func main() {
 		addr := cmd.Flag("abci").Value.String()
 
 		// update the client
-		client = *abci.NewHTTPClient(addr, key)
-		return nil
+		client, err = abci.NewHTTPClient(addr, key)
+		return err
 	}
 
-	abci := cli.New(&client)
+	abci := cli.New(client)
 
 	tx := &cobra.Command{
 		Use:   "tx",
@@ -71,6 +72,7 @@ func main() {
 	)
 
 	rootCmd.AddCommand(
+		version.NewCommand(),
 		tx,
 		query,
 	)

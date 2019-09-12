@@ -3,10 +3,11 @@ package rpc
 import (
 	"errors"
 	"fmt"
-	"go-kosu/abci"
 	"log"
 	"net/http"
 	"sync"
+
+	"github.com/ParadigmFoundation/kosu-monorepo/packages/go-kosu/abci"
 
 	"github.com/ethereum/go-ethereum/rpc"
 	"github.com/spf13/cobra"
@@ -49,9 +50,12 @@ func NewCommand() *cobra.Command {
 
 			return nil
 		},
-		Run: func(cmd *cobra.Command, args []string) {
-			client := abci.NewHTTPClient(url, key)
-			srv := NewServer(client)
+		RunE: func(cmd *cobra.Command, args []string) error {
+			fn := func() (*abci.Client, error) { return abci.NewHTTPClient(url, key) }
+			srv, err := NewServer(fn)
+			if err != nil {
+				return err
+			}
 
 			wg := sync.WaitGroup{}
 			if http {
@@ -74,6 +78,7 @@ func NewCommand() *cobra.Command {
 				}()
 			}
 			wg.Wait()
+			return nil
 		},
 	}
 

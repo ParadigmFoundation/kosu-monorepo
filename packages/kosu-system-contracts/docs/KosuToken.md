@@ -1,6 +1,6 @@
 # KosuToken
 
-KosuToken (KOSU) is an implentation of the ERC-20 interface and supporting bonding curve for mints and burns.
+KosuToken (KOSU) is an implementation of the ERC-20 interface and supporting bonding curve for mints and burns.
 
 ## Contents
 
@@ -14,7 +14,6 @@ KosuToken (KOSU) is an implentation of the ERC-20 interface and supporting bondi
     -   [estimateEtherToToken](#estimateethertotoken)
     -   [estimateTokenToEther](#estimatetokentoether)
     -   [increaseAllowance](#increaseallowance)
-    -   [mint](#mint)
     -   [mintTo](#mintto)
     -   [releaseTokens](#releasetokens)
     -   [transfer](#transfer)
@@ -82,7 +81,7 @@ An uint256 representing the amount owned by the passed address.
 
 ### bondTokens
 
-Uses the ether paid to calculate and mint tokens.
+Receives ether as a backing currency to be used against the bonding curve to mint tokens.
 
 #### Signature
 
@@ -98,7 +97,7 @@ function bondTokens(minPayout uint256) public (uint256)
 
 ### burn
 
-Burn tokens
+Voluntarily burn tokens.
 
 #### Signature
 
@@ -108,9 +107,9 @@ function burn(amount uint256) public
 
 #### Parameters:
 
-| Parameter | Type      | Description                 |
-| --------- | --------- | --------------------------- |
-| `amount`  | `uint256` | Number of tokens to destroy |
+| Parameter | Type      | Description               |
+| --------- | --------- | ------------------------- |
+| `amount`  | `uint256` | Number of tokens to burn. |
 
 ### decreaseAllowance
 
@@ -131,7 +130,7 @@ function decreaseAllowance(spender address, subtractedValue uint256) public (boo
 
 ### estimateEtherToToken
 
-Estimates the number of tokens to generate with the input ether at the current state.
+Estimates the number of tokens that would be minted with the input ether at the current ether and token balances.
 
 #### Signature
 
@@ -141,17 +140,17 @@ function estimateEtherToToken(input uint256) public view (uint256)
 
 #### Parameters:
 
-| Parameter | Type      | Description                       |
-| --------- | --------- | --------------------------------- |
-| `input`   | `uint256` | The amount of ether to contribute |
+| Parameter | Type      | Description                        |
+| --------- | --------- | ---------------------------------- |
+| `input`   | `uint256` | The amount of ether to contribute. |
 
 #### Returns:
 
-Number of tokens that would be generated
+Number of tokens that would be minted.
 
 ### estimateTokenToEther
 
-Estimates the amount of ether to return with the input number of tokens to burn.
+Estimates the amount of ether to be released with the input number of tokens to burn.
 
 #### Signature
 
@@ -161,13 +160,13 @@ function estimateTokenToEther(input uint256) public view (uint256)
 
 #### Parameters:
 
-| Parameter | Type      | Description                  |
-| --------- | --------- | ---------------------------- |
-| `input`   | `uint256` | The number of tokens to burn |
+| Parameter | Type      | Description                   |
+| --------- | --------- | ----------------------------- |
+| `input`   | `uint256` | The number of tokens to burn. |
 
 #### Returns:
 
-Amount of ether to receive
+Amount of ether to release.
 
 ### increaseAllowance
 
@@ -186,25 +185,9 @@ function increaseAllowance(spender address, addedValue uint256) public (bool)
 | `spender`    | `address` | The address which will spend the funds.            |
 | `addedValue` | `uint256` | The amount of tokens to increase the allowance by. |
 
-### mint
-
-Mint tokens
-
-#### Signature
-
-```solidity
-function mint(amount uint256) public
-```
-
-#### Parameters:
-
-| Parameter | Type      | Description                |
-| --------- | --------- | -------------------------- |
-| `amount`  | `uint256` | Number of tokens to create |
-
 ### mintTo
 
-Mint tokens to specified address
+Authorized addresses (mostly contract systems) may manually mint new tokens to desired addresses.
 
 #### Signature
 
@@ -214,14 +197,14 @@ function mintTo(_address address, amount uint256) public
 
 #### Parameters:
 
-| Parameter  | Type      | Description                 |
-| ---------- | --------- | --------------------------- |
-| `_address` | `address` | Address to receive tokens   |
-| `amount`   | `uint256` | Number of tokens to create. |
+| Parameter  | Type      | Description                |
+| ---------- | --------- | -------------------------- |
+| `_address` | `address` | Address to mint tokens to. |
+| `amount`   | `uint256` | Number of tokens to mint.  |
 
 ### releaseTokens
 
-Burns the input amount of tokens returning the calculated amount of ether.
+Burns the input tokens and releases the calculated amount of ether backing the tokens destroyed.
 
 #### Signature
 
@@ -231,9 +214,9 @@ function releaseTokens(tokensToBurn uint256) public
 
 #### Parameters:
 
-| Parameter      | Type      | Description                  |
-| -------------- | --------- | ---------------------------- |
-| `tokensToBurn` | `uint256` | The number of tokens to burn |
+| Parameter      | Type      | Description                             |
+| -------------- | --------- | --------------------------------------- |
+| `tokensToBurn` | `uint256` | The number of the users tokens to burn. |
 
 ### transfer
 

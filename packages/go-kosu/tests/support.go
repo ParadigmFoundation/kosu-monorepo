@@ -3,15 +3,16 @@ package tests
 import (
 	"io/ioutil"
 	"os"
+	"strings"
 	"testing"
 	"time"
 
 	"github.com/stretchr/testify/require"
 
-	"github.com/tendermint/tendermint/libs/db"
 	"github.com/tendermint/tendermint/libs/log"
+	db "github.com/tendermint/tm-db"
 
-	"go-kosu/abci"
+	"github.com/ParadigmFoundation/kosu-monorepo/packages/go-kosu/abci"
 )
 
 // StartServer starts a kosud test server.
@@ -20,6 +21,10 @@ func StartServer(t *testing.T, db db.DB) (*abci.App, func()) {
 	for {
 		app, closer, err := startServer(t, db)
 		if err != nil {
+			if strings.Contains(err.Error(), "address already in use") {
+				t.Fatal(err)
+			}
+
 			closer()
 			time.Sleep(100 * time.Millisecond)
 			continue

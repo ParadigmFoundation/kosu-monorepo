@@ -4,18 +4,19 @@ import (
 	"encoding/hex"
 
 	abci "github.com/tendermint/tendermint/abci/types"
-	"github.com/tendermint/tendermint/libs/db"
+	db "github.com/tendermint/tm-db"
 
 	cosmos "github.com/cosmos/cosmos-sdk/store"
 	"github.com/cosmos/cosmos-sdk/store/rootmulti"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 
-	"go-kosu/abci/types"
+	"github.com/ParadigmFoundation/kosu-monorepo/packages/go-kosu/abci/types"
+	"github.com/ParadigmFoundation/kosu-monorepo/packages/go-kosu/store"
 )
 
 // Store stores the application state
 type Store struct {
-	codec Codec
+	codec store.Codec
 
 	cms *rootmulti.Store
 
@@ -26,7 +27,7 @@ type Store struct {
 }
 
 // NewStore returns a new store
-func NewStore(db db.DB, cdc Codec) *Store {
+func NewStore(db db.DB, cdc store.Codec) *Store {
 	s := &Store{codec: cdc,
 		cms: rootmulti.NewStore(db),
 
@@ -105,8 +106,53 @@ func (s *Store) LastCommitID() cosmos.CommitID { return s.cms.LastCommitID() }
 
 // Query wrap the rootmulti.Query method
 func (s *Store) Query(req abci.RequestQuery) abci.ResponseQuery {
+	// TODO: move the switch to a sensible place (perhaps ./store or ./abci)
+	// this should not be local to the store implementation
+	switch req.Path {
+	case "/poster/number":
+		return s.queryPosterNumber()
+	case "/poster/remaininglimit":
+		return s.queryPosterRemainingLimit()
+	}
 	return s.cms.Query(req)
 }
+
+func (s *Store) queryPosterNumber() (resp abci.ResponseQuery) {
+	var num uint64
+	s.All(s.posterKey, func(_ string, _ []byte) {
+		num++
+	})
+
+	buf, err := s.codec.Encode(num)
+	if err != nil {
+		resp.Code = 1
+		resp.Log = err.Error()
+	} else {
+		resp.Value = buf
+	}
+
+	return resp
+}
+
+func (s *Store) queryPosterRemainingLimit() (resp abci.ResponseQuery) {
+	var num uint64
+	s.IteratePosters(func(_ string, p *types.Poster) {
+		num += p.Limit
+	})
+
+	buf, err := s.codec.Encode(num)
+	if err != nil {
+		resp.Code = 1
+		resp.Log = err.Error()
+	} else {
+		resp.Value = buf
+	}
+
+	return resp
+}
+
+// Codec returns the storage codec
+func (s *Store) Codec() store.Codec { return s.codec }
 
 // SetRoundInfo sets the RoundInfo
 func (s *Store) SetRoundInfo(v types.RoundInfo) {
@@ -141,6 +187,18 @@ func (s *Store) SetLastEvent(v uint64) {
 func (s *Store) LastEvent() uint64 {
 	var v uint64
 	s.Get("lastevent", s.chainKey, &v)
+	return v
+}
+
+// SetTotalOrders sets the TotalOrders
+func (s *Store) SetTotalOrders(v uint64) {
+	s.Set("totalorders", s.chainKey, v)
+}
+
+// TotalOrders gets the TotalOrders
+func (s *Store) TotalOrders() uint64 {
+	var v uint64
+	s.Get("totalorders", s.chainKey, &v)
 	return v
 }
 

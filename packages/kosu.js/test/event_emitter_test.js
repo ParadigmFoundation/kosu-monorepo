@@ -1,5 +1,4 @@
 const { EventEmitter } = require("../src/EventEmitter");
-const DeployedAddresses = require("@kosu/system-contracts").DeployedAddresses;
 
 describe("EventEmitter", () => {
     it("should allow constructor to configured with a custom address", async () => {
@@ -7,12 +6,6 @@ describe("EventEmitter", () => {
     });
 
     describe("getAddress", () => {
-        it("should return the configured address.", async () => {
-            await new EventEmitter({ web3Wrapper })
-                .getAddress()
-                .should.eventually.eq(DeployedAddresses["6174"].EventEmitter.contractAddress);
-        });
-
         it("throw when using an unknown network", async () => {
             await new EventEmitter({ web3Wrapper: nullWeb3Wrapper })
                 .getAddress()
@@ -23,16 +16,14 @@ describe("EventEmitter", () => {
     describe("getPastDecodedLogs", () => {
         it("should return decoded logs", async () => {
             const fromBlock = (await web3Wrapper.getBlockNumberAsync()) + 1;
-            await kosu.posterRegistry.registerTokens(TestValues.oneWei).catch(e => {
-                clearInterval(interval);
-                throw e;
-            });
+            await kosu.posterRegistry.pay(TestValues.oneWei);
             const logs = await kosu.eventEmitter.getPastDecodedLogs({ fromBlock });
             logs.length.should.eq(1);
             logs[0].decodedArgs.eventType.should.eq("PosterRegistryUpdate");
 
-            await kosu.posterRegistry.releaseTokens(TestValues.oneWei);
-            await kosu.treasury.withdraw(TestValues.oneWei);
+            const tokens = await kosu.posterRegistry.tokensRegisteredFor(accounts[0]);
+            await kosu.posterRegistry.releaseTokens(tokens);
+            await kosu.treasury.withdraw(tokens);
         });
     });
 
@@ -50,13 +41,14 @@ describe("EventEmitter", () => {
                     callback,
                 );
 
-                await kosu.posterRegistry.registerTokens(TestValues.oneWei).catch(e => {
+                await kosu.posterRegistry.pay(TestValues.oneWei).catch(e => {
                     clearInterval(interval);
                     throw e;
                 });
 
-                await kosu.posterRegistry.releaseTokens(TestValues.oneWei);
-                await kosu.treasury.withdraw(TestValues.oneWei);
+                const tokens = await kosu.posterRegistry.tokensRegisteredFor(accounts[0]);
+                await kosu.posterRegistry.releaseTokens(tokens);
+                await kosu.treasury.withdraw(tokens);
             })
                 .then(() => {
                     clearInterval(interval);
