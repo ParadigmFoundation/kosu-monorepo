@@ -20,8 +20,5 @@
     },
     "bugs": {
         "url": "https://github.com/ParadigmFoundation/kosu-monorepo/issues"
-    },
-    "publishConfig": {
-        "access": "public"
     }
 }
