@@ -41,7 +41,7 @@ describe("ValidatorRegistry", () => {
         await testHelpers.skipExitPeriod(resp4.blockNumber);
         await kosu.validatorRegistry.finalizeExit(pubKey);
 
-        await kosu.treasury.withdraw(await kosu.treasury.systemBalance(accounts[0]));
+        await testHelpers.clearTreasury(accounts[0]);
         await kosu.treasury.systemBalance(accounts[0]).then(x => x.eq(0)).should.eventually.be.true;
     });
 });

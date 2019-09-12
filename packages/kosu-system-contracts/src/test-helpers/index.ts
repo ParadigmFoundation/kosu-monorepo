@@ -121,6 +121,8 @@ export class TestHelpers {
     public async clearTreasury(address: string): Promise<void> {
         const transactions = [];
         const systemBalance = await this.migratedContracts.treasury.systemBalance.callAsync(address);
+        const unlockBlock = await this.migratedContracts.treasury.tokenLocksExpire.callAsync(address);
+        await this.skipTo(unlockBlock);
         if (systemBalance.gt(0)) {
             const currentBalance = await this.migratedContracts.treasury.currentBalance.callAsync(address);
             if (systemBalance.gt(currentBalance)) {
@@ -277,7 +279,11 @@ export class TestHelpers {
         }
     }
 
-    public async variablePoll(start: number, end: number): Promise<{ blockNumber: number; pollId: BigNumber }> {
+    public async variablePoll(
+        start: number,
+        end: number,
+        options: { win?: BigNumber; lose?: BigNumber } = {},
+    ): Promise<{ blockNumber: number; pollId: BigNumber }> {
         const base = await this.web3Wrapper.getBlockNumberAsync();
         const creationBlock = base + 1;
         const commitEnd = creationBlock + start;
@@ -285,6 +291,8 @@ export class TestHelpers {
         const { logs, blockNumber } = await this.migratedContracts.voting.createPoll.awaitTransactionSuccessAsync(
             new BigNumber(commitEnd),
             new BigNumber(revealEnd),
+            options.win || new BigNumber(0),
+            options.lose || new BigNumber(0),
         );
         const { pollId } = decodeKosuEvents(logs)[0];
         return { blockNumber, pollId: new BigNumber(pollId) };

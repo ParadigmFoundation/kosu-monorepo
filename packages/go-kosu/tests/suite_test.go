@@ -26,6 +26,7 @@ func init() {
 
 type Node struct {
 	Client  *abci.Client
+	URL     string
 	Config  *config.Config
 	PrivVal privval.FilePVKey
 }
@@ -164,6 +165,7 @@ func (suite *IntegrationTestSuite) addNode(homedir, url string) {
 
 	suite.Nodes = append(suite.Nodes, Node{
 		Client:  newClient(suite.T(), homedir, url),
+		URL:     url,
 		Config:  cfg,
 		PrivVal: priv,
 	})

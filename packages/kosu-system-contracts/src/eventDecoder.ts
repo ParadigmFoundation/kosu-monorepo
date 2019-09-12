@@ -61,7 +61,7 @@ export const eventDecoder = (eventReturnValues: any): any => {
                 owner: bytes32ToAddressString(data[1]),
                 challenger: bytes32ToAddressString(data[2]),
                 challengeId: hexToNumberString(data[3]),
-                pollId: hexToNumberString(data[3]),
+                pollId: hexToNumberString(data[4]),
                 details: stringData,
             });
             break;
