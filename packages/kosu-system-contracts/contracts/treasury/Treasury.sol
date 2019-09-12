@@ -266,14 +266,23 @@ contract Treasury is Authorizable {
 
     /** @dev Calculates addresses total locked tokens
     */
-    function _getLockedTokens(address account) internal view returns (uint) {
+    function _getLockedTokens(address account) internal returns (uint) {
+        //cleanup
+        _removeInactiveTokenLocks(account);
         //Updates the systemBalance for the account
         uint totalLocked;
-        uint maxVoteLock;//todo
+        uint maxVoteLock;
         for(uint i = 0; i < addressTokenLocks[account].length; i++) {
-            totalLocked = totalLocked.add(addressTokenLocks[account][i].value);
+            TokenLock storage lock = addressTokenLocks[account][i];
+            if(lock.pollId == 0) {
+                totalLocked = totalLocked.add(addressTokenLocks[account][i].value);
+            } else {
+                if (lock.value > maxVoteLock) {
+                    maxVoteLock = lock.value;
+                }
+            }
         }
-        return totalLocked;
+        return totalLocked + maxVoteLock;
     }
     /** @dev Reads the account addresses system balance.
     */
