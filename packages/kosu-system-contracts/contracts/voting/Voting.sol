@@ -100,7 +100,7 @@ contract Voting is IVoting {
         //Ensure commit phase hasn't ended, the user has not committed and has adequate balance in the treasury
         require(block.number <= p.commitEndBlock);
         require(!p.didCommit[msg.sender]);
-        require(treasury.registerVote(msg.sender, _pollId, _tokensToCommit, p.winnerLockEnd, p.loserLockEnd)); //TODO parameterize the 100
+        require(treasury.registerVote(msg.sender, _pollId, _tokensToCommit, p.winnerLockEnd, p.loserLockEnd));
         require(_tokensToCommit > 0);
 
         //Set the tokens committed hidden vote data
