@@ -152,7 +152,7 @@ contract Treasury is Authorizable {
     */
     function burnFrom(address account, uint amount) isAuthorized public {
         require(getCurrentBalance(account) >= amount);
-        kosuToken.burn(amount); //TODO: Consider event?
+        kosuToken.burn(amount);
         setCurrentBalance(account, getCurrentBalance(account).sub(amount));
         setSystemBalance(account, getSystemBalance(account).sub(amount));
     }
