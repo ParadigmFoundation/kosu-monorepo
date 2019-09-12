@@ -172,6 +172,12 @@ contract Treasury is Authorizable {
         return true;
     }
 
+    /** @dev Allows validator registry to lock tokens in treasury after an exit.
+        @notice Allows validator registry to lock tokens in treasury after an exit.
+        @param account The account validator is locking.
+        @param amount Number of tokens to lock.
+        @param endBlock The end of the lock.
+    */
     function validatorLock(address account, uint amount, uint endBlock) isAuthorized public {
         addressTokenLocks[account].push(TokenLock(
             amount,
@@ -181,6 +187,11 @@ contract Treasury is Authorizable {
         ));
     }
 
+    /** @dev Allows tokens to determine when all tokens are unlocked for a given account.
+        @notice Allows tokens to determine when all tokens are unlocked for a given account.
+        @param account The account to look at locks for.
+        @return Final block of the last lock to expire.
+    */
     function tokenLocksExpire(address account) public returns (uint lastBlock) {
         _removeInactiveTokenLocks(msg.sender);
         for(uint i = addressTokenLocks[account].length; i > 0; i--) {
