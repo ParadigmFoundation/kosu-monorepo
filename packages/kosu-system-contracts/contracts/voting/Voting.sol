@@ -58,7 +58,7 @@ contract Voting is IVoting {
         @param _loserLock Blocks after poll losing voters' tokens are locked.
         @return Poll index number. Will be used as the key for interacting with a vote.
     */
-    function createPoll(uint _commitEndBlock, uint _revealEndBlock, uint _winnerLock, uint _loserLock) public returns (uint) {//TODO is it a concern that polls could be created by anyone freely?
+    function createPoll(uint _commitEndBlock, uint _revealEndBlock, uint _winnerLock, uint _loserLock) public returns (uint) {
         // Reveal end after commit
         require(_commitEndBlock < _revealEndBlock);
 
