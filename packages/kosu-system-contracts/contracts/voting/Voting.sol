@@ -126,7 +126,6 @@ contract Voting is IVoting {
         require(block.number <= p.revealEndBlock, "reveal has ended");
         require(p.didCommit[msg.sender], "address hasn't committed");
         require(!p.didReveal[msg.sender], "address has revealed");
-        require(treasury.completeVote(msg.sender, _pollId), "token's broke lock");
 
         // Calculate and compare the commited vote
         bytes32 exposedVote = keccak256(abi.encodePacked(_voteOption, _voteSalt));
