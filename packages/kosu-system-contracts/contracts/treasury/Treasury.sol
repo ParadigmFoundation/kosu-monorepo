@@ -2,6 +2,7 @@ pragma solidity ^0.5.0;
 
 import "../base/Authorizable.sol";
 import "../lib/KosuToken.sol";
+import "../voting/IVoting.sol";
 
 /** @title Treasury
     @author Freydal
@@ -10,16 +11,19 @@ import "../lib/KosuToken.sol";
 contract Treasury is Authorizable {
     using SafeMath for uint;
 
-    struct PollLock {
+    IVoting voting;
+
+    struct TokenLock {
         uint value;
         uint pollId;
-        bool invalidated;
+        uint tokenLockEnd;
+        uint pollEarlyUnlock;
     }
 
     KosuToken public kosuToken;
     mapping(address => uint) private currentBalances;
     mapping(address => uint) private systemBalances;
-    mapping(address => PollLock[]) private userVotes;
+    mapping(address => TokenLock[]) private addressTokenLocks;
 
     /** @dev Initializes the treasury with the kosuToken and authorizedAddresses contracts.
         @notice Initializes the treasury with the kosuToken and authorizedAddresses contracts.
@@ -28,6 +32,10 @@ contract Treasury is Authorizable {
     */
     constructor(address payable kosuTokenAddress, address auth) Authorizable(auth) public {
         kosuToken = KosuToken(kosuTokenAddress);
+    }
+
+    function setVoting(address votingAddress) isAuthorized public {
+        voting = IVoting(votingAddress);
     }
 
     /** @dev Fallback payable function to allow ether but be bonded and directly deposit tokens into the Treasury.
@@ -67,6 +75,8 @@ contract Treasury is Authorizable {
         @param amount Number of tokens to withdraw.
     */
     function withdraw(uint amount) public {
+        require(getSystemBalance(msg.sender).sub(amount) >= _getLockedTokens(msg.sender), "tokens are locked");
+
         _withdraw(msg.sender, amount);
     }
 
@@ -141,7 +151,7 @@ contract Treasury is Authorizable {
     */
     function burnFrom(address account, uint amount) isAuthorized public {
         require(getCurrentBalance(account) >= amount, "insufficient current balance");
-        kosuToken.burn(amount); //TODO: Consider event?
+        kosuToken.burn(amount);
         setCurrentBalance(account, getCurrentBalance(account).sub(amount));
         setSystemBalance(account, getSystemBalance(account).sub(amount));
     }
@@ -152,41 +162,44 @@ contract Treasury is Authorizable {
         @param pollId The poll the account is voting on.
         @param amount Number of tokens contributed.
     */
-    function registerVote(address account, uint pollId, uint amount) isAuthorized public returns (bool) {
+    function registerVote(address account, uint pollId, uint amount, uint endBlock, uint losingEndBlock) isAuthorized public returns (bool) {
         if(systemBalances[account] < amount) {
             return false;
         }
 
-        userVotes[account].push(PollLock(amount, pollId, false));
+        addressTokenLocks[account].push(TokenLock(amount, pollId, endBlock, losingEndBlock));
 
         return true;
     }
 
-    /** @dev Releases lock on tokens for account after vote is revealed.  No longer tracks the revealed poll.
-        @notice Releases lock on tokens for account after vote is revealed.  No longer tracks the revealed poll.
-        @param account The account voting.
-        @param pollId The poll the account is voting on.
+    /** @dev Allows validator registry to lock tokens in treasury after an exit.
+        @notice Allows validator registry to lock tokens in treasury after an exit.
+        @param account The account validator is locking.
+        @param amount Number of tokens to lock.
+        @param endBlock The end of the lock.
     */
-    function completeVote(address account, uint pollId) isAuthorized public returns (bool) {
-        for(uint i = 0; i < userVotes[account].length; i++) {
-            PollLock storage v = userVotes[account][i];
-            if(v.pollId == pollId) {
-                bool notInvalidated = !v.invalidated;
+    function validatorLock(address account, uint amount, uint endBlock) isAuthorized public {
+        addressTokenLocks[account].push(TokenLock(
+            amount,
+            0,
+            endBlock,
+            0
+        ));
+    }
 
-                if(i == userVotes[account].length) {
-                    delete userVotes[account][i];
-                    userVotes[account].length = userVotes[account].length - 1;
-                } else {
-                    userVotes[account][i] = userVotes[account][userVotes[account].length - 1];
-                    delete userVotes[account][userVotes[account].length - 1];
-                    userVotes[account].length = userVotes[account].length - 1;
-                }
-
-                return notInvalidated;
+    /** @dev Allows tokens to determine when all tokens are unlocked for a given account.
+        @notice Allows tokens to determine when all tokens are unlocked for a given account.
+        @param account The account to look at locks for.
+        @return Final block of the last lock to expire.
+    */
+    function tokenLocksExpire(address account) public returns (uint lastBlock) {
+        _removeInactiveTokenLocks(msg.sender);
+        for(uint i = addressTokenLocks[account].length; i > 0; i--) {
+            if(addressTokenLocks[account][i - 1].tokenLockEnd > lastBlock) {
+                lastBlock = addressTokenLocks[account][i - 1].tokenLockEnd;
             }
         }
-
-        return false;
+        return lastBlock;
     }
 
     /** @dev Reports the total balance within the entire contract system for an account.
@@ -240,6 +253,48 @@ contract Treasury is Authorizable {
         setCurrentBalance(account, getCurrentBalance(account).sub(amount));
     }
 
+    /** @dev Removes expired locks.
+    */
+    function _removeInactiveTokenLocks(address account) internal {
+        for(uint i = addressTokenLocks[account].length; i > 0; i--) {
+            TokenLock storage v = addressTokenLocks[account][i - 1];
+            (bool finished, uint winningTokens) = voting.userWinningTokens(v.pollId, msg.sender);
+            if(v.pollId > 0 && finished && winningTokens == 0) {
+                v.tokenLockEnd = v.pollEarlyUnlock;
+            }
+            if(v.tokenLockEnd < block.number) {
+                if(i == addressTokenLocks[account].length) {
+                    delete addressTokenLocks[account][i - 1];
+                    addressTokenLocks[account].length = addressTokenLocks[account].length - 1;
+                } else {
+                    addressTokenLocks[account][i - 1] = addressTokenLocks[account][addressTokenLocks[account].length - 1];
+                    delete addressTokenLocks[account][addressTokenLocks[account].length - 1];
+                    addressTokenLocks[account].length = addressTokenLocks[account].length - 1;
+                }
+            }
+        }
+    }
+
+    /** @dev Calculates addresses total locked tokens
+    */
+    function _getLockedTokens(address account) internal returns (uint) {
+        //cleanup
+        _removeInactiveTokenLocks(account);
+        //Updates the systemBalance for the account
+        uint totalLocked;
+        uint maxVoteLock;
+        for(uint i = 0; i < addressTokenLocks[account].length; i++) {
+            TokenLock storage lock = addressTokenLocks[account][i];
+            if(lock.pollId == 0) {
+                totalLocked = totalLocked.add(addressTokenLocks[account][i].value);
+            } else {
+                if (lock.value > maxVoteLock) {
+                    maxVoteLock = lock.value;
+                }
+            }
+        }
+        return totalLocked + maxVoteLock;
+    }
     /** @dev Reads the account addresses system balance.
     */
     function getSystemBalance(address account) internal view returns (uint) {
@@ -250,15 +305,6 @@ contract Treasury is Authorizable {
     /** @dev Sets the accounts system balance.
     */
     function setSystemBalance(address account, uint amount) internal {
-        //Updates the systemBalance for the account
-        if (systemBalances[account] > amount) {
-            for(uint i = 0; i < userVotes[account].length; i++) {
-                if(userVotes[account][i].value > amount) {
-                    userVotes[account][i].invalidated = true;
-                }
-            }
-        }
-
         systemBalances[account] = amount;
     }
 
