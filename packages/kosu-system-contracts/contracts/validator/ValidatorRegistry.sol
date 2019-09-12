@@ -62,9 +62,9 @@ contract ValidatorRegistry is Ownable {
     uint public challengePeriod;
     uint public exitPeriod;
     uint public rewardPeriod;
-    uint public exitLockPeriod = 100; //TODO add to update method
-    uint public winningVoteLockPeriod = 100;
-    uint public losingVoteLockPeriod = 50;
+    uint public exitLockPeriod;
+    uint public winningVoteLockPeriod;
+    uint public losingVoteLockPeriod;
     uint public minimumBalance = 500 ether;
     uint public stakeholderCut = 30; // Will be used as a percent so must be sub 100
     uint public minMaxGenerator = 1 ether / 10;
@@ -92,7 +92,7 @@ contract ValidatorRegistry is Ownable {
         @param _exitPeriod Number of blocks exiting listings must wait before claiming stake.
         @param _rewardPeriod The frequency (in blocks) with which validator rewards may be issued.
     */
-    constructor(address payable _treasuryAddress, address _votingAddress, address _events, uint _applicationPeriod, uint _commitPeriod, uint _challengePeriod, uint _exitPeriod, uint _rewardPeriod) public Ownable() {
+    constructor(address payable _treasuryAddress, address _votingAddress, address _events, uint _applicationPeriod, uint _commitPeriod, uint _challengePeriod, uint _exitPeriod, uint _rewardPeriod, uint _exitLockPeriod, uint _winningVoteLockPeriod, uint _losingVoteLockPeriod) public Ownable() {
         treasury = Treasury(_treasuryAddress);
         voting = Voting(_votingAddress);
         kosuToken = treasury.kosuToken();
@@ -102,6 +102,9 @@ contract ValidatorRegistry is Ownable {
         challengePeriod = _challengePeriod;
         exitPeriod = _exitPeriod;
         rewardPeriod = _rewardPeriod;
+        exitLockPeriod = _exitLockPeriod; //TODO initialize with this
+        winningVoteLockPeriod = _winningVoteLockPeriod;
+        losingVoteLockPeriod = _losingVoteLockPeriod;
     }
 
     /** @dev Expose the list of active listing keys.
