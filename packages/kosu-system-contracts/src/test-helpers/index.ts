@@ -279,7 +279,11 @@ export class TestHelpers {
         }
     }
 
-    public async variablePoll(start: number, end: number, options: { win?: BigNumber; lose?: BigNumber } = {}): Promise<{ blockNumber: number; pollId: BigNumber }> {
+    public async variablePoll(
+        start: number,
+        end: number,
+        options: { win?: BigNumber; lose?: BigNumber } = {},
+    ): Promise<{ blockNumber: number; pollId: BigNumber }> {
         const base = await this.web3Wrapper.getBlockNumberAsync();
         const creationBlock = base + 1;
         const commitEnd = creationBlock + start;

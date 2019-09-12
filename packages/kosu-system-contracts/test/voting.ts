@@ -51,8 +51,12 @@ describe("Voting", () => {
     describe("createPoll", () => {
         it("should allow a poll to be created", async () => {
             const nextPoll = await voting.nextPollId.callAsync();
-            const result = await voting.createPoll.awaitTransactionSuccessAsync(block1, block2, TestValues.zero, TestValues.zero).should.eventually.be
-                .fulfilled;
+            const result = await voting.createPoll.awaitTransactionSuccessAsync(
+                block1,
+                block2,
+                TestValues.zero,
+                TestValues.zero,
+            ).should.eventually.be.fulfilled;
             const decodedLogs = decodeKosuEvents(result.logs)[0];
 
             decodedLogs.eventType.should.eq("PollCreated");
@@ -66,11 +70,13 @@ describe("Voting", () => {
         });
 
         it("should not allow the commit end to be before reveal end", async () => {
-            await voting.createPoll.awaitTransactionSuccessAsync(block2, block1, TestValues.zero, TestValues.zero).should.eventually.be.rejected;
+            await voting.createPoll.awaitTransactionSuccessAsync(block2, block1, TestValues.zero, TestValues.zero)
+                .should.eventually.be.rejected;
         });
 
         it("should not allow the commit end to be equal to reveal end", async () => {
-            await voting.createPoll.awaitTransactionSuccessAsync(block1, block1, TestValues.zero, TestValues.zero).should.eventually.be.rejected;
+            await voting.createPoll.awaitTransactionSuccessAsync(block1, block1, TestValues.zero, TestValues.zero)
+                .should.eventually.be.rejected;
         });
     });
 
@@ -151,7 +157,10 @@ describe("Voting", () => {
             await voting.commitVote.awaitTransactionSuccessAsync(testPoll, secret1, TestValues.fiveEther).should
                 .eventually.be.fulfilled;
 
-            await treasury.withdraw.callAsync(TestValues.oneWei).should.eventually.be.rejected.and.have.property("message").that.contain("tokens are locked");
+            await treasury.withdraw
+                .callAsync(TestValues.oneWei)
+                .should.eventually.be.rejected.and.have.property("message")
+                .that.contain("tokens are locked");
         });
     });
 
