@@ -127,7 +127,7 @@ contract Treasury is Authorizable {
         //Remove the system balance
         setSystemBalance(account, getSystemBalance(account).sub(amount));
         // Require the tokens being confiscated are only tokens already in kosu system contract control
-        require(getSystemBalance(account) >= getCurrentBalance(account));
+        require(getSystemBalance(account) >= getCurrentBalance(account), "system balance overburn");
     }
 
     /** @dev Allows accounts to be rewarded with tokens. These tokens were previously obtained by the calling contract and are now being redistributed to the provided account.
@@ -150,7 +150,7 @@ contract Treasury is Authorizable {
         @param amount Number of tokens to burn.
     */
     function burnFrom(address account, uint amount) isAuthorized public {
-        require(getCurrentBalance(account) >= amount);
+        require(getCurrentBalance(account) >= amount, "insufficient current balance");
         kosuToken.burn(amount);
         setCurrentBalance(account, getCurrentBalance(account).sub(amount));
         setSystemBalance(account, getSystemBalance(account).sub(amount));
@@ -215,7 +215,7 @@ contract Treasury is Authorizable {
     function _bond(address account) internal returns (uint) {
         uint initialBalance = kosuToken.balanceOf(address(this));
         uint minted = kosuToken.bondTokens.value(msg.value)(0);
-        require(initialBalance+minted == kosuToken.balanceOf(address(this)));
+        require(initialBalance + minted == kosuToken.balanceOf(address(this)), "tokens not minted");
 
         setSystemBalance(account, getSystemBalance(account).add(minted));
         setCurrentBalance(account, getCurrentBalance(account).add(minted));
@@ -236,7 +236,7 @@ contract Treasury is Authorizable {
     */
     function _withdraw(address account, uint amount) internal {
         //Sends tokens to the account reduce the values of internal and system balances by the value.
-        require(getCurrentBalance(account) >= amount);
+        require(getCurrentBalance(account) >= amount, "insufficient tokens");
         require(kosuToken.transfer(account, amount));
         setSystemBalance(account, getSystemBalance(account).sub(amount));
         setCurrentBalance(account, getCurrentBalance(account).sub(amount));

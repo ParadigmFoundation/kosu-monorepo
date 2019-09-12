@@ -23,7 +23,7 @@ contract AuthorizedAddresses is Ownable {
         @param a Address to authorize
     */
     function authorizeAddress(address a) public {
-        require(authorizedAddresses[msg.sender]);
+        require(authorizedAddresses[msg.sender], "unauthorized");
         authorizedAddresses[a] = true;
     }
 

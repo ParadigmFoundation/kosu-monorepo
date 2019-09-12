@@ -12,8 +12,6 @@ steps:
   image: gcr.io/kosu-io/node-lts:latest
   commands:
   - yarn prettier:ci
-  depends_on:
-  - clone
 
 - name: build-project
   pull: always
@@ -27,8 +25,6 @@ steps:
   environment:
     WEB3_URI: http://kosu-geth:8545
     WEB3_URI_WS: ws://kosu-geth:8546
-  depends_on:
-  - clone
 
 - name: npm-tests
   pull: always
