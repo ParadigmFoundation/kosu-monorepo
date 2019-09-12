@@ -1,3 +1,5 @@
+// +build server
+
 package main
 
 import (
@@ -30,5 +32,7 @@ func main() {
 		}
 	}()
 
-	http.ListenAndServe(":14342", srv.WebsocketHandler([]string{"*"}))
+	panic(
+		http.ListenAndServe(":14342", srv.WebsocketHandler([]string{"*"})),
+	)
 }
