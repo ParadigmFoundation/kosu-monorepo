@@ -75,7 +75,6 @@ contract Treasury is Authorizable {
         @param amount Number of tokens to withdraw.
     */
     function withdraw(uint amount) public {
-        _removeInactiveTokenLocks(msg.sender);
         require(getSystemBalance(msg.sender).sub(amount) >= _getLockedTokens(msg.sender), "tokens are locked");
 
         _withdraw(msg.sender, amount);
@@ -182,7 +181,8 @@ contract Treasury is Authorizable {
         ));
     }
 
-    function tokenLocksExpire(address account) public view returns (uint lastBlock) {
+    function tokenLocksExpire(address account) public returns (uint lastBlock) {
+        _removeInactiveTokenLocks(msg.sender);
         for(uint i = addressTokenLocks[account].length; i > 0; i--) {
             if(addressTokenLocks[account][i - 1].tokenLockEnd > lastBlock) {
                 lastBlock = addressTokenLocks[account][i - 1].tokenLockEnd;
