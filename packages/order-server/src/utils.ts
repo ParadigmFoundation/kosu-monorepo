@@ -1,4 +1,4 @@
-import { BigNumber, orderHashUtils } from "0x.js";
+import { assetDataUtils, BigNumber, orderHashUtils } from "0x.js";
 import { NextFunction, Request, Response } from "express";
 
 import { DB } from "./db";
@@ -38,18 +38,22 @@ export const wrapAsync = (fn: (...args: any[]) => any) => {
 /**
  * Convert an array of full signed orders to quote snippets.
  */
-export function parseQuotesFromOrders(orders: SignedOrderWithID[], side: "bid" | "ask"): Quote[] {
+export function parseQuotesFromOrders(baseAsset: string, orders: SignedOrderWithID[]): Quote[] {
     const quotes: Quote[] = [];
     for (const order of orders) {
+        const { tokenAddress: makerAsset } = assetDataUtils.decodeERC20AssetData(order.makerAssetData);
         const makerAssetAmount = new BigNumber(order.makerAssetAmount);
         const takerAssetAmount = new BigNumber(order.takerAssetAmount);
 
-        const price =
-            side === "bid"
-                ? takerAssetAmount.div(makerAssetAmount).toFixed(8)
-                : makerAssetAmount.div(takerAssetAmount).toFixed(8);
-
-        const size = side === "bid" ? takerAssetAmount.toString() : makerAssetAmount.toString();
+        let price;
+        let size;
+        if (baseAsset.toLowerCase() === makerAsset.toLowerCase()) {
+            price = takerAssetAmount.div(makerAssetAmount).toFixed(10);
+            size = makerAssetAmount.toString();
+        } else {
+            price = makerAssetAmount.div(takerAssetAmount).toFixed(10);
+            size = takerAssetAmount.toString();
+        }
 
         const orderId = order.id;
         const expiration = order.expirationTimeSeconds.toString();

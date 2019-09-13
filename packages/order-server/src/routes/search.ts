@@ -10,7 +10,7 @@ export function searchClosure(db: DB): AsyncHandlerFunction {
         const { baseAsset, quoteAsset, side, page = 0, perPage = 10 } = req.query;
 
         const orders = await db.getOrdersForPair(baseAsset, quoteAsset, side, perPage, page);
-        const quotes = parseQuotesFromOrders(orders, side);
+        const quotes = parseQuotesFromOrders(baseAsset, orders);
         return res.status(200).send({ side, baseAsset, quoteAsset, page, perPage, quotes });
     };
 }
