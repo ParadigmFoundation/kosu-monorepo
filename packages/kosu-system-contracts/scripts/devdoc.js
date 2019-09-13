@@ -185,7 +185,7 @@ function parseMarkdown(devDoc, methods) {
                 table.rows.push({
                     Parameter: `\`${param.name}\``,
                     Type: `\`${param.type}\`` || "?",
-                    Description: param.desc,
+                    Description: param.desc || " ",
                 });
             }
             output.push({ h4: "Parameters:" }, { table });
