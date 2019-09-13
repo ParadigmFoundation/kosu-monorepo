@@ -64,7 +64,8 @@ export class DB {
 
         const qs = `SELECT * FROM orders WHERE\
             makerAssetData = '${makerAssetData}' AND \
-            takerAssetData = '${takerAssetData}' \
+            takerAssetData = '${takerAssetData}' AND \
+            expirationTimeSeconds > UNIX_TIMESTAMP(NOW()) \
             LIMIT ${page},${perPage}`;
         return this._query(qs);
     }
