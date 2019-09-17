@@ -53,7 +53,7 @@ func TestValidatorsVerification(t *testing.T) {
 		}
 
 		gen := GenesisValidatorSet{
-			GenesisValidator{PublicKey: string(pk2), EthereumAddress: "0x1", InitialStake: "1"},
+			GenesisValidator{TendermintAddress: string(pk2), EthereumAddress: "0x1", InitialStake: "1"},
 		}
 
 		_, err := UnifyValidators(updates, gen)
@@ -69,7 +69,7 @@ func TestValidatorsVerification(t *testing.T) {
 		}
 
 		gen := GenesisValidatorSet{
-			GenesisValidator{PublicKey: string(pk), EthereumAddress: "0x1", InitialStake: "20000000000000000000"},
+			GenesisValidator{TendermintAddress: string(pk), EthereumAddress: "0x1", InitialStake: "20000000000000000000"},
 		}
 
 		_, err := UnifyValidators(updates, gen)
@@ -87,8 +87,8 @@ func TestValidatorsVerification(t *testing.T) {
 		}
 
 		gen := GenesisValidatorSet{
-			GenesisValidator{PublicKey: string(pk2), EthereumAddress: "0x2", InitialStake: "2000000000000000000"},
-			GenesisValidator{PublicKey: string(pk1), EthereumAddress: "0x1", InitialStake: "1000000000000000000"},
+			GenesisValidator{TendermintAddress: string(pk2), EthereumAddress: "0x2", InitialStake: "2000000000000000000"},
+			GenesisValidator{TendermintAddress: string(pk1), EthereumAddress: "0x1", InitialStake: "1000000000000000000"},
 		}
 
 		set, err := UnifyValidators(updates, gen)
@@ -125,7 +125,7 @@ func TestValidatorsVerificationOnInitChain(t *testing.T) {
 	require.NoError(t, json.Unmarshal(doc.AppState, gen))
 
 	gen.InitialValidatorInfo = GenesisValidatorSet{
-		GenesisValidator{PublicKey: "key_foo"},
+		GenesisValidator{TendermintAddress: "key_foo"},
 	}
 
 	assert.Panics(t, func() {

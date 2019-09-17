@@ -13,9 +13,9 @@ import (
 // GenesisValidator is the data structure used to define a validator in the app_state section of the genesis file
 // It links a Tendermint PublicKey with an Ethereum Address.
 type GenesisValidator struct {
-	PublicKey       string `json:"public_key"`
-	EthereumAddress string `json:"ethereum_address"`
-	InitialStake    string `json:"initial_stake"`
+	TendermintAddress string `json:"tendermint_address"`
+	EthereumAddress   string `json:"ethereum_address"`
+	InitialStake      string `json:"initial_stake"`
 }
 
 // GenesisValidatorSet is the initial set of validators
@@ -23,7 +23,7 @@ type GenesisValidatorSet []GenesisValidator
 
 func (s GenesisValidatorSet) Len() int { return len(s) }
 func (s GenesisValidatorSet) Less(i, j int) bool {
-	return s[i].PublicKey < s[j].PublicKey
+	return s[i].TendermintAddress < s[j].TendermintAddress
 }
 func (s GenesisValidatorSet) Swap(i, j int) { s[i], s[j] = s[j], s[i] }
 

@@ -1,14 +1,16 @@
 package abci
 
 import (
-	"bytes"
+	"encoding/hex"
 	"errors"
 	"fmt"
 	"math/big"
 	"sort"
+	"strings"
 
 	"github.com/ParadigmFoundation/kosu-monorepo/packages/go-kosu/abci/types"
 	abci "github.com/tendermint/tendermint/abci/types"
+	"github.com/tendermint/tendermint/crypto/tmhash"
 )
 
 var (
@@ -26,6 +28,13 @@ var (
 		return fmt.Errorf("balance %d != %d", b1, b2)
 	}
 )
+
+// GetUpdateAddress returns the Tendermint's address of a Validator Update
+func GetUpdateAddress(update *abci.ValidatorUpdate) string {
+	key := tmhash.SumTruncated(update.PubKey.Data)
+	enc := hex.EncodeToString(key)
+	return strings.ToUpper(enc)
+}
 
 // UnifyValidators returns a new validator set built out of ValidatorUpdates and GenesisValidatorSet,
 // both present in the genesis file.
@@ -61,15 +70,20 @@ func UnifyValidators(updates abci.ValidatorUpdates, state GenesisValidatorSet) (
 		return nil, ErrLengthMismatch
 	}
 
+	// create a map of validators addresses to verify if they exist
+	addresses := make(map[string]struct{})
+	for _, update := range updates {
+		addr := GetUpdateAddress(&update)
+		addresses[addr] = struct{}{}
+	}
+
 	for i := range newSet {
-		v := &newSet[i]
+		v := newSet[i]
 		s := state[i]
 
 		// key verification
-		if !bytes.Equal(v.PublicKey, []byte(s.PublicKey)) {
-			return nil, NewPublicKeyMismatchError(
-				v.PublicKey, []byte(s.PublicKey),
-			)
+		if _, ok := addresses[s.TendermintAddress]; !ok {
+			return nil, fmt.Errorf("address from app_state.initial_validator_info[%s] was not found in []validators", s.TendermintAddress)
 		}
 
 		// balance verification

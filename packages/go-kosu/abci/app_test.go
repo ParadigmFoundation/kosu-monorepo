@@ -139,15 +139,18 @@ func TestGenesisStateCorrectness(t *testing.T) {
 
 	app := NewApp(db.NewMemDB(), dir)
 
-	updates := abci.ValidatorUpdates{
-		abci.Ed25519ValidatorUpdate([]byte("some_pub_key"), 10),
-	}
+	update := abci.Ed25519ValidatorUpdate([]byte("some_pub_key"), 10)
+	updates := abci.ValidatorUpdates{update}
 
+	/*
+		9339CD2572AB19E2A2E431EEF2E9FD2B1A91C472 is the Address of the update
+		To retrieve it call GetUpdateAddress(&update)
+	*/
 	t.Run("InitialValidatorInfo_And_Snapshot_Defined", func(t *testing.T) {
 		app.InitChain(abci.RequestInitChain{
 			Validators: updates, AppStateBytes: []byte(`{
 			"initial_validator_info": [
-				{"public_key": "some_pub_key", "ethereum_address": "0xethereum", "initial_stake": "10000000000000000000"}
+				{"tendermint_address": "9339CD2572AB19E2A2E431EEF2E9FD2B1A91C472", "ethereum_address": "0xethereum", "initial_stake": "10000000000000000000"}
 			],
 			"snapshot_block": 999
 		}`),
@@ -159,7 +162,7 @@ func TestGenesisStateCorrectness(t *testing.T) {
 			app.InitChain(abci.RequestInitChain{
 				Validators: updates, AppStateBytes: []byte(`{
 			"initial_validator_info": [
-				{"public_key": "some_pub_key", "ethereum_address": "0xethereum", "initial_stake": "10000000000000000000"}
+				{"tendermint_address": "9339CD2572AB19E2A2E431EEF2E9FD2B1A91C472", "ethereum_address": "0xethereum", "initial_stake": "10000000000000000000"}
 			],
 			"snapshot_block": 0
 		}`),
@@ -173,7 +176,7 @@ func TestGenesisStateCorrectness(t *testing.T) {
 			app.InitChain(abci.RequestInitChain{
 				Validators: updates, AppStateBytes: []byte(`{
 			"initial_validator_info": [
-				{"public_key": "some_pub_key", "ethereum_address": "0xethereum", "initial_stake": "99990000000000000000"}
+				{"tendermint_address": "9339CD2572AB19E2A2E431EEF2E9FD2B1A91C472", "ethereum_address": "0xethereum", "initial_stake": "99990000000000000000"}
 			],
 			"snapshot_block": 999
 		}`),
@@ -187,7 +190,7 @@ func TestGenesisStateCorrectness(t *testing.T) {
 			app.InitChain(abci.RequestInitChain{
 				Validators: updates, AppStateBytes: []byte(`{
 			"initial_validator_info": [
-				{"public_key": "different_pub_key", "ethereum_address": "0xethereum", "initial_stake": "10000000000000000000"}
+				{"tendermint_address": "0000000000000000000000000000000000000000", "ethereum_address": "0xethereum", "initial_stake": "10000000000000000000"}
 			],
 			"snapshot_block": 999
 		}`),
