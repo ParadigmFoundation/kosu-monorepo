@@ -1,4 +1,5 @@
 import { BigNumber } from "@0x/utils";
+import { soliditySha3 } from "web3-utils";
 
 import { AuthorizedAddressesContract, KosuTokenContract, PosterRegistryContract, TreasuryContract } from "../src";
 
@@ -490,6 +491,96 @@ describe("Treasury", async () => {
                 .plus(expectedReturn)
                 .toString()
                 .should.eq(finalCurrentBalance.toString());
+        });
+    });
+
+    describe("TokenLocks", () => {
+        const salt = new BigNumber("42");
+        const vote1 = new BigNumber("1");
+        const vote2 = new BigNumber("2");
+        const secret1 = soliditySha3({ t: "uint", v: new BigNumber("1") }, { t: "uint", v: salt });
+        const secret2 = soliditySha3({ t: "uint", v: new BigNumber("2") }, { t: "uint", v: salt });
+
+        it("should lock a validator after exit", async () => {
+            await testHelpers.prepareListing("0x010203", {
+                reward: await contracts.validatorRegistry.maxRewardRate.callAsync(),
+            });
+            await contracts.validatorRegistry.confirmListing.awaitTransactionSuccessAsync("0x010203");
+
+            const result = await contracts.validatorRegistry.initExit.awaitTransactionSuccessAsync("0x010203");
+
+            await testHelpers.skipExitPeriod(result.blockNumber);
+
+            const result2 = await contracts.validatorRegistry.finalizeExit.awaitTransactionSuccessAsync("0x010203");
+
+            const lockDuration = await contracts.validatorRegistry.exitLockPeriod.callAsync();
+            const lock = await contracts.treasury.tokenLocksExpire.callAsync(accounts[0]);
+
+            lockDuration
+                .plus(result2.blockNumber)
+                .toString()
+                .should.eq(lock.toString());
+
+            await testHelpers.clearTreasury(accounts[0]);
+        });
+
+        it("should lock a voter after commit until after the poll ends + winning side", async () => {
+            await kosuToken.transfer.awaitTransactionSuccessAsync(accounts[1], TestValues.fiveEther);
+            await testHelpers.prepareTokens(accounts[0], TestValues.fiveEther);
+            await testHelpers.prepareTokens(accounts[1], TestValues.fiveEther);
+            const { pollId, blockNumber } = await testHelpers.variablePoll(2, 2, {
+                win: new BigNumber(10),
+                lose: new BigNumber(5),
+            });
+            await contracts.voting.commitVote.awaitTransactionSuccessAsync(pollId, secret1, TestValues.oneEther).should
+                .eventually.be.fulfilled;
+            await contracts.voting.commitVote.awaitTransactionSuccessAsync(pollId, secret2, TestValues.fiveEther, {
+                from: accounts[1],
+            }).should.eventually.be.fulfilled;
+            await contracts.voting.revealVote.awaitTransactionSuccessAsync(pollId, vote1, salt).should.eventually.be
+                .fulfilled;
+            await contracts.voting.revealVote.awaitTransactionSuccessAsync(pollId, vote2, salt, { from: accounts[1] })
+                .should.eventually.be.fulfilled;
+
+            await testHelpers.skipBlocks(new BigNumber(1));
+            await contracts.voting.userWinningTokens
+                .callAsync(pollId, accounts[0])
+                .then(x => x.toString())
+                .should.eventually.eq("true,0");
+            await treasury.tokenLocksExpire
+                .callAsync(accounts[0])
+                .then(x => x.toString())
+                .should.eventually.eq((blockNumber + 4 + 5).toString());
+        });
+
+        it("should lock a voter after commit until after the poll ends + loosing side", async () => {
+            await kosuToken.transfer.awaitTransactionSuccessAsync(accounts[1], TestValues.fiveEther);
+            await testHelpers.prepareTokens(accounts[0], TestValues.fiveEther);
+            await testHelpers.prepareTokens(accounts[1], TestValues.fiveEther);
+            const { pollId, blockNumber } = await testHelpers.variablePoll(2, 2, {
+                win: new BigNumber(10),
+                lose: new BigNumber(5),
+            });
+            await contracts.voting.commitVote.awaitTransactionSuccessAsync(pollId, secret1, TestValues.oneEther).should
+                .eventually.be.fulfilled;
+            await contracts.voting.commitVote.awaitTransactionSuccessAsync(pollId, secret2, TestValues.fiveEther, {
+                from: accounts[1],
+            }).should.eventually.be.fulfilled;
+            await contracts.voting.revealVote.awaitTransactionSuccessAsync(pollId, vote1, salt).should.eventually.be
+                .fulfilled;
+            await contracts.voting.revealVote.awaitTransactionSuccessAsync(pollId, vote2, salt, { from: accounts[1] })
+                .should.eventually.be.fulfilled;
+
+            await testHelpers.skipBlocks(new BigNumber(1));
+            await contracts.voting.userWinningTokens
+                .callAsync(pollId, accounts[1])
+                .then(x => x.toString())
+                .should.eventually.eq([true, TestValues.fiveEther].toString());
+
+            await treasury.tokenLocksExpire
+                .callAsync(accounts[1])
+                .then(x => x.toString())
+                .should.eventually.eq((blockNumber + 4 + 10).toString());
         });
     });
 });

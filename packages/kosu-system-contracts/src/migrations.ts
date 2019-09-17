@@ -42,6 +42,9 @@ export async function migrations(
                 _challengePeriod: 30000,
                 _exitPeriod: 60000,
                 _rewardPeriod: 6000,
+                _exitLockPeriod: 30000,
+                _winningVoteLockPeriod: 20000,
+                _losingVoteLockPeriod: 10000,
             },
             3: {
                 _applicationPeriod: 60000,
@@ -49,6 +52,9 @@ export async function migrations(
                 _challengePeriod: 30000,
                 _exitPeriod: 60000,
                 _rewardPeriod: 6000,
+                _exitLockPeriod: 30000,
+                _winningVoteLockPeriod: 20000,
+                _losingVoteLockPeriod: 10000,
             },
             6174: {
                 _applicationPeriod: 600,
@@ -56,6 +62,9 @@ export async function migrations(
                 _challengePeriod: 1000,
                 _exitPeriod: 600,
                 _rewardPeriod: 600,
+                _exitLockPeriod: 600,
+                _winningVoteLockPeriod: 600,
+                _losingVoteLockPeriod: 300,
             },
             6175: {
                 _applicationPeriod: 10,
@@ -63,6 +72,9 @@ export async function migrations(
                 _challengePeriod: 20,
                 _exitPeriod: 5,
                 _rewardPeriod: 5,
+                _exitLockPeriod: 5,
+                _winningVoteLockPeriod: 4,
+                _losingVoteLockPeriod: 2,
             },
             default: {
                 _applicationPeriod: 8,
@@ -70,6 +82,9 @@ export async function migrations(
                 _challengePeriod: 8,
                 _exitPeriod: 2,
                 _rewardPeriod: 4,
+                _exitLockPeriod: 5,
+                _winningVoteLockPeriod: 4,
+                _losingVoteLockPeriod: 2,
             },
         };
         const zeroExAddresses = getContractAddressesForNetworkOrThrow([6174, 6175].includes(netId) ? 50 : netId);
@@ -130,6 +145,9 @@ export async function migrations(
             config._challengePeriod,
             config._exitPeriod,
             config._rewardPeriod,
+            config._exitLockPeriod,
+            config._winningVoteLockPeriod,
+            config._losingVoteLockPeriod,
         );
         const zeroExV2SubContract = await ZeroExV2SubContractContract.deployFrom0xArtifactAsync(
             artifacts.ZeroExV2SubContract as ContractArtifact,
@@ -139,6 +157,7 @@ export async function migrations(
             zeroExAddresses.exchange,
             zeroExAddresses.erc20Proxy,
         );
+
         await authorizedAddresses.authorizeAddress.awaitTransactionSuccessAsync(treasury.address).then(() => {
             console.log(`Authorized address: ${treasury.address}`);
         });
@@ -151,6 +170,12 @@ export async function migrations(
             console.log(`Authorized address: ${posterRegistry.address}`);
         });
 
+        await authorizedAddresses.authorizeAddress.awaitTransactionSuccessAsync(validatorRegistry.address).then(() => {
+            console.log(`Authorized address: ${validatorRegistry.address}`);
+        });
+
+        await treasury.setVoting.awaitTransactionSuccessAsync(voting.address);
+
         await web3Wrapper
             .sendTransactionAsync({
                 ...txDefaults,
@@ -162,10 +187,6 @@ export async function migrations(
                     console.log("Submitted initial bonding transaction.");
                 }),
             );
-
-        await authorizedAddresses.authorizeAddress.awaitTransactionSuccessAsync(validatorRegistry.address).then(() => {
-            console.log(`Authorized address: ${validatorRegistry.address}`);
-        });
 
         if (options.noLogs) {
             console = _console;

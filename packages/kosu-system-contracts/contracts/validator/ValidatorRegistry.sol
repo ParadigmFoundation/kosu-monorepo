@@ -62,6 +62,9 @@ contract ValidatorRegistry is Ownable {
     uint public challengePeriod;
     uint public exitPeriod;
     uint public rewardPeriod;
+    uint public exitLockPeriod;
+    uint public winningVoteLockPeriod;
+    uint public losingVoteLockPeriod;
     uint public minimumBalance = 500 ether;
     uint public stakeholderCut = 30; // Will be used as a percent so must be sub 100
     uint public minMaxGenerator = 1 ether / 10;
@@ -89,7 +92,7 @@ contract ValidatorRegistry is Ownable {
         @param _exitPeriod Number of blocks exiting listings must wait before claiming stake.
         @param _rewardPeriod The frequency (in blocks) with which validator rewards may be issued.
     */
-    constructor(address payable _treasuryAddress, address _votingAddress, address _events, uint _applicationPeriod, uint _commitPeriod, uint _challengePeriod, uint _exitPeriod, uint _rewardPeriod) public Ownable() {
+    constructor(address payable _treasuryAddress, address _votingAddress, address _events, uint _applicationPeriod, uint _commitPeriod, uint _challengePeriod, uint _exitPeriod, uint _rewardPeriod, uint _exitLockPeriod, uint _winningVoteLockPeriod, uint _losingVoteLockPeriod) public Ownable() {
         treasury = Treasury(_treasuryAddress);
         voting = Voting(_votingAddress);
         kosuToken = treasury.kosuToken();
@@ -99,6 +102,9 @@ contract ValidatorRegistry is Ownable {
         challengePeriod = _challengePeriod;
         exitPeriod = _exitPeriod;
         rewardPeriod = _rewardPeriod;
+        exitLockPeriod = _exitLockPeriod; //TODO initialize with this
+        winningVoteLockPeriod = _winningVoteLockPeriod;
+        losingVoteLockPeriod = _losingVoteLockPeriod;
     }
 
     /** @dev Expose the list of active listing keys.
@@ -265,7 +271,7 @@ contract ValidatorRegistry is Ownable {
         challenge.challenger = msg.sender;
         challenge.listingKey = listing.tendermintPublicKey;
         challenge.challengeEnd = block.number + challengePeriod;
-        challenge.pollId = voting.createPoll(block.number + commitPeriod, block.number + challengePeriod);
+        challenge.pollId = voting.createPoll(block.number + commitPeriod, block.number + challengePeriod, winningVoteLockPeriod, losingVoteLockPeriod);
         challenge.details = details;
         challenge.listingSnapshot = listing;
 
@@ -377,7 +383,7 @@ contract ValidatorRegistry is Ownable {
         }
 
         //Get vote info
-        uint winningTokens = voting.userWinningTokens(challenge.pollId, msg.sender);
+        (bool _x, uint winningTokens) = voting.userWinningTokens(challenge.pollId, msg.sender);
         uint totalWinningTokens = voting.totalWinningTokens(challenge.pollId);
 
         //Approve and release tokens to treasury for the listing holder Remaning tokens
@@ -484,6 +490,7 @@ contract ValidatorRegistry is Ownable {
         //Approve and release tokens to treasury
         kosuToken.approve(address(treasury), listing.stakedBalance);
         treasury.releaseTokens(msg.sender, listing.stakedBalance);
+        treasury.validatorLock(msg.sender, listing.stakedBalance, block.number + exitLockPeriod);
 
         //Clear listing data and remove from tracking array
         _removeListing(listing);
@@ -541,6 +548,12 @@ contract ValidatorRegistry is Ownable {
             maxGeneratorGrowth = value;
         } else if (index == 9) {
             maxMaxGenerator = value;
+        } else if (index == 10) {
+            exitLockPeriod = value;
+        } else if (index == 11) {
+            winningVoteLockPeriod = value;
+        } else if (index == 12) {
+            losingVoteLockPeriod = value;
         } else {
             revert("Index does not match a value");
         }

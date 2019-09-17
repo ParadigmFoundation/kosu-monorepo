@@ -144,7 +144,14 @@ export class Voting {
      */
     public async userWinningTokens(_pollId: BigNumber, _userAddress: string = this.coinbase): Promise<BigNumber> {
         const contract = await this.getContract();
-        return contract.userWinningTokens.callAsync(new BigNumber(_pollId.toString()), _userAddress);
+        const [bool, value] = await contract.userWinningTokens.callAsync(
+            new BigNumber(_pollId.toString()),
+            _userAddress,
+        );
+        if (!bool) {
+            throw new Error("Poll hasn't ended"); // This should be fine since previously the transaction would have reverted.
+        }
+        return value;
     }
 
     /**

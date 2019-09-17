@@ -51,8 +51,12 @@ describe("Voting", () => {
     describe("createPoll", () => {
         it("should allow a poll to be created", async () => {
             const nextPoll = await voting.nextPollId.callAsync();
-            const result = await voting.createPoll.awaitTransactionSuccessAsync(block1, block2).should.eventually.be
-                .fulfilled;
+            const result = await voting.createPoll.awaitTransactionSuccessAsync(
+                block1,
+                block2,
+                TestValues.zero,
+                TestValues.zero,
+            ).should.eventually.be.fulfilled;
             const decodedLogs = decodeKosuEvents(result.logs)[0];
 
             decodedLogs.eventType.should.eq("PollCreated");
@@ -66,11 +70,13 @@ describe("Voting", () => {
         });
 
         it("should not allow the commit end to be before reveal end", async () => {
-            await voting.createPoll.awaitTransactionSuccessAsync(block2, block1).should.eventually.be.rejected;
+            await voting.createPoll.awaitTransactionSuccessAsync(block2, block1, TestValues.zero, TestValues.zero)
+                .should.eventually.be.rejected;
         });
 
         it("should not allow the commit end to be equal to reveal end", async () => {
-            await voting.createPoll.awaitTransactionSuccessAsync(block1, block1).should.eventually.be.rejected;
+            await voting.createPoll.awaitTransactionSuccessAsync(block1, block1, TestValues.zero, TestValues.zero)
+                .should.eventually.be.rejected;
         });
     });
 
@@ -145,15 +151,16 @@ describe("Voting", () => {
             await voting.revealVote.awaitTransactionSuccessAsync(testPoll, vote1, salt).should.eventually.be.rejected;
         });
 
-        it("should not allow a voter to reveal when the tokens are gone", async () => {
+        it("should not allow a voter to move tokens after commit", async () => {
             await treasury.withdraw.awaitTransactionSuccessAsync(await treasury.currentBalance.callAsync(accounts[0]));
             const testPoll = await oneTwoPoll();
             await voting.commitVote.awaitTransactionSuccessAsync(testPoll, secret1, TestValues.fiveEther).should
                 .eventually.be.fulfilled;
 
-            await treasury.withdraw.awaitTransactionSuccessAsync(TestValues.oneWei);
-
-            await voting.revealVote.awaitTransactionSuccessAsync(testPoll, vote1, salt).should.eventually.be.rejected;
+            await treasury.withdraw
+                .callAsync(TestValues.oneWei)
+                .should.eventually.be.rejected.and.have.property("message")
+                .that.contain("tokens are locked");
         });
     });
 
@@ -243,7 +250,7 @@ describe("Voting", () => {
             await voting.userWinningTokens
                 .callAsync(pollId, accounts[0])
                 .then(x => x.toString())
-                .should.eventually.eq("0");
+                .should.eventually.eq("true,0");
         });
 
         it("should report the correct number of tokens", async () => {
@@ -264,42 +271,7 @@ describe("Voting", () => {
             await voting.userWinningTokens
                 .callAsync(pollId, accounts[1])
                 .then(x => x.toString())
-                .should.eventually.eq(TestValues.fiveEther.toString());
-        });
-    });
-
-    describe("Vote Protections", () => {
-        it("should not allow a user to vote with the same tokens", async () => {
-            await testHelpers.prepareTokens(accounts[0], TestValues.fiveEther);
-            const { pollId, blockNumber } = await testHelpers.variablePoll(30, 30);
-
-            // Commit with 0 then send to 1
-            await voting.commitVote.awaitTransactionSuccessAsync(pollId, secret1, TestValues.fiveEther);
-            await treasury.withdraw.awaitTransactionSuccessAsync(TestValues.fiveEther);
-            await kosuToken.transfer.awaitTransactionSuccessAsync(accounts[1], TestValues.fiveEther);
-
-            // Prepare those tokens with 1 commit then send em back to 0
-            await kosuToken.approve.awaitTransactionSuccessAsync(treasury.address, TestValues.fiveEther, {
-                from: accounts[1],
-            });
-            await treasury.deposit.awaitTransactionSuccessAsync(TestValues.fiveEther, { from: accounts[1] });
-            await voting.commitVote.awaitTransactionSuccessAsync(pollId, secret1, TestValues.fiveEther, {
-                from: accounts[1],
-            });
-            await treasury.withdraw.awaitTransactionSuccessAsync(TestValues.fiveEther, { from: accounts[1] });
-            await kosuToken.transfer.awaitTransactionSuccessAsync(accounts[0], TestValues.fiveEther, {
-                from: accounts[1],
-            });
-
-            // Return tokens to vote ready state for 0
-            await kosuToken.approve.awaitTransactionSuccessAsync(treasury.address, TestValues.fiveEther);
-            await treasury.deposit.awaitTransactionSuccessAsync(TestValues.fiveEther);
-
-            // Skip to reveal
-            await testHelpers.skipTo(blockNumber + 30);
-
-            // Reveal with 0
-            await voting.revealVote.awaitTransactionSuccessAsync(pollId, vote1, salt).should.eventually.be.rejected;
+                .should.eventually.eq([true, TestValues.fiveEther].toString());
         });
     });
 });
