@@ -83,6 +83,15 @@ module.exports = {
                 food: "4.svg",
                 children: ["/go-kosu/", "/go-kosu/kosu_rpc"],
             },
+            {
+                title: "Kosu Genesis CLI",
+                collapsable: true,
+                food: "5.svg",
+                children: [
+                    "./kosu-genesis-cli/",
+                    "./kosu-genesis-cli/globals"
+                ],
+            },
         ],
     },
 };
