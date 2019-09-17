@@ -1,0 +1,3 @@
+# Tool: `gen-kosu`
+
+...
