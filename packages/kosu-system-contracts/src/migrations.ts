@@ -158,6 +158,7 @@ export async function migrations(
             zeroExAddresses.erc20Proxy,
         );
 
+        /* tslint:disable */
         await authorizedAddresses.authorizeAddress.awaitTransactionSuccessAsync(treasury.address).then(() => {
             console.log(`Authorized address: ${treasury.address}`);
         });
@@ -175,6 +176,7 @@ export async function migrations(
         });
 
         await treasury.setVoting.awaitTransactionSuccessAsync(voting.address);
+        /* tslint:enable */
 
         await web3Wrapper
             .sendTransactionAsync({

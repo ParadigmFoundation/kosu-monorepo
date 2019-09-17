@@ -21,7 +21,9 @@
         "prettier": "prettier --write '**/*.{ts,tsx,json,md,js}' --config .prettierrc",
         "prettier:ci": "prettier --list-different '**/*.{ts,tsx,json,md,js}' --config .prettierrc",
         "postinstall": "lerna link --force-local",
-        "setup:ci": "run-p lint build"
+        "setup:ci": "run-p lint build",
+        "kosu:test:start": "yarn workspace @kosu/kosu-geth kosu:test:start",
+        "migrate:ci": "yarn workspace @kosu/system-contracts migrate:ci"
     },
     "workspaces": {
         "packages": [
