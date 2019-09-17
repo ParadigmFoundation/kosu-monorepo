@@ -131,3 +131,74 @@ func TestUpdateConfirmationThreshold(t *testing.T) {
 		)
 	}
 }
+
+// nolint:lll
+func TestGenesisStateCorrectness(t *testing.T) {
+	dir := initTendermint(t)
+	closer := func() { _ = os.RemoveAll(dir) }
+	defer closer()
+
+	app := NewApp(db.NewMemDB(), dir)
+
+	update := abci.Ed25519ValidatorUpdate([]byte("some_pub_key"), 10)
+	updates := abci.ValidatorUpdates{update}
+
+	/*
+		9339CD2572AB19E2A2E431EEF2E9FD2B1A91C472 is the Address of the update
+		To retrieve it call GetUpdateAddress(&update)
+	*/
+
+	t.Run("InitialValidatorInfo_And_Snapshot_Defined", func(t *testing.T) {
+		app.InitChain(abci.RequestInitChain{
+			Validators: updates, AppStateBytes: []byte(`{
+			"initial_validator_info": [
+				{"tendermint_address": "9339CD2572AB19E2A2E431EEF2E9FD2B1A91C472", "ethereum_address": "0xethereum", "initial_stake": "10000000000000000000"}
+			],
+			"snapshot_block": 999
+		}`),
+		})
+	})
+
+	t.Run("InitialValidatorInfo_And_Snapshot_Zero", func(t *testing.T) {
+		fn := func() {
+			app.InitChain(abci.RequestInitChain{
+				Validators: updates, AppStateBytes: []byte(`{
+			"initial_validator_info": [
+				{"tendermint_address": "9339CD2572AB19E2A2E431EEF2E9FD2B1A91C472", "ethereum_address": "0xethereum", "initial_stake": "10000000000000000000"}
+			],
+			"snapshot_block": 0
+		}`),
+			})
+		}
+		assert.Panics(t, fn)
+	})
+
+	t.Run("Balances_Doesnt_Match", func(t *testing.T) {
+		fn := func() {
+			app.InitChain(abci.RequestInitChain{
+				Validators: updates, AppStateBytes: []byte(`{
+			"initial_validator_info": [
+				{"tendermint_address": "9339CD2572AB19E2A2E431EEF2E9FD2B1A91C472", "ethereum_address": "0xethereum", "initial_stake": "99990000000000000000"}
+			],
+			"snapshot_block": 999
+		}`),
+			})
+		}
+		assert.Panics(t, fn)
+	})
+
+	t.Run("PublicKeys_Doesnt_Match", func(t *testing.T) {
+		fn := func() {
+			app.InitChain(abci.RequestInitChain{
+				Validators: updates, AppStateBytes: []byte(`{
+			"initial_validator_info": [
+				{"tendermint_address": "0000000000000000000000000000000000000000", "ethereum_address": "0xethereum", "initial_stake": "10000000000000000000"}
+			],
+			"snapshot_block": 999
+		}`),
+			})
+		}
+		assert.Panics(t, fn)
+	})
+
+}
