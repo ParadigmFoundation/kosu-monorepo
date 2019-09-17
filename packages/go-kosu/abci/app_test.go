@@ -131,3 +131,69 @@ func TestUpdateConfirmationThreshold(t *testing.T) {
 		)
 	}
 }
+
+func TestGenesisStateCorrectness(t *testing.T) {
+	dir := initTendermint(t)
+	closer := func() { _ = os.RemoveAll(dir) }
+	defer closer()
+
+	app := NewApp(db.NewMemDB(), dir)
+
+	updates := abci.ValidatorUpdates{
+		abci.Ed25519ValidatorUpdate([]byte("some_pub_key"), 10),
+	}
+
+	t.Run("InitialValidatorInfo_And_Snapshot_Defined", func(t *testing.T) {
+		app.InitChain(abci.RequestInitChain{
+			Validators: updates, AppStateBytes: []byte(`{
+			"initial_validator_info": [
+				{"public_key": "some_pub_key", "ethereum_address": "0xethereum", "initial_stake": "10000000000000000000"}
+			],
+			"snapshot_block": 999
+		}`),
+		})
+	})
+
+	t.Run("InitialValidatorInfo_And_Snapshot_Zero", func(t *testing.T) {
+		fn := func() {
+			app.InitChain(abci.RequestInitChain{
+				Validators: updates, AppStateBytes: []byte(`{
+			"initial_validator_info": [
+				{"public_key": "some_pub_key", "ethereum_address": "0xethereum", "initial_stake": "10000000000000000000"}
+			],
+			"snapshot_block": 0
+		}`),
+			})
+		}
+		assert.Panics(t, fn)
+	})
+
+	t.Run("Balances_Doesnt_Match", func(t *testing.T) {
+		fn := func() {
+			app.InitChain(abci.RequestInitChain{
+				Validators: updates, AppStateBytes: []byte(`{
+			"initial_validator_info": [
+				{"public_key": "some_pub_key", "ethereum_address": "0xethereum", "initial_stake": "99990000000000000000"}
+			],
+			"snapshot_block": 999
+		}`),
+			})
+		}
+		assert.Panics(t, fn)
+	})
+
+	t.Run("PublicKeys_Doesnt_Match", func(t *testing.T) {
+		fn := func() {
+			app.InitChain(abci.RequestInitChain{
+				Validators: updates, AppStateBytes: []byte(`{
+			"initial_validator_info": [
+				{"public_key": "different_pub_key", "ethereum_address": "0xethereum", "initial_stake": "10000000000000000000"}
+			],
+			"snapshot_block": 999
+		}`),
+			})
+		}
+		assert.Panics(t, fn)
+	})
+
+}

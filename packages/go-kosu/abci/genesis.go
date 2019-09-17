@@ -1,8 +1,8 @@
 package abci
 
 import (
-	"bytes"
 	"encoding/json"
+	"errors"
 	"io/ioutil"
 
 	abci "github.com/tendermint/tendermint/abci/types"
@@ -13,9 +13,9 @@ import (
 // GenesisValidator is the data structure used to define a validator in the app_state section of the genesis file
 // It links a Tendermint PublicKey with an Ethereum Address.
 type GenesisValidator struct {
-	PublicKey       []byte
-	EthereumAddress string
-	InitialStake    string
+	PublicKey       string `json:"public_key"`
+	EthereumAddress string `json:"ethereum_address"`
+	InitialStake    string `json:"initial_stake"`
 }
 
 // GenesisValidatorSet is the initial set of validators
@@ -23,7 +23,7 @@ type GenesisValidatorSet []GenesisValidator
 
 func (s GenesisValidatorSet) Len() int { return len(s) }
 func (s GenesisValidatorSet) Less(i, j int) bool {
-	return bytes.Compare(s[i].PublicKey, s[j].PublicKey) <= 0
+	return s[i].PublicKey < s[j].PublicKey
 }
 func (s GenesisValidatorSet) Swap(i, j int) { s[i], s[j] = s[j], s[i] }
 
@@ -43,6 +43,10 @@ func NewGenesisFromRequest(req abci.RequestInitChain) (*Genesis, error) {
 	gen := &Genesis{}
 	if err := json.Unmarshal(req.AppStateBytes, gen); err != nil {
 		return nil, err
+	}
+
+	if len(gen.InitialValidatorInfo) != 0 && gen.SnapshotBlock == 0 {
+		return nil, errors.New(".SnapshotBlock can't be zero when .InitialValidatorInfo are defined")
 	}
 	return gen, nil
 }
