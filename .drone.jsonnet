@@ -78,6 +78,6 @@ local KosuGeth(name) = Image(name, "kosu-test-geth:latest") {
 	],
 
 	"trigger": {
-		"event": [ "pull_request" ]
+		"event": [ "pull_request", "tag" ]
 	},
 }
