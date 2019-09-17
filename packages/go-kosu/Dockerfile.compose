@@ -1,11 +1,4 @@
-FROM golang:1.12
+FROM golang:1.12.9
 
 WORKDIR /go-kosu
-# COPY kosud .
-# COPY kosu-cli .
-# COPY ./testnet/ ./testnet/
-
 COPY . .
-RUN go build -o kosud ./cmd/kosud
-
-CMD ./kosud
