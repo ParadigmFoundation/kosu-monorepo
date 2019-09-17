@@ -24,7 +24,7 @@ build:
 testnet:
 	docker-compose rm -f
 	docker-compose up --build goinstall
-	docker-compose up node0 node1 node2 node3 
+	docker-compose up --build node0 node1 node2 node3 
 
 test-fast:
 	$(GOTEST) -failfast
