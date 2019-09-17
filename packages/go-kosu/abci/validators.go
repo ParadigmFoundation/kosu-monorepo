@@ -19,10 +19,6 @@ var (
 	// ErrLengthMismatch means that the validators set sizes are not equal
 	ErrLengthMismatch = errors.New("length mismatch")
 
-	// NewPublicKeyMismatchError returns a PublicKey Mismatch formatted error
-	NewPublicKeyMismatchError = func(pk1, pk2 []byte) error {
-		return fmt.Errorf("public key '%X' != '%X'", pk1, pk2)
-	}
 	// NewBalanceMismatchError returns a Balance Mismatch formatted error
 	NewBalanceMismatchError = func(b1, b2 int64) error {
 		return fmt.Errorf("balance %d != %d", b1, b2)
