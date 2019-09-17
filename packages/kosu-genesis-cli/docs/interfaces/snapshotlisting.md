@@ -6,56 +6,56 @@
 
 ## Hierarchy
 
-* **SnapshotListing**
+-   **SnapshotListing**
 
-  * [SnapshotValidator](snapshotvalidator.md)
+    -   [SnapshotValidator](snapshotvalidator.md)
 
 ## Index
 
 ### Properties
 
-* [details](snapshotlisting.md#details)
-* [ethAddress](snapshotlisting.md#ethaddress)
-* [publicKey](snapshotlisting.md#publickey)
-* [stakeAmount](snapshotlisting.md#optional-stakeamount)
-* [status](snapshotlisting.md#status)
+-   [details](snapshotlisting.md#details)
+-   [ethAddress](snapshotlisting.md#ethaddress)
+-   [publicKey](snapshotlisting.md#publickey)
+-   [stakeAmount](snapshotlisting.md#optional-stakeamount)
+-   [status](snapshotlisting.md#status)
 
 ## Properties
 
-###  details
+### details
 
-• **details**: *string*
+• **details**: _string_
 
 Defined in types.d.ts:44
 
-___
+---
 
-###  ethAddress
+### ethAddress
 
-• **ethAddress**: *string*
+• **ethAddress**: _string_
 
 Defined in types.d.ts:43
 
-___
+---
 
-###  publicKey
+### publicKey
 
-• **publicKey**: *`Buffer`*
+• **publicKey**: _`Buffer`_
 
 Defined in types.d.ts:42
 
-___
+---
 
 ### `Optional` stakeAmount
 
-• **stakeAmount**? : *undefined | string*
+• **stakeAmount**? : _undefined | string_
 
 Defined in types.d.ts:45
 
-___
+---
 
-###  status
+### status
 
-• **status**: *"proposal" | "validator"*
+• **status**: _"proposal" | "validator"_
 
 Defined in types.d.ts:46

@@ -1,40 +1,40 @@
 {
-  "name": "@kosu/genesis-cli",
-  "version": "0.0.0",
-  "description": "Simple CLI for snap-shotting Kosu contract system to generate a Kosu network genesis file.",
-  "repository": "https://github.com/ParadigmFoundation/kosu-monorepo/blob/master/packages/kosu-genesis-cli",
-  "license": "MIT",
-  "private": false,
-  "main": "./lib/index.js",
-  "bin": {
-    "gen-kosu": "./lib/cli/main.js"
-  },
-  "scripts": {
-    "lint": "tslint -p .",
-    "lint:fix": "tslint -p . --fix",
-    "docs": "typedoc ./src",
-    "start": "nodemon --watch 'src/**/*.ts' --exec 'ts-node' src/index.ts",
-    "build": "tsc -p ."
-  },
-  "dependencies": {
-    "@kosu/kosu.js": "^0.3.0",
-    "@kosu/tsc-config": "^0.1.0",
-    "@kosu/tslint-config": "^0.0.4",
-    "chalk": "^2.4.2",
-    "commander": "^3.0.1",
-    "web3": "^1.2.1",
-    "web3-provider": "^1.0.0"
-  },
-  "devDependencies": {
-    "@types/commander": "^2.12.2",
-    "@types/node": "^12.7.5",
-    "@types/web3": "^1.0.19",
-    "nodemon": "^1.19.2",
-    "ts-node": "^8.4.1",
-    "tslint": "^5.20.0",
-    "typescript": "^3.6.3"
-  },
-  "files": [
-    "lib/"
-  ]
+    "name": "@kosu/genesis-cli",
+    "version": "0.0.0",
+    "description": "Simple CLI for snap-shotting Kosu contract system to generate a Kosu network genesis file.",
+    "repository": "https://github.com/ParadigmFoundation/kosu-monorepo/blob/master/packages/kosu-genesis-cli",
+    "license": "MIT",
+    "private": false,
+    "main": "./lib/index.js",
+    "bin": {
+        "gen-kosu": "./lib/cli/main.js"
+    },
+    "scripts": {
+        "lint": "tslint -p .",
+        "lint:fix": "tslint -p . --fix",
+        "docs": "typedoc ./src",
+        "start": "nodemon --watch 'src/**/*.ts' --exec 'ts-node' src/index.ts",
+        "build": "tsc -p ."
+    },
+    "dependencies": {
+        "@kosu/kosu.js": "^0.3.0",
+        "@kosu/tsc-config": "^0.1.0",
+        "@kosu/tslint-config": "^0.0.4",
+        "chalk": "^2.4.2",
+        "commander": "^3.0.1",
+        "web3": "^1.2.1",
+        "web3-provider": "^1.0.0"
+    },
+    "devDependencies": {
+        "@types/commander": "^2.12.2",
+        "@types/node": "^12.7.5",
+        "@types/web3": "^1.0.19",
+        "nodemon": "^1.19.2",
+        "ts-node": "^8.4.1",
+        "tslint": "^5.20.0",
+        "typescript": "^3.6.3"
+    },
+    "files": [
+        "lib/"
+    ]
 }

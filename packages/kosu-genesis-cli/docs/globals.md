@@ -8,44 +8,44 @@
 
 ### Interfaces
 
-* [AppState](interfaces/appstate.md)
-* [ConsensusParams](interfaces/consensusparams.md)
-* [GenesisBlock](interfaces/genesisblock.md)
-* [GenesisValidator](interfaces/genesisvalidator.md)
-* [InitialValidatorInfo](interfaces/initialvalidatorinfo.md)
-* [SnapshotListing](interfaces/snapshotlisting.md)
-* [SnapshotPoster](interfaces/snapshotposter.md)
-* [SnapshotValidator](interfaces/snapshotvalidator.md)
+-   [AppState](interfaces/appstate.md)
+-   [ConsensusParams](interfaces/consensusparams.md)
+-   [GenesisBlock](interfaces/genesisblock.md)
+-   [GenesisValidator](interfaces/genesisvalidator.md)
+-   [InitialValidatorInfo](interfaces/initialvalidatorinfo.md)
+-   [SnapshotListing](interfaces/snapshotlisting.md)
+-   [SnapshotPoster](interfaces/snapshotposter.md)
+-   [SnapshotValidator](interfaces/snapshotvalidator.md)
 
 ### Variables
 
-* [cli](globals.md#const-cli)
+-   [cli](globals.md#const-cli)
 
 ### Functions
 
-* [dateFromTimestamp](globals.md#datefromtimestamp)
-* [generateGenesisFromBlock](globals.md#generategenesisfromblock)
-* [getAppState](globals.md#getappstate)
-* [getInitialValidatorInfo](globals.md#getinitialvalidatorinfo)
-* [getTendermintValidators](globals.md#gettendermintvalidators)
-* [hexKeyToBase64](globals.md#hexkeytobase64)
-* [publicKeyToAddress](globals.md#publickeytoaddress)
-* [snapshotPostersAtBlock](globals.md#snapshotpostersatblock)
-* [snapshotValidatorsAtBlock](globals.md#snapshotvalidatorsatblock)
+-   [dateFromTimestamp](globals.md#datefromtimestamp)
+-   [generateGenesisFromBlock](globals.md#generategenesisfromblock)
+-   [getAppState](globals.md#getappstate)
+-   [getInitialValidatorInfo](globals.md#getinitialvalidatorinfo)
+-   [getTendermintValidators](globals.md#gettendermintvalidators)
+-   [hexKeyToBase64](globals.md#hexkeytobase64)
+-   [publicKeyToAddress](globals.md#publickeytoaddress)
+-   [snapshotPostersAtBlock](globals.md#snapshotpostersatblock)
+-   [snapshotValidatorsAtBlock](globals.md#snapshotvalidatorsatblock)
 
 ## Variables
 
 ### `Const` cli
 
-• **cli**: *`Command`* =  new commander.Command()
+• **cli**: _`Command`_ = new commander.Command()
 
 Defined in cli/cli.ts:3
 
 ## Functions
 
-###  dateFromTimestamp
+### dateFromTimestamp
 
-▸ **dateFromTimestamp**(`timestamp`: number): *`Date`*
+▸ **dateFromTimestamp**(`timestamp`: number): _`Date`_
 
 Defined in functions.ts:265
 
@@ -53,19 +53,19 @@ Return a `Date` object generated from a Unix timestamp in seconds.
 
 **Parameters:**
 
-Name | Type | Description |
------- | ------ | ------ |
-`timestamp` | number | A Unix timestamp (in seconds). |
+| Name        | Type   | Description                    |
+| ----------- | ------ | ------------------------------ |
+| `timestamp` | number | A Unix timestamp (in seconds). |
 
-**Returns:** *`Date`*
+**Returns:** _`Date`_
 
 The JavaScript Date object corresponding to that Unix time.
 
-___
+---
 
-###  generateGenesisFromBlock
+### generateGenesisFromBlock
 
-▸ **generateGenesisFromBlock**(`kosu`: `Kosu`, `chainId`: string, `snapshotBlock`: number, `startTime`: number, `consensusParams`: [ConsensusParams](interfaces/consensusparams.md)): *`Promise<GenesisBlock>`*
+▸ **generateGenesisFromBlock**(`kosu`: `Kosu`, `chainId`: string, `snapshotBlock`: number, `startTime`: number, `consensusParams`: [ConsensusParams](interfaces/consensusparams.md)): _`Promise<GenesisBlock>`_
 
 Defined in functions.ts:18
 
@@ -75,23 +75,23 @@ ValidatorRegistry contract, at a specified block height.
 
 **Parameters:**
 
-Name | Type | Description |
------- | ------ | ------ |
-`kosu` | `Kosu` | An initialized kosu.js instance. |
-`chainId` | string | The desired Kosu chain ID for the Tendermint blockchain. |
-`snapshotBlock` | number | The block at which to export contract system state. |
-`startTime` | number | The desired genesis time and network start time (Unix timestamp). |
-`consensusParams` | [ConsensusParams](interfaces/consensusparams.md) | Network-specific consensus parameters agreed upon prior to genesis. |
+| Name              | Type                                             | Description                                                         |
+| ----------------- | ------------------------------------------------ | ------------------------------------------------------------------- |
+| `kosu`            | `Kosu`                                           | An initialized kosu.js instance.                                    |
+| `chainId`         | string                                           | The desired Kosu chain ID for the Tendermint blockchain.            |
+| `snapshotBlock`   | number                                           | The block at which to export contract system state.                 |
+| `startTime`       | number                                           | The desired genesis time and network start time (Unix timestamp).   |
+| `consensusParams` | [ConsensusParams](interfaces/consensusparams.md) | Network-specific consensus parameters agreed upon prior to genesis. |
 
-**Returns:** *`Promise<GenesisBlock>`*
+**Returns:** _`Promise<GenesisBlock>`_
 
 Promise resolving to object that can be JSON-serialized to a Kosu/Tendermint genesis file.
 
-___
+---
 
-###  getAppState
+### getAppState
 
-▸ **getAppState**(`validators`: [SnapshotValidator](interfaces/snapshotvalidator.md)[], `posters`: [SnapshotPoster](interfaces/snapshotposter.md)[], `snapshotBlock`: number, `consensusParameters`: [ConsensusParams](interfaces/consensusparams.md)): *`Promise<AppState>`*
+▸ **getAppState**(`validators`: [SnapshotValidator](interfaces/snapshotvalidator.md)[], `posters`: [SnapshotPoster](interfaces/snapshotposter.md)[], `snapshotBlock`: number, `consensusParameters`: [ConsensusParams](interfaces/consensusparams.md)): _`Promise<AppState>`_
 
 Defined in functions.ts:81
 
@@ -99,32 +99,32 @@ Constructs the `app_state` genesis field, where the following initial states
 are gathered or set, from re-processed Ethereum blockchain event logs, or from
 CLI input.
 
-- `initial_validator_info`: Set to match state with active validators at snapshot height
-- `initial_poster_info`: Set to match PosterRegistry contract  state at snapshot height
-- `snapshot_block`: The Ethereum block height at which contract system state should be exported
-- `consensus_params`: Consensus critical parameters, such as:
-     - `finality_threshold`: How old Ethereum events must be before state changes can be applied
-     - `period_limit`: Number of orders to be accepted per period (allocated to posters)
-     - `period_length`: The length of each rebalance period (in Ethereum blocks)
-     - `max_order_bytes`: Maximum size of an order message (protobuf-encoded transaction length)
-     - `blocks_before_pruning`: Maximum age of attestations before accepted and pending attestations are cleared
+-   `initial_validator_info`: Set to match state with active validators at snapshot height
+-   `initial_poster_info`: Set to match PosterRegistry contract state at snapshot height
+-   `snapshot_block`: The Ethereum block height at which contract system state should be exported
+-   `consensus_params`: Consensus critical parameters, such as:
+    -   `finality_threshold`: How old Ethereum events must be before state changes can be applied
+    -   `period_limit`: Number of orders to be accepted per period (allocated to posters)
+    -   `period_length`: The length of each rebalance period (in Ethereum blocks)
+    -   `max_order_bytes`: Maximum size of an order message (protobuf-encoded transaction length)
+    -   `blocks_before_pruning`: Maximum age of attestations before accepted and pending attestations are cleared
 
 **Parameters:**
 
-Name | Type | Description |
------- | ------ | ------ |
-`validators` | [SnapshotValidator](interfaces/snapshotvalidator.md)[] | Validators from ValidatorRegistry TCR snapshot. |
-`posters` | [SnapshotPoster](interfaces/snapshotposter.md)[] | Posters from PosterRegistry snapshot. |
-`snapshotBlock` | number | The Ethereum block used to generate validator and poster snapshot. |
-`consensusParameters` | [ConsensusParams](interfaces/consensusparams.md) | Consensus parameters to set in genesis.  |
+| Name                  | Type                                                   | Description                                                        |
+| --------------------- | ------------------------------------------------------ | ------------------------------------------------------------------ |
+| `validators`          | [SnapshotValidator](interfaces/snapshotvalidator.md)[] | Validators from ValidatorRegistry TCR snapshot.                    |
+| `posters`             | [SnapshotPoster](interfaces/snapshotposter.md)[]       | Posters from PosterRegistry snapshot.                              |
+| `snapshotBlock`       | number                                                 | The Ethereum block used to generate validator and poster snapshot. |
+| `consensusParameters` | [ConsensusParams](interfaces/consensusparams.md)       | Consensus parameters to set in genesis.                            |
 
-**Returns:** *`Promise<AppState>`*
+**Returns:** _`Promise<AppState>`_
 
-___
+---
 
-###  getInitialValidatorInfo
+### getInitialValidatorInfo
 
-▸ **getInitialValidatorInfo**(`validators`: [SnapshotValidator](interfaces/snapshotvalidator.md)[]): *`Promise<InitialValidatorInfo[]>`*
+▸ **getInitialValidatorInfo**(`validators`: [SnapshotValidator](interfaces/snapshotvalidator.md)[]): _`Promise<InitialValidatorInfo[]>`_
 
 Defined in functions.ts:237
 
@@ -133,19 +133,19 @@ client.
 
 **Parameters:**
 
-Name | Type | Description |
------- | ------ | ------ |
-`validators` | [SnapshotValidator](interfaces/snapshotvalidator.md)[] | Raw validator snapshot data. |
+| Name         | Type                                                   | Description                  |
+| ------------ | ------------------------------------------------------ | ---------------------------- |
+| `validators` | [SnapshotValidator](interfaces/snapshotvalidator.md)[] | Raw validator snapshot data. |
 
-**Returns:** *`Promise<InitialValidatorInfo[]>`*
+**Returns:** _`Promise<InitialValidatorInfo[]>`_
 
 Promise resolving to the array of initial validators as expected by `initial_validator_info`.
 
-___
+---
 
-###  getTendermintValidators
+### getTendermintValidators
 
-▸ **getTendermintValidators**(`validators`: [SnapshotValidator](interfaces/snapshotvalidator.md)[]): *`Promise<GenesisValidator[]>`*
+▸ **getTendermintValidators**(`validators`: [SnapshotValidator](interfaces/snapshotvalidator.md)[]): _`Promise<GenesisValidator[]>`_
 
 Defined in functions.ts:212
 
@@ -153,19 +153,19 @@ Convert the validator snapshot data to the JSON format expected by Tendermint.
 
 **Parameters:**
 
-Name | Type | Description |
------- | ------ | ------ |
-`validators` | [SnapshotValidator](interfaces/snapshotvalidator.md)[] | Raw validator snapshot data. |
+| Name         | Type                                                   | Description                  |
+| ------------ | ------------------------------------------------------ | ---------------------------- |
+| `validators` | [SnapshotValidator](interfaces/snapshotvalidator.md)[] | Raw validator snapshot data. |
 
-**Returns:** *`Promise<GenesisValidator[]>`*
+**Returns:** _`Promise<GenesisValidator[]>`_
 
 Promise resolving to Tendermint-style genesis validator JSON.
 
-___
+---
 
-###  hexKeyToBase64
+### hexKeyToBase64
 
-▸ **hexKeyToBase64**(`publicKey`: string): *string*
+▸ **hexKeyToBase64**(`publicKey`: string): _string_
 
 Defined in functions.ts:255
 
@@ -173,19 +173,19 @@ Convert a 0x-prefixed hex-encoded public key string to a base64-encoded string.
 
 **Parameters:**
 
-Name | Type | Description |
------- | ------ | ------ |
-`publicKey` | string | 0x-prefixed hex-encoded public key string. |
+| Name        | Type   | Description                                |
+| ----------- | ------ | ------------------------------------------ |
+| `publicKey` | string | 0x-prefixed hex-encoded public key string. |
 
-**Returns:** *string*
+**Returns:** _string_
 
 The base64-encoded string representation of the public key.
 
-___
+---
 
-###  publicKeyToAddress
+### publicKeyToAddress
 
-▸ **publicKeyToAddress**(`publicKey`: `Buffer`): *string*
+▸ **publicKeyToAddress**(`publicKey`: `Buffer`): _string_
 
 Defined in functions.ts:199
 
@@ -193,19 +193,19 @@ Convert a Tendermint public key to a Tendermint address (also called node ID).
 
 **Parameters:**
 
-Name | Type | Description |
------- | ------ | ------ |
-`publicKey` | `Buffer` | Tendermint 32-byte public key buffer. |
+| Name        | Type     | Description                           |
+| ----------- | -------- | ------------------------------------- |
+| `publicKey` | `Buffer` | Tendermint 32-byte public key buffer. |
 
-**Returns:** *string*
+**Returns:** _string_
 
 The corresponding Tendermint address string.
 
-___
+---
 
-###  snapshotPostersAtBlock
+### snapshotPostersAtBlock
 
-▸ **snapshotPostersAtBlock**(`kosu`: `Kosu`, `snapshotBlock`: number): *`Promise<SnapshotPoster[]>`*
+▸ **snapshotPostersAtBlock**(`kosu`: `Kosu`, `snapshotBlock`: number): _`Promise<SnapshotPoster[]>`_
 
 Defined in functions.ts:169
 
@@ -217,20 +217,20 @@ specified snapshot block.
 
 **Parameters:**
 
-Name | Type | Description |
------- | ------ | ------ |
-`kosu` | `Kosu` | An initialized kosu.js instance. |
-`snapshotBlock` | number | The Ethereum block at which to stop replaying past event logs. |
+| Name            | Type   | Description                                                    |
+| --------------- | ------ | -------------------------------------------------------------- |
+| `kosu`          | `Kosu` | An initialized kosu.js instance.                               |
+| `snapshotBlock` | number | The Ethereum block at which to stop replaying past event logs. |
 
-**Returns:** *`Promise<SnapshotPoster[]>`*
+**Returns:** _`Promise<SnapshotPoster[]>`_
 
 Promise resolving to snapshot poster info (see type definition).
 
-___
+---
 
-###  snapshotValidatorsAtBlock
+### snapshotValidatorsAtBlock
 
-▸ **snapshotValidatorsAtBlock**(`kosu`: `Kosu`, `snapshotBlock`: number): *`Promise<SnapshotValidator[]>`*
+▸ **snapshotValidatorsAtBlock**(`kosu`: `Kosu`, `snapshotBlock`: number): _`Promise<SnapshotValidator[]>`_
 
 Defined in functions.ts:108
 
@@ -244,11 +244,11 @@ as validators at the specified `snapshotBlock`.
 
 **Parameters:**
 
-Name | Type | Description |
------- | ------ | ------ |
-`kosu` | `Kosu` | An initialized kosu.js instance. |
-`snapshotBlock` | number | The Ethereum block at which to stop replaying past event logs. |
+| Name            | Type   | Description                                                    |
+| --------------- | ------ | -------------------------------------------------------------- |
+| `kosu`          | `Kosu` | An initialized kosu.js instance.                               |
+| `snapshotBlock` | number | The Ethereum block at which to stop replaying past event logs. |
 
-**Returns:** *`Promise<SnapshotValidator[]>`*
+**Returns:** _`Promise<SnapshotValidator[]>`_
 
 Promise resolving to array of snapshot validator data (see type definition).

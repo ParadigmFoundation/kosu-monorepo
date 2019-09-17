@@ -6,54 +6,54 @@
 
 ## Hierarchy
 
-* **GenesisBlock**
+-   **GenesisBlock**
 
 ## Index
 
 ### Properties
 
-* [app_hash](genesisblock.md#app_hash)
-* [app_state](genesisblock.md#app_state)
-* [chain_id](genesisblock.md#chain_id)
-* [genesis_time](genesisblock.md#genesis_time)
-* [validators](genesisblock.md#validators)
+-   [app_hash](genesisblock.md#app_hash)
+-   [app_state](genesisblock.md#app_state)
+-   [chain_id](genesisblock.md#chain_id)
+-   [genesis_time](genesisblock.md#genesis_time)
+-   [validators](genesisblock.md#validators)
 
 ## Properties
 
-###  app_hash
+### app_hash
 
-• **app_hash**: *string*
+• **app_hash**: _string_
 
 Defined in types.d.ts:5
 
-___
+---
 
-###  app_state
+### app_state
 
-• **app_state**: *[AppState](appstate.md)*
+• **app_state**: _[AppState](appstate.md)_
 
 Defined in types.d.ts:6
 
-___
+---
 
-###  chain_id
+### chain_id
 
-• **chain_id**: *string*
+• **chain_id**: _string_
 
 Defined in types.d.ts:3
 
-___
+---
 
-###  genesis_time
+### genesis_time
 
-• **genesis_time**: *string*
+• **genesis_time**: _string_
 
 Defined in types.d.ts:2
 
-___
+---
 
-###  validators
+### validators
 
-• **validators**: *[GenesisValidator](genesisvalidator.md)[]*
+• **validators**: _[GenesisValidator](genesisvalidator.md)[]_
 
 Defined in types.d.ts:4

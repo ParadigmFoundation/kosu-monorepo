@@ -6,27 +6,27 @@
 
 ## Hierarchy
 
-* **SnapshotPoster**
+-   **SnapshotPoster**
 
 ## Index
 
 ### Properties
 
-* [address](snapshotposter.md#address)
-* [balance](snapshotposter.md#balance)
+-   [address](snapshotposter.md#address)
+-   [balance](snapshotposter.md#balance)
 
 ## Properties
 
-###  address
+### address
 
-• **address**: *string*
+• **address**: _string_
 
 Defined in types.d.ts:55
 
-___
+---
 
-###  balance
+### balance
 
-• **balance**: *string*
+• **balance**: _string_
 
 Defined in types.d.ts:56

@@ -33,7 +33,7 @@ export interface GenesisValidator {
     pub_key: {
         type: string;
         value: string;
-    }
+    };
     power: string;
     name: string;
 }

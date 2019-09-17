@@ -3,30 +3,17 @@
     "compilerOptions": {
         "target": "es5",
         "module": "commonjs",
-        "lib": [
-            "es6",
-            "es2015",
-            "dom"
-        ],
+        "lib": ["es6", "es2015", "dom"],
         "declaration": true,
         "outDir": "lib",
         "rootDir": "src",
         "strict": true,
-        "types": [
-            "node"
-        ],
+        "types": ["node"],
         "esModuleInterop": true,
         "resolveJsonModule": true,
         "sourceMap": true,
         "moduleResolution": "node",
-        "typeRoots": [
-            "node_modules/@types",
-            "node_modules/@0x/typescript-typings/types"
-        ]
+        "typeRoots": ["node_modules/@types", "node_modules/@0x/typescript-typings/types"]
     },
-    "include": [
-        "../package.json",
-        "./src/**/*",
-        "../kosu-system-contracts/src/types.d.ts"
-    ]
+    "include": ["../package.json", "./src/**/*", "../kosu-system-contracts/src/types.d.ts"]
 }

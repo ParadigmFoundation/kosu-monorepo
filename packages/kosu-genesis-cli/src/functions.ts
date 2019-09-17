@@ -1,7 +1,16 @@
 import { Kosu } from "@kosu/kosu.js";
 import { createHash } from "crypto";
 
-import { AppState, ConsensusParams, GenesisBlock, GenesisValidator, InitialValidatorInfo, SnapshotListing, SnapshotPoster, SnapshotValidator } from "./types";
+import {
+    AppState,
+    ConsensusParams,
+    GenesisBlock,
+    GenesisValidator,
+    InitialValidatorInfo,
+    SnapshotListing,
+    SnapshotPoster,
+    SnapshotValidator,
+} from "./types";
 
 /**
  * Generate a Tendermint genesis file for a Kosu network, where the initial validators
@@ -141,7 +150,8 @@ export async function snapshotValidatorsAtBlock(kosu: Kosu, snapshotBlock: numbe
                 listings[tendermintPublicKeyHex].status = "validator";
                 break;
             }
-            default: continue;
+            default:
+                continue;
         }
     }
 
@@ -183,7 +193,8 @@ export async function snapshotPostersAtBlock(kosu: Kosu, snapshotBlock: number):
                 posters.push({ address, balance });
                 break;
             }
-            default: continue;
+            default:
+                continue;
         }
     }
 
@@ -199,7 +210,10 @@ export async function snapshotPostersAtBlock(kosu: Kosu, snapshotBlock: number):
 export function publicKeyToAddress(publicKey: Buffer): string {
     const digest = createHash("sha256");
     const hash = digest.update(publicKey).digest();
-    const address = hash.slice(0, 20).toString("hex").toUpperCase();
+    const address = hash
+        .slice(0, 20)
+        .toString("hex")
+        .toUpperCase();
     return address;
 }
 

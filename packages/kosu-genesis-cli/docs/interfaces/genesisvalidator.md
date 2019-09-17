@@ -6,46 +6,46 @@
 
 ## Hierarchy
 
-* **GenesisValidator**
+-   **GenesisValidator**
 
 ## Index
 
 ### Properties
 
-* [address](genesisvalidator.md#address)
-* [name](genesisvalidator.md#name)
-* [power](genesisvalidator.md#power)
-* [pub_key](genesisvalidator.md#pub_key)
+-   [address](genesisvalidator.md#address)
+-   [name](genesisvalidator.md#name)
+-   [power](genesisvalidator.md#power)
+-   [pub_key](genesisvalidator.md#pub_key)
 
 ## Properties
 
-###  address
+### address
 
-• **address**: *string*
+• **address**: _string_
 
 Defined in types.d.ts:32
 
-___
+---
 
-###  name
+### name
 
-• **name**: *string*
+• **name**: _string_
 
 Defined in types.d.ts:38
 
-___
+---
 
-###  power
+### power
 
-• **power**: *string*
+• **power**: _string_
 
 Defined in types.d.ts:37
 
-___
+---
 
-###  pub_key
+### pub_key
 
-• **pub_key**: *object*
+• **pub_key**: _object_
 
 Defined in types.d.ts:33
 

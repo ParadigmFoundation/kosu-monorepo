@@ -6,45 +6,45 @@
 
 ## Hierarchy
 
-* **AppState**
+-   **AppState**
 
 ## Index
 
 ### Properties
 
-* [consensus_params](appstate.md#consensus_params)
-* [initial_poster_info](appstate.md#initial_poster_info)
-* [initial_validator_info](appstate.md#initial_validator_info)
-* [snapshot_block](appstate.md#snapshot_block)
+-   [consensus_params](appstate.md#consensus_params)
+-   [initial_poster_info](appstate.md#initial_poster_info)
+-   [initial_validator_info](appstate.md#initial_validator_info)
+-   [snapshot_block](appstate.md#snapshot_block)
 
 ## Properties
 
-###  consensus_params
+### consensus_params
 
-• **consensus_params**: *[ConsensusParams](consensusparams.md)*
+• **consensus_params**: _[ConsensusParams](consensusparams.md)_
 
 Defined in types.d.ts:19
 
-___
+---
 
-###  initial_poster_info
+### initial_poster_info
 
-• **initial_poster_info**: *[SnapshotPoster](snapshotposter.md)[]*
+• **initial_poster_info**: _[SnapshotPoster](snapshotposter.md)[]_
 
 Defined in types.d.ts:21
 
-___
+---
 
-###  initial_validator_info
+### initial_validator_info
 
-• **initial_validator_info**: *[InitialValidatorInfo](initialvalidatorinfo.md)[]*
+• **initial_validator_info**: _[InitialValidatorInfo](initialvalidatorinfo.md)[]_
 
 Defined in types.d.ts:20
 
-___
+---
 
-###  snapshot_block
+### snapshot_block
 
-• **snapshot_block**: *number*
+• **snapshot_block**: _number_
 
 Defined in types.d.ts:22

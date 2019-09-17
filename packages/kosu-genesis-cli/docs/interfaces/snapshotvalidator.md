@@ -6,66 +6,66 @@
 
 ## Hierarchy
 
-* [SnapshotListing](snapshotlisting.md)
+-   [SnapshotListing](snapshotlisting.md)
 
-  * **SnapshotValidator**
+    -   **SnapshotValidator**
 
 ## Index
 
 ### Properties
 
-* [details](snapshotvalidator.md#details)
-* [ethAddress](snapshotvalidator.md#ethaddress)
-* [publicKey](snapshotvalidator.md#publickey)
-* [stakeAmount](snapshotvalidator.md#stakeamount)
-* [status](snapshotvalidator.md#status)
+-   [details](snapshotvalidator.md#details)
+-   [ethAddress](snapshotvalidator.md#ethaddress)
+-   [publicKey](snapshotvalidator.md#publickey)
+-   [stakeAmount](snapshotvalidator.md#stakeamount)
+-   [status](snapshotvalidator.md#status)
 
 ## Properties
 
-###  details
+### details
 
-• **details**: *string*
+• **details**: _string_
 
-*Inherited from [SnapshotListing](snapshotlisting.md).[details](snapshotlisting.md#details)*
+_Inherited from [SnapshotListing](snapshotlisting.md).[details](snapshotlisting.md#details)_
 
 Defined in types.d.ts:44
 
-___
+---
 
-###  ethAddress
+### ethAddress
 
-• **ethAddress**: *string*
+• **ethAddress**: _string_
 
-*Inherited from [SnapshotListing](snapshotlisting.md).[ethAddress](snapshotlisting.md#ethaddress)*
+_Inherited from [SnapshotListing](snapshotlisting.md).[ethAddress](snapshotlisting.md#ethaddress)_
 
 Defined in types.d.ts:43
 
-___
+---
 
-###  publicKey
+### publicKey
 
-• **publicKey**: *`Buffer`*
+• **publicKey**: _`Buffer`_
 
-*Inherited from [SnapshotListing](snapshotlisting.md).[publicKey](snapshotlisting.md#publickey)*
+_Inherited from [SnapshotListing](snapshotlisting.md).[publicKey](snapshotlisting.md#publickey)_
 
 Defined in types.d.ts:42
 
-___
+---
 
-###  stakeAmount
+### stakeAmount
 
-• **stakeAmount**: *string*
+• **stakeAmount**: _string_
 
-*Overrides [SnapshotListing](snapshotlisting.md).[stakeAmount](snapshotlisting.md#optional-stakeamount)*
+_Overrides [SnapshotListing](snapshotlisting.md).[stakeAmount](snapshotlisting.md#optional-stakeamount)_
 
 Defined in types.d.ts:50
 
-___
+---
 
-###  status
+### status
 
-• **status**: *"validator"*
+• **status**: _"validator"_
 
-*Overrides [SnapshotListing](snapshotlisting.md).[status](snapshotlisting.md#status)*
+_Overrides [SnapshotListing](snapshotlisting.md).[status](snapshotlisting.md#status)_
 
 Defined in types.d.ts:51

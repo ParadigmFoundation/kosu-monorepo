@@ -6,36 +6,36 @@
 
 ## Hierarchy
 
-* **InitialValidatorInfo**
+-   **InitialValidatorInfo**
 
 ## Index
 
 ### Properties
 
-* [ethereum_address](initialvalidatorinfo.md#ethereum_address)
-* [initial_stake](initialvalidatorinfo.md#initial_stake)
-* [tendermint_address](initialvalidatorinfo.md#tendermint_address)
+-   [ethereum_address](initialvalidatorinfo.md#ethereum_address)
+-   [initial_stake](initialvalidatorinfo.md#initial_stake)
+-   [tendermint_address](initialvalidatorinfo.md#tendermint_address)
 
 ## Properties
 
-###  ethereum_address
+### ethereum_address
 
-• **ethereum_address**: *string*
+• **ethereum_address**: _string_
 
 Defined in types.d.ts:27
 
-___
+---
 
-###  initial_stake
+### initial_stake
 
-• **initial_stake**: *string*
+• **initial_stake**: _string_
 
 Defined in types.d.ts:28
 
-___
+---
 
-###  tendermint_address
+### tendermint_address
 
-• **tendermint_address**: *string*
+• **tendermint_address**: _string_
 
 Defined in types.d.ts:26

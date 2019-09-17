@@ -23,12 +23,7 @@ export function loadConsensusParameters(program: Command): ConsensusParams {
 }
 
 export function validateOptions(program: Command): void {
-    const {
-        chainId,
-        providerUrl,
-        snapshotBlock,
-        startTime,
-    } = program;
+    const { chainId, providerUrl, snapshotBlock, startTime } = program;
 
     assert(chainId, "The chain ID is required (-n or --chain-id)");
     assert(snapshotBlock, "Snapshot block is required (-b or --snapshot-block)");
