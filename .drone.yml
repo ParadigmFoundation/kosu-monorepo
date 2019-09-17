@@ -48,20 +48,6 @@ steps:
   depends_on:
   - build-project
 
-- name: release
-  pull: always
-  image: gcr.io/kosu-io/node-lts:latest
-  commands:
-  - lerna changed
-  when:
-    event:
-    - tag
-    status:
-    - success
-  depends_on:
-  - solidity
-  - npm-tests
-
 - name: kosu-node-0
   pull: always
   image: gcr.io/kosu-io/go-kosu-ci:latest
@@ -116,6 +102,20 @@ steps:
   - kosu-node-2
   - kosu-node-3
 
+- name: release
+  pull: always
+  image: plugins/npm
+  commands:
+  - lerna changed
+  when:
+    event:
+    - tag
+    status:
+    - success
+  depends_on:
+  - solidity
+  - npm-tests
+
 services:
 - name: kosu-geth
   pull: always
@@ -134,5 +134,6 @@ services:
 trigger:
   event:
   - pull_request
+  - tag
 
 ...
