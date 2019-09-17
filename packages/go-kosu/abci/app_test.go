@@ -132,6 +132,7 @@ func TestUpdateConfirmationThreshold(t *testing.T) {
 	}
 }
 
+// nolint:lll
 func TestGenesisStateCorrectness(t *testing.T) {
 	dir := initTendermint(t)
 	closer := func() { _ = os.RemoveAll(dir) }
@@ -146,6 +147,7 @@ func TestGenesisStateCorrectness(t *testing.T) {
 		9339CD2572AB19E2A2E431EEF2E9FD2B1A91C472 is the Address of the update
 		To retrieve it call GetUpdateAddress(&update)
 	*/
+
 	t.Run("InitialValidatorInfo_And_Snapshot_Defined", func(t *testing.T) {
 		app.InitChain(abci.RequestInitChain{
 			Validators: updates, AppStateBytes: []byte(`{

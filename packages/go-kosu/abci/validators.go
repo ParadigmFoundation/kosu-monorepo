@@ -83,7 +83,8 @@ func UnifyValidators(updates abci.ValidatorUpdates, state GenesisValidatorSet) (
 
 		// key verification
 		if _, ok := addresses[s.TendermintAddress]; !ok {
-			return nil, fmt.Errorf("address from app_state.initial_validator_info[%s] was not found in []validators", s.TendermintAddress)
+			err := fmt.Errorf("address from app_state.initial_validator_info[%s] was not found in []validators", s.TendermintAddress) // nolint
+			return nil, err
 		}
 
 		// balance verification
