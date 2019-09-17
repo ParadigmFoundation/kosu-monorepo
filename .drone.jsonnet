@@ -52,8 +52,8 @@ local KosuGeth(name) = Image(name, "kosu-test-geth:latest") {
 			"depends_on": [ "build-project" ],
 		},
 
-
 		KosuNode(0), KosuNode(1), KosuNode(2), KosuNode(3),
+
 		Image("go-kosu", "go-kosu-ci:latest") {
 				"commands": [
 				"cd packages/go-kosu",
