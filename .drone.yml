@@ -104,10 +104,9 @@ steps:
 
 - name: release
   pull: always
-  image: plugins/npm
+  image: gcr.io/kosu-io/node-lts:latest
   commands:
-  - npm i
-  - yarn lerna changed
+  - lerna changed
   when:
     event:
     - tag
