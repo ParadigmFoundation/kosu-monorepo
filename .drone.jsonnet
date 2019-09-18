@@ -28,11 +28,11 @@ local KosuGeth(name) = Image(name, "kosu-test-geth:latest") {
 	"kind": "pipeline",
 	"name": "tests",
 	"steps": [
-		Image("prettier_project", "node-lts:latest") {
+		Image("prettier_project", "node-ci:latest") {
 			"commands": ["yarn prettier:ci"]
 		},
 
-	    Image("build-project", "node-lts:latest") + GethConfig() {
+	    Image("build-project", "node-ci:latest") + GethConfig() {
 			"commands": [
 				"yarn",
 				"yarn setup:ci",
@@ -42,12 +42,12 @@ local KosuGeth(name) = Image(name, "kosu-test-geth:latest") {
 			]
 		},
 
-		Image("npm-tests", "node-lts:latest") + GethConfig() {
+		Image("npm-tests", "node-ci:latest") + GethConfig() {
 			"commands": [ "yarn test:ci" ],
 			"depends_on": [ "build-project" ],
 		},
 
-		Image("solidity", "node-lts:latest") + GethConfig() {
+		Image("solidity", "node-ci:latest") + GethConfig() {
 			"commands": [ "yarn contracts:test:ci" ],
 			"depends_on": [ "build-project" ],
 		},

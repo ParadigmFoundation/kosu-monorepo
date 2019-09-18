@@ -9,13 +9,13 @@ platform:
 steps:
 - name: prettier_project
   pull: always
-  image: gcr.io/kosu-io/node-lts:latest
+  image: gcr.io/kosu-io/node-ci:latest
   commands:
   - yarn prettier:ci
 
 - name: build-project
   pull: always
-  image: gcr.io/kosu-io/node-lts:latest
+  image: gcr.io/kosu-io/node-ci:latest
   commands:
   - yarn
   - yarn setup:ci
@@ -28,7 +28,7 @@ steps:
 
 - name: npm-tests
   pull: always
-  image: gcr.io/kosu-io/node-lts:latest
+  image: gcr.io/kosu-io/node-ci:latest
   commands:
   - yarn test:ci
   environment:
@@ -39,7 +39,7 @@ steps:
 
 - name: solidity
   pull: always
-  image: gcr.io/kosu-io/node-lts:latest
+  image: gcr.io/kosu-io/node-ci:latest
   commands:
   - yarn contracts:test:ci
   environment:
