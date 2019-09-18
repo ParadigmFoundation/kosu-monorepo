@@ -106,6 +106,7 @@ steps:
   pull: always
   image: plugins/npm
   commands:
+  - npm i
   - yarn lerna changed
   when:
     event:
