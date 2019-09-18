@@ -53,6 +53,7 @@ local KosuGeth(name) = Image(name, "kosu-test-geth:latest") {
 		},
 
 		KosuNode(0), KosuNode(1), KosuNode(2), KosuNode(3),
+
 		Image("go-kosu", "go-kosu-ci:latest") {
 				"commands": [
 				"cd packages/go-kosu",
@@ -60,6 +61,18 @@ local KosuGeth(name) = Image(name, "kosu-test-geth:latest") {
 				"make ci"
 			],
 			"depends_on": ["build-project", "kosu-node-0", "kosu-node-1","kosu-node-2","kosu-node-3"]
+		},
+
+		{
+		    "name": "release",
+		    "image": "plugins/npm",
+		    "pull": "always",
+		    "commands": [ "lerna changed" ],
+            "when": {
+                "status": [ "success" ],
+                "event": [ "tag" ]
+            },
+            "depends_on": [ "solidity", "npm-tests" ],
 		},
 	],
 
@@ -69,6 +82,6 @@ local KosuGeth(name) = Image(name, "kosu-test-geth:latest") {
 	],
 
 	"trigger": {
-		"event": [ "pull_request" ]
+		"event": [ "pull_request", "tag" ]
 	},
 }

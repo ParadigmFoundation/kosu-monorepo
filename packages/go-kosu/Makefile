@@ -15,13 +15,16 @@ GOLINT = golangci-lint run --enable-all \
 		--exclude-use-default=false \
 		--deadline=10m
 
+.PHONY: testnet
+
 build:
 	go build -ldflags $(GOBUILD_LDFLAGS) -o kosud ./cmd/kosud
 	go build -ldflags $(GOBUILD_LDFLAGS) -o kosu-cli ./cmd/kosu-cli
 
-testnet: build
+testnet:
 	docker-compose rm -f
-	docker-compose up --build
+	docker-compose up --build goinstall
+	docker-compose up --build node0 node1 node2 node3 
 
 test-fast:
 	$(GOTEST) -failfast
