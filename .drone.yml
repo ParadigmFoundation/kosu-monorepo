@@ -106,15 +106,16 @@ steps:
   pull: always
   image: gcr.io/kosu-io/node-ci:latest
   commands:
+  - "echo ${NPM_USER}"
   - yarn lerna changed
   - npm-cli-login
-  settings:
-    npm_email:
-      $secret: npm_email
-    npm_pass:
-      $secret: npm_password
-    npm_user:
-      $secret: npm_user
+  environment:
+    NPM_EMAIL:
+      from_secret: npm_email
+    NPM_PASS:
+      from_secret: npm_password
+    NPM_USER:
+      from_secret: npm_user
   when:
     event:
     - tag
