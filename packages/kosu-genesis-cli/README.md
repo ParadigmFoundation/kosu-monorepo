@@ -8,7 +8,7 @@ Before being used for main-net or public test network's by validators, the tests
 
 ## Documentation
 
-Documentation is hosted [here](https://docs.kosu.io/) and can also be found in the `docs` folder.
+Documentation is hosted on [`docs.kosu.io`](https://docs.kosu.io/) and can also be found in the `docs` folder.
 
 There is additional documentation within certain methods, and all potential validators are encouraged to read the snapshot logic and independently verify the programs correctness.
 
