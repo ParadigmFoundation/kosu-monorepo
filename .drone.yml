@@ -106,7 +106,7 @@ steps:
   pull: always
   image: gcr.io/kosu-io/node-lts:latest
   commands:
-  - lerna changed
+  - yarn lerna changed
   when:
     event:
     - tag
