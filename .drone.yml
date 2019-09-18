@@ -104,7 +104,7 @@ steps:
 
 - name: release
   pull: always
-  image: gcr.io/kosu-io/node-lts:latest
+  image: gcr.io/kosu-io/node-ci:latest
   commands:
   - yarn lerna changed
   - npm-cli-login -u trash -p trash
