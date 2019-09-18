@@ -106,9 +106,8 @@ steps:
   pull: always
   image: gcr.io/kosu-io/node-ci:latest
   commands:
-  - "echo ${NPM_USER}"
-  - yarn lerna changed
   - npm-cli-login
+  - yarn lerna publish
   environment:
     NPM_EMAIL:
       from_secret: npm_email
