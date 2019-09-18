@@ -25,7 +25,7 @@
 
 • **blocks_before_pruning**: _number_
 
-Defined in types.d.ts:15
+_Defined in [types.d.ts:15](https://github.com/ParadigmFoundation/kosu-monorepo/blob/9a271ceb/packages/kosu-genesis-cli/src/types.d.ts#L15)_
 
 ---
 
@@ -33,7 +33,7 @@ Defined in types.d.ts:15
 
 • **confirmation_threshold**: _number_
 
-Defined in types.d.ts:14
+_Defined in [types.d.ts:14](https://github.com/ParadigmFoundation/kosu-monorepo/blob/9a271ceb/packages/kosu-genesis-cli/src/types.d.ts#L14)_
 
 ---
 
@@ -41,7 +41,7 @@ Defined in types.d.ts:14
 
 • **finality_threshold**: _number_
 
-Defined in types.d.ts:10
+_Defined in [types.d.ts:10](https://github.com/ParadigmFoundation/kosu-monorepo/blob/9a271ceb/packages/kosu-genesis-cli/src/types.d.ts#L10)_
 
 ---
 
@@ -49,7 +49,7 @@ Defined in types.d.ts:10
 
 • **max_order_bytes**: _number_
 
-Defined in types.d.ts:13
+_Defined in [types.d.ts:13](https://github.com/ParadigmFoundation/kosu-monorepo/blob/9a271ceb/packages/kosu-genesis-cli/src/types.d.ts#L13)_
 
 ---
 
@@ -57,7 +57,7 @@ Defined in types.d.ts:13
 
 • **period_length**: _number_
 
-Defined in types.d.ts:12
+_Defined in [types.d.ts:12](https://github.com/ParadigmFoundation/kosu-monorepo/blob/9a271ceb/packages/kosu-genesis-cli/src/types.d.ts#L12)_
 
 ---
 
@@ -65,4 +65,4 @@ Defined in types.d.ts:12
 
 • **period_limit**: _number_
 
-Defined in types.d.ts:11
+_Defined in [types.d.ts:11](https://github.com/ParadigmFoundation/kosu-monorepo/blob/9a271ceb/packages/kosu-genesis-cli/src/types.d.ts#L11)_

@@ -23,7 +23,7 @@
 
 • **address**: _string_
 
-Defined in types.d.ts:32
+_Defined in [types.d.ts:32](https://github.com/ParadigmFoundation/kosu-monorepo/blob/9a271ceb/packages/kosu-genesis-cli/src/types.d.ts#L32)_
 
 ---
 
@@ -31,7 +31,7 @@ Defined in types.d.ts:32
 
 • **name**: _string_
 
-Defined in types.d.ts:38
+_Defined in [types.d.ts:38](https://github.com/ParadigmFoundation/kosu-monorepo/blob/9a271ceb/packages/kosu-genesis-cli/src/types.d.ts#L38)_
 
 ---
 
@@ -39,7 +39,7 @@ Defined in types.d.ts:38
 
 • **power**: _string_
 
-Defined in types.d.ts:37
+_Defined in [types.d.ts:37](https://github.com/ParadigmFoundation/kosu-monorepo/blob/9a271ceb/packages/kosu-genesis-cli/src/types.d.ts#L37)_
 
 ---
 
@@ -47,6 +47,6 @@ Defined in types.d.ts:37
 
 • **pub_key**: _object_
 
-Defined in types.d.ts:33
+_Defined in [types.d.ts:33](https://github.com/ParadigmFoundation/kosu-monorepo/blob/9a271ceb/packages/kosu-genesis-cli/src/types.d.ts#L33)_
 
 #### Type declaration:

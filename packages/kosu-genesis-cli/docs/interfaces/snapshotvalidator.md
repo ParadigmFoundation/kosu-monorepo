@@ -28,7 +28,7 @@
 
 _Inherited from [SnapshotListing](snapshotlisting.md).[details](snapshotlisting.md#details)_
 
-Defined in types.d.ts:44
+_Defined in [types.d.ts:44](https://github.com/ParadigmFoundation/kosu-monorepo/blob/9a271ceb/packages/kosu-genesis-cli/src/types.d.ts#L44)_
 
 ---
 
@@ -38,7 +38,7 @@ Defined in types.d.ts:44
 
 _Inherited from [SnapshotListing](snapshotlisting.md).[ethAddress](snapshotlisting.md#ethaddress)_
 
-Defined in types.d.ts:43
+_Defined in [types.d.ts:43](https://github.com/ParadigmFoundation/kosu-monorepo/blob/9a271ceb/packages/kosu-genesis-cli/src/types.d.ts#L43)_
 
 ---
 
@@ -48,7 +48,7 @@ Defined in types.d.ts:43
 
 _Inherited from [SnapshotListing](snapshotlisting.md).[publicKey](snapshotlisting.md#publickey)_
 
-Defined in types.d.ts:42
+_Defined in [types.d.ts:42](https://github.com/ParadigmFoundation/kosu-monorepo/blob/9a271ceb/packages/kosu-genesis-cli/src/types.d.ts#L42)_
 
 ---
 
@@ -58,7 +58,7 @@ Defined in types.d.ts:42
 
 _Overrides [SnapshotListing](snapshotlisting.md).[stakeAmount](snapshotlisting.md#optional-stakeamount)_
 
-Defined in types.d.ts:50
+_Defined in [types.d.ts:50](https://github.com/ParadigmFoundation/kosu-monorepo/blob/9a271ceb/packages/kosu-genesis-cli/src/types.d.ts#L50)_
 
 ---
 
@@ -68,4 +68,4 @@ Defined in types.d.ts:50
 
 _Overrides [SnapshotListing](snapshotlisting.md).[status](snapshotlisting.md#status)_
 
-Defined in types.d.ts:51
+_Defined in [types.d.ts:51](https://github.com/ParadigmFoundation/kosu-monorepo/blob/9a271ceb/packages/kosu-genesis-cli/src/types.d.ts#L51)_

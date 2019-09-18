@@ -22,7 +22,7 @@
 
 • **ethereum_address**: _string_
 
-Defined in types.d.ts:27
+_Defined in [types.d.ts:27](https://github.com/ParadigmFoundation/kosu-monorepo/blob/9a271ceb/packages/kosu-genesis-cli/src/types.d.ts#L27)_
 
 ---
 
@@ -30,7 +30,7 @@ Defined in types.d.ts:27
 
 • **initial_stake**: _string_
 
-Defined in types.d.ts:28
+_Defined in [types.d.ts:28](https://github.com/ParadigmFoundation/kosu-monorepo/blob/9a271ceb/packages/kosu-genesis-cli/src/types.d.ts#L28)_
 
 ---
 
@@ -38,4 +38,4 @@ Defined in types.d.ts:28
 
 • **tendermint_address**: _string_
 
-Defined in types.d.ts:26
+_Defined in [types.d.ts:26](https://github.com/ParadigmFoundation/kosu-monorepo/blob/9a271ceb/packages/kosu-genesis-cli/src/types.d.ts#L26)_

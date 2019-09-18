@@ -26,7 +26,7 @@
 
 • **details**: _string_
 
-Defined in types.d.ts:44
+_Defined in [types.d.ts:44](https://github.com/ParadigmFoundation/kosu-monorepo/blob/9a271ceb/packages/kosu-genesis-cli/src/types.d.ts#L44)_
 
 ---
 
@@ -34,7 +34,7 @@ Defined in types.d.ts:44
 
 • **ethAddress**: _string_
 
-Defined in types.d.ts:43
+_Defined in [types.d.ts:43](https://github.com/ParadigmFoundation/kosu-monorepo/blob/9a271ceb/packages/kosu-genesis-cli/src/types.d.ts#L43)_
 
 ---
 
@@ -42,7 +42,7 @@ Defined in types.d.ts:43
 
 • **publicKey**: _`Buffer`_
 
-Defined in types.d.ts:42
+_Defined in [types.d.ts:42](https://github.com/ParadigmFoundation/kosu-monorepo/blob/9a271ceb/packages/kosu-genesis-cli/src/types.d.ts#L42)_
 
 ---
 
@@ -50,7 +50,7 @@ Defined in types.d.ts:42
 
 • **stakeAmount**? : _undefined | string_
 
-Defined in types.d.ts:45
+_Defined in [types.d.ts:45](https://github.com/ParadigmFoundation/kosu-monorepo/blob/9a271ceb/packages/kosu-genesis-cli/src/types.d.ts#L45)_
 
 ---
 
@@ -58,4 +58,4 @@ Defined in types.d.ts:45
 
 • **status**: _"proposal" | "validator"_
 
-Defined in types.d.ts:46
+_Defined in [types.d.ts:46](https://github.com/ParadigmFoundation/kosu-monorepo/blob/9a271ceb/packages/kosu-genesis-cli/src/types.d.ts#L46)_
