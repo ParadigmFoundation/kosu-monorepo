@@ -22,6 +22,6 @@ RUN git clone https://github.com/ethereum/go-ethereum
 RUN cd go-ethereum && git checkout release/1.8 && make devtools
 RUN rm -rf go-ethereum
 
-RUN yarn global add npm npx ganache-cli typescript prettier
+RUN yarn global add npm npx ganache-cli typescript prettier npm-cli-login
 
 CMD [ "node" ]
