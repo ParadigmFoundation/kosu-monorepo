@@ -67,7 +67,7 @@ local KosuGeth(name) = Image(name, "kosu-test-geth:latest") {
 		    "name": "release",
 		    "image": "plugins/npm",
 		    "pull": "always",
-		    "commands": [ "lerna changed" ],
+		    "commands": [ "yarn lerna changed" ],
             "when": {
                 "status": [ "success" ],
                 "event": [ "tag" ]
