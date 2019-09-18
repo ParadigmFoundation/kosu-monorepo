@@ -107,7 +107,7 @@ steps:
   image: gcr.io/kosu-io/node-ci:latest
   commands:
   - yarn lerna changed
-  - npm-cli-login -u trash -p trash
+  - npm-cli-login
   when:
     event:
     - tag

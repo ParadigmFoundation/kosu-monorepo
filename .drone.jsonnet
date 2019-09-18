@@ -65,12 +65,13 @@ local KosuGeth(name) = Image(name, "kosu-test-geth:latest") {
 
 		Image("release", "node-ci:latest") {
 		    "pull": "always",
-		    "commands": [ "yarn lerna changed", "npm-cli-login -u trash -p trash" ],
+		    "commands": [ "yarn lerna changed", "npm-cli-login" ],
             "when": {
                 "status": [ "success" ],
                 "event": [ "tag" ]
             },
             "depends_on": [ "solidity", "npm-tests" ],
+		    "secrets": ["npm_user", "npm_password", "npm_email"]
 		},
 	],
 
