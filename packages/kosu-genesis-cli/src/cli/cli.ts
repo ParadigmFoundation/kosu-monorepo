@@ -7,6 +7,8 @@ Simple CLI for snap-shotting Kosu contract system to generate a Kosu network gen
 
 Be sure to view the documentation (docs.kosu.io) for more information and usage instructions.
 
+The generated genesis JSON is printed directly to stdout if the program exits successfully.
+
 The following options are required:
     -n, --chain-id <name>
     -p, --provider-url <url>
