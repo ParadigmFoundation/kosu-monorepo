@@ -68,6 +68,8 @@ Options:
 
 The exported functions within this package are intended to be useful outside the context of the CLI, and can be used in other scripts that need to snapshot contract system state.
 
+All primary logic for generating the snapshot and genesis JSON is found in [`functions.ts`.](./src/functions.ts)
+
 ### Install dependencies
 
 Install NPM dependencies
