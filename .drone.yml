@@ -108,6 +108,13 @@ steps:
   commands:
   - yarn lerna changed
   - npm-cli-login
+  settings:
+    npm_email:
+      $secret: npm_email
+    npm_pass:
+      $secret: npm_password
+    npm_user:
+      $secret: npm_user
   when:
     event:
     - tag
