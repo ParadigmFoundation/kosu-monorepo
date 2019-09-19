@@ -2,6 +2,9 @@
 
 ## master
 
+-   Upgrade tendermint/tm-db to v0.2.0
+-   Fix Fix witness connection mngmt and error handling
+-   Remove confirmation_threshold from ConsensusParams
 -   Ethereum Snapshot block
 
 ## v0.3.0

@@ -52,9 +52,8 @@ func startWitness(ctx context.Context, app *abci.App, ethAddr string, logger log
 		return err
 	}
 
-	ethOpts := witness.EthereumProviderOpts{
-		SnapshotBlock: gen.SnapshotBlock,
-	}
+	ethOpts := witness.DefaultEthereumProviderOpts
+	ethOpts.SnapshotBlock = gen.SnapshotBlock
 	p, err := witness.NewEthereumProviderWithOpts(ethAddr, ethOpts)
 	if err != nil {
 		return err
