@@ -2,6 +2,7 @@
 
 ## master
 
+-   Remove confirmation_threshold from ConsensusParams
 -   Ethereum Snapshot block
 
 ## v0.3.0
