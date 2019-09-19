@@ -2,6 +2,8 @@
 
 ## master
 
+-   Fix Fix witness connection mngmt and error handling
+-   Remove confirmation_threshold from ConsensusParams
 -   Ethereum Snapshot block
 
 ## v0.3.0
