@@ -26,13 +26,4 @@ cli.version("0.0.0")
     .option("-l, --period-limit <number>", "Maximum number of order messages to accept per rebalance period", "100000")
     .option("-L, --period-length <number>", "The length of each rebalance period (in Ethereum blocks)", "5")
     .option("-m, --max-order-bytes <number>", "The maximum size of a single order transaction", "4096")
-    .option(
-        "-c, --confirmation-threshold <number>",
-        "Amount of network vote power needed to accept witness events (updated each block)",
-        "0",
-    )
-    .option(
-        "-B, --blocks-before-pruning <number>",
-        "The number of blocks to wait before pruning old attestations",
-        "50",
-    );
+    .option("-B, --blocks-before-pruning <number>", "Maximum age of attestations before pruning", "50");

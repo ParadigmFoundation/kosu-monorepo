@@ -11,7 +11,6 @@ export interface ConsensusParams {
     period_limit: number;
     period_length: number;
     max_order_bytes: number;
-    confirmation_threshold: number;
     blocks_before_pruning: number;
 }
 

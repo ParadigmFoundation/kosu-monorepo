@@ -9,7 +9,6 @@ export function loadConsensusParameters(program: Command): ConsensusParams {
         periodLimit,
         periodLength,
         maxOrderBytes,
-        confirmationThreshold,
         blocksBeforePruning,
     } = program;
     return {
@@ -17,7 +16,6 @@ export function loadConsensusParameters(program: Command): ConsensusParams {
         period_limit: parseInt(periodLimit, 10),
         period_length: parseInt(periodLength, 10),
         max_order_bytes: parseInt(maxOrderBytes, 10),
-        confirmation_threshold: parseInt(confirmationThreshold, 10),
         blocks_before_pruning: parseInt(blocksBeforePruning, 10),
     };
 }
