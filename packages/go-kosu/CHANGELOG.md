@@ -2,6 +2,7 @@
 
 ## master
 
+-   Fix witness unsupported key logger bug
 -   Fix Fix witness connection mngmt and error handling
 -   Remove confirmation_threshold from ConsensusParams
 -   Ethereum Snapshot block
