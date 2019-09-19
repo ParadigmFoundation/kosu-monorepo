@@ -337,7 +337,7 @@ export class ValidatorRegistry {
             out = out.substr(0, 66);
         }
 
-        return this.web3.utils.padRight(out, 64);
+        return this.web3.utils.padRight(out, 64, "0");
     }
 
     /**
