@@ -18,17 +18,18 @@ var _ Provider = &EthereumProvider{}
 // EthereumProviderOpts controls internal provider options
 type EthereumProviderOpts struct {
 	Delay         time.Duration
-	DelayFactor   int
 	DelayMax      time.Duration
 	SnapshotBlock uint64
 }
 
 // DefaultEthereumProviderOpts provides sensible options for the provider
 // This options are used when NewEthereumProvider is invoked
+// The default behavior is to delay for 100ms between connecting attempts,
+// after each attempts the delay time is increasted by 100ms
+// When 3sec delay is reached, delay is kept constant
 var DefaultEthereumProviderOpts = EthereumProviderOpts{
-	Delay:       1 * time.Second,
-	DelayFactor: 2,
-	DelayMax:    30 * time.Second,
+	Delay:    100 * time.Millisecond,
+	DelayMax: 3 * time.Second,
 }
 
 // EthereumProvider implements a Provider that connect to the Ethereum Blockchain
@@ -87,7 +88,7 @@ func (w *EthereumProvider) backoff(name string, fn func() error) error {
 		w.log.Error("Watcher: retrying...", "op", name, "err", err, "in", delay)
 		time.Sleep(delay)
 
-		delay = delay * time.Duration(w.opts.DelayFactor)
+		delay = delay + w.opts.Delay
 		if delay > w.opts.DelayMax {
 			delay = w.opts.DelayMax
 		}

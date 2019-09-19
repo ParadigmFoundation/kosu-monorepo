@@ -149,19 +149,22 @@ func (w *Witness) forward(ctx context.Context) error {
 func (w *Witness) broadcastTxSync(tx interface{}, args []interface{}) {
 	res, err := w.client.BroadcastTxSync(tx)
 	if err != nil {
-		args = append(args, "err", err)
-		if res.Log != "" {
-			args = append(args, "log", res.Log)
-		}
-		w.log.Error("BroadcastTxSync: WitnessTx", args...)
+		w.log.Error("BroadcastTxSync", "err", err)
 		return
 	}
-	w.log.Info("BroadcastTxSync: WitnessTx", append(args, "hash", res.Hash[0:4])...)
+
+	if res.Log != "" {
+		args = append(args, "log", res.Log)
+	}
+
+	if res.Code != 0 {
+		w.log.Error("BroadcastTxSync: WitnessTx", append(args, "code", res.Code))
+	} else {
+		w.log.Info("BroadcastTxSync: WitnessTx", append(args, "hash", res.Hash[0:4])...)
+	}
 }
 
 func (w *Witness) handlePosterRegistryUpdate(e *EventEmitterKosuEvent) {
-	w.log.Info("poster update event", "e", e)
-
 	event := &EventPosterRegistryUpdate{}
 	if err := DecodeKosuEvent(e, event); err != nil {
 		panic(err)
