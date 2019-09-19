@@ -2,6 +2,7 @@
 
 ## master
 
+-   Fix Fix witness connection mngmt and error handling
 -   Ethereum Snapshot block
 
 ## v0.3.0
