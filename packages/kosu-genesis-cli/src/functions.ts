@@ -178,6 +178,7 @@ export async function snapshotValidatorsAtBlock(kosu: Kosu, snapshotBlock: numbe
  */
 export async function snapshotPostersAtBlock(kosu: Kosu, snapshotBlock: number): Promise<SnapshotPoster[]> {
     const posters: SnapshotPoster[] = [];
+    const postersMap: { [address: string]: SnapshotPoster } = {};
 
     // get all events from deploy to snapshot block
     const allLogs = await kosu.eventEmitter.getPastDecodedLogs({
@@ -190,12 +191,24 @@ export async function snapshotPostersAtBlock(kosu: Kosu, snapshotBlock: number):
         switch (decodedArgs.eventType) {
             case "PosterRegistryUpdate": {
                 const { poster: address, stake: balance } = decodedArgs;
-                posters.push({ address, balance });
+
+                if (balance === "0") {
+                    delete posters[address];
+                }
+
+                if (!postersMap[address]) {
+                    (postersMap[address] as Partial<SnapshotPoster>) = { address };
+                }
+                postersMap[address].balance = balance;
                 break;
             }
             default:
                 continue;
         }
+    }
+
+    for (const posterAddress of Object.keys(postersMap)) {
+        posters.push(postersMap[posterAddress]);
     }
 
     return posters;
