@@ -13,6 +13,7 @@
         "lint": "tslint -p .",
         "lint:fix": "tslint -p . --fix",
         "test": "yarn build && ts-mocha -p test/tsconfig.json test/* --timeout 0 --slow 2000 -b",
+        "test:ci": "yarn test",
         "docs": "typedoc ./src",
         "start": "nodemon --watch 'src/**/*.ts' --exec 'ts-node' src/index.ts",
         "build": "tsc -p ."
@@ -27,6 +28,7 @@
         "web3-provider": "^1.0.0"
     },
     "devDependencies": {
+        "@0x/utils": "^4.5.2",
         "@types/commander": "^2.12.2",
         "@types/node": "^12.7.5",
         "@types/web3": "^1.0.19",
