@@ -28,11 +28,11 @@ local KosuGeth(name) = Image(name, "kosu-test-geth:latest") {
 	"kind": "pipeline",
 	"name": "tests",
 	"steps": [
-		Image("prettier_project", "node-lts:latest") {
+		Image("prettier_project", "node-ci:latest") {
 			"commands": ["yarn prettier:ci"]
 		},
 
-	    Image("build-project", "node-lts:latest") + GethConfig() {
+	    Image("build-project", "node-ci:latest") + GethConfig() {
 			"commands": [
 				"yarn",
 				"yarn setup:ci",
@@ -42,17 +42,18 @@ local KosuGeth(name) = Image(name, "kosu-test-geth:latest") {
 			]
 		},
 
-		Image("npm-tests", "node-lts:latest") + GethConfig() {
+		Image("npm-tests", "node-ci:latest") + GethConfig() {
 			"commands": [ "yarn test:ci" ],
 			"depends_on": [ "build-project" ],
 		},
 
-		Image("solidity", "node-lts:latest") + GethConfig() {
+		Image("solidity", "node-ci:latest") + GethConfig() {
 			"commands": [ "yarn contracts:test:ci" ],
 			"depends_on": [ "build-project" ],
 		},
 
 		KosuNode(0), KosuNode(1), KosuNode(2), KosuNode(3),
+
 		Image("go-kosu", "go-kosu-ci:latest") {
 				"commands": [
 				"cd packages/go-kosu",
@@ -60,6 +61,22 @@ local KosuGeth(name) = Image(name, "kosu-test-geth:latest") {
 				"make ci"
 			],
 			"depends_on": ["build-project", "kosu-node-0", "kosu-node-1","kosu-node-2","kosu-node-3"]
+		},
+
+		Image("release", "node-ci:latest") {
+		    "pull": "always",
+		    "commands": [ "npm-cli-login", "yarn lerna publish from-package" ],
+            "when": {
+                "status": [ "success" ],
+                "event": [ "tag" ]
+            },
+            "depends_on": [ "solidity", "npm-tests" ],
+            "environment": {
+                "NPM_USER": { "from_secret": "npm_user" },
+                "NPM_EMAIL": { "from_secret": "npm_email" },
+                "NPM_PASS": { "from_secret": "npm_password" },
+
+            },
 		},
 	],
 
@@ -69,6 +86,6 @@ local KosuGeth(name) = Image(name, "kosu-test-geth:latest") {
 	],
 
 	"trigger": {
-		"event": [ "pull_request" ]
+		"event": [ "pull_request", "tag" ]
 	},
 }
