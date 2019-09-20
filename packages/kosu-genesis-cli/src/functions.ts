@@ -94,7 +94,7 @@ export async function getAppState(
     consensusParameters: ConsensusParams,
 ): Promise<AppState> {
     return {
-        initial_validator_info: await getInitialValidatorInfo(validators),
+        initial_validator_info: getInitialValidatorInfo(validators),
         initial_poster_info: posters,
         consensus_params: consensusParameters,
         snapshot_block: snapshotBlock,
@@ -259,9 +259,9 @@ export async function getTendermintValidators(validators: SnapshotValidator[]): 
  * client.
  *
  * @param validators Raw validator snapshot data.
- * @returns Promise resolving to the array of initial validators as expected by `initial_validator_info`.
+ * @returns The array of initial validators as expected by `initial_validator_info`.
  */
-export async function getInitialValidatorInfo(validators: SnapshotValidator[]): Promise<InitialValidatorInfo[]> {
+export function getInitialValidatorInfo(validators: SnapshotValidator[]): InitialValidatorInfo[] {
     const initialValidatorInfo: InitialValidatorInfo[] = [];
     for (const validator of validators) {
         initialValidatorInfo.push({
