@@ -1,0 +1,21 @@
+{
+    "extends": "./tsconfig.json",
+    "compilerOptions": {
+        "outDir": "dist",
+        "rootDir": "..",
+        "resolveJsonModule": true,
+        "moduleResolution": "node",
+        "typeRoots": [
+            "node_modules/@types"
+        ],
+        "types": [
+            "mocha"
+        ]
+    },
+    "include": [
+        "./**/*"
+    ],
+    "files": [
+        "../src/types.d.ts"
+    ]
+}
