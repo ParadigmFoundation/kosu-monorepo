@@ -52,7 +52,7 @@ export async function generateGenesisFromBlock(
     // tendermint-specific validator representation
     // - generated from contract system snapshot
     // - directly associated with app_state.initial_validator_info
-    genesis.validators = await getTendermintValidators(validators);
+    genesis.validators = getTendermintValidators(validators);
 
     // the initial app state is set to null, expected as an empty string
     genesis.app_hash = "";
@@ -87,12 +87,12 @@ export async function generateGenesisFromBlock(
  * @param snapshotBlock The Ethereum block used to generate validator and poster snapshot.
  * @param consensusParameters Consensus parameters to set in genesis.
  */
-export async function getAppState(
+export function getAppState(
     validators: SnapshotValidator[],
     posters: SnapshotPoster[],
     snapshotBlock: number,
     consensusParameters: ConsensusParams,
-): Promise<AppState> {
+): AppState {
     return {
         initial_validator_info: getInitialValidatorInfo(validators),
         initial_poster_info: posters,
