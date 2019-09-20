@@ -5,6 +5,7 @@ import (
 	"os"
 	"time"
 
+	"github.com/ethereum/go-ethereum/accounts/abi/bind"
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/core/types"
 	"github.com/ethereum/go-ethereum/ethclient"
@@ -16,17 +17,19 @@ var _ Provider = &EthereumProvider{}
 
 // EthereumProviderOpts controls internal provider options
 type EthereumProviderOpts struct {
-	Delay       time.Duration
-	DelayFactor int
-	DelayMax    time.Duration
+	Delay         time.Duration
+	DelayMax      time.Duration
+	SnapshotBlock uint64
 }
 
 // DefaultEthereumProviderOpts provides sensible options for the provider
 // This options are used when NewEthereumProvider is invoked
+// The default behavior is to delay for 100ms between connecting attempts,
+// after each attempts the delay time is increasted by 100ms
+// When 3sec delay is reached, delay is kept constant
 var DefaultEthereumProviderOpts = EthereumProviderOpts{
-	Delay:       1 * time.Second,
-	DelayFactor: 2,
-	DelayMax:    30 * time.Second,
+	Delay:    100 * time.Millisecond,
+	DelayMax: 3 * time.Second,
 }
 
 // EthereumProvider implements a Provider that connect to the Ethereum Blockchain
@@ -85,7 +88,7 @@ func (w *EthereumProvider) backoff(name string, fn func() error) error {
 		w.log.Error("Watcher: retrying...", "op", name, "err", err, "in", delay)
 		time.Sleep(delay)
 
-		delay = delay * time.Duration(w.opts.DelayFactor)
+		delay = delay + w.opts.Delay
 		if delay > w.opts.DelayMax {
 			delay = w.opts.DelayMax
 		}
@@ -95,6 +98,7 @@ func (w *EthereumProvider) backoff(name string, fn func() error) error {
 // WatchEvents watches for emitted events from the EventEmitter contract.
 // First, emits the existing events in the blockchain, then subscribes to get the emitted events as they happen
 func (w *EthereumProvider) WatchEvents(ctx context.Context, fn EventHandler) error {
+	w.log.Info("Watching for Events", "snapshot", w.opts.SnapshotBlock)
 	return w.backoff("events", func() error {
 		return w.watchEvents(ctx, fn)
 	})
@@ -109,7 +113,11 @@ func (w *EthereumProvider) watchEvents(ctx context.Context, fn EventHandler) err
 		return err
 	}
 
-	f, err := emitter.FilterKosuEvent(nil)
+	// Get events from SnapshotBlock
+	fOpts := &bind.FilterOpts{
+		Start: w.opts.SnapshotBlock,
+	}
+	f, err := emitter.FilterKosuEvent(fOpts)
 	if err != nil {
 		return err
 	}

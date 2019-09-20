@@ -62,7 +62,7 @@ func (fi bindataFileInfo) Mode() os.FileMode {
 	return fi.mode
 }
 
-// ModTime return file modify time
+// Mode return file modify time
 func (fi bindataFileInfo) ModTime() time.Time {
 	return fi.modTime
 }
@@ -92,7 +92,7 @@ func Node_modulesKosuSystemContractsSrcDeployedaddressesJson() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "../node_modules/@kosu/system-contracts/src/deployedAddresses.json", size: 37224, mode: os.FileMode(420), modTime: time.Unix(1568318974, 0)}
+	info := bindataFileInfo{name: "../node_modules/@kosu/system-contracts/src/deployedAddresses.json", size: 37224, mode: os.FileMode(420), modTime: time.Unix(1568718717, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }

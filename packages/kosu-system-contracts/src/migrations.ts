@@ -68,8 +68,8 @@ export async function migrations(
             },
             6175: {
                 _applicationPeriod: 10,
-                _commitPeriod: 10,
-                _challengePeriod: 20,
+                _commitPeriod: 20,
+                _challengePeriod: 40,
                 _exitPeriod: 5,
                 _rewardPeriod: 5,
                 _exitLockPeriod: 5,
@@ -158,6 +158,7 @@ export async function migrations(
             zeroExAddresses.erc20Proxy,
         );
 
+        /* tslint:disable */
         await authorizedAddresses.authorizeAddress.awaitTransactionSuccessAsync(treasury.address).then(() => {
             console.log(`Authorized address: ${treasury.address}`);
         });
@@ -175,6 +176,7 @@ export async function migrations(
         });
 
         await treasury.setVoting.awaitTransactionSuccessAsync(voting.address);
+        /* tslint:enable */
 
         await web3Wrapper
             .sendTransactionAsync({
