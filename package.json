@@ -21,7 +21,9 @@
         "prettier": "prettier --write '**/*.{ts,tsx,json,md,js}' --config .prettierrc",
         "prettier:ci": "prettier --list-different '**/*.{ts,tsx,json,md,js}' --config .prettierrc",
         "postinstall": "lerna link --force-local",
-        "setup:ci": "run-p lint build"
+        "setup:ci": "run-p lint build",
+        "kosu:test:start": "yarn workspace @kosu/kosu-geth kosu:test:start",
+        "migrate:ci": "yarn workspace @kosu/system-contracts migrate:ci"
     },
     "workspaces": {
         "packages": [
@@ -31,10 +33,7 @@
             "packages/go-kosu"
         ]
     },
-    "dependencies": {
-        "dotenv": "^6.2.0",
-        "vue-simple-spinner": "^1.2.8"
-    },
+    "dependencies": {},
     "private": true,
     "devDependencies": {
         "@0x/dev-utils": "^2.2.2",
@@ -51,7 +50,6 @@
         "@types/expect": "^1.20.4",
         "@types/mocha": "^5.2.6",
         "@types/node": "^12.0.7",
-        "@vuepress/plugin-google-analytics": "^1.0.4",
         "chai": "^4.2.0",
         "chai-as-promised": "^7.1.1",
         "lerna": "^3.13.4",
@@ -66,7 +64,6 @@
         "webpack-cli": "^3.2.3",
         "webpack-dev-middleware": "^3.6.0",
         "webpack-dev-server": "^3.3.1",
-        "wsrun": "^3.6.5",
-        "vuepress": "^0.14.11"
+        "wsrun": "^3.6.5"
     }
 }

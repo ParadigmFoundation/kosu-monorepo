@@ -3305,11 +3305,6 @@
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/@vuepress/plugin-google-analytics/-/plugin-google-analytics-1.0.2.tgz#c5754d55d01bf7e1a9a5b1ff5fde07a08e4a797d"
 
-"@vuepress/plugin-google-analytics@^1.0.4":
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/@vuepress/plugin-google-analytics/-/plugin-google-analytics-1.1.0.tgz#282309cf6071b42f57ce996f2b07e3a9eaefc727"
-  integrity sha512-dihyMDXWyPPGxvZge6Xz904ZAjhNcP2dzVbMa2rBvh9oPd6VD5M6mMw6NyNzHfm+LTFY0bTqOzuTFC1j7RnZnw==
-
 "@webassemblyjs/ast@1.8.5":
   version "1.8.5"
   resolved "https://registry.yarnpkg.com/@webassemblyjs/ast/-/ast-1.8.5.tgz#51b1c5fe6576a34953bf4b253df9f0d490d9e359"
@@ -6741,11 +6736,6 @@ dot-prop@^4.1.0, dot-prop@^4.2.0:
   resolved "https://registry.yarnpkg.com/dot-prop/-/dot-prop-4.2.0.tgz#1f19e0c2e1aa0e32797c49799f2837ac6af69c57"
   dependencies:
     is-obj "^1.0.0"
-
-dotenv@^6.2.0:
-  version "6.2.0"
-  resolved "https://registry.yarnpkg.com/dotenv/-/dotenv-6.2.0.tgz#941c0410535d942c8becf28d3f357dbd9d476064"
-  integrity sha512-HygQCKUBSFl8wKQZBSemMywRWcEDNidvNbjGVyZu3nbZ8qq9ubiPoGLMdRDpfSrpkkm9BXYFkpKxxFX38o/76w==
 
 drbg.js@^1.0.1:
   version "1.0.1"
@@ -15889,11 +15879,6 @@ vue-server-renderer@^2.5.16:
     serialize-javascript "^1.3.0"
     source-map "0.5.6"
 
-vue-simple-spinner@^1.2.8:
-  version "1.2.8"
-  resolved "https://registry.yarnpkg.com/vue-simple-spinner/-/vue-simple-spinner-1.2.8.tgz#638249e9b25b43424ff906c14f1b7c7ed441ce9d"
-  integrity sha1-Y4JJ6bJbQ0JP+QbBTxt8ftRBzp0=
-
 vue-style-loader@^4.1.0:
   version "4.1.2"
   resolved "https://registry.yarnpkg.com/vue-style-loader/-/vue-style-loader-4.1.2.tgz#dedf349806f25ceb4e64f3ad7c0a44fba735fcf8"
@@ -15928,7 +15913,7 @@ vuepress-html-webpack-plugin@^3.2.0:
     toposort "^1.0.0"
     util.promisify "1.0.0"
 
-vuepress@^0.14.11, vuepress@^0.14.8:
+vuepress@^0.14.8:
   version "0.14.11"
   resolved "https://registry.yarnpkg.com/vuepress/-/vuepress-0.14.11.tgz#fc6ba0e609e3433a8070e95301b4d987712b2a08"
   integrity sha512-5iB7iWeEG7GtEiNwmS2LOcifp2V93aZ4+oO9pq8OcUgOWay9/NqmNqzg7KQ7AJ0puZGg0tYwUKKjifIWIPE8jQ==
