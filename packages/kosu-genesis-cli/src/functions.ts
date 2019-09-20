@@ -234,9 +234,9 @@ export function publicKeyToAddress(publicKey: Buffer): string {
  * Convert the validator snapshot data to the JSON format expected by Tendermint.
  *
  * @param validators Raw validator snapshot data.
- * @returns Promise resolving to Tendermint-style genesis validator JSON.
+ * @returns Tendermint-style genesis validator JSON.
  */
-export async function getTendermintValidators(validators: SnapshotValidator[]): Promise<GenesisValidator[]> {
+export function getTendermintValidators(validators: SnapshotValidator[]): GenesisValidator[] {
     const genesisValidators: GenesisValidator[] = [];
     for (const validator of validators) {
         genesisValidators.push({
