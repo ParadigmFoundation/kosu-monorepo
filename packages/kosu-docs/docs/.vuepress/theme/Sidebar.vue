@@ -1,16 +1,16 @@
 <template>
-  <div class="sidebar"
-       :style="{
+  <div class="sidebar" :style="{
          'width' : 256 + paddingLeft +'px',
        }">
-    <NavLinks/>
-    <slot name="top"/>
-    <ul class="sidebar-links" 
-        v-if="items.length"
-        :style="{
+    <NavLinks />
+    <slot name="top" />
+    <ul
+      class="sidebar-links"
+      v-if="items.length"
+      :style="{
           'padding-left' : paddingLeft+'px'
         }"
-        >
+    >
       <li class="sidbar-links-header" v-for="(item, i) in items" :key="i">
         <!-- <img :class="item.title !== 'Home'?'img-other':'img-home'" :src="'/'+item.food"> -->
         <SidebarGroup
@@ -24,7 +24,7 @@
         <!-- <SidebarLink v-else :item="homeItem(item)"/> -->
       </li>
     </ul>
-    <slot name="bottom"/>
+    <slot name="bottom" />
   </div>
 </template>
 
@@ -42,19 +42,19 @@ export default {
   data() {
     return {
       openGroupIndex: 0,
-      paddingLeft: 32,
+      paddingLeft: 32
     };
   },
   mounted() {
     const MOBILE_DESKTOP_BREAKPOINT = 719; // refer to config.styl
     const handleLinksWrapWidth = () => {
-      if(document.documentElement.clientWidth < MOBILE_DESKTOP_BREAKPOINT) {
+      if (document.documentElement.clientWidth < MOBILE_DESKTOP_BREAKPOINT) {
         this.paddingLeft = 32;
-      }
-      else {
-        this.paddingLeft = (document.documentElement.clientWidth - 320 - 740) / 2;
-        if(this.paddingLeft < 32) {
-          this.paddingLeft = 32
+      } else {
+        this.paddingLeft =
+          (document.documentElement.clientWidth - 320 - 740) / 2;
+        if (this.paddingLeft < 32) {
+          this.paddingLeft = 32;
         }
       }
     };
@@ -90,9 +90,9 @@ export default {
       return {
         ...item,
         food: item.food,
-        path: '/home/',
-        type: 'page',
-      }
+        path: "/home/",
+        type: "page"
+      };
     }
   }
 };
@@ -121,19 +121,21 @@ $mobilesidbarLinkPaddingWidth = $sidbarLinkPaddingWidth - 6rem;
     padding: 0;
     margin: 0;
     list-style-type: none;
+
     .sidbar-links-header {
       display: flex;
+
       img {
         display: inline-block;
         width: 19px;
         height: 19px;
-        margin-top: 18px;        
+        margin-top: 18px;
         margin-left: 0.5rem;
       }
+
       .img-home {
         margin-top: 6px;
       }
-
     }
   }
 
