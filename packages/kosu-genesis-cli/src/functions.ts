@@ -62,7 +62,7 @@ export async function generateGenesisFromBlock(
     // - initial validator info generated from contract system state
     // - initial poster info generated from contract system state
     // - snapshot block: the Ethereum block at which contract system state "snap-shotted"
-    genesis.app_state = await getAppState(validators, posters, snapshotBlock, consensusParams);
+    genesis.app_state = getAppState(validators, posters, snapshotBlock, consensusParams);
 
     return genesis as GenesisBlock;
 }
