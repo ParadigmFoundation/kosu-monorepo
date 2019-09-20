@@ -1,10 +1,14 @@
 {
-    "extends": ["@kosu/tslint-config"],
+    "extends": [
+        "@kosu/tslint-config"
+    ],
     "rules": {
         "no-console": false,
         "no-unbound-method": false,
         "no-floating-promises": false,
         "whitespace": false,
-        "completed-docs": false
+        "completed-docs": false,
+        "only-arrow-functions": false,
+        "space-before-function-paren": false
     }
 }
