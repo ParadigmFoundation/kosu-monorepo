@@ -10,7 +10,7 @@ import {
     publicKeyToAddress,
 } from "..";
 
-describe("function unit tests", function (): void {
+describe("Snapshot function blockchain-less tests (unit tests)", function (): void {
     it("#dateFromTimestamp", function (): void {
         const date = new Date();
         const ts = date.getTime() / 1000;
