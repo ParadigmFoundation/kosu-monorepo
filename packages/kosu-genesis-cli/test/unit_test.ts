@@ -10,8 +10,8 @@ import {
     publicKeyToAddress,
 } from "..";
 
-describe("Snapshot function blockchain-less tests (unit tests)", function (): void {
-    it("#dateFromTimestamp", function (): void {
+describe("Snapshot function blockchain-less tests (unit tests)", function(): void {
+    it("#dateFromTimestamp", function(): void {
         const date = new Date();
         const ts = date.getTime() / 1000;
         const generatedDate = dateFromTimestamp(ts);
@@ -21,7 +21,7 @@ describe("Snapshot function blockchain-less tests (unit tests)", function (): vo
         assert.strictEqual(actualTime, expectedTime, "local time strings should match");
     });
 
-    it("#hexKeyToBase64", function (): void {
+    it("#hexKeyToBase64", function(): void {
         const knownKey = Buffer.allocUnsafe(32);
         const knownHexKey = `0x${knownKey.toString("hex").toUpperCase()}`;
         const expectedBase64Key = knownKey.toString("base64");
@@ -30,7 +30,7 @@ describe("Snapshot function blockchain-less tests (unit tests)", function (): vo
         assert.strictEqual(actualBase64Key, expectedBase64Key, "base64 keys should match test case");
     });
 
-    it("#publicKeyToAddress", function (): void {
+    it("#publicKeyToAddress", function(): void {
         const knownHexKey = "0x2D03EA48ADDC6B56DC1D456ED8778C8152EDC74F58572306BB3353DDEFFAE2E5";
         const expectedAddress = "6E759A69DAF556E8C492D6AA9E263A6168F688B7";
 
@@ -40,28 +40,36 @@ describe("Snapshot function blockchain-less tests (unit tests)", function (): vo
         assert.strictEqual(generatedAddress, expectedAddress, "generated address should match test case");
     });
 
-    it("#getInitialValidatorInfo", function (): void {
+    it("#getInitialValidatorInfo", function(): void {
         const testPubKey = Buffer.allocUnsafe(32);
         const testEthAddress = `0x${Buffer.allocUnsafe(20).toString("hex")}`;
         const testTendermintAddress = publicKeyToAddress(testPubKey);
         const testInitialStake = new BigNumber("500e18").toString();
 
-        const testSnapshots = [{
-            publicKey: testPubKey,
-            ethAddress: testEthAddress,
-            details: "test case",
-            stakeAmount: testInitialStake,
-            status: "validator",
-        }];
+        const testSnapshots = [
+            {
+                publicKey: testPubKey,
+                ethAddress: testEthAddress,
+                details: "test case",
+                stakeAmount: testInitialStake,
+                status: "validator",
+            },
+        ];
 
-        const expectedValidatorInfo = [{
-            ethereum_address: testEthAddress,
-            tendermint_address: testTendermintAddress,
-            initial_stake: testInitialStake,
-        }];
+        const expectedValidatorInfo = [
+            {
+                ethereum_address: testEthAddress,
+                tendermint_address: testTendermintAddress,
+                initial_stake: testInitialStake,
+            },
+        ];
 
         const actualValidatorInfo = getInitialValidatorInfo(testSnapshots);
-        assert.strictEqual(actualValidatorInfo.length, expectedValidatorInfo.length, "validator info array length should match");
+        assert.strictEqual(
+            actualValidatorInfo.length,
+            expectedValidatorInfo.length,
+            "validator info array length should match",
+        );
 
         const { ethereum_address, tendermint_address, initial_stake } = actualValidatorInfo[0];
         assert.strictEqual(ethereum_address, testEthAddress, "ethereum address should match snapshot");
@@ -69,32 +77,40 @@ describe("Snapshot function blockchain-less tests (unit tests)", function (): vo
         assert.strictEqual(initial_stake, testInitialStake, "initial stakes should match snapshot");
     });
 
-    it("#getTendermintValidators", function (): void {
+    it("#getTendermintValidators", function(): void {
         const testPubKey = Buffer.allocUnsafe(32);
         const testEthAddress = `0x${Buffer.allocUnsafe(20).toString("hex")}`;
         const testTendermintAddress = publicKeyToAddress(testPubKey);
         const testDetails = "test case";
 
-        const testSnapshots = [{
-            publicKey: testPubKey,
-            ethAddress: testEthAddress,
-            details: testDetails,
-            stakeAmount: new BigNumber("500e18").toString(),
-            status: "validator",
-        }];
-
-        const expectedTendermintValidators = [{
-            address: testTendermintAddress,
-            pub_key: {
-                type: "tendermint/PubKeyEd25519",
-                value: testPubKey.toString("base64"),
+        const testSnapshots = [
+            {
+                publicKey: testPubKey,
+                ethAddress: testEthAddress,
+                details: testDetails,
+                stakeAmount: new BigNumber("500e18").toString(),
+                status: "validator",
             },
-            power: "0",
-            name: testDetails,
-        }];
+        ];
+
+        const expectedTendermintValidators = [
+            {
+                address: testTendermintAddress,
+                pub_key: {
+                    type: "tendermint/PubKeyEd25519",
+                    value: testPubKey.toString("base64"),
+                },
+                power: "0",
+                name: testDetails,
+            },
+        ];
 
         const actualTendermintValidators = getTendermintValidators(testSnapshots);
-        assert.strictEqual(actualTendermintValidators.length, expectedTendermintValidators.length, "validator info array length should match");
+        assert.strictEqual(
+            actualTendermintValidators.length,
+            expectedTendermintValidators.length,
+            "validator info array length should match",
+        );
 
         const { address, power, name } = actualTendermintValidators[0];
         assert.strictEqual(address, testTendermintAddress, "tendermint address should match expected");
@@ -102,7 +118,7 @@ describe("Snapshot function blockchain-less tests (unit tests)", function (): vo
         assert.strictEqual(name, testDetails, "validator name should match snapshot details");
     });
 
-    it("#getAppState", function (): void {
+    it("#getAppState", function(): void {
         const testPubKey = Buffer.allocUnsafe(32);
         const testEthAddress = `0x${Buffer.allocUnsafe(20).toString("hex")}`;
         const testTendermintAddress = publicKeyToAddress(testPubKey);
@@ -119,33 +135,46 @@ describe("Snapshot function blockchain-less tests (unit tests)", function (): vo
             max_order_bytes: 14,
             blocks_before_pruning: 15,
         };
-        const testValidatorSnapshots = [{
-            publicKey: testPubKey,
-            ethAddress: testEthAddress,
-            stakeAmount: testInitialStake,
-            status: "validator",
-            details: "test case",
-        }];
-        const testPosterSnapshots = [{
-            address: testPosterAddress,
-            balance: testPosterBalance,
-        }];
-
-        const expectedAppState = {
-            initial_validator_info: [{
-                tendermint_address: testTendermintAddress,
-                ethereum_address: testEthAddress,
-                initial_stake: testInitialStake,
-            }],
-            initial_poster_info: [{
+        const testValidatorSnapshots = [
+            {
+                publicKey: testPubKey,
+                ethAddress: testEthAddress,
+                stakeAmount: testInitialStake,
+                status: "validator",
+                details: "test case",
+            },
+        ];
+        const testPosterSnapshots = [
+            {
                 address: testPosterAddress,
                 balance: testPosterBalance,
-            }],
+            },
+        ];
+
+        const expectedAppState = {
+            initial_validator_info: [
+                {
+                    tendermint_address: testTendermintAddress,
+                    ethereum_address: testEthAddress,
+                    initial_stake: testInitialStake,
+                },
+            ],
+            initial_poster_info: [
+                {
+                    address: testPosterAddress,
+                    balance: testPosterBalance,
+                },
+            ],
             snapshot_block: testSnapshotBlock,
             consensus_params: testConsensusParams,
         };
 
-        const actualAppState = getAppState(testValidatorSnapshots, testPosterSnapshots, testSnapshotBlock, testConsensusParams);
+        const actualAppState = getAppState(
+            testValidatorSnapshots,
+            testPosterSnapshots,
+            testSnapshotBlock,
+            testConsensusParams,
+        );
         assert.deepStrictEqual(actualAppState, expectedAppState, "generated app state should match expected");
     });
 });

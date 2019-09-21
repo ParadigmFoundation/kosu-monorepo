@@ -12,7 +12,7 @@ import Web3ProviderEngine from "web3-provider-engine";
 
 import { snapshotPostersAtBlock, snapshotValidatorsAtBlock } from "..";
 
-describe("Snapshot tests with contract system (integration tests)", function (): void {
+describe("Snapshot tests with contract system (integration tests)", function(): void {
     let kosu: Kosu;
     let assert: Chai.AssertStatic;
     let provider: Web3ProviderEngine;
@@ -91,7 +91,7 @@ describe("Snapshot tests with contract system (integration tests)", function ():
                 details: address.toLowerCase(),
                 reward: new BigNumber(0),
             });
-            validatorBlockNumbers.push((await web3.eth.getBlockNumber()));
+            validatorBlockNumbers.push(await web3.eth.getBlockNumber());
             const listing = await kosu.validatorRegistry.getListing(publicKey);
             (listing.status as string).should.be.equals(2);
         }
@@ -132,7 +132,10 @@ describe("Snapshot tests with contract system (integration tests)", function ():
 
         const expectedSnapshotLength = 9;
         const generatedSnapshot = await snapshotValidatorsAtBlock(kosu, snapshotBlock);
-        expectedSnapshotLength.should.eql(generatedSnapshot.length, "snapshot length should be less before last validator joins");
+        expectedSnapshotLength.should.eql(
+            generatedSnapshot.length,
+            "snapshot length should be less before last validator joins",
+        );
     });
 
     it("should produce an empty validator snapshot from the 0th block", async () => {
@@ -153,10 +156,12 @@ describe("Snapshot tests with contract system (integration tests)", function ():
 
     it("should produce a poster snapshot that matches the expected snapshot", async () => {
         const currentBlock = await web3.eth.getBlockNumber();
-        const expectedSnapshot = [{
-            address: accounts[0].toLowerCase(),
-            balance: new BigNumber("1e18").toString(),
-        }];
+        const expectedSnapshot = [
+            {
+                address: accounts[0].toLowerCase(),
+                balance: new BigNumber("1e18").toString(),
+            },
+        ];
         const generatedSnapshot = await snapshotPostersAtBlock(kosu, currentBlock);
         expectedSnapshot.should.eql(generatedSnapshot, "poster snapshot should match expected");
     });

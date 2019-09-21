@@ -6,17 +6,9 @@
         "resolveJsonModule": true,
         "esModuleInterop": true,
         "moduleResolution": "node",
-        "typeRoots": [
-            "node_modules/@types"
-        ],
-        "types": [
-            "mocha"
-        ]
+        "typeRoots": ["node_modules/@types"],
+        "types": ["mocha"]
     },
-    "include": [
-        "./**/*"
-    ],
-    "files": [
-        "../src/types.d.ts"
-    ]
+    "include": ["./**/*"],
+    "files": ["../src/types.d.ts"]
 }
