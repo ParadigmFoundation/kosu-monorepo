@@ -1,6 +1,6 @@
 {
     "name": "@kosu/genesis-cli",
-    "version": "1.0.0-beta.0",
+    "version": "1.0.0",
     "description": "Simple CLI for snap-shotting Kosu contract system to generate a Kosu network genesis file.",
     "repository": "https://github.com/ParadigmFoundation/kosu-monorepo/blob/master/packages/kosu-genesis-cli",
     "license": "MIT",
