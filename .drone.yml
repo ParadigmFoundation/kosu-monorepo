@@ -106,6 +106,7 @@ steps:
   pull: always
   image: gcr.io/kosu-io/node-ci:latest
   commands:
+  - git reset --head
   - npm-cli-login
   - yarn lerna publish from-package
   environment:
