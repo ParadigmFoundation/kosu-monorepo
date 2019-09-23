@@ -106,7 +106,10 @@ steps:
   pull: always
   image: gcr.io/kosu-io/node-ci:latest
   commands:
-  - "git checkout . && git clean -fd"
+  - git status
+  - "git checkout . && git clean -fd && git status"
+  - git reset --hard HEAD
+  - git status
   - npm-cli-login
   - yarn lerna publish from-package
   environment:
