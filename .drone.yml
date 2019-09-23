@@ -111,6 +111,7 @@ steps:
   - git reset --hard HEAD
   - git status
   - npm-cli-login
+  - git status
   - yarn lerna publish from-package
   environment:
     NPM_EMAIL:

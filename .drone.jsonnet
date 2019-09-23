@@ -65,7 +65,7 @@ local KosuGeth(name) = Image(name, "kosu-test-geth:latest") {
 
 		Image("release", "node-ci:latest") {
 		    "pull": "always",
-		    "commands": [ "git status", "git checkout . && git clean -fd && git status", "git reset --hard HEAD", "git status", "npm-cli-login", "yarn lerna publish from-package" ],
+		    "commands": [ "git status", "git checkout . && git clean -fd && git status", "git reset --hard HEAD", "git status", "npm-cli-login", "git status", "yarn lerna publish from-package" ],
             "when": {
                 "status": [ "success" ],
                 "event": [ "tag" ]
