@@ -43,7 +43,7 @@ import Sidebar from "./Sidebar.vue";
 import SWUpdatePopup from "./SWUpdatePopup.vue";
 import { resolveSidebarItems } from "./util";
 
-import Spinner from "vue-simple-spinner";
+import Spinner from "vue-simple-spinner/src/components/Spinner.vue";
 
 export default {
   components: { Home, Page, Sidebar, Navbar, SWUpdatePopup, Spinner },
