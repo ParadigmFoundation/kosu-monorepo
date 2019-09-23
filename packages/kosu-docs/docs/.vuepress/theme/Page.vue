@@ -313,6 +313,7 @@ function find(page, items, offset) {
   .next {
     padding-right: 20px;
     float: right;
+    text-align: right;
 
     span {
       clear: right;
