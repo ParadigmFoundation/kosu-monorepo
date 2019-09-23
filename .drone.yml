@@ -122,6 +122,7 @@ steps:
     status:
     - success
   depends_on:
+  - go-kosu
   - solidity
   - npm-tests
 
