@@ -72,7 +72,3 @@ notes
 
 # Solidity/Truffle stuff
 mnemonic.json
-
-# Go-kosu testnet stuff
-packages/go-kosu/testnet/**/*.db
-packages/go-kosu/testnet/**/*.json
