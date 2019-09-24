@@ -47,7 +47,10 @@ func UnifyValidators(updates abci.ValidatorUpdates, state GenesisValidatorSet) (
 	}
 
 	// sort is needed because so that we can use the same iterator index for both
-	sort.Sort(updates)
+	// TM sorts by Pubkey, but we need to sort by Address
+	sort.SliceStable(updates, func(i, j int) bool {
+		return GetUpdateAddress(&updates[i]) < GetUpdateAddress(&updates[j])
+	})
 	sort.Sort(state)
 
 	newSet := make([]types.Validator, len(updates))
@@ -86,6 +89,13 @@ func UnifyValidators(updates abci.ValidatorUpdates, state GenesisValidatorSet) (
 		// balance verification
 		bn, _ := big.NewInt(0).SetString(s.InitialStake, 10)
 		balance := ScaleBalance(bn)
+
+		update := &updates[i]
+		if update.Power == 0 {
+			update.Power = balance
+		}
+		v.Power = update.Power
+
 		if v.Power != balance {
 			return nil, NewBalanceMismatchError(
 				v.Power, balance,

@@ -135,7 +135,9 @@ func (app *App) InitChain(req abci.RequestInitChain) abci.ResponseInitChain {
 	app.store.SetConsensusParams(gen.ConsensusParams)
 	app.log.Info("Loaded Genesis State", "gen", gen)
 
-	return abci.ResponseInitChain{}
+	return abci.ResponseInitChain{
+		Validators: req.Validators,
+	}
 }
 
 // BeginBlock .
