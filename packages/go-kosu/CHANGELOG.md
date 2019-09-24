@@ -1,8 +1,7 @@
 # Changelog
 
-## master
-
 -   Sort ValidatorUpdates by address and returns updated set
+-   Fix witness unsupported key logger bug
 -   Upgrade tendermint/tm-db to v0.2.0
 -   Fix witness connection mngmt and error handling
 -   Remove confirmation_threshold from ConsensusParams
