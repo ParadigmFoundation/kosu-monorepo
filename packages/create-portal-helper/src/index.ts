@@ -132,9 +132,13 @@ class Create {
         // get a reasonable gas price, use 5 if API fails
         const rawRes = await fetch("https://ethgasstation.info/json/ethgasAPI.json");
         const parsed = await rawRes.json();
-        const gasPriceGwei = parsed["safeLow"] ? parsed["safeLow"].toString() : "5";
-        this.gasPriceWei = new BigNumber(this.web3.utils.toWei(gasPriceGwei, "Gwei").toString());
+        const gasPriceGwei = parsed["safeLow"]
 
+            // eth gas station prices are gwei * 10
+            ? (parseInt(parsed["safeLow"]) / 10).toString()
+            : "5";
+
+        this.gasPriceWei = new BigNumber(this.web3.utils.toWei(gasPriceGwei, "gwei").toString());
         this.initialized = true;
     }
 
