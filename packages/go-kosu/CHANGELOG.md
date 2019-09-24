@@ -1,5 +1,8 @@
 # Changelog
 
+## master
+
+-   Bump tendermint version from v0.32.3 to v0.32.4
 -   Sort ValidatorUpdates by address and returns updated set
 -   Fix witness unsupported key logger bug
 -   Upgrade tendermint/tm-db to v0.2.0
