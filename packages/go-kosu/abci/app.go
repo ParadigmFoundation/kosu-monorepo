@@ -132,6 +132,10 @@ func (app *App) InitChain(req abci.RequestInitChain) abci.ResponseInitChain {
 		app.store.SetValidator(nodeID, &v)
 	}
 
+	for addr, p := range gen.InitialPosters {
+		app.store.SetPoster(addr, p)
+	}
+
 	app.store.SetConsensusParams(gen.ConsensusParams)
 	app.log.Info("Loaded Genesis State", "gen", gen)
 

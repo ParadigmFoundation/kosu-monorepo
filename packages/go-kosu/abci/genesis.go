@@ -27,12 +27,16 @@ func (s GenesisValidatorSet) Less(i, j int) bool {
 }
 func (s GenesisValidatorSet) Swap(i, j int) { s[i], s[j] = s[j], s[i] }
 
+// GenesisPosterSet is a map of address to type.Poster used to define the initial poster set
+type GenesisPosterSet map[string]types.Poster
+
 // Genesis is the initial chain state
 type Genesis struct {
-	ConsensusParams      types.ConsensusParams `json:"consensus_params"`
-	InitialValidatorInfo GenesisValidatorSet   `json:"initial_validator_info"`
+	ConsensusParams types.ConsensusParams `json:"consensus_params"`
 	// SnapshotBlock indicates the first Ethereum block we will subscribe to
-	SnapshotBlock uint64 `json:"snapshot_block"`
+	SnapshotBlock        uint64              `json:"snapshot_block"`
+	InitialValidatorInfo GenesisValidatorSet `json:"initial_validator_info"`
+	InitialPosters       GenesisPosterSet    `json:"initial_posters"`
 }
 
 // NewGenesisFromRequest returnsa a new Genesis object given a RequestInitChain
@@ -84,6 +88,7 @@ var GenesisAppState = &Genesis{
 		PeriodLimit:         100000,
 		BlocksBeforePruning: 10,
 	},
-	InitialValidatorInfo: nil,
 	SnapshotBlock:        0,
+	InitialValidatorInfo: nil,
+	InitialPosters:       nil,
 }
