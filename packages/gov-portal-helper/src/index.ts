@@ -108,6 +108,8 @@ interface Vote {
 interface PastGovernanceActivity {
     type: "CHALLENGE_BY" | "CHALLENGE_AGAINST" | "PROPOSAL";
     result: "PENDING" | "ACCEPTED" | "REJECTED";
+    listingPubKey: string;
+    challengeId?: number;
     actionable: boolean;
 }
 
@@ -261,6 +263,9 @@ interface Map<T> {
  * @typedef PastGovernanceActivity
  * @property {string} type Either "CHALLENGE_BY" for created challenges, "CHALLENGE_AGAINST" for challenges against a user, and "PROPOSAL" for created listings
  * @property {string} result Either "PENDING" for active, "ACCEPTED" for successful listings and challenges, and "REJECTED" for failed challenges and applications
+ * @property {boolean} actionable Indicates if some on-chain action can be taken to change the governance activity state
+ * @property {number} challengeId If present, indicates the challenge ID associated with the activity
+ * @property {string} listingPubKey The public key of the listing (proposal or challenged proposal) 
  */
 
 /**
@@ -792,6 +797,8 @@ class Gov {
         for (const listingKey of Object.keys(ownedListings)) {
             const govActivity: Partial<PastGovernanceActivity> = {};
             govActivity.type = "PROPOSAL";
+            govActivity.listingPubKey = listingKey;
+            govActivity.challengeId = null;
 
             const snapshot = ownedListings[listingKey];
             const listing = await this.kosu.validatorRegistry.getListing(listingKey);
@@ -832,11 +839,16 @@ class Gov {
         ownedChallenges: OwnedChallenges,
     ): Promise<void> {
         for (const challengeId of Object.keys(ownedChallenges)) {
+            if (!challengeId) {
+                continue;
+            }
             const govActivity: Partial<PastGovernanceActivity> = {};
-            govActivity.type = "CHALLENGE_BY";
-
             const snapshot = ownedChallenges[challengeId];
             const challenge = await this.kosu.validatorRegistry.getChallenge(new BigNumber(challengeId));
+
+            govActivity.type = "CHALLENGE_BY";
+            govActivity.challengeId = parseInt(challengeId, 10);
+            govActivity.listingPubKey = snapshot.listingPublicKey;
 
             if (challenge.finalized) {
                 govActivity.actionable = false;
@@ -871,10 +883,12 @@ class Gov {
                 continue;
             }
             const govActivity: Partial<PastGovernanceActivity> = {};
-            govActivity.type = "CHALLENGE_AGAINST";
-
             const snapshot = challengesAgainst[challengeId];
             const challenge = await this.kosu.validatorRegistry.getChallenge(new BigNumber(challengeId));
+
+            govActivity.type = "CHALLENGE_AGAINST";
+            govActivity.challengeId = parseInt(challengeId, 10);
+            govActivity.listingPubKey = snapshot.listingPublicKey;
 
             if (challenge.finalized) {
                 govActivity.actionable = false;
