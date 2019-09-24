@@ -298,8 +298,8 @@ contract ValidatorRegistry is Ownable {
         //Must be currently challenged and after the end block but not finalized
         require(listing.status == Status.CHALLENGED, "listing is not challenged");
         require(block.number > challenge.challengeEnd, "challenge has not ended");
-        require(!challenge.finalized, "challenge has been finalized");
-        require(challenge.balance == listing.stakedBalance, "challenge balance has changed");
+        require(!challenge.finalized, "challenge has been finalized"); //TODO this would be a failure in the state machine and perhaps should be rmeoved
+        require(challenge.balance == listing.stakedBalance, "challenge balance has changed"); //TODO this would be a failure in the state machine and perhaps should be rmeoved
 
         uint winningOption = voting.winningOption(challenge.pollId);
 
