@@ -296,10 +296,10 @@ class Create {
         const res: any = await this.node.addOrders([signedKosuOrder]);
         const { accepted, rejected } = res;
 
-        if (rejected.length > 0) {
+        if (rejected && rejected.length > 0) {
             throw new Error(`order rejected: ${rejected[0]["reason"]}`);
         } else {
-            return accepted[0];
+            return accepted && accepted[0] ? accepted[0] : "unknown";
         }
     }
 
