@@ -201,4 +201,49 @@ func TestGenesisStateCorrectness(t *testing.T) {
 		assert.Panics(t, fn)
 	})
 
+	t.Run("Sorted", func(t *testing.T) {
+		app.InitChain(abci.RequestInitChain{
+			Validators: abci.ValidatorUpdates{
+				abci.Ed25519ValidatorUpdate([]byte("z"), 2000),
+				abci.Ed25519ValidatorUpdate([]byte("y"), 2001),
+				abci.Ed25519ValidatorUpdate([]byte("x"), 2002),
+				abci.Ed25519ValidatorUpdate([]byte("w"), 2003),
+			},
+			AppStateBytes: []byte(`{
+			"initial_validator_info": [
+				  {"tendermint_address": "50E721E49C013F00C62CF59F2163542A9D8DF024", "ethereum_address": "0xethereum1", "initial_stake": "2003000000000000000000"}
+				, {"tendermint_address": "2D711642B726B04401627CA9FBAC32F5C8530FB1", "ethereum_address": "0xethereum1", "initial_stake": "2002000000000000000000"}
+				, {"tendermint_address": "A1FCE4363854FF888CFF4B8E7875D600C2682390", "ethereum_address": "0xethereum1", "initial_stake": "2001000000000000000000"}
+				, {"tendermint_address": "594E519AE499312B29433B7DD8A97FF068DEFCBA", "ethereum_address": "0xethereum1", "initial_stake": "2000000000000000000000"}
+			],
+			"snapshot_block": 999
+			}`),
+		})
+	})
+
+	t.Run("ValidatorUpdates_Power_Is_0", func(t *testing.T) {
+		updates := abci.ValidatorUpdates{
+			abci.Ed25519ValidatorUpdate([]byte("z"), 0),
+			abci.Ed25519ValidatorUpdate([]byte("y"), 0),
+			abci.Ed25519ValidatorUpdate([]byte("x"), 0),
+			abci.Ed25519ValidatorUpdate([]byte("w"), 0),
+		}
+		res := app.InitChain(abci.RequestInitChain{
+			Validators: updates,
+			AppStateBytes: []byte(`{
+			"initial_validator_info": [
+				  {"tendermint_address": "50E721E49C013F00C62CF59F2163542A9D8DF024", "ethereum_address": "0xethereum1", "initial_stake": "2003000000000000000000"}
+				, {"tendermint_address": "2D711642B726B04401627CA9FBAC32F5C8530FB1", "ethereum_address": "0xethereum1", "initial_stake": "2002000000000000000000"}
+				, {"tendermint_address": "A1FCE4363854FF888CFF4B8E7875D600C2682390", "ethereum_address": "0xethereum1", "initial_stake": "2001000000000000000000"}
+				, {"tendermint_address": "594E519AE499312B29433B7DD8A97FF068DEFCBA", "ethereum_address": "0xethereum1", "initial_stake": "2000000000000000000000"}
+			],
+			"snapshot_block": 999
+			}`),
+		})
+
+		require.Len(t, res.Validators, 4)
+		for _, u := range res.Validators {
+			assert.True(t, u.Power > 0)
+		}
+	})
 }
