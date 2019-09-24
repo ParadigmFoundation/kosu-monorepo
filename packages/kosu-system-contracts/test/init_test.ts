@@ -8,6 +8,7 @@ import { providerUtils } from "@0x/utils";
 import { Web3Wrapper } from "@0x/web3-wrapper";
 import chai from "chai";
 import chaiAsPromised from "chai-as-promised";
+import chaiSubset from "chai-subset";
 import { ContractArtifact } from "ethereum-types";
 import Web3 from "web3";
 import Web3ProviderEngine from "web3-provider-engine";
@@ -23,6 +24,7 @@ const runCoverage = process.argv.includes("runCoverage");
 const trace = process.argv.includes("trace");
 
 chai.use(chaiAsPromised);
+chai.use(chaiSubset);
 chai.should();
 
 let coverageSubprovider;
