@@ -158,7 +158,7 @@ func (w *Witness) broadcastTxSync(tx interface{}, args []interface{}) {
 	}
 
 	if res.Code != 0 {
-		w.log.Error("BroadcastTxSync: WitnessTx", append(args, "code", res.Code))
+		w.log.Error("BroadcastTxSync: WitnessTx", append(args, "code", res.Code)...)
 	} else {
 		w.log.Info("BroadcastTxSync: WitnessTx", append(args, "hash", res.Hash[0:4])...)
 	}
