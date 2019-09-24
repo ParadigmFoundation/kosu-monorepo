@@ -103,7 +103,11 @@ describe("ValidatorRegistry", async () => {
         before(async () => {
             for (const account of accounts) {
                 await kosuToken.transfer.awaitTransactionSuccessAsync(account, minimumBalance.multipliedBy(10));
-                await kosuToken.approve.awaitTransactionSuccessAsync(treasury.address, minimumBalance.multipliedBy(10), { from: account });
+                await kosuToken.approve.awaitTransactionSuccessAsync(
+                    treasury.address,
+                    minimumBalance.multipliedBy(10),
+                    { from: account },
+                );
                 await treasury.deposit.awaitTransactionSuccessAsync(minimumBalance.multipliedBy(10), { from: account });
             }
         });
@@ -124,7 +128,12 @@ describe("ValidatorRegistry", async () => {
 
             // should fail when you try to generate too many tokens
             await validatorRegistry.registerListing
-                .callAsync(publicKeys[0], minimumBalance, (await validatorRegistry.maxRewardRate.callAsync()).plus(new BigNumber("1")), paradigmMarket)
+                .callAsync(
+                    publicKeys[0],
+                    minimumBalance,
+                    (await validatorRegistry.maxRewardRate.callAsync()).plus(new BigNumber("1")),
+                    paradigmMarket,
+                )
                 .should.eventually.be.rejected.and.have.property("message")
                 .that.includes("reward rate exceeds max");
 
@@ -193,40 +202,77 @@ describe("ValidatorRegistry", async () => {
 
             // should emit a ValidatorRegistered event
             const listingRegister0DecodedLogs = decodeKosuEvents(listingRegister0.logs)[0];
-            listingRegister0DecodedLogs.eventType.should.eq("ValidatorRegistered", "should emit a ValdiatorRegisteredEvent - eventType");
-            listingRegister0DecodedLogs.tendermintPublicKey.should.eq(publicKeysBase64[0], "should emit a ValdiatorRegisteredEvent - tendermintPublicKey");
-            listingRegister0DecodedLogs.owner.should.eq(accounts[0].toLowerCase(), "should emit a ValdiatorRegisteredEvent - owner");
-            listingRegister0DecodedLogs.applicationBlockNumber.should.eq(listingRegister0.blockNumber.toString(), "should emit a ValdiatorRegisteredEvent - applicationBlockNumber");
-            listingRegister0DecodedLogs.rewardRate.should.eq("0", "should emit a ValdiatorRegisteredEvent - rewardRate");
-            listingRegister0DecodedLogs.details.should.eq(paradigmMarket, "should emit a ValdiatorRegisteredEvent - details");
+            listingRegister0DecodedLogs.eventType.should.eq(
+                "ValidatorRegistered",
+                "should emit a ValdiatorRegisteredEvent - eventType",
+            );
+            listingRegister0DecodedLogs.tendermintPublicKey.should.eq(
+                publicKeysBase64[0],
+                "should emit a ValdiatorRegisteredEvent - tendermintPublicKey",
+            );
+            listingRegister0DecodedLogs.owner.should.eq(
+                accounts[0].toLowerCase(),
+                "should emit a ValdiatorRegisteredEvent - owner",
+            );
+            listingRegister0DecodedLogs.applicationBlockNumber.should.eq(
+                listingRegister0.blockNumber.toString(),
+                "should emit a ValdiatorRegisteredEvent - applicationBlockNumber",
+            );
+            listingRegister0DecodedLogs.rewardRate.should.eq(
+                "0",
+                "should emit a ValdiatorRegisteredEvent - rewardRate",
+            );
+            listingRegister0DecodedLogs.details.should.eq(
+                paradigmMarket,
+                "should emit a ValdiatorRegisteredEvent - details",
+            );
 
             // should emit a ValidatorRegistered event with correct positive reward
             const listingRegister1DecodedLogs = decodeKosuEvents(listingRegister1.logs)[0];
-            listingRegister1DecodedLogs.applicationBlockNumber.should.eq(listingRegister1.blockNumber.toString(), "should emit a ValidatorRegistered event with correct positive reward - applicationBlockNumber");
-            listingRegister1DecodedLogs.rewardRate.should.eq("1", "should emit a ValidatorRegistered event with correct positive reward - rewardRate");
+            listingRegister1DecodedLogs.applicationBlockNumber.should.eq(
+                listingRegister1.blockNumber.toString(),
+                "should emit a ValidatorRegistered event with correct positive reward - applicationBlockNumber",
+            );
+            listingRegister1DecodedLogs.rewardRate.should.eq(
+                "1",
+                "should emit a ValidatorRegistered event with correct positive reward - rewardRate",
+            );
 
             // should emit a ValidatorRegistered event with correct negative reward
             const listingRegister2DecodedLogs = decodeKosuEvents(listingRegister2.logs)[0];
-            listingRegister2DecodedLogs.applicationBlockNumber.should.eq(listingRegister2.blockNumber.toString(), "should emit a ValidatorRegistered event with correct negative reward - applicationBlockNumber");
-            listingRegister2DecodedLogs.rewardRate.should.eq("-1", "should emit a ValidatorRegistered event with correct negative reward - rewardRate");
+            listingRegister2DecodedLogs.applicationBlockNumber.should.eq(
+                listingRegister2.blockNumber.toString(),
+                "should emit a ValidatorRegistered event with correct negative reward - applicationBlockNumber",
+            );
+            listingRegister2DecodedLogs.rewardRate.should.eq(
+                "-1",
+                "should emit a ValidatorRegistered event with correct negative reward - rewardRate",
+            );
 
             // should be initialized correctly
             const listing0Pending = await validatorRegistry.getListing.callAsync(publicKeys[0]);
-            listing0Pending.tendermintPublicKey.should.eq(publicKeys[0], "should be initialized correctly - tendermintPublicKey");
+            listing0Pending.tendermintPublicKey.should.eq(
+                publicKeys[0],
+                "should be initialized correctly - tendermintPublicKey",
+            );
             listing0Pending.owner.should.eq(accounts[0], "should be initialized correctly - owner");
-            listing0Pending.applicationBlock.toString().should.eq(listingRegister0.blockNumber.toString(), "should be initialized correctly - applicationBlock");
+            listing0Pending.applicationBlock
+                .toString()
+                .should.eq(
+                    listingRegister0.blockNumber.toString(),
+                    "should be initialized correctly - applicationBlock",
+                );
             listing0Pending.rewardRate.toString().should.eq("0", "should be initialized correctly - rewardRate");
-            listing0Pending.stakedBalance.toString().should.eq(minimumBalance.toString(), "should be initialized correctly - stakedBalance");
+            listing0Pending.stakedBalance
+                .toString()
+                .should.eq(minimumBalance.toString(), "should be initialized correctly - stakedBalance");
             listing0Pending.status.should.eq(1, "should be initialized correctly - status");
             listing0Pending.details.should.eq(paradigmMarket, "should be initialized correctly - details");
 
             // should fail when you try to overwrite a listing.
-            await validatorRegistry.registerListing.callAsync(
-                publicKeys[0],
-                minimumBalance,
-                TestValues.zero,
-                paradigmMarket,
-            ).should.eventually.be.rejected.and.have.property("message")
+            await validatorRegistry.registerListing
+                .callAsync(publicKeys[0], minimumBalance, TestValues.zero, paradigmMarket)
+                .should.eventually.be.rejected.and.have.property("message")
                 .that.includes("listing with public key exists", "should fail when you try to overwrite a listing");
 
             // should require sufficient blocks to pass before confirmation
@@ -248,11 +294,9 @@ describe("ValidatorRegistry", async () => {
             challenges.length.should.be.gt(0); //todo do better
 
             // should require appropriate state
-            await validatorRegistry.challengeListing.callAsync(
-                publicKeys[0],
-                paradigmMarket,
-                { from: accounts[9] },
-            ).should.eventually.be.rejected.and.have.property("message")
+            await validatorRegistry.challengeListing
+                .callAsync(publicKeys[0], paradigmMarket, { from: accounts[9] })
+                .should.eventually.be.rejected.and.have.property("message")
                 .that.includes("listing is not pending, accepted or exiting");
 
             // should require challenge to be ended
@@ -299,8 +343,8 @@ describe("ValidatorRegistry", async () => {
 
             const initialListingHolderSystemBalance = await treasury.systemBalance.callAsync(accounts[0]);
             const initialChallengerSystemBalance = await treasury.systemBalance.callAsync(accounts[9]);
-            await validatorRegistry.resolveChallenge.awaitTransactionSuccessAsync(publicKeys[0])
-                .should.eventually.be.fulfilled;
+            await validatorRegistry.resolveChallenge.awaitTransactionSuccessAsync(publicKeys[0]).should.eventually.be
+                .fulfilled;
 
             // should correctly distribute tokens to winning stakeholder
             const finalListingHolderSystemBalance = await treasury.systemBalance.callAsync(accounts[0]);
@@ -329,8 +373,8 @@ describe("ValidatorRegistry", async () => {
                 .that.includes("not listing owner");
 
             // should confirm a valid listing
-            await validatorRegistry.confirmListing.awaitTransactionSuccessAsync(publicKeys[0]).should
-                .eventually.be.fulfilled;
+            await validatorRegistry.confirmListing.awaitTransactionSuccessAsync(publicKeys[0]).should.eventually.be
+                .fulfilled;
             const listing0AfterConfirm = await validatorRegistry.getListing.callAsync(publicKeys[0]);
 
             listing0AfterConfirm.status.toString().should.eq("2"); // Accepted is 2
@@ -338,8 +382,7 @@ describe("ValidatorRegistry", async () => {
             listing0AfterConfirm.owner.should.eq(accounts[0]);
 
             // should set state to exiting
-            await validatorRegistry.initExit.awaitTransactionSuccessAsync(publicKeys[0]).should
-                .eventually.be.fulfilled;
+            await validatorRegistry.initExit.awaitTransactionSuccessAsync(publicKeys[0]).should.eventually.be.fulfilled;
             const listing0AfterInitExit = await validatorRegistry.getListing.callAsync(publicKeys[0]);
             listing0AfterInitExit.status.toString().should.eq("4");
 
@@ -350,14 +393,16 @@ describe("ValidatorRegistry", async () => {
                 .that.includes("not listing owner");
 
             // pending listing should exit immediately
-            await validatorRegistry.initExit.awaitTransactionSuccessAsync(publicKeys[2], { from: accounts[2] }).should.eventually.be
-                .fulfilled;
+            await validatorRegistry.initExit.awaitTransactionSuccessAsync(publicKeys[2], { from: accounts[2] }).should
+                .eventually.be.fulfilled;
             const listing2AfterInitExit = await validatorRegistry.getListing.callAsync(publicKeys[2]);
             listing2AfterInitExit.status.toString().should.eq("0");
             listing2AfterInitExit.owner.should.eq("0x0000000000000000000000000000000000000000");
 
             // listingKeys should return a list of listing keys excluding removed
-            await validatorRegistry.listingKeys.callAsync().should.eventually.not.include(publicKeys[2], "still contained 2");;
+            await validatorRegistry.listingKeys
+                .callAsync()
+                .should.eventually.not.include(publicKeys[2], "still contained 2");
         });
 
         it("should increase the maxRewardRate", async () => {
@@ -1300,7 +1345,10 @@ describe("ValidatorRegistry", async () => {
 
         it("should hit max", async () => {
             const backupMax = await validatorRegistry.maxMaxGenerator.callAsync();
-            await validatorRegistry.updateConfigValue.awaitTransactionSuccessAsync(new BigNumber(9), await validatorRegistry.maxRewardRate.callAsync().then(x => x.plus(1)));
+            await validatorRegistry.updateConfigValue.awaitTransactionSuccessAsync(
+                new BigNumber(9),
+                await validatorRegistry.maxRewardRate.callAsync().then(x => x.plus(1)),
+            );
             let currentMax;
             const keys = [];
             do {
@@ -1320,7 +1368,6 @@ describe("ValidatorRegistry", async () => {
             }
 
             await validatorRegistry.updateConfigValue.awaitTransactionSuccessAsync(new BigNumber(9), backupMax);
-
         });
     });
 
