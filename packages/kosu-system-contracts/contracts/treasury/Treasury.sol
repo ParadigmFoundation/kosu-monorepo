@@ -75,7 +75,7 @@ contract Treasury is Authorizable {
         @param amount Number of tokens to withdraw.
     */
     function withdraw(uint amount) public {
-        require(getSystemBalance(msg.sender).sub(amount) >= _getLockedTokens(msg.sender), "tokens are locked");
+        require(getCurrentBalance(msg.sender).sub(amount) >= _getLockedTokens(msg.sender), "tokens are locked");
 
         _withdraw(msg.sender, amount);
     }
