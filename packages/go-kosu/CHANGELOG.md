@@ -2,6 +2,7 @@
 
 ## master
 
+-   Bump tendermint version from v0.32.3 to v0.32.4
 -   Upgrade tendermint/tm-db to v0.2.0
 -   Fix Fix witness connection mngmt and error handling
 -   Remove confirmation_threshold from ConsensusParams

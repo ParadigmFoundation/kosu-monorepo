@@ -13,7 +13,6 @@ require (
 	github.com/edsrzf/mmap-go v1.0.0 // indirect
 	github.com/ethereum/go-ethereum v1.8.27
 	github.com/fjl/memsize v0.0.0-20180929194037-2a09253e352a // indirect
-	github.com/go-logfmt/logfmt v0.4.0 // indirect
 	github.com/gogo/protobuf v1.3.0
 	github.com/golang/protobuf v1.3.2
 	github.com/hashicorp/golang-lru v0.5.1 // indirect
@@ -30,9 +29,9 @@ require (
 	github.com/rjeczalik/notify v0.9.2 // indirect
 	github.com/smartystreets/goconvey v0.0.0-20190330032615-68dc04aab96a // indirect
 	github.com/spf13/cobra v0.0.5
-	github.com/spf13/viper v1.3.2
-	github.com/stretchr/testify v1.3.0
-	github.com/tendermint/tendermint v0.32.3
+	github.com/spf13/viper v1.4.0
+	github.com/stretchr/testify v1.4.0
+	github.com/tendermint/tendermint v0.32.4
 	github.com/tendermint/tm-db v0.2.0
 	github.com/tidwall/gjson v1.3.0
 	golang.org/x/crypto v0.0.0-20190426145343-a29dc8fdc734
