@@ -135,7 +135,7 @@ class Create {
         const parsed = await rawRes.json();
         const gasPriceGwei = parsed["safeLow"]
             ? // eth gas station prices are gwei * 10
-              (parseInt(parsed["safeLow"]) / 10).toString()
+            (parseInt(parsed["safeLow"]) / 10).toString()
             : "5";
 
         this.gasPriceWei = new BigNumber(this.web3.utils.toWei(gasPriceGwei, "gwei").toString());
@@ -362,13 +362,13 @@ class Create {
      */
     async userHasBond(userAddress: string = this.coinbase): Promise<boolean> {
         try {
-            const { limit } = await this.node.queryPoster(userAddress.toLowerCase());
-            if (limit > 0) {
-                return true;
+            const res = await this.node.queryPoster(userAddress.toLowerCase());
+            if (!res || res.limit < 1) {
+                return false;
             }
-            return false;
-        } catch {
-            return false;
+            return true;
+        } catch (error) {
+            throw new Error(`failed to fetch poster account: ${error.message}`);
         }
     }
 
