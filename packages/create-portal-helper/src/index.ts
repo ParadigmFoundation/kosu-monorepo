@@ -9,6 +9,7 @@ import {
     ERC20ProxyWrapper,
     ERC20TokenWrapper,
     SignedOrder,
+    orderHashUtils,
 } from "0x.js";
 
 import { MetamaskSubprovider } from "@0x/subproviders";
@@ -294,12 +295,12 @@ class Create {
         const signedKosuOrder = await this.orderHelper.prepareForPost(kosuOrder, this.coinbase);
 
         const res: any = await this.node.addOrders([signedKosuOrder]);
-        const { accepted, rejected } = res;
+        const { rejected } = res;
 
         if (rejected && rejected.length > 0) {
             throw new Error(`order rejected: ${rejected[0]["reason"]}`);
         } else {
-            return accepted && accepted[0] ? accepted[0] : "unknown";
+            return orderHashUtils.getOrderHashHex(signedZeroExOrder);
         }
     }
 
