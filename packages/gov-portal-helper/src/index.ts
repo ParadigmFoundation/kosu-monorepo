@@ -642,7 +642,11 @@ class Gov {
     async getHistoricalChallenges(): Promise<Array<PastChallenge>> {
         const pastChallenges = await this.kosu.validatorRegistry.getAllChallenges();
         for (const pastChallenge of pastChallenges) {
-            pastChallenge.winningTokens = await this.kosu.voting.totalWinningTokens(pastChallenge.pollId);
+            try {
+                pastChallenge.winningTokens = await this.kosu.voting.totalWinningTokens(pastChallenge.pollId);
+            } catch {
+                pastChallenge.winningTokens = null;
+            }
         }
         return pastChallenges.reverse();
     }
