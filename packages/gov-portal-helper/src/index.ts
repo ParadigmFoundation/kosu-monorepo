@@ -265,7 +265,7 @@ interface Map<T> {
  * @property {string} result Either "PENDING" for active, "ACCEPTED" for successful listings and challenges, and "REJECTED" for failed challenges and applications
  * @property {boolean} actionable Indicates if some on-chain action can be taken to change the governance activity state
  * @property {number} challengeId If present, indicates the challenge ID associated with the activity
- * @property {string} listingPubKey The public key of the listing (proposal or challenged proposal) 
+ * @property {string} listingPubKey The public key of the listing (proposal or challenged proposal)
  */
 
 /**
