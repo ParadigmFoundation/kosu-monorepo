@@ -58,6 +58,10 @@ describe("ValidatorRegistry", async () => {
         commitPeriod = await validatorRegistry.commitPeriod.callAsync();
     });
 
+    after(async () => {
+        await testHelpers.cleanAccounts();
+    });
+
     describe("constructor", () => {
         it("should have a reasonable gas cost", async () => {
             const { txReceipt } = await ValidatorRegistryContract.deployFrom0xArtifactAsync(
