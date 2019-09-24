@@ -135,7 +135,7 @@ class Create {
         const parsed = await rawRes.json();
         const gasPriceGwei = parsed["safeLow"]
             ? // eth gas station prices are gwei * 10
-              (parseInt(parsed["safeLow"]) / 10).toString()
+            (parseInt(parsed["safeLow"]) / 10).toString()
             : "5";
 
         this.gasPriceWei = new BigNumber(this.web3.utils.toWei(gasPriceGwei, "gwei").toString());
@@ -264,8 +264,8 @@ class Create {
         let signedOrder;
         try {
             signedOrder = await signatureUtils.ecSignOrderAsync(this.subProvider, zeroExOrder, makerAddress);
-        } catch {
-            throw new Error("failed to sign order");
+        } catch (error) {
+            throw new Error("failed to sign order: " + error.message);
         }
 
         return signedOrder;
@@ -285,12 +285,12 @@ class Create {
      */
     async signAndPost(signedZeroExOrder: SignedOrder): Promise<string> {
         const kosuOrder = {
-            maker: this.coinbase,
-            subContract: this.NULL_ADDRESS,
+            maker: signedZeroExOrder.makerAddress,
+            subContract: signedZeroExOrder.exchangeAddress,
             makerValues: signedZeroExOrder,
             arguments: ZRX_SUBCONTRACT_ARGS,
         };
-        const signedKosuOrder = await this.orderHelper.prepareForPost(kosuOrder, this.coinbase);
+        const signedKosuOrder = await this.orderHelper.prepareForPost(kosuOrder, this.coinbase.toLowerCase());
 
         const res: any = await this.node.addOrders([signedKosuOrder]);
         const { rejected } = res;
