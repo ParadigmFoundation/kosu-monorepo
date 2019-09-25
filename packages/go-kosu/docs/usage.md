@@ -21,3 +21,19 @@ For Kosu, this set is determined by the Kosu contract system, deployed on the Et
 [Follow this guide to apply to a Kosu ValidatorRegistry.]()
 
 **Warning:** Registering a main-network Kosu validator node requires locking tokens (staking) which may be confiscated if your listing is successfully challenged during the application process, or while it is in the set of active validators. [Read more about the validator selection and curation process here.](https://docs.kosu.io/overview/validator-curation.html)
+
+# Contents
+
+- [Security considerations](#security-considerations)
+- [Ethereum JSONRPC provider](#ethereum-jsonrpc-provider)
+- [Environment setup](#environment-setup)
+    - [System requirements](#system-requirements)
+    - [Network setup](#network-setup)
+- [Installation](#installation)
+    - [Pre-built binaries](#pre-built-binaries)
+    - [Build from source](#build-from-source)
+    - [Process supervisor](#process-supervisor)
+- [Configuration](#configuration)
+    - [Key generation](#key-generation)
+    - [Genesis file](#genesis-file)
+    - [Application configuration](#application-configuration)
