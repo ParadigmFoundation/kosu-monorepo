@@ -33,7 +33,7 @@ export interface GenesisValidator {
         type: string;
         value: string;
     };
-    power: string;
+    power?: string;
     name: string;
 }
 
