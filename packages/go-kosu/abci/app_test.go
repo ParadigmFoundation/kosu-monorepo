@@ -140,66 +140,83 @@ func TestGenesisStateCorrectness(t *testing.T) {
 
 	app := NewApp(db.NewMemDB(), dir)
 
-	update := abci.Ed25519ValidatorUpdate([]byte("some_pub_key"), 10)
-	updates := abci.ValidatorUpdates{update}
+	//	9339CD2572AB19E2A2E431EEF2E9FD2B1A91C472 is the Address of the update
+	//	To retrieve it call GetUpdateAddress(&update)
+	newTestReq := func(state []byte) abci.RequestInitChain {
+		req := abci.RequestInitChain{
+			Validators: abci.ValidatorUpdates{
+				abci.Ed25519ValidatorUpdate([]byte("some_pub_key"), 10),
+			},
+			AppStateBytes: state,
+		}
+		return req
+	}
 
-	/*
-		9339CD2572AB19E2A2E431EEF2E9FD2B1A91C472 is the Address of the update
-		To retrieve it call GetUpdateAddress(&update)
-	*/
+	tests := []struct {
+		name        string
+		state       []byte
+		shouldPanic bool
+		assert      func(*abci.ResponseInitChain)
+	}{
+		{
+			"InitialValidatorInfo_And_Snapshot_Zero", []byte(`{
+				"initial_validator_info": [
+					{"tendermint_address": "9339CD2572AB19E2A2E431EEF2E9FD2B1A91C472", "ethereum_address": "0xethereum", "initial_stake": "10000000000000000000"}
+				],
+				"snapshot_block": 0
+			}`), true, nil,
+		},
+		{
+			"Balances_Doesnt_Match", []byte(`{
+				"initial_validator_info": [
+					{"tendermint_address": "9339CD2572AB19E2A2E431EEF2E9FD2B1A91C472", "ethereum_address": "0xethereum", "initial_stake": "98760000000000000000"}
+				],
+				"snapshot_block": 999
+			}`), true, nil,
+		},
+		{
+			"PublicKeys_Doesnt_Match", []byte(`{
+				"initial_validator_info": [
+					{"tendermint_address": "0000000000000000000000000000000000000000", "ethereum_address": "0xethereum", "initial_stake": "10000000000000000000"}
+				],
+				"snapshot_block": 999
+			}`), true, nil,
+		},
+		{
+			"InitialPosters_Are_Stored", []byte(`{
+				"initial_validator_info": [
+					{"tendermint_address": "9339CD2572AB19E2A2E431EEF2E9FD2B1A91C472", "ethereum_address": "0xethereum", "initial_stake": "10000000000000000000"}
+				],
+				"snapshot_block": 999,
+				"initial_posters": [
+					{"ethereum_address": "some_address", "balance": "1234"}
+				]
+			}`),
+			false,
+			func(res *abci.ResponseInitChain) {
+				p := app.store.Poster("some_address")
+				require.NotNil(t, p)
+				assert.EqualValues(t, 1234, p.Balance.BigInt().Int64())
+				assert.EqualValues(t, 0, p.Limit, "Limit should not be set")
+			},
+		},
+	}
 
-	t.Run("InitialValidatorInfo_And_Snapshot_Defined", func(t *testing.T) {
-		app.InitChain(abci.RequestInitChain{
-			Validators: updates, AppStateBytes: []byte(`{
-			"initial_validator_info": [
-				{"tendermint_address": "9339CD2572AB19E2A2E431EEF2E9FD2B1A91C472", "ethereum_address": "0xethereum", "initial_stake": "10000000000000000000"}
-			],
-			"snapshot_block": 999
-		}`),
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			req := newTestReq(test.state)
+			if test.shouldPanic {
+				assert.Panics(t, func() {
+					app.InitChain(req)
+				})
+			}
+
+			if fn := test.assert; fn != nil {
+				res := app.InitChain(req)
+				fn(&res)
+			}
 		})
-	})
-
-	t.Run("InitialValidatorInfo_And_Snapshot_Zero", func(t *testing.T) {
-		fn := func() {
-			app.InitChain(abci.RequestInitChain{
-				Validators: updates, AppStateBytes: []byte(`{
-			"initial_validator_info": [
-				{"tendermint_address": "9339CD2572AB19E2A2E431EEF2E9FD2B1A91C472", "ethereum_address": "0xethereum", "initial_stake": "10000000000000000000"}
-			],
-			"snapshot_block": 0
-		}`),
-			})
-		}
-		assert.Panics(t, fn)
-	})
-
-	t.Run("Balances_Doesnt_Match", func(t *testing.T) {
-		fn := func() {
-			app.InitChain(abci.RequestInitChain{
-				Validators: updates, AppStateBytes: []byte(`{
-			"initial_validator_info": [
-				{"tendermint_address": "9339CD2572AB19E2A2E431EEF2E9FD2B1A91C472", "ethereum_address": "0xethereum", "initial_stake": "99990000000000000000"}
-			],
-			"snapshot_block": 999
-		}`),
-			})
-		}
-		assert.Panics(t, fn)
-	})
-
-	t.Run("PublicKeys_Doesnt_Match", func(t *testing.T) {
-		fn := func() {
-			app.InitChain(abci.RequestInitChain{
-				Validators: updates, AppStateBytes: []byte(`{
-			"initial_validator_info": [
-				{"tendermint_address": "0000000000000000000000000000000000000000", "ethereum_address": "0xethereum", "initial_stake": "10000000000000000000"}
-			],
-			"snapshot_block": 999
-		}`),
-			})
-		}
-		assert.Panics(t, fn)
-	})
+	}
 
 	t.Run("Sorted", func(t *testing.T) {
 		app.InitChain(abci.RequestInitChain{
@@ -210,13 +227,13 @@ func TestGenesisStateCorrectness(t *testing.T) {
 				abci.Ed25519ValidatorUpdate([]byte("w"), 2003),
 			},
 			AppStateBytes: []byte(`{
-			"initial_validator_info": [
-				  {"tendermint_address": "50E721E49C013F00C62CF59F2163542A9D8DF024", "ethereum_address": "0xethereum1", "initial_stake": "2003000000000000000000"}
-				, {"tendermint_address": "2D711642B726B04401627CA9FBAC32F5C8530FB1", "ethereum_address": "0xethereum1", "initial_stake": "2002000000000000000000"}
-				, {"tendermint_address": "A1FCE4363854FF888CFF4B8E7875D600C2682390", "ethereum_address": "0xethereum1", "initial_stake": "2001000000000000000000"}
-				, {"tendermint_address": "594E519AE499312B29433B7DD8A97FF068DEFCBA", "ethereum_address": "0xethereum1", "initial_stake": "2000000000000000000000"}
-			],
-			"snapshot_block": 999
+				"initial_validator_info": [
+					  {"tendermint_address": "50E721E49C013F00C62CF59F2163542A9D8DF024", "ethereum_address": "0xethereum1", "initial_stake": "2003000000000000000000"}
+					, {"tendermint_address": "2D711642B726B04401627CA9FBAC32F5C8530FB1", "ethereum_address": "0xethereum1", "initial_stake": "2002000000000000000000"}
+					, {"tendermint_address": "A1FCE4363854FF888CFF4B8E7875D600C2682390", "ethereum_address": "0xethereum1", "initial_stake": "2001000000000000000000"}
+					, {"tendermint_address": "594E519AE499312B29433B7DD8A97FF068DEFCBA", "ethereum_address": "0xethereum1", "initial_stake": "2000000000000000000000"}
+				],
+				"snapshot_block": 999
 			}`),
 		})
 	})
@@ -231,13 +248,13 @@ func TestGenesisStateCorrectness(t *testing.T) {
 		res := app.InitChain(abci.RequestInitChain{
 			Validators: updates,
 			AppStateBytes: []byte(`{
-			"initial_validator_info": [
-				  {"tendermint_address": "50E721E49C013F00C62CF59F2163542A9D8DF024", "ethereum_address": "0xethereum1", "initial_stake": "2003000000000000000000"}
-				, {"tendermint_address": "2D711642B726B04401627CA9FBAC32F5C8530FB1", "ethereum_address": "0xethereum1", "initial_stake": "2002000000000000000000"}
-				, {"tendermint_address": "A1FCE4363854FF888CFF4B8E7875D600C2682390", "ethereum_address": "0xethereum1", "initial_stake": "2001000000000000000000"}
-				, {"tendermint_address": "594E519AE499312B29433B7DD8A97FF068DEFCBA", "ethereum_address": "0xethereum1", "initial_stake": "2000000000000000000000"}
-			],
-			"snapshot_block": 999
+				"initial_validator_info": [
+					  {"tendermint_address": "50E721E49C013F00C62CF59F2163542A9D8DF024", "ethereum_address": "0xethereum1", "initial_stake": "2003000000000000000000"}
+					, {"tendermint_address": "2D711642B726B04401627CA9FBAC32F5C8530FB1", "ethereum_address": "0xethereum1", "initial_stake": "2002000000000000000000"}
+					, {"tendermint_address": "A1FCE4363854FF888CFF4B8E7875D600C2682390", "ethereum_address": "0xethereum1", "initial_stake": "2001000000000000000000"}
+					, {"tendermint_address": "594E519AE499312B29433B7DD8A97FF068DEFCBA", "ethereum_address": "0xethereum1", "initial_stake": "2000000000000000000000"}
+				],
+				"snapshot_block": 999
 			}`),
 		})
 
