@@ -3,6 +3,7 @@ package types
 import (
 	"bytes"
 	"crypto/sha256"
+	"encoding/json"
 	"errors"
 	"fmt"
 	"math/big"
@@ -23,6 +24,18 @@ func (b *BigInt) MarshalText() ([]byte, error) {
 	n := big.NewInt(0).SetBytes(b.Value)
 	str := fmt.Sprintf("value: %s", n.String())
 	return []byte(str), nil
+}
+
+// UnmarshalJSON is defined to parse BigInt from JSON.
+// The BigInt value MUST be encoded as string.
+func (b *BigInt) UnmarshalJSON(data []byte) error {
+	var str string
+	if err := json.Unmarshal(data, &str); err != nil {
+		return err
+	}
+
+	b.Value = NewBigIntFromString(str, 10).Bytes()
+	return nil
 }
 
 // Zero returns true if the value is 0

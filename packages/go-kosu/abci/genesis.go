@@ -27,12 +27,22 @@ func (s GenesisValidatorSet) Less(i, j int) bool {
 }
 func (s GenesisValidatorSet) Swap(i, j int) { s[i], s[j] = s[j], s[i] }
 
+// GenesisPoster is the data structure to define a poster in the app_state section of the genesis file.
+type GenesisPoster struct {
+	EthereumAddress string `json:"ethereum_address"`
+	Balance         string `json:"balance"`
+}
+
+// GenesisPosterSet is the initial set of posters
+type GenesisPosterSet []GenesisPoster
+
 // Genesis is the initial chain state
 type Genesis struct {
-	ConsensusParams      types.ConsensusParams `json:"consensus_params"`
-	InitialValidatorInfo GenesisValidatorSet   `json:"initial_validator_info"`
+	ConsensusParams types.ConsensusParams `json:"consensus_params"`
 	// SnapshotBlock indicates the first Ethereum block we will subscribe to
-	SnapshotBlock uint64 `json:"snapshot_block"`
+	SnapshotBlock        uint64              `json:"snapshot_block"`
+	InitialValidatorInfo GenesisValidatorSet `json:"initial_validator_info"`
+	InitialPosters       GenesisPosterSet    `json:"initial_posters"`
 }
 
 // NewGenesisFromRequest returnsa a new Genesis object given a RequestInitChain
@@ -84,6 +94,7 @@ var GenesisAppState = &Genesis{
 		PeriodLimit:         100000,
 		BlocksBeforePruning: 10,
 	},
-	InitialValidatorInfo: nil,
 	SnapshotBlock:        0,
+	InitialValidatorInfo: nil,
+	InitialPosters:       nil,
 }

@@ -9,17 +9,18 @@ import {
     ERC20ProxyWrapper,
     ERC20TokenWrapper,
     SignedOrder,
+    orderHashUtils,
 } from "0x.js";
 
 import { MetamaskSubprovider } from "@0x/subproviders";
 import { Web3Wrapper, TransactionReceiptWithDecodedLogs } from "@0x/web3-wrapper";
-import { Kosu, Signature, OrderSerializer } from "@kosu/kosu.js";
+import { OrderHelper, NodeClient } from "@kosu/kosu.js";
 
 // stores common token addresses
 import * as addresses from "./config/addresses.json";
 
 // hard-coded 0x subcontract makerArguments
-import * as ZRX_SUBCONTRACT_MAKER_ARGS from "./config/zrx_subcontract_maker_args.json";
+import * as ZRX_SUBCONTRACT_ARGS from "./config/zrx_subcontract_maker_args.json";
 
 /**
  * Helper methods for building the Paradigm "Create" portal.
@@ -34,7 +35,9 @@ class Create {
     public ZRX_SUBCONTRACT_ADDRESS: string;
     public EXCHANGE_ADDRESS: string;
 
-    public kosu: Kosu;
+    public node: NodeClient;
+    public orderHelper: OrderHelper;
+    public kosuNodeUrl: string;
     public web3: Web3;
     public web3Wrapper: Web3Wrapper;
     public subProvider: MetamaskSubprovider;
@@ -50,9 +53,12 @@ class Create {
      *
      * Most instance methods require `init()` to be called prior to use.
      */
-    constructor() {
+    constructor(kosuNodeUrl: string = "wss://explore-api.kosu.io/jsonrpc") {
         // set to true after `init()` completes
         this.initialized = false;
+
+        // connection to kosu RPC (setup in .init())
+        this.kosuNodeUrl = kosuNodeUrl;
 
         // addresses for common tokens
         this.NULL_ADDRESS = addresses.NULL;
@@ -67,7 +73,8 @@ class Create {
         this.EXCHANGE_ADDRESS = null;
 
         // will be loaded in `init()`
-        this.kosu = null;
+        this.node = null;
+        this.orderHelper = null;
         this.web3 = null;
         this.web3Wrapper = null;
         this.coinbase = null;
@@ -120,14 +127,18 @@ class Create {
         this.EXCHANGE_ADDRESS = this.zeroExContracts.exchange.address;
 
         // ropsten web3 provider required for check poster bond
-        this.kosu = new Kosu({ provider: this.web3.currentProvider });
+        this.node = new NodeClient(this.kosuNodeUrl);
+        this.orderHelper = new OrderHelper(this.web3, null);
 
         // get a reasonable gas price, use 5 if API fails
         const rawRes = await fetch("https://ethgasstation.info/json/ethgasAPI.json");
         const parsed = await rawRes.json();
-        const gasPriceGwei = parsed["safeLow"] ? parsed["safeLow"].toString() : "5";
-        this.gasPriceWei = new BigNumber(this.web3.utils.toWei(gasPriceGwei, "Gwei").toString());
+        const gasPriceGwei = parsed["safeLow"]
+            ? // eth gas station prices are gwei * 10
+              (parseInt(parsed["safeLow"]) / 10).toString()
+            : "5";
 
+        this.gasPriceWei = new BigNumber(this.web3.utils.toWei(gasPriceGwei, "gwei").toString());
         this.initialized = true;
     }
 
@@ -221,7 +232,6 @@ class Create {
             } else if (["WETH", "DAI", "ZRX"].indexOf(maybeAddress) !== -1) {
                 return parseCommonToken(maybeAddress);
             } else {
-                console.log(maybeAddress);
                 throw new Error("not and address or a common token.");
             }
         };
@@ -254,8 +264,8 @@ class Create {
         let signedOrder;
         try {
             signedOrder = await signatureUtils.ecSignOrderAsync(this.subProvider, zeroExOrder, makerAddress);
-        } catch {
-            throw new Error("failed to sign order");
+        } catch (error) {
+            throw new Error("failed to sign order: " + error.message);
         }
 
         return signedOrder;
@@ -274,23 +284,22 @@ class Create {
      * @param {object} signedZeroExOrder as outputted from `createAndSignOrder`
      */
     async signAndPost(signedZeroExOrder: SignedOrder): Promise<string> {
-        const makerValues = this._formatZeroExOrder(signedZeroExOrder);
         const kosuOrder = {
-            maker: this.coinbase,
-            subContract: this.ZRX_SUBCONTRACT_ADDRESS,
-            makerValues,
+            maker: signedZeroExOrder.makerAddress,
+            subContract: signedZeroExOrder.exchangeAddress,
+            makerValues: signedZeroExOrder,
+            arguments: ZRX_SUBCONTRACT_ARGS,
         };
-        const posterSignature = await Signature.generate(
-            this.web3,
-            OrderSerializer.posterSignatureHex(kosuOrder, ZRX_SUBCONTRACT_MAKER_ARGS),
-            this.coinbase,
-        );
-        const signedKosuOrder = {
-            ...kosuOrder,
-            posterSignature,
-        };
-        console.log(JSON.stringify(signedKosuOrder, null, 2));
-        return "1234";
+        const signedKosuOrder = await this.orderHelper.prepareForPost(kosuOrder, this.coinbase.toLowerCase());
+
+        const res: any = await this.node.addOrders([signedKosuOrder]);
+        const { rejected } = res;
+
+        if (rejected && rejected.length > 0) {
+            throw new Error(`order rejected: ${rejected[0]["reason"]}`);
+        } else {
+            return orderHashUtils.getOrderHashHex(signedZeroExOrder);
+        }
     }
 
     /**
@@ -352,11 +361,15 @@ class Create {
      * @returns {Promise<boolean>} `true` if user has active bond, `false` otherwise
      */
     async userHasBond(userAddress: string = this.coinbase): Promise<boolean> {
-        const bond = await this.kosu.posterRegistry.tokensRegisteredFor(userAddress);
-        if (bond.gt(0)) {
+        try {
+            const res = await this.node.queryPoster(userAddress.toLowerCase());
+            if (!res || res.limit < 1) {
+                return false;
+            }
             return true;
+        } catch (error) {
+            throw new Error(`failed to fetch poster account: ${error.message}`);
         }
-        return false;
     }
 
     /**
@@ -569,24 +582,6 @@ class Create {
         } else {
             throw new Error("non-ethereum browser detected");
         }
-    }
-
-    _formatZeroExOrder(signedOrder) {
-        const makerAsset = signedOrder.makerAssetData.substr(2).match(/.{1,64}/g);
-        const takerAsset = signedOrder.takerAssetData.substr(2).match(/.{1,64}/g);
-        const signature = signedOrder.signature.substr(2).match(/.{1,64}/g);
-
-        signedOrder.makerAssetData0 = `0x${makerAsset[0]}`;
-        signedOrder.makerAssetData1 = `0x${makerAsset[1]}`;
-
-        signedOrder.takerAssetData0 = `0x${takerAsset[0]}`;
-        signedOrder.takerAssetData1 = `0x${takerAsset[1]}`;
-
-        signedOrder.signature0 = `0x${signature[0]}`;
-        signedOrder.signature1 = `0x${signature[1]}`;
-        signedOrder.signature2 = `0x${signature[2]}`;
-
-        return signedOrder;
     }
 }
 
