@@ -188,18 +188,16 @@ func TestGenesisStateCorrectness(t *testing.T) {
 					{"tendermint_address": "9339CD2572AB19E2A2E431EEF2E9FD2B1A91C472", "ethereum_address": "0xethereum", "initial_stake": "10000000000000000000"}
 				],
 				"snapshot_block": 999,
-				"initial_posters": {
-					"some_address": {
-						"balance": "1234", "limit": 10
-					}
-				}
+				"initial_posters": [
+					{"ethereum_address": "some_address", "balance": "1234"}
+				]
 			}`),
 			false,
 			func(res *abci.ResponseInitChain) {
 				p := app.store.Poster("some_address")
 				require.NotNil(t, p)
 				assert.EqualValues(t, 1234, p.Balance.BigInt().Int64())
-				assert.EqualValues(t, 10, p.Limit)
+				assert.EqualValues(t, 0, p.Limit, "Limit should not be set")
 			},
 		},
 	}
@@ -220,8 +218,7 @@ func TestGenesisStateCorrectness(t *testing.T) {
 		})
 	}
 
-	/*
-t.Run("Sorted", func(t *testing.T) {
+	t.Run("Sorted", func(t *testing.T) {
 		app.InitChain(abci.RequestInitChain{
 			Validators: abci.ValidatorUpdates{
 				abci.Ed25519ValidatorUpdate([]byte("z"), 2000),
@@ -230,13 +227,13 @@ t.Run("Sorted", func(t *testing.T) {
 				abci.Ed25519ValidatorUpdate([]byte("w"), 2003),
 			},
 			AppStateBytes: []byte(`{
-			"initial_validator_info": [
-				  {"tendermint_address": "50E721E49C013F00C62CF59F2163542A9D8DF024", "ethereum_address": "0xethereum1", "initial_stake": "2003000000000000000000"}
-				, {"tendermint_address": "2D711642B726B04401627CA9FBAC32F5C8530FB1", "ethereum_address": "0xethereum1", "initial_stake": "2002000000000000000000"}
-				, {"tendermint_address": "A1FCE4363854FF888CFF4B8E7875D600C2682390", "ethereum_address": "0xethereum1", "initial_stake": "2001000000000000000000"}
-				, {"tendermint_address": "594E519AE499312B29433B7DD8A97FF068DEFCBA", "ethereum_address": "0xethereum1", "initial_stake": "2000000000000000000000"}
-			],
-			"snapshot_block": 999
+				"initial_validator_info": [
+					  {"tendermint_address": "50E721E49C013F00C62CF59F2163542A9D8DF024", "ethereum_address": "0xethereum1", "initial_stake": "2003000000000000000000"}
+					, {"tendermint_address": "2D711642B726B04401627CA9FBAC32F5C8530FB1", "ethereum_address": "0xethereum1", "initial_stake": "2002000000000000000000"}
+					, {"tendermint_address": "A1FCE4363854FF888CFF4B8E7875D600C2682390", "ethereum_address": "0xethereum1", "initial_stake": "2001000000000000000000"}
+					, {"tendermint_address": "594E519AE499312B29433B7DD8A97FF068DEFCBA", "ethereum_address": "0xethereum1", "initial_stake": "2000000000000000000000"}
+				],
+				"snapshot_block": 999
 			}`),
 		})
 	})
@@ -251,13 +248,13 @@ t.Run("Sorted", func(t *testing.T) {
 		res := app.InitChain(abci.RequestInitChain{
 			Validators: updates,
 			AppStateBytes: []byte(`{
-			"initial_validator_info": [
-				  {"tendermint_address": "50E721E49C013F00C62CF59F2163542A9D8DF024", "ethereum_address": "0xethereum1", "initial_stake": "2003000000000000000000"}
-				, {"tendermint_address": "2D711642B726B04401627CA9FBAC32F5C8530FB1", "ethereum_address": "0xethereum1", "initial_stake": "2002000000000000000000"}
-				, {"tendermint_address": "A1FCE4363854FF888CFF4B8E7875D600C2682390", "ethereum_address": "0xethereum1", "initial_stake": "2001000000000000000000"}
-				, {"tendermint_address": "594E519AE499312B29433B7DD8A97FF068DEFCBA", "ethereum_address": "0xethereum1", "initial_stake": "2000000000000000000000"}
-			],
-			"snapshot_block": 999
+				"initial_validator_info": [
+					  {"tendermint_address": "50E721E49C013F00C62CF59F2163542A9D8DF024", "ethereum_address": "0xethereum1", "initial_stake": "2003000000000000000000"}
+					, {"tendermint_address": "2D711642B726B04401627CA9FBAC32F5C8530FB1", "ethereum_address": "0xethereum1", "initial_stake": "2002000000000000000000"}
+					, {"tendermint_address": "A1FCE4363854FF888CFF4B8E7875D600C2682390", "ethereum_address": "0xethereum1", "initial_stake": "2001000000000000000000"}
+					, {"tendermint_address": "594E519AE499312B29433B7DD8A97FF068DEFCBA", "ethereum_address": "0xethereum1", "initial_stake": "2000000000000000000000"}
+				],
+				"snapshot_block": 999
 			}`),
 		})
 
@@ -266,5 +263,4 @@ t.Run("Sorted", func(t *testing.T) {
 			assert.True(t, u.Power > 0)
 		}
 	})
-*/
 }

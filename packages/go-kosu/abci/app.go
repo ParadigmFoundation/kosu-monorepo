@@ -132,8 +132,11 @@ func (app *App) InitChain(req abci.RequestInitChain) abci.ResponseInitChain {
 		app.store.SetValidator(nodeID, &v)
 	}
 
-	for addr, p := range gen.InitialPosters {
-		app.store.SetPoster(addr, p)
+	for _, init := range gen.InitialPosters {
+		poster := types.Poster{
+			Balance: types.NewBigIntFromString(init.Balance, 10),
+		}
+		app.store.SetPoster(init.EthereumAddress, poster)
 	}
 
 	app.store.SetConsensusParams(gen.ConsensusParams)

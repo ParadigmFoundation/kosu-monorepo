@@ -27,8 +27,14 @@ func (s GenesisValidatorSet) Less(i, j int) bool {
 }
 func (s GenesisValidatorSet) Swap(i, j int) { s[i], s[j] = s[j], s[i] }
 
-// GenesisPosterSet is a map of address to type.Poster used to define the initial poster set
-type GenesisPosterSet map[string]types.Poster
+// GenesisPoster is the data structure to define a poster in the app_state section of the genesis file.
+type GenesisPoster struct {
+	EthereumAddress string `json:"ethereum_address"`
+	Balance         string `json:"balance"`
+}
+
+// GenesisPosterSet is the initial set of posters
+type GenesisPosterSet []GenesisPoster
 
 // Genesis is the initial chain state
 type Genesis struct {
