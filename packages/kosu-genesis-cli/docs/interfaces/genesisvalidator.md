@@ -14,7 +14,7 @@
 
 -   [address](genesisvalidator.md#address)
 -   [name](genesisvalidator.md#name)
--   [power](genesisvalidator.md#power)
+-   [power](genesisvalidator.md#optional-power)
 -   [pub_key](genesisvalidator.md#pub_key)
 
 ## Properties
@@ -23,7 +23,7 @@
 
 • **address**: _string_
 
-_Defined in [types.d.ts:32](https://github.com/ParadigmFoundation/kosu-monorepo/blob/9a271ceb/packages/kosu-genesis-cli/src/types.d.ts#L32)_
+_Defined in [types.d.ts:31](https://github.com/ParadigmFoundation/kosu-monorepo/blob/ba034df4/packages/kosu-genesis-cli/src/types.d.ts#L31)_
 
 ---
 
@@ -31,15 +31,15 @@ _Defined in [types.d.ts:32](https://github.com/ParadigmFoundation/kosu-monorepo/
 
 • **name**: _string_
 
-_Defined in [types.d.ts:38](https://github.com/ParadigmFoundation/kosu-monorepo/blob/9a271ceb/packages/kosu-genesis-cli/src/types.d.ts#L38)_
+_Defined in [types.d.ts:37](https://github.com/ParadigmFoundation/kosu-monorepo/blob/ba034df4/packages/kosu-genesis-cli/src/types.d.ts#L37)_
 
 ---
 
-### power
+### `Optional` power
 
-• **power**: _string_
+• **power**? : _undefined | string_
 
-_Defined in [types.d.ts:37](https://github.com/ParadigmFoundation/kosu-monorepo/blob/9a271ceb/packages/kosu-genesis-cli/src/types.d.ts#L37)_
+_Defined in [types.d.ts:36](https://github.com/ParadigmFoundation/kosu-monorepo/blob/ba034df4/packages/kosu-genesis-cli/src/types.d.ts#L36)_
 
 ---
 
@@ -47,6 +47,6 @@ _Defined in [types.d.ts:37](https://github.com/ParadigmFoundation/kosu-monorepo/
 
 • **pub_key**: _object_
 
-_Defined in [types.d.ts:33](https://github.com/ParadigmFoundation/kosu-monorepo/blob/9a271ceb/packages/kosu-genesis-cli/src/types.d.ts#L33)_
+_Defined in [types.d.ts:32](https://github.com/ParadigmFoundation/kosu-monorepo/blob/ba034df4/packages/kosu-genesis-cli/src/types.d.ts#L32)_
 
 #### Type declaration:

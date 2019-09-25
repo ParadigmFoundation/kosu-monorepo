@@ -12,7 +12,7 @@ Before being used for main-net or public test network's by validators, the tests
 
 ## Documentation
 
-Documentation is hosted [here](https://docs.kosu.io/) and can also be found in the `docs` folder.
+Documentation is hosted on [`docs.kosu.io`](https://docs.kosu.io/) and can also be found in the `docs` folder.
 
 There is additional documentation within certain methods, and all potential validators are encouraged to read the snapshot logic and independently verify the programs correctness.
 
@@ -54,23 +54,24 @@ The following options are required:
     -t, --start-time <number>
 
 Options:
-  -V, --version                          output the version number
-  -n, --chain-id <name>                  Specify the resulting Kosu chain ID
-  -p, --provider-url <url>               HTTP Ethereum JSONRPC provider
-  -b, --snapshot-block <number>          The block height at which to snapshot Kosu contract system state
-  -t, --start-time <number>              Unix timestamp (in seconds) of network start
-  -f, --finality-threshold <number>      Minimum age of Ethereum blocks before submitting attestations (default: "10")
-  -l, --period-limit <number>            Maximum number of order messages to accept per rebalance period (default: "100000")
-  -L, --period-length <number>           The length of each rebalance period (in Ethereum blocks) (default: "5")
-  -m, --max-order-bytes <number>         The maximum size of a single order transaction (default: "4096")
-  -c, --confirmation-threshold <number>  Amount of network vote power needed to accept witness events (updated each block) (default: "0")
-  -B, --blocks-before-pruning <number>   The number of blocks to wait before pruning old attestations (default: "50")
-  -h, --help                             output usage information
+  -V, --version                         output the version number
+  -n, --chain-id <name>                 Specify the resulting Kosu chain ID
+  -p, --provider-url <url>              HTTP Ethereum JSONRPC provider
+  -b, --snapshot-block <number>         The block height at which to snapshot Kosu contract system state
+  -t, --start-time <number>             Unix timestamp (in seconds) of network start
+  -f, --finality-threshold <number>     Minimum age of Ethereum blocks before submitting attestations (default: "10")
+  -l, --period-limit <number>           Maximum number of order messages to accept per rebalance period (default: "100000")
+  -L, --period-length <number>          The length of each rebalance period (in Ethereum blocks) (default: "5")
+  -m, --max-order-bytes <number>        The maximum size of a single order transaction (default: "4096")
+  -B, --blocks-before-pruning <number>  Maximum age of attestations before pruning (default: "50")
+  -h, --help                            output usage information
 ```
 
 ## Develop
 
 The exported functions within this package are intended to be useful outside the context of the CLI, and can be used in other scripts that need to snapshot contract system state.
+
+All primary logic for generating the snapshot and genesis JSON is found in [`functions.ts`.](./src/functions.ts)
 
 ### Install dependencies
 

@@ -50,18 +50,17 @@ The following options are required:
     -t, --start-time <number>
 
 Options:
-  -V, --version                          output the version number
-  -n, --chain-id <name>                  Specify the resulting Kosu chain ID
-  -p, --provider-url <url>               HTTP Ethereum JSONRPC provider
-  -b, --snapshot-block <number>          The block height at which to snapshot Kosu contract system state
-  -t, --start-time <number>              Unix timestamp (in seconds) of network start
-  -f, --finality-threshold <number>      Minimum age of Ethereum blocks before submitting attestations (default: "10")
-  -l, --period-limit <number>            Maximum number of order messages to accept per rebalance period (default: "100000")
-  -L, --period-length <number>           The length of each rebalance period (in Ethereum blocks) (default: "5")
-  -m, --max-order-bytes <number>         The maximum size of a single order transaction (default: "4096")
-  -c, --confirmation-threshold <number>  Amount of network vote power needed to accept witness events (updated each block) (default: "0")
-  -B, --blocks-before-pruning <number>   The number of blocks to wait before pruning old attestations (default: "50")
-  -h, --help                             output usage information
+  -V, --version                         output the version number
+  -n, --chain-id <name>                 Specify the resulting Kosu chain ID
+  -p, --provider-url <url>              HTTP Ethereum JSONRPC provider
+  -b, --snapshot-block <number>         The block height at which to snapshot Kosu contract system state
+  -t, --start-time <number>             Unix timestamp (in seconds) of network start
+  -f, --finality-threshold <number>     Minimum age of Ethereum blocks before submitting attestations (default: "10")
+  -l, --period-limit <number>           Maximum number of order messages to accept per rebalance period (default: "100000")
+  -L, --period-length <number>          The length of each rebalance period (in Ethereum blocks) (default: "5")
+  -m, --max-order-bytes <number>        The maximum size of a single order transaction (default: "4096")
+  -B, --blocks-before-pruning <number>  Maximum age of attestations before pruning (default: "50")
+  -h, --help                            output usage information
 ```
 
 ## Develop
