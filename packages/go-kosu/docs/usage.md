@@ -11,7 +11,7 @@ Additionally, instructions for the following usage scenarios are included:
 - Existing network from contract system snapshot (mainnet or test-network).
 - New network from contract snapshot (mainnet or test-network).
 
-## A note on validators
+## A note for validators
 
 Validator configuration from the perspective of configuring the underlying full node
 process (`kosud`) is identical; the only difference between a full node and a validating full node is the inclusion (or lack thereof) of the node's public key in the active Tendermint validator set.
@@ -24,16 +24,111 @@ For Kosu, this set is determined by the Kosu contract system, deployed on the Et
 
 # Contents
 
+- [Important resources](#important-resources)
+    - [Tendermint](#tendermint)
+    - [Kosu](#kosu)
+    - [Ethereum](#ethereum)
 - [Security considerations](#security-considerations)
 - [Ethereum JSONRPC provider](#ethereum-jsonrpc-provider)
+- [Contract system snapshots](#contract-system-snapshots)
 - [Environment setup](#environment-setup)
     - [System requirements](#system-requirements)
     - [Network setup](#network-setup)
 - [Installation](#installation)
     - [Pre-built binaries](#pre-built-binaries)
     - [Build from source](#build-from-source)
-    - [Process supervisor](#process-supervisor)
 - [Configuration](#configuration)
+    - [Process supervisor](#process-supervisor)
     - [Key generation](#key-generation)
     - [Genesis file](#genesis-file)
     - [Application configuration](#application-configuration)
+- [Usage](#usage)
+    - [Development network](#development-network)
+    - [Existing network](#existing-network)
+    - [New network launch](#new-network-launch)
+    - [RPC Server](#rpc-server)
+- [Validators](#validators)
+    - [Networking](#networking)
+    - [Ethereum client](#ethereum-client)
+    - [Sentry nodes](#sentry-nodes)
+
+<!-- - -->
+## Important resources
+
+The following resources cover topics that are required to understand for individuals wishing to operate on the Kosu main-network or incentivized test-networks, and helpful for everyone else.
+
+### Tendermint
+Because `go-kosu` is built on Tendermint ([Tendermint core](https://github.com/tendermint/tendermint) is compiled into `kosud`), running Kosu nodes and networks is identical with respect to blockchain structure, networking, and the underlying consensus mechanism.
+
+- [Running Tendermint in production](https://tendermint.com/docs/tendermint-core/running-in-production.html#running-in-production)
+- [Tendermint networks](https://tendermint.com/docs/tendermint-core/using-tendermint.html#tendermint-networks)
+- [Tendermint configuration](https://tendermint.com/docs/tendermint-core/configuration.html)
+- [Tendermint RPC reference](https://tendermint.com/rpc/) (available through `kosud`)
+- [Secure P2P](https://tendermint.com/docs/tendermint-core/secure-p2p.html#secure-p2p)
+
+### Kosu
+Before connecting to an existing Kosu network, it is important to be familiar with some core Kosu concepts.
+
+- [Introduction to Kosu](https://docs.kosu.io/overview/)
+- [KOSU token mechanics](https://docs.kosu.io/overview/token-mechanics.html#introduction)
+- [Kosu validator curation](https://docs.kosu.io/overview/validator-curation.html)
+
+### Ethereum
+Ethereum smart-contracts ([Kosu system contracts](https://github.com/ParadigmFoundation/kosu-monorepo/blob/master/packages/kosu-system-contracts)) are a core component of the Kosu system, and support the Kosu validator registry and curation mechanism.
+
+- [Getting up to speed on Ethereum](https://medium.com/@mattcondon/getting-up-to-speed-on-ethereum-63ed28821bbe)
+- [Ethereum JSONRPC](https://github.com/ethereum/wiki/wiki/JSON-RPC)
+
+<!-- - -->
+## Security considerations
+
+<!-- - -->
+## Ethereum JSONRPC provider
+
+<!-- - -->
+## Contract system snapshots
+
+<!-- - -->
+## Environment setup
+
+### System requirements
+
+### Network setup
+
+<!-- - -->
+## Installation
+
+### Pre-built binaries
+
+### Build from source
+
+<!-- - -->
+## Configuration
+
+### Process supervisor
+
+### Key generation
+
+### Genesis file
+
+### Application configuration
+
+<!-- - -->
+## Usage
+
+### Development network
+
+### Existing network
+
+### New network launch
+
+### RPC Server
+
+<!-- - -->
+## Validators
+
+### Networking
+
+### Ethereum client
+
+### Sentry nodes
