@@ -279,7 +279,7 @@ export function parseMonikerFromDetails(
     const kvs = details.split(itemSeparator);
 
     // if no object pattern is detected, just use full details
-    if (kvs.length < 2 || (kvs.length % 2 !== 0)) {
+    if (kvs.length < 2 || kvs.length % 2 !== 0) {
         return details;
     }
 

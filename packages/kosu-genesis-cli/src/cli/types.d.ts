@@ -1,2 +1,2 @@
 // avoids conflicting type definitions
-declare module 'web3';
+declare module "web3";
