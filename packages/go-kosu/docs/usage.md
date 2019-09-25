@@ -65,6 +65,7 @@ Because `go-kosu` is built on Tendermint ([Tendermint core](https://github.com/t
 - [Tendermint networks](https://tendermint.com/docs/tendermint-core/using-tendermint.html#tendermint-networks)
 - [Tendermint configuration](https://tendermint.com/docs/tendermint-core/configuration.html)
 - [Tendermint RPC reference](https://tendermint.com/rpc/) (available through `kosud`)
+- [Genesis file](https://cosmos.network/docs/cosmos-hub/genesis.html#genesis-file) (for Cosmos, but most is applicable to Tendermint and Kosu)
 - [Secure P2P](https://tendermint.com/docs/tendermint-core/secure-p2p.html#secure-p2p)
 
 ### Kosu
@@ -98,6 +99,7 @@ Among many other things, this means (for validators):
 
 - [Sentry node overview](https://forum.cosmos.network/t/sentry-node-architecture-overview/454)
 - [Tendermint sentry nodes](https://github.com/tendermint/tendermint/blob/master/docs/spec/p2p/node.md#sentry-node)
+- [Cosmos sentry nodes](https://cosmos.network/docs/cosmos-hub/validators/security.html#sentry-nodes-ddos-protection)
 - [Example validator setup](https://iqlusion.blog/a-look-inside-our-validator-architecture)
 
 <!-- - -->
@@ -123,16 +125,122 @@ Kosu's reliance on the Ethereum contract system for network startup offers an in
 <!-- - -->
 ## Environment setup
 
+This section covers some recommendations (and requirements) to keep in mind when provisioning virtual (or physical) infrastructure for a Kosu full or validating full node deployment.
+
 ### System requirements
 
+The `go-kosu` binaries themselves currently support bit linux or darwin (macOS) architectures. Linux (or linux via Docker) is recommended for validators and mission-critical full nodes. Support for Windows or 32-bit architectures is not guaranteed.
+
+The below specifications do _not_ include recommended resources for a local full Ethereum node. A separate host machine should be used for the Ethereum client process and RPC server.
+
+#### Minimum
+
+Sufficient for development servers, low-load full nodes, etc.
+
+- **RAM:** 1GB RAM
+- **CPU:** 1 core, ~1.4 GHZ (x64/x32)
+- **OS:** Linux, darwin (macOS) or Docker
+- **Disk:** 25GB (HDD or SSD)
+
+#### Recommended 
+
+Recommended specifications for validator hosts, production full nodes, etc.
+
+- **RAM:** ≥2GB
+- **CPU:** ≥2 cores, ≥2.0 GHZ (x64)
+- **OS:** Linux or Docker
+- **Disk:** ≥100 GB SSD
+
 ### Network setup
+
+For production full nodes and validating full nodes, usage of a VPN/C (virtual private network or cloud) for the validator host is highly recommended. Read more about security considerations for validators [here](#security-considerations) and [here](#validators).
+
+#### Ports
+
+Default TCP ports (customizable via CLI and/or `config.toml`) listed below.
+
+- **Tendermint P2P:** `26656`
+- **Tendermint RPC:** `26657`
+- **Kosu RPC (WS):** `14342`
+- **Kosu RPC (HTTP):** `14343`
 
 <!-- - -->
 ## Installation
 
+This section covers installing the `go-kosu` binaries, including usage of pre-built hosted binaries (linux x64 only), as well as resources to build the client and full monorepo from source.
+
 ### Pre-built binaries
 
+If you are installing one of the `go-kosu` binaries on a 64-bit modern linux machine, you can quickly download and install pre-built binaries with the latest available version. The install path shown below (`/usr/local/bin`) may need to be modified depending on your use case or operating system.
+
+### Client (`kosud`)
+
+Kosu network client reference implementation, built on Tendermint consensus.
+
+```
+wget https://storage.googleapis.com/kosud/linux_amd64/kosud
+chmod +x kosud
+install kosud /usr/local/bin
+```
+
+### CLI (`kosu-cli`)
+
+Command-line interface for `kosud` (run `kosu-cli` for usage).
+
+```
+wget https://storage.googleapis.com/kosu-cli/linux_amd64/kosu-cli
+chmod +x kosu-cli
+install kosu-cli /usr/local/bin
+```
+
 ### Build from source
+
+For other architectures or macOS, you must build the `go-kosu` binaries alongside the full [Kosu monorepo.](https://github.com/ParadigmFoundation/kosu-monorepo/)
+
+#### Prerequisites
+
+In order to build the full monorepo, the following is required:
+
+-   [Node.js](https://nodejs.org/en/download/) (`^10`)
+-   [Yarn](https://yarnpkg.com/lang/en/docs/install/#mac-stable) (`^1.15`)
+-   [jq](https://stedolan.github.io/jq/download/) (`^1.6`)
+-   [golang](https://golang.org/dl/) (`^1.12`)
+-   [go-bindata](https://github.com/go-bindata/go-bindata) (`^3.1`)
+-   [go-ethereum](https://github.com/ethereum/go-ethereum/wiki/Building-Ethereum) (`^1.8`)
+    -   Only the `abigen` binary is required to build the monorepo.
+
+
+**Note:** MacOS users can install most required packages listed above with [`Homebrew`](https://brew.sh/) package manager. For other operating systems, see the official install instructions for each required package (linked above).
+
+#### Clone kosu-monorepo
+
+Clone the repository to a convenient location.
+
+```bash
+# over SSH
+git clone git@github.com:ParadigmFoundation/kosu-monorepo
+
+# over HTTP
+git clone https://github.com/ParadigmFoundation/kosu-monorepo
+```
+
+#### Build packages
+
+Install Node.js dependencies:
+
+```
+yarn
+```
+
+To build all packages (including `go-kosu` binaries):
+
+```
+yarn build
+```
+
+#### Build output
+
+The built binaries for `go-kosu` will be located in the `packages/go-kosu` directory.
 
 <!-- - -->
 ## Configuration
