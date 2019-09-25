@@ -244,14 +244,117 @@ The built binaries for `go-kosu` will be located in the `packages/go-kosu` direc
 
 <!-- - -->
 ## Configuration
+For usage in development, configuration is as simple as running `kosud init` to [generate keys](#key-generation), and `kosud -E [ETHEREUM_PROVIDER_URL]` to start the full node process.
 
-### Process supervisor
+More consideration and configuration steps are necessary for joining the Kosu main-network, public test-network, or other private networks.
 
 ### Key generation
 
+Full and validating full nodes must generate a private-public key pair prior to joining a network. For validators (and to a lesser extent, full nodes) protection of the private key files (`node_key.json` and `priv_validator_key.json`) is of upmost importance. The keys should never leave the host machine, or be transmitted over the public internet.
+
+To generate a new Kosu/Tendermint key pair and base application configuration in the default directory (`~/.kosu`), run the following (using platform-specific randomness source).
+
+```bash
+kosud init
+```
+
+To generate keys and application config in an arbitrary directory, use the following flag.
+
+```bash
+kosud init -H /path/to/your/directory
+```
+
+If successful, the output will looks something like the below snippet.
+```
+I[2019-09-25|16:29:42.673] Generated private validator   module=main keyFile=/home/you/.kosu/config/priv_validator_key.json stateFile=/home/you/.kosu/data/priv_validator_state.json
+I[2019-09-25|16:29:42.674] Generated node key            module=main path=/home/you/.kosu/config/node_key.json
+I[2019-09-25|16:29:42.674] Generated genesis file        module=main path=/home/you/.kosu/config/genesis.json
+```
+
+### Process supervisor
+
+It is _highly_ recommended to run `kosud` with a process supervisor in production environments and at all times for validating full nodes.
+
+This section describes an example configuration using `systemd` on linux, however other configurations can work just as well or better for certain setups (Docker compose, K8/GKE, etc.).
+
+#### Service file
+After provisioning a host machine and installing `kosud`, create a service file like the one below. A bare-minimum configuration is show, customize as needed.
+
+The example assumes an Ethereum client is serving the Ethereum JSONRPC over WebSockets on `geth:8546` within a private network, and that a user account `kosu` exists, and that a Kosu configuration exists at `/home/kosu/.kosu` (see above).
+
+```
+[Unit]
+Description=Kosu network client (kosud).
+
+[Service]
+ExecStart=/usr/local/bin/kosud \
+	-E ws://geth:8546 \
+	-H /home/kosu/.kosu
+```
+
+Save your service file to `/etc/system/systemd/kosu.service` after making necessary modifications.
+
+**Note:** an `ExecStop` may be specified as well, such as `/usr/bin/pkill kosud`.
+
+#### Start
+
+After saving a configured service file, run the following to start the client daemon.
+
+```bash
+sudo systemctl start kosu
+```
+
+#### Stop/restart
+
+Stop and/or restart the client with the following commands.
+
+```bash
+# stop (w/o restart)
+sudo systemctl stop kosu
+
+# stop and restart
+sudo systemctl restart kosu
+```
+
 ### Genesis file
 
-### Application configuration
+Tendermint (and all networks built on it) use a [`genesis.json` file](https://cosmos.network/docs/cosmos-hub/genesis.html#genesis-file) to set the initial "block," the initial validators, and a variety of consensus parameters (as well as application-specific data).
+
+All nodes on a given network must use the same genesis file. Kosu networks (main or "realistic" test-networks) use a genesis file generated from a [snapshot of the Kosu contract system's state.](#contract-system-snapshots)
+
+Depending on your intended configuration your genesis file may come from:
+- Generated during `kosud init` (development only)
+- Distributed on GitHub/Gist (private networks/test-networks)
+- Generated from contract snapshot (mainnet, public test-networks)
+
+### Client configuration
+Certain application configuration (including all Tendermint configuration) is done through the `config.toml` file, which is generated when `kosud init` is run.
+
+For development, the base/default config should suffice. Most users will likely need to change some values from the defaults.
+
+[See this document](https://tendermint.com/docs/tendermint-core/configuration.html) for a more complete reference about the `config.toml` file. This section only describes a few commonly used settings.
+
+#### Moniker
+```
+# A custom human readable name for this node
+moniker = "anonymous"
+```
+
+- Defaults to hostname of machine running `kosud init`
+- Should be set to a helpful identifier.
+
+#### Log level
+```
+# Output level for logging, including package level options
+log_level = "app:info,witness:info,main:info,state:info,*:error"
+```
+
+Configure the log output for the Kosu ABCI application, the Kosu witness, and Tendermint.
+
+- `app` - The Kosu ABCI application (core state machine)
+- `witness` - Kosu witness sub-process and Ethereum connection
+- `main` - Tendermint main log output
+- `state` - Tendermint state module output
 
 <!-- - -->
 ## Usage
