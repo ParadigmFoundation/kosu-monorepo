@@ -95,6 +95,15 @@ steps:
     "./packages/kosu-docs/docs/kosu-system-contracts"
   ]
 
+  - name: "gcr.io/cloud-builders/gsutil"
+  args: [
+    "-m", 
+    "rsync", 
+    "-r", "-c", "-d", 
+    "./packages/kosu-genesis-cli/docs",
+    "./packages/kosu-docs/docs/kosu-genesis-cli"
+  ]
+
 - name: "gcr.io/cloud-builders/gsutil"
   args: [
     "-m", 

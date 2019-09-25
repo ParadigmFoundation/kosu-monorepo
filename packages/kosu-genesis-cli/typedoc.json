@@ -1,0 +1,14 @@
+{
+    "name": "Kosu genesis CLI",
+    "mode": "file",
+    "readme": "./README.md",
+    "theme": "markdown",
+    "out": "./docs",
+    "exclude": "src/cli/utils.ts",
+    "excludeNotExported": true,
+    "excludePrivate": true,
+    "excludeExternals": true,
+    "ignoreCompilerErrors": true,
+    "disableOutputCheck": true,
+    "includeDeclarations": true
+}
