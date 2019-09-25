@@ -245,13 +245,53 @@ export function getTendermintValidators(validators: SnapshotValidator[]): Genesi
                 type: "tendermint/PubKeyEd25519",
                 value: validator.publicKey.toString("base64"),
             },
-
-            // Note: power is calculated and set by the network
-            power: "0",
-            name: validator.details,
+            name: parseMonikerFromDetails(validator.details),
         });
     }
     return genesisValidators;
+}
+
+/**
+ * Allows parsing a moniker from a string that uses two types of separators to
+ * store key-value pairs in a plain string.
+ *
+ * This method will return a moniker, if found, within a provided string (see
+ * below), otherwise it will return the input string.
+ *
+ * @param details The input string with potential key-value pairs encoded.
+ * @param itemSeparator Separator to use between key-value pairs.
+ * @param valueSeparator Separator to use between key and value.
+ * @returns The value corresponding to the `moniker` key if found, otherwise the input string.
+ * @example
+ * ```typescript
+ * const stringWithMoniker = "website=https://example.com,moniker=alice"
+ * console.log(parseMonikerFromDetails(stringWithMoniker)) // > "alice"
+ *
+ * const stringWithoutMoniker = "an ordinary string with no keys"
+ * console.log(parseMonikerFromDetails(stringWithoutMoniker)) // > "an ordinary string with no keys"
+ * ```
+ */
+export function parseMonikerFromDetails(
+    details: string,
+    itemSeparator: string = ",",
+    valueSeparator: string = "=",
+): string {
+    const kvs = details.split(itemSeparator);
+
+    // if no object pattern is detected, just use full details
+    if (kvs.length < 2 || (kvs.length % 2 !== 0)) {
+        return details;
+    }
+
+    for (const kv of kvs) {
+        const [key, value] = kv.split(valueSeparator);
+        if (key === "moniker" && value) {
+            return value;
+        }
+    }
+
+    // if false positive for conventional detail syntax or no moniker, use full details
+    return details;
 }
 
 /**
