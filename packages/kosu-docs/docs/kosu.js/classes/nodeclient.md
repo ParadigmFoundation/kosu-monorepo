@@ -59,7 +59,7 @@ View the Kosu RPC documentation [here.](https://docs.kosu.io/go-kosu/kosu_rpc.ht
 
 \+ **new NodeClient**(`url`: string, `options?`: `WebsocketProviderOptions`): _[NodeClient](nodeclient.md)_
 
-Defined in NodeClient.ts:69
+_Defined in [NodeClient.ts:69](https://github.com/ParadigmFoundation/kosu-monorepo/blob/2f37cabf/packages/kosu.js/src/NodeClient.ts#L69)_
 
 Create a new NodeClient (`node`) via a connection to a Kosu node serving
 the Kosu JSONRPC/WebSocket.
@@ -86,7 +86,7 @@ const node = new NodeClient("wss://localhost:14342", { timeout: 1000 });
 
 ▪ **NODE_ID_HASH_OFFSET**: _number_ = 20
 
-Defined in NodeClient.ts:38
+_Defined in [NodeClient.ts:38](https://github.com/ParadigmFoundation/kosu-monorepo/blob/2f37cabf/packages/kosu.js/src/NodeClient.ts#L38)_
 
 Kosu validator node IDs are the first 20 bytes of the SHA-256 hash of the
 public key.
@@ -97,7 +97,7 @@ public key.
 
 ▪ **PUBLIC_KEY_LENGTH**: _number_ = 32
 
-Defined in NodeClient.ts:32
+_Defined in [NodeClient.ts:32](https://github.com/ParadigmFoundation/kosu-monorepo/blob/2f37cabf/packages/kosu.js/src/NodeClient.ts#L32)_
 
 Kosu validator public key's are 32 bytes long.
 
@@ -107,7 +107,7 @@ Kosu validator public key's are 32 bytes long.
 
 ▸ **addOrders**(...`orders`: any[]): _`Promise<OrderValidationResult[]>`_
 
-Defined in NodeClient.ts:101
+_Defined in [NodeClient.ts:101](https://github.com/ParadigmFoundation/kosu-monorepo/blob/2f37cabf/packages/kosu.js/src/NodeClient.ts#L101)_
 
 See [`kosu_addOrders`.](https://docs.kosu.io/go-kosu/kosu_rpc.html#addorders)
 
@@ -134,7 +134,7 @@ ID's of the accepted orders.
 
 ▸ **latestHeight**(): _`Promise<number>`_
 
-Defined in NodeClient.ts:112
+_Defined in [NodeClient.ts:112](https://github.com/ParadigmFoundation/kosu-monorepo/blob/2f37cabf/packages/kosu.js/src/NodeClient.ts#L112)_
 
 See [`kosu_latestHeight`.](https://docs.kosu.io/go-kosu/kosu_rpc.html#latestheight)
 
@@ -150,7 +150,7 @@ The most recent Kosu block number.
 
 ▸ **numberPosters**(): _`Promise<number>`_
 
-Defined in NodeClient.ts:123
+_Defined in [NodeClient.ts:123](https://github.com/ParadigmFoundation/kosu-monorepo/blob/2f37cabf/packages/kosu.js/src/NodeClient.ts#L123)_
 
 See [`kosu_numberPosters`.](https://docs.kosu.io/go-kosu/kosu_rpc.html#numberposters)
 
@@ -166,7 +166,7 @@ The total number of poster accounts the node is tracking.
 
 ▸ **queryPoster**(`address`: string): _`Promise<Poster>`_
 
-Defined in NodeClient.ts:135
+_Defined in [NodeClient.ts:135](https://github.com/ParadigmFoundation/kosu-monorepo/blob/2f37cabf/packages/kosu.js/src/NodeClient.ts#L135)_
 
 See [`kosu_queryPoster`.](https://docs.kosu.io/go-kosu/kosu_rpc.html#queryposter)
 
@@ -189,7 +189,7 @@ Balance and order limit data for the specified poster account.
 
 ▸ **queryValidator**(`nodeId`: string): _`Promise<Validator>`_
 
-Defined in NodeClient.ts:156
+_Defined in [NodeClient.ts:156](https://github.com/ParadigmFoundation/kosu-monorepo/blob/2f37cabf/packages/kosu.js/src/NodeClient.ts#L156)_
 
 See [`kosu_queryValidator`.](https://docs.kosu.io/go-kosu/kosu_rpc.html#queryvalidator)
 
@@ -216,7 +216,7 @@ Information about the requested validator (see `Validator`).
 
 ▸ **remainingLimit**(): _`Promise<number>`_
 
-Defined in NodeClient.ts:173
+_Defined in [NodeClient.ts:173](https://github.com/ParadigmFoundation/kosu-monorepo/blob/2f37cabf/packages/kosu.js/src/NodeClient.ts#L173)_
 
 See [`kosu_remainingLimit`.](https://docs.kosu.io/go-kosu/kosu_rpc.html#remaininglimit)
 
@@ -234,7 +234,7 @@ The unutilized order bandwidth for the current period.
 
 ▸ **roundInfo**(): _`Promise<RoundInfo>`_
 
-Defined in NodeClient.ts:185
+_Defined in [NodeClient.ts:185](https://github.com/ParadigmFoundation/kosu-monorepo/blob/2f37cabf/packages/kosu.js/src/NodeClient.ts#L185)_
 
 See [`kosu_roundInfo`.](https://docs.kosu.io/go-kosu/kosu_rpc.html#roundinfo)
 
@@ -251,7 +251,7 @@ Information about the current rebalance period.
 
 ▸ **subscribeToBlocks**(`cb`: function): _`Promise<string>`_
 
-Defined in NodeClient.ts:241
+_Defined in [NodeClient.ts:241](https://github.com/ParadigmFoundation/kosu-monorepo/blob/2f37cabf/packages/kosu.js/src/NodeClient.ts#L241)_
 
 Read about Kosu subscriptions [here](https://docs.kosu.io/go-kosu/kosu_rpc.html#subscriptions).
 
@@ -284,7 +284,7 @@ A UUID that can be used to cancel the new subscription (see `node.unsubscribe()`
 
 ▸ **subscribeToOrders**(`cb`: function): _`Promise<string>`_
 
-Defined in NodeClient.ts:226
+_Defined in [NodeClient.ts:226](https://github.com/ParadigmFoundation/kosu-monorepo/blob/2f37cabf/packages/kosu.js/src/NodeClient.ts#L226)_
 
 Read about Kosu subscriptions [here](https://docs.kosu.io/go-kosu/kosu_rpc.html#subscriptions).
 
@@ -317,7 +317,7 @@ A UUID that can be used to cancel the new subscription (see `node.unsubscribe()`
 
 ▸ **subscribeToRebalances**(`cb`: function): _`Promise<string>`_
 
-Defined in NodeClient.ts:256
+_Defined in [NodeClient.ts:256](https://github.com/ParadigmFoundation/kosu-monorepo/blob/2f37cabf/packages/kosu.js/src/NodeClient.ts#L256)_
 
 Read about Kosu subscriptions [here](https://docs.kosu.io/go-kosu/kosu_rpc.html#subscriptions).
 
@@ -350,7 +350,7 @@ A UUID that can be used to cancel the new subscription (see `node.unsubscribe()`
 
 ▸ **totalOrders**(): _`Promise<number>`_
 
-Defined in NodeClient.ts:198
+_Defined in [NodeClient.ts:198](https://github.com/ParadigmFoundation/kosu-monorepo/blob/2f37cabf/packages/kosu.js/src/NodeClient.ts#L198)_
 
 See [`kosu_totalOrders`.](https://docs.kosu.io/go-kosu/kosu_rpc.html#totalorders)
 
@@ -367,7 +367,7 @@ The total number of orders posted since network genesis.
 
 ▸ **unsubscribe**(`subscriptionId`: string): _`Promise<void>`_
 
-Defined in NodeClient.ts:265
+_Defined in [NodeClient.ts:265](https://github.com/ParadigmFoundation/kosu-monorepo/blob/2f37cabf/packages/kosu.js/src/NodeClient.ts#L265)_
 
 Cancel an active subscription.
 
@@ -385,7 +385,7 @@ Cancel an active subscription.
 
 ▸ **validators**(): _`Promise<Validator[]>`_
 
-Defined in NodeClient.ts:210
+_Defined in [NodeClient.ts:210](https://github.com/ParadigmFoundation/kosu-monorepo/blob/2f37cabf/packages/kosu.js/src/NodeClient.ts#L210)_
 
 See [`kosu_validators`.](https://docs.kosu.io/go-kosu/kosu_rpc.html#validators)
 
@@ -402,7 +402,7 @@ Information about all active Kosu validators (see `Validator`).
 
 ▸ **publicKeyToNodeId**(`publicKey`: string): _string_
 
-Defined in NodeClient.ts:51
+_Defined in [NodeClient.ts:51](https://github.com/ParadigmFoundation/kosu-monorepo/blob/2f37cabf/packages/kosu.js/src/NodeClient.ts#L51)_
 
 Convert a Kosu/Tendermint public key to the corresponding node ID.
 
@@ -424,7 +424,7 @@ The node ID (tendermint "address") for that public key.
 
 ### ▪ **DEFAULT_OPTIONS**: _object_
 
-Defined in NodeClient.ts:27
+_Defined in [NodeClient.ts:27](https://github.com/ParadigmFoundation/kosu-monorepo/blob/2f37cabf/packages/kosu.js/src/NodeClient.ts#L27)_
 
 The default options specify a connection timeout of 3s, all other defaults
 are inherited from `WebsocketProviderOptions`.
@@ -433,4 +433,4 @@ are inherited from `WebsocketProviderOptions`.
 
 • **timeout**: _number_ = 3000
 
-Defined in NodeClient.ts:27
+_Defined in [NodeClient.ts:27](https://github.com/ParadigmFoundation/kosu-monorepo/blob/2f37cabf/packages/kosu.js/src/NodeClient.ts#L27)_

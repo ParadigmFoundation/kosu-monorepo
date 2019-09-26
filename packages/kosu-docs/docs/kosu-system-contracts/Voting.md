@@ -58,15 +58,17 @@ Create a new poll. The commit and reveal periods must be provided. The creation 
 #### Signature
 
 ```solidity
-function createPoll(_commitEndBlock uint256, _revealEndBlock uint256) public (uint256)
+function createPoll(_commitEndBlock uint256, _revealEndBlock uint256, _winnerLock uint256, _loserLock uint256) public (uint256)
 ```
 
 #### Parameters:
 
-| Parameter         | Type      | Description                          |
-| ----------------- | --------- | ------------------------------------ |
-| `_commitEndBlock` | `uint256` | Block number when commit phase ends. |
-| `_revealEndBlock` | `uint256` | Block number when reveal phase ends. |
+| Parameter         | Type      | Description                                          |
+| ----------------- | --------- | ---------------------------------------------------- |
+| `_commitEndBlock` | `uint256` | Block number when commit phase ends.                 |
+| `_revealEndBlock` | `uint256` | Block number when reveal phase ends.                 |
+| `_winnerLock`     | `uint256` | Blocks after poll winning voters' tokens are locked. |
+| `_loserLock`      | `uint256` | Blocks after poll losing voters' tokens are locked.  |
 
 #### Returns:
 
@@ -137,7 +139,7 @@ Retrieve the number of tokens committed by a user for the winning option.
 #### Signature
 
 ```solidity
-function userWinningTokens(_pollId uint256, _user address) public view (uint256)
+function userWinningTokens(_pollId uint256, _user address) public view (booluint256)
 ```
 
 #### Parameters:

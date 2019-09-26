@@ -31,7 +31,7 @@
 
 • **arguments**? : _any_
 
-Defined in types.d.ts:22
+_Defined in [types.d.ts:22](https://github.com/ParadigmFoundation/kosu-monorepo/blob/2f37cabf/packages/kosu.js/src/types.d.ts#L22)_
 
 ---
 
@@ -39,7 +39,7 @@ Defined in types.d.ts:22
 
 • **id**: _any_
 
-Defined in types.d.ts:23
+_Defined in [types.d.ts:23](https://github.com/ParadigmFoundation/kosu-monorepo/blob/2f37cabf/packages/kosu.js/src/types.d.ts#L23)_
 
 ---
 
@@ -47,7 +47,7 @@ Defined in types.d.ts:23
 
 • **maker**: _string_
 
-Defined in types.d.ts:18
+_Defined in [types.d.ts:18](https://github.com/ParadigmFoundation/kosu-monorepo/blob/2f37cabf/packages/kosu.js/src/types.d.ts#L18)_
 
 ---
 
@@ -55,7 +55,7 @@ Defined in types.d.ts:18
 
 • **makerSignature**? : _any_
 
-Defined in types.d.ts:21
+_Defined in [types.d.ts:21](https://github.com/ParadigmFoundation/kosu-monorepo/blob/2f37cabf/packages/kosu.js/src/types.d.ts#L21)_
 
 ---
 
@@ -63,7 +63,7 @@ Defined in types.d.ts:21
 
 • **makerValues**: _any_
 
-Defined in types.d.ts:19
+_Defined in [types.d.ts:19](https://github.com/ParadigmFoundation/kosu-monorepo/blob/2f37cabf/packages/kosu.js/src/types.d.ts#L19)_
 
 ---
 
@@ -71,7 +71,7 @@ Defined in types.d.ts:19
 
 • **poster**: _string_
 
-Defined in types.d.ts:24
+_Defined in [types.d.ts:24](https://github.com/ParadigmFoundation/kosu-monorepo/blob/2f37cabf/packages/kosu.js/src/types.d.ts#L24)_
 
 ---
 
@@ -79,7 +79,7 @@ Defined in types.d.ts:24
 
 • **subContract**: _string_
 
-Defined in types.d.ts:17
+_Defined in [types.d.ts:17](https://github.com/ParadigmFoundation/kosu-monorepo/blob/2f37cabf/packages/kosu.js/src/types.d.ts#L17)_
 
 ---
 
@@ -87,4 +87,4 @@ Defined in types.d.ts:17
 
 • **takerValues**? : _any_
 
-Defined in types.d.ts:20
+_Defined in [types.d.ts:20](https://github.com/ParadigmFoundation/kosu-monorepo/blob/2f37cabf/packages/kosu.js/src/types.d.ts#L20)_

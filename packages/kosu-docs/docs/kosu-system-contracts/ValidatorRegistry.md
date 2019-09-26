@@ -96,21 +96,24 @@ Initializes the ValidatorRegistry with chain based configuration for pacing and 
 #### Signature
 
 ```solidity
-constructor(_treasuryAddress address, _votingAddress address, _events address, _applicationPeriod uint256, _commitPeriod uint256, _challengePeriod uint256, _exitPeriod uint256, _rewardPeriod uint256) public
+constructor(_treasuryAddress address, _votingAddress address, _events address, _applicationPeriod uint256, _commitPeriod uint256, _challengePeriod uint256, _exitPeriod uint256, _rewardPeriod uint256, _exitLockPeriod uint256, _winningVoteLockPeriod uint256, _losingVoteLockPeriod uint256) public
 ```
 
 #### Parameters:
 
-| Parameter            | Type      | Description                                                                 |
-| -------------------- | --------- | --------------------------------------------------------------------------- |
-| `_treasuryAddress`   | `address` | Deployed Treasury address.                                                  |
-| `_votingAddress`     | `address` | Deployed Voting address.                                                    |
-| `_events`            | `address` | Deployed EventEmitter address.                                              |
-| `_applicationPeriod` | `uint256` | Initial application period (in blocks) for pending listings.                |
-| `_commitPeriod`      | `uint256` | Number of blocks after challenge initiated in which votes can be committed. |
-| `_challengePeriod`   | `uint256` | Number of blocks a challenge lasts before being finalized.                  |
-| `_exitPeriod`        | `uint256` | Number of blocks exiting listings must wait before claiming stake.          |
-| `_rewardPeriod`      | `uint256` | The frequency (in blocks) with which validator rewards may be issued.       |
+| Parameter                | Type      | Description                                                                 |
+| ------------------------ | --------- | --------------------------------------------------------------------------- |
+| `_treasuryAddress`       | `address` | Deployed Treasury address.                                                  |
+| `_votingAddress`         | `address` | Deployed Voting address.                                                    |
+| `_events`                | `address` | Deployed EventEmitter address.                                              |
+| `_applicationPeriod`     | `uint256` | Initial application period (in blocks) for pending listings.                |
+| `_commitPeriod`          | `uint256` | Number of blocks after challenge initiated in which votes can be committed. |
+| `_challengePeriod`       | `uint256` | Number of blocks a challenge lasts before being finalized.                  |
+| `_exitPeriod`            | `uint256` | Number of blocks exiting listings must wait before claiming stake.          |
+| `_rewardPeriod`          | `uint256` | The frequency (in blocks) with which validator rewards may be issued.       |
+| `_exitLockPeriod`        | `uint256` |
+| `_winningVoteLockPeriod` | `uint256` |
+| `_losingVoteLockPeriod`  | `uint256` |
 
 ### finalizeExit
 

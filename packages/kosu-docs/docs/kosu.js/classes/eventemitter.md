@@ -30,7 +30,7 @@ to subscribe to future events.
 
 \+ **new EventEmitter**(`options`: [KosuOptions](../interfaces/kosuoptions.md)): _[EventEmitter](eventemitter.md)_
 
-Defined in EventEmitter.ts:47
+_Defined in [EventEmitter.ts:47](https://github.com/ParadigmFoundation/kosu-monorepo/blob/2f37cabf/packages/kosu.js/src/EventEmitter.ts#L47)_
 
 Create a new `EventEmitter` instance.
 
@@ -48,7 +48,7 @@ Create a new `EventEmitter` instance.
 
 ▸ **getAddress**(): _`Promise<string>`_
 
-Defined in EventEmitter.ts:63
+_Defined in [EventEmitter.ts:63](https://github.com/ParadigmFoundation/kosu-monorepo/blob/2f37cabf/packages/kosu.js/src/EventEmitter.ts#L63)_
 
 Return the address of the configured deployed contract. If not already cached,
 will return the deployed address for the detected network ID (if available).
@@ -61,7 +61,7 @@ will return the deployed address for the detected network ID (if available).
 
 ▸ **getFutureDecodedLogs**(`start`: number, `callback`: function): _`Timeout`_
 
-Defined in EventEmitter.ts:109
+_Defined in [EventEmitter.ts:109](https://github.com/ParadigmFoundation/kosu-monorepo/blob/2f37cabf/packages/kosu.js/src/EventEmitter.ts#L109)_
 
 **`todo`** document better (and confirm)
 
@@ -91,7 +91,7 @@ A callback function to be called on an array of each new event log.
 
 ▸ **getPastDecodedLogs**(`config`: `FilterObject`): _`Promise<Array<LogWithDecodedKosuArgs<DecodedLogArgs, DecodedKosuLogArgs>>>`_
 
-Defined in EventEmitter.ts:82
+_Defined in [EventEmitter.ts:82](https://github.com/ParadigmFoundation/kosu-monorepo/blob/2f37cabf/packages/kosu.js/src/EventEmitter.ts#L82)_
 
 Get all past decoded logs from the Kosu `EventEmitter` contract, with the
 oldest event at position 0.

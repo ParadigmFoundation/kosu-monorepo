@@ -31,7 +31,7 @@
 
 _Inherited from [Order](order.md).[arguments](order.md#optional-arguments)_
 
-Defined in types.d.ts:22
+_Defined in [types.d.ts:22](https://github.com/ParadigmFoundation/kosu-monorepo/blob/2f37cabf/packages/kosu.js/src/types.d.ts#L22)_
 
 ---
 
@@ -41,7 +41,7 @@ Defined in types.d.ts:22
 
 _Inherited from [Order](order.md).[id](order.md#id)_
 
-Defined in types.d.ts:23
+_Defined in [types.d.ts:23](https://github.com/ParadigmFoundation/kosu-monorepo/blob/2f37cabf/packages/kosu.js/src/types.d.ts#L23)_
 
 ---
 
@@ -51,7 +51,7 @@ Defined in types.d.ts:23
 
 _Inherited from [Order](order.md).[maker](order.md#maker)_
 
-Defined in types.d.ts:18
+_Defined in [types.d.ts:18](https://github.com/ParadigmFoundation/kosu-monorepo/blob/2f37cabf/packages/kosu.js/src/types.d.ts#L18)_
 
 ---
 
@@ -61,7 +61,7 @@ Defined in types.d.ts:18
 
 _Inherited from [Order](order.md).[makerSignature](order.md#optional-makersignature)_
 
-Defined in types.d.ts:21
+_Defined in [types.d.ts:21](https://github.com/ParadigmFoundation/kosu-monorepo/blob/2f37cabf/packages/kosu.js/src/types.d.ts#L21)_
 
 ---
 
@@ -71,7 +71,7 @@ Defined in types.d.ts:21
 
 _Inherited from [Order](order.md).[makerValues](order.md#makervalues)_
 
-Defined in types.d.ts:19
+_Defined in [types.d.ts:19](https://github.com/ParadigmFoundation/kosu-monorepo/blob/2f37cabf/packages/kosu.js/src/types.d.ts#L19)_
 
 ---
 
@@ -81,7 +81,7 @@ Defined in types.d.ts:19
 
 _Inherited from [Order](order.md).[poster](order.md#poster)_
 
-Defined in types.d.ts:24
+_Defined in [types.d.ts:24](https://github.com/ParadigmFoundation/kosu-monorepo/blob/2f37cabf/packages/kosu.js/src/types.d.ts#L24)_
 
 ---
 
@@ -91,7 +91,7 @@ Defined in types.d.ts:24
 
 _Inherited from [Order](order.md).[subContract](order.md#subcontract)_
 
-Defined in types.d.ts:17
+_Defined in [types.d.ts:17](https://github.com/ParadigmFoundation/kosu-monorepo/blob/2f37cabf/packages/kosu.js/src/types.d.ts#L17)_
 
 ---
 
@@ -101,4 +101,4 @@ Defined in types.d.ts:17
 
 _Overrides [Order](order.md).[takerValues](order.md#optional-takervalues)_
 
-Defined in types.d.ts:32
+_Defined in [types.d.ts:32](https://github.com/ParadigmFoundation/kosu-monorepo/blob/2f37cabf/packages/kosu.js/src/types.d.ts#L32)_

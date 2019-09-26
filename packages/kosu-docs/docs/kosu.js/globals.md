@@ -57,7 +57,7 @@
 
 • **NULL_ADDRESS**: _string_ = "0x0000000000000000000000000000000000000000"
 
-Defined in utils.ts:12
+_Defined in [utils.ts:12](https://github.com/ParadigmFoundation/kosu-monorepo/blob/2f37cabf/packages/kosu.js/src/utils.ts#L12)_
 
 ---
 
@@ -65,7 +65,7 @@ Defined in utils.ts:12
 
 • **version**: _any_ = process.env.npm_package_version || require("../package.json").version
 
-Defined in Kosu.ts:18
+_Defined in [Kosu.ts:18](https://github.com/ParadigmFoundation/kosu-monorepo/blob/2f37cabf/packages/kosu.js/src/Kosu.ts#L18)_
 
 ## Functions
 
@@ -73,7 +73,7 @@ Defined in Kosu.ts:18
 
 ▸ **\_serialize**(`_arguments`: any, `values`: any): _string_
 
-Defined in OrderSerializer.ts:8
+_Defined in [OrderSerializer.ts:8](https://github.com/ParadigmFoundation/kosu-monorepo/blob/2f37cabf/packages/kosu.js/src/OrderSerializer.ts#L8)_
 
 **Parameters:**
 
@@ -90,7 +90,7 @@ Defined in OrderSerializer.ts:8
 
 ▸ **toBytes32**(`value`: string): _string_
 
-Defined in utils.ts:8
+_Defined in [utils.ts:8](https://github.com/ParadigmFoundation/kosu-monorepo/blob/2f37cabf/packages/kosu.js/src/utils.ts#L8)_
 
 Convert an arbitrary string to a `bytes32` version.
 
@@ -108,11 +108,11 @@ Convert an arbitrary string to a `bytes32` version.
 
 ### ▪ **KosuEndpoints**: _object_
 
-Defined in EventEmitter.ts:7
+_Defined in [EventEmitter.ts:7](https://github.com/ParadigmFoundation/kosu-monorepo/blob/2f37cabf/packages/kosu.js/src/EventEmitter.ts#L7)_
 
 ▪ **1**: _object_
 
-Defined in EventEmitter.ts:8
+_Defined in [EventEmitter.ts:8](https://github.com/ParadigmFoundation/kosu-monorepo/blob/2f37cabf/packages/kosu.js/src/EventEmitter.ts#L8)_
 
 -   **http**: _string_ = `https://ethnet.zaidan.io/mainnet`
 
@@ -120,7 +120,7 @@ Defined in EventEmitter.ts:8
 
 ▪ **3**: _object_
 
-Defined in EventEmitter.ts:12
+_Defined in [EventEmitter.ts:12](https://github.com/ParadigmFoundation/kosu-monorepo/blob/2f37cabf/packages/kosu.js/src/EventEmitter.ts#L12)_
 
 -   **http**: _string_ = `https://ethnet.zaidan.io/ropsten`
 
@@ -128,7 +128,7 @@ Defined in EventEmitter.ts:12
 
 ▪ **42**: _object_
 
-Defined in EventEmitter.ts:16
+_Defined in [EventEmitter.ts:16](https://github.com/ParadigmFoundation/kosu-monorepo/blob/2f37cabf/packages/kosu.js/src/EventEmitter.ts#L16)_
 
 -   **http**: _string_ = `https://ethnet.zaidan.io/kovan`
 
@@ -136,7 +136,7 @@ Defined in EventEmitter.ts:16
 
 ▪ **6174**: _object_
 
-Defined in EventEmitter.ts:20
+_Defined in [EventEmitter.ts:20](https://github.com/ParadigmFoundation/kosu-monorepo/blob/2f37cabf/packages/kosu.js/src/EventEmitter.ts#L20)_
 
 -   **http**: _string_ = `https://ethnet.zaidan.io/kosu`
 
@@ -148,7 +148,7 @@ Defined in EventEmitter.ts:20
 
 ### ▪ **OrderSerializer**: _object_
 
-Defined in OrderSerializer.ts:51
+_Defined in [OrderSerializer.ts:51](https://github.com/ParadigmFoundation/kosu-monorepo/blob/2f37cabf/packages/kosu.js/src/OrderSerializer.ts#L51)_
 
 could add to utils (or create order-utils pacakge)
 
@@ -156,7 +156,7 @@ could add to utils (or create order-utils pacakge)
 
 ▸ **makerHex**(`order`: [Order](interfaces/order.md), `_arguments`: any): _string_
 
-Defined in OrderSerializer.ts:97
+_Defined in [OrderSerializer.ts:97](https://github.com/ParadigmFoundation/kosu-monorepo/blob/2f37cabf/packages/kosu.js/src/OrderSerializer.ts#L97)_
 
 Generate the maker hex from order
 
@@ -173,7 +173,7 @@ Generate the maker hex from order
 
 ▸ **posterSignatureHex**(`order`: [Order](interfaces/order.md), `_arguments`: any): _string_
 
-Defined in OrderSerializer.ts:73
+_Defined in [OrderSerializer.ts:73](https://github.com/ParadigmFoundation/kosu-monorepo/blob/2f37cabf/packages/kosu.js/src/OrderSerializer.ts#L73)_
 
 Generates hex to be used for the poster signing process
 
@@ -190,7 +190,7 @@ Generates hex to be used for the poster signing process
 
 ▸ **recoverMaker**(`order`: [Order](interfaces/order.md), `_arguments`: any[]): _string_
 
-Defined in OrderSerializer.ts:125
+_Defined in [OrderSerializer.ts:125](https://github.com/ParadigmFoundation/kosu-monorepo/blob/2f37cabf/packages/kosu.js/src/OrderSerializer.ts#L125)_
 
 Recovers the maker from the signed information
 
@@ -207,7 +207,7 @@ Recovers the maker from the signed information
 
 ▸ **recoverPoster**(`order`: [PostableOrder](interfaces/postableorder.md), `_arguments`: any[]): _string_
 
-Defined in OrderSerializer.ts:87
+_Defined in [OrderSerializer.ts:87](https://github.com/ParadigmFoundation/kosu-monorepo/blob/2f37cabf/packages/kosu.js/src/OrderSerializer.ts#L87)_
 
 Recovers the poster from the poster signature
 
@@ -224,7 +224,7 @@ Recovers the poster from the poster signature
 
 ▸ **serialize**(`_arguments`: any, `order`: [Order](interfaces/order.md)): _string_
 
-Defined in OrderSerializer.ts:58
+_Defined in [OrderSerializer.ts:58](https://github.com/ParadigmFoundation/kosu-monorepo/blob/2f37cabf/packages/kosu.js/src/OrderSerializer.ts#L58)_
 
 Serializes the data into bytes
 
@@ -243,15 +243,15 @@ Serializes the data into bytes
 
 ### ▪ **Signature**: _object_
 
-Defined in Signature.ts:7
+_Defined in [Signature.ts:7](https://github.com/ParadigmFoundation/kosu-monorepo/blob/2f37cabf/packages/kosu.js/src/Signature.ts#L7)_
 
-Defined in types.d.ts:45
+_Defined in [types.d.ts:45](https://github.com/ParadigmFoundation/kosu-monorepo/blob/2f37cabf/packages/kosu.js/src/types.d.ts#L45)_
 
 ### generate
 
 ▸ **generate**(`web3`: `Web3`, `messageHex`: string, `signer`: string): _`Promise<string>`_
 
-Defined in Signature.ts:16
+_Defined in [Signature.ts:16](https://github.com/ParadigmFoundation/kosu-monorepo/blob/2f37cabf/packages/kosu.js/src/Signature.ts#L16)_
 
 Generates a signature for a message hex using calls to a provider though web3
 
@@ -269,7 +269,7 @@ A vrs signature
 
 ▸ **generate**(`web3`: `Web3`, `messageHex`: string, `signer`: string): _`Promise<string>`_
 
-Defined in types.d.ts:46
+_Defined in [types.d.ts:46](https://github.com/ParadigmFoundation/kosu-monorepo/blob/2f37cabf/packages/kosu.js/src/types.d.ts#L46)_
 
 **Parameters:**
 
@@ -285,7 +285,7 @@ Defined in types.d.ts:46
 
 ▸ **recoverAddress**(`messageHex`: any, `signature`: string): _string_
 
-Defined in Signature.ts:38
+_Defined in [Signature.ts:38](https://github.com/ParadigmFoundation/kosu-monorepo/blob/2f37cabf/packages/kosu.js/src/Signature.ts#L38)_
 
 Recovers address from a message hex and signature
 
@@ -300,7 +300,7 @@ Recovers address from a message hex and signature
 
 ▸ **recoverAddress**(`messageHex`: any, `signature`: string): _string_
 
-Defined in types.d.ts:48
+_Defined in [types.d.ts:48](https://github.com/ParadigmFoundation/kosu-monorepo/blob/2f37cabf/packages/kosu.js/src/types.d.ts#L48)_
 
 **Parameters:**
 
@@ -315,7 +315,7 @@ Defined in types.d.ts:48
 
 ▸ **sign**(`web3`: `Web3`, `messageHex`: string, `signer`: string): _`Promise<string>`_
 
-Defined in Signature.ts:56
+_Defined in [Signature.ts:56](https://github.com/ParadigmFoundation/kosu-monorepo/blob/2f37cabf/packages/kosu.js/src/Signature.ts#L56)_
 
 Sign hex with provided address
 
@@ -331,7 +331,7 @@ Sign hex with provided address
 
 ▸ **sign**(`web3`: `Web3`, `messageHex`: string, `signer`: string): _`Promise<string>`_
 
-Defined in types.d.ts:49
+_Defined in [types.d.ts:49](https://github.com/ParadigmFoundation/kosu-monorepo/blob/2f37cabf/packages/kosu.js/src/types.d.ts#L49)_
 
 **Parameters:**
 
@@ -347,7 +347,7 @@ Defined in types.d.ts:49
 
 ▸ **validate**(`messageHex`: string, `signature`: string, `signer`: string): _boolean_
 
-Defined in Signature.ts:28
+_Defined in [Signature.ts:28](https://github.com/ParadigmFoundation/kosu-monorepo/blob/2f37cabf/packages/kosu.js/src/Signature.ts#L28)_
 
 Validates the signature of a messageHex is from the provided signer
 
@@ -365,7 +365,7 @@ boolean representing if the signer in fact generated the signature with this mes
 
 ▸ **validate**(`messageHex`: string, `signature`: string, `signer`: string): _boolean_
 
-Defined in types.d.ts:47
+_Defined in [types.d.ts:47](https://github.com/ParadigmFoundation/kosu-monorepo/blob/2f37cabf/packages/kosu.js/src/types.d.ts#L47)_
 
 **Parameters:**
 
