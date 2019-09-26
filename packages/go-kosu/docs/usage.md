@@ -370,13 +370,14 @@ moniker = "anonymous"
 
 ```
 # Output level for logging, including package level options
-log_level = "app:info,witness:info,main:info,state:info,*:error"
+log_level = "app:info,ethereum:info,witness:info,main:info,state:info,*:error"
 ```
 
 Configure the log output for the Kosu ABCI application, the Kosu witness, and Tendermint.
 
 -   `app` - The Kosu ABCI application (core state machine).
--   `witness` - Kosu witness sub-process and Ethereum connection.
+-   `ethereum` - Ethereum specific events.
+-   `witness` - Kosu witness sub-process.
 -   `main` - Tendermint main log output.
 -   `state` - Tendermint state module output.
 
