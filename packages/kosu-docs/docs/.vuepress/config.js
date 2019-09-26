@@ -39,6 +39,7 @@ module.exports = {
                     "/overview/",
                     "/overview/token-mechanics",
                     "/overview/validator-curation",
+                    "/overview/validator-application",
                     "/overview/contributing",
                 ],
             },
@@ -81,7 +82,7 @@ module.exports = {
                 title: "Go Kosu",
                 collapsable: true,
                 food: "4.svg",
-                children: ["/go-kosu/", "/go-kosu/kosu_rpc"],
+                children: ["/go-kosu/", "/go-kosu/kosu_rpc", "/go-kosu/usage"],
             },
             {
                 title: "Kosu Genesis CLI",
