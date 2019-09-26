@@ -31,6 +31,20 @@ access the objects directly with <code>gov.listings</code>, etc.</p></dd>
 <dd><p>Represents a stored vote in a challenge poll.</p></dd>
 <dt><a href="#ChallengeInfo">ChallengeInfo</a></dt>
 <dd><p>Contains block numbers for various state changes for a given challenge.</p></dd>
+<dt><a href="#PastGovernanceActivity">PastGovernanceActivity</a></dt>
+<dd><p>An object representing an instance of past &quot;activity&quot; within the ValidatorRegistry contract.</p>
+<p>If <code>actionable</code> is true, the following actions can be taken for a given <code>type</code>:</p>
+<ul>
+<li>CHALLENGE_BY: challenge can be resolved</li>
+<li>CHALLENGE_AGAINST: challenge can be resolved</li>
+<li>PROPOSAL: the listing can be confirmed</li>
+</ul>
+<p>If <code>state</code> is <code>&quot;PENDING&quot;</code> for a given <code>type</code>, the following action can be taken:</p>
+<ul>
+<li>CHALLENGE_BY: the challenge can be voted on in the active poll</li>
+<li>CHALLENGE_AGAINST: the challenge can be voted on in the active poll</li>
+<li>PROPOSAL: the proposal may be challenged</li>
+</ul></dd>
 </dl>
 
 <a name="Gov"></a>
@@ -68,6 +82,7 @@ access the objects directly with <code>gov.listings</code>, etc.</p>
         -   [.getHistoricalChallenges()](#Gov+getHistoricalChallenges) ⇒ <code>Promise.&lt;Array.&lt;PastChallenge&gt;&gt;</code>
         -   [.getChallengeInfo(challengeId)](#Gov+getChallengeInfo) ⇒ [<code>Promise.&lt;ChallengeInfo&gt;</code>](#ChallengeInfo)
         -   [.currentBlockNumber()](#Gov+currentBlockNumber) ⇒ <code>number</code>
+        -   [.getPastGovernanceActivity(address)](#Gov+getPastGovernanceActivity) ⇒ <code>Promise.&lt;Array.&lt;PastGovernanceActivity&gt;&gt;</code>
     -   _static_
         -   [.ZERO](#Gov.ZERO)
         -   [.ONE](#Gov.ONE)
@@ -369,6 +384,29 @@ if (currentBlock < endCommitPeriod && currentBlock >= challengeStart) {
 
 **Kind**: instance method of [<code>Gov</code>](#Gov)  
 **Returns**: <code>number</code> - <p>The current (or most recent) Ethereum block height.</p>  
+<a name="Gov+getPastGovernanceActivity"></a>
+
+### gov.getPastGovernanceActivity(address) ⇒ <code>Promise.&lt;Array.&lt;PastGovernanceActivity&gt;&gt;</code>
+
+<p>Get information about a given Ethereum address's past governance activity
+within the system.</p>
+<p>Returns info about proposals submitted, challenges created, and challenges
+against listings owned by the user.</p>
+<p>For a given activity object, if <code>actionable</code> is <code>true</code>, the following
+action may be taken for each state:</p>
+<ul>
+<li>If &quot;CHALLENGE_BY&quot;: the challenge can be resolved</li>
+<li>If &quot;CHALLENGE_AGAINST&quot;: the challenge can be resolved</li>
+<li>If &quot;PROPOSAL&quot; the listing can be confirmed</li>
+</ul>
+
+**Kind**: instance method of [<code>Gov</code>](#Gov)  
+**Returns**: <code>Promise.&lt;Array.&lt;PastGovernanceActivity&gt;&gt;</code> - <p>An array of snippets about past governance activity.</p>
+
+| Param   | Type                | Description                                               |
+| ------- | ------------------- | --------------------------------------------------------- |
+| address | <code>string</code> | <p>Ethereum address of user to get past activity for.</p> |
+
 <a name="Gov.ZERO"></a>
 
 ### Gov.ZERO
@@ -537,3 +575,32 @@ if (currentBlock < endCommitPeriod && currentBlock >= challengeStart) {
 | challengeStart  | <code>number</code> | <p>the block at which the challenge was initiated, and when the commit period starts</p> |
 | endCommitPeriod | <code>number</code> | <p>the block the commit period ends, and the reveal period starts</p>                    |
 | challengeEnd    | <code>number</code> | <p>the block the reveal period ends, and the challenge finalizes</p>                     |
+
+<a name="PastGovernanceActivity"></a>
+
+## PastGovernanceActivity
+
+<p>An object representing an instance of past &quot;activity&quot; within the ValidatorRegistry contract.</p>
+<p>If <code>actionable</code> is true, the following actions can be taken for a given <code>type</code>:</p>
+<ul>
+<li>CHALLENGE_BY: challenge can be resolved</li>
+<li>CHALLENGE_AGAINST: challenge can be resolved</li>
+<li>PROPOSAL: the listing can be confirmed</li>
+</ul>
+<p>If <code>state</code> is <code>&quot;PENDING&quot;</code> for a given <code>type</code>, the following action can be taken:</p>
+<ul>
+<li>CHALLENGE_BY: the challenge can be voted on in the active poll</li>
+<li>CHALLENGE_AGAINST: the challenge can be voted on in the active poll</li>
+<li>PROPOSAL: the proposal may be challenged</li>
+</ul>
+
+**Kind**: global typedef  
+**Properties**
+
+| Name          | Type                 | Description                                                                                                                                                                |
+| ------------- | -------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| type          | <code>string</code>  | <p>Either &quot;CHALLENGE_BY&quot; for created challenges, &quot;CHALLENGE_AGAINST&quot; for challenges against a user, and &quot;PROPOSAL&quot; for created listings</p>  |
+| result        | <code>string</code>  | <p>Either &quot;PENDING&quot; for active, &quot;ACCEPTED&quot; for successful listings and challenges, and &quot;REJECTED&quot; for failed challenges and applications</p> |
+| actionable    | <code>boolean</code> | <p>Indicates if some on-chain action can be taken to change the governance activity state</p>                                                                              |
+| challengeId   | <code>number</code>  | <p>If present, indicates the challenge ID associated with the activity</p>                                                                                                 |
+| listingPubKey | <code>string</code>  | <p>The public key of the listing (proposal or challenged proposal)</p>                                                                                                     |
