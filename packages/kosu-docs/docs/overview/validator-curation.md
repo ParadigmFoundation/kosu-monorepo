@@ -32,7 +32,7 @@ A voter is any entity who holds KOSU and participates in governance polls. Both 
 
 ## Validator listing process
 
-![Listing lifecycle](https://github.com/ParadigmFoundation/whitepaper/blob/whitepaper/v3/figures/fig3.png?raw=true")
+![Listing lifecycle](https://storage.googleapis.com/paradigm-artifacts/challenge-process-diagram.png)
 
 ### Right to submit a proposal
 
