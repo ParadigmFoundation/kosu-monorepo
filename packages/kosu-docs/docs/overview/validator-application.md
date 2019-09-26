@@ -284,8 +284,7 @@ kosu.validatorRegsitry.applicationPeriod().then(period => {
 // If your registerListing TX was mined in block X...
 // You can call the below method any time after block (X + applicationPeriod).
 // This is only true if your listing is not challenged during that time.
-kosu.validatorRegistry.confirmListing(TM_PUBLIC_KEY)
-    .then(receipt => {
-        console.log(`Transaction ID: ${receipt.transactionHash}`);
-    });
+kosu.validatorRegistry.confirmListing(TM_PUBLIC_KEY).then(receipt => {
+    console.log(`Transaction ID: ${receipt.transactionHash}`);
+});
 ```
