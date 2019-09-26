@@ -23,7 +23,7 @@
 
 • **address**: _string_
 
-_Defined in [types.d.ts:31](https://github.com/ParadigmFoundation/kosu-monorepo/blob/ba034df4/packages/kosu-genesis-cli/src/types.d.ts#L31)_
+_Defined in [types.d.ts:31](https://github.com/ParadigmFoundation/kosu-monorepo/blob/2f37cabf/packages/kosu-genesis-cli/src/types.d.ts#L31)_
 
 ---
 
@@ -31,7 +31,7 @@ _Defined in [types.d.ts:31](https://github.com/ParadigmFoundation/kosu-monorepo/
 
 • **name**: _string_
 
-_Defined in [types.d.ts:37](https://github.com/ParadigmFoundation/kosu-monorepo/blob/ba034df4/packages/kosu-genesis-cli/src/types.d.ts#L37)_
+_Defined in [types.d.ts:37](https://github.com/ParadigmFoundation/kosu-monorepo/blob/2f37cabf/packages/kosu-genesis-cli/src/types.d.ts#L37)_
 
 ---
 
@@ -39,7 +39,7 @@ _Defined in [types.d.ts:37](https://github.com/ParadigmFoundation/kosu-monorepo/
 
 • **power**? : _undefined | string_
 
-_Defined in [types.d.ts:36](https://github.com/ParadigmFoundation/kosu-monorepo/blob/ba034df4/packages/kosu-genesis-cli/src/types.d.ts#L36)_
+_Defined in [types.d.ts:36](https://github.com/ParadigmFoundation/kosu-monorepo/blob/2f37cabf/packages/kosu-genesis-cli/src/types.d.ts#L36)_
 
 ---
 
@@ -47,6 +47,6 @@ _Defined in [types.d.ts:36](https://github.com/ParadigmFoundation/kosu-monorepo/
 
 • **pub_key**: _object_
 
-_Defined in [types.d.ts:32](https://github.com/ParadigmFoundation/kosu-monorepo/blob/ba034df4/packages/kosu-genesis-cli/src/types.d.ts#L32)_
+_Defined in [types.d.ts:32](https://github.com/ParadigmFoundation/kosu-monorepo/blob/2f37cabf/packages/kosu-genesis-cli/src/types.d.ts#L32)_
 
 #### Type declaration:

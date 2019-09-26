@@ -21,7 +21,7 @@
 
 • **address**: _string_
 
-_Defined in [types.d.ts:54](https://github.com/ParadigmFoundation/kosu-monorepo/blob/ba034df4/packages/kosu-genesis-cli/src/types.d.ts#L54)_
+_Defined in [types.d.ts:54](https://github.com/ParadigmFoundation/kosu-monorepo/blob/2f37cabf/packages/kosu-genesis-cli/src/types.d.ts#L54)_
 
 ---
 
@@ -29,4 +29,4 @@ _Defined in [types.d.ts:54](https://github.com/ParadigmFoundation/kosu-monorepo/
 
 • **balance**: _string_
 
-_Defined in [types.d.ts:55](https://github.com/ParadigmFoundation/kosu-monorepo/blob/ba034df4/packages/kosu-genesis-cli/src/types.d.ts#L55)_
+_Defined in [types.d.ts:55](https://github.com/ParadigmFoundation/kosu-monorepo/blob/2f37cabf/packages/kosu-genesis-cli/src/types.d.ts#L55)_

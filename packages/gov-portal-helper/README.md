@@ -60,7 +60,9 @@ access the objects directly with <code>gov.listings</code>, etc.</p>
         -   [.weiToEther(wei)](#Gov+weiToEther) ⇒ <code>string</code>
         -   [.etherToWei(ether)](#Gov+etherToWei) ⇒ <code>string</code>
         -   [.commitVote(challengeId, value, amount)](#Gov+commitVote) ⇒ <code>Promise.&lt;string&gt;</code>
+        -   [.hasCommittedVote(challengeId)](#Gov+hasCommittedVote) ⇒ <code>boolean</code>
         -   [.revealVote(challengeId)](#Gov+revealVote) ⇒ <code>Promise.&lt;string&gt;</code>
+        -   [.hasRevealedVote(challengeId)](#Gov+hasRevealedVote) ⇒ <code>boolean</code>
         -   [.estimateFutureBlockTimestamp(blockNumber)](#Gov+estimateFutureBlockTimestamp) ⇒ <code>Promise.&lt;number&gt;</code>
         -   [.getPastBlockTimestamp(blockNumber)](#Gov+getPastBlockTimestamp) ⇒ <code>Promise.&lt;number&gt;</code>
         -   [.getHistoricalChallenges()](#Gov+getHistoricalChallenges) ⇒ <code>Promise.&lt;Array.&lt;PastChallenge&gt;&gt;</code>
@@ -227,6 +229,19 @@ const revealTxId = await gov.revealVote(new BigNumber("13"));
 // ... wait for Tx's to confirm or whatever, etc.
 ```
 
+<a name="Gov+hasCommittedVote"></a>
+
+### gov.hasCommittedVote(challengeId) ⇒ <code>boolean</code>
+
+<p>Check for a previously committed vote, by challengeId (as a BigNumber).</p>
+
+**Kind**: instance method of [<code>Gov</code>](#Gov)  
+**Returns**: <code>boolean</code> - <p>the boolean representing the presence of a commit vote</p>
+
+| Param       | Type                   | Description                                                |
+| ----------- | ---------------------- | ---------------------------------------------------------- |
+| challengeId | <code>BigNumber</code> | <p>the challenge to check for a stored commit vote for</p> |
+
 <a name="Gov+revealVote"></a>
 
 ### gov.revealVote(challengeId) ⇒ <code>Promise.&lt;string&gt;</code>
@@ -245,6 +260,19 @@ signature and approval.</p>
 | Param       | Type                   | Description                                      |
 | ----------- | ---------------------- | ------------------------------------------------ |
 | challengeId | <code>BigNumber</code> | <p>the challenge to reveal a stored vote for</p> |
+
+<a name="Gov+hasRevealedVote"></a>
+
+### gov.hasRevealedVote(challengeId) ⇒ <code>boolean</code>
+
+<p>Check for a previously revealed vote, by challengeId (as a BigNumber).</p>
+
+**Kind**: instance method of [<code>Gov</code>](#Gov)  
+**Returns**: <code>boolean</code> - <p>the boolean representing the presence of a reveal vote</p>
+
+| Param       | Type                   | Description                                                |
+| ----------- | ---------------------- | ---------------------------------------------------------- |
+| challengeId | <code>BigNumber</code> | <p>the challenge to check for a stored reveal vote for</p> |
 
 <a name="Gov+estimateFutureBlockTimestamp"></a>
 
@@ -486,12 +514,14 @@ if (currentBlock < endCommitPeriod && currentBlock >= challengeStart) {
 **Kind**: global typedef  
 **Properties**
 
-| Name    | Type                   | Description                                                                          |
-| ------- | ---------------------- | ------------------------------------------------------------------------------------ |
-| id      | <code>BigNumber</code> | <p>the challengeId the vote is for</p>                                               |
-| value   | <code>string</code>    | <p>the vote value (should be &quot;1&quot; or &quot;0&quot; for challenge votes)</p> |
-| salt    | <code>string</code>    | <p>a secret string used to hash the vote; must use same salt in commit as reveal</p> |
-| encoded | <code>string</code>    | <p>the encoded vote, as passed to the contract system</p>                            |
+| Name         | Type                   | Description                                                                          |
+| ------------ | ---------------------- | ------------------------------------------------------------------------------------ |
+| id           | <code>BigNumber</code> | <p>the challengeId the vote is for</p>                                               |
+| value        | <code>string</code>    | <p>the vote value (should be &quot;1&quot; or &quot;0&quot; for challenge votes)</p> |
+| salt         | <code>string</code>    | <p>a secret string used to hash the vote; must use same salt in commit as reveal</p> |
+| encoded      | <code>string</code>    | <p>the encoded vote, as passed to the contract system</p>                            |
+| commitTxHash | <code>string</code>    | <p>the transaction hash of the commit transaction</p>                                |
+| revealTxHash | <code>string</code>    | <p>the transaction hash of the reveal transaction</p>                                |
 
 <a name="ChallengeInfo"></a>
 
