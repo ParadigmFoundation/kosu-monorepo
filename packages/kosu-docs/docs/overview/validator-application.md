@@ -209,6 +209,8 @@ kosu.treasury.approveTreasury(MAX_ALLOWANCE).then(receipt => console.log(`Transa
 
 ## Deposit tokens
 
+**Note:** With an allowance for the treasury set, this step is not strictly necessary, as Kosu.js will deposit tokens on your behalf when you submit your listing application in the next step.
+
 Prior to submitting the listing application, you must deposit _at least_ the number of tokens you will stake with your application into the treasury.
 
 ```javascript
