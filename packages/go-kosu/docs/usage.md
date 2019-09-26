@@ -11,12 +11,14 @@ Additionally, instructions for the following usage scenarios are included:
 - Existing network from contract system snapshot (mainnet or test-network).
 - New network from contract snapshot (mainnet or test-network).
 
+Already configured and ready to join a network? [Jump to usage.](#usage)
+
 ## A note for validators
 
-Validator configuration from the perspective of configuring the underlying full node
-process (`kosud`) is identical; the only difference between a full node and a validating full node is the inclusion (or lack thereof) of the node's public key in the active Tendermint validator set.
+Validator configuration, from the perspective of configuring the underlying full node
+process (`kosud`), is identical to that of a full node. The only difference between a full node and a validating full node is the inclusion (or lack thereof) of the node's public key in the active Tendermint validator set.
 
-For Kosu, this set is determined by the Kosu contract system, deployed on the Ethereum blockchain. To set up a validator, you must first configure a full node, then apply to the registry on-chain. If KOSU token holders approve your application, your full node will automatically become a validator when the peg-zone applies the registry state transition to the Kosu state.
+For Kosu, the validator set is determined and curated by the Kosu contract system, deployed on the Ethereum blockchain. To set up a validator, you must first configure a Kosu full node, then apply to the on-chain registry through the contract system. If KOSU token holders approve your application, your full node will automatically become a validator when the peg-zone applies the registry state transition to the Kosu state.
 
 [Follow this guide to apply to a Kosu ValidatorRegistry.]()
 
@@ -57,6 +59,13 @@ For Kosu, this set is determined by the Kosu contract system, deployed on the Et
 
 The following resources cover topics that are required to understand for individuals wishing to operate on the Kosu main-network or incentivized test-networks, and helpful for everyone else.
 
+### Kosu
+Before connecting to an existing Kosu network, it is important to be familiar with some core Kosu concepts.
+
+- [Introduction to Kosu](https://docs.kosu.io/overview/)
+- [KOSU token mechanics](https://docs.kosu.io/overview/token-mechanics.html#introduction)
+- [Kosu validator curation](https://docs.kosu.io/overview/validator-curation.html)
+
 ### Tendermint
 Because `go-kosu` is built on Tendermint ([Tendermint core](https://github.com/tendermint/tendermint) is compiled into `kosud`), running Kosu nodes and networks is identical with respect to blockchain structure, networking, and the underlying consensus mechanism.
 
@@ -68,13 +77,6 @@ Because `go-kosu` is built on Tendermint ([Tendermint core](https://github.com/t
 - [Genesis file](https://cosmos.network/docs/cosmos-hub/genesis.html#genesis-file) (for Cosmos, but most is applicable to Tendermint and Kosu)
 - [Secure P2P](https://tendermint.com/docs/tendermint-core/secure-p2p.html#secure-p2p)
 
-### Kosu
-Before connecting to an existing Kosu network, it is important to be familiar with some core Kosu concepts.
-
-- [Introduction to Kosu](https://docs.kosu.io/overview/)
-- [KOSU token mechanics](https://docs.kosu.io/overview/token-mechanics.html#introduction)
-- [Kosu validator curation](https://docs.kosu.io/overview/validator-curation.html)
-
 ### Ethereum
 Ethereum smart-contracts ([Kosu system contracts](https://github.com/ParadigmFoundation/kosu-monorepo/blob/master/packages/kosu-system-contracts)) are a core component of the Kosu system, and support the Kosu validator registry and curation mechanism.
 
@@ -83,15 +85,15 @@ Ethereum smart-contracts ([Kosu system contracts](https://github.com/ParadigmFou
 
 <!-- - -->
 ## Security considerations
-If running a Kosu full node as a validator on the Kosu main-network (or a network using the mainnet contract system), it is important to take extreme care in protecting the validating private key, the peer-to-peer networking port, and the validator process itself (as in all Tendermint-based networks).
+If running a Kosu full node as a validator on the Kosu main-network (or a network using the mainnet contract system), it is important to take extreme care in protecting the validating private key, the peer-to-peer networking port, and the validator process itself (as is true for all Tendermint-based networks).
 
-For Kosu, the requirement for validators to have an Ethereum key-pair (in addition to the Tendermint validating key-pair) represents an additional risk factor that must be managed with extreme care.
+For Kosu, the requirement for validators to have an Ethereum key-pair (in addition to the Tendermint validating key-pair) represents an additional risk factor that must be managed with extreme care by operators.
 
-Among many other things, this means (for validators):
+Among many other things, this means usage of the following (for validators):
 - Virtual private network or cloud for validator host and supporting infrastructure.
 - Dedicated (virtual or physical) hosts for the validator process and Ethereum client.
 - Failover and backup hosts for Ethereum client and validator process.
-- Sentry nodes (see below) as only connection to validator hosts.
+- Sentry nodes (see below) as only connection to validator hosts (proxy p2p traffic).
 - Disable RPC servers and block all public internet traffic from VPN/C.
 - Consideration of Ethereum key management (mnemonic, private unlocked node, etc.).
 
@@ -116,11 +118,11 @@ In production Kosu networks, an Ethereum smart-contract, the [`ValidatorRegistry
 
 To facilitate this unique network launch, Kosu clients (currently only `kosud`) accept a "snapshot" of the Kosu Ethereum contract system's relevant state within the `genesis.json` file shared by all nodes prior to network startup.
 
-The contract system must be deployed sufficiently prior to the network to provide adequate time for individuals to aquire tokens (by bonding), submit applications, and curate a high-quality initial validator set. Parameters such as a stat snapshot block and a network start time will be agreed upon by participants prior to deployment of the contract system
+The contract system must be deployed sufficiently prior to the network to provide adequate time for individuals to acquire tokens (by bonding), submit applications, and curate a high-quality initial validator set. Parameters such as a state snapshot block height, network start time, and other consensus parameters will be agreed upon by participants prior to deployment of the contract system
 
-The [`gen-kosu`](https://docs.kosu.io/kosu-genesis-cli/#tool-gen-kosu) provides a simple mechanism to generate a Kosu genesis file, provided a snapshot block, an Ethereum JSONRPC provider, a network start time, and a chain ID (as well as optional consensus parameters).
+The [`gen-kosu`](https://docs.kosu.io/kosu-genesis-cli/#tool-gen-kosu) provides a simple mechanism to generate a Kosu genesis file, provided a snapshot block, an Ethereum JSONRPC provider, a network start time, and a chain ID (as well as optional consensus parameters). It also be done "manually" or with other applications using the functions provided by the [`@kosu/genesis-cli` package](https://github.com/ParadigmFoundation/kosu-monorepo/tree/master/packages/kosu-genesis-cli).
 
-Kosu's reliance on the Ethereum contract system for network startup offers an interesting benefit: trustless genesis file generation and network startup. Because the required genesis file for a Kosu network can be generated entirely from the contract system's state for a given network, there is no need to manually distribute a genesis file prior to network launch. All participants can simply generate a genesis file locally, and since Ethereum acts as a source of truth for the state of the validator registry, everyone will get the same file for a given Ethereum height.
+Kosu's reliance on the Ethereum contract system for network startup offers an interesting benefit in this context: trustless genesis file generation and network startup. Because the required genesis file for a Kosu network can be generated entirely from the contract system's state for a given network, there is no need to manually distribute a genesis file prior to network launch. All participants can simply generate a genesis file locally, and since Ethereum acts as a source of truth for the state of the validator registry, everyone will get the same file for a given Ethereum height.
 
 <!-- - -->
 ## Environment setup
@@ -129,7 +131,7 @@ This section covers some recommendations (and requirements) to keep in mind when
 
 ### System requirements
 
-The `go-kosu` binaries themselves currently support bit linux or darwin (macOS) architectures. Linux (or linux via Docker) is recommended for validators and mission-critical full nodes. Support for Windows or 32-bit architectures is not guaranteed.
+The `go-kosu` binaries themselves currently support 64-bit linux or darwin (macOS) architectures. Linux (or linux via Docker) is recommended for validators and mission-critical full nodes. Support for Windows or 32-bit architectures is not guaranteed.
 
 The below specifications do _not_ include recommended resources for a local full Ethereum node. A separate host machine should be used for the Ethereum client process and RPC server.
 
@@ -334,13 +336,15 @@ For development, the base/default config should suffice. Most users will likely 
 
 [See this document](https://tendermint.com/docs/tendermint-core/configuration.html) for a more complete reference about the `config.toml` file. This section only describes a few commonly used settings.
 
+By default, the base configuration is saved to `~/.kosu/config/config.toml` (snippets from the default configuration are shown below).
+
 #### Moniker
 ```
 # A custom human readable name for this node
 moniker = "anonymous"
 ```
 
-- Defaults to hostname of machine running `kosud init`
+- Defaults to hostname of machine running the `kosud init` command.
 - Should be set to a helpful identifier.
 
 #### Log level
@@ -351,10 +355,129 @@ log_level = "app:info,witness:info,main:info,state:info,*:error"
 
 Configure the log output for the Kosu ABCI application, the Kosu witness, and Tendermint.
 
-- `app` - The Kosu ABCI application (core state machine)
-- `witness` - Kosu witness sub-process and Ethereum connection
-- `main` - Tendermint main log output
-- `state` - Tendermint state module output
+- `app` - The Kosu ABCI application (core state machine).
+- `witness` - Kosu witness sub-process and Ethereum connection.
+- `main` - Tendermint main log output.
+- `state` - Tendermint state module output.
+
+#### Log output
+```
+# Output format: 'plain' (colored text) or 'json'
+log_format = "plain"
+```
+
+Optionally set to `"json"` to enable JSON logger output for all modules.
+
+
+#### Private validator listen address
+```
+# TCP or UNIX socket address for Tendermint to listen on for
+# connections from an external PrivValidator process
+priv_validator_laddr = ""
+```
+
+- Must be set when configuring a sentry node.
+- [Read more about setting up sentries here.](https://forum.cosmos.network/t/sentry-node-architecture-overview/454)
+
+#### Tendermint RPC configuration
+```
+[rpc]
+
+# TCP or UNIX socket address for the RPC server to listen on
+laddr = "tcp://127.0.0.1:26657"
+
+# A list of origins a cross-domain request can be executed from
+# Default value '[]' disables cors support
+# Use '["*"]' to allow any origin
+cors_allowed_origins = []
+```
+
+- Change or disable the [Tendermint RPC]() server.
+- Configure CORS, etc. (more options available).
+
+#### Tendermint P2P address configuration
+```
+[p2p]
+
+# Address to listen for incoming connections
+laddr = "tcp://0.0.0.0:26656"
+
+# Address to advertise to peers for them to dial
+# If empty, will use the same port as the laddr,
+# and will introspect on the listener or use UPnP
+# to figure out the address.
+external_address = ""
+```
+
+- Must be set when using a sentry node configuration.
+
+#### Seeds and peers
+```
+[p2p]
+
+# Comma separated list of seed nodes to connect to
+seeds = ""
+
+# Comma separated list of nodes to keep persistent connections to
+persistent_peers = ""
+```
+
+- Seeds or persistent peers must be set to connect to an existing network.
+
+#### Seed mode
+```
+[p2p]
+
+# Seed mode, in which node constantly crawls the network and looks for
+# peers. If another node asks it for addresses, it responds and disconnects.
+#
+# Does not work if the peer-exchange reactor is disabled.
+seed_mode = false
+```
+
+- Set to `true` to run a Kosu seed node.
+
+#### Private peer ID's
+```
+[p2p]
+
+# Comma separated list of peer IDs to keep private (will not be gossiped to other peers)
+private_peer_ids = ""
+```
+
+- Must be set by sentry nodes to the peer ID(s) of the validator(s).
+
+#### Mempool configuration
+```
+[mempool]
+
+recheck = true
+broadcast = true
+wal_dir = ""
+
+# Maximum number of transactions in the mempool
+size = 5000
+```
+
+- To keep mempool private, change `broadcast` to `false`.
+- See full `config.toml` for additional helpful configuration.
+
+#### Transaction indexing
+```
+[tx_index]
+
+# When set to true, tells indexer to index all tags (predefined tags:
+# "tx.hash", "tx.height" and all tags from DeliverTx responses).
+#
+# Note this may be not desirable (see the comment above). IndexTags has a
+# precedence over IndexAllTags (i.e. when given both, IndexTags will be
+# indexed).
+index_all_tags = false
+```
+
+- Set to `true` to allow searching for old transactions/orders by tag.
+- Increases resource usage (disk and memory).
+- See full config to index specific tags only.
 
 <!-- - -->
 ## Usage
