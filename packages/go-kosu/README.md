@@ -8,8 +8,8 @@ Stable release builds will be available from the GitHub releases page after an i
 
 ## Documentation
 
-- Usage documentation is located in `docs/` (and hosted [here](https://docs.kosu.io/go-kosu)).
-- Package documentation for Go projects can be found [here.](https://godoc.org/github.com/ParadigmFoundation/kosu-monorepo)
+-   Usage documentation is located in `docs/` (and hosted [here](https://docs.kosu.io/go-kosu)).
+-   Package documentation for Go projects can be found [here.](https://godoc.org/github.com/ParadigmFoundation/kosu-monorepo)
 
 ## Building from source
 
