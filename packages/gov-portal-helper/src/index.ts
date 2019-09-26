@@ -105,6 +105,44 @@ interface Vote {
     revealTxHash?: string;
 }
 
+interface PastGovernanceActivity {
+    type: "CHALLENGE_BY" | "CHALLENGE_AGAINST" | "PROPOSAL";
+    result: "PENDING" | "ACCEPTED" | "REJECTED";
+    listingPubKey: string;
+    challengeId?: number;
+    actionable: boolean;
+}
+
+interface OwnedListings {
+    [publicKey: string]: {
+        state: "PENDING" | "ACCEPTED" | "REJECTED";
+        challenger?: string;
+        challengeId?: string;
+        applicationBlockNumber: number;
+        confirmedBlockNumber: number;
+    };
+}
+
+interface OwnedChallenges {
+    [challengeId: string]: {
+        state: "PENDING" | "ACCEPTED" | "REJECTED";
+        listingPublicKey: string;
+        listingOwner: string;
+        challengeBlock: number;
+        challengeEndBlock: number;
+    };
+}
+
+interface ChallengesAgainst {
+    [challengeId: string]: {
+        state: "PENDING" | "ACCEPTED" | "REJECTED";
+        listingPublicKey: string;
+        challenger: string;
+        challengeBlock: number;
+        challengeEndBlock: number;
+    };
+}
+
 // will be the global window object in browser
 declare var window, global: Window;
 
@@ -208,6 +246,26 @@ interface Map<T> {
  * @property {number} challengeStart the block at which the challenge was initiated, and when the commit period starts
  * @property {number} endCommitPeriod the block the commit period ends, and the reveal period starts
  * @property {number} challengeEnd the block the reveal period ends, and the challenge finalizes
+ */
+
+/**
+ * An object representing an instance of past "activity" within the ValidatorRegistry contract.
+ *
+ * If `actionable` is true, the following actions can be taken for a given `type`:
+ * - CHALLENGE_BY: challenge can be resolved
+ * - CHALLENGE_AGAINST: challenge can be resolved
+ * - PROPOSAL: the listing can be confirmed
+ *
+ * If `state` is `"PENDING"` for a given `type`, the following action can be taken:
+ * - CHALLENGE_BY: the challenge can be voted on in the active poll
+ * - CHALLENGE_AGAINST: the challenge can be voted on in the active poll
+ * - PROPOSAL: the proposal may be challenged
+ * @typedef PastGovernanceActivity
+ * @property {string} type Either "CHALLENGE_BY" for created challenges, "CHALLENGE_AGAINST" for challenges against a user, and "PROPOSAL" for created listings
+ * @property {string} result Either "PENDING" for active, "ACCEPTED" for successful listings and challenges, and "REJECTED" for failed challenges and applications
+ * @property {boolean} actionable Indicates if some on-chain action can be taken to change the governance activity state
+ * @property {number} challengeId If present, indicates the challenge ID associated with the activity
+ * @property {string} listingPubKey The public key of the listing (proposal or challenged proposal)
  */
 
 /**
@@ -589,7 +647,11 @@ class Gov {
     async getHistoricalChallenges(): Promise<Array<PastChallenge>> {
         const pastChallenges = await this.kosu.validatorRegistry.getAllChallenges();
         for (const pastChallenge of pastChallenges) {
-            pastChallenge.winningTokens = await this.kosu.voting.totalWinningTokens(pastChallenge.pollId);
+            try {
+                pastChallenge.winningTokens = await this.kosu.voting.totalWinningTokens(pastChallenge.pollId);
+            } catch {
+                pastChallenge.winningTokens = null;
+            }
         }
         return pastChallenges.reverse();
     }
@@ -640,6 +702,215 @@ class Gov {
      */
     async currentBlockNumber(): Promise<number> {
         return await this.web3.eth.getBlockNumber();
+    }
+
+    /**
+     * Get information about a given Ethereum address's past governance activity
+     * within the system.
+     *
+     * Returns info about proposals submitted, challenges created, and challenges
+     * against listings owned by the user.
+     *
+     * For a given activity object, if `actionable` is `true`, the following
+     * action may be taken for each state:
+     * - If "CHALLENGE_BY": the challenge can be resolved
+     * - If "CHALLENGE_AGAINST": the challenge can be resolved
+     * - If "PROPOSAL" the listing can be confirmed
+     *
+     * @param {string} address Ethereum address of user to get past activity for.
+     * @returns {Promise<PastGovernanceActivity[]>} An array of snippets about past governance activity.
+     */
+    async getPastGovernanceActivity(_address: string): Promise<PastGovernanceActivity[]> {
+        const ownedListings: OwnedListings = {};
+        const ownedChallenges: OwnedChallenges = {};
+        const challengesAgainst: ChallengesAgainst = {};
+
+        const address = _address.toLowerCase();
+        const pastLogs = await this.kosu.eventEmitter.getPastDecodedLogs({ fromBlock: 0 });
+
+        for (const event of pastLogs) {
+            const { decodedArgs, blockNumber } = event;
+            const { eventType } = decodedArgs;
+
+            switch (eventType) {
+                case "ValidatorRegistered": {
+                    const { applicationBlockNumber, owner, tendermintPublicKeyHex } = decodedArgs;
+                    if (owner !== address) {
+                        break;
+                    }
+
+                    ownedListings[tendermintPublicKeyHex] = {
+                        state: "PENDING",
+                        applicationBlockNumber: parseInt(applicationBlockNumber),
+                        confirmedBlockNumber: parseInt(applicationBlockNumber) + this.params.applicationPeriod,
+                    };
+                    break;
+                }
+                case "ValidatorChallenged": {
+                    const { challenger, challengeId, owner, tendermintPublicKeyHex } = decodedArgs;
+                    if (challenger === address) {
+                        ownedChallenges[challengeId] = {
+                            state: "PENDING",
+                            listingOwner: owner,
+                            listingPublicKey: tendermintPublicKeyHex,
+                            challengeBlock: blockNumber,
+                            challengeEndBlock: blockNumber + this.params.challengePeriod,
+                        };
+                    } else if (owner === address) {
+                        challengesAgainst[challengeId] = {
+                            state: "PENDING",
+                            challenger,
+                            listingPublicKey: tendermintPublicKeyHex,
+                            challengeBlock: blockNumber,
+                            challengeEndBlock: blockNumber + this.params.challengePeriod,
+                        };
+                    } else {
+                        break;
+                    }
+                }
+                default:
+                    break;
+            }
+        }
+
+        return this._processPastGovernanceActivity(ownedListings, ownedChallenges, challengesAgainst);
+    }
+
+    async _processPastGovernanceActivity(
+        ownedListings: OwnedListings,
+        ownedChallenges: OwnedChallenges,
+        challengesAgainst: ChallengesAgainst,
+    ): Promise<PastGovernanceActivity[]> {
+        const pastGovActivity: PastGovernanceActivity[] = [];
+        const currentBlock = await this.kosu.web3Wrapper.getBlockNumberAsync();
+        await this._processOwnedListings(pastGovActivity, currentBlock, ownedListings);
+        await this._processOwnedChallenges(pastGovActivity, currentBlock, ownedChallenges);
+        await this._processChallengesAgainst(pastGovActivity, currentBlock, challengesAgainst);
+        return pastGovActivity;
+    }
+
+    async _processOwnedListings(
+        pastGovArr: PastGovernanceActivity[],
+        currentBlock: number,
+        ownedListings: OwnedListings,
+    ): Promise<void> {
+        for (const listingKey of Object.keys(ownedListings)) {
+            const govActivity: Partial<PastGovernanceActivity> = {};
+            govActivity.type = "PROPOSAL";
+            govActivity.listingPubKey = listingKey;
+            govActivity.challengeId = null;
+
+            const snapshot = ownedListings[listingKey];
+            const listing = await this.kosu.validatorRegistry.getListing(listingKey);
+
+            // currently a proposal
+            if (listing.status === 1) {
+                // application period ended, but not yet confirmed
+                if (snapshot.confirmedBlockNumber <= currentBlock) {
+                    govActivity.actionable = true;
+                    govActivity.result = "ACCEPTED";
+                } else {
+                    govActivity.actionable = false;
+                    govActivity.result = "PENDING";
+                }
+
+                // currently in registry (validator)
+            } else if (listing.status === 2) {
+                govActivity.actionable = false;
+                govActivity.result = "ACCEPTED";
+
+                // currently in challenge
+            } else if (listing.status === 3) {
+                govActivity.actionable = false;
+                govActivity.result = "PENDING";
+
+                // 0, 4, or 5 => listing has exited or been kicked-off
+            } else {
+                govActivity.actionable = false;
+                govActivity.result = "REJECTED";
+            }
+            pastGovArr.push(govActivity as PastGovernanceActivity);
+        }
+    }
+
+    async _processOwnedChallenges(
+        pastGovArr: PastGovernanceActivity[],
+        currentBlock: number,
+        ownedChallenges: OwnedChallenges,
+    ): Promise<void> {
+        for (const challengeId of Object.keys(ownedChallenges)) {
+            if (!challengeId) {
+                continue;
+            }
+            const govActivity: Partial<PastGovernanceActivity> = {};
+            const snapshot = ownedChallenges[challengeId];
+            const challenge = await this.kosu.validatorRegistry.getChallenge(new BigNumber(challengeId));
+
+            govActivity.type = "CHALLENGE_BY";
+            govActivity.challengeId = parseInt(challengeId, 10);
+            govActivity.listingPubKey = snapshot.listingPublicKey;
+
+            if (challenge.finalized) {
+                govActivity.actionable = false;
+                if (challenge.passed) {
+                    govActivity.result = "ACCEPTED";
+                } else {
+                    govActivity.result = "REJECTED";
+                }
+            } else {
+                if (snapshot.challengeEndBlock <= currentBlock) {
+                    govActivity.actionable = true;
+                    const result = await this.kosu.voting
+                        .winningOption(challenge.pollId)
+                        .then(option => (option.toString() === "1" ? "ACCEPTED" : "REJECTED"));
+                    govActivity.result = result;
+                } else {
+                    govActivity.actionable = false;
+                    govActivity.result = "PENDING";
+                }
+            }
+            pastGovArr.push(govActivity as PastGovernanceActivity);
+        }
+    }
+
+    async _processChallengesAgainst(
+        pastGovArr: PastGovernanceActivity[],
+        currentBlock: number,
+        challengesAgainst: ChallengesAgainst,
+    ): Promise<void> {
+        for (const challengeId of Object.keys(challengesAgainst)) {
+            if (!challengeId) {
+                continue;
+            }
+            const govActivity: Partial<PastGovernanceActivity> = {};
+            const snapshot = challengesAgainst[challengeId];
+            const challenge = await this.kosu.validatorRegistry.getChallenge(new BigNumber(challengeId));
+
+            govActivity.type = "CHALLENGE_AGAINST";
+            govActivity.challengeId = parseInt(challengeId, 10);
+            govActivity.listingPubKey = snapshot.listingPublicKey;
+
+            if (challenge.finalized) {
+                govActivity.actionable = false;
+                if (challenge.passed) {
+                    govActivity.result = "ACCEPTED";
+                } else {
+                    govActivity.result = "REJECTED";
+                }
+            } else {
+                if (snapshot.challengeEndBlock <= currentBlock) {
+                    govActivity.actionable = true;
+                    const result = await this.kosu.voting
+                        .winningOption(challenge.pollId)
+                        .then(option => (option.toString() === "1" ? "ACCEPTED" : "REJECTED"));
+                    govActivity.result = result;
+                } else {
+                    govActivity.actionable = false;
+                    govActivity.result = "PENDING";
+                }
+            }
+            pastGovArr.push(govActivity as PastGovernanceActivity);
+        }
     }
 
     async _processListing(listing) {

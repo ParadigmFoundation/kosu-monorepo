@@ -1,6 +1,6 @@
 {
     "name": "@kosu/gov-portal-helper",
-    "version": "0.1.22",
+    "version": "0.1.25",
     "description": "Abstraction library for interacting with the Kosu contract system governance functions.",
     "main": "lib/index.js",
     "license": "MIT",
