@@ -49,9 +49,10 @@ Smart-contract packages (Solidity) including the core Kosu system contracts and 
 
 Client/server libraries for interacting with the Kosu network and contract system.
 
-| Package &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; | Version                                                | Description                                                                   |
-| :------------------------------------------------ | :----------------------------------------------------- | :---------------------------------------------------------------------------- |
-| [`@kosu/kosu.js`](./packages/kosu.js)             | ![npm](https://img.shields.io/npm/v/@kosu/kosu.js.svg) | TypeScript library for interacting with the Kosu network and contract system. |
+| Package &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;  | Version                                                    | Description                                                                   |
+| :------------------------------------------------- | :--------------------------------------------------------- | :---------------------------------------------------------------------------- |
+| [`@kosu/kosu.js`](./packages/kosu.js)              | ![npm](https://img.shields.io/npm/v/@kosu/kosu.js.svg)     | TypeScript library for interacting with the Kosu network and contract system. |
+| [`@kosu/genesis-cli`](./packages/kosu-genesis-cli) | ![npm](https://img.shields.io/npm/v/@kosu/genesis-cli.svg) | Library and CLI for generating network genesis files from contract sate.      |
 
 ### Utility/development packages
 
