@@ -229,12 +229,25 @@ View the `kosu.validatorRegistry` docs [here.](https://docs.kosu.io/kosu.js/clas
 
 Follow this step to submit a listing proposal to the `ValidatorRegistry` contract, indicating your intent to join the Kosu network as a validator.
 
+### Public key conversion
+
+Tendermint public keys are used to identify listing applicants and validators within the registry system.
+
+The public key is 32-bytes, and represented in Tendermint data files as a base64-encoded string, but also sometimes represented as a hex-encoded string (as in the output of `kosud show_node_info`).
+
+[This method (`convertPubKey`)](https://docs.kosu.io/kosu.js/classes/validatorregistry.html#convertpubkey) is exposed by the `ValidatorRegistry` class in Kosu.js, and should be used to ensure your key is in the correct format before submitting the listing application transaction.
+
+### Code sample
+
+The sample below demonstrates how to submit a listing application, and annotates the required fields.
+
 ```javascript
 // The amount to stake with your listing, must be above the minimum (500).
 const STAKE_AMOUNT = 500;
 
-// Hex-encoded tendermint public key (no prefix).
-const TM_PUBLIC_KEY = "230F8D6BEAE46557469C9AFDBD7DD54CDD03F0DF1432CD8EF6CF78981A998DFA";
+// Hex-encoded tendermint public key (prefixed or un-prefixed).
+// See note above about public key conversion.
+const TM_PUBLIC_KEY = "0x230F8D6BEAE46557469C9AFDBD7DD54CDD03F0DF1432CD8EF6CF78981A998DFA";
 
 // The reward rate you request for your services validating.
 // This amount may be positive or negative (must collateralize and burn).
