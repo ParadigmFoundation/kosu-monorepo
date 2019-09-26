@@ -28,7 +28,7 @@
 
 • **active**: _number_
 
-_Defined in [types.d.ts:83](https://github.com/ParadigmFoundation/kosu-monorepo/blob/4048650/packages/kosu.js/src/types.d.ts#L83)_
+_Defined in [types.d.ts:83](https://github.com/ParadigmFoundation/kosu-monorepo/blob/2f37cabf/packages/kosu.js/src/types.d.ts#L83)_
 
 ---
 
@@ -36,15 +36,15 @@ _Defined in [types.d.ts:83](https://github.com/ParadigmFoundation/kosu-monorepo/
 
 • **applied**: _number_
 
-_Defined in [types.d.ts:84](https://github.com/ParadigmFoundation/kosu-monorepo/blob/4048650/packages/kosu.js/src/types.d.ts#L84)_
+_Defined in [types.d.ts:84](https://github.com/ParadigmFoundation/kosu-monorepo/blob/2f37cabf/packages/kosu.js/src/types.d.ts#L84)_
 
 ---
 
 ### balance
 
-• **balance**: _number_
+• **balance**: _`BigNumber`_
 
-_Defined in [types.d.ts:76](https://github.com/ParadigmFoundation/kosu-monorepo/blob/4048650/packages/kosu.js/src/types.d.ts#L76)_
+_Defined in [types.d.ts:76](https://github.com/ParadigmFoundation/kosu-monorepo/blob/2f37cabf/packages/kosu.js/src/types.d.ts#L76)_
 
 ---
 
@@ -52,7 +52,7 @@ _Defined in [types.d.ts:76](https://github.com/ParadigmFoundation/kosu-monorepo/
 
 • **firstVote**: _number_
 
-_Defined in [types.d.ts:79](https://github.com/ParadigmFoundation/kosu-monorepo/blob/4048650/packages/kosu.js/src/types.d.ts#L79)_
+_Defined in [types.d.ts:79](https://github.com/ParadigmFoundation/kosu-monorepo/blob/2f37cabf/packages/kosu.js/src/types.d.ts#L79)_
 
 ---
 
@@ -60,7 +60,7 @@ _Defined in [types.d.ts:79](https://github.com/ParadigmFoundation/kosu-monorepo/
 
 • **lastProposed**: _number_
 
-_Defined in [types.d.ts:81](https://github.com/ParadigmFoundation/kosu-monorepo/blob/4048650/packages/kosu.js/src/types.d.ts#L81)_
+_Defined in [types.d.ts:81](https://github.com/ParadigmFoundation/kosu-monorepo/blob/2f37cabf/packages/kosu.js/src/types.d.ts#L81)_
 
 ---
 
@@ -68,7 +68,7 @@ _Defined in [types.d.ts:81](https://github.com/ParadigmFoundation/kosu-monorepo/
 
 • **lastVoted**: _number_
 
-_Defined in [types.d.ts:80](https://github.com/ParadigmFoundation/kosu-monorepo/blob/4048650/packages/kosu.js/src/types.d.ts#L80)_
+_Defined in [types.d.ts:80](https://github.com/ParadigmFoundation/kosu-monorepo/blob/2f37cabf/packages/kosu.js/src/types.d.ts#L80)_
 
 ---
 
@@ -76,7 +76,7 @@ _Defined in [types.d.ts:80](https://github.com/ParadigmFoundation/kosu-monorepo/
 
 • **power**: _number_
 
-_Defined in [types.d.ts:77](https://github.com/ParadigmFoundation/kosu-monorepo/blob/4048650/packages/kosu.js/src/types.d.ts#L77)_
+_Defined in [types.d.ts:77](https://github.com/ParadigmFoundation/kosu-monorepo/blob/2f37cabf/packages/kosu.js/src/types.d.ts#L77)_
 
 ---
 
@@ -84,7 +84,7 @@ _Defined in [types.d.ts:77](https://github.com/ParadigmFoundation/kosu-monorepo/
 
 • **publicKey**: _string_
 
-_Defined in [types.d.ts:78](https://github.com/ParadigmFoundation/kosu-monorepo/blob/4048650/packages/kosu.js/src/types.d.ts#L78)_
+_Defined in [types.d.ts:78](https://github.com/ParadigmFoundation/kosu-monorepo/blob/2f37cabf/packages/kosu.js/src/types.d.ts#L78)_
 
 ---
 
@@ -92,4 +92,4 @@ _Defined in [types.d.ts:78](https://github.com/ParadigmFoundation/kosu-monorepo/
 
 • **totalVotes**: _number_
 
-_Defined in [types.d.ts:82](https://github.com/ParadigmFoundation/kosu-monorepo/blob/4048650/packages/kosu.js/src/types.d.ts#L82)_
+_Defined in [types.d.ts:82](https://github.com/ParadigmFoundation/kosu-monorepo/blob/2f37cabf/packages/kosu.js/src/types.d.ts#L82)_

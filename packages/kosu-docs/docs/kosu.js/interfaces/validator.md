@@ -28,7 +28,7 @@
 
 • **active**: _number_
 
-Defined in types.d.ts:83
+_Defined in [types.d.ts:83](https://github.com/ParadigmFoundation/kosu-monorepo/blob/2f37cabf/packages/kosu.js/src/types.d.ts#L83)_
 
 ---
 
@@ -36,7 +36,7 @@ Defined in types.d.ts:83
 
 • **applied**: _number_
 
-Defined in types.d.ts:84
+_Defined in [types.d.ts:84](https://github.com/ParadigmFoundation/kosu-monorepo/blob/2f37cabf/packages/kosu.js/src/types.d.ts#L84)_
 
 ---
 
@@ -44,7 +44,7 @@ Defined in types.d.ts:84
 
 • **balance**: _`BigNumber`_
 
-Defined in types.d.ts:76
+_Defined in [types.d.ts:76](https://github.com/ParadigmFoundation/kosu-monorepo/blob/2f37cabf/packages/kosu.js/src/types.d.ts#L76)_
 
 ---
 
@@ -52,7 +52,7 @@ Defined in types.d.ts:76
 
 • **firstVote**: _number_
 
-Defined in types.d.ts:79
+_Defined in [types.d.ts:79](https://github.com/ParadigmFoundation/kosu-monorepo/blob/2f37cabf/packages/kosu.js/src/types.d.ts#L79)_
 
 ---
 
@@ -60,7 +60,7 @@ Defined in types.d.ts:79
 
 • **lastProposed**: _number_
 
-Defined in types.d.ts:81
+_Defined in [types.d.ts:81](https://github.com/ParadigmFoundation/kosu-monorepo/blob/2f37cabf/packages/kosu.js/src/types.d.ts#L81)_
 
 ---
 
@@ -68,7 +68,7 @@ Defined in types.d.ts:81
 
 • **lastVoted**: _number_
 
-Defined in types.d.ts:80
+_Defined in [types.d.ts:80](https://github.com/ParadigmFoundation/kosu-monorepo/blob/2f37cabf/packages/kosu.js/src/types.d.ts#L80)_
 
 ---
 
@@ -76,7 +76,7 @@ Defined in types.d.ts:80
 
 • **power**: _number_
 
-Defined in types.d.ts:77
+_Defined in [types.d.ts:77](https://github.com/ParadigmFoundation/kosu-monorepo/blob/2f37cabf/packages/kosu.js/src/types.d.ts#L77)_
 
 ---
 
@@ -84,7 +84,7 @@ Defined in types.d.ts:77
 
 • **publicKey**: _string_
 
-Defined in types.d.ts:78
+_Defined in [types.d.ts:78](https://github.com/ParadigmFoundation/kosu-monorepo/blob/2f37cabf/packages/kosu.js/src/types.d.ts#L78)_
 
 ---
 
@@ -92,4 +92,4 @@ Defined in types.d.ts:78
 
 • **totalVotes**: _number_
 
-Defined in types.d.ts:82
+_Defined in [types.d.ts:82](https://github.com/ParadigmFoundation/kosu-monorepo/blob/2f37cabf/packages/kosu.js/src/types.d.ts#L82)_

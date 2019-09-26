@@ -30,7 +30,7 @@
 
 • **args**: _`A`_
 
-Defined in types.d.ts:56
+_Defined in [types.d.ts:56](https://github.com/ParadigmFoundation/kosu-monorepo/blob/2f37cabf/packages/kosu.js/src/types.d.ts#L56)_
 
 ---
 
@@ -38,7 +38,7 @@ Defined in types.d.ts:56
 
 • **decodedArgs**: _`B`_
 
-Defined in types.d.ts:57
+_Defined in [types.d.ts:57](https://github.com/ParadigmFoundation/kosu-monorepo/blob/2f37cabf/packages/kosu.js/src/types.d.ts#L57)_
 
 ---
 
@@ -46,4 +46,4 @@ Defined in types.d.ts:57
 
 • **event**: _string_
 
-Defined in types.d.ts:55
+_Defined in [types.d.ts:55](https://github.com/ParadigmFoundation/kosu-monorepo/blob/2f37cabf/packages/kosu.js/src/types.d.ts#L55)_

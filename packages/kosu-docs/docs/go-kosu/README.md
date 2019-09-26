@@ -6,6 +6,11 @@ Automated per-commit builds are available for `Linux/amd64` architectures, publi
 
 Stable release builds will be available from the GitHub releases page after an initial beta release.
 
+## Documentation
+
+-   Usage documentation is located in `docs/` (and hosted [here](https://docs.kosu.io/go-kosu)).
+-   Package documentation for Go projects can be found [here.](https://godoc.org/github.com/ParadigmFoundation/kosu-monorepo)
+
 ## Building from source
 
 Binaries from `go-kosu` must be build alongside the rest of the `kosu-monorepo` due to the Kosu client implementation's dependency on contract system build artifacts. See [the top-level README for full build instructions.](https://github.com/ParadigmFoundation/kosu-monorepo/blob/master/README.md#install-instructions)
@@ -19,6 +24,7 @@ In order to build the full monorepo, the following is required:
 -   [jq](https://stedolan.github.io/jq/download/) (`^1.6`)
 -   [golang](https://golang.org/dl/) (`^1.12`)
 -   [go-ethereum](https://github.com/ethereum/go-ethereum/wiki/Building-Ethereum) (`^1.8`)
+-   [go-bindata](https://github.com/go-bindata/go-bindata) (`^3.1`)
 
 ### Clone monorepo
 
@@ -94,12 +100,16 @@ install kosu-cli /usr/local/bin
 
 Each binary has a `help` command or `--help` flag which should be used for full command reference.
 
+View full usage documentation [here.](https://docs.kosu.io/go-kosu/#usage)
+
 ### Start a node
 
-You can start a single-node Kosu development network with the following command:
+You can start a single-node Kosu development network with the following commands:
 
 ```bash
-kosud --init --home=$HOME/.kosu
+# generate keypair and base configuration
+kosud init --home=$HOME/.kosu
+kosud -E [ETHEREUM_JSONRPC_URL] --home=$HOME/.kosu
 ```
 
 The command-line interface will also be built (see `kosu-cli help` for all commands).

@@ -21,7 +21,7 @@
 
 • **order**: _string_
 
-Defined in types.d.ts:66
+_Defined in [types.d.ts:66](https://github.com/ParadigmFoundation/kosu-monorepo/blob/2f37cabf/packages/kosu.js/src/types.d.ts#L66)_
 
 ---
 
@@ -29,4 +29,4 @@ Defined in types.d.ts:66
 
 • **reason**: _string_
 
-Defined in types.d.ts:67
+_Defined in [types.d.ts:67](https://github.com/ParadigmFoundation/kosu-monorepo/blob/2f37cabf/packages/kosu.js/src/types.d.ts#L67)_

@@ -1,378 +1,291 @@
-> **[kosu.js](README.md)**
+> **[Kosu genesis CLI](README.md)**
 
 [Globals](globals.md) /
 
-# kosu.js
+# Kosu genesis CLI
 
 ## Index
 
-### Classes
-
--   [EventEmitter](classes/eventemitter.md)
--   [Kosu](classes/kosu.md)
--   [KosuToken](classes/kosutoken.md)
--   [NodeClient](classes/nodeclient.md)
--   [OrderGateway](classes/ordergateway.md)
--   [OrderHelper](classes/orderhelper.md)
--   [PosterRegistry](classes/posterregistry.md)
--   [Treasury](classes/treasury.md)
--   [ValidatorRegistry](classes/validatorregistry.md)
--   [Voting](classes/voting.md)
-
 ### Interfaces
 
--   [DecodedKosuLogArgs](interfaces/decodedkosulogargs.md)
--   [KosuOptions](interfaces/kosuoptions.md)
--   [KosuUtils](interfaces/kosuutils.md)
--   [LogWithDecodedKosuArgs](interfaces/logwithdecodedkosuargs.md)
--   [Order](interfaces/order.md)
--   [OrderArgument](interfaces/orderargument.md)
--   [OrderRejectionInfo](interfaces/orderrejectioninfo.md)
--   [OrderValidationResult](interfaces/ordervalidationresult.md)
--   [PostableOrder](interfaces/postableorder.md)
--   [Poster](interfaces/poster.md)
--   [RoundInfo](interfaces/roundinfo.md)
--   [TakeableOrder](interfaces/takeableorder.md)
--   [Validator](interfaces/validator.md)
+-   [AppState](interfaces/appstate.md)
+-   [ConsensusParams](interfaces/consensusparams.md)
+-   [GenesisBlock](interfaces/genesisblock.md)
+-   [GenesisValidator](interfaces/genesisvalidator.md)
+-   [InitialValidatorInfo](interfaces/initialvalidatorinfo.md)
+-   [SnapshotListing](interfaces/snapshotlisting.md)
+-   [SnapshotPoster](interfaces/snapshotposter.md)
+-   [SnapshotValidator](interfaces/snapshotvalidator.md)
 
 ### Variables
 
--   [NULL_ADDRESS](globals.md#const-null_address)
--   [version](globals.md#const-version)
+-   [cli](globals.md#const-cli)
 
 ### Functions
 
--   [\_serialize](globals.md#_serialize)
--   [toBytes32](globals.md#tobytes32)
-
-### Object literals
-
--   [KosuEndpoints](globals.md#const-kosuendpoints)
--   [OrderSerializer](globals.md#const-orderserializer)
--   [Signature](globals.md#const-signature)
+-   [dateFromTimestamp](globals.md#datefromtimestamp)
+-   [generateGenesisFromBlock](globals.md#generategenesisfromblock)
+-   [getAppState](globals.md#getappstate)
+-   [getInitialValidatorInfo](globals.md#getinitialvalidatorinfo)
+-   [getTendermintValidators](globals.md#gettendermintvalidators)
+-   [hexKeyToBase64](globals.md#hexkeytobase64)
+-   [parseMonikerFromDetails](globals.md#parsemonikerfromdetails)
+-   [publicKeyToAddress](globals.md#publickeytoaddress)
+-   [snapshotPostersAtBlock](globals.md#snapshotpostersatblock)
+-   [snapshotValidatorsAtBlock](globals.md#snapshotvalidatorsatblock)
 
 ## Variables
 
-### `Const` NULL_ADDRESS
+### `Const` cli
 
-• **NULL_ADDRESS**: _string_ = "0x0000000000000000000000000000000000000000"
+• **cli**: _`Command`_ = new commander.Command()
 
-_Defined in [utils.ts:12](https://github.com/ParadigmFoundation/kosu-monorepo/blob/4048650/packages/kosu.js/src/utils.ts#L12)_
-
----
-
-### `Const` version
-
-• **version**: _any_ = process.env.npm_package_version || require("../package.json").version
-
-_Defined in [Kosu.ts:18](https://github.com/ParadigmFoundation/kosu-monorepo/blob/4048650/packages/kosu.js/src/Kosu.ts#L18)_
+_Defined in [cli/cli.ts:3](https://github.com/ParadigmFoundation/kosu-monorepo/blob/2f37cabf/packages/kosu-genesis-cli/src/cli/cli.ts#L3)_
 
 ## Functions
 
-### \_serialize
+### dateFromTimestamp
 
-▸ **\_serialize**(`_arguments`: any, `values`: any): _string_
+▸ **dateFromTimestamp**(`timestamp`: number): _`Date`_
 
-_Defined in [OrderSerializer.ts:8](https://github.com/ParadigmFoundation/kosu-monorepo/blob/4048650/packages/kosu.js/src/OrderSerializer.ts#L8)_
+_Defined in [functions.ts:332](https://github.com/ParadigmFoundation/kosu-monorepo/blob/2f37cabf/packages/kosu-genesis-cli/src/functions.ts#L332)_
+
+Return a `Date` object generated from a Unix timestamp in seconds.
 
 **Parameters:**
 
-| Name         | Type |
-| ------------ | ---- |
-| `_arguments` | any  |
-| `values`     | any  |
+| Name        | Type   | Description                    |
+| ----------- | ------ | ------------------------------ |
+| `timestamp` | number | A Unix timestamp (in seconds). |
 
-**Returns:** _string_
+**Returns:** _`Date`_
+
+The JavaScript Date object corresponding to that Unix time.
 
 ---
 
-### toBytes32
+### generateGenesisFromBlock
 
-▸ **toBytes32**(`value`: string): _string_
+▸ **generateGenesisFromBlock**(`kosu`: `Kosu`, `chainId`: string, `snapshotBlock`: number, `startTime`: number, `consensusParams`: [ConsensusParams](interfaces/consensusparams.md)): _`Promise<GenesisBlock>`_
 
-_Defined in [utils.ts:8](https://github.com/ParadigmFoundation/kosu-monorepo/blob/4048650/packages/kosu.js/src/utils.ts#L8)_
+_Defined in [functions.ts:27](https://github.com/ParadigmFoundation/kosu-monorepo/blob/2f37cabf/packages/kosu-genesis-cli/src/functions.ts#L27)_
 
-Convert an arbitrary string to a `bytes32` version.
+Generate a Tendermint genesis file for a Kosu network, where the initial validators
+are set based on the current state of a deployed Kosu contract system's
+ValidatorRegistry contract, at a specified block height.
 
 **Parameters:**
 
-| Name    | Type   | Description                                               |
-| ------- | ------ | --------------------------------------------------------- |
-| `value` | string | String value to be converted into bytes32 representation. |
+| Name              | Type                                             | Description                                                         |
+| ----------------- | ------------------------------------------------ | ------------------------------------------------------------------- |
+| `kosu`            | `Kosu`                                           | An initialized kosu.js instance.                                    |
+| `chainId`         | string                                           | The desired Kosu chain ID for the Tendermint blockchain.            |
+| `snapshotBlock`   | number                                           | The block at which to export contract system state.                 |
+| `startTime`       | number                                           | The desired genesis time and network start time (Unix timestamp).   |
+| `consensusParams` | [ConsensusParams](interfaces/consensusparams.md) | Network-specific consensus parameters agreed upon prior to genesis. |
 
-**Returns:** _string_
+**Returns:** _`Promise<GenesisBlock>`_
 
-## Object literals
-
-### `Const` KosuEndpoints
-
-### ▪ **KosuEndpoints**: _object_
-
-_Defined in [EventEmitter.ts:7](https://github.com/ParadigmFoundation/kosu-monorepo/blob/4048650/packages/kosu.js/src/EventEmitter.ts#L7)_
-
-▪ **1**: _object_
-
-_Defined in [EventEmitter.ts:8](https://github.com/ParadigmFoundation/kosu-monorepo/blob/4048650/packages/kosu.js/src/EventEmitter.ts#L8)_
-
--   **http**: _string_ = `https://ethnet.zaidan.io/mainnet`
-
--   **ws**: _string_ = `wss://ethnet.zaidan.io/ws/mainnet`
-
-▪ **3**: _object_
-
-_Defined in [EventEmitter.ts:12](https://github.com/ParadigmFoundation/kosu-monorepo/blob/4048650/packages/kosu.js/src/EventEmitter.ts#L12)_
-
--   **http**: _string_ = `https://ethnet.zaidan.io/ropsten`
-
--   **ws**: _string_ = `wss://ethnet.zaidan.io/ws/ropsten`
-
-▪ **42**: _object_
-
-_Defined in [EventEmitter.ts:16](https://github.com/ParadigmFoundation/kosu-monorepo/blob/4048650/packages/kosu.js/src/EventEmitter.ts#L16)_
-
--   **http**: _string_ = `https://ethnet.zaidan.io/kovan`
-
--   **ws**: _string_ = `wss://ethnet.zaidan.io/ws/kovan`
-
-▪ **6174**: _object_
-
-_Defined in [EventEmitter.ts:20](https://github.com/ParadigmFoundation/kosu-monorepo/blob/4048650/packages/kosu.js/src/EventEmitter.ts#L20)_
-
--   **http**: _string_ = `https://ethnet.zaidan.io/kosu`
-
--   **ws**: _string_ = `wss://ethnet.zaidan.io/ws/kosu`
+Promise resolving to object that can be JSON-serialized to a Kosu/Tendermint genesis file.
 
 ---
 
-### `Const` OrderSerializer
+### getAppState
 
-### ▪ **OrderSerializer**: _object_
+▸ **getAppState**(`validators`: [SnapshotValidator](interfaces/snapshotvalidator.md)[], `posters`: [SnapshotPoster](interfaces/snapshotposter.md)[], `snapshotBlock`: number, `consensusParameters`: [ConsensusParams](interfaces/consensusparams.md)): _[AppState](interfaces/appstate.md)_
 
-_Defined in [OrderSerializer.ts:42](https://github.com/ParadigmFoundation/kosu-monorepo/blob/4048650/packages/kosu.js/src/OrderSerializer.ts#L42)_
+_Defined in [functions.ts:90](https://github.com/ParadigmFoundation/kosu-monorepo/blob/2f37cabf/packages/kosu-genesis-cli/src/functions.ts#L90)_
 
-could add to utils (or create order-utils pacakge)
+Constructs the `app_state` genesis field, where the following initial states
+are gathered or set, from re-processed Ethereum blockchain event logs, or from
+CLI input.
 
-### makerHex
-
-▸ **makerHex**(`order`: [Order](interfaces/order.md), `_arguments`: any): _string_
-
-_Defined in [OrderSerializer.ts:88](https://github.com/ParadigmFoundation/kosu-monorepo/blob/4048650/packages/kosu.js/src/OrderSerializer.ts#L88)_
-
-Generate the maker hex from order
-
-**Parameters:**
-
-| Name         | Type                         | Description                              |
-| ------------ | ---------------------------- | ---------------------------------------- |
-| `order`      | [Order](interfaces/order.md) | to generate hex from                     |
-| `_arguments` | any                          | Argument json defined in the subContract |
-
-**Returns:** _string_
-
-### posterSignatureHex
-
-▸ **posterSignatureHex**(`order`: [Order](interfaces/order.md), `_arguments`: any): _string_
-
-_Defined in [OrderSerializer.ts:64](https://github.com/ParadigmFoundation/kosu-monorepo/blob/4048650/packages/kosu.js/src/OrderSerializer.ts#L64)_
-
-Generates hex to be used for the poster signing process
+-   `initial_validator_info`: Set to match state with active validators at snapshot height
+-   `initial_poster_info`: Set to match PosterRegistry contract state at snapshot height
+-   `snapshot_block`: The Ethereum block height at which contract system state should be exported
+-   `consensus_params`: Consensus critical parameters, such as:
+    -   `finality_threshold`: How old Ethereum events must be before state changes can be applied
+    -   `period_limit`: Number of orders to be accepted per period (allocated to posters)
+    -   `period_length`: The length of each rebalance period (in Ethereum blocks)
+    -   `max_order_bytes`: Maximum size of an order message (protobuf-encoded transaction length)
+    -   `blocks_before_pruning`: Maximum age of attestations before accepted and pending attestations are cleared
 
 **Parameters:**
 
-| Name         | Type                         | Description                              |
-| ------------ | ---------------------------- | ---------------------------------------- |
-| `order`      | [Order](interfaces/order.md) | Order to get data for                    |
-| `_arguments` | any                          | Argument json defined in the subContract |
+| Name                  | Type                                                   | Description                                                        |
+| --------------------- | ------------------------------------------------------ | ------------------------------------------------------------------ |
+| `validators`          | [SnapshotValidator](interfaces/snapshotvalidator.md)[] | Validators from ValidatorRegistry TCR snapshot.                    |
+| `posters`             | [SnapshotPoster](interfaces/snapshotposter.md)[]       | Posters from PosterRegistry snapshot.                              |
+| `snapshotBlock`       | number                                                 | The Ethereum block used to generate validator and poster snapshot. |
+| `consensusParameters` | [ConsensusParams](interfaces/consensusparams.md)       | Consensus parameters to set in genesis.                            |
 
-**Returns:** _string_
-
-### recoverMaker
-
-▸ **recoverMaker**(`order`: [Order](interfaces/order.md), `_arguments`: any[]): _string_
-
-_Defined in [OrderSerializer.ts:109](https://github.com/ParadigmFoundation/kosu-monorepo/blob/4048650/packages/kosu.js/src/OrderSerializer.ts#L109)_
-
-Recovers the maker from the signed information
-
-**Parameters:**
-
-| Name         | Type                         | Description                              |
-| ------------ | ---------------------------- | ---------------------------------------- |
-| `order`      | [Order](interfaces/order.md) | to recover address from                  |
-| `_arguments` | any[]                        | Argument json defined in the subContract |
-
-**Returns:** _string_
-
-### recoverPoster
-
-▸ **recoverPoster**(`order`: [PostableOrder](interfaces/postableorder.md), `_arguments`: any[]): _string_
-
-_Defined in [OrderSerializer.ts:78](https://github.com/ParadigmFoundation/kosu-monorepo/blob/4048650/packages/kosu.js/src/OrderSerializer.ts#L78)_
-
-Recovers the poster from the poster signature
-
-**Parameters:**
-
-| Name         | Type                                         | Description                              |
-| ------------ | -------------------------------------------- | ---------------------------------------- |
-| `order`      | [PostableOrder](interfaces/postableorder.md) | Order to recover address that signed     |
-| `_arguments` | any[]                                        | Argument json defined in the subContract |
-
-**Returns:** _string_
-
-### serialize
-
-▸ **serialize**(`_arguments`: any, `order`: [Order](interfaces/order.md)): _string_
-
-_Defined in [OrderSerializer.ts:49](https://github.com/ParadigmFoundation/kosu-monorepo/blob/4048650/packages/kosu.js/src/OrderSerializer.ts#L49)_
-
-Serializes the data into bytes
-
-**Parameters:**
-
-| Name         | Type                         | Description                              |
-| ------------ | ---------------------------- | ---------------------------------------- |
-| `_arguments` | any                          | Argument json defined in the subContract |
-| `order`      | [Order](interfaces/order.md) | Order to serialize                       |
-
-**Returns:** _string_
+**Returns:** _[AppState](interfaces/appstate.md)_
 
 ---
 
-### `Const` Signature
+### getInitialValidatorInfo
 
-### ▪ **Signature**: _object_
+▸ **getInitialValidatorInfo**(`validators`: [SnapshotValidator](interfaces/snapshotvalidator.md)[]): _[InitialValidatorInfo](interfaces/initialvalidatorinfo.md)[]_
 
-_Defined in [Signature.ts:7](https://github.com/ParadigmFoundation/kosu-monorepo/blob/4048650/packages/kosu.js/src/Signature.ts#L7)_
+_Defined in [functions.ts:304](https://github.com/ParadigmFoundation/kosu-monorepo/blob/2f37cabf/packages/kosu-genesis-cli/src/functions.ts#L304)_
 
-_Defined in [types.d.ts:45](https://github.com/ParadigmFoundation/kosu-monorepo/blob/4048650/packages/kosu.js/src/types.d.ts#L45)_
-
-### generate
-
-▸ **generate**(`web3`: `Web3`, `messageHex`: string, `signer`: string): _`Promise<string>`_
-
-_Defined in [Signature.ts:16](https://github.com/ParadigmFoundation/kosu-monorepo/blob/4048650/packages/kosu.js/src/Signature.ts#L16)_
-
-Generates a signature for a message hex using calls to a provider though web3
+Convert the validator snapshot data to the JSON format expected by the Kosu
+client.
 
 **Parameters:**
 
-| Name         | Type   | Description                         |
-| ------------ | ------ | ----------------------------------- |
-| `web3`       | `Web3` | Web3 configured to desired provider |
-| `messageHex` | string | Hex representation of the message   |
-| `signer`     | string | Address to sign the message         |
+| Name         | Type                                                   | Description                  |
+| ------------ | ------------------------------------------------------ | ---------------------------- |
+| `validators` | [SnapshotValidator](interfaces/snapshotvalidator.md)[] | Raw validator snapshot data. |
 
-**Returns:** _`Promise<string>`_
+**Returns:** _[InitialValidatorInfo](interfaces/initialvalidatorinfo.md)[]_
 
-A vrs signature
+The array of initial validators as expected by `initial_validator_info`.
 
-▸ **generate**(`web3`: `Web3`, `messageHex`: string, `signer`: string): _`Promise<string>`_
+---
 
-_Defined in [types.d.ts:46](https://github.com/ParadigmFoundation/kosu-monorepo/blob/4048650/packages/kosu.js/src/types.d.ts#L46)_
+### getTendermintValidators
 
-**Parameters:**
+▸ **getTendermintValidators**(`validators`: [SnapshotValidator](interfaces/snapshotvalidator.md)[]): _[GenesisValidator](interfaces/genesisvalidator.md)[]_
 
-| Name         | Type   |
-| ------------ | ------ |
-| `web3`       | `Web3` |
-| `messageHex` | string |
-| `signer`     | string |
+_Defined in [functions.ts:239](https://github.com/ParadigmFoundation/kosu-monorepo/blob/2f37cabf/packages/kosu-genesis-cli/src/functions.ts#L239)_
 
-**Returns:** _`Promise<string>`_
-
-### recoverAddress
-
-▸ **recoverAddress**(`messageHex`: any, `signature`: string): _string_
-
-_Defined in [Signature.ts:38](https://github.com/ParadigmFoundation/kosu-monorepo/blob/4048650/packages/kosu.js/src/Signature.ts#L38)_
-
-Recovers address from a message hex and signature
+Convert the validator snapshot data to the JSON format expected by Tendermint.
 
 **Parameters:**
 
-| Name         | Type   | Description                              |
-| ------------ | ------ | ---------------------------------------- |
-| `messageHex` | any    | Hex representation of the signed message |
-| `signature`  | string | VRS signature                            |
+| Name         | Type                                                   | Description                  |
+| ------------ | ------------------------------------------------------ | ---------------------------- |
+| `validators` | [SnapshotValidator](interfaces/snapshotvalidator.md)[] | Raw validator snapshot data. |
+
+**Returns:** _[GenesisValidator](interfaces/genesisvalidator.md)[]_
+
+Tendermint-style genesis validator JSON.
+
+---
+
+### hexKeyToBase64
+
+▸ **hexKeyToBase64**(`publicKey`: string): _string_
+
+_Defined in [functions.ts:322](https://github.com/ParadigmFoundation/kosu-monorepo/blob/2f37cabf/packages/kosu-genesis-cli/src/functions.ts#L322)_
+
+Convert a 0x-prefixed hex-encoded public key string to a base64-encoded string.
+
+**Parameters:**
+
+| Name        | Type   | Description                                |
+| ----------- | ------ | ------------------------------------------ |
+| `publicKey` | string | 0x-prefixed hex-encoded public key string. |
 
 **Returns:** _string_
 
-▸ **recoverAddress**(`messageHex`: any, `signature`: string): _string_
+The base64-encoded string representation of the public key.
 
-_Defined in [types.d.ts:48](https://github.com/ParadigmFoundation/kosu-monorepo/blob/4048650/packages/kosu.js/src/types.d.ts#L48)_
+---
+
+### parseMonikerFromDetails
+
+▸ **parseMonikerFromDetails**(`details`: string, `itemSeparator`: string, `valueSeparator`: string): _string_
+
+_Defined in [functions.ts:274](https://github.com/ParadigmFoundation/kosu-monorepo/blob/2f37cabf/packages/kosu-genesis-cli/src/functions.ts#L274)_
+
+Allows parsing a moniker from a string that uses two types of separators to
+store key-value pairs in a plain string.
+
+This method will return a moniker, if found, within a provided string (see
+below), otherwise it will return the input string.
+
+**`example`**
+
+```typescript
+const stringWithMoniker = "website=https://example.com,moniker=alice";
+console.log(parseMonikerFromDetails(stringWithMoniker)); // > "alice"
+
+const stringWithoutMoniker = "an ordinary string with no keys";
+console.log(parseMonikerFromDetails(stringWithoutMoniker)); // > "an ordinary string with no keys"
+```
 
 **Parameters:**
 
-| Name         | Type   |
-| ------------ | ------ |
-| `messageHex` | any    |
-| `signature`  | string |
+| Name             | Type   | Default | Description                                              |
+| ---------------- | ------ | ------- | -------------------------------------------------------- |
+| `details`        | string | -       | The input string with potential key-value pairs encoded. |
+| `itemSeparator`  | string | ","     | Separator to use between key-value pairs.                |
+| `valueSeparator` | string | "="     | Separator to use between key and value.                  |
 
 **Returns:** _string_
 
-### sign
+The value corresponding to the `moniker` key if found, otherwise the input string.
 
-▸ **sign**(`web3`: `Web3`, `messageHex`: string, `signer`: string): _`Promise<string>`_
+---
 
-_Defined in [Signature.ts:56](https://github.com/ParadigmFoundation/kosu-monorepo/blob/4048650/packages/kosu.js/src/Signature.ts#L56)_
+### publicKeyToAddress
 
-Sign hex with provided address
+▸ **publicKeyToAddress**(`publicKey`: `Buffer`): _string_
 
-**Parameters:**
+_Defined in [functions.ts:223](https://github.com/ParadigmFoundation/kosu-monorepo/blob/2f37cabf/packages/kosu-genesis-cli/src/functions.ts#L223)_
 
-| Name         | Type   | Description                            |
-| ------------ | ------ | -------------------------------------- |
-| `web3`       | `Web3` | Provider which executes the signature. |
-| `messageHex` | string | Hex to be singed                       |
-| `signer`     | string | Address to sign with.                  |
-
-**Returns:** _`Promise<string>`_
-
-▸ **sign**(`web3`: `Web3`, `messageHex`: string, `signer`: string): _`Promise<string>`_
-
-_Defined in [types.d.ts:49](https://github.com/ParadigmFoundation/kosu-monorepo/blob/4048650/packages/kosu.js/src/types.d.ts#L49)_
+Convert a Tendermint public key to a Tendermint address (also called node ID).
 
 **Parameters:**
 
-| Name         | Type   |
-| ------------ | ------ |
-| `web3`       | `Web3` |
-| `messageHex` | string |
-| `signer`     | string |
+| Name        | Type     | Description                           |
+| ----------- | -------- | ------------------------------------- |
+| `publicKey` | `Buffer` | Tendermint 32-byte public key buffer. |
 
-**Returns:** _`Promise<string>`_
+**Returns:** _string_
 
-### validate
+The corresponding Tendermint address string.
 
-▸ **validate**(`messageHex`: string, `signature`: string, `signer`: string): _boolean_
+---
 
-_Defined in [Signature.ts:28](https://github.com/ParadigmFoundation/kosu-monorepo/blob/4048650/packages/kosu.js/src/Signature.ts#L28)_
+### snapshotPostersAtBlock
 
-Validates the signature of a messageHex is from the provided signer
+▸ **snapshotPostersAtBlock**(`kosu`: `Kosu`, `snapshotBlock`: number): _`Promise<SnapshotPoster[]>`_
 
-**Parameters:**
+_Defined in [functions.ts:179](https://github.com/ParadigmFoundation/kosu-monorepo/blob/2f37cabf/packages/kosu-genesis-cli/src/functions.ts#L179)_
 
-| Name         | Type   | Description                            |
-| ------------ | ------ | -------------------------------------- |
-| `messageHex` | string | signed message hex                     |
-| `signature`  | string | signature from message hex             |
-| `signer`     | string | signer who may have signed the message |
+Generate a "snapshot" of the PosterRegistry contract state (all posters) by
+re-playing `PosterRegistryUpdate` events from the Kosu EventEmitter contract.
 
-**Returns:** _boolean_
-
-boolean representing if the signer in fact generated the signature with this message
-
-▸ **validate**(`messageHex`: string, `signature`: string, `signer`: string): _boolean_
-
-_Defined in [types.d.ts:47](https://github.com/ParadigmFoundation/kosu-monorepo/blob/4048650/packages/kosu.js/src/types.d.ts#L47)_
+The resulting array contains the address and balance of each account at the
+specified snapshot block.
 
 **Parameters:**
 
-| Name         | Type   |
-| ------------ | ------ |
-| `messageHex` | string |
-| `signature`  | string |
-| `signer`     | string |
+| Name            | Type   | Description                                                    |
+| --------------- | ------ | -------------------------------------------------------------- |
+| `kosu`          | `Kosu` | An initialized kosu.js instance.                               |
+| `snapshotBlock` | number | The Ethereum block at which to stop replaying past event logs. |
 
-**Returns:** _boolean_
+**Returns:** _`Promise<SnapshotPoster[]>`_
+
+Promise resolving to snapshot poster info (see type definition).
+
+---
+
+### snapshotValidatorsAtBlock
+
+▸ **snapshotValidatorsAtBlock**(`kosu`: `Kosu`, `snapshotBlock`: number): _`Promise<SnapshotValidator[]>`_
+
+_Defined in [functions.ts:117](https://github.com/ParadigmFoundation/kosu-monorepo/blob/2f37cabf/packages/kosu-genesis-cli/src/functions.ts#L117)_
+
+Generate a "snapshot" of the ValidatorRegistry TCR contract state (specifically,
+only the listings designated validators at the snapshot block) by re-playing
+all `ValidatorRegistryUpdate` events from the Kosu EventEmitter contract.
+
+The resulting array contains the Ethereum address, Tendermint public key, and
+initial staked-balances (used to calculate vote power) of all listings designated
+as validators at the specified `snapshotBlock`.
+
+**Parameters:**
+
+| Name            | Type   | Description                                                    |
+| --------------- | ------ | -------------------------------------------------------------- |
+| `kosu`          | `Kosu` | An initialized kosu.js instance.                               |
+| `snapshotBlock` | number | The Ethereum block at which to stop replaying past event logs. |
+
+**Returns:** _`Promise<SnapshotValidator[]>`_
+
+Promise resolving to array of snapshot validator data (see type definition).
