@@ -22,7 +22,7 @@ process (`kosud`), is identical to that of a full node. The only difference betw
 
 For Kosu, the validator set is determined and curated by the Kosu contract system, deployed on the Ethereum blockchain. To set up a validator, you must first configure a Kosu full node, then apply to the on-chain registry through the contract system. If KOSU token holders approve your application, your full node will automatically become a validator when the peg-zone applies the registry state transition to the Kosu state.
 
-[Follow this guide to apply to a Kosu ValidatorRegistry.]()
+[Follow this guide to apply to a Kosu ValidatorRegistry.](#todo)
 
 **Warning:** Registering a main-network Kosu validator node requires locking tokens (staking) which may be confiscated if your listing is successfully challenged during the application process, or while it is in the set of active validators. [Read more about the validator selection and curation process here.](https://docs.kosu.io/overview/validator-curation.html)
 
@@ -593,10 +593,10 @@ The community launching the network must agree on the following before, or short
 This example will assume the following:
 
 -   The network will be called `kosu-0`.
--   The Kosu contract system was deployed to the Ethereum mainnet at block **8621444.**
--   A state snapshot from block **8141444** (~20 days later) will be used to generate the network's genesis file.
+-   The Kosu contract system was deployed to the Ethereum mainnet at block **10021444.**
+-   A state snapshot from block **10080000** (~20 days later) will be used to generate the network's genesis file.
 -   During those ~20 days, token holders will curate a set of initial validators from applicants.
--   The chain start time (unix) is picked as **1572000000** (~10 days after the snapshot).
+-   The chain start time (unix) is picked as **1590000000** (~10 days after the snapshot).
 -   The default consensus parameters from `gen-kosu` (and `kosud`) are used.
 
 1. Install and configure `kosud` (see [above](#install)).
@@ -605,14 +605,14 @@ This example will assume the following:
     ```bash
     # full form (assumes default data/config directory)
     gen-kosu \
-        --snapshot-block=8141444 \
+        --snapshot-block=10080000 \
         --chain-id=kosu-0 \
         --start-time=1572000000 \
         --provider-url=https://mainnet.infura.io \
         > ~/.kosu/config/genesis.json
 
     # shorthand equivalent
-    gen-kosu -b 8141444 -n kosu-0 -t 1572000000 -p https://mainnet.infura.io > ~/.kosu/config/genesis.json
+    gen-kosu -b 10080000 -n kosu-0 -t 1590000000 -p https://mainnet.infura.io > ~/.kosu/config/genesis.json
     ```
 
 1. Wait until shortly before the specified network start time, and start the client.
@@ -633,8 +633,41 @@ This example will assume the following:
 
 ## Validators
 
+This section highlights additional considerations specific to validating full nodes. It does not intend to serve as a guide to configuring or securing a mainnet validator.
+
+[Click hear to read about the on-chain validator application process](#todo)
+
 ### Networking
+
+Validators must take extra precaution with regard to network configuration, and the goal should be to prevent any inbound network requests to the validator process except for those from the sentry node or nodes, and the Ethereum client.
+
+At minimum validator operators should:
+
+-   Have a dedicated host machine or VM for the validator process (with backups enabled).
+-   Operate a private virtual or physical network environment for the validator and sentry nodes.
+-   Only enable inbound (rate-limited) requests from the public internet to the sentry nodes.
+-   Operate an Ethereum client serving JSONRPC/WebSocket within the private network for the node (see below).
+
+[See here]() for an example of a sophisticated validator setup for the Cosmos Hub.
 
 ### Ethereum client
 
+[As described above,](#ethereum-jsonrpc-provider) validators require a WebSocket connection to an Ethereum client serving the Ethereum JSONRPC API.
+
+For validators, it is important that (at minimum) a full Ethereum node is run within the same private network as the validator process, or otherwise able to maintain a persistent private connection.
+
+There is no specific reason to choose Geth over Parity, but it is important that the configured client reliably serves the JSONRPC API over WebSockets.
+
 ### Sentry nodes
+
+Sentry nodes are required for main-network validators to protect them from DoS attacks and other potential exploits.
+
+In simplest terms, "sentry node architecture" is described by the following statements.
+
+-   A validator host and special full nodes (sentries) exist in a virtual or private networking configuration.
+-   The validator exposes no TCP, UDP or other unix ports to the public internet.
+-   The validator host only accepts Tendermint peer-to-peer traffic from the sentry nodes over a private connection.
+-   The sentry nodes relay the validator's signed messages to the network, as well as gossiped transactions.
+-   The validator relies on no one specific sentry node for its connection to the greater network at a given time.
+
+[See here](https://forum.cosmos.network/t/sentry-node-architecture-overview/454) for an in-depth explanation and setup example for a sentry node cluster.
