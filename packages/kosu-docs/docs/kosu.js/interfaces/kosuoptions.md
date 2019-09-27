@@ -31,7 +31,7 @@
 
 • **eventEmitterAddress**? : _string_
 
-Defined in types.d.ts:10
+_Defined in [types.d.ts:10](https://github.com/ParadigmFoundation/kosu-monorepo/blob/2f37cabf/packages/kosu.js/src/types.d.ts#L10)_
 
 ---
 
@@ -39,7 +39,7 @@ Defined in types.d.ts:10
 
 • **kosuNodeUrl**? : _string_
 
-Defined in types.d.ts:6
+_Defined in [types.d.ts:6](https://github.com/ParadigmFoundation/kosu-monorepo/blob/2f37cabf/packages/kosu.js/src/types.d.ts#L6)_
 
 ---
 
@@ -47,7 +47,7 @@ Defined in types.d.ts:6
 
 • **kosuTokenAddress**? : _string_
 
-Defined in types.d.ts:9
+_Defined in [types.d.ts:9](https://github.com/ParadigmFoundation/kosu-monorepo/blob/2f37cabf/packages/kosu.js/src/types.d.ts#L9)_
 
 ---
 
@@ -55,7 +55,7 @@ Defined in types.d.ts:9
 
 • **networkId**? : _number | string_
 
-Defined in types.d.ts:3
+_Defined in [types.d.ts:3](https://github.com/ParadigmFoundation/kosu-monorepo/blob/2f37cabf/packages/kosu.js/src/types.d.ts#L3)_
 
 ---
 
@@ -63,7 +63,7 @@ Defined in types.d.ts:3
 
 • **orderGatewayAddress**? : _string_
 
-Defined in types.d.ts:11
+_Defined in [types.d.ts:11](https://github.com/ParadigmFoundation/kosu-monorepo/blob/2f37cabf/packages/kosu.js/src/types.d.ts#L11)_
 
 ---
 
@@ -71,7 +71,7 @@ Defined in types.d.ts:11
 
 • **posterRegistryAddress**? : _string_
 
-Defined in types.d.ts:12
+_Defined in [types.d.ts:12](https://github.com/ParadigmFoundation/kosu-monorepo/blob/2f37cabf/packages/kosu.js/src/types.d.ts#L12)_
 
 ---
 
@@ -79,7 +79,7 @@ Defined in types.d.ts:12
 
 • **provider**? : _[provider](kosuoptions.md#optional-provider)_
 
-Defined in types.d.ts:2
+_Defined in [types.d.ts:2](https://github.com/ParadigmFoundation/kosu-monorepo/blob/2f37cabf/packages/kosu.js/src/types.d.ts#L2)_
 
 ---
 
@@ -87,7 +87,7 @@ Defined in types.d.ts:2
 
 • **treasuryAddress**? : _string_
 
-Defined in types.d.ts:8
+_Defined in [types.d.ts:8](https://github.com/ParadigmFoundation/kosu-monorepo/blob/2f37cabf/packages/kosu.js/src/types.d.ts#L8)_
 
 ---
 
@@ -95,7 +95,7 @@ Defined in types.d.ts:8
 
 • **validatorRegistryAddress**? : _string_
 
-Defined in types.d.ts:13
+_Defined in [types.d.ts:13](https://github.com/ParadigmFoundation/kosu-monorepo/blob/2f37cabf/packages/kosu.js/src/types.d.ts#L13)_
 
 ---
 
@@ -103,7 +103,7 @@ Defined in types.d.ts:13
 
 • **votingAddress**? : _string_
 
-Defined in types.d.ts:7
+_Defined in [types.d.ts:7](https://github.com/ParadigmFoundation/kosu-monorepo/blob/2f37cabf/packages/kosu.js/src/types.d.ts#L7)_
 
 ---
 
@@ -111,7 +111,7 @@ Defined in types.d.ts:7
 
 • **web3**? : _`Web3`_
 
-Defined in types.d.ts:4
+_Defined in [types.d.ts:4](https://github.com/ParadigmFoundation/kosu-monorepo/blob/2f37cabf/packages/kosu.js/src/types.d.ts#L4)_
 
 ---
 
@@ -119,4 +119,4 @@ Defined in types.d.ts:4
 
 • **web3Wrapper**? : _`Web3Wrapper`_
 
-Defined in types.d.ts:5
+_Defined in [types.d.ts:5](https://github.com/ParadigmFoundation/kosu-monorepo/blob/2f37cabf/packages/kosu.js/src/types.d.ts#L5)_

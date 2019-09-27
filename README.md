@@ -49,9 +49,10 @@ Smart-contract packages (Solidity) including the core Kosu system contracts and 
 
 Client/server libraries for interacting with the Kosu network and contract system.
 
-| Package &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; | Version                                                | Description                                                                   |
-| :------------------------------------------------ | :----------------------------------------------------- | :---------------------------------------------------------------------------- |
-| [`@kosu/kosu.js`](./packages/kosu.js)             | ![npm](https://img.shields.io/npm/v/@kosu/kosu.js.svg) | TypeScript library for interacting with the Kosu network and contract system. |
+| Package &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;  | Version                                                    | Description                                                                   |
+| :------------------------------------------------- | :--------------------------------------------------------- | :---------------------------------------------------------------------------- |
+| [`@kosu/kosu.js`](./packages/kosu.js)              | ![npm](https://img.shields.io/npm/v/@kosu/kosu.js.svg)     | TypeScript library for interacting with the Kosu network and contract system. |
+| [`@kosu/genesis-cli`](./packages/kosu-genesis-cli) | ![npm](https://img.shields.io/npm/v/@kosu/genesis-cli.svg) | Library and CLI for generating network genesis files from contract sate.      |
 
 ### Utility/development packages
 
@@ -135,31 +136,11 @@ To build all packages:
 yarn build
 ```
 
-### Run a validator node
-
-After building, `go-kosu` binaries can be found at `packages/go-kosu` for your OS and architecture.
-
-To start a single-node Kosu development network as a validator, and initialize a peg-zone with the Kosu Ropsten contract system:
-
-```
-./kosud --init --web3 wss://ethnet.zaidan.io/ws/ropsten
-```
-
-To start the `JSON-RPC` bridge and interact with kosud use the `kosud rpc` sub-command.
-By default the HTTP and WS endpoints are binded to ports `14341` and `14342` repectively.
-
-The command-line interface will also be built (see `kosu-cli help` for all commands).
-
-```
-./kosu-cli query round
-```
-
-See the [`go-kosu`](https://github.com/ParadigmFoundation/kosu-monorepo/tree/master/packages/go-kosu) package for more info about executing transactions, queries, and running a testnet with `docker-compose`.
-
 ## Documentation
 
 Generated documentation is published for the following packages with each commit, and published to [`docs.kosu.io`](https://docs.kosu.io):
 
+-   [`go-kosu`](https://docs.kosu.io/go-kosu): Golang Tendermint-based network reference implementation and CLI.
 -   [`@kosu/kosu.js`](https://docs.kosu.io/kosu.js): TypeScript library for interacting with the Kosu contract system and network.
 -   [`@kosu/system-contracts`](https://docs.kosu.io/kosu-system-contracts): The core Kosu system smart-contracts in Solidity, and TypeScript test suite.
 

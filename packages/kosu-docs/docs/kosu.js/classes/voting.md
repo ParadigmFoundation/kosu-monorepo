@@ -32,7 +32,7 @@ Integration with Voting contract on an Ethereum blockchain.
 
 \+ **new Voting**(`options`: [KosuOptions](../interfaces/kosuoptions.md), `treasury`: [Treasury](treasury.md)): _[Voting](voting.md)_
 
-Defined in Voting.ts:18
+_Defined in [Voting.ts:18](https://github.com/ParadigmFoundation/kosu-monorepo/blob/2f37cabf/packages/kosu.js/src/Voting.ts#L18)_
 
 Create a new Voting instance.
 
@@ -51,7 +51,7 @@ Create a new Voting instance.
 
 ▸ **commitVote**(`_pollId`: `BigNumber`, `_vote`: string, `_tokensToCommit`: `BigNumber`): _`Promise<TransactionReceiptWithDecodedLogs>`_
 
-Defined in Voting.ts:67
+_Defined in [Voting.ts:67](https://github.com/ParadigmFoundation/kosu-monorepo/blob/2f37cabf/packages/kosu.js/src/Voting.ts#L67)_
 
 Commits vote to voting contract
 
@@ -71,7 +71,7 @@ Commits vote to voting contract
 
 ▸ **encodeVote**(`_voteOption`: string, `_voteSalt`: string): _string_
 
-Defined in Voting.ts:158
+_Defined in [Voting.ts:165](https://github.com/ParadigmFoundation/kosu-monorepo/blob/2f37cabf/packages/kosu.js/src/Voting.ts#L165)_
 
 Encodes a vote by hashing the option and salt
 
@@ -92,7 +92,7 @@ Encoded vote
 
 ▸ **revealVote**(`_pollId`: `BigNumber`, `_voteOption`: `BigNumber`, `_voteSalt`: `BigNumber`): _`Promise<TransactionReceiptWithDecodedLogs>`_
 
-Defined in Voting.ts:96
+_Defined in [Voting.ts:96](https://github.com/ParadigmFoundation/kosu-monorepo/blob/2f37cabf/packages/kosu.js/src/Voting.ts#L96)_
 
 Reveals vote on voting contract
 
@@ -112,7 +112,7 @@ Reveals vote on voting contract
 
 ▸ **totalRevealedTokens**(`_pollId`: `BigNumber`): _`Promise<BigNumber>`_
 
-Defined in Voting.ts:134
+_Defined in [Voting.ts:134](https://github.com/ParadigmFoundation/kosu-monorepo/blob/2f37cabf/packages/kosu.js/src/Voting.ts#L134)_
 
 Reads the total winning tokens for poll
 
@@ -130,7 +130,7 @@ Reads the total winning tokens for poll
 
 ▸ **totalWinningTokens**(`_pollId`: `BigNumber`): _`Promise<BigNumber>`_
 
-Defined in Voting.ts:124
+_Defined in [Voting.ts:124](https://github.com/ParadigmFoundation/kosu-monorepo/blob/2f37cabf/packages/kosu.js/src/Voting.ts#L124)_
 
 Reads the total winning tokens for poll
 
@@ -148,7 +148,7 @@ Reads the total winning tokens for poll
 
 ▸ **userWinningTokens**(`_pollId`: `BigNumber`, `_userAddress`: string): _`Promise<BigNumber>`_
 
-Defined in Voting.ts:145
+_Defined in [Voting.ts:145](https://github.com/ParadigmFoundation/kosu-monorepo/blob/2f37cabf/packages/kosu.js/src/Voting.ts#L145)_
 
 Reads users winning tokens committed for poll
 
@@ -167,7 +167,7 @@ Reads users winning tokens committed for poll
 
 ▸ **winningOption**(`_pollId`: `BigNumber`): _`Promise<BigNumber>`_
 
-Defined in Voting.ts:114
+_Defined in [Voting.ts:114](https://github.com/ParadigmFoundation/kosu-monorepo/blob/2f37cabf/packages/kosu.js/src/Voting.ts#L114)_
 
 Reads the winning option for poll
 

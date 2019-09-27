@@ -38,7 +38,7 @@ specified SubContract during serialization and signature generation.
 
 \+ **new OrderGateway**(`options`: [KosuOptions](../interfaces/kosuoptions.md)): _[OrderGateway](ordergateway.md)_
 
-Defined in OrderGateway.ts:46
+_Defined in [OrderGateway.ts:46](https://github.com/ParadigmFoundation/kosu-monorepo/blob/2f37cabf/packages/kosu.js/src/OrderGateway.ts#L46)_
 
 Create a new OrderGateway instance.
 
@@ -56,7 +56,7 @@ Create a new OrderGateway instance.
 
 ▸ **amountRemaining**(`order`: [Order](../interfaces/order.md)): _`Promise<BigNumber>`_
 
-Defined in OrderGateway.ts:150
+_Defined in [OrderGateway.ts:150](https://github.com/ParadigmFoundation/kosu-monorepo/blob/2f37cabf/packages/kosu.js/src/OrderGateway.ts#L150)_
 
 Checks amount of partial exchange tokens remaining, depending on the
 implementation of the SubContract specified in the supplied order.
@@ -78,7 +78,7 @@ implementation of the `amountRemaining` method.
 
 ▸ **arguments**(`subContract`: string): _`Promise<any>`_
 
-Defined in OrderGateway.ts:117
+_Defined in [OrderGateway.ts:117](https://github.com/ParadigmFoundation/kosu-monorepo/blob/2f37cabf/packages/kosu.js/src/OrderGateway.ts#L117)_
 
 Read the required arguments from a deployed SubContract.
 
@@ -98,7 +98,7 @@ The JSON array that defines the arguments for the SubContract.
 
 ▸ **isValid**(`order`: [Order](../interfaces/order.md)): _`Promise<boolean>`_
 
-Defined in OrderGateway.ts:134
+_Defined in [OrderGateway.ts:134](https://github.com/ParadigmFoundation/kosu-monorepo/blob/2f37cabf/packages/kosu.js/src/OrderGateway.ts#L134)_
 
 Checks validity of order data according the order's SubContract implementation.
 
@@ -116,7 +116,7 @@ Checks validity of order data according the order's SubContract implementation.
 
 ▸ **participate**(`order`: [Order](../interfaces/order.md), `taker`: string): _`Promise<any>`_
 
-Defined in OrderGateway.ts:96
+_Defined in [OrderGateway.ts:96](https://github.com/ParadigmFoundation/kosu-monorepo/blob/2f37cabf/packages/kosu.js/src/OrderGateway.ts#L96)_
 
 Participate in a trade as a taker (or on behalf of one), by submitting the
 maker order, and the Ethereum address of the taker. The fill transaction

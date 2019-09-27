@@ -31,6 +31,20 @@ access the objects directly with <code>gov.listings</code>, etc.</p></dd>
 <dd><p>Represents a stored vote in a challenge poll.</p></dd>
 <dt><a href="#ChallengeInfo">ChallengeInfo</a></dt>
 <dd><p>Contains block numbers for various state changes for a given challenge.</p></dd>
+<dt><a href="#PastGovernanceActivity">PastGovernanceActivity</a></dt>
+<dd><p>An object representing an instance of past &quot;activity&quot; within the ValidatorRegistry contract.</p>
+<p>If <code>actionable</code> is true, the following actions can be taken for a given <code>type</code>:</p>
+<ul>
+<li>CHALLENGE_BY: challenge can be resolved</li>
+<li>CHALLENGE_AGAINST: challenge can be resolved</li>
+<li>PROPOSAL: the listing can be confirmed</li>
+</ul>
+<p>If <code>state</code> is <code>&quot;PENDING&quot;</code> for a given <code>type</code>, the following action can be taken:</p>
+<ul>
+<li>CHALLENGE_BY: the challenge can be voted on in the active poll</li>
+<li>CHALLENGE_AGAINST: the challenge can be voted on in the active poll</li>
+<li>PROPOSAL: the proposal may be challenged</li>
+</ul></dd>
 </dl>
 
 <a name="Gov"></a>
@@ -60,12 +74,15 @@ access the objects directly with <code>gov.listings</code>, etc.</p>
         -   [.weiToEther(wei)](#Gov+weiToEther) ⇒ <code>string</code>
         -   [.etherToWei(ether)](#Gov+etherToWei) ⇒ <code>string</code>
         -   [.commitVote(challengeId, value, amount)](#Gov+commitVote) ⇒ <code>Promise.&lt;string&gt;</code>
+        -   [.hasCommittedVote(challengeId)](#Gov+hasCommittedVote) ⇒ <code>boolean</code>
         -   [.revealVote(challengeId)](#Gov+revealVote) ⇒ <code>Promise.&lt;string&gt;</code>
+        -   [.hasRevealedVote(challengeId)](#Gov+hasRevealedVote) ⇒ <code>boolean</code>
         -   [.estimateFutureBlockTimestamp(blockNumber)](#Gov+estimateFutureBlockTimestamp) ⇒ <code>Promise.&lt;number&gt;</code>
         -   [.getPastBlockTimestamp(blockNumber)](#Gov+getPastBlockTimestamp) ⇒ <code>Promise.&lt;number&gt;</code>
         -   [.getHistoricalChallenges()](#Gov+getHistoricalChallenges) ⇒ <code>Promise.&lt;Array.&lt;PastChallenge&gt;&gt;</code>
         -   [.getChallengeInfo(challengeId)](#Gov+getChallengeInfo) ⇒ [<code>Promise.&lt;ChallengeInfo&gt;</code>](#ChallengeInfo)
         -   [.currentBlockNumber()](#Gov+currentBlockNumber) ⇒ <code>number</code>
+        -   [.getPastGovernanceActivity(address)](#Gov+getPastGovernanceActivity) ⇒ <code>Promise.&lt;Array.&lt;PastGovernanceActivity&gt;&gt;</code>
     -   _static_
         -   [.ZERO](#Gov.ZERO)
         -   [.ONE](#Gov.ONE)
@@ -227,6 +244,19 @@ const revealTxId = await gov.revealVote(new BigNumber("13"));
 // ... wait for Tx's to confirm or whatever, etc.
 ```
 
+<a name="Gov+hasCommittedVote"></a>
+
+### gov.hasCommittedVote(challengeId) ⇒ <code>boolean</code>
+
+<p>Check for a previously committed vote, by challengeId (as a BigNumber).</p>
+
+**Kind**: instance method of [<code>Gov</code>](#Gov)  
+**Returns**: <code>boolean</code> - <p>the boolean representing the presence of a commit vote</p>
+
+| Param       | Type                   | Description                                                |
+| ----------- | ---------------------- | ---------------------------------------------------------- |
+| challengeId | <code>BigNumber</code> | <p>the challenge to check for a stored commit vote for</p> |
+
 <a name="Gov+revealVote"></a>
 
 ### gov.revealVote(challengeId) ⇒ <code>Promise.&lt;string&gt;</code>
@@ -245,6 +275,19 @@ signature and approval.</p>
 | Param       | Type                   | Description                                      |
 | ----------- | ---------------------- | ------------------------------------------------ |
 | challengeId | <code>BigNumber</code> | <p>the challenge to reveal a stored vote for</p> |
+
+<a name="Gov+hasRevealedVote"></a>
+
+### gov.hasRevealedVote(challengeId) ⇒ <code>boolean</code>
+
+<p>Check for a previously revealed vote, by challengeId (as a BigNumber).</p>
+
+**Kind**: instance method of [<code>Gov</code>](#Gov)  
+**Returns**: <code>boolean</code> - <p>the boolean representing the presence of a reveal vote</p>
+
+| Param       | Type                   | Description                                                |
+| ----------- | ---------------------- | ---------------------------------------------------------- |
+| challengeId | <code>BigNumber</code> | <p>the challenge to check for a stored reveal vote for</p> |
 
 <a name="Gov+estimateFutureBlockTimestamp"></a>
 
@@ -341,6 +384,29 @@ if (currentBlock < endCommitPeriod && currentBlock >= challengeStart) {
 
 **Kind**: instance method of [<code>Gov</code>](#Gov)  
 **Returns**: <code>number</code> - <p>The current (or most recent) Ethereum block height.</p>  
+<a name="Gov+getPastGovernanceActivity"></a>
+
+### gov.getPastGovernanceActivity(address) ⇒ <code>Promise.&lt;Array.&lt;PastGovernanceActivity&gt;&gt;</code>
+
+<p>Get information about a given Ethereum address's past governance activity
+within the system.</p>
+<p>Returns info about proposals submitted, challenges created, and challenges
+against listings owned by the user.</p>
+<p>For a given activity object, if <code>actionable</code> is <code>true</code>, the following
+action may be taken for each state:</p>
+<ul>
+<li>If &quot;CHALLENGE_BY&quot;: the challenge can be resolved</li>
+<li>If &quot;CHALLENGE_AGAINST&quot;: the challenge can be resolved</li>
+<li>If &quot;PROPOSAL&quot; the listing can be confirmed</li>
+</ul>
+
+**Kind**: instance method of [<code>Gov</code>](#Gov)  
+**Returns**: <code>Promise.&lt;Array.&lt;PastGovernanceActivity&gt;&gt;</code> - <p>An array of snippets about past governance activity.</p>
+
+| Param   | Type                | Description                                               |
+| ------- | ------------------- | --------------------------------------------------------- |
+| address | <code>string</code> | <p>Ethereum address of user to get past activity for.</p> |
+
 <a name="Gov.ZERO"></a>
 
 ### Gov.ZERO
@@ -486,12 +552,14 @@ if (currentBlock < endCommitPeriod && currentBlock >= challengeStart) {
 **Kind**: global typedef  
 **Properties**
 
-| Name    | Type                   | Description                                                                          |
-| ------- | ---------------------- | ------------------------------------------------------------------------------------ |
-| id      | <code>BigNumber</code> | <p>the challengeId the vote is for</p>                                               |
-| value   | <code>string</code>    | <p>the vote value (should be &quot;1&quot; or &quot;0&quot; for challenge votes)</p> |
-| salt    | <code>string</code>    | <p>a secret string used to hash the vote; must use same salt in commit as reveal</p> |
-| encoded | <code>string</code>    | <p>the encoded vote, as passed to the contract system</p>                            |
+| Name         | Type                   | Description                                                                          |
+| ------------ | ---------------------- | ------------------------------------------------------------------------------------ |
+| id           | <code>BigNumber</code> | <p>the challengeId the vote is for</p>                                               |
+| value        | <code>string</code>    | <p>the vote value (should be &quot;1&quot; or &quot;0&quot; for challenge votes)</p> |
+| salt         | <code>string</code>    | <p>a secret string used to hash the vote; must use same salt in commit as reveal</p> |
+| encoded      | <code>string</code>    | <p>the encoded vote, as passed to the contract system</p>                            |
+| commitTxHash | <code>string</code>    | <p>the transaction hash of the commit transaction</p>                                |
+| revealTxHash | <code>string</code>    | <p>the transaction hash of the reveal transaction</p>                                |
 
 <a name="ChallengeInfo"></a>
 
@@ -507,3 +575,32 @@ if (currentBlock < endCommitPeriod && currentBlock >= challengeStart) {
 | challengeStart  | <code>number</code> | <p>the block at which the challenge was initiated, and when the commit period starts</p> |
 | endCommitPeriod | <code>number</code> | <p>the block the commit period ends, and the reveal period starts</p>                    |
 | challengeEnd    | <code>number</code> | <p>the block the reveal period ends, and the challenge finalizes</p>                     |
+
+<a name="PastGovernanceActivity"></a>
+
+## PastGovernanceActivity
+
+<p>An object representing an instance of past &quot;activity&quot; within the ValidatorRegistry contract.</p>
+<p>If <code>actionable</code> is true, the following actions can be taken for a given <code>type</code>:</p>
+<ul>
+<li>CHALLENGE_BY: challenge can be resolved</li>
+<li>CHALLENGE_AGAINST: challenge can be resolved</li>
+<li>PROPOSAL: the listing can be confirmed</li>
+</ul>
+<p>If <code>state</code> is <code>&quot;PENDING&quot;</code> for a given <code>type</code>, the following action can be taken:</p>
+<ul>
+<li>CHALLENGE_BY: the challenge can be voted on in the active poll</li>
+<li>CHALLENGE_AGAINST: the challenge can be voted on in the active poll</li>
+<li>PROPOSAL: the proposal may be challenged</li>
+</ul>
+
+**Kind**: global typedef  
+**Properties**
+
+| Name          | Type                 | Description                                                                                                                                                                |
+| ------------- | -------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| type          | <code>string</code>  | <p>Either &quot;CHALLENGE_BY&quot; for created challenges, &quot;CHALLENGE_AGAINST&quot; for challenges against a user, and &quot;PROPOSAL&quot; for created listings</p>  |
+| result        | <code>string</code>  | <p>Either &quot;PENDING&quot; for active, &quot;ACCEPTED&quot; for successful listings and challenges, and &quot;REJECTED&quot; for failed challenges and applications</p> |
+| actionable    | <code>boolean</code> | <p>Indicates if some on-chain action can be taken to change the governance activity state</p>                                                                              |
+| challengeId   | <code>number</code>  | <p>If present, indicates the challenge ID associated with the activity</p>                                                                                                 |
+| listingPubKey | <code>string</code>  | <p>The public key of the listing (proposal or challenged proposal)</p>                                                                                                     |

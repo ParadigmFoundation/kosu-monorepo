@@ -23,7 +23,7 @@
 
 • **endsAt**: _number_
 
-Defined in types.d.ts:90
+_Defined in [types.d.ts:90](https://github.com/ParadigmFoundation/kosu-monorepo/blob/2f37cabf/packages/kosu.js/src/types.d.ts#L90)_
 
 ---
 
@@ -31,7 +31,7 @@ Defined in types.d.ts:90
 
 • **limit**: _number_
 
-Defined in types.d.ts:91
+_Defined in [types.d.ts:91](https://github.com/ParadigmFoundation/kosu-monorepo/blob/2f37cabf/packages/kosu.js/src/types.d.ts#L91)_
 
 ---
 
@@ -39,7 +39,7 @@ Defined in types.d.ts:91
 
 • **number**: _number_
 
-Defined in types.d.ts:88
+_Defined in [types.d.ts:88](https://github.com/ParadigmFoundation/kosu-monorepo/blob/2f37cabf/packages/kosu.js/src/types.d.ts#L88)_
 
 ---
 
@@ -47,4 +47,4 @@ Defined in types.d.ts:88
 
 • **startsAt**: _number_
 
-Defined in types.d.ts:89
+_Defined in [types.d.ts:89](https://github.com/ParadigmFoundation/kosu-monorepo/blob/2f37cabf/packages/kosu.js/src/types.d.ts#L89)_

@@ -21,7 +21,7 @@
 
 • **datatype**: _string_
 
-Defined in types.d.ts:37
+_Defined in [types.d.ts:37](https://github.com/ParadigmFoundation/kosu-monorepo/blob/2f37cabf/packages/kosu.js/src/types.d.ts#L37)_
 
 ---
 
@@ -29,4 +29,4 @@ Defined in types.d.ts:37
 
 • **name**: _string_
 
-Defined in types.d.ts:36
+_Defined in [types.d.ts:36](https://github.com/ParadigmFoundation/kosu-monorepo/blob/2f37cabf/packages/kosu.js/src/types.d.ts#L36)_

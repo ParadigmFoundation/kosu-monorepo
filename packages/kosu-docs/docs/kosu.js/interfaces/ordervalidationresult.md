@@ -21,7 +21,7 @@
 
 • **accepted**: _string[]_
 
-Defined in types.d.ts:61
+_Defined in [types.d.ts:61](https://github.com/ParadigmFoundation/kosu-monorepo/blob/2f37cabf/packages/kosu.js/src/types.d.ts#L61)_
 
 ---
 
@@ -29,4 +29,4 @@ Defined in types.d.ts:61
 
 • **rejected**: _[OrderRejectionInfo](orderrejectioninfo.md)[]_
 
-Defined in types.d.ts:62
+_Defined in [types.d.ts:62](https://github.com/ParadigmFoundation/kosu-monorepo/blob/2f37cabf/packages/kosu.js/src/types.d.ts#L62)_

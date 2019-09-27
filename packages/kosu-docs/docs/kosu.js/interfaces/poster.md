@@ -21,7 +21,7 @@
 
 • **balance**: _`BigNumber`_
 
-Defined in types.d.ts:71
+_Defined in [types.d.ts:71](https://github.com/ParadigmFoundation/kosu-monorepo/blob/2f37cabf/packages/kosu.js/src/types.d.ts#L71)_
 
 ---
 
@@ -29,4 +29,4 @@ Defined in types.d.ts:71
 
 • **limit**: _number_
 
-Defined in types.d.ts:72
+_Defined in [types.d.ts:72](https://github.com/ParadigmFoundation/kosu-monorepo/blob/2f37cabf/packages/kosu.js/src/types.d.ts#L72)_

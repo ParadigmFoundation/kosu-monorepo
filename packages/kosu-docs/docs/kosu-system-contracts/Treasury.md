@@ -8,7 +8,6 @@ The Kosu Treasury manages KosuToken balances to allow tokens in use within the c
     -   [award](#award)
     -   [burnFrom](#burnfrom)
     -   [claimTokens](#claimtokens)
-    -   [completeVote](#completevote)
     -   [confiscate](#confiscate)
     -   [constructor](#constructor)
     -   [contractBond](#contractbond)
@@ -19,6 +18,8 @@ The Kosu Treasury manages KosuToken balances to allow tokens in use within the c
     -   [registerVote](#registervote)
     -   [releaseTokens](#releasetokens)
     -   [systemBalance](#systembalance)
+    -   [tokenLocksExpire](#tokenlocksexpire)
+    -   [validatorLock](#validatorlock)
     -   [withdraw](#withdraw)
 
 ## Methods
@@ -73,23 +74,6 @@ function claimTokens(account address, amount uint256) public
 | --------- | --------- | ----------------------------- |
 | `account` | `address` | Account to claim tokens from. |
 | `amount`  | `uint256` | Number of tokens to claim.    |
-
-### completeVote
-
-Releases lock on tokens for account after vote is revealed. No longer tracks the revealed poll.
-
-#### Signature
-
-```solidity
-function completeVote(account address, pollId uint256) public (bool)
-```
-
-#### Parameters:
-
-| Parameter | Type      | Description                        |
-| --------- | --------- | ---------------------------------- |
-| `account` | `address` | The account voting.                |
-| `pollId`  | `uint256` | The poll the account is voting on. |
 
 ### confiscate
 
@@ -218,16 +202,18 @@ Allows voting contract to register a poll to ensure tokens aren't removed.
 #### Signature
 
 ```solidity
-function registerVote(account address, pollId uint256, amount uint256) public (bool)
+function registerVote(account address, pollId uint256, amount uint256, endBlock uint256, losingEndBlock uint256) public (bool)
 ```
 
 #### Parameters:
 
-| Parameter | Type      | Description                        |
-| --------- | --------- | ---------------------------------- |
-| `account` | `address` | The account voting.                |
-| `pollId`  | `uint256` | The poll the account is voting on. |
-| `amount`  | `uint256` | Number of tokens contributed.      |
+| Parameter        | Type      | Description                        |
+| ---------------- | --------- | ---------------------------------- |
+| `account`        | `address` | The account voting.                |
+| `pollId`         | `uint256` | The poll the account is voting on. |
+| `amount`         | `uint256` | Number of tokens contributed.      |
+| `endBlock`       | `uint256` |
+| `losingEndBlock` | `uint256` |
 
 ### releaseTokens
 
@@ -265,6 +251,44 @@ function systemBalance(account address) public view (uint256)
 #### Returns:
 
 The number of tokens within the entire contract system.
+
+### tokenLocksExpire
+
+Allows tokens to determine when all tokens are unlocked for a given account.
+
+#### Signature
+
+```solidity
+function tokenLocksExpire(account address) public (uint256)
+```
+
+#### Parameters:
+
+| Parameter | Type      | Description                       |
+| --------- | --------- | --------------------------------- |
+| `account` | `address` | The account to look at locks for. |
+
+#### Returns:
+
+Final block of the last lock to expire.
+
+### validatorLock
+
+Allows validator registry to lock tokens in treasury after an exit.
+
+#### Signature
+
+```solidity
+function validatorLock(account address, amount uint256, endBlock uint256) public
+```
+
+#### Parameters:
+
+| Parameter  | Type      | Description                       |
+| ---------- | --------- | --------------------------------- |
+| `account`  | `address` | The account validator is locking. |
+| `amount`   | `uint256` | Number of tokens to lock.         |
+| `endBlock` | `uint256` | The end of the lock.              |
 
 ### withdraw
 

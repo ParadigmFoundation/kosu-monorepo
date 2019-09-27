@@ -19,9 +19,9 @@
 
 ### balance
 
-• **balance**: _number_
+• **balance**: _`BigNumber`_
 
-_Defined in [types.d.ts:71](https://github.com/ParadigmFoundation/kosu-monorepo/blob/4048650/packages/kosu.js/src/types.d.ts#L71)_
+_Defined in [types.d.ts:71](https://github.com/ParadigmFoundation/kosu-monorepo/blob/2f37cabf/packages/kosu.js/src/types.d.ts#L71)_
 
 ---
 
@@ -29,4 +29,4 @@ _Defined in [types.d.ts:71](https://github.com/ParadigmFoundation/kosu-monorepo/
 
 • **limit**: _number_
 
-_Defined in [types.d.ts:72](https://github.com/ParadigmFoundation/kosu-monorepo/blob/4048650/packages/kosu.js/src/types.d.ts#L72)_
+_Defined in [types.d.ts:72](https://github.com/ParadigmFoundation/kosu-monorepo/blob/2f37cabf/packages/kosu.js/src/types.d.ts#L72)_

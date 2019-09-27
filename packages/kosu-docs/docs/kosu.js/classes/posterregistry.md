@@ -34,7 +34,7 @@ and to view their balance, as well as the cumulative lockup.
 
 \+ **new PosterRegistry**(`options`: [KosuOptions](../interfaces/kosuoptions.md), `treasury`: [Treasury](treasury.md)): _[PosterRegistry](posterregistry.md)_
 
-Defined in PosterRegistry.ts:41
+_Defined in [PosterRegistry.ts:41](https://github.com/ParadigmFoundation/kosu-monorepo/blob/2f37cabf/packages/kosu.js/src/PosterRegistry.ts#L41)_
 
 Create a new PosterRegistry instance.
 
@@ -53,7 +53,7 @@ Create a new PosterRegistry instance.
 
 ▸ **pay**(`value`: `BigNumber`): _`Promise<TransactionReceiptWithDecodedLogs>`_
 
-Defined in PosterRegistry.ts:149
+_Defined in [PosterRegistry.ts:149](https://github.com/ParadigmFoundation/kosu-monorepo/blob/2f37cabf/packages/kosu.js/src/PosterRegistry.ts#L149)_
 
 Sends ether to the contract to bond and register tokens for posting.
 
@@ -73,7 +73,7 @@ Logs from the transaction block.
 
 ▸ **registerTokens**(`amount`: `BigNumber`): _`Promise<TransactionReceiptWithDecodedLogs>`_
 
-Defined in PosterRegistry.ts:107
+_Defined in [PosterRegistry.ts:107](https://github.com/ParadigmFoundation/kosu-monorepo/blob/2f37cabf/packages/kosu.js/src/PosterRegistry.ts#L107)_
 
 Register tokens into the PosterRegistry contract by bonding KOSU tokens.
 
@@ -93,7 +93,7 @@ A transaction receipt from the mined `register` transaction.
 
 ▸ **releaseTokens**(`amount`: `BigNumber`): _`Promise<TransactionReceiptWithDecodedLogs>`_
 
-Defined in PosterRegistry.ts:138
+_Defined in [PosterRegistry.ts:138](https://github.com/ParadigmFoundation/kosu-monorepo/blob/2f37cabf/packages/kosu.js/src/PosterRegistry.ts#L138)_
 
 Release tokens from the PosterRegistry for the `coinbase` address (un-bond).
 
@@ -113,7 +113,7 @@ A transaction receipt from the mined `register` transaction.
 
 ▸ **tokensContributed**(): _`Promise<BigNumber>`_
 
-Defined in PosterRegistry.ts:85
+_Defined in [PosterRegistry.ts:85](https://github.com/ParadigmFoundation/kosu-monorepo/blob/2f37cabf/packages/kosu.js/src/PosterRegistry.ts#L85)_
 
 Reads total KOSU tokens contributed to registry.
 
@@ -127,7 +127,7 @@ The total pool of locked KOSU tokens in units of wei.
 
 ▸ **tokensRegisteredFor**(`address`: string): _`Promise<BigNumber>`_
 
-Defined in PosterRegistry.ts:96
+_Defined in [PosterRegistry.ts:96](https://github.com/ParadigmFoundation/kosu-monorepo/blob/2f37cabf/packages/kosu.js/src/PosterRegistry.ts#L96)_
 
 Reads number of tokens registered for a given address.
 
