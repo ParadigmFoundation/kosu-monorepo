@@ -152,7 +152,7 @@ View the `kosu.kosuToken` docs [here.](https://docs.kosu.io/kosu.js/classes/kosu
 
 KOSU is the native token of the Kosu system. It implements the ERC-20 interface, and includes a bonding curve within the token contract.
 
-This means the best way to buy KOSU is simple to send Ether to the contract.
+This means the best way to buy KOSU is simply to send Ether to the contract.
 
 The snippet below assumes you have configured `kosu.js` according to one of the setups above (or with some other signing provider).
 
