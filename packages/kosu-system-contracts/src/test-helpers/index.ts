@@ -80,7 +80,10 @@ export class TestHelpers {
         if (currentBalance.lt(desiredValue)) {
             const balanceNeeded = desiredValue.minus(currentBalance);
             const approxRate = await this.migratedContracts.kosuToken.estimateEtherToToken.callAsync(TestValues.oneWei);
-            const approxDeposit = balanceNeeded.dividedToIntegerBy(approxRate).plus(1);
+            const approxDeposit = balanceNeeded
+                .dividedBy(approxRate)
+                .multipliedBy(1.5)
+                .dividedToIntegerBy(1);
             await this.migratedContracts.kosuToken.bondTokens.awaitTransactionSuccessAsync(TestValues.zero, {
                 from: address,
                 value: approxDeposit,
@@ -92,8 +95,11 @@ export class TestHelpers {
             });
         }
 
-        if (await this.migratedContracts.kosuToken.balanceOf.callAsync(address).then(val => val.lt(desiredValue))) {
-            throw new Error(`Ensure ${address} has balanceOf ${desiredValue.toString()} failed`);
+        const finalBalance = await this.migratedContracts.kosuToken.balanceOf.callAsync(address);
+        if (finalBalance.lt(desiredValue)) {
+            throw new Error(
+                `Ensure ${address} has balanceOf ${desiredValue.toString()} failed. Final balance: ${finalBalance}`,
+            );
         }
     }
 
@@ -119,77 +125,109 @@ export class TestHelpers {
     }
 
     public async clearTreasury(address: string): Promise<void> {
-        const transactions = [];
         const systemBalance = await this.migratedContracts.treasury.systemBalance.callAsync(address);
-        const unlockBlock = await this.migratedContracts.treasury.tokenLocksExpire.callAsync(address);
-        await this.skipTo(unlockBlock);
         if (systemBalance.gt(0)) {
             const currentBalance = await this.migratedContracts.treasury.currentBalance.callAsync(address);
             if (systemBalance.gt(currentBalance)) {
-                // TODO address this
-                // transactions.push(
-                //     this.migratedContracts.treasury.releaseTokens.awaitTransactionSuccessAsync(
-                //         address,
-                //         systemBalance.minus(currentBalance),
-                //     ),
-                // );
+                const posterBonded = await this.migratedContracts.posterRegistry.tokensRegisteredFor.callAsync(address);
+                this.migratedContracts.posterRegistry.releaseTokens.awaitTransactionSuccessAsync(posterBonded, {
+                    from: address,
+                });
+                if (posterBonded.lt(systemBalance.minus(currentBalance))) {
+                    const listings = await this.migratedContracts.validatorRegistry.getAllListings.callAsync();
+
+                    for (const listing of listings) {
+                        if (listing.owner.toLocaleLowerCase() === address.toLocaleLowerCase()) {
+                            await this.exitListing(listing.tendermintPublicKey, address);
+                        }
+                    }
+                }
             }
-            transactions.push(
-                this.migratedContracts.treasury.withdraw.awaitTransactionSuccessAsync(
-                    /*systemBalance*/ currentBalance,
-                    {
-                        from: address,
-                    },
-                ),
+            const unlockBlock = await this.migratedContracts.treasury.tokenLocksExpire.callAsync(address);
+            await this.skipTo(unlockBlock);
+            await this.migratedContracts.treasury.withdraw.awaitTransactionSuccessAsync(
+                /*systemBalance*/ currentBalance,
+                {
+                    from: address,
+                },
             );
-            await Promise.all(transactions);
         }
     }
 
     public async prepareListing(
         tendermintPublicKey: string,
-        options: { stake?: BigNumber; reward?: BigNumber; details?: string } = {},
+        options: { stake?: BigNumber; reward?: BigNumber; details?: string; from?: string } = {},
     ): Promise<void> {
         await this.initializing;
+        if (!options.from) {
+            options.from = this.accounts[0];
+        }
         const { stake, reward, details } = options;
         await this.migratedContracts.kosuToken.approve.awaitTransactionSuccessAsync(
             this.migratedContracts.treasury.address,
             stake || this.minimumBalance,
+            options,
         );
         const result = await this.migratedContracts.validatorRegistry.registerListing.awaitTransactionSuccessAsync(
             tendermintPublicKey,
             stake || this.minimumBalance,
             reward || new BigNumber("0"),
             details || "details",
+            options,
         );
         await this.skipApplicationPeriod(result.blockNumber);
     }
 
     public async prepareConfirmedListing(
         tendermintPublicKey: string,
-        options: { stake?: BigNumber; reward?: BigNumber; details?: string } = {},
+        options: { stake?: BigNumber; reward?: BigNumber; details?: string; from?: string } = {},
     ): Promise<void> {
+        if (!options.from) {
+            options.from = this.accounts[0];
+        }
         await this.prepareListing(tendermintPublicKey, options);
         const listing = await this.migratedContracts.validatorRegistry.getListing.callAsync(tendermintPublicKey);
         if (listing.rewardRate.lt(0)) {
             const tokensNeeded = await this.migratedContracts.kosuToken.estimateEtherToToken.callAsync(
                 listing.rewardRate.times(-1),
             );
-            await this.ensureTreasuryBalance(this.accounts[0], tokensNeeded);
+            await this.ensureTreasuryBalance(options.from, tokensNeeded);
         }
-        await this.migratedContracts.validatorRegistry.confirmListing.awaitTransactionSuccessAsync(tendermintPublicKey);
+        await this.migratedContracts.validatorRegistry.confirmListing.awaitTransactionSuccessAsync(
+            tendermintPublicKey,
+            options,
+        );
     }
 
     public async exitListing(publicKey: string, from: string = this.accounts[0]): Promise<void> {
         await this.initializing;
-        const { status } = await this.migratedContracts.validatorRegistry.getListing.callAsync(publicKey);
-        const result = await this.migratedContracts.validatorRegistry.initExit.awaitTransactionSuccessAsync(publicKey, {
-            from,
-        });
-        if (status === 1) {
-            await this.clearTreasury(from);
-        } else {
-            await this.finishExit(publicKey, from, result.blockNumber);
+        const { exitBlock, currentChallenge } = await this.migratedContracts.validatorRegistry.getListing.callAsync(
+            publicKey,
+        );
+
+        if ((await this.migratedContracts.validatorRegistry.getListing.callAsync(publicKey)).status === 0) {
+            return;
+        }
+
+        if ((await this.migratedContracts.validatorRegistry.getListing.callAsync(publicKey)).status === 3) {
+            const challengeBlock = await this.migratedContracts.validatorRegistry.getChallenge
+                .callAsync(currentChallenge)
+                .then(c => c.challengeEnd.toNumber());
+            await this.finishChallenge(publicKey, challengeBlock);
+        }
+
+        if ((await this.migratedContracts.validatorRegistry.getListing.callAsync(publicKey)).status !== 4) {
+            await this.migratedContracts.validatorRegistry.initExit.awaitTransactionSuccessAsync(publicKey, {
+                from,
+            });
+        }
+
+        if ((await this.migratedContracts.validatorRegistry.getListing.callAsync(publicKey)).status === 4) {
+            await this.finishExit(
+                publicKey,
+                from,
+                (await this.migratedContracts.validatorRegistry.getListing.callAsync(publicKey)).exitBlock,
+            );
         }
     }
 
@@ -197,7 +235,6 @@ export class TestHelpers {
         await this.initializing;
         await this.skipExitPeriod(initBlock || (await this.web3Wrapper.getBlockNumberAsync()));
         await this.migratedContracts.validatorRegistry.finalizeExit.awaitTransactionSuccessAsync(publicKey, { from });
-        await this.clearTreasury(from);
     }
 
     public async finishChallenge(publicKey: string, challengeBlock?: number): Promise<void> {
@@ -260,6 +297,20 @@ export class TestHelpers {
             new BigNumber(funds),
             { from },
         );
+        const currentBalance = await this.migratedContracts.kosuToken.balanceOf.callAsync(from);
+        if (currentBalance.lt(funds)) {
+            const tokenPerWei = await this.migratedContracts.kosuToken.estimateEtherToToken.callAsync(
+                new BigNumber("1"),
+            );
+            const needed = funds.minus(currentBalance);
+            const weiToDeposit = needed.div(tokenPerWei).plus("1");
+            await this.web3Wrapper.sendTransactionAsync({
+                to: this.migratedContracts.kosuToken.address,
+                from,
+                value: weiToDeposit.toString(),
+                gas: "70000",
+            });
+        }
         await this.migratedContracts.treasury.deposit.awaitTransactionSuccessAsync(new BigNumber(funds), { from });
     }
 
