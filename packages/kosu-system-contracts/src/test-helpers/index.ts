@@ -80,7 +80,10 @@ export class TestHelpers {
         if (currentBalance.lt(desiredValue)) {
             const balanceNeeded = desiredValue.minus(currentBalance);
             const approxRate = await this.migratedContracts.kosuToken.estimateEtherToToken.callAsync(TestValues.oneWei);
-            const approxDeposit = balanceNeeded.dividedBy(approxRate).multipliedBy(1.5).dividedToIntegerBy(1);
+            const approxDeposit = balanceNeeded
+                .dividedBy(approxRate)
+                .multipliedBy(1.5)
+                .dividedToIntegerBy(1);
             await this.migratedContracts.kosuToken.bondTokens.awaitTransactionSuccessAsync(TestValues.zero, {
                 from: address,
                 value: approxDeposit,
@@ -94,7 +97,9 @@ export class TestHelpers {
 
         const finalBalance = await this.migratedContracts.kosuToken.balanceOf.callAsync(address);
         if (finalBalance.lt(desiredValue)) {
-            throw new Error(`Ensure ${address} has balanceOf ${desiredValue.toString()} failed. Final balance: ${finalBalance}`);
+            throw new Error(
+                `Ensure ${address} has balanceOf ${desiredValue.toString()} failed. Final balance: ${finalBalance}`,
+            );
         }
     }
 
@@ -125,10 +130,9 @@ export class TestHelpers {
             const currentBalance = await this.migratedContracts.treasury.currentBalance.callAsync(address);
             if (systemBalance.gt(currentBalance)) {
                 const posterBonded = await this.migratedContracts.posterRegistry.tokensRegisteredFor.callAsync(address);
-                this.migratedContracts.posterRegistry.releaseTokens.awaitTransactionSuccessAsync(
-                    posterBonded,
-                    { from: address },
-                );
+                this.migratedContracts.posterRegistry.releaseTokens.awaitTransactionSuccessAsync(posterBonded, {
+                    from: address,
+                });
                 if (posterBonded.lt(systemBalance.minus(currentBalance))) {
                     const listings = await this.migratedContracts.validatorRegistry.getAllListings.callAsync();
 
@@ -186,14 +190,18 @@ export class TestHelpers {
 
     public async exitListing(publicKey: string, from: string = this.accounts[0]): Promise<void> {
         await this.initializing;
-        const { exitBlock, currentChallenge } = await this.migratedContracts.validatorRegistry.getListing.callAsync(publicKey);
+        const { exitBlock, currentChallenge } = await this.migratedContracts.validatorRegistry.getListing.callAsync(
+            publicKey,
+        );
 
         if ((await this.migratedContracts.validatorRegistry.getListing.callAsync(publicKey)).status === 0) {
             return;
         }
 
         if ((await this.migratedContracts.validatorRegistry.getListing.callAsync(publicKey)).status === 3) {
-            const challengeBlock = await this.migratedContracts.validatorRegistry.getChallenge.callAsync(currentChallenge).then(c => c.challengeEnd.toNumber());
+            const challengeBlock = await this.migratedContracts.validatorRegistry.getChallenge
+                .callAsync(currentChallenge)
+                .then(c => c.challengeEnd.toNumber());
             await this.finishChallenge(publicKey, challengeBlock);
         }
 
@@ -204,7 +212,11 @@ export class TestHelpers {
         }
 
         if ((await this.migratedContracts.validatorRegistry.getListing.callAsync(publicKey)).status === 4) {
-            await this.finishExit(publicKey, from, (await this.migratedContracts.validatorRegistry.getListing.callAsync(publicKey)).exitBlock);
+            await this.finishExit(
+                publicKey,
+                from,
+                (await this.migratedContracts.validatorRegistry.getListing.callAsync(publicKey)).exitBlock,
+            );
         }
     }
 
@@ -276,9 +288,11 @@ export class TestHelpers {
         );
         const currentBalance = await this.migratedContracts.kosuToken.balanceOf.callAsync(from);
         if (currentBalance.lt(funds)) {
-            const tokenPerWei = await this.migratedContracts.kosuToken.estimateEtherToToken.callAsync(new BigNumber('1'));
+            const tokenPerWei = await this.migratedContracts.kosuToken.estimateEtherToToken.callAsync(
+                new BigNumber("1"),
+            );
             const needed = funds.minus(currentBalance);
-            const weiToDeposit = needed.div(tokenPerWei).plus('1');
+            const weiToDeposit = needed.div(tokenPerWei).plus("1");
             await this.web3Wrapper.sendTransactionAsync({
                 to: this.migratedContracts.kosuToken.address,
                 from,
