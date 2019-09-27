@@ -156,36 +156,44 @@ export class TestHelpers {
 
     public async prepareListing(
         tendermintPublicKey: string,
-        options: { stake?: BigNumber; reward?: BigNumber; details?: string } = {},
+        options: { stake?: BigNumber; reward?: BigNumber; details?: string; from?: string } = { },
     ): Promise<void> {
         await this.initializing;
+        if (!options.from) {
+            options.from = this.accounts[0];
+        }
         const { stake, reward, details } = options;
         await this.migratedContracts.kosuToken.approve.awaitTransactionSuccessAsync(
             this.migratedContracts.treasury.address,
             stake || this.minimumBalance,
+            options,
         );
         const result = await this.migratedContracts.validatorRegistry.registerListing.awaitTransactionSuccessAsync(
             tendermintPublicKey,
             stake || this.minimumBalance,
             reward || new BigNumber("0"),
             details || "details",
+            options,
         );
         await this.skipApplicationPeriod(result.blockNumber);
     }
 
     public async prepareConfirmedListing(
         tendermintPublicKey: string,
-        options: { stake?: BigNumber; reward?: BigNumber; details?: string } = {},
+        options: { stake?: BigNumber; reward?: BigNumber; details?: string, from?: string } = {},
     ): Promise<void> {
+        if (!options.from) {
+            options.from = this.accounts[0];
+        }
         await this.prepareListing(tendermintPublicKey, options);
         const listing = await this.migratedContracts.validatorRegistry.getListing.callAsync(tendermintPublicKey);
         if (listing.rewardRate.lt(0)) {
             const tokensNeeded = await this.migratedContracts.kosuToken.estimateEtherToToken.callAsync(
                 listing.rewardRate.times(-1),
             );
-            await this.ensureTreasuryBalance(this.accounts[0], tokensNeeded);
+            await this.ensureTreasuryBalance(options.from, tokensNeeded);
         }
-        await this.migratedContracts.validatorRegistry.confirmListing.awaitTransactionSuccessAsync(tendermintPublicKey);
+        await this.migratedContracts.validatorRegistry.confirmListing.awaitTransactionSuccessAsync(tendermintPublicKey, options);
     }
 
     public async exitListing(publicKey: string, from: string = this.accounts[0]): Promise<void> {
