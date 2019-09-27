@@ -156,7 +156,7 @@ export class TestHelpers {
 
     public async prepareListing(
         tendermintPublicKey: string,
-        options: { stake?: BigNumber; reward?: BigNumber; details?: string; from?: string } = { },
+        options: { stake?: BigNumber; reward?: BigNumber; details?: string; from?: string } = {},
     ): Promise<void> {
         await this.initializing;
         if (!options.from) {
@@ -180,7 +180,7 @@ export class TestHelpers {
 
     public async prepareConfirmedListing(
         tendermintPublicKey: string,
-        options: { stake?: BigNumber; reward?: BigNumber; details?: string, from?: string } = {},
+        options: { stake?: BigNumber; reward?: BigNumber; details?: string; from?: string } = {},
     ): Promise<void> {
         if (!options.from) {
             options.from = this.accounts[0];
@@ -193,7 +193,10 @@ export class TestHelpers {
             );
             await this.ensureTreasuryBalance(options.from, tokensNeeded);
         }
-        await this.migratedContracts.validatorRegistry.confirmListing.awaitTransactionSuccessAsync(tendermintPublicKey, options);
+        await this.migratedContracts.validatorRegistry.confirmListing.awaitTransactionSuccessAsync(
+            tendermintPublicKey,
+            options,
+        );
     }
 
     public async exitListing(publicKey: string, from: string = this.accounts[0]): Promise<void> {
