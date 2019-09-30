@@ -2,6 +2,7 @@
 
 ## master
 
+-   [bug] Fix panic on kosu-cli
 -   Add /store prefix to Query Path
 -   Add InitialPosters support
 -   Bump tendermint version from v0.32.3 to v0.32.4
