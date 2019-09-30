@@ -180,7 +180,7 @@ describe("Snapshot function blockchain-less tests (unit tests)", function(): voi
             ],
             initial_poster_info: [
                 {
-                    address: testPosterAddress,
+                    ethereum_address: testPosterAddress,
                     balance: testPosterBalance,
                 },
             ],
