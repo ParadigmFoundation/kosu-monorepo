@@ -847,7 +847,7 @@ _Returns:_
 func (s *Service) NumberPosters() (uint64, error) {
 	var num uint64
 
-	if err := s.abci.Query("/poster/number", nil, &num); err != nil {
+	if err := s.abci.Query("/store/poster/number", nil, &num); err != nil {
 		return 0, newQueryError(err)
 	}
 
@@ -871,7 +871,7 @@ _Returns:_
 func (s *Service) RemainingLimit() (uint64, error) {
 	var num uint64
 
-	if err := s.abci.Query("/poster/remaininglimit", nil, &num); err != nil {
+	if err := s.abci.Query("/store/poster/remaininglimit", nil, &num); err != nil {
 		return 0, newQueryError(err)
 	}
 

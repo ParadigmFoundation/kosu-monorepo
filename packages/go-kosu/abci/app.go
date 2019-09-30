@@ -76,7 +76,28 @@ func (app *App) NewClient() (*Client, error) {
 
 // Query queries the application state using the store.Query method
 func (app *App) Query(req abci.RequestQuery) abci.ResponseQuery {
-	return app.store.Query(req)
+	path := req.Path
+
+	// Remove the initial "/" if present
+	if strings.HasPrefix(path, "/") {
+		path = path[1:]
+	}
+
+	// Get the first segment (resource) of the path
+	paths := strings.SplitN(path, "/", 2)
+	if len(paths) != 2 {
+		return abci.ResponseQuery{Code: 1, Log: "invalid query path: " + path}
+	}
+
+	// req.Path will contain the full path withput the resource
+	req.Path = "/" + paths[1]
+	resource := paths[0]
+	switch resource {
+	case "store":
+		return app.store.Query(req)
+	}
+
+	return abci.ResponseQuery{Code: 1, Log: fmt.Sprintf("invalid query resource '%s'", resource)}
 }
 
 // Store returns the underlying store
