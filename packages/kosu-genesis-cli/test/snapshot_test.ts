@@ -12,7 +12,7 @@ import Web3ProviderEngine from "web3-provider-engine";
 
 import { snapshotPostersAtBlock, snapshotValidatorsAtBlock } from "..";
 
-describe("Snapshot tests with contract system (integration tests)", function(): void {
+describe("Snapshot tests with contract system (integration tests)", function (): void {
     let kosu: Kosu;
     let assert: Chai.AssertStatic;
     let provider: Web3ProviderEngine;
@@ -158,7 +158,7 @@ describe("Snapshot tests with contract system (integration tests)", function(): 
         const currentBlock = await web3.eth.getBlockNumber();
         const expectedSnapshot = [
             {
-                address: accounts[0].toLowerCase(),
+                ethereum_address: accounts[0].toLowerCase(),
                 balance: new BigNumber("1e18").toString(),
             },
         ];

@@ -11,8 +11,8 @@ import {
     publicKeyToAddress,
 } from "..";
 
-describe("Snapshot function blockchain-less tests (unit tests)", function(): void {
-    it("#dateFromTimestamp", function(): void {
+describe("Snapshot function blockchain-less tests (unit tests)", function (): void {
+    it("#dateFromTimestamp", function (): void {
         const date = new Date();
         const ts = date.getTime() / 1000;
         const generatedDate = dateFromTimestamp(ts);
@@ -22,7 +22,7 @@ describe("Snapshot function blockchain-less tests (unit tests)", function(): voi
         assert.strictEqual(actualTime, expectedTime, "local time strings should match");
     });
 
-    it("#parseMonikerFromDetails", function(): void {
+    it("#parseMonikerFromDetails", function (): void {
         const expectedMoniker = "alice";
         const stringWithMoniker = `website=https://example.com,moniker=${expectedMoniker}`;
         const stringWithoutMoniker = "an ordinary string with no keys";
@@ -39,7 +39,7 @@ describe("Snapshot function blockchain-less tests (unit tests)", function(): voi
         );
     });
 
-    it("#hexKeyToBase64", function(): void {
+    it("#hexKeyToBase64", function (): void {
         const knownKey = Buffer.allocUnsafe(32);
         const knownHexKey = `0x${knownKey.toString("hex").toUpperCase()}`;
         const expectedBase64Key = knownKey.toString("base64");
@@ -48,7 +48,7 @@ describe("Snapshot function blockchain-less tests (unit tests)", function(): voi
         assert.strictEqual(actualBase64Key, expectedBase64Key, "base64 keys should match test case");
     });
 
-    it("#publicKeyToAddress", function(): void {
+    it("#publicKeyToAddress", function (): void {
         const knownHexKey = "0x2D03EA48ADDC6B56DC1D456ED8778C8152EDC74F58572306BB3353DDEFFAE2E5";
         const expectedAddress = "6E759A69DAF556E8C492D6AA9E263A6168F688B7";
 
@@ -58,7 +58,7 @@ describe("Snapshot function blockchain-less tests (unit tests)", function(): voi
         assert.strictEqual(generatedAddress, expectedAddress, "generated address should match test case");
     });
 
-    it("#getInitialValidatorInfo", function(): void {
+    it("#getInitialValidatorInfo", function (): void {
         const testPubKey = Buffer.allocUnsafe(32);
         const testEthAddress = `0x${Buffer.allocUnsafe(20).toString("hex")}`;
         const testTendermintAddress = publicKeyToAddress(testPubKey);
@@ -95,7 +95,7 @@ describe("Snapshot function blockchain-less tests (unit tests)", function(): voi
         assert.strictEqual(initial_stake, testInitialStake, "initial stakes should match snapshot");
     });
 
-    it("#getTendermintValidators", function(): void {
+    it("#getTendermintValidators", function (): void {
         const testPubKey = Buffer.allocUnsafe(32);
         const testEthAddress = `0x${Buffer.allocUnsafe(20).toString("hex")}`;
         const testTendermintAddress = publicKeyToAddress(testPubKey);
@@ -137,7 +137,7 @@ describe("Snapshot function blockchain-less tests (unit tests)", function(): voi
         assert.strictEqual(name, testDetails, "validator name should match snapshot details");
     });
 
-    it("#getAppState", function(): void {
+    it("#getAppState", function (): void {
         const testPubKey = Buffer.allocUnsafe(32);
         const testEthAddress = `0x${Buffer.allocUnsafe(20).toString("hex")}`;
         const testTendermintAddress = publicKeyToAddress(testPubKey);
@@ -165,7 +165,7 @@ describe("Snapshot function blockchain-less tests (unit tests)", function(): voi
         ];
         const testPosterSnapshots = [
             {
-                address: testPosterAddress,
+                ethereum_address: testPosterAddress,
                 balance: testPosterBalance,
             },
         ];
