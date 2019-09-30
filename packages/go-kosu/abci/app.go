@@ -77,11 +77,7 @@ func (app *App) NewClient() (*Client, error) {
 // Query queries the application state using the store.Query method
 func (app *App) Query(req abci.RequestQuery) abci.ResponseQuery {
 	path := req.Path
-
-	// Remove the initial "/" if present
-	if strings.HasPrefix(path, "/") {
-		path = path[1:]
-	}
+	path = strings.TrimPrefix(path, "/")
 
 	// Get the first segment (resource) of the path
 	paths := strings.SplitN(path, "/", 2)
