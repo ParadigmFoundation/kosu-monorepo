@@ -2,6 +2,7 @@
 
 ## master
 
+-   Add kosulite proxy
 -   [bug] Fix panic on kosu-cli
 -   Add /store prefix to Query Path
 -   Add InitialPosters support
