@@ -197,7 +197,9 @@ export async function snapshotPostersAtBlock(kosu: Kosu, snapshotBlock: number):
                 }
 
                 if (!postersMap[address]) {
-                    (postersMap[address] as Partial<SnapshotPoster>) = { address };
+                    (postersMap[address] as Partial<SnapshotPoster>) = {
+                        ethereum_address: address,
+                    };
                 }
                 postersMap[address].balance = balance;
                 break;
@@ -246,6 +248,7 @@ export function getTendermintValidators(validators: SnapshotValidator[]): Genesi
                 value: validator.publicKey.toString("base64"),
             },
             name: parseMonikerFromDetails(validator.details),
+            power: "1",
         });
     }
     return genesisValidators;
