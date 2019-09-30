@@ -119,6 +119,9 @@ describe("Snapshot function blockchain-less tests (unit tests)", function(): voi
                     value: testPubKey.toString("base64"),
                 },
                 name: testDetails,
+
+                // snapshot validators must all set power to 1
+                power: "1",
             },
         ];
 
@@ -162,7 +165,7 @@ describe("Snapshot function blockchain-less tests (unit tests)", function(): voi
         ];
         const testPosterSnapshots = [
             {
-                address: testPosterAddress,
+                ethereum_address: testPosterAddress,
                 balance: testPosterBalance,
             },
         ];
@@ -177,7 +180,7 @@ describe("Snapshot function blockchain-less tests (unit tests)", function(): voi
             ],
             initial_poster_info: [
                 {
-                    address: testPosterAddress,
+                    ethereum_address: testPosterAddress,
                     balance: testPosterBalance,
                 },
             ],

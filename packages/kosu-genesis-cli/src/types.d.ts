@@ -33,7 +33,7 @@ export interface GenesisValidator {
         type: string;
         value: string;
     };
-    power?: string;
+    power: string;
     name: string;
 }
 
@@ -51,6 +51,6 @@ export interface SnapshotValidator extends SnapshotListing {
 }
 
 export interface SnapshotPoster {
-    address: string;
+    ethereum_address: string;
     balance: string;
 }
