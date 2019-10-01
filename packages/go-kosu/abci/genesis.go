@@ -42,7 +42,7 @@ type Genesis struct {
 	// SnapshotBlock indicates the first Ethereum block we will subscribe to
 	SnapshotBlock        uint64              `json:"snapshot_block"`
 	InitialValidatorInfo GenesisValidatorSet `json:"initial_validator_info"`
-	InitialPosters       GenesisPosterSet    `json:"initial_posters"`
+	InitialPosterInfo    GenesisPosterSet    `json:"initial_poster_info"`
 }
 
 // NewGenesisFromRequest returnsa a new Genesis object given a RequestInitChain
@@ -96,5 +96,5 @@ var GenesisAppState = &Genesis{
 	},
 	SnapshotBlock:        0,
 	InitialValidatorInfo: nil,
-	InitialPosters:       nil,
+	InitialPosterInfo:    nil,
 }

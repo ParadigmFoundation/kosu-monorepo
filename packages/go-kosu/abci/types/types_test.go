@@ -2,6 +2,7 @@
 package types
 
 import (
+	"bytes"
 	"encoding/json"
 	"math"
 	"math/big"
@@ -128,4 +129,14 @@ func TestTransactionOrder(t *testing.T) {
 			require.NoError(t, err, "Expected no error decoding order transaction")
 		})
 	}
+}
+
+func TestBigIntJSONSerialization(t *testing.T) {
+	bn := NewBigIntFromInt(42)
+	buf := bytes.NewBuffer(nil)
+	require.NoError(t,
+		json.NewEncoder(buf).Encode(bn),
+	)
+
+	assert.Equal(t, "42\n", buf.String())
 }
