@@ -16,7 +16,7 @@ import (
 )
 
 func main() {
-	var client *abci.Client
+	var client abci.Client
 
 	rootCmd := &cobra.Command{
 		Use:   "kosu-cli",
@@ -46,11 +46,16 @@ func main() {
 		addr := cmd.Flag("abci").Value.String()
 
 		// update the client
-		client, err = abci.NewHTTPClient(addr, key)
+		c, err := abci.NewHTTPClient(addr, key)
+		if err != nil {
+			return err
+		}
+
+		client = *c
 		return err
 	}
 
-	abci := cli.New(client)
+	abci := cli.New(&client)
 
 	tx := &cobra.Command{
 		Use:   "tx",

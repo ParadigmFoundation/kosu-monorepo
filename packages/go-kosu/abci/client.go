@@ -108,7 +108,7 @@ func (c *Client) Subscribe(ctx context.Context, q string) (<-chan rpctypes.Resul
 // QueryRoundInfo performs a ABCIQuery to "/roundinfo"
 func (c *Client) QueryRoundInfo() (*types.RoundInfo, error) {
 	var pb types.RoundInfo
-	if err := c.Query("/chain/key", []byte("roundinfo"), &pb); err != nil {
+	if err := c.Query("/store/chain/key", []byte("roundinfo"), &pb); err != nil {
 		return nil, err
 	}
 
@@ -118,7 +118,7 @@ func (c *Client) QueryRoundInfo() (*types.RoundInfo, error) {
 // QueryConsensusParams performs a ABCI Query to "/consensusparams"
 func (c *Client) QueryConsensusParams() (*types.ConsensusParams, error) {
 	var pb types.ConsensusParams
-	if err := c.Query("/chain/key", []byte("consensusparams"), &pb); err != nil {
+	if err := c.Query("/store/chain/key", []byte("consensusparams"), &pb); err != nil {
 		if err == ErrNotFound {
 			return &types.ConsensusParams{}, nil
 		}
@@ -131,7 +131,7 @@ func (c *Client) QueryConsensusParams() (*types.ConsensusParams, error) {
 // QueryLastEvent performs a ABCI Query to "/lastevent".
 // `lastevent` keeps track of the last block height recorded from the Ethereum chain
 func (c *Client) QueryLastEvent() (uint64, error) {
-	out, err := c.ABCIQuery("/chain/key", []byte("lastevent"))
+	out, err := c.ABCIQuery("/store/chain/key", []byte("lastevent"))
 	if err != nil {
 		return 0, err
 	}
@@ -152,7 +152,7 @@ func (c *Client) QueryLastEvent() (uint64, error) {
 // QueryPoster performs a ABCI Query to "/posters/<addr>"
 func (c *Client) QueryPoster(addr string) (*types.Poster, error) {
 	var pb types.Poster
-	if err := c.Query("/poster/key", []byte(addr), &pb); err != nil {
+	if err := c.Query("/store/poster/key", []byte(addr), &pb); err != nil {
 		return nil, err
 	}
 
@@ -162,7 +162,7 @@ func (c *Client) QueryPoster(addr string) (*types.Poster, error) {
 // QueryValidator performs a ABCI Query to "/validator/<addr>"
 func (c *Client) QueryValidator(addr string) (*types.Validator, error) {
 	var pb types.Validator
-	if err := c.Query("/validator/key", []byte(addr), &pb); err != nil {
+	if err := c.Query("/store/validator/key", []byte(addr), &pb); err != nil {
 		return nil, err
 	}
 
@@ -172,7 +172,7 @@ func (c *Client) QueryValidator(addr string) (*types.Validator, error) {
 // QueryTotalOrders performs a ABCI Query to "/chain/totalorders"
 func (c *Client) QueryTotalOrders() (uint64, error) {
 	var num uint64
-	if err := c.Query("/chain/key", []byte("totalorders"), &num); err != nil {
+	if err := c.Query("/store/chain/key", []byte("totalorders"), &num); err != nil {
 		return 0, err
 	}
 

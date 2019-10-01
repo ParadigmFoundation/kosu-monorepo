@@ -56,7 +56,7 @@ func (suite *IntegrationTestSuite) TestWitness() {
 		tx1 := newTx()
 		suite.BroadcastTxCommit(tx1)
 
-		res, err := suite.Client().ABCIQuery("/witness/key", tx1.Hash())
+		res, err := suite.Client().ABCIQuery("/store/witness/key", tx1.Hash())
 		suite.Require().NoError(err)
 		suite.Require().NotNil(res.Response.Value)
 		suite.Require().NotEmpty(res.Response.Value)
@@ -65,7 +65,7 @@ func (suite *IntegrationTestSuite) TestWitness() {
 		tx2.Block = abci.GenesisAppState.ConsensusParams.BlocksBeforePruning + tx1.Block
 		suite.BroadcastTxCommit(tx2)
 
-		res, err = suite.Client().ABCIQuery("/witness/key", tx1.Hash())
+		res, err = suite.Client().ABCIQuery("/store/witness/key", tx1.Hash())
 		suite.Require().NoError(err)
 
 		suite.Empty(res.Response.Value)
