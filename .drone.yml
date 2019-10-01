@@ -107,7 +107,9 @@ steps:
   image: gcr.io/kosu-io/node-ci:latest
   commands:
   - npm-cli-login
-  - "git checkout . && git clean -fd"
+  - git checkout .
+  - git clean -fdx
+  - git reset --hard
   - yarn lerna publish from-package
   environment:
     NPM_EMAIL:
