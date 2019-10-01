@@ -145,7 +145,7 @@ func TestGenesisStateCorrectness(t *testing.T) {
 	newTestReq := func(state []byte) abci.RequestInitChain {
 		req := abci.RequestInitChain{
 			Validators: abci.ValidatorUpdates{
-				abci.Ed25519ValidatorUpdate([]byte("some_pub_key"), 10),
+				abci.Ed25519ValidatorUpdate([]byte("some_pub_key"), 1),
 			},
 			AppStateBytes: state,
 		}
@@ -167,14 +167,6 @@ func TestGenesisStateCorrectness(t *testing.T) {
 			}`), true, nil,
 		},
 		{
-			"Balances_Doesnt_Match", []byte(`{
-				"initial_validator_info": [
-					{"tendermint_address": "9339CD2572AB19E2A2E431EEF2E9FD2B1A91C472", "ethereum_address": "0xethereum", "initial_stake": "98760000000000000000"}
-				],
-				"snapshot_block": 999
-			}`), true, nil,
-		},
-		{
 			"PublicKeys_Doesnt_Match", []byte(`{
 				"initial_validator_info": [
 					{"tendermint_address": "0000000000000000000000000000000000000000", "ethereum_address": "0xethereum", "initial_stake": "10000000000000000000"}
@@ -185,10 +177,10 @@ func TestGenesisStateCorrectness(t *testing.T) {
 		{
 			"InitialPosters_Are_Stored", []byte(`{
 				"initial_validator_info": [
-					{"tendermint_address": "9339CD2572AB19E2A2E431EEF2E9FD2B1A91C472", "ethereum_address": "0xethereum", "initial_stake": "10000000000000000000"}
+					{"tendermint_address": "9339CD2572AB19E2A2E431EEF2E9FD2B1A91C472", "ethereum_address": "0xethereum", "initial_stake": "1000000000000000000"}
 				],
 				"snapshot_block": 999,
-				"initial_posters": [
+				"initial_poster_info": [
 					{"ethereum_address": "some_address", "balance": "1234"}
 				]
 			}`),
@@ -221,10 +213,10 @@ func TestGenesisStateCorrectness(t *testing.T) {
 	t.Run("Sorted", func(t *testing.T) {
 		app.InitChain(abci.RequestInitChain{
 			Validators: abci.ValidatorUpdates{
-				abci.Ed25519ValidatorUpdate([]byte("z"), 2000),
-				abci.Ed25519ValidatorUpdate([]byte("y"), 2001),
-				abci.Ed25519ValidatorUpdate([]byte("x"), 2002),
-				abci.Ed25519ValidatorUpdate([]byte("w"), 2003),
+				abci.Ed25519ValidatorUpdate([]byte("z"), 1),
+				abci.Ed25519ValidatorUpdate([]byte("y"), 1),
+				abci.Ed25519ValidatorUpdate([]byte("x"), 1),
+				abci.Ed25519ValidatorUpdate([]byte("w"), 1),
 			},
 			AppStateBytes: []byte(`{
 				"initial_validator_info": [
@@ -238,12 +230,12 @@ func TestGenesisStateCorrectness(t *testing.T) {
 		})
 	})
 
-	t.Run("ValidatorUpdates_Power_Is_0", func(t *testing.T) {
+	t.Run("ValidatorUpdates_Power_Is_1", func(t *testing.T) {
 		updates := abci.ValidatorUpdates{
-			abci.Ed25519ValidatorUpdate([]byte("z"), 0),
-			abci.Ed25519ValidatorUpdate([]byte("y"), 0),
-			abci.Ed25519ValidatorUpdate([]byte("x"), 0),
-			abci.Ed25519ValidatorUpdate([]byte("w"), 0),
+			abci.Ed25519ValidatorUpdate([]byte("z"), 1),
+			abci.Ed25519ValidatorUpdate([]byte("y"), 1),
+			abci.Ed25519ValidatorUpdate([]byte("x"), 1),
+			abci.Ed25519ValidatorUpdate([]byte("w"), 1),
 		}
 		res := app.InitChain(abci.RequestInitChain{
 			Validators: updates,

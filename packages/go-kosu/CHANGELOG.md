@@ -5,6 +5,8 @@
 -   Add kosulite proxy
 -   [bug] Fix panic on kosu-cli
 -   Add /store prefix to Query Path
+-   Require power=1 in genesis file
+-   [bug][\#304] Fix BigInt JSON Serialization
 -   Add InitialPosters support
 -   Bump tendermint version from v0.32.3 to v0.32.4
 -   Sort ValidatorUpdates by address and returns updated set

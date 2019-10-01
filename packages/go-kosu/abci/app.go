@@ -149,7 +149,7 @@ func (app *App) InitChain(req abci.RequestInitChain) abci.ResponseInitChain {
 		app.store.SetValidator(nodeID, &v)
 	}
 
-	for _, init := range gen.InitialPosters {
+	for _, init := range gen.InitialPosterInfo {
 		poster := types.Poster{
 			Balance: types.NewBigIntFromString(init.Balance, 10),
 		}
