@@ -2,6 +2,7 @@
 
 ## master
 
+-   Require power=1 in genesis file
 -   Add InitialPosters support
 -   Bump tendermint version from v0.32.3 to v0.32.4
 -   Sort ValidatorUpdates by address and returns updated set

@@ -18,11 +18,6 @@ var (
 	ErrEmptyValidatorSet = errors.New("validators set are empty")
 	// ErrLengthMismatch means that the validators set sizes are not equal
 	ErrLengthMismatch = errors.New("length mismatch")
-
-	// NewBalanceMismatchError returns a Balance Mismatch formatted error
-	NewBalanceMismatchError = func(b1, b2 int64) error {
-		return fmt.Errorf("balance %d != %d", b1, b2)
-	}
 )
 
 // GetUpdateAddress returns the Tendermint's address of a Validator Update
@@ -86,22 +81,16 @@ func UnifyValidators(updates abci.ValidatorUpdates, state GenesisValidatorSet) (
 			return nil, err
 		}
 
-		// balance verification
-		bn, _ := big.NewInt(0).SetString(s.InitialStake, 10)
-		balance := ScaleBalance(bn)
+		bn := big.NewInt(0)
+		if s.InitialStake != "" {
+			bn, _ = bn.SetString(s.InitialStake, 10)
+		}
 
 		update := &updates[i]
-		if update.Power == 0 {
-			update.Power = balance
+		if update.Power != 1 {
+			return nil, errors.New("The genesis file cannot contain validators with voting power other than '1' when the initial_validator_info is set")
 		}
 		v.Power = update.Power
-
-		if v.Power != balance {
-			return nil, NewBalanceMismatchError(
-				v.Power, balance,
-			)
-		}
-
 		v.Balance = types.NewBigInt(bn.Bytes())
 		v.EthAccount = s.EthereumAddress
 	}
