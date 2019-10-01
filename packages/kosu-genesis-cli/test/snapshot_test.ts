@@ -158,7 +158,7 @@ describe("Snapshot tests with contract system (integration tests)", function(): 
         const currentBlock = await web3.eth.getBlockNumber();
         const expectedSnapshot = [
             {
-                address: accounts[0].toLowerCase(),
+                ethereum_address: accounts[0].toLowerCase(),
                 balance: new BigNumber("1e18").toString(),
             },
         ];
