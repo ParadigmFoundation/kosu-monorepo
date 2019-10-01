@@ -112,6 +112,10 @@ func NewBigIntFromString(s string, base int) *BigInt {
 	return NewBigInt(b.Bytes())
 }
 
+// MarshalJSON is implemented to delegate the serialization to b.BigInt()
+// It will render the same JSON as big.Int
+func (b *BigInt) MarshalJSON() ([]byte, error) { return json.Marshal(b.BigInt()) }
+
 // NewValidator returns a new validator with zero balance
 func NewValidator() *Validator {
 	return &Validator{
