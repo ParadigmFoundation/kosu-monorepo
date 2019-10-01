@@ -188,7 +188,7 @@ func TestGenesisStateCorrectness(t *testing.T) {
 					{"tendermint_address": "9339CD2572AB19E2A2E431EEF2E9FD2B1A91C472", "ethereum_address": "0xethereum", "initial_stake": "10000000000000000000"}
 				],
 				"snapshot_block": 999,
-				"initial_posters": [
+				"initial_poster_info": [
 					{"ethereum_address": "some_address", "balance": "1234"}
 				]
 			}`),
