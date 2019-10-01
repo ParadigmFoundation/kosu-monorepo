@@ -14,7 +14,7 @@ steps:
   - yarn prettier:ci
   volumes:
   - name: cache
-    path: /
+    path: /drone/src/
 
 - name: build-project
   pull: always
@@ -30,7 +30,7 @@ steps:
     WEB3_URI_WS: ws://kosu-geth:8546
   volumes:
   - name: cache
-    path: /
+    path: /drone/src/
 
 - name: npm-tests
   pull: always
@@ -44,7 +44,7 @@ steps:
   - build-project
   volumes:
   - name: cache
-    path: /
+    path: /drone/src/
 
 - name: solidity
   pull: always
@@ -58,7 +58,7 @@ steps:
   - build-project
   volumes:
   - name: cache
-    path: /
+    path: /drone/src/
 
 - name: kosu-node-0
   pull: always
@@ -69,6 +69,9 @@ steps:
   - ./kosud -H ./testnet/node0 -E ws://go-kosu-ci-geth:8546
   depends_on:
   - build-project
+  volumes:
+  - name: cache
+    path: /drone/src/
 
 - name: kosu-node-1
   pull: always
@@ -81,7 +84,7 @@ steps:
   - build-project
   volumes:
   - name: cache
-    path: /
+    path: /drone/src/
 
 - name: kosu-node-2
   pull: always
@@ -94,7 +97,7 @@ steps:
   - build-project
   volumes:
   - name: cache
-    path: /
+    path: /drone/src/
 
 - name: kosu-node-3
   pull: always
@@ -107,7 +110,7 @@ steps:
   - build-project
   volumes:
   - name: cache
-    path: /
+    path: /drone/src/
 
 - name: go-kosu
   pull: always
@@ -124,7 +127,7 @@ steps:
   - kosu-node-3
   volumes:
   - name: cache
-    path: /
+    path: /drone/src/
 
 - name: release
   pull: always
@@ -153,7 +156,7 @@ steps:
   - npm-tests
   volumes:
   - name: cache
-    path: /
+    path: /drone/src/
 
 services:
 - name: kosu-geth
