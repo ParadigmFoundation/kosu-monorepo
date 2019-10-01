@@ -88,6 +88,7 @@ func UnifyValidators(updates abci.ValidatorUpdates, state GenesisValidatorSet) (
 
 		update := &updates[i]
 		if update.Power != 1 {
+			// nolint
 			return nil, errors.New("The genesis file cannot contain validators with voting power other than '1' when the initial_validator_info is set")
 		}
 		v.Power = update.Power
