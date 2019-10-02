@@ -175,7 +175,7 @@ func main() {
 		Long:  "Main entrypoint for Kosu validators and full nodes.\nPrior to use, 'kosud init' must be run.",
 	}
 
-	startCmd.Flags().StringVarP(&cfg.LAddr, "laddr", "", "tcp://localhost:26657", "Serve on a given address")
+	startCmd.Flags().StringVarP(&cfg.LAddr, "laddr", "", "tcp://0.0.0.0:26657", "Serve on a given address")
 	startCmd.Flags().StringVarP(&cfg.Web3, "web3", "E", "ws://localhost:8546", "URL of an Ethereum JSONRPC provider")
 	startCmd.Flags().BoolVarP(&cfg.RPC, "rpc", "", false, "Start the JSON-RPC API")
 	startCmd.Flags().BoolVarP(&cfg.Lite, "lite", "", false, "Start the node as a Lite client")
