@@ -1,8 +1,0 @@
-{
-    "maker": [
-        {
-            "datatype": "address",
-            "name": "makerAddress"
-        }
-    ]
-}
