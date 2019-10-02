@@ -6,8 +6,5 @@ packages/kosu-system-contracts/generated-artifacts/
 packages/kosu-system-contracts/generated-wrappers/
 packages/web-helpers/dist/
 packages/web-helpers/public/
-packages/gov-portal-helper/dist/
-packages/gov-portal-helper/lib/
-packages/create-portal-helper/lib/
 packages/kosu-docs/docs/.vuepress/dist/
 packages/order-server/dist/
