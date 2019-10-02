@@ -45,4 +45,4 @@ Paradigm Labs is committed to developing Kosu as open-source software. Connect w
 -   Source code hosted and developed [on GitHub](https://github.com/ParadigmFoundation)
 -   Subscribe to [our subreddit](https://reddit.com/r/ParadigmFoundation)
 -   Follow us [on Twitter](https://twitter.com/paradigm_io), and [on Medium](https://medium.com/paradigm-foundation)
--   Ask for help on [our chat server](https://chat.paradigm.market)
+-   Ask for help on [our chat server](https://discordapp.com/invite/sNeMpDe)

@@ -64,4 +64,4 @@ The core protocol (contract logic and primary client implementation) is being de
 
 Collaboration and contribution from the community is not only highly encouraged, but essential to the success and stability of the network, and Paradigm's long-term vision of borderless, open, and efficient global markets.
 
-Don't hesitate to get involved on our [GitHub](https://github.com/ParadigmFoundation/), [Reddit](https://reddit.com/r/ParadigmFoundation), and public [chat server](https://chat.paradigm.market).
+Don't hesitate to get involved on our [GitHub](https://github.com/ParadigmFoundation/), [Reddit](https://reddit.com/r/ParadigmFoundation), and public [chat server](https://discordapp.com/invite/sNeMpDe).
