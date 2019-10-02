@@ -2,6 +2,8 @@
 
 ## master
 
+-   Embed RPC Server in kosud
+-   Create node and start subcommands
 -   Add kosulite proxy
 -   [bug] Fix panic on kosu-cli
 -   Add /store prefix to Query Path

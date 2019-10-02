@@ -16,7 +16,7 @@ local KosuNode(id) = Image("kosu-node-"+id, "go-kosu-ci:latest") {
 	depends_on: ["build-project"],
 	commands: [
 		"cd packages/go-kosu",
-		'./kosud -H ./testnet/node%(id)s -E ws://go-kosu-ci-geth:8546' %id,
+		'./kosud start -H ./testnet/node%(id)s -E ws://go-kosu-ci-geth:8546' %id,
 	]
 };
 

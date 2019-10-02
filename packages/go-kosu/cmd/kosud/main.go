@@ -27,9 +27,9 @@ const (
 // Config holds the program execution arguments
 type Config struct {
 	Home  string
-	Debug bool
-	Init  bool
 	Web3  string
+	Debug bool
+	RPC   bool
 }
 
 func newDB(dir string) (db.DB, error) {
@@ -66,7 +66,20 @@ func startWitness(ctx context.Context, app *abci.App, ethAddr string, logger log
 	return w.WithLogger(logger).Start(ctx)
 }
 
-func run(cfg *Config) error {
+func startRPCServer(cfg *Config, app *abci.App, rpcArgs *rpc.ServerArgs, logger log.Logger) error {
+	if !cfg.RPC {
+		return nil
+	}
+
+	client, err := app.NewClient()
+	if err != nil {
+		return err
+	}
+
+	return rpcArgs.StartServer(client, logger, nil)
+}
+
+func start(cfg *Config, rpcArgs *rpc.ServerArgs) error {
 	db, err := newDB(cfg.Home)
 	if err != nil {
 		return err
@@ -91,6 +104,10 @@ func run(cfg *Config) error {
 		return err
 	}
 
+	if err := startRPCServer(cfg, app, rpcArgs, logger); err != nil {
+		return err
+	}
+
 	srv.Wait()
 	return nil
 }
@@ -104,15 +121,25 @@ func main() {
 		cfg.Home = expandPath(cfg.Home)
 	})
 
-	rootCmd := &cobra.Command{
-		Use:   "kosud",
+	startCmd := &cobra.Command{
+		Use:   "start",
 		Short: "Starts the kosu node",
 		Long:  "Main entrypoint for Kosu validators and full nodes.\nPrior to use, 'kosud init' must be run.",
-		Run: func(cmd *cobra.Command, args []string) {
-			if err := run(&cfg); err != nil {
-				stdlog.Fatal(err)
-			}
-		},
+	}
+	startCmd.Flags().StringVarP(&cfg.Web3, "web3", "E", "ws://localhost:8546", "URL of an Ethereum JSONRPC provider")
+	startCmd.Flags().BoolVarP(&cfg.RPC, "rpc", "", false, "Start the JSON-RPC API")
+	rpcArgs := rpc.RegisterServerArgs("rpc", startCmd)
+	startCmd.PreRunE = func(cmd *cobra.Command, args []string) error {
+		if cfg.RPC {
+			return rpcArgs.Validate()
+		}
+		return nil
+	}
+
+	startCmd.Run = func(cmd *cobra.Command, args []string) {
+		if err := start(&cfg, rpcArgs); err != nil {
+			stdlog.Fatal(err)
+		}
 	}
 
 	initCmd := &cobra.Command{
@@ -127,56 +154,62 @@ func main() {
 		},
 	}
 
-	showNodeInfoCmd := &cobra.Command{
-		Use:   "show_node_info",
-		Short: "Show this node's information",
-		Long:  "Displays information unique to this node",
-		RunE: func(cmd *cobra.Command, _ []string) error {
-			kosuCfg, err := abci.LoadConfig(cfg.Home)
-			if err != nil {
-				return err
-			}
-
-			info, err := abci.ShowNodeInfo(kosuCfg)
-			if err != nil {
-				return err
-			}
-
-			fmt.Printf("Public Key: %s\n", info.PublicKey)
-			fmt.Printf("Node ID:    %s\n", info.NodeID)
-			fmt.Printf("Peer ID:    %s\n", info.PeerID)
-			fmt.Printf("Moniker:    %s\n", info.Moniker)
-			return nil
-		},
+	nodeCmd := &cobra.Command{
+		Use:   "node",
+		Short: "Node related operations",
 	}
+	nodeCmd.AddCommand(
+		&cobra.Command{
+			Use:   "info",
+			Short: "Show this node's information",
+			Long:  "Displays information unique to this node",
+			RunE: func(cmd *cobra.Command, _ []string) error {
+				kosuCfg, err := abci.LoadConfig(cfg.Home)
+				if err != nil {
+					return err
+				}
 
-	unsafeResetCmd := &cobra.Command{
-		Use:   "reset",
-		Short: "Reset this node to genesis state",
-		Long:  "Reset will wipe all the data and WAL, keeping only the config and the genesis file",
-		RunE: func(cmd *cobra.Command, _ []string) error {
-			kosuCfg, err := abci.LoadConfig(cfg.Home)
-			if err != nil {
-				return err
-			}
+				info, err := abci.ShowNodeInfo(kosuCfg)
+				if err != nil {
+					return err
+				}
 
-			abci.ResetAll(kosuCfg, os.Stdout)
-
-			dbdir := path.Join(kosuCfg.RootDir, dbName+".db")
-			return os.RemoveAll(dbdir)
+				fmt.Printf("Public Key: %s\n", info.PublicKey)
+				fmt.Printf("Node ID:    %s\n", info.NodeID)
+				fmt.Printf("Peer ID:    %s\n", info.PeerID)
+				fmt.Printf("Moniker:    %s\n", info.Moniker)
+				return nil
+			},
 		},
+		&cobra.Command{
+			Use:   "reset",
+			Short: "Reset this node to genesis state",
+			Long:  "Reset will wipe all the data and WAL, keeping only the config and the genesis file",
+			RunE: func(cmd *cobra.Command, _ []string) error {
+				kosuCfg, err := abci.LoadConfig(cfg.Home)
+				if err != nil {
+					return err
+				}
+
+				abci.ResetAll(kosuCfg, os.Stdout)
+
+				dbdir := path.Join(kosuCfg.RootDir, dbName+".db")
+				return os.RemoveAll(dbdir)
+			},
+		},
+	)
+	rootCmd := &cobra.Command{
+		Use:   "kosud",
+		Short: "The Kosud node",
 	}
 
 	rootCmd.PersistentFlags().StringVarP(&cfg.Home, "home", "H", "~/.kosu", "directory for config and data")
 	rootCmd.PersistentFlags().BoolVarP(&cfg.Debug, "debug", "d", false, "enable debuging")
-	rootCmd.Flags().StringVarP(&cfg.Web3, "web3", "E", "ws://localhost:8546", "URL of an Ethereum JSONRPC provider")
-
 	rootCmd.AddCommand(
-		version.NewCommand(),
-		rpc.NewCommand(),
 		initCmd,
-		showNodeInfoCmd,
-		unsafeResetCmd,
+		startCmd,
+		nodeCmd,
+		version.NewCommand(),
 	)
 
 	if err := rootCmd.Execute(); err != nil {

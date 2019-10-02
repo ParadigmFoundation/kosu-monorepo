@@ -109,7 +109,7 @@ You can start a single-node Kosu development network with the following commands
 ```bash
 # generate keypair and base configuration
 kosud init --home=$HOME/.kosu
-kosud -E [ETHEREUM_JSONRPC_URL] --home=$HOME/.kosu
+kosud start -E [ETHEREUM_JSONRPC_URL] --home=$HOME/.kosu
 ```
 
 The command-line interface will also be built (see `kosu-cli help` for all commands).

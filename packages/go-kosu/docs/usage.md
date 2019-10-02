@@ -305,7 +305,7 @@ The example assumes an Ethereum client is serving the Ethereum JSONRPC over WebS
 Description=Kosu network client (kosud).
 
 [Service]
-ExecStart=/usr/local/bin/kosud \
+ExecStart=/usr/local/bin/kosud start\
 	-E ws://geth:8546 \
 	-H /home/kosu/.kosu
 ```
@@ -370,7 +370,7 @@ moniker = "anonymous"
 
 ```
 # Output level for logging, including package level options
-log_level = "app:info,ethereum:info,witness:info,main:info,state:info,*:error"
+log_level = "app:info,ethereum:info,witness:info,jsonrpc:info,main:info,state:info,*:error"
 ```
 
 Configure the log output for the Kosu ABCI application, the Kosu witness, and Tendermint.
@@ -378,6 +378,7 @@ Configure the log output for the Kosu ABCI application, the Kosu witness, and Te
 -   `app` - The Kosu ABCI application (core state machine).
 -   `ethereum` - Ethereum specific events.
 -   `witness` - Kosu witness sub-process.
+-   `jsonrpc` - Kosu JSON-RPC API.
 -   `main` - Tendermint main log output.
 -   `state` - Tendermint state module output.
 
@@ -532,13 +533,13 @@ The simplest configuration is to run a single node development "network" on a lo
 
         ```bash
         # shorthand (assuming kosu data dir is ~/.kosu)
-        kosud -E [URL]
+        kosud start -E [URL]
 
         # full
-        kosud --web3 [URL] --home [HOMEDIR]
+        kosud start --web3 [URL] --home [HOMEDIR]
         ```
 
-1. Optionally, start the RPC server with `kosud rpc` as a separate process.
+1. Optionally, start the RPC server with the `--rpc` flag (i.e `kosu start --rpc`).
 
 ### Existing network
 
@@ -559,10 +560,10 @@ Generation of the genesis file using the snapshot method only works if the netwo
 
         ```bash
         # shorthand (assuming kosu data dir is ~/.kosu)
-        kosud -E [URL]
+        kosud start -E [URL]
 
         # full
-        kosud --web3 [URL] --home [HOMEDIR]
+        kosud start --web3 [URL] --home [HOMEDIR]
         ```
 
     - If using the [above `systemd` configuration](#process-supervisor) the start command becomes:
@@ -620,7 +621,7 @@ This example will assume the following:
 
     ```bash
     # start command
-    kosud -E [ETHEREUM_JSONRPC_PROVIDER]
+    kosud start -E [ETHEREUM_JSONRPC_PROVIDER]
 
     # with example systemd configuration
     sudo systemctl start kosu

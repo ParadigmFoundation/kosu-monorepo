@@ -56,7 +56,7 @@ func createConfig(homedir string, logger log.Logger) error {
 	// update the cfg only if it didn't exist
 	if needUpdate {
 		config.LogLevel = strings.Join(
-			[]string{"app:info,witness:info", config.LogLevel}, ",",
+			[]string{"app:info,witness:info,jsonrpc:info", config.LogLevel}, ",",
 		)
 
 		// WriteConfigFile will overwrite the default config written by .EnsureRoot
