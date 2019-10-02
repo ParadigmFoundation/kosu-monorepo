@@ -9,9 +9,11 @@ import (
 	"path"
 	"path/filepath"
 	"strings"
+	"time"
 
 	"github.com/spf13/cobra"
-	"github.com/tendermint/tendermint/libs/log"
+	tmlog "github.com/tendermint/tendermint/libs/log"
+	"github.com/tendermint/tendermint/lite/proxy"
 	db "github.com/tendermint/tm-db"
 
 	"github.com/ParadigmFoundation/kosu-monorepo/packages/go-kosu/abci"
@@ -26,10 +28,13 @@ const (
 
 // Config holds the program execution arguments
 type Config struct {
-	Home  string
-	Web3  string
-	Debug bool
-	RPC   bool
+	Home         string
+	Web3         string
+	LiteFullnode string
+	LAddr        string
+	Debug        bool
+	RPC          bool
+	Lite         bool
 }
 
 func newDB(dir string) (db.DB, error) {
@@ -41,7 +46,7 @@ func newDB(dir string) (db.DB, error) {
 	return gdb, nil
 }
 
-func startWitness(ctx context.Context, app *abci.App, ethAddr string, logger log.Logger) error {
+func startWitness(ctx context.Context, app *abci.App, ethAddr string, logger tmlog.Logger) error {
 	client, err := app.NewClient()
 	if err != nil {
 		return err
@@ -66,50 +71,93 @@ func startWitness(ctx context.Context, app *abci.App, ethAddr string, logger log
 	return w.WithLogger(logger).Start(ctx)
 }
 
-func startRPCServer(cfg *Config, app *abci.App, rpcArgs *rpc.ServerArgs, logger log.Logger) error {
+func startRPCServer(cfg *Config, client *abci.Client, rpcArgs *rpc.ServerArgs, logger tmlog.Logger) error {
 	if !cfg.RPC {
 		return nil
-	}
-
-	client, err := app.NewClient()
-	if err != nil {
-		return err
 	}
 
 	return rpcArgs.StartServer(client, logger, nil)
 }
 
 func start(cfg *Config, rpcArgs *rpc.ServerArgs) error {
-	db, err := newDB(cfg.Home)
+	var client *abci.Client
+	var logger tmlog.Logger
+	done := make(chan error)
+
+	// Load the Kosu config and update the listening address
+	conf, err := abci.LoadConfig(cfg.Home)
 	if err != nil {
 		return err
 	}
-
-	app := abci.NewApp(db, cfg.Home)
-	srv, err := abci.StartInProcessServer(app)
-	if err != nil {
-		return err
-	}
-	logger, err := abci.NewLogger(app.Config)
-	if err != nil {
-		return err
+	if addr := cfg.LAddr; addr != "" {
+		conf.RPC.ListenAddress = addr
 	}
 
-	// TODO, call defer srv.Stop() ?
+	if !cfg.Lite {
+		// starts the fullnode
+		db, err := newDB(cfg.Home)
+		if err != nil {
+			return err
+		}
+		app := abci.NewAppWithConfig(db, conf)
+		logger, err = abci.NewLogger(conf)
+		if err != nil {
+			return err
+		}
 
-	ctx, cancel := context.WithCancel(context.Background())
-	defer cancel()
+		srv, err := abci.StartInProcessServer(app)
+		if err != nil {
+			return err
+		}
 
-	if err := startWitness(ctx, app, cfg.Web3, logger); err != nil {
+		ctx, cancel := context.WithCancel(context.Background())
+		defer cancel()
+
+		if err := startWitness(ctx, app, cfg.Web3, logger); err != nil {
+			return err
+		}
+
+		client, err = app.NewClient()
+		if err != nil {
+			return err
+		}
+
+		// Wait for the server to finish and signal it
+		go func() {
+			srv.Wait()
+			done <- srv.Stop()
+		}()
+
+	} else {
+		logger = tmlog.NewTMLogger(os.Stdout)
+
+		// start the lite node
+		lite, err := abci.NewLite(cfg.LiteFullnode)
+		if err != nil {
+			return err
+		}
+		addr := conf.RPC.ListenAddress
+
+		// We start a proxy using the lite client and
+		// an abci.Client that connects to the proxy
+		go func() {
+			err := proxy.StartProxy(*lite, addr, logger.With("module", "rpc"), 99)
+			done <- err
+		}()
+
+		time.Sleep(1 * time.Second)
+		client, err = abci.NewHTTPClient(addr, nil)
+		if err != nil {
+			return err
+		}
+	}
+
+	if err := startRPCServer(cfg, client, rpcArgs, logger); err != nil {
 		return err
 	}
 
-	if err := startRPCServer(cfg, app, rpcArgs, logger); err != nil {
-		return err
-	}
-
-	srv.Wait()
-	return nil
+	err = <-done
+	return err
 }
 
 func main() {
@@ -126,8 +174,12 @@ func main() {
 		Short: "Starts the kosu node",
 		Long:  "Main entrypoint for Kosu validators and full nodes.\nPrior to use, 'kosud init' must be run.",
 	}
+
+	startCmd.Flags().StringVarP(&cfg.LAddr, "laddr", "", "tcp://localhost:26657", "Serve on a given address")
 	startCmd.Flags().StringVarP(&cfg.Web3, "web3", "E", "ws://localhost:8546", "URL of an Ethereum JSONRPC provider")
 	startCmd.Flags().BoolVarP(&cfg.RPC, "rpc", "", false, "Start the JSON-RPC API")
+	startCmd.Flags().BoolVarP(&cfg.Lite, "lite", "", false, "Start the node as a Lite client")
+	startCmd.Flags().StringVarP(&cfg.LiteFullnode, "lite-fullnode", "", "http://localhost:26657", "Fullnode's endpoint (required when running with --lite)")
 	rpcArgs := rpc.RegisterServerArgs("rpc", startCmd)
 	startCmd.PreRunE = func(cmd *cobra.Command, args []string) error {
 		if cfg.RPC {

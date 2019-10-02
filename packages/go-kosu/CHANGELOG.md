@@ -2,6 +2,7 @@
 
 ## master
 
+-   Allow to start the node in --lite mode
 -   Embed RPC Server in kosud
 -   Create node and start subcommands
 -   Add kosulite proxy

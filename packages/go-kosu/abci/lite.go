@@ -12,7 +12,14 @@ import (
 
 // NewLite returns a RPC Client that uses the Lite client protocol.
 // All the responses are verified with merkle proofs.
-func NewLite(id string, endpoint string) (*proxy.Wrapper, error) {
+func NewLite(endpoint string) (*proxy.Wrapper, error) {
+	node := rpcclient.NewHTTP(endpoint, "/websocket")
+	status, err := node.Status()
+	if err != nil {
+		return nil, err
+	}
+	chainID := status.NodeInfo.Network
+
 	memProvider := lite.NewDBProvider("trusted.mem", dbm.NewMemDB()).SetLimit(10)
 	lvlProvider := lite.NewDBProvider("trusted.lvl", dbm.NewDB("trust-base", dbm.GoLevelDBBackend, "."))
 	trust := lite.NewMultiProvider(
@@ -20,14 +27,12 @@ func NewLite(id string, endpoint string) (*proxy.Wrapper, error) {
 		lvlProvider,
 	)
 
-	node := rpcclient.NewHTTP(endpoint, "/websocket")
-	source := client.NewProvider(id, node)
+	source := client.NewProvider(chainID, node)
 
-	cert := lite.NewDynamicVerifier(id, trust, source)
+	cert := lite.NewDynamicVerifier(chainID, trust, source)
 
-	_, err := trust.LatestFullCommit(id, 1, 1<<63-1)
-	if err != nil {
-		fc, err := source.LatestFullCommit(id, 1, 1)
+	if _, err := trust.LatestFullCommit(chainID, 1, 1<<63-1); err != nil {
+		fc, err := source.LatestFullCommit(chainID, 1, 1)
 		if err != nil {
 			return nil, err
 

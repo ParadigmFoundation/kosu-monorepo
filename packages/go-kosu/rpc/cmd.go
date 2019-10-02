@@ -2,7 +2,6 @@ package rpc
 
 import (
 	"fmt"
-	"log"
 	"net/http"
 	"strings"
 
@@ -64,7 +63,7 @@ func (args *ServerArgs) StartServer(client *abci.Client, logger tmlog.Logger, er
 	if args.HTTP {
 		go func() {
 			if err := startHTTP(srv, args.HTTPPort, logger); err != nil {
-				log.Printf("http: %s", err)
+				logger.Error("HTTP", "err", err)
 				if errCh != nil {
 					errCh <- err
 				}
@@ -75,7 +74,7 @@ func (args *ServerArgs) StartServer(client *abci.Client, logger tmlog.Logger, er
 	if args.WS {
 		go func() {
 			if err := startWS(srv, args.WSPort, logger); err != nil {
-				log.Printf("ws: %s", err)
+				logger.Error("WS", "err", err)
 				if errCh != nil {
 					errCh <- err
 				}
