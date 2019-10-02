@@ -179,7 +179,8 @@ func main() {
 	startCmd.Flags().StringVarP(&cfg.Web3, "web3", "E", "ws://localhost:8546", "URL of an Ethereum JSONRPC provider")
 	startCmd.Flags().BoolVarP(&cfg.RPC, "rpc", "", false, "Start the JSON-RPC API")
 	startCmd.Flags().BoolVarP(&cfg.Lite, "lite", "", false, "Start the node as a Lite client")
-	startCmd.Flags().StringVarP(&cfg.LiteFullnode, "lite-fullnode", "", "http://localhost:26657", "Fullnode's endpoint (required when running with --lite)")
+	startCmd.Flags().StringVarP(&cfg.LiteFullnode, "lite-fullnode", "", "http://localhost:26657",
+		"Fullnode's endpoint (required when running with --lite)")
 	rpcArgs := rpc.RegisterServerArgs("rpc", startCmd)
 	startCmd.PreRunE = func(cmd *cobra.Command, args []string) error {
 		if cfg.RPC {

@@ -5,7 +5,6 @@
 -   Allow to start the node in --lite mode
 -   Embed RPC Server in kosud
 -   Create node and start subcommands
--   Add kosulite proxy
 -   [bug] Fix panic on kosu-cli
 -   Add /store prefix to Query Path
 -   Require power=1 in genesis file
