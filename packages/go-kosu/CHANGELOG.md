@@ -2,6 +2,7 @@
 
 ## master
 
+-   Refactor ./cmd/kosud
 -   Allow to start the node in --lite mode
 -   Embed RPC Server in kosud
 -   Create node and start subcommands
