@@ -54,7 +54,7 @@ steps:
   detach: true
   commands:
   - cd packages/go-kosu
-  - ./kosud -H ./testnet/node0 -E ws://go-kosu-ci-geth:8546
+  - ./kosud start -H ./testnet/node0 -E ws://go-kosu-ci-geth:8546
   depends_on:
   - build-project
 
@@ -64,7 +64,7 @@ steps:
   detach: true
   commands:
   - cd packages/go-kosu
-  - ./kosud -H ./testnet/node1 -E ws://go-kosu-ci-geth:8546
+  - ./kosud start -H ./testnet/node1 -E ws://go-kosu-ci-geth:8546
   depends_on:
   - build-project
 
@@ -74,7 +74,7 @@ steps:
   detach: true
   commands:
   - cd packages/go-kosu
-  - ./kosud -H ./testnet/node2 -E ws://go-kosu-ci-geth:8546
+  - ./kosud start -H ./testnet/node2 -E ws://go-kosu-ci-geth:8546
   depends_on:
   - build-project
 
@@ -84,7 +84,7 @@ steps:
   detach: true
   commands:
   - cd packages/go-kosu
-  - ./kosud -H ./testnet/node3 -E ws://go-kosu-ci-geth:8546
+  - ./kosud start -H ./testnet/node3 -E ws://go-kosu-ci-geth:8546
   depends_on:
   - build-project
 
@@ -93,7 +93,7 @@ steps:
   image: gcr.io/kosu-io/go-kosu-ci:latest
   commands:
   - cd packages/go-kosu
-  - "export KOSU_TEST_NODES=$(pwd)/testnet/node0@kosu-node-1:26657,$(pwd)/testnet/node1@kosu-node-1:26657,$(pwd)/testnet/node2@kosu-node-1:26657,$(pwd)/testnet/node3@kosu-node-1:26657"
+  - export KOSU_TEST_NODES=$(pwd)/testnet/node0@kosu-node-1:26657,$(pwd)/testnet/node1@kosu-node-1:26657,$(pwd)/testnet/node2@kosu-node-1:26657,$(pwd)/testnet/node3@kosu-node-1:26657
   - make ci
   depends_on:
   - build-project
@@ -107,7 +107,7 @@ steps:
   image: gcr.io/kosu-io/node-ci:latest
   commands:
   - npm-cli-login
-  - "git checkout . && git clean -fd"
+  - git checkout . && git clean -fd
   - yarn lerna publish from-package
   environment:
     NPM_EMAIL:

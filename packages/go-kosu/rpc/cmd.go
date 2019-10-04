@@ -1,106 +1,99 @@
 package rpc
 
 import (
-	"errors"
 	"fmt"
-	"log"
 	"net/http"
-	"sync"
-
-	"github.com/ParadigmFoundation/kosu-monorepo/packages/go-kosu/abci"
+	"strings"
 
 	"github.com/ethereum/go-ethereum/rpc"
 	"github.com/spf13/cobra"
+	tmlog "github.com/tendermint/tendermint/libs/log"
+
+	"github.com/ParadigmFoundation/kosu-monorepo/packages/go-kosu/abci"
 )
 
-// NewCommand returns a new cobra.Command to be attached as a sub-command
-func NewCommand() *cobra.Command {
-	var (
-		url string
+// RegisterServerArgs will set the necessary flags to setup a RPC Server.
+// The flags will be prefixed with the prefix string
+// RegisterServerArgs returns a *ServerArgs object which can be used to start the RPC Server.
+func RegisterServerArgs(prefix string, cmd *cobra.Command) *ServerArgs {
+	args := &ServerArgs{prefix: prefix}
 
-		http     bool
-		httpPort int
-
-		ws     bool
-		wsPort int
-
-		key []byte
-	)
-	cmd := &cobra.Command{
-		Use:   "rpc",
-		Short: "starts the rpc bridge",
-		Long:  "The RPC bridge exposes a set of kosud functionalities over JSON-RPC 2.0",
-		PreRunE: func(cmd *cobra.Command, args []string) error {
-			if !http && !ws {
-				return errors.New("both `--ws` and `--http` where false, you need to enable at least one")
-			}
-
-			var homeDir string
-			if home := cmd.Flag("home"); home == nil {
-				homeDir = "~/kosu"
-			} else {
-				homeDir = home.Value.String()
-			}
-
-			var err error
-			key, err = abci.LoadPrivateKey(homeDir)
-			if err != nil {
-				return err
-			}
-
-			return nil
-		},
-		RunE: func(cmd *cobra.Command, args []string) error {
-			fn := func() (*abci.Client, error) { return abci.NewHTTPClient(url, key) }
-			srv, err := NewServer(fn)
-			if err != nil {
-				return err
-			}
-
-			wg := sync.WaitGroup{}
-			if http {
-				wg.Add(1)
-				go func() {
-					defer wg.Done()
-					if err := startHTTP(srv, httpPort); err != nil {
-						log.Printf("http: %s", err)
-					}
-				}()
-			}
-
-			if ws {
-				wg.Add(1)
-				go func() {
-					defer wg.Done()
-					if err := startWS(srv, wsPort); err != nil {
-						log.Printf("ws: %s", err)
-					}
-				}()
-			}
-			wg.Wait()
-			return nil
-		},
+	flag := func(flag string) string {
+		return strings.Join([]string{prefix, flag}, "-")
 	}
 
-	cmd.Flags().StringVar(&url, "url", "http://localhost:26657", "URL exposed by kosud")
-	cmd.Flags().BoolVar(&http, "http", true, "Starts the HTTP server")
-	cmd.Flags().IntVar(&httpPort, "http-port", 14341, "HTTP server listening port")
+	cmd.Flags().BoolVar(&args.HTTP, flag("http"), true, "Starts the HTTP server")
+	cmd.Flags().IntVar(&args.HTTPPort, flag("http-port"), 14341, "HTTP server listening port")
 
-	cmd.Flags().BoolVar(&ws, "ws", true, "Starts the WebSocket server")
-	cmd.Flags().IntVar(&wsPort, "ws-port", 14342, "WebSocket server listening port")
+	cmd.Flags().BoolVar(&args.WS, flag("ws"), true, "Starts the WebSocket server")
+	cmd.Flags().IntVar(&args.WSPort, flag("ws-port"), 14342, "WebSocket server listening port")
 
-	return cmd
+	return args
 }
 
-func startHTTP(srv *rpc.Server, port int) error {
+// ServerArgs contains the parameters required to start the RPC Server
+type ServerArgs struct {
+	prefix string
+
+	HTTPPort int
+	WSPort   int
+	HTTP     bool
+	WS       bool
+}
+
+// Validate validates that all the parameters are valid
+func (args *ServerArgs) Validate() error {
+	if !args.HTTP && !args.WS {
+		return fmt.Errorf("both `--%s-ws` and `--%s-http` where false, you need to enable at least one",
+			args.prefix, args.prefix)
+	}
+	return nil
+}
+
+// StartServer starts RPC Server endpoints WS and HTTP if defined
+func (args *ServerArgs) StartServer(client *abci.Client, logger tmlog.Logger, errCh chan<- error) error {
+	fn := func() (*abci.Client, error) { return client, nil }
+	srv, err := NewServer(fn)
+	if err != nil {
+		return err
+	}
+
+	logger = logger.With("module", "jsonrpc")
+
+	if args.HTTP {
+		go func() {
+			if err := startHTTP(srv, args.HTTPPort, logger); err != nil {
+				logger.Error("HTTP", "err", err)
+				if errCh != nil {
+					errCh <- err
+				}
+			}
+		}()
+	}
+
+	if args.WS {
+		go func() {
+			if err := startWS(srv, args.WSPort, logger); err != nil {
+				logger.Error("WS", "err", err)
+				if errCh != nil {
+					errCh <- err
+				}
+			}
+		}()
+	}
+
+	return nil
+}
+
+func startHTTP(srv *rpc.Server, port int, logger tmlog.Logger) error {
 	bind := fmt.Sprintf(":%d", port)
-	log.Printf("Starting HTTP server on %s", bind)
+	logger.Info("Starting HTTP server", "bind", bind)
 	return http.ListenAndServe(bind, srv)
 }
 
-func startWS(srv *rpc.Server, port int) error {
+func startWS(srv *rpc.Server, port int, logger tmlog.Logger) error {
 	bind := fmt.Sprintf(":%d", port)
-	log.Printf("Starting WS server on %s", bind)
+	logger.Info("Starting WS server", "bind", bind)
 
 	return http.ListenAndServe(
 		bind,

@@ -7,13 +7,13 @@ the protocol specification can be found [here](https://www.jsonrpc.org/specifica
 
 ### Usage
 
-You can start the bridge with the following command:
+When starting the node (`kosud start`) you can optionally enable the JSON-RPC server using the `--rpc` flag:
 
 ```bash
-kosud rpc
+kosud start --rpc
 ```
 
-For more information use `kosud rpc --help`.
+For more information use `kosud start --help`.
 
 By default the HTTP and WS endpoints are bound to ports `14341` and `14342` respectively.
 Note that the subscriptions operations are only available via WebSockets.

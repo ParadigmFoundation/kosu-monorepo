@@ -15,7 +15,7 @@ services:
     container_name: kosu-node-0
     ports: 
       - "8000:26657"
-    command: "kosud --home /go-kosu/testnet/node0 -E ws://172.17.0.1:8546"
+    command: "kosud --home /go-kosu/testnet/node0 start -E ws://172.17.0.1:8546"
     networks:
       localnet:
         ipv4_address: 192.167.10.2
@@ -25,7 +25,7 @@ services:
     container_name: kosu-node-1
     ports: 
       - "8001:26657"
-    command: "kosud --home /go-kosu/testnet/node1 -E ws://172.17.0.1:8546"
+    command: "kosud --home /go-kosu/testnet/node1 start -E ws://172.17.0.1:8546"
     networks:
       localnet:
         ipv4_address: 192.167.10.3
@@ -35,7 +35,7 @@ services:
     container_name: kosu-node-2
     ports: 
       - "8002:26657"
-    command: "kosud --home /go-kosu/testnet/node2 -E ws://172.17.0.1:8546"
+    command: "kosud --home /go-kosu/testnet/node2 start -E ws://172.17.0.1:8546"
     networks:
       localnet:
         ipv4_address: 192.167.10.4
@@ -45,7 +45,7 @@ services:
     container_name: kosu-node-3
     ports: 
       - "8003:26657"
-    command: "kosud --home /go-kosu/testnet/node3 -E ws://172.17.0.1:8546"
+    command: "kosud --home /go-kosu/testnet/node3 start -E ws://172.17.0.1:8546"
     networks:
       localnet:
         ipv4_address: 192.167.10.5
