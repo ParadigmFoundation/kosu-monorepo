@@ -10,5 +10,5 @@
         "esModuleInterop": true,
         "typeRoots": ["node_modules/@types", "node_modules/@0x/typescript-typings/types"]
     },
-    "include": ["src/"]
+    "include": ["src/", "../kosu-system-contracts/src/types.d.ts"]
 }
