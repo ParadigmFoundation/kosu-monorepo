@@ -17,7 +17,7 @@ import { toTwosComplement, toWei } from "web3-utils";
 import { BasicTradeSubContractContract } from "../generated-wrappers/basic_trade_sub_contract";
 import { artifacts } from "../src";
 import { migrations } from "../src/migrations";
-import { TestHelpers, TestValues } from "../src/test-helpers";
+import { TestHelpers, TestValues } from "../../kosu-contract-stuff/test-helpers";
 
 const useGeth = process.argv.includes("geth");
 const runCoverage = process.argv.includes("runCoverage");
