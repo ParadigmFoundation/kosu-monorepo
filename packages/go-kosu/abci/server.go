@@ -16,7 +16,12 @@ type Server struct {
 
 // StartInProcessServer starts an InProcess ABCI app and server
 func StartInProcessServer(app *App) (*Server, error) {
-	tm, err := app.CreateNode()
+	return StartInProcessServerWithNodeOptions(app, NodeOptions{})
+}
+
+// StartInProcessServerWithNodeOptions starts an InProcess ABCI app and server using custom options
+func StartInProcessServerWithNodeOptions(app *App, opts NodeOptions) (*Server, error) {
+	tm, err := app.CreateNode(opts)
 	if err != nil {
 		return nil, err
 	}
