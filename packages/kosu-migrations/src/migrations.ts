@@ -1,9 +1,5 @@
 import { getContractAddressesForNetworkOrThrow } from "@0x/contract-addresses";
 import { Web3Wrapper } from "@0x/web3-wrapper";
-import { ContractArtifact } from "ethereum-types";
-import Web3ProviderEngine from "web3-provider-engine";
-import { toWei } from "web3-utils";
-
 import {
     artifacts,
     AuthorizedAddressesContract,
@@ -15,7 +11,10 @@ import {
     ValidatorRegistryContract,
     VotingContract,
     ZeroExV2SubContractContract,
-} from "./index";
+} from "@kosu/system-contracts";
+import { ContractArtifact } from "ethereum-types";
+import Web3ProviderEngine from "web3-provider-engine";
+import { toWei } from "web3-utils";
 
 /**
  * Migrate contracts to the chain represented by the configured provider.

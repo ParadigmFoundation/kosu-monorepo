@@ -1,12 +1,13 @@
 import { MnemonicWalletSubprovider, RPCSubprovider } from "@0x/subproviders";
 import { BigNumber, providerUtils } from "@0x/utils";
 import { Web3Wrapper } from "@0x/web3-wrapper";
+import { KosuTokenContract } from "@kosu/system-contracts";
 import safeRequire from "safe-node-require";
 import Web3 from "web3";
 import Web3ProviderEngine from "web3-provider-engine";
 import yargs from "yargs";
 
-import { artifacts, DeployedAddresses, KosuTokenContract } from "..";
+import { DeployedAddresses } from "..";
 
 const args = yargs
     .option("rpc-url", {
