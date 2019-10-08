@@ -9,12 +9,13 @@ import (
 
 // CommandConfig are the config parameter for the command
 type CommandConfig struct {
-	Home         string
-	Web3         string
-	LiteFullnode string
-	LAddr        string
-	RPC          bool
-	Lite         bool
+	Home                 string
+	Web3                 string
+	LiteFullnode         string
+	LAddr                string
+	RPC                  bool
+	Lite                 bool
+	RemoteSignerListener string
 }
 
 // RegisterCommand register flags and logic into a cobra command to start a node
@@ -27,6 +28,8 @@ func RegisterCommand(cmd *cobra.Command, homeFlag string) {
 	cmd.Flags().BoolVarP(&cfg.Lite, "lite", "", false, "Start the node as a Lite client")
 	cmd.Flags().StringVarP(&cfg.LiteFullnode, "lite-fullnode", "", "http://localhost:26657",
 		"Fullnode's endpoint (required when running with --lite)")
+	cmd.Flags().StringVarP(&cfg.RemoteSignerListener, "remote-signer-listener", "", "",
+		"If set, kosud will use a remote signer (pointing to this address) to sign blocks")
 	rpcArgs := rpc.RegisterServerArgs("rpc", cmd)
 	cmd.PreRunE = func(cmd *cobra.Command, args []string) error {
 		if cfg.RPC {
@@ -42,9 +45,10 @@ func RegisterCommand(cmd *cobra.Command, homeFlag string) {
 		}
 
 		srv := Service{
-			HomeDir: home,
-			WEB3:    cfg.Web3,
-			LAddr:   cfg.LAddr,
+			HomeDir:              home,
+			WEB3:                 cfg.Web3,
+			LAddr:                cfg.LAddr,
+			RemoteSignerListener: cfg.RemoteSignerListener,
 		}
 
 		if cfg.Lite {
