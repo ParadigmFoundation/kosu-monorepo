@@ -28,8 +28,14 @@ func RegisterCommand(cmd *cobra.Command, homeFlag string) {
 	cmd.Flags().BoolVarP(&cfg.Lite, "lite", "", false, "Start the node as a Lite client")
 	cmd.Flags().StringVarP(&cfg.LiteFullnode, "lite-fullnode", "", "http://localhost:26657",
 		"Fullnode's endpoint (required when running with --lite)")
-	cmd.Flags().StringVarP(&cfg.RemoteSignerListener, "remote-signer-listener", "", "",
-		"If set, kosud will use a remote signer (pointing to this address) to sign blocks")
+
+	// TODO: re-enable this when TM support Tx signing via remote-signer
+	// We can't enable the option without it, because we need to sign Witness's Txs
+	if false {
+		cmd.Flags().StringVarP(&cfg.RemoteSignerListener, "remote-signer-listener", "", "",
+			"If set, kosud will use a remote signer (pointing to this address) to sign blocks")
+	}
+
 	rpcArgs := rpc.RegisterServerArgs("rpc", cmd)
 	cmd.PreRunE = func(cmd *cobra.Command, args []string) error {
 		if cfg.RPC {
