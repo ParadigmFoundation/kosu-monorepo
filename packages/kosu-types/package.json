@@ -1,0 +1,32 @@
+{
+    "name": "@kosu/types",
+    "version": "0.3.0",
+    "description": "Kosu TypeScript types.",
+    "license": "MIT",
+    "scripts": {
+        "build": "tsc",
+        "lint": "tslint -p ."
+    },
+    "types": "src/index.d.ts",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/ParadigmFoundation/kosu-monorepo.git"
+    },
+    "bugs": {
+        "url": "https://github.com/ParadigmFoundation/kosu-monorepo/issues"
+    },
+    "dependencies": {
+        "@kosu/tsc-config": "^0.1.0",
+        "@kosu/tslint-config": "^0.0.4",
+        "@kosu/system-contracts": "^0.3.0",
+        "@0x/types": "^2.4.3",
+        "@0x/typescript-typings": "^4.3.0",
+        "bignumber.js": "^9.0.0"
+    },
+    "publishConfig": {
+        "access": "public"
+    },
+    "files": [
+        "dist/"
+    ]
+}
