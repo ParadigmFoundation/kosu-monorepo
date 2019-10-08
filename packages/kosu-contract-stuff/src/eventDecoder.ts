@@ -1,7 +1,7 @@
 import Decoder from "web3-eth-abi";
 import { hexToNumberString, soliditySha3 } from "web3-utils";
 
-import * as EventEmitter from "../generated-artifacts/EventEmitter.json";
+import * as EventEmitter from "@kosu/system-contracts/dist/generated-artifacts/EventEmitter.json";
 
 const event: {
     name: string;

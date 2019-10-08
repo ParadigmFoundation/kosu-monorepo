@@ -1,8 +1,8 @@
 import { BigNumber } from "@0x/utils";
 import { Web3Wrapper } from "@0x/web3-wrapper";
 
-import { decodeKosuEvents, DeployedAddresses } from "..";
-import * as Wrappers from "../wrappers";
+import { decodeKosuEvents, DeployedAddresses } from "@kosu/system-contracts/dist/src";
+import * as Wrappers from "@kosu/system-contracts/dist/src/wrappers";
 
 import { TestValues } from "./test_values";
 
