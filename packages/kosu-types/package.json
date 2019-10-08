@@ -7,7 +7,7 @@
         "build": "tsc",
         "lint": "tslint -p ."
     },
-    "types": "src/index.d.ts",
+    "types": "dist/index.d.ts",
     "repository": {
         "type": "git",
         "url": "https://github.com/ParadigmFoundation/kosu-monorepo.git"
