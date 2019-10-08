@@ -8,7 +8,7 @@
         "url": "https://github.com/ParadigmFoundation/kosu-monorepo/blob/master/packages/kosu-system-contracts"
     },
     "main": "dist/src/index.js",
-    "types": "src",
+    "types": "src/",
     "bugs": {
         "url": "https://github.com/ParadigmFoundation/kosu-monorepo/issues"
     },
@@ -20,7 +20,6 @@
         "compile:solidity": "sol-compiler",
         "compile:typescript": "tsc",
         "lint": "tslint -p .",
-        "truffle:clean": "shx rm -rf build/contracts",
         "contracts:clean": "shx rm -rf  generated-artifacts generated-wrappers",
         "deliver:kosu:zaidan": "ts-node --files src/bin/deliver_tokens.ts --test-mnemonic --rpc-url=https://ethnet.zaidan.io/kosu",
         "deliver:kosu:ci": "ts-node --files src/bin/deliver_tokens.ts --test-mnemonic --rpc-url=${WEB3_URI}",
@@ -33,8 +32,6 @@
         "migrate:zaidan": "run-s deploy:kosu:zaidan deploy:0x:zaidan generate:readme deliver:kosu:zaidan",
         "migrate:ci": "run-s deploy:kosu:ci deploy:0x:ci deliver:kosu:ci",
         "prettier:deployedAddresses": "prettier --write src/deployedAddresses.json --config ../../.prettierrc",
-        "ganache_rpc": "docker run --rm -p 8545:8545 ${npm_package_config_kosu_ganache_image}",
-        "ganache_rpc:detached": "docker run --rm -d -p 8545:8545 ${npm_package_config_kosu_ganache_image}",
         "generate:contract_wrappers": "abi-gen --abis  ${npm_package_config_abis} --template ./abi-gen-templates/contract.handlebars --partials '../../node_modules/@0x/abi-gen-templates/partials/**/*.handlebars' --output generated-wrappers --backend ethers",
         "generate:readme": "node scripts/generateReadme.js",
         "docs": "node scripts/devdoc.js ./generated-artifacts ./docs"
