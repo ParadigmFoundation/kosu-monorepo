@@ -216,5 +216,9 @@ func (s *KosudSuite) TestStart() {
 }
 
 func TestKosudSuite(t *testing.T) {
+	if ci := os.Getenv("CI"); ci != "" {
+		t.SkipNow()
+	}
+
 	suite.Run(t, new(KosudSuite))
 }
