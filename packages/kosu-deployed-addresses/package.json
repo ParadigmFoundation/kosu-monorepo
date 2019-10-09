@@ -1,0 +1,29 @@
+{
+    "name": "@kosu/deployed-addresses",
+    "version": "0.3.0",
+    "description": "Kosu contract deployment receipts",
+    "license": "MIT",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/ParadigmFoundation/kosu-monorepo/blob/master/packages/kosu-migrations"
+    },
+    "main": "dist/src/index.js",
+    "bugs": {
+        "url": "https://github.com/ParadigmFoundation/kosu-monorepo/issues"
+    },
+    "scripts": {
+        "build": "tsc",
+        "lint": "tslint -p ."
+    },
+    "dependencies": {
+        "@kosu/migrations": "0.3.0"
+    },
+    "publishConfig": {
+        "access": "public"
+    },
+    "files": [
+        "dist/",
+        "tsconfig.json",
+        "tslint.json"
+    ]
+}
