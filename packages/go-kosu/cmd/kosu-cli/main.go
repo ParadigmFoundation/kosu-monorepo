@@ -74,6 +74,7 @@ func main() {
 		abci.QueryConsensusParams(),
 		abci.QueryPoster(),
 		abci.QueryRoundInfo(),
+		abci.QueryLatestOrders(),
 	)
 
 	rootCmd.AddCommand(

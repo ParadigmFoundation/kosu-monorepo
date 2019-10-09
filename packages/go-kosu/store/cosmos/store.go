@@ -2,11 +2,16 @@ package cosmos
 
 import (
 	"encoding/hex"
+	"fmt"
+	"sort"
+	"strconv"
+	"strings"
 
 	abci "github.com/tendermint/tendermint/abci/types"
 	db "github.com/tendermint/tm-db"
 
 	cosmos "github.com/cosmos/cosmos-sdk/store"
+
 	"github.com/cosmos/cosmos-sdk/store/rootmulti"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 
@@ -24,6 +29,7 @@ type Store struct {
 	witnessKey   *sdk.KVStoreKey
 	posterKey    *sdk.KVStoreKey
 	validatorKey *sdk.KVStoreKey
+	orderKey     *sdk.KVStoreKey
 }
 
 // NewStore returns a new store
@@ -35,12 +41,14 @@ func NewStore(db db.DB, cdc store.Codec) *Store {
 		witnessKey:   sdk.NewKVStoreKey("witness"),
 		posterKey:    sdk.NewKVStoreKey("poster"),
 		validatorKey: sdk.NewKVStoreKey("validator"),
+		orderKey:     sdk.NewKVStoreKey("orders"),
 	}
 
 	s.cms.MountStoreWithDB(s.chainKey, sdk.StoreTypeIAVL, nil)
 	s.cms.MountStoreWithDB(s.witnessKey, sdk.StoreTypeIAVL, nil)
 	s.cms.MountStoreWithDB(s.posterKey, sdk.StoreTypeIAVL, nil)
 	s.cms.MountStoreWithDB(s.validatorKey, sdk.StoreTypeIAVL, nil)
+	s.cms.MountStoreWithDB(s.orderKey, sdk.StoreTypeIAVL, nil)
 
 	if err := s.cms.LoadLatestVersion(); err != nil {
 		panic(err)
@@ -87,8 +95,17 @@ func (s *Store) Has(key string, kv *sdk.KVStoreKey) bool {
 
 // All iterates over all the elements of a given store
 func (s *Store) All(kv *sdk.KVStoreKey, fn func(key string, buf []byte)) {
-	//	it := kv.Iterator([]byte(start), []byte(end))
 	it := s.cms.GetCommitKVStore(kv).Iterator(nil, nil)
+	s.iterate(it, fn)
+}
+
+// Reverse iterates over all the elements of a given store in reverse order
+func (s *Store) Reverse(kv *sdk.KVStoreKey, fn func(key string, buf []byte)) {
+	it := s.cms.GetCommitKVStore(kv).ReverseIterator(nil, nil)
+	s.iterate(it, fn)
+}
+
+func (s *Store) iterate(it sdk.Iterator, fn func(key string, buf []byte)) {
 	for it.Valid() {
 		key := it.Key()
 		val := it.Value()
@@ -200,6 +217,64 @@ func (s *Store) TotalOrders() uint64 {
 	var v uint64
 	s.Get("totalorders", s.chainKey, &v)
 	return v
+}
+
+const OrderKeyPrefix = "orders"
+
+func orderKey(id int) string {
+	return fmt.Sprintf("%s%d", OrderKeyPrefix, id)
+}
+
+func parseOrderKey(key string) (int, error) {
+	key = strings.TrimPrefix(key, OrderKeyPrefix)
+	return strconv.Atoi(key)
+}
+
+// SetOrder creates an order in the store and remove the oldest
+// if the number of stored orders exceeds the limit value.
+// SetOrder will also update the TotalOrders counter
+func (s *Store) SetOrder(tx *types.TransactionOrder, limit int) {
+	// we generate auto-incremental IDs so that we can track the oldest order
+	var keys []int
+	s.All(s.orderKey, func(key string, _ []byte) {
+		n, err := parseOrderKey(key)
+		if err != nil {
+			panic(err)
+		}
+
+		keys = append(keys, n)
+	})
+	sort.Ints(keys)
+	// at this point we have all the IDs in order
+
+	// Delete all the orders that exceeds the limit
+	for len(keys) >= limit && limit > 0 {
+		key := keys[0]
+		s.Delete(orderKey(key), s.orderKey)
+		keys = keys[1:]
+	}
+
+	var newKey = 0
+	if len(keys) > 0 {
+		newKey = keys[len(keys)-1] + 1
+	}
+	s.Set(orderKey(newKey), s.orderKey, tx)
+
+	total := s.TotalOrders()
+	s.SetTotalOrders(total + 1)
+}
+
+// GetOrders retrieves all the available orders in the store
+func (s *Store) GetOrders() (orders []types.TransactionOrder) {
+	s.All(s.orderKey, func(_ string, bytes []byte) {
+		var tx types.TransactionOrder
+		if err := s.Codec().Decode(bytes, &tx); err != nil {
+			panic(err)
+		}
+		orders = append(orders, tx)
+	})
+
+	return
 }
 
 // WitnessTxExists checks if a given WitnessTx has been persisted

@@ -8,6 +8,7 @@ import (
 	"github.com/ParadigmFoundation/kosu-monorepo/packages/go-kosu/abci"
 	"github.com/ParadigmFoundation/kosu-monorepo/packages/go-kosu/abci/types"
 	"github.com/ParadigmFoundation/kosu-monorepo/packages/go-kosu/rpc"
+	"github.com/ParadigmFoundation/kosu-monorepo/packages/go-kosu/store"
 
 	"github.com/stretchr/testify/require"
 )
@@ -77,7 +78,7 @@ func (suite *IntegrationTestSuite) TestOrders() {
 		suite.NotEqual(0, res.Code)
 	})
 
-	suite.Run("RPCEvents", func() {
+	suite.Run("RPC", func() {
 		tx := NewOrderTx(suite.T())
 
 		fn := func() (*abci.Client, error) {
@@ -89,17 +90,26 @@ func (suite *IntegrationTestSuite) TestOrders() {
 
 		rpcClient := rpc.DialInProc(srv)
 
-		ctx, cancel := context.WithCancel(context.Background())
-		defer cancel()
+		suite.Run("Events", func() {
+			ctx, cancel := context.WithCancel(context.Background())
+			defer cancel()
 
-		ch := make(chan *types.TransactionOrder)
-		sub, err := rpcClient.Subscribe(ctx, "kosu", ch, "newOrders")
-		suite.Require().NoError(err)
-		defer sub.Unsubscribe()
+			ch := make(chan *types.TransactionOrder)
+			sub, err := rpcClient.Subscribe(ctx, "kosu", ch, "newOrders")
+			suite.Require().NoError(err)
+			defer sub.Unsubscribe()
 
-		suite.BroadcastTxSync(tx)
+			suite.BroadcastTxSync(tx)
 
-		event := <-ch
-		suite.Equal(tx.String(), event.String())
+			event := <-ch
+			suite.Equal(tx.String(), event.String())
+		})
+
+		suite.Run("LatestOrders", func() {
+			var orders []*store.Order
+			err := rpcClient.Call(&orders, "kosu_latestOrders")
+			suite.Require().NoError(err)
+			suite.Assert().NotEmpty(orders)
+		})
 	})
 }

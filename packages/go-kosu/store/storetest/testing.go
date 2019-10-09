@@ -1,6 +1,7 @@
 package storetest
 
 import (
+	"fmt"
 	"math"
 	"testing"
 
@@ -28,6 +29,7 @@ func TestSuite(t *testing.T, f Factory) {
 		{"Witness", TestWitness},
 		{"Poster", TestPoster},
 		{"Validator", TestValidator},
+		{"Orders", TestOrders},
 	}
 
 	for _, test := range cases {
@@ -131,4 +133,22 @@ func TestValidator(t *testing.T, s store.Store) {
 		newV := s.Validator(addr)
 		assert.Nil(t, newV)
 	})
+}
+
+// TestOrders creates `total` orders keeping up to `limit` orders.
+func TestOrders(t *testing.T, s store.Store) {
+	total := 1000
+	limit := 5
+	for i := 0; i < total; i++ {
+		tx := types.TransactionOrder{
+			SubContract: fmt.Sprintf("%d", i),
+		}
+		s.SetOrder(&tx, limit)
+	}
+
+	txs := s.GetOrders()
+	require.Len(t, txs, limit)
+	assert.Equal(t, "995", txs[0].SubContract)
+	assert.Equal(t, "999", txs[len(txs)-1].SubContract)
+	assert.EqualValues(t, 1000, s.TotalOrders())
 }

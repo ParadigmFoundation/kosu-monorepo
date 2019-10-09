@@ -14,6 +14,7 @@ import (
 
 	"github.com/ParadigmFoundation/kosu-monorepo/packages/go-kosu/abci"
 	"github.com/ParadigmFoundation/kosu-monorepo/packages/go-kosu/abci/types"
+	"github.com/ParadigmFoundation/kosu-monorepo/packages/go-kosu/store"
 
 	"github.com/ethereum/go-ethereum/rpc"
 
@@ -812,7 +813,7 @@ func (s *Service) QueryPoster(addr string) (*types.Poster, error) {
 
 /*
 TotalOrders returns the total number of orders in the system.
-This number is incremented each time one submits a new valid order
+This number is incremented each time one submits a new valid order.
 
 _Method:_
 
@@ -828,6 +829,36 @@ _Returns:_
 func (s *Service) TotalOrders() (uint64, error) {
 	v, err := s.abci.QueryTotalOrders()
 	return v, newQueryError(err)
+}
+
+/*
+LatestOrders returns the latest orders in the store.
+The maximum number of order returned is defined by the consensus parameter `OrdersLimit`.
+
+_Method:_
+
+-Parameters:_ None
+
+_Returns:_
+
+-   `Orders` - `Array`([Order](https://godoc.org/github.com/ParadigmFoundation/kosu-monorepo/packages/go-kosu/store#Order))
+
+*/
+func (s *Service) LatestOrders() ([]*store.Order, error) {
+	txs, err := s.abci.QueryLatestOrders()
+	if err != nil {
+		return nil, err
+	}
+
+	orders := make([]*store.Order, len(txs))
+	for i, tx := range txs {
+		order, err := store.NewOrderFromProto(&tx)
+		if err != nil {
+			return nil, err
+		}
+		orders[i] = order
+	}
+	return orders, nil
 }
 
 /*

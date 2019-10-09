@@ -2,6 +2,7 @@
 
 ## master
 
+-   Add LatestOrders RPC endpoint
 -   Refactor ./cmd/kosud
 -   Allow to start the node in --lite mode
 -   Embed RPC Server in kosud

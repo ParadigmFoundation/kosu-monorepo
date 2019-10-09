@@ -44,7 +44,8 @@
         "consensus_params": {
             "period_limit": 100000,
             "period_length": 10,
-            "blocks_before_pruning": 10
+            "blocks_before_pruning": 10,
+            "orders_limit": 10
         }
     }
 }

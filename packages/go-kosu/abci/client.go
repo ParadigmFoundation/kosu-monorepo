@@ -5,13 +5,18 @@ import (
 	"errors"
 
 	"github.com/gogo/protobuf/proto"
+
 	"github.com/tendermint/tendermint/libs/pubsub/query"
 	"github.com/tendermint/tendermint/rpc/client"
 	rpctypes "github.com/tendermint/tendermint/rpc/core/types"
 	tmtypes "github.com/tendermint/tendermint/types"
 
+	"github.com/cosmos/cosmos-sdk/codec"
+	sdktypes "github.com/cosmos/cosmos-sdk/store/types"
+
 	"github.com/ParadigmFoundation/kosu-monorepo/packages/go-kosu/abci/types"
 	"github.com/ParadigmFoundation/kosu-monorepo/packages/go-kosu/store"
+	"github.com/ParadigmFoundation/kosu-monorepo/packages/go-kosu/store/cosmos"
 )
 
 var (
@@ -179,6 +184,24 @@ func (c *Client) QueryTotalOrders() (uint64, error) {
 	return num, nil
 }
 
+func (c *Client) QueryLatestOrders() ([]types.TransactionOrder, error) {
+	KVs, err := c.QuerySubSpace("orders", []byte(cosmos.OrderKeyPrefix))
+	if err != nil {
+		return nil, err
+	}
+
+	var txs []types.TransactionOrder
+	for _, kv := range KVs {
+		var tx types.TransactionOrder
+		if err := c.cdc.Decode(kv.Value, &tx); err != nil {
+			return nil, err
+		}
+		txs = append(txs, tx)
+	}
+
+	return txs, nil
+}
+
 // Query is a generic query interface.
 // It will use the store.DefaultCodec codec to decode the `response.Value`.
 func (c *Client) Query(path string, data []byte, v interface{}) error {
@@ -197,4 +220,24 @@ func (c *Client) Query(path string, data []byte, v interface{}) error {
 	}
 
 	return c.cdc.Decode(res.Value, v)
+}
+
+func (c *Client) QuerySubSpace(store string, data []byte) ([]sdktypes.KVPair, error) {
+	out, err := c.ABCIQuery("/store/"+store+"/subspace", data)
+	if err != nil {
+		return nil, err
+	}
+	res := out.Response
+
+	if res.IsErr() {
+		return nil, errors.New(res.GetLog())
+	}
+
+	var KVs []sdktypes.KVPair
+	cdc := codec.New()
+	if err := cdc.UnmarshalBinaryLengthPrefixed(res.Value, &KVs); err != nil {
+		return nil, err
+	}
+
+	return KVs, nil
 }
