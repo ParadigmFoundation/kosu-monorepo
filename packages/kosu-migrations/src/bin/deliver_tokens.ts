@@ -1,4 +1,4 @@
-import { MnemonicWalletSubprovider, RPCSubprovider } from "@0x/subproviders";
+import { RPCSubprovider } from "@0x/subproviders";
 import { BigNumber, providerUtils } from "@0x/utils";
 import { Web3Wrapper } from "@0x/web3-wrapper";
 import { KosuTokenContract } from "@kosu/system-contracts";
@@ -26,7 +26,6 @@ if (args["test-mnemonic"] || !mnemonic) {
     provider.addProvider(rpcSubprovider);
     providerUtils.startProviderEngine(provider);
     const web3 = new Web3(args["rpc-url"]);
-    const web3Wrapper = new Web3Wrapper(provider);
 
     const networkId = await web3.eth.net.getId();
 
