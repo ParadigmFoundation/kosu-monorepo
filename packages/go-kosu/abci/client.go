@@ -184,19 +184,20 @@ func (c *Client) QueryTotalOrders() (uint64, error) {
 	return num, nil
 }
 
+// QueryLatestOrders queries a collection (subspace) of orders in the `orders` store.
 func (c *Client) QueryLatestOrders() ([]types.TransactionOrder, error) {
-	KVs, err := c.QuerySubSpace("orders", []byte(cosmos.OrderKeyPrefix))
+	KVs, err := c.querySubSpace("orders", []byte(cosmos.OrderKeyPrefix))
 	if err != nil {
 		return nil, err
 	}
 
-	var txs []types.TransactionOrder
-	for _, kv := range KVs {
+	txs := make([]types.TransactionOrder, len(KVs))
+	for i, kv := range KVs {
 		var tx types.TransactionOrder
 		if err := c.cdc.Decode(kv.Value, &tx); err != nil {
 			return nil, err
 		}
-		txs = append(txs, tx)
+		txs[i] = tx
 	}
 
 	return txs, nil
@@ -222,7 +223,8 @@ func (c *Client) Query(path string, data []byte, v interface{}) error {
 	return c.cdc.Decode(res.Value, v)
 }
 
-func (c *Client) QuerySubSpace(store string, data []byte) ([]sdktypes.KVPair, error) {
+// querySubSpace
+func (c *Client) querySubSpace(store string, data []byte) ([]sdktypes.KVPair, error) {
 	out, err := c.ABCIQuery("/store/"+store+"/subspace", data)
 	if err != nil {
 		return nil, err

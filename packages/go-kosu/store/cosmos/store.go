@@ -219,6 +219,8 @@ func (s *Store) TotalOrders() uint64 {
 	return v
 }
 
+// OrderKeyPrefix is the prefix to be used in the orders
+// We need a prefix to be able to use the `/subspace` query path.
 const OrderKeyPrefix = "orders"
 
 func orderKey(id int) string {

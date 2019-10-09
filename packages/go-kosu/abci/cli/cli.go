@@ -190,6 +190,7 @@ func (cli *CLI) QueryPoster() *cobra.Command {
 	}
 }
 
+// QueryLatestOrders queries the latest orders
 func (cli *CLI) QueryLatestOrders() *cobra.Command {
 	return &cobra.Command{
 		Use:   "latest-orders",
