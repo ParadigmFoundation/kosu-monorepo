@@ -12,6 +12,9 @@
     "bugs": {
         "url": "https://github.com/ParadigmFoundation/kosu-monorepo/issues"
     },
+    "config": {
+        "test_mnemonic": "plate tag lend tissue capable ketchup evidence deliver aspect salt used always"
+    },
     "scripts": {
         "build": "tsc",
         "lint": "tslint -p .",
