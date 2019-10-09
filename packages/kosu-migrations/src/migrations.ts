@@ -12,6 +12,7 @@ import {
     VotingContract,
     ZeroExV2SubContractContract,
 } from "@kosu/system-contracts";
+import { MigratedContracts } from "@kosu/types";
 import { ContractArtifact } from "ethereum-types";
 import Web3ProviderEngine from "web3-provider-engine";
 import { toWei } from "web3-utils";
