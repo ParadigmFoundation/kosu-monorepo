@@ -1,14 +1,14 @@
 {
     "name": "@kosu/go-kosu",
     "private": true,
-    "version": "0.3.0",
+    "version": "v0.4.0",
     "description": "Package file used to configure go-kosu builds with up-to-date contract addresses",
     "repository": "https://github.com/ParadigmFoundation/kosu-monorepo/blob/master/packages/go-kosu",
     "license": "MIT",
     "scripts": {
         "build": "yarn abigen && yarn bindata && make",
         "bindata": "go generate ./witness",
-        "abigen": "jq '.compilerOutput.abi' node_modules/@kosu/system-contracts/generated-artifacts/EventEmitter.json |  abigen --abi - --pkg witness --type EventEmitter -out witness/event_emitter.go",
+        "abigen": "jq '.compilerOutput.abi' node_modules/@kosu/system-contracts/generated-artifacts/EventEmitter.json | abigen --abi - --pkg witness --type EventEmitter -out witness/event_emitter.go",
         "docs": "yarn docs:setup && yarn docs:rpc",
         "docs:clean": "rm -rf ./docs/",
         "docs:setup": "mkdir -p ./docs && cp README.md ./docs/",
