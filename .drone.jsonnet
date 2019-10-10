@@ -93,5 +93,8 @@ local KosuGeth(name) = Image(name, "kosu-test-geth:latest") {
 
             },
         }
-    ]
+    ],
+    "depends_on": [
+        "tests"
+    ],
 }]
