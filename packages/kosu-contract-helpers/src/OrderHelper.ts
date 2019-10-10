@@ -1,4 +1,4 @@
-import {Order, PostableOrder, TakeableOrder} from "@kosu/types";
+import { Order, PostableOrder, TakeableOrder } from "@kosu/types";
 import Web3 from "web3";
 
 import { OrderGateway } from "./OrderGateway";

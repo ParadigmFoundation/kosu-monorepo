@@ -2,7 +2,7 @@
 import { BigNumber } from "@0x/utils";
 import { ContractArtifact } from "ethereum-types";
 import { padRight, soliditySha3, stringToHex, toTwosComplement, toWei } from "web3-utils";
-import { decodeKosuEvents } from "@kosu/contract-utils"
+import { decodeKosuEvents } from "@kosu/contract-utils";
 
 import {
     artifacts,

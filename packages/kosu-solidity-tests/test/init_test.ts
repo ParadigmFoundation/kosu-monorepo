@@ -15,7 +15,7 @@ import { toWei } from "web3-utils";
 import { artifacts, BasicTradeSubContractContract } from "@kosu/system-contracts";
 import { migrations } from "@kosu/migrations";
 import { TestHelpers, TestValues } from "@kosu/test-helpers";
-import {MigratedTestContracts} from "@kosu/types";
+import { MigratedTestContracts } from "@kosu/types";
 
 const useGeth = process.argv.includes("geth");
 const runCoverage = process.argv.includes("runCoverage");
