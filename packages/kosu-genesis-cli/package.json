@@ -31,8 +31,8 @@
     "devDependencies": {
         "@0x/dev-utils": "^2.3.3",
         "@0x/subproviders": "^5.0.4",
-        "@0x/utils": "^4.5.2",
-        "@0x/web3-wrapper": "^6.0.13",
+        "@0x/utils": "^4.3.1",
+        "@0x/web3-wrapper": "^6.0.5",
         "@kosu/kosu.js": "^0.3.0",
         "@types/commander": "^2.12.2",
         "@types/node": "^12.7.5",

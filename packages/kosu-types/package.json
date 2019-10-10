@@ -17,11 +17,16 @@
         "url": "https://github.com/ParadigmFoundation/kosu-monorepo/issues"
     },
     "dependencies": {
+        "@0x/types": "^2.4.3",
+        "@0x/typescript-typings": "^4.3.0",
+        "@0x/utils": "^4.5.2",
+        "@0x/web3-wrapper": "^6.0.5",
+        "@kosu/system-contracts": "^0.3.0",
         "@kosu/tsc-config": "^0.1.0",
         "@kosu/tslint-config": "^0.0.4",
-        "@kosu/system-contracts": "^0.3.0",
-        "@0x/types": "^2.4.3",
-        "@0x/typescript-typings": "^4.3.0"
+        "bn.js": "2.0.3",
+        "ethereum-types": "^2.1.6",
+        "web3": "^1.2.1"
     },
     "publishConfig": {
         "access": "public"
