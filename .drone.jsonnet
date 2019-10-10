@@ -88,7 +88,6 @@ local KosuGeth(name) = Image(name, "kosu-test-geth:latest") {
                     "status": [ "success" ],
                     "event": [ "tag" ]
                 },
-                "depends_on": [ "go-kosu", "solidity", "npm-tests" ],
                 "environment": {
                     "NPM_USER": { "from_secret": "npm_user" },
                     "NPM_EMAIL": { "from_secret": "npm_email" },

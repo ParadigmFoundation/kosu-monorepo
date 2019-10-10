@@ -150,14 +150,9 @@ steps:
     - tag
     status:
     - success
-  depends_on:
-  - go-kosu
-  - solidity
-  - npm-tests
 
 trigger:
   event:
   - tag
-
 
 ...
