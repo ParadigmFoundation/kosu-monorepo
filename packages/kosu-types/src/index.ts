@@ -121,7 +121,14 @@ export interface Signature {
     sign(web3: Web3, messageHex: string, signer: string): Promise<string>;
 }
 
-export interface DecodedKosuLogArgs {}
+export interface DecodedKosuLogArgs {
+    eventType: string;
+    owner?: string;
+    details?: string;
+    poster?: string;
+    tendermintPublicKeyHex?: string;
+    stake?: string;
+}
 
 export interface LogWithDecodedKosuArgs<A, B> extends LogWithDecodedArgs<A> {
     event: string;
