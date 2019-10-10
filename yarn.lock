@@ -4821,6 +4821,11 @@ bluebird@^3.1.1, bluebird@^3.5.0, bluebird@^3.5.1, bluebird@^3.5.3, bluebird@^3.
   version "3.5.5"
   resolved "https://registry.yarnpkg.com/bluebird/-/bluebird-3.5.5.tgz#a8d0afd73251effbbd5fe384a77d73003c17a71f"
 
+bn.js@2.0.3:
+  version "2.0.3"
+  resolved "https://registry.yarnpkg.com/bn.js/-/bn.js-2.0.3.tgz#88922f1d693cfdc8260c606a3aaabfc98d25815f"
+  integrity sha1-iJIvHWk8/cgmDGBqOqq/yY0lgV8=
+
 bn.js@4.11.6:
   version "4.11.6"
   resolved "https://registry.yarnpkg.com/bn.js/-/bn.js-4.11.6.tgz#53344adb14617a13f6e8dd2ce28905d1c0ba3215"
