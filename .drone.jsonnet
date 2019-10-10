@@ -36,7 +36,6 @@ local KosuGeth(name) = Image(name, "kosu-test-geth:latest") {
 			"commands": [
 				"yarn",
 				"yarn setup:ci",
-				"cd packages/kosu-system-contracts",
 				"yarn migrate:ci",
 				"WEB3_URI=http://go-kosu-ci-geth:8545 yarn migrate:ci"
 			]
