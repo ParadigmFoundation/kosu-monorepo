@@ -21,13 +21,13 @@
         "@kosu/tslint-config": "^0.0.4",
         "@kosu/system-contracts": "^0.3.0",
         "@0x/types": "^2.4.3",
-        "@0x/typescript-typings": "^4.3.0",
-        "bignumber.js": "^9.0.0"
+        "@0x/typescript-typings": "^4.3.0"
     },
     "publishConfig": {
         "access": "public"
     },
     "files": [
+        "package.json",
         "dist/"
     ]
 }

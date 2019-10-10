@@ -2,7 +2,8 @@
     "extends": "@kosu/tsc-config",
     "compilerOptions": {
         "outDir": "dist",
-        "rootDir": "src"
-    },
-    "include": ["src/**/*"]
+        "rootDir": "src",
+        "typeRoots": ["./node_modules/@0x/typescript-typings/types"],
+        "types": ["@kosu/system-contracts"]
+    }
 }
