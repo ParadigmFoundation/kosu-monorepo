@@ -10,7 +10,7 @@
         "url": "https://github.com/ParadigmFoundation/kosu-monorepo/issues"
     },
     "scripts": {
-        "clean": "lerna clean -y && rm -rf node_modules",
+        "clean": "wsrun --exclude-missing clean && lerna clean -y && rm -rf node_modules",
         "clean:install": "yarn clean && yarn",
         "docs": "wsrun --exclude-missing docs",
         "lint": "wsrun --exclude-missing lint",

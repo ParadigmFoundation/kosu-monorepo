@@ -13,6 +13,7 @@
         "url": "https://github.com/ParadigmFoundation/kosu-monorepo/issues"
     },
     "scripts": {
+        "clean": "shx rm -rf dist/",
         "build": "tsc"
     },
     "dependencies": {

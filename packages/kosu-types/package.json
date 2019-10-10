@@ -5,6 +5,7 @@
     "license": "MIT",
     "scripts": {
         "build": "tsc",
+        "clean": "shx rm -rf dist/",
         "lint": "tslint -p ."
     },
     "main": "dist/index.js",

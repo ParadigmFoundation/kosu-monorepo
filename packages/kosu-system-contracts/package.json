@@ -14,6 +14,7 @@
     },
     "scripts": {
         "build": "run-s compile:solidity generate:contract_wrappers compile:typescript",
+        "clean": "shx rm -rf dist/ && yarn contracts:clean",
         "compile:solidity": "sol-compiler",
         "compile:typescript": "tsc",
         "contracts:clean": "shx rm -rf generated-artifacts generated-wrappers",

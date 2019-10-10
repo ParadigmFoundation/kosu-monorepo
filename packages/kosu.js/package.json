@@ -6,6 +6,7 @@
     "license": "MIT",
     "scripts": {
         "build": "tsc",
+        "clean": "shx rm -rf dist/",
         "lint": "tslint -p .",
         "lint:fix": "tslint -p . --fix",
         "docs": "typedoc ./src"

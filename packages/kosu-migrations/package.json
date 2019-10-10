@@ -17,6 +17,7 @@
     },
     "scripts": {
         "build": "tsc",
+        "clean": "shx rm -rf dist/",
         "lint": "tslint -p .",
         "deliver:kosu:zaidan": "ts-node --files src/bin/deliver_tokens.ts --test-mnemonic --rpc-url=https://ethnet.zaidan.io/kosu",
         "deliver:kosu:ci": "ts-node --files src/bin/deliver_tokens.ts --test-mnemonic --rpc-url=${WEB3_URI}",

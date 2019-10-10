@@ -8,6 +8,7 @@
     "private": true,
     "scripts": {
         "build": "tsc",
+        "clean": "shx rm -rf dist/",
         "lint": "tslint -p .",
         "lint:fix": "tslint -p . --fix",
         "start": "node dist/index.js",

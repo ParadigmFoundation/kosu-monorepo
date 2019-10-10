@@ -13,6 +13,7 @@
     },
     "scripts": {
         "build": "tsc",
+        "clean": "shx rm -rf dist/",
         "lint": "tslint -p ."
     },
     "dependencies": {
