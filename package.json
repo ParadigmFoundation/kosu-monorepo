@@ -23,7 +23,7 @@
         "postinstall": "lerna link --force-local",
         "setup:ci": "run-p lint build",
         "kosu:test:start": "yarn workspace @kosu/kosu-geth kosu:test:start",
-        "migrate:ci": "yarn workspace @kosu/system-contracts migrate:ci"
+        "migrate:ci": "yarn workspace @kosu/migrations migrate:ci"
     },
     "workspaces": {
         "packages": [
