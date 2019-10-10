@@ -1,4 +1,3 @@
-const NULL_ADDRESS = require("../src/utils").NULL_ADDRESS;
 const { OrderSerializer } = require("../src/OrderSerializer");
 
 describe("OrderSerializer", () => {

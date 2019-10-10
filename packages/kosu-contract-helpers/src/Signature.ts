@@ -1,7 +1,6 @@
+import { NULL_ADDRESS } from "@kosu/contract-utils";
 import { bufferToHex, ecrecover, fromRpcSig, hashPersonalMessage, pubToAddress, toBuffer } from "ethereumjs-util";
 import Web3 from "web3";
-
-import { NULL_ADDRESS } from "./utils";
 
 // tslint:disable-next-line: no-unnecessary-class
 export const Signature = {

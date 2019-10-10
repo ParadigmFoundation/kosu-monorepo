@@ -1,9 +1,10 @@
+import { toBytes32 } from "@kosu/contract-utils";
+import { Order, PostableOrder } from "@kosu/types";
 import { soliditySHA3 as solSHA3 } from "ethereumjs-abi";
 import { bufferToHex, toBuffer } from "ethereumjs-util";
 import { isAddress } from "web3-utils";
 
 import { Signature } from "./Signature";
-import { toBytes32 } from "./utils";
 
 function _serialize(_arguments: any, values: any): string {
     let bytes: string = "";

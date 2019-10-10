@@ -1,5 +1,6 @@
 import { BigNumber } from "@0x/utils";
 import { WebsocketProvider, WebsocketProviderOptions } from "@0x/web3-providers-fork";
+import { OrderValidationResult, Poster, RoundInfo, Validator } from "@kosu/types";
 import assert from "assert";
 import { createHash } from "crypto";
 import { isFunction, isString } from "lodash";

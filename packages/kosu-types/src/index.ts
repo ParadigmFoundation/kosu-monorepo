@@ -1,3 +1,22 @@
+import { BigNumber } from "@0x/utils";
+import { Web3Wrapper } from "@0x/web3-wrapper";
+import {
+    AuthorizedAddressesContract,
+    BasicTradeSubContractContract,
+    EventEmitterContract,
+    KosuTokenContract,
+    OrderGatewayContract,
+    PosterRegistryContract,
+    TreasuryContract,
+    ValidatorRegistryContract,
+    VotingContract,
+    ZeroExV2SubContractContract,
+} from "@kosu/system-contracts";
+import BN from "bn.js";
+import { LogWithDecodedArgs } from "ethereum-types";
+import Web3 from "web3";
+import { Provider } from "web3/providers";
+
 export interface MigratedContracts {
     orderGateway: OrderGatewayContract;
     eventEmitter: EventEmitterContract;
@@ -51,8 +70,8 @@ export interface PrettyListing {
     currentChallenge: string;
 }
 
-interface KosuOptions {
-    provider?: provider;
+export interface KosuOptions {
+    provider?: Provider;
     networkId?: number | string;
     web3?: Web3;
     web3Wrapper?: Web3Wrapper;
@@ -66,7 +85,7 @@ interface KosuOptions {
     validatorRegistryAddress?: string;
 }
 
-interface Order {
+export interface Order {
     subContract: string;
     maker: string;
     makerValues: any;
@@ -77,55 +96,55 @@ interface Order {
     poster: string;
 }
 
-interface PostableOrder extends Order {
+export interface PostableOrder extends Order {
     posterSignature: string;
 }
 
-interface TakeableOrder extends Order {
+export interface TakeableOrder extends Order {
     takerValues: any;
 }
 
-interface OrderArgument {
+export interface OrderArgument {
     name: string;
     datatype: string;
 }
 
-interface KosuUtils {
+export interface KosuUtils {
     toBytes32(value: string): number | string | BN;
     NULL_ADDRESS: string;
 }
 
-interface Signature {
+export interface Signature {
     generate(web3: Web3, messageHex: string, signer: string): Promise<string>;
     validate(messageHex: string, signature: string, signer: string): boolean;
     recoverAddress(messageHex: any, signature: string): string;
     sign(web3: Web3, messageHex: string, signer: string): Promise<string>;
 }
 
-interface DecodedKosuLogArgs {}
+export interface DecodedKosuLogArgs {}
 
-interface LogWithDecodedKosuArgs<A, B> extends LogWithDecodedArgs<A> {
+export interface LogWithDecodedKosuArgs<A, B> extends LogWithDecodedArgs<A> {
     event: string;
     args: A;
     decodedArgs: B;
 }
 
-interface OrderValidationResult {
+export interface OrderValidationResult {
     accepted: string[];
     rejected: OrderRejectionInfo[];
 }
 
-interface OrderRejectionInfo {
+export interface OrderRejectionInfo {
     order: string;
     reason: string;
 }
 
-interface Poster {
+export interface Poster {
     balance: BigNumber;
     limit: number;
 }
 
-interface Validator {
+export interface Validator {
     balance: BigNumber;
     power: number;
     publicKey: string;
@@ -137,7 +156,7 @@ interface Validator {
     applied: number;
 }
 
-interface RoundInfo {
+export interface RoundInfo {
     number: number;
     startsAt: number;
     endsAt: number;

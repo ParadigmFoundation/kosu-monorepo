@@ -1,5 +1,5 @@
 const { OrderGateway } = require("../src/OrderGateway");
-const DeployedAddresses = require("@kosu/system-contracts").DeployedAddresses;
+const DeployedAddresses = require("@kosu/migrations").DeployedAddresses;
 
 describe("OrderGateway", () => {
     let orderGateway, maker, taker, order, subContract;

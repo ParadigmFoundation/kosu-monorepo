@@ -1,6 +1,8 @@
 import { BigNumber } from "@0x/utils";
 import { Web3Wrapper } from "@0x/web3-wrapper";
-import { DeployedAddresses, ValidatorRegistryContract } from "@kosu/system-contracts";
+import { DeployedAddresses } from "@kosu/migrations";
+import { ValidatorRegistryContract } from "@kosu/system-contracts";
+import { Challenge, KosuOptions, Listing } from "@kosu/types";
 import { TransactionReceiptWithDecodedLogs } from "ethereum-protocol";
 import Web3 from "web3";
 

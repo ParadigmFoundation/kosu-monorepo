@@ -1,5 +1,5 @@
-const DeployedAddresses = require("@kosu/system-contracts").DeployedAddresses[6174];
-const decodeKosuEvents = require("@kosu/system-contracts").decodeKosuEvents;
+const DeployedAddresses = require("@kosu/migrations").DeployedAddresses[6174];
+const decodeKosuEvents = require("@kosu/contract-utils").decodeKosuEvents;
 
 describe("ValidatorRegistry", () => {
     it("should allow validator interactions", async () => {

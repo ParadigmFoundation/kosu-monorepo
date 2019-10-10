@@ -1,6 +1,8 @@
 import { BigNumber } from "@0x/utils";
 import { Web3Wrapper } from "@0x/web3-wrapper";
-import { DeployedAddresses, OrderGatewayContract } from "@kosu/system-contracts";
+import { DeployedAddresses } from "@kosu/migrations";
+import { OrderGatewayContract } from "@kosu/system-contracts";
+import { KosuOptions, Order } from "@kosu/types";
 import Web3 from "web3";
 
 import { OrderSerializer } from "./OrderSerializer";

@@ -1,11 +1,11 @@
-const NULL_ADDRESS = require("../src/utils").NULL_ADDRESS;
+const NULL_ADDRESS = require("@kosu/contract-utils").NULL_ADDRESS;
+const Signature = require("../dist/src").Signature;
 
 describe("OrderHelper", () => {
-    let maker, taker, order, orderGateway, orderHelper, Signature, subContract;
+    let maker, taker, order, orderGateway, orderHelper, subContract;
 
     before(async () => {
         subContract = basicTradeSubContract.address;
-        Signature = kosu.Signature;
         orderGateway = kosu.orderGateway;
         orderHelper = kosu.orderHelper;
 
