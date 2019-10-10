@@ -15,7 +15,9 @@ services:
     container_name: kosu-node-0
     ports: 
       - "8000:26657"
-    command: "kosud --home /go-kosu/testnet/node0 start -E ws://172.17.0.1:8546"
+      - "14341:14341"
+      - "14342:14342"
+    command: "kosud --home /go-kosu/testnet/node0 start -E ws://172.17.0.1:8546 --rpc"
     networks:
       localnet:
         ipv4_address: 192.167.10.2

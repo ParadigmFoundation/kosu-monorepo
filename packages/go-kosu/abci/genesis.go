@@ -93,6 +93,7 @@ var GenesisAppState = &Genesis{
 		PeriodLength:        10,
 		PeriodLimit:         100000,
 		BlocksBeforePruning: 10,
+		OrdersLimit:         100,
 	},
 	SnapshotBlock:        0,
 	InitialValidatorInfo: nil,

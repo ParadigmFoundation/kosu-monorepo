@@ -129,7 +129,7 @@ func (o *Order) RecoverPoster() (Address, error) {
 
 // String implements Stringer to represent Order as a string
 func (o *Order) String() string {
-	return fmt.Sprintf("Order{%v}", "@todo")
+	return fmt.Sprintf("Order<Maker: %s>", o.Maker)
 }
 
 // Arguments defines the data types required for maker and taker values

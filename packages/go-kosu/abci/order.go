@@ -63,8 +63,8 @@ func (app *App) deliverOrderTx(tx *types.TransactionOrder) abci.ResponseDeliverT
 	poster.Limit--
 	app.store.SetPoster(posterAddress.String(), *poster)
 
-	total := app.store.TotalOrders()
-	app.store.SetTotalOrders(total + 1)
+	limit := app.store.ConsensusParams().OrdersLimit
+	app.store.SetOrder(tx, int(limit))
 	// end state modification
 
 	return abci.ResponseDeliverTx{

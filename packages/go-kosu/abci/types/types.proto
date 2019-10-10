@@ -35,6 +35,7 @@ message ConsensusParams {
   uint32 period_length = 3;
   uint32 max_order_bytes = 4;
   uint64 blocks_before_pruning = 5;
+  uint32 orders_limit = 6;
 }
 
 /**

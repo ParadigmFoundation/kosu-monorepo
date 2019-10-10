@@ -137,6 +137,25 @@ curl -X POST --data '{"jsonrpc":"2.0","method":"kosu_latestHeight", "id": 1}' lo
 { "jsonrpc": "2.0", "id": 1, "result": 260 }
 ```
 
+### _LatestOrders_
+
+LatestOrders returns the latest orders in the store.
+The maximum number of order returned is defined by the consensus parameter `OrdersLimit`.
+The results will be paginated according to the `page` and `perpage` parameters;
+`page` indicated the page number and `perpage`, how many orders per page. Use `page:0` and `perpage:0`
+to get all the Orders available.
+
+_Method:_
+
+_Parameters:_
+
+-   `page` - _int_
+-   `perpage` - _int_
+
+_Returns:_
+
+-   `Orders` - `Array`([Order](https://godoc.org/github.com/ParadigmFoundation/kosu-monorepo/packages/go-kosu/store#Order))
+
 ### _NumberPosters_
 
 NumberPosters returns the number of poster accounts
@@ -275,7 +294,7 @@ curl -X POST localhost:14341 \
 ### _TotalOrders_
 
 TotalOrders returns the total number of orders in the system.
-This number is incremented each time one submits a new valid order
+This number is incremented each time one submits a new valid order.
 
 _Method:_
 

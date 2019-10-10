@@ -2,14 +2,9 @@ package rpc
 
 import (
 	"fmt"
-	"net/http"
 	"strings"
 
-	"github.com/ethereum/go-ethereum/rpc"
 	"github.com/spf13/cobra"
-	tmlog "github.com/tendermint/tendermint/libs/log"
-
-	"github.com/ParadigmFoundation/kosu-monorepo/packages/go-kosu/abci"
 )
 
 // RegisterServerArgs will set the necessary flags to setup a RPC Server.
@@ -48,55 +43,4 @@ func (args *ServerArgs) Validate() error {
 			args.prefix, args.prefix)
 	}
 	return nil
-}
-
-// StartServer starts RPC Server endpoints WS and HTTP if defined
-func (args *ServerArgs) StartServer(client *abci.Client, logger tmlog.Logger, errCh chan<- error) error {
-	fn := func() (*abci.Client, error) { return client, nil }
-	srv, err := NewServer(fn)
-	if err != nil {
-		return err
-	}
-
-	logger = logger.With("module", "jsonrpc")
-
-	if args.HTTP {
-		go func() {
-			if err := startHTTP(srv, args.HTTPPort, logger); err != nil {
-				logger.Error("HTTP", "err", err)
-				if errCh != nil {
-					errCh <- err
-				}
-			}
-		}()
-	}
-
-	if args.WS {
-		go func() {
-			if err := startWS(srv, args.WSPort, logger); err != nil {
-				logger.Error("WS", "err", err)
-				if errCh != nil {
-					errCh <- err
-				}
-			}
-		}()
-	}
-
-	return nil
-}
-
-func startHTTP(srv *rpc.Server, port int, logger tmlog.Logger) error {
-	bind := fmt.Sprintf(":%d", port)
-	logger.Info("Starting HTTP server", "bind", bind)
-	return http.ListenAndServe(bind, srv)
-}
-
-func startWS(srv *rpc.Server, port int, logger tmlog.Logger) error {
-	bind := fmt.Sprintf(":%d", port)
-	logger.Info("Starting WS server", "bind", bind)
-
-	return http.ListenAndServe(
-		bind,
-		srv.WebsocketHandler([]string{"*"}),
-	)
 }
