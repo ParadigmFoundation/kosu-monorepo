@@ -9,11 +9,13 @@ import (
 	"strconv"
 
 	"github.com/spf13/cobra"
+
 	"github.com/tendermint/tendermint/config"
 
 	"github.com/ParadigmFoundation/kosu-monorepo/packages/go-kosu/abci"
 	"github.com/ParadigmFoundation/kosu-monorepo/packages/go-kosu/abci/types"
 	"github.com/ParadigmFoundation/kosu-monorepo/packages/go-kosu/service"
+	"github.com/ParadigmFoundation/kosu-monorepo/packages/go-kosu/store"
 )
 
 // CLI provides functions to build a cli client
@@ -184,6 +186,28 @@ func (cli *CLI) QueryPoster() *cobra.Command {
 			}
 
 			fmt.Printf("ok: < %s>\n", poster)
+		},
+	}
+}
+
+// QueryLatestOrders queries the latest orders
+func (cli *CLI) QueryLatestOrders() *cobra.Command {
+	return &cobra.Command{
+		Use:   "latest-orders",
+		Short: "Query the latest orders",
+		Run: func(cmd *cobra.Command, _ []string) {
+			txs, err := cli.client.QueryLatestOrders()
+			if err != nil {
+				printAndExit("%v\n", err)
+			}
+
+			for _, tx := range txs {
+				order, err := store.NewOrderFromProto(&tx)
+				if err != nil {
+					printAndExit("%v\n", err)
+				}
+				fmt.Println(order)
+			}
 		},
 	}
 }

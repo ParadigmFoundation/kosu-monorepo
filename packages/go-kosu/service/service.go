@@ -256,8 +256,8 @@ func (s *Service) startRPC(errCh chan error) error {
 	if port := opts.WSPort; port != 0 {
 		bind := fmt.Sprintf(":%d", port)
 		go func() {
-			logger.Info("Starting HTTP server", "bind", bind)
-			errCh <- http.ListenAndServe(bind, srv)
+			logger.Info("Starting WS server", "bind", bind)
+			errCh <- http.ListenAndServe(bind, srv.WebsocketHandler([]string{"*"}))
 		}()
 	}
 
