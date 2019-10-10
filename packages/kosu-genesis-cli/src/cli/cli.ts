@@ -26,4 +26,5 @@ cli.version("0.0.0")
     .option("-l, --period-limit <number>", "Maximum number of order messages to accept per rebalance period", "100000")
     .option("-L, --period-length <number>", "The length of each rebalance period (in Ethereum blocks)", "5")
     .option("-m, --max-order-bytes <number>", "The maximum size of a single order transaction", "4096")
-    .option("-B, --blocks-before-pruning <number>", "Maximum age of attestations before pruning", "50");
+    .option("-B, --blocks-before-pruning <number>", "Maximum age of attestations before pruning", "50")
+    .option("-o, --orders-limit <number>", "The maximum number of orders to keep in state at time", "100");

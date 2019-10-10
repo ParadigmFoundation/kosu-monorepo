@@ -12,6 +12,7 @@ export interface ConsensusParams {
     period_length: number;
     max_order_bytes: number;
     blocks_before_pruning: number;
+    orders_limit: number;
 }
 
 export interface AppState {
