@@ -93,7 +93,7 @@ steps:
   image: gcr.io/kosu-io/go-kosu-ci:latest
   commands:
   - cd packages/go-kosu
-  - export KOSU_TEST_NODES=$(pwd)/testnet/node0@kosu-node-1:26657,$(pwd)/testnet/node1@kosu-node-1:26657,$(pwd)/testnet/node2@kosu-node-1:26657,$(pwd)/testnet/node3@kosu-node-1:26657
+  - "export KOSU_TEST_NODES=$(pwd)/testnet/node0@kosu-node-1:26657,$(pwd)/testnet/node1@kosu-node-1:26657,$(pwd)/testnet/node2@kosu-node-1:26657,$(pwd)/testnet/node3@kosu-node-1:26657"
   - make ci
   depends_on:
   - build-project
@@ -101,30 +101,6 @@ steps:
   - kosu-node-1
   - kosu-node-2
   - kosu-node-3
-
-- name: release
-  pull: always
-  image: gcr.io/kosu-io/node-ci:latest
-  commands:
-  - npm-cli-login
-  - git checkout . && git clean -fd
-  - yarn lerna publish from-package
-  environment:
-    NPM_EMAIL:
-      from_secret: npm_email
-    NPM_PASS:
-      from_secret: npm_password
-    NPM_USER:
-      from_secret: npm_user
-  when:
-    event:
-    - tag
-    status:
-    - success
-  depends_on:
-  - go-kosu
-  - solidity
-  - npm-tests
 
 services:
 - name: kosu-geth
@@ -144,6 +120,43 @@ services:
 trigger:
   event:
   - pull_request
+  - tag
+
+---
+kind: pipeline
+name: release
+
+platform:
+  os: linux
+  arch: amd64
+
+steps:
+- name: release
+  pull: always
+  image: gcr.io/kosu-io/node-ci:latest
+  commands:
+  - npm-cli-login
+  - "git checkout . && git clean -fd"
+  - yarn lerna publish from-package
+  environment:
+    NPM_EMAIL:
+      from_secret: npm_email
+    NPM_PASS:
+      from_secret: npm_password
+    NPM_USER:
+      from_secret: npm_user
+  when:
+    event:
+    - tag
+    status:
+    - success
+  depends_on:
+  - go-kosu
+  - solidity
+  - npm-tests
+
+trigger:
+  event:
   - tag
 
 ...
