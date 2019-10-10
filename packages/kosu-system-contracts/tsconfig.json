@@ -4,9 +4,7 @@
         "outDir": "dist",
         "rootDir": ".",
         "resolveJsonModule": true,
-        "moduleResolution": "node",
-        "typeRoots": ["node_modules/@types"],
-        "types": ["mocha"]
+        "moduleResolution": "node"
     },
     "include": ["./generated-wrappers/*", "./src/**/*"],
     "files": [

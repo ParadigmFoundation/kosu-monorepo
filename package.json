@@ -10,20 +10,20 @@
         "url": "https://github.com/ParadigmFoundation/kosu-monorepo/issues"
     },
     "scripts": {
-        "clean": "lerna clean -y && rm -rf node_modules",
+        "clean": "wsrun --exclude-missing clean && lerna clean -y && rm -rf node_modules",
         "clean:install": "yarn clean && yarn",
         "docs": "wsrun --exclude-missing docs",
         "lint": "wsrun --exclude-missing lint",
         "build": "wsrun --exclude-missing --fast-exit --stages build",
         "test": "wsrun --exclude-missing --stages --fast-exit test",
         "test:ci": "wsrun --exclude-missing --fast-exit test:ci",
-        "contracts:test:ci": "yarn workspace @kosu/system-contracts contracts:test:ci",
+        "contracts:test:ci": "yarn workspace @kosu/solidity-tests contracts:test:ci",
         "prettier": "prettier --write '**/*.{ts,tsx,json,md,js}' --config .prettierrc",
         "prettier:ci": "prettier --list-different '**/*.{ts,tsx,json,md,js}' --config .prettierrc",
         "postinstall": "lerna link --force-local",
         "setup:ci": "run-p lint build",
         "kosu:test:start": "yarn workspace @kosu/kosu-geth kosu:test:start",
-        "migrate:ci": "yarn workspace @kosu/system-contracts migrate:ci"
+        "migrate:ci": "yarn workspace @kosu/migrations migrate:ci"
     },
     "workspaces": {
         "packages": [

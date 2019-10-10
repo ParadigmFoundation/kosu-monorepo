@@ -24,14 +24,22 @@ local KosuGeth(name) = Image(name, "kosu-test-geth:latest") {
 	ports: [8545, 8546]
 };
 
-[
-    {
-        "kind": "pipeline",
-        "name": "tests",
-        "steps": [
-            Image("prettier_project", "node-ci:latest") {
-                "commands": ["yarn prettier:ci"]
-            },
+{
+	"kind": "pipeline",
+	"name": "tests",
+	"steps": [
+		Image("prettier_project", "node-ci:latest") {
+			"commands": ["yarn prettier:ci"]
+		},
+
+	    Image("build-project", "node-ci:latest") + GethConfig() {
+			"commands": [
+				"yarn",
+				"yarn setup:ci",
+				"yarn migrate:ci",
+				"WEB3_URI=http://go-kosu-ci-geth:8545 yarn migrate:ci"
+			]
+		},
 
             Image("build-project", "node-ci:latest") + GethConfig() {
                 "commands": [
