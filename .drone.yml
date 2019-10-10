@@ -134,6 +134,8 @@ steps:
   pull: always
   image: gcr.io/kosu-io/node-ci:latest
   commands:
+  - yarn
+  - yarn build
   - npm-cli-login
   - "git checkout . && git clean -fd"
   - yarn lerna publish from-package
