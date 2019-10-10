@@ -17,29 +17,31 @@ type Flags struct {
 	Home string
 }
 
-func main() {
+const (
+	homeFlag = "home"
+)
+
+// New returns a new root command
+func New() *cobra.Command {
 	var flags Flags
 
-	cobra.OnInitialize(func() {
-		flags.Home = expandPath(flags.Home)
-	})
-
-	rootCmd := &cobra.Command{
+	cmd := &cobra.Command{
 		Use:   "kosud",
 		Short: "The Kosud node",
 	}
-	rootCmd.PersistentFlags().StringVarP(&flags.Home, "home", "H", "~/.kosu", "directory for config and data")
+	cmd.PersistentFlags().StringVarP(&flags.Home, homeFlag, "H", "~/.kosu", "directory for config and data")
+	cmd.PersistentPreRun = func(cmd *cobra.Command, args []string) {
+		flags.Home = expandPath(flags.Home)
+	}
 
-	rootCmd.AddCommand(
-		cli.NewInitCommand("home"),
-		cli.NewStartCommand("home"),
-		cli.NewNodeCommand("home"),
+	cmd.AddCommand(
+		cli.NewInitCommand(homeFlag),
+		cli.NewStartCommand(homeFlag),
+		cli.NewNodeCommand(homeFlag),
 		version.NewCommand(),
 	)
 
-	if err := rootCmd.Execute(); err != nil {
-		log.Fatal(err)
-	}
+	return cmd
 }
 
 func expandPath(path string) string {
@@ -55,4 +57,11 @@ func expandPath(path string) string {
 	}
 
 	return path
+}
+
+func main() {
+	if err := New().Execute(); err != nil {
+		log.Fatal(err)
+	}
+
 }

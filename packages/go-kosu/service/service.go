@@ -9,6 +9,7 @@ import (
 
 	tmlog "github.com/tendermint/tendermint/libs/log"
 	"github.com/tendermint/tendermint/lite/proxy"
+	"github.com/tendermint/tendermint/privval"
 	tmdb "github.com/tendermint/tm-db"
 
 	"github.com/ParadigmFoundation/kosu-monorepo/packages/go-kosu/abci"
@@ -68,15 +69,23 @@ type Service struct {
 
 	// RPC will be enabled using the ports defined in RPC struct if != nil
 	RPC *RPC
+
+	// RemoteSignerListener
+	RemoteSignerListener string
 }
 
 func (s *Service) setDefaults() error {
-	if s.Logger == nil {
-		s.Logger = tmlog.NewTMLogger(os.Stdout)
-	}
-
 	if s.HomeDir == "" {
 		os.ExpandEnv("$HOME/.kosud")
+	}
+
+	cfg, err := abci.LoadConfig(s.HomeDir)
+	if err != nil {
+		return err
+	}
+	s.Logger, err = abci.NewLogger(cfg)
+	if err != nil {
+		return err
 	}
 
 	if s.LAddr == "" {
@@ -144,7 +153,21 @@ func (s *Service) startFull(ctx context.Context, errCh chan error) error {
 	cfg.RPC.ListenAddress = s.LAddr
 
 	app := abci.NewAppWithConfig(s.DB, cfg)
-	srv, err := abci.StartInProcessServer(app)
+	opts := abci.NodeOptions{}
+
+	if addr := s.RemoteSignerListener; addr != "" {
+		listener, err := privval.NewSignerListener(addr, s.Logger.With("module", "privval"))
+		if err != nil {
+			return err
+		}
+		signer, err := privval.NewSignerClient(listener)
+		if err != nil {
+			return err
+		}
+		opts.PrivValidator = signer
+	}
+
+	srv, err := abci.StartInProcessServerWithNodeOptions(app, opts)
 	if err != nil {
 		return err
 	}
