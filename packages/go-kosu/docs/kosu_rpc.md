@@ -141,10 +141,16 @@ curl -X POST --data '{"jsonrpc":"2.0","method":"kosu_latestHeight", "id": 1}' lo
 
 LatestOrders returns the latest orders in the store.
 The maximum number of order returned is defined by the consensus parameter `OrdersLimit`.
+The results will be paginated according to the `page` and `perpage` parameters;
+`page` indicated the page number and `perpage`, how many orders per page. Use `page:0` and `perpage:0`
+to get all the Orders available.
 
 _Method:_
 
-_Parameters:_ None
+_Parameters:_
+
+-   `page` - _int_
+-   `perpage` - _int_
 
 _Returns:_
 

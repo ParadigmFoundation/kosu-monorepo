@@ -12,13 +12,14 @@ import (
 	"log"
 	"strings"
 
-	"github.com/ParadigmFoundation/kosu-monorepo/packages/go-kosu/abci"
-	"github.com/ParadigmFoundation/kosu-monorepo/packages/go-kosu/abci/types"
-	"github.com/ParadigmFoundation/kosu-monorepo/packages/go-kosu/store"
-
 	"github.com/ethereum/go-ethereum/rpc"
 
 	tmtypes "github.com/tendermint/tendermint/types"
+
+	"github.com/ParadigmFoundation/kosu-monorepo/packages/go-kosu/abci"
+	"github.com/ParadigmFoundation/kosu-monorepo/packages/go-kosu/abci/types"
+	"github.com/ParadigmFoundation/kosu-monorepo/packages/go-kosu/store"
+	"github.com/ParadigmFoundation/kosu-monorepo/packages/go-kosu/utils"
 )
 
 // Service is a RPC service
@@ -831,20 +832,32 @@ func (s *Service) TotalOrders() (uint64, error) {
 	return v, newQueryError(err)
 }
 
+// Orders is a collection of store.Order, it's used for pagination purposes
+type Orders []*store.Order
+
+// Len is implemented to satisfy the utils.Paginator interface
+func (o Orders) Len() int { return len(o) }
+
 /*
 LatestOrders returns the latest orders in the store.
 The maximum number of order returned is defined by the consensus parameter `OrdersLimit`.
+The results will be paginated according to the `page` and `perpage` parameters;
+`page` indicated the page number and `perpage`, how many orders per page. Use `page:0` and `perpage:0`
+to get all the Orders available.
 
 _Method:_
 
-_Parameters:_ None
+_Parameters:_
+
+-   `page` - _int_
+-   `perpage` - _int_
 
 _Returns:_
 
 -   `Orders` - `Array`([Order](https://godoc.org/github.com/ParadigmFoundation/kosu-monorepo/packages/go-kosu/store#Order))
 
 */
-func (s *Service) LatestOrders() ([]*store.Order, error) {
+func (s *Service) LatestOrders(page, perpage int) ([]*store.Order, error) {
 	txs, err := s.abci.QueryLatestOrders()
 	if err != nil {
 		return nil, err
@@ -858,7 +871,9 @@ func (s *Service) LatestOrders() ([]*store.Order, error) {
 		}
 		orders[i] = order
 	}
-	return orders, nil
+
+	i, j := utils.Paginate(Orders(orders), page, perpage)
+	return orders[i:j], nil
 }
 
 /*

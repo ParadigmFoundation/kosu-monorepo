@@ -107,9 +107,22 @@ func (suite *IntegrationTestSuite) TestOrders() {
 
 		suite.Run("LatestOrders", func() {
 			var orders []*store.Order
-			err := rpcClient.Call(&orders, "kosu_latestOrders")
+
+			err := rpcClient.Call(&orders, "kosu_latestOrders", 0, 2)
 			suite.Require().NoError(err)
-			suite.Assert().NotEmpty(orders)
+			suite.Assert().Len(orders, 2)
+
+			err = rpcClient.Call(&orders, "kosu_latestOrders", 0, 1)
+			suite.Require().NoError(err)
+			suite.Assert().Len(orders, 1)
+
+			err = rpcClient.Call(&orders, "kosu_latestOrders", 1, 1)
+			suite.Require().NoError(err)
+			suite.Assert().Len(orders, 1)
+
+			err = rpcClient.Call(&orders, "kosu_latestOrders", 999, 1)
+			suite.Require().NoError(err)
+			suite.Assert().Empty(orders)
 		})
 	})
 }
