@@ -1,0 +1,71 @@
+{
+    "name": "@kosu/contract-helpers",
+    "version": "0.3.0",
+    "description": "JavaScript module for connecting with Kosu.",
+    "main": "dist/src/index.js",
+    "license": "MIT",
+    "scripts": {
+        "test": "mocha",
+        "coverage": "nyc mocha && istanbul report html && open coverage/lcov-report/index.html",
+        "test:ci": "ts-mocha -p tsconfig.json test/ --timeout 20000 -- geth",
+        "test:ganache": "docker run --rm -p 8545:8545 ${npm_package_config_ganache_image_uri}",
+        "test:ganache_detached": "docker run --rm -d -p 8545:8545 ${npm_package_config_ganache_image_uri}",
+        "build": "tsc",
+        "clean": "shx rm -rf dist/",
+        "lint": "tslint -p .",
+        "lint:fix": "tslint -p . --fix",
+        "docs": "typedoc ./src"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/ParadigmFoundation/kosu-monorepo.git"
+    },
+    "bugs": {
+        "url": "https://github.com/ParadigmFoundation/kosu-monorepo/issues"
+    },
+    "config": {
+        "test_mnemonic": "plate tag lend tissue capable ketchup evidence deliver aspect salt used always",
+        "ganache_image_uri": "gcr.io/kosu-io/kosu-ganache:latest"
+    },
+    "dependencies": {
+        "@0x/utils": "^4.3.1",
+        "@0x/web3-providers-fork": "^0.0.7",
+        "@0x/web3-wrapper": "^6.0.5",
+        "@babel/core": "^7.4.4",
+        "@kosu/system-contracts": "^0.3.0",
+        "@kosu/contract-utils": "^0.3.0",
+        "@kosu/types": "^0.3.0",
+        "@kosu/migrations": "^0.3.0",
+        "@kosu/tsc-config": "^0.1.0",
+        "@kosu/tslint-config": "^0.0.4",
+        "ethereum-protocol": "^1.0.1",
+        "ethereumjs-abi": "^0.6.6",
+        "ethereumjs-util": "^5.2.0",
+        "isomorphic-ws": "^4.0.1",
+        "lodash": "^4.17.15",
+        "node-fetch": "^2.2.0",
+        "uuid": "^3.3.3",
+        "web3": "1.2.0",
+        "web3-provider-engine": "15.0.0",
+        "web3-utils": "1.2.0",
+        "ws": "^7.1.2"
+    },
+    "devDependencies": {
+        "@istanbuljs/nyc-config-typescript": "^0.1.3",
+        "@types/ws": "^6.0.2",
+        "nyc": "^14.1.1",
+        "simple-mock": "^0.8.0",
+        "source-map-support": "^0.5.12",
+        "ts-mocha": "^6.0.0",
+        "ts-node": "^8.1.0",
+        "typedoc": "^0.14.2",
+        "typedoc-plugin-markdown": "^2.0.1"
+    },
+    "publishConfig": {
+        "access": "public"
+    },
+    "files": [
+        "dist/",
+        "README.md"
+    ]
+}

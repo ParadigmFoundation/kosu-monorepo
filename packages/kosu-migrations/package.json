@@ -1,0 +1,66 @@
+{
+    "name": "@kosu/migrations",
+    "version": "0.3.0",
+    "description": "Kosu Solidity migration scripts.",
+    "license": "MIT",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/ParadigmFoundation/kosu-monorepo/blob/master/packages/kosu-migrations"
+    },
+    "main": "dist/index.js",
+    "types": "src",
+    "bugs": {
+        "url": "https://github.com/ParadigmFoundation/kosu-monorepo/issues"
+    },
+    "config": {
+        "test_mnemonic": "plate tag lend tissue capable ketchup evidence deliver aspect salt used always"
+    },
+    "scripts": {
+        "build": "tsc",
+        "clean": "shx rm -rf dist/",
+        "lint": "tslint -p .",
+        "deliver:kosu:zaidan": "ts-node --files src/bin/deliver_tokens.ts --test-mnemonic --rpc-url=https://ethnet.zaidan.io/kosu",
+        "deliver:kosu:ci": "ts-node --files src/bin/deliver_tokens.ts --test-mnemonic --rpc-url=${WEB3_URI}",
+        "deploy:ropsten": "ts-node -T src/bin/migrate.ts --rpc-url=https://eth-ropsten.alchemyapi.io/jsonrpc/KUnSgCMXUSlgavPAznIBDCKhPhpgk8XA",
+        "deploy:kosu:zaidan": "ts-node -T src/bin/migrate.ts --test-mnemonic --rpc-url=https://ethnet.zaidan.io/kosu && yarn prettier:deployedAddresses",
+        "deploy:kosu:ci": "ts-node -T src/bin/migrate.ts --test-mnemonic --rpc-url=${WEB3_URI} && yarn prettier:deployedAddresses",
+        "deploy:0x:zaidan": "0x-migrate --rpc-url https://ethnet.zaidan.io/kosu --from 0x5409ED021D9299bf6814279A6A1411A7e866A631",
+        "deploy:0x:ci": "0x-migrate --rpc-url ${WEB3_URI} --from 0x5409ed021d9299bf6814279a6a1411a7e866a631",
+        "migrate:ropsten": "run-s deploy:ropsten generate:readme",
+        "migrate:zaidan": "run-s deploy:kosu:zaidan deploy:0x:zaidan generate:readme deliver:kosu:zaidan",
+        "migrate:ci": "run-s deploy:kosu:ci deploy:0x:ci deliver:kosu:ci",
+        "prettier:deployedAddresses": "prettier --write src/deployedAddresses.json --config ../../.prettierrc"
+    },
+    "dependencies": {
+        "@0x/contract-addresses": "^3.0.2",
+        "@0x/dev-utils": "^2.2.2",
+        "@0x/subproviders": "^4.1.0",
+        "@0x/utils": "^4.3.1",
+        "@0x/web3-wrapper": "^6.0.5",
+        "@kosu/system-contracts": "0.3.0",
+        "@kosu/tsc-config": "^0.1.0",
+        "@kosu/tslint-config": "^0.0.4",
+        "@kosu/types": "0.3.0",
+        "ethereum-types": "^2.1.6",
+        "openzeppelin-solidity": "2.1.2",
+        "safe-node-require": "^1.0.0",
+        "web3": "1.2.0",
+        "web3-eth-abi": "1.2.0",
+        "web3-provider-engine": "^15.0.0",
+        "web3-utils": "1.2.0"
+    },
+    "devDependencies": {
+        "0x.js": "^6.0.9",
+        "ethereumjs-abi": "^0.6.7",
+        "ethereumjs-util": "^6.1.0",
+        "yargs": "^13.2.2"
+    },
+    "publishConfig": {
+        "access": "public"
+    },
+    "files": [
+        "dist/",
+        "tsconfig.json",
+        "tslint.json"
+    ]
+}

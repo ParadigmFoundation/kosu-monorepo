@@ -1,10 +1,8 @@
 packages/go-kosu/vendor/
-packages/kosu.js/dist/
-packages/kosu-system-contracts/dist/
 packages/kosu-system-contracts/test/dist/
 packages/kosu-system-contracts/generated-artifacts/
 packages/kosu-system-contracts/generated-wrappers/
 packages/web-helpers/dist/
 packages/web-helpers/public/
 packages/kosu-docs/docs/.vuepress/dist/
-packages/order-server/dist/
+**/dist/
