@@ -136,9 +136,9 @@ steps:
   commands:
   - yarn
   - yarn build
+  - yarn prettier
   - npm-cli-login
-  - "git checkout . && git clean -fd"
-  - yarn lerna publish from-package
+  - yarn lerna publish from-package --yes
   environment:
     NPM_EMAIL:
       from_secret: npm_email

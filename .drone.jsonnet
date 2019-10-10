@@ -84,9 +84,9 @@ local KosuGeth(name) = Image(name, "kosu-test-geth:latest") {
             "commands": [
                 "yarn",
                 "yarn build",
+                "yarn prettier",
                 "npm-cli-login",
-                "git checkout . && git clean -fd",
-                "yarn lerna publish from-package" 
+                "yarn lerna publish from-package --yes" 
             ],
             "when": {
                 "status": [ "success" ],
