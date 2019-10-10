@@ -1,13 +1,13 @@
 import Decoder from "web3-eth-abi";
 import { hexToNumberString, soliditySha3 } from "web3-utils";
 
-import * as EventEmitter from "@kosu/system-contracts/dist/generated-artifacts/EventEmitter.json";
+import { artifacts } from "@kosu/system-contracts";
 
 const event: {
     name: string;
     type: string;
     inputs: Array<{ name: string; type: string }>;
-} = EventEmitter.compilerOutput.abi.filter(entry => entry.type === "event")[0] as {
+} = artifacts.EventEmitter.compilerOutput.abi.filter(entry => entry.type === "event")[0] as {
     name: string;
     type: string;
     inputs: Array<{ name: string; type: string }>;
