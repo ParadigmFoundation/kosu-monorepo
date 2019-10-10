@@ -8,7 +8,7 @@
         "url": "https://github.com/ParadigmFoundation/kosu-monorepo/blob/master/packages/kosu-system-contracts"
     },
     "main": "dist/src/index.js",
-    "types": "src/",
+    "types": "dist/src/index.d.ts",
     "bugs": {
         "url": "https://github.com/ParadigmFoundation/kosu-monorepo/issues"
     },
