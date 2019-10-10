@@ -1,5 +1,7 @@
 import { Web3Wrapper } from "@0x/web3-wrapper";
+import { NULL_ADDRESS, toBytes32 } from "@kosu/contract-utils";
 import { artifacts } from "@kosu/system-contracts";
+import { KosuOptions, KosuUtils } from "@kosu/types";
 import Web3 from "web3";
 
 import { EventEmitter } from "./EventEmitter";
@@ -10,7 +12,6 @@ import { OrderHelper } from "./OrderHelper";
 import { PosterRegistry } from "./PosterRegistry";
 import { Signature } from "./Signature";
 import { Treasury } from "./Treasury";
-import { NULL_ADDRESS, toBytes32 } from "./utils";
 import { ValidatorRegistry } from "./ValidatorRegistry";
 import { Voting } from "./Voting";
 
@@ -126,12 +127,6 @@ export class Kosu {
     public readonly utils: KosuUtils;
 
     /**
-     * Utilities for generating and recovering signatures for use within the
-     * Kosu system.
-     */
-    public readonly Signature: Signature;
-
-    /**
      * The current `@kosu/kosu.js` package version.
      */
     public readonly version: string;
@@ -176,7 +171,8 @@ export class Kosu {
 
         // Utilities
         this.utils = { toBytes32, NULL_ADDRESS };
-        this.Signature = Signature;
         this.version = version;
     }
 }
+
+export { Signature };
