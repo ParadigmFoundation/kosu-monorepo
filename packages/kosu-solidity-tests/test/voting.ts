@@ -1,7 +1,7 @@
 import { BigNumber } from "@0x/utils";
 import { soliditySha3 } from "web3-utils";
-
-import { decodeKosuEvents, KosuTokenContract, TreasuryContract, VotingContract } from "../src";
+import { decodeKosuEvents} from "@kosu/contract-utils";
+import { KosuTokenContract, TreasuryContract, VotingContract } from "@kosu/system-contracts";
 
 describe("Voting", () => {
     let voting: VotingContract;

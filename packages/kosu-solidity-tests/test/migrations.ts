@@ -1,4 +1,4 @@
-import { migrations } from "../src/migrations";
+import { migrations } from "@kosu/migrations";
 
 describe("migrations", () => {
     it("should recover console when failure occurs during processing", async () => {

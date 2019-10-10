@@ -1,7 +1,7 @@
 import { BigNumber } from "@0x/utils";
 import { soliditySha3 } from "web3-utils";
 
-import { AuthorizedAddressesContract, KosuTokenContract, PosterRegistryContract, TreasuryContract } from "../src";
+import { AuthorizedAddressesContract, KosuTokenContract, PosterRegistryContract, TreasuryContract } from "@kosu/system-contracts";
 
 describe("Treasury", async () => {
     let treasury: TreasuryContract;

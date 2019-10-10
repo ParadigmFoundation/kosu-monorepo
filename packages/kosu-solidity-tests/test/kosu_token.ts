@@ -1,7 +1,5 @@
 import { ContractArtifact } from "ethereum-types";
-import { fromWei } from "web3-utils";
-
-import { artifacts, KosuTokenContract } from "..";
+import { artifacts, KosuTokenContract } from "@kosu/system-contracts";
 
 describe("KosuToken", () => {
     let token, from, kosuToken;

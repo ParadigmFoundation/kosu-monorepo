@@ -2,16 +2,16 @@
 import { BigNumber } from "@0x/utils";
 import { ContractArtifact } from "ethereum-types";
 import { padRight, soliditySha3, stringToHex, toTwosComplement, toWei } from "web3-utils";
+import { decodeKosuEvents } from "@kosu/contract-utils"
 
 import {
     artifacts,
     AuthorizedAddressesContract,
-    decodeKosuEvents,
     KosuTokenContract,
     TreasuryContract,
     ValidatorRegistryContract,
     VotingContract,
-} from "../src";
+} from "@kosu/system-contracts";
 
 describe("ValidatorRegistry", async () => {
     const base64Key: string = "x6899Z4PYjavGaaEBt8jk0Y/3HF5GiR1duDld66IlxM=";

@@ -1,4 +1,3 @@
-import { LogDecoder } from "@0x/contracts-test-utils";
 import { BlockchainLifecycle } from "@0x/dev-utils";
 import { runMigrationsAsync as runZeroExMigrationsAsync } from "@0x/migrations";
 import { CoverageSubprovider } from "@0x/sol-coverage";
@@ -12,12 +11,11 @@ import chaiSubset from "chai-subset";
 import { ContractArtifact } from "ethereum-types";
 import Web3 from "web3";
 import Web3ProviderEngine from "web3-provider-engine";
-import { toTwosComplement, toWei } from "web3-utils";
-
-import { BasicTradeSubContractContract } from "../generated-wrappers/basic_trade_sub_contract";
-import { artifacts } from "../src";
-import { migrations } from "../src/migrations";
-import { TestHelpers, TestValues } from "../../kosu-contract-stuff/test-helpers";
+import { toWei } from "web3-utils";
+import { artifacts, BasicTradeSubContractContract } from "@kosu/system-contracts";
+import { migrations } from "@kosu/migrations";
+import { TestHelpers, TestValues } from "@kosu/test-helpers";
+import {MigratedTestContracts} from "@kosu/types";
 
 const useGeth = process.argv.includes("geth");
 const runCoverage = process.argv.includes("runCoverage");
@@ -36,27 +34,27 @@ before(async () => {
         const rpcSubprovider = new RPCSubprovider(process.env.WEB3_URI);
         provider.addProvider(rpcSubprovider);
     } else {
-        const artifactAdapter = new SolCompilerArtifactAdapter();
-        if (runCoverage) {
-            coverageSubprovider = new CoverageSubprovider(
-                artifactAdapter,
-                "0xc521f483f607eb5ea4d6b2dfdbd540134753a865",
-                {
-                    ignoreFilesGlobs: [
-                        "**/node_modules/openzeppelin-solidity/**",
-                        "**/node_modules/@kosu/subcontract-sdk/contracts/SubContract.sol",
-                        "**/IPosterRegistry.sol",
-                    ],
-                },
-            );
-            provider.addProvider(coverageSubprovider);
-        } else if (trace) {
-            const traceSubprovider = new RevertTraceSubprovider(
-                artifactAdapter,
-                "0xc521f483f607eb5ea4d6b2dfdbd540134753a865",
-            );
-            provider.addProvider(traceSubprovider);
-        }
+        // const artifactAdapter = new SolCompilerArtifactAdapter();
+        // if (runCoverage) {
+        //     coverageSubprovider = new CoverageSubprovider(
+        //         artifactAdapter,
+        //         "0xc521f483f607eb5ea4d6b2dfdbd540134753a865",
+        //         {
+        //             ignoreFilesGlobs: [
+        //                 "**/node_modules/openzeppelin-solidity/**",
+        //                 "**/node_modules/@kosu/subcontract-sdk/contracts/SubContract.sol",
+        //                 "**/IPosterRegistry.sol",
+        //             ],
+        //         },
+        //     );
+        //     provider.addProvider(coverageSubprovider);
+        // } else if (trace) {
+        //     const traceSubprovider = new RevertTraceSubprovider(
+        //         artifactAdapter,
+        //         "0xc521f483f607eb5ea4d6b2dfdbd540134753a865",
+        //     );
+        //     provider.addProvider(traceSubprovider);
+        // }
 
         const ganacheSubprovider = new GanacheSubprovider({
             mnemonic: process.env.npm_package_config_test_mnemonic,

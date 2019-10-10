@@ -3,12 +3,10 @@ import {
     BigNumber,
     ContractWrappers,
     generatePseudoRandomSalt,
-    orderHashUtils,
     signatureUtils,
 } from "0x.js";
 import { numberToHex, toTwosComplement } from "web3-utils";
-
-const NULL_ADDRESS = "0x0000000000000000000000000000000000000000";
+import { NULL_ADDRESS} from "@kosu/contract-utils";
 
 describe("ZeroExV2SubContract", () => {
     it("facilitate a 0x transfer", async () => {
