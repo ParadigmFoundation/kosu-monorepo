@@ -1,3 +1,5 @@
+import { Listing, PrettyListing } from "@kosu/types"
+
 export const listingStringifier = (listing: Listing): PrettyListing => {
     const prettyListing = {
         stakedBalance: listing.stakedBalance.toString(),

@@ -1,8 +1,10 @@
 import { Web3Wrapper } from "@0x/web3-wrapper";
-import { DeployedAddresses, eventDecoder } from "@kosu/system-contracts";
+import { DeployedAddresses } from "@kosu/migrations";
 import { DecodedLogArgs, FilterObject, LogEntry } from "ethereum-protocol";
 import Web3 from "web3";
 import Timeout = NodeJS.Timeout;
+
+import { eventDecoder } from "./utils";
 
 const KosuEndpoints = {
     1: {

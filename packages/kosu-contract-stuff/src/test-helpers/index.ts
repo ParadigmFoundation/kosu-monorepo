@@ -1,10 +1,12 @@
 import { BigNumber } from "@0x/utils";
 import { Web3Wrapper } from "@0x/web3-wrapper";
 
-import { decodeKosuEvents, DeployedAddresses } from "@kosu/system-contracts/dist/src";
-import * as Wrappers from "@kosu/system-contracts/dist/src/wrappers";
+import { DeployedAddresses } from "@kosu/migrations";
+import * as Wrappers from "@kosu/system-contracts";
+import { MigratedTestContracts } from "@kosu/types";
 
 import { TestValues } from "./test_values";
+import { decodeKosuEvents } from "../eventDecoder";
 
 export class TestHelpers {
     public web3Wrapper: Web3Wrapper;
@@ -144,7 +146,7 @@ export class TestHelpers {
                 }
             }
             const unlockBlock = await this.migratedContracts.treasury.tokenLocksExpire.callAsync(address);
-            await this.skipTo(unlockBlock);
+            await this.skipTo(unlockBlock.toNumber());
             await this.migratedContracts.treasury.withdraw.awaitTransactionSuccessAsync(
                 /*systemBalance*/ currentBalance,
                 {
@@ -226,7 +228,7 @@ export class TestHelpers {
             await this.finishExit(
                 publicKey,
                 from,
-                (await this.migratedContracts.validatorRegistry.getListing.callAsync(publicKey)).exitBlock,
+                (await this.migratedContracts.validatorRegistry.getListing.callAsync(publicKey)).exitBlock.toNumber(),
             );
         }
     }
