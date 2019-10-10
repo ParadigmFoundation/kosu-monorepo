@@ -2,7 +2,7 @@
     "name": "@kosu/contract-helpers",
     "version": "0.3.0",
     "description": "JavaScript module for connecting with Kosu.",
-    "main": "dist/index.js",
+    "main": "dist/src/index.js",
     "license": "MIT",
     "scripts": {
         "test": "mocha",
