@@ -1,0 +1,29 @@
+{
+    "name": "@kosu/test-helpers",
+    "version": "0.3.0",
+    "description": "Kosu test system helper functions",
+    "license": "MIT",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/ParadigmFoundation/kosu-monorepo"
+    },
+    "main": "dist/src/index.js",
+    "types": "src/",
+    "bugs": {
+        "url": "https://github.com/ParadigmFoundation/kosu-monorepo/issues"
+    },
+    "scripts": {
+        "build": "tsc"
+    },
+    "dependencies": {
+        "@kosu/contract-helpers": "0.3.0"
+    },
+    "publishConfig": {
+        "access": "public"
+    },
+    "files": [
+        "dist/",
+        "tsconfig.json",
+        "tslint.json"
+    ]
+}
