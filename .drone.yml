@@ -138,6 +138,7 @@ steps:
   - yarn build
   - yarn prettier
   - npm-cli-login
+  - git checkout .
   - yarn lerna publish from-package --yes
   environment:
     NPM_EMAIL:
