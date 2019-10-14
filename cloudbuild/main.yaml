@@ -82,8 +82,8 @@ steps:
     "-m", 
     "rsync", 
     "-r", "-c", "-d", 
-    "./packages/kosu.js/docs",
-    "./packages/kosu-docs/docs/kosu.js"
+    "./packages/kosu-contract-helpers/docs",
+    "./packages/kosu-docs/docs/kosu-contract-helpers"
   ]
 
 - name: "gcr.io/cloud-builders/gsutil"
