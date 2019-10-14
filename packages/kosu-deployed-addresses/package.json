@@ -14,7 +14,7 @@
     "scripts": {
         "build": "tsc",
         "clean": "shx rm -rf dist/",
-        "generate:readme": "node scripts/generateReadme.js",
+        "generate:readme": "node scripts/generateReadme.js && prettier --write README.md --config ../../.prettierrc",
         "lint": "tslint -p ."
     },
     "dependencies": {
