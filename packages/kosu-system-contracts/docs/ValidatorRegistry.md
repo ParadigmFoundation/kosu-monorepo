@@ -101,19 +101,19 @@ constructor(_treasuryAddress address, _votingAddress address, _events address, _
 
 #### Parameters:
 
-| Parameter                | Type      | Description                                                                                  |
-| ------------------------ | --------- | -------------------------------------------------------------------------------------------- |
-| `_treasuryAddress`       | `address` | Deployed Treasury address.                                                                   |
-| `_votingAddress`         | `address` | Deployed Voting address.                                                                     |
-| `_events`                | `address` | Deployed EventEmitter address.                                                               |
-| `_applicationPeriod`     | `uint256` | Initial application period (in blocks) for pending listings.                                 |
-| `_commitPeriod`          | `uint256` | Number of blocks after challenge initiated in which votes can be committed.                  |
-| `_challengePeriod`       | `uint256` | Number of blocks a challenge lasts before being finalized.                                   |
-| `_exitPeriod`            | `uint256` | Number of blocks exiting listings must wait before claiming stake.                           |
-| `_rewardPeriod`          | `uint256` | The frequency (in blocks) with which validator rewards may be issued.                        |
-| `_exitLockPeriod`        | `uint256` | Number of blocks tokens will be locked after a successful exit.                              |
-| `_winningVoteLockPeriod` | `uint256` | Number of blocks winning voters will have tokens locked after a challenge has been resolved. |
-| `_losingVoteLockPeriod`  | `uint256` | Number of blocks losing voters will have tokens locked after a challenge has been resolved.  |
+| Parameter                | Type      | Description                                                                 |
+| ------------------------ | --------- | --------------------------------------------------------------------------- |
+| `_treasuryAddress`       | `address` | Deployed Treasury address.                                                  |
+| `_votingAddress`         | `address` | Deployed Voting address.                                                    |
+| `_events`                | `address` | Deployed EventEmitter address.                                              |
+| `_applicationPeriod`     | `uint256` | Initial application period (in blocks) for pending listings.                |
+| `_commitPeriod`          | `uint256` | Number of blocks after challenge initiated in which votes can be committed. |
+| `_challengePeriod`       | `uint256` | Number of blocks a challenge lasts before being finalized.                  |
+| `_exitPeriod`            | `uint256` | Number of blocks exiting listings must wait before claiming stake.          |
+| `_rewardPeriod`          | `uint256` | The frequency (in blocks) with which validator rewards may be issued.       |
+| `_exitLockPeriod`        | `uint256` |
+| `_winningVoteLockPeriod` | `uint256` |
+| `_losingVoteLockPeriod`  | `uint256` |
 
 ### finalizeExit
 

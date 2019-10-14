@@ -64,6 +64,7 @@ Options:
   -L, --period-length <number>          The length of each rebalance period (in Ethereum blocks) (default: "5")
   -m, --max-order-bytes <number>        The maximum size of a single order transaction (default: "4096")
   -B, --blocks-before-pruning <number>  Maximum age of attestations before pruning (default: "50")
+  -o, --orders-limit <number>           The maximum number of orders to keep in state at time (default: "100")
   -h, --help                            output usage information
 ```
 

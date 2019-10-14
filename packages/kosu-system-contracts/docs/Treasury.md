@@ -17,7 +17,6 @@ The Kosu Treasury manages KosuToken balances to allow tokens in use within the c
     -   [deposit](#deposit)
     -   [registerVote](#registervote)
     -   [releaseTokens](#releasetokens)
-    -   [setVoting](#setvoting)
     -   [systemBalance](#systembalance)
     -   [tokenLocksExpire](#tokenlocksexpire)
     -   [validatorLock](#validatorlock)
@@ -208,13 +207,13 @@ function registerVote(account address, pollId uint256, amount uint256, endBlock 
 
 #### Parameters:
 
-| Parameter        | Type      | Description                                                                           |
-| ---------------- | --------- | ------------------------------------------------------------------------------------- |
-| `account`        | `address` | The account voting.                                                                   |
-| `pollId`         | `uint256` | The poll the account is voting on.                                                    |
-| `amount`         | `uint256` | Number of tokens contributed.                                                         |
-| `endBlock`       | `uint256` | Block number vote token lock should expire.                                           |
-| `losingEndBlock` | `uint256` | Block number vote token lock should expire if vote was in support of a losing option. |
+| Parameter        | Type      | Description                        |
+| ---------------- | --------- | ---------------------------------- |
+| `account`        | `address` | The account voting.                |
+| `pollId`         | `uint256` | The poll the account is voting on. |
+| `amount`         | `uint256` | Number of tokens contributed.      |
+| `endBlock`       | `uint256` |
+| `losingEndBlock` | `uint256` |
 
 ### releaseTokens
 
@@ -232,22 +231,6 @@ function releaseTokens(account address, amount uint256) public
 | --------- | --------- | ----------------------------- |
 | `account` | `address` | Account to release tokens to. |
 | `amount`  | `uint256` | Number of tokens to release.  |
-
-### setVoting
-
-Set the voting contract after post deployment of the Treasury contract.
-
-#### Signature
-
-```solidity
-function setVoting(votingAddress address) public
-```
-
-#### Parameters:
-
-| Parameter       | Type      | Description                              |
-| --------------- | --------- | ---------------------------------------- |
-| `votingAddress` | `address` | address of the deployed Voting contract. |
 
 ### systemBalance
 
