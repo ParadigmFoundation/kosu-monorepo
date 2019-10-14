@@ -14,10 +14,14 @@
     "scripts": {
         "build": "tsc",
         "clean": "shx rm -rf dist/",
+        "generate:readme": "node scripts/generateReadme.js",
         "lint": "tslint -p ."
     },
     "dependencies": {
         "@kosu/migrations": "0.3.0"
+    },
+    "devDependencies": {
+        "json2md": "^1.6.3"
     },
     "publishConfig": {
         "access": "public"
