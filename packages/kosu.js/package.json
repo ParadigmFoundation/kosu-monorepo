@@ -8,8 +8,7 @@
         "build": "tsc",
         "clean": "shx rm -rf dist/",
         "lint": "tslint -p .",
-        "lint:fix": "tslint -p . --fix",
-        "docs": "typedoc ./src"
+        "lint:fix": "tslint -p . --fix"
     },
     "repository": {
         "type": "git",
@@ -36,9 +35,7 @@
         "simple-mock": "^0.8.0",
         "source-map-support": "^0.5.12",
         "ts-mocha": "^6.0.0",
-        "ts-node": "^8.1.0",
-        "typedoc": "^0.14.2",
-        "typedoc-plugin-markdown": "^2.0.1"
+        "ts-node": "^8.1.0"
     },
     "publishConfig": {
         "access": "public"

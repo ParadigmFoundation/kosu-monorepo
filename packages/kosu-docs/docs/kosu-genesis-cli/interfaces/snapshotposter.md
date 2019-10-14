@@ -12,21 +12,21 @@
 
 ### Properties
 
--   [address](snapshotposter.md#address)
 -   [balance](snapshotposter.md#balance)
+-   [ethereum_address](snapshotposter.md#ethereum_address)
 
 ## Properties
-
-### address
-
-• **address**: _string_
-
-_Defined in [types.d.ts:54](https://github.com/ParadigmFoundation/kosu-monorepo/blob/2f37cabf/packages/kosu-genesis-cli/src/types.d.ts#L54)_
-
----
 
 ### balance
 
 • **balance**: _string_
 
-_Defined in [types.d.ts:55](https://github.com/ParadigmFoundation/kosu-monorepo/blob/2f37cabf/packages/kosu-genesis-cli/src/types.d.ts#L55)_
+_Defined in [types.d.ts:56](https://github.com/ParadigmFoundation/kosu-monorepo/blob/a7ce3d5b/packages/kosu-genesis-cli/src/types.d.ts#L56)_
+
+---
+
+### ethereum_address
+
+• **ethereum_address**: _string_
+
+_Defined in [types.d.ts:55](https://github.com/ParadigmFoundation/kosu-monorepo/blob/a7ce3d5b/packages/kosu-genesis-cli/src/types.d.ts#L55)_

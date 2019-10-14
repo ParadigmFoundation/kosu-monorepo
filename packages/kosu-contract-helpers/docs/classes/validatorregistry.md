@@ -50,18 +50,18 @@ Integration with ValidatorRegistry contract on an Ethereum blockchain.
 
 ### constructor
 
-\+ **new ValidatorRegistry**(`options`: [KosuOptions](../interfaces/kosuoptions.md), `treasury`: [Treasury](treasury.md)): _[ValidatorRegistry](validatorregistry.md)_
+\+ **new ValidatorRegistry**(`options`: `KosuOptions`, `treasury`: [Treasury](treasury.md)): _[ValidatorRegistry](validatorregistry.md)_
 
-_Defined in [ValidatorRegistry.ts:18](https://github.com/ParadigmFoundation/kosu-monorepo/blob/2f37cabf/packages/kosu.js/src/ValidatorRegistry.ts#L18)_
+_Defined in [ValidatorRegistry.ts:20](https://github.com/ParadigmFoundation/kosu-monorepo/blob/a7ce3d5b/packages/kosu-contract-helpers/src/ValidatorRegistry.ts#L20)_
 
 Create a new ValidatorRegistry instance.
 
 **Parameters:**
 
-| Name       | Type                                        | Description                   |
-| ---------- | ------------------------------------------- | ----------------------------- |
-| `options`  | [KosuOptions](../interfaces/kosuoptions.md) | instantiation options         |
-| `treasury` | [Treasury](treasury.md)                     | treasury integration instance |
+| Name       | Type                    | Description                   |
+| ---------- | ----------------------- | ----------------------------- |
+| `options`  | `KosuOptions`           | instantiation options         |
+| `treasury` | [Treasury](treasury.md) | treasury integration instance |
 
 **Returns:** _[ValidatorRegistry](validatorregistry.md)_
 
@@ -71,7 +71,7 @@ Create a new ValidatorRegistry instance.
 
 ▸ **applicationPeriod**(): _`Promise<BigNumber>`_
 
-_Defined in [ValidatorRegistry.ts:64](https://github.com/ParadigmFoundation/kosu-monorepo/blob/2f37cabf/packages/kosu.js/src/ValidatorRegistry.ts#L64)_
+_Defined in [ValidatorRegistry.ts:66](https://github.com/ParadigmFoundation/kosu-monorepo/blob/a7ce3d5b/packages/kosu-contract-helpers/src/ValidatorRegistry.ts#L66)_
 
 Reads the application period
 
@@ -83,7 +83,7 @@ Reads the application period
 
 ▸ **challengeListing**(`_pubKey`: string, `_details`: string): _`Promise<TransactionReceiptWithDecodedLogs>`_
 
-_Defined in [ValidatorRegistry.ts:256](https://github.com/ParadigmFoundation/kosu-monorepo/blob/2f37cabf/packages/kosu.js/src/ValidatorRegistry.ts#L256)_
+_Defined in [ValidatorRegistry.ts:258](https://github.com/ParadigmFoundation/kosu-monorepo/blob/a7ce3d5b/packages/kosu-contract-helpers/src/ValidatorRegistry.ts#L258)_
 
 Starts a challenge of a listing
 
@@ -102,7 +102,7 @@ Starts a challenge of a listing
 
 ▸ **challengePeriod**(): _`Promise<BigNumber>`_
 
-_Defined in [ValidatorRegistry.ts:80](https://github.com/ParadigmFoundation/kosu-monorepo/blob/2f37cabf/packages/kosu.js/src/ValidatorRegistry.ts#L80)_
+_Defined in [ValidatorRegistry.ts:82](https://github.com/ParadigmFoundation/kosu-monorepo/blob/a7ce3d5b/packages/kosu-contract-helpers/src/ValidatorRegistry.ts#L82)_
 
 Reads the challenge period
 
@@ -114,7 +114,7 @@ Reads the challenge period
 
 ▸ **claimRewards**(`_pubKey`: string): _`Promise<TransactionReceiptWithDecodedLogs>`_
 
-_Defined in [ValidatorRegistry.ts:285](https://github.com/ParadigmFoundation/kosu-monorepo/blob/2f37cabf/packages/kosu.js/src/ValidatorRegistry.ts#L285)_
+_Defined in [ValidatorRegistry.ts:287](https://github.com/ParadigmFoundation/kosu-monorepo/blob/a7ce3d5b/packages/kosu-contract-helpers/src/ValidatorRegistry.ts#L287)_
 
 Claims the rewards of a generating/burning listing
 
@@ -132,7 +132,7 @@ Claims the rewards of a generating/burning listing
 
 ▸ **claimWinnings**(`challengeId`: `BigNumber`): _`Promise<TransactionReceiptWithDecodedLogs>`_
 
-_Defined in [ValidatorRegistry.ts:315](https://github.com/ParadigmFoundation/kosu-monorepo/blob/2f37cabf/packages/kosu.js/src/ValidatorRegistry.ts#L315)_
+_Defined in [ValidatorRegistry.ts:317](https://github.com/ParadigmFoundation/kosu-monorepo/blob/a7ce3d5b/packages/kosu-contract-helpers/src/ValidatorRegistry.ts#L317)_
 
 Claims winnings from complete challenge
 
@@ -150,7 +150,7 @@ Claims winnings from complete challenge
 
 ▸ **commitPeriod**(): _`Promise<BigNumber>`_
 
-_Defined in [ValidatorRegistry.ts:72](https://github.com/ParadigmFoundation/kosu-monorepo/blob/2f37cabf/packages/kosu.js/src/ValidatorRegistry.ts#L72)_
+_Defined in [ValidatorRegistry.ts:74](https://github.com/ParadigmFoundation/kosu-monorepo/blob/a7ce3d5b/packages/kosu-contract-helpers/src/ValidatorRegistry.ts#L74)_
 
 Reads the commit period
 
@@ -162,7 +162,7 @@ Reads the commit period
 
 ▸ **confirmListing**(`_pubKey`: string): _`Promise<TransactionReceiptWithDecodedLogs>`_
 
-_Defined in [ValidatorRegistry.ts:245](https://github.com/ParadigmFoundation/kosu-monorepo/blob/2f37cabf/packages/kosu.js/src/ValidatorRegistry.ts#L245)_
+_Defined in [ValidatorRegistry.ts:247](https://github.com/ParadigmFoundation/kosu-monorepo/blob/a7ce3d5b/packages/kosu-contract-helpers/src/ValidatorRegistry.ts#L247)_
 
 Confirms listing after application period
 
@@ -180,7 +180,7 @@ Confirms listing after application period
 
 ▸ **convertPubKey**(`_pubKey`: string): _string_
 
-_Defined in [ValidatorRegistry.ts:326](https://github.com/ParadigmFoundation/kosu-monorepo/blob/2f37cabf/packages/kosu.js/src/ValidatorRegistry.ts#L326)_
+_Defined in [ValidatorRegistry.ts:328](https://github.com/ParadigmFoundation/kosu-monorepo/blob/a7ce3d5b/packages/kosu-contract-helpers/src/ValidatorRegistry.ts#L328)_
 
 Converts public key to hex if input is not currently in hex
 
@@ -200,7 +200,7 @@ hex encoded tendermint public key
 
 ▸ **exitPeriod**(): _`Promise<BigNumber>`_
 
-_Defined in [ValidatorRegistry.ts:88](https://github.com/ParadigmFoundation/kosu-monorepo/blob/2f37cabf/packages/kosu.js/src/ValidatorRegistry.ts#L88)_
+_Defined in [ValidatorRegistry.ts:90](https://github.com/ParadigmFoundation/kosu-monorepo/blob/a7ce3d5b/packages/kosu-contract-helpers/src/ValidatorRegistry.ts#L90)_
 
 Reads the exit period
 
@@ -212,7 +212,7 @@ Reads the exit period
 
 ▸ **finalizeExit**(`_pubKey`: string): _`Promise<TransactionReceiptWithDecodedLogs>`_
 
-_Defined in [ValidatorRegistry.ts:305](https://github.com/ParadigmFoundation/kosu-monorepo/blob/2f37cabf/packages/kosu.js/src/ValidatorRegistry.ts#L305)_
+_Defined in [ValidatorRegistry.ts:307](https://github.com/ParadigmFoundation/kosu-monorepo/blob/a7ce3d5b/packages/kosu-contract-helpers/src/ValidatorRegistry.ts#L307)_
 
 Finalizes the exit of a listing
 
@@ -230,7 +230,7 @@ Finalizes the exit of a listing
 
 ▸ **getAllChallenges**(): _`Promise<Challenge[]>`_
 
-_Defined in [ValidatorRegistry.ts:199](https://github.com/ParadigmFoundation/kosu-monorepo/blob/2f37cabf/packages/kosu.js/src/ValidatorRegistry.ts#L199)_
+_Defined in [ValidatorRegistry.ts:201](https://github.com/ParadigmFoundation/kosu-monorepo/blob/a7ce3d5b/packages/kosu-contract-helpers/src/ValidatorRegistry.ts#L201)_
 
 Reads all challenges
 
@@ -242,7 +242,7 @@ Reads all challenges
 
 ▸ **getAllListings**(): _`Promise<Listing[]>`_
 
-_Defined in [ValidatorRegistry.ts:162](https://github.com/ParadigmFoundation/kosu-monorepo/blob/2f37cabf/packages/kosu.js/src/ValidatorRegistry.ts#L162)_
+_Defined in [ValidatorRegistry.ts:164](https://github.com/ParadigmFoundation/kosu-monorepo/blob/a7ce3d5b/packages/kosu-contract-helpers/src/ValidatorRegistry.ts#L164)_
 
 Reads the registered listings
 
@@ -254,7 +254,7 @@ Reads the registered listings
 
 ▸ **getChallenge**(`challengeId`: `BigNumber`): _`Promise<Challenge>`_
 
-_Defined in [ValidatorRegistry.ts:180](https://github.com/ParadigmFoundation/kosu-monorepo/blob/2f37cabf/packages/kosu.js/src/ValidatorRegistry.ts#L180)_
+_Defined in [ValidatorRegistry.ts:182](https://github.com/ParadigmFoundation/kosu-monorepo/blob/a7ce3d5b/packages/kosu-contract-helpers/src/ValidatorRegistry.ts#L182)_
 
 Reads the challenge by challengeId
 
@@ -272,7 +272,7 @@ Reads the challenge by challengeId
 
 ▸ **getChallenges**(`challengeIds`: `BigNumber`[]): _`Promise<Challenge[]>`_
 
-_Defined in [ValidatorRegistry.ts:190](https://github.com/ParadigmFoundation/kosu-monorepo/blob/2f37cabf/packages/kosu.js/src/ValidatorRegistry.ts#L190)_
+_Defined in [ValidatorRegistry.ts:192](https://github.com/ParadigmFoundation/kosu-monorepo/blob/a7ce3d5b/packages/kosu-contract-helpers/src/ValidatorRegistry.ts#L192)_
 
 Reads the challenges by challengeIds
 
@@ -290,7 +290,7 @@ Reads the challenges by challengeIds
 
 ▸ **getListing**(`_pubKey`: string): _`Promise<Listing>`_
 
-_Defined in [ValidatorRegistry.ts:146](https://github.com/ParadigmFoundation/kosu-monorepo/blob/2f37cabf/packages/kosu.js/src/ValidatorRegistry.ts#L146)_
+_Defined in [ValidatorRegistry.ts:148](https://github.com/ParadigmFoundation/kosu-monorepo/blob/a7ce3d5b/packages/kosu-contract-helpers/src/ValidatorRegistry.ts#L148)_
 
 Reads the listing for public key
 
@@ -308,7 +308,7 @@ Reads the listing for public key
 
 ▸ **getListings**(`_pubKeys`: string[]): _`Promise<Listing[]>`_
 
-_Defined in [ValidatorRegistry.ts:154](https://github.com/ParadigmFoundation/kosu-monorepo/blob/2f37cabf/packages/kosu.js/src/ValidatorRegistry.ts#L154)_
+_Defined in [ValidatorRegistry.ts:156](https://github.com/ParadigmFoundation/kosu-monorepo/blob/a7ce3d5b/packages/kosu-contract-helpers/src/ValidatorRegistry.ts#L156)_
 
 Reads the requested listings
 
@@ -326,7 +326,7 @@ Reads the requested listings
 
 ▸ **hexToBase64**(`_pubKey`: string): _string_
 
-_Defined in [ValidatorRegistry.ts:350](https://github.com/ParadigmFoundation/kosu-monorepo/blob/2f37cabf/packages/kosu.js/src/ValidatorRegistry.ts#L350)_
+_Defined in [ValidatorRegistry.ts:352](https://github.com/ParadigmFoundation/kosu-monorepo/blob/a7ce3d5b/packages/kosu-contract-helpers/src/ValidatorRegistry.ts#L352)_
 
 Converts hex encoded public key back to tendermint base64
 
@@ -346,7 +346,7 @@ Base64 tendermint public key
 
 ▸ **initExit**(`_pubKey`: string): _`Promise<TransactionReceiptWithDecodedLogs>`_
 
-_Defined in [ValidatorRegistry.ts:295](https://github.com/ParadigmFoundation/kosu-monorepo/blob/2f37cabf/packages/kosu.js/src/ValidatorRegistry.ts#L295)_
+_Defined in [ValidatorRegistry.ts:297](https://github.com/ParadigmFoundation/kosu-monorepo/blob/a7ce3d5b/packages/kosu-contract-helpers/src/ValidatorRegistry.ts#L297)_
 
 Initializes an exit of a listing from the registry
 
@@ -364,7 +364,7 @@ Initializes an exit of a listing from the registry
 
 ▸ **kosuToken**(): _`Promise<string>`_
 
-_Defined in [ValidatorRegistry.ts:128](https://github.com/ParadigmFoundation/kosu-monorepo/blob/2f37cabf/packages/kosu.js/src/ValidatorRegistry.ts#L128)_
+_Defined in [ValidatorRegistry.ts:130](https://github.com/ParadigmFoundation/kosu-monorepo/blob/a7ce3d5b/packages/kosu-contract-helpers/src/ValidatorRegistry.ts#L130)_
 
 Reads the kosuToken address
 
@@ -376,7 +376,7 @@ Reads the kosuToken address
 
 ▸ **listingKeys**(): _`Promise<string[]>`_
 
-_Defined in [ValidatorRegistry.ts:136](https://github.com/ParadigmFoundation/kosu-monorepo/blob/2f37cabf/packages/kosu.js/src/ValidatorRegistry.ts#L136)_
+_Defined in [ValidatorRegistry.ts:138](https://github.com/ParadigmFoundation/kosu-monorepo/blob/a7ce3d5b/packages/kosu-contract-helpers/src/ValidatorRegistry.ts#L138)_
 
 Reads the current listing keys
 
@@ -388,7 +388,7 @@ Reads the current listing keys
 
 ▸ **maxRewardRate**(): _`Promise<BigNumber>`_
 
-_Defined in [ValidatorRegistry.ts:170](https://github.com/ParadigmFoundation/kosu-monorepo/blob/2f37cabf/packages/kosu.js/src/ValidatorRegistry.ts#L170)_
+_Defined in [ValidatorRegistry.ts:172](https://github.com/ParadigmFoundation/kosu-monorepo/blob/a7ce3d5b/packages/kosu-contract-helpers/src/ValidatorRegistry.ts#L172)_
 
 Reads the max reward rate
 
@@ -400,7 +400,7 @@ Reads the max reward rate
 
 ▸ **minimumBalance**(): _`Promise<BigNumber>`_
 
-_Defined in [ValidatorRegistry.ts:104](https://github.com/ParadigmFoundation/kosu-monorepo/blob/2f37cabf/packages/kosu.js/src/ValidatorRegistry.ts#L104)_
+_Defined in [ValidatorRegistry.ts:106](https://github.com/ParadigmFoundation/kosu-monorepo/blob/a7ce3d5b/packages/kosu-contract-helpers/src/ValidatorRegistry.ts#L106)_
 
 Reads the minimum balance
 
@@ -412,7 +412,7 @@ Reads the minimum balance
 
 ▸ **registerListing**(`_pubKey`: string, `_tokensToStake`: `BigNumber`, `_rewardRate`: `BigNumber`, `_details`: string): _`Promise<TransactionReceiptWithDecodedLogs>`_
 
-_Defined in [ValidatorRegistry.ts:212](https://github.com/ParadigmFoundation/kosu-monorepo/blob/2f37cabf/packages/kosu.js/src/ValidatorRegistry.ts#L212)_
+_Defined in [ValidatorRegistry.ts:214](https://github.com/ParadigmFoundation/kosu-monorepo/blob/a7ce3d5b/packages/kosu-contract-helpers/src/ValidatorRegistry.ts#L214)_
 
 Register a new listing
 
@@ -433,7 +433,7 @@ Register a new listing
 
 ▸ **resolveChallenge**(`_pubKey`: string): _`Promise<TransactionReceiptWithDecodedLogs>`_
 
-_Defined in [ValidatorRegistry.ts:275](https://github.com/ParadigmFoundation/kosu-monorepo/blob/2f37cabf/packages/kosu.js/src/ValidatorRegistry.ts#L275)_
+_Defined in [ValidatorRegistry.ts:277](https://github.com/ParadigmFoundation/kosu-monorepo/blob/a7ce3d5b/packages/kosu-contract-helpers/src/ValidatorRegistry.ts#L277)_
 
 Resolves challenge of a listing
 
@@ -451,7 +451,7 @@ Resolves challenge of a listing
 
 ▸ **rewardPeriod**(): _`Promise<BigNumber>`_
 
-_Defined in [ValidatorRegistry.ts:96](https://github.com/ParadigmFoundation/kosu-monorepo/blob/2f37cabf/packages/kosu.js/src/ValidatorRegistry.ts#L96)_
+_Defined in [ValidatorRegistry.ts:98](https://github.com/ParadigmFoundation/kosu-monorepo/blob/a7ce3d5b/packages/kosu-contract-helpers/src/ValidatorRegistry.ts#L98)_
 
 Reads the reward period
 
@@ -463,7 +463,7 @@ Reads the reward period
 
 ▸ **stakeholderCut**(): _`Promise<BigNumber>`_
 
-_Defined in [ValidatorRegistry.ts:112](https://github.com/ParadigmFoundation/kosu-monorepo/blob/2f37cabf/packages/kosu.js/src/ValidatorRegistry.ts#L112)_
+_Defined in [ValidatorRegistry.ts:114](https://github.com/ParadigmFoundation/kosu-monorepo/blob/a7ce3d5b/packages/kosu-contract-helpers/src/ValidatorRegistry.ts#L114)_
 
 Reads the stakeholder cut
 
@@ -475,7 +475,7 @@ Reads the stakeholder cut
 
 ▸ **voting**(): _`Promise<string>`_
 
-_Defined in [ValidatorRegistry.ts:120](https://github.com/ParadigmFoundation/kosu-monorepo/blob/2f37cabf/packages/kosu.js/src/ValidatorRegistry.ts#L120)_
+_Defined in [ValidatorRegistry.ts:122](https://github.com/ParadigmFoundation/kosu-monorepo/blob/a7ce3d5b/packages/kosu-contract-helpers/src/ValidatorRegistry.ts#L122)_
 
 Reads the Voting contract address
 

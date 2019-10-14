@@ -15,8 +15,7 @@
         "clean": "shx rm -rf dist/",
         "contracts:test:ci": "ts-mocha -p tsconfig.json test/* --slow 2000 --timeout 0 -b -- geth",
         "coverage": "ts-mocha -p tsconfig.json test/* --slow 2000 --timeout 100000 -- runCoverage && istanbul report html && open coverage/index.html",
-        "lint": "tslint -p .",
-        "docs": "node scripts/devdoc.js ./generated-artifacts ./docs"
+        "lint": "tslint -p ."
     },
     "config": {
         "kosu_ganache_image": "gcr.io/kosu-io/kosu-ganache",
