@@ -55,8 +55,7 @@ const printTableCorrectly = (jsonOutput, table) => {
 
     jsonOutput.push({ h1: "Kosu Migrations" });
     jsonOutput.push({
-        p:
-            "This repository contains the migrations necessary to initialize the Kosu contract system.",
+        p: "This repository contains the migrations necessary to initialize the Kosu contract system.",
     });
     jsonOutput.push({ p: "These contracts are **under active development and may change extensively at any time**." });
     jsonOutput.push({ h2: "Deployed addresses" });
