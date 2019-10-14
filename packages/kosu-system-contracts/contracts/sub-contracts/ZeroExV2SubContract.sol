@@ -98,6 +98,7 @@ contract ZeroExV2SubContract is SubContract {
         return true;
     }
 
+    //INTERNAL
     /** @dev Internal function to deserialize the Order data from the input bytes.
     */
     function _getOrder(bytes memory data) internal pure returns (LibOrder.Order memory) {

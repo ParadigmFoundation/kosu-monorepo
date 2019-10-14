@@ -34,6 +34,10 @@ contract Treasury is Authorizable {
         kosuToken = KosuToken(kosuTokenAddress);
     }
 
+    /** @dev Set the voting contract after post deployment of the Treasury contract.
+        @notice Set the voting contract after post deployment of the Treasury contract.
+        @param votingAddress address of the deployed Voting contract.
+    */
     function setVoting(address votingAddress) isAuthorized public {
         voting = IVoting(votingAddress);
     }
@@ -161,6 +165,8 @@ contract Treasury is Authorizable {
         @param account The account voting.
         @param pollId The poll the account is voting on.
         @param amount Number of tokens contributed.
+        @param endBlock Block number vote token lock should expire.
+        @param losingEndBlock Block number vote token lock should expire if vote was in support of a losing option.
     */
     function registerVote(address account, uint pollId, uint amount, uint endBlock, uint losingEndBlock) isAuthorized public returns (bool) {
         if(systemBalances[account] < amount) {

@@ -91,6 +91,9 @@ contract ValidatorRegistry is Ownable {
         @param _challengePeriod Number of blocks a challenge lasts before being finalized.
         @param _exitPeriod Number of blocks exiting listings must wait before claiming stake.
         @param _rewardPeriod The frequency (in blocks) with which validator rewards may be issued.
+        @param _exitLockPeriod Number of blocks tokens will be locked after a successful exit.
+        @param _winningVoteLockPeriod Number of blocks winning voters will have tokens locked after a challenge has been resolved.
+        @param _losingVoteLockPeriod Number of blocks losing voters will have tokens locked after a challenge has been resolved.
     */
     constructor(address payable _treasuryAddress, address _votingAddress, address _events, uint _applicationPeriod, uint _commitPeriod, uint _challengePeriod, uint _exitPeriod, uint _rewardPeriod, uint _exitLockPeriod, uint _winningVoteLockPeriod, uint _losingVoteLockPeriod) public Ownable() {
         treasury = Treasury(_treasuryAddress);

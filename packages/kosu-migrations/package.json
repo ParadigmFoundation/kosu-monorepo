@@ -29,7 +29,8 @@
         "migrate:ropsten": "run-s deploy:ropsten generate:readme",
         "migrate:zaidan": "run-s deploy:kosu:zaidan deploy:0x:zaidan generate:readme deliver:kosu:zaidan",
         "migrate:ci": "run-s deploy:kosu:ci deploy:0x:ci deliver:kosu:ci",
-        "prettier:deployedAddresses": "prettier --write src/deployedAddresses.json --config ../../.prettierrc"
+        "prettier:deployedAddresses": "prettier --write src/deployedAddresses.json --config ../../.prettierrc",
+        "generate:readme": "node scripts/generateReadme.js && prettier --write README.md --config ../../.prettierrc"
     },
     "dependencies": {
         "@0x/contract-addresses": "^3.0.2",

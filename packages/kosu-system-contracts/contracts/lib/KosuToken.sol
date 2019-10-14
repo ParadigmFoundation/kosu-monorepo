@@ -18,6 +18,7 @@ contract KosuToken is ERC20, Authorizable {
 
     /** @dev Initializes KosuToken with the authorizedAddresses shared permission contract to protect functions.
         @notice Initializes KosuToken with the authorizedAddresses shared permission contract to protect functions.
+        @param _auth Deployed AuthorizedAddresses contract.
     */
     constructor(address _auth) Authorizable(_auth) public {
     }
@@ -94,6 +95,7 @@ contract KosuToken is ERC20, Authorizable {
         _mint(_address, amount);
     }
 
+    //Internal
     /** @dev Uses a modified BancorFormula to calculate the number of tokens to mint for input ether value.
     */
     function calculateEtherToToken(uint etherValue) internal view returns (uint) {
