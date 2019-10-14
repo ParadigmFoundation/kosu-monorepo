@@ -36,7 +36,8 @@ fi
 # load latest built docs from public kosu storage
 log "$LOADING_DOCS"
 
-gsutil -m rsync -r -c -d gs://kosu-docs/kosu.js ./docs/kosu.js
+gsutil -m rsync -r -c -d gs://kosu-docs/kosu-genesis-cli ./docs/kosu-genesis-cli
+gsutil -m rsync -r -c -d gs://kosu-docs/kosu-contract-helpers ./docs/kosu-contract-helpers
 gsutil -m rsync -r -c -d gs://kosu-docs/kosu-system-contracts ./docs/kosu-system-contracts 
 gsutil -m rsync -r -c -d gs://kosu-docs/go-kosu ./docs/go-kosu 
 
