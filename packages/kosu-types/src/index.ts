@@ -13,7 +13,7 @@ import {
     ZeroExV2SubContractContract,
 } from "@kosu/system-contracts";
 import BN from "bn.js";
-import { LogWithDecodedArgs } from "ethereum-types";
+import { LogWithDecodedArgs, TransactionReceipt } from "ethereum-types";
 import Web3 from "web3";
 import { Provider } from "web3/providers";
 
@@ -168,4 +168,32 @@ export interface RoundInfo {
     startsAt: number;
     endsAt: number;
     limit: number;
+}
+
+export interface KosuDeploymentReceipts {
+    OrderGateway: TransactionReceipt;
+    AuthorizedAddresses: TransactionReceipt;
+    EventEmitter: TransactionReceipt;
+    KosuToken: TransactionReceipt;
+    Treasury: TransactionReceipt;
+    Voting: TransactionReceipt;
+    PosterRegistry: TransactionReceipt;
+    ValidatorRegistry: TransactionReceipt;
+    ZeroExV2SubContract: TransactionReceipt;
+}
+
+export interface KosuAddresses {
+    OrderGateway: string;
+    AuthorizedAddresses: string;
+    EventEmitter: string;
+    KosuToken: string;
+    Treasury: string;
+    Voting: string;
+    PosterRegistry: string;
+    ValidatorRegistry: string;
+    ZeroExV2SubContract: string;
+}
+
+export interface KosuDeployments {
+    [key: string]: KosuDeploymentReceipts;
 }
