@@ -2,6 +2,8 @@
 
 ## master
 
+-   Add GetBlocks RPC endpoint
+
 ## v0.4.0
 
 -   Add LatestOrders RPC endpoint

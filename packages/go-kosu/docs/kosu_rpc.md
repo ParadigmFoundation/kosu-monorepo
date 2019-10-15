@@ -112,6 +112,88 @@ curl -X POST localhost:14341 \
 ]
 ```
 
+### _GetBlocks_
+
+GetBlocks gets one or more blocks given a list of heights.
+It will fail if there are at least one invalid or non-existing block height in the parameters.
+
+_Method:_
+
+-   `kosu_getBlocks`
+
+_Parameters:_
+
+-   `heights` - `Array`(_int64_)
+
+_Returns:_
+
+-   `blocks` - `Array`([Block](https://godoc.org/github.com/tendermint/tendermint/types#Block))
+
+#### cURL Example
+
+```bash
+# The following will request the block with height 1
+curl -X POST localhost:14341 \
+	--data '{"jsonrpc":"2.0", "id": 1, "method": "kosu_getBlocks", "params": [[1]]}' \
+	-H 'Content-Type: application/json'
+```
+
+```json
+{
+    "jsonrpc": "2.0",
+    "id": 1,
+    "result": [
+        {
+            "header": {
+                "version": {
+                    "block": 10,
+                    "app": 0
+                },
+                "chain_id": "kosu-chain-6ETgBz",
+                "height": 1,
+                "time": "2019-10-15T08:25:58.01874923Z",
+                "num_txs": 1,
+                "total_txs": 1,
+                "last_block_id": {
+                    "hash": "",
+                    "parts": {
+                        "total": 0,
+                        "hash": ""
+                    }
+                },
+                "last_commit_hash": "",
+                "data_hash": "ACB36F347EAACE6E496058659C319C5C3633E9C767FA3A7FC7BB5A76472614B6",
+                "validators_hash": "9FD0575A3E1F26E9C21C69A885E096A55D546BAF2273EF22AB381FB5CE509100",
+                "next_validators_hash": "9FD0575A3E1F26E9C21C69A885E096A55D546BAF2273EF22AB381FB5CE509100",
+                "consensus_hash": "048091BC7DDC283F77BFBF91D73C44DA58C3DF8A9CBC867405D8B7F3DAADA22F",
+                "app_hash": "",
+                "last_results_hash": "",
+                "evidence_hash": "",
+                "proposer_address": "934211FEB7AA63390DDABD2CF02D042F6B4BCD7B"
+            },
+            "data": {
+                "txs": [
+                    "Q21RS0lERWR0NUlBdUFGelFxczVhUE1oRGdlLzdIOEtRdVpFaDVCMEVtN1JQTkVURWtDY1JKeFN2TEMrVURmMWovQWFCRDY0dFdCSFpROWtjYXU5OXg3REw4K244MzdBSUhja252aUtGbXBwbFlKMG1Oc1daYlZvRFBjNndFTjh6R1VKdXZNS0VoSUtFQklPQ0FFUXpkQUNHTmZRQWlDZ2pRWT0="
+                ]
+            },
+            "evidence": {
+                "evidence": null
+            },
+            "last_commit": {
+                "block_id": {
+                    "hash": "",
+                    "parts": {
+                        "total": 0,
+                        "hash": ""
+                    }
+                },
+                "precommits": null
+            }
+        }
+    ]
+}
+```
+
 ### _LatestHeight_
 
 LatestHeight returns the height of the best known block.
