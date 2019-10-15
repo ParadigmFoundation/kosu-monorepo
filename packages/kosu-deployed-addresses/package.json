@@ -18,7 +18,8 @@
         "lint": "tslint -p ."
     },
     "dependencies": {
-        "@kosu/migrations": "0.3.0"
+        "@kosu/migrations": "0.3.0",
+        "@kosu/types": "^0.3.0"
     },
     "devDependencies": {
         "json2md": "^1.6.3"
