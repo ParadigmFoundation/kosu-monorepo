@@ -72,7 +72,6 @@ module.exports = {
                     "./kosu-system-contracts/KosuToken",
                     "./kosu-system-contracts/OrderGateway",
                     "./kosu-system-contracts/PosterRegistry",
-                    "./kosu-system-contracts/PosterRegistryProxy",
                     "./kosu-system-contracts/Treasury",
                     "./kosu-system-contracts/ValidatorRegistry",
                     "./kosu-system-contracts/Voting",
