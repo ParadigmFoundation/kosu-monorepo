@@ -1,11 +1,23 @@
 import { DeployedAddresses } from "@kosu/migrations";
 import {KosuAddresses, KosuDeploymentReceipts} from "@kosu/types";
 
-const getReceiptsForNetwork = (id: number | string): KosuDeploymentReceipts => {
+/**
+ * Get the deployment receipts for a desired network by id.
+ *
+ * @param networkId Ethereum network id.
+ * @returns The deployment receipts for the Kosu contracts.
+ */
+const getReceiptsForNetwork = (networkId: number | string): KosuDeploymentReceipts => {
     return DeployedAddresses[id.toString()];
 };
 
-const getAddressesForNetwork = (id: number | string): KosuAddresses => {
+/**
+ * Get the deployment addresses for a desired network by id.
+ *
+ * @param networkId Ethereum network id.
+ * @returns The addresses for the Kosu contracts.
+ */
+const getAddressesForNetwork = (networkId: number | string): KosuAddresses => {
     const receipts = DeployedAddresses[id.toString()];
     return {
         OrderGateway: receipts.OrderGateway.contractAddress,
