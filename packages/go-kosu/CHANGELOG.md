@@ -2,6 +2,8 @@
 
 ## master
 
+-   Fix wrong RPC remote address in lite mode
+
 ## v0.4.0
 
 -   Add LatestOrders RPC endpoint
