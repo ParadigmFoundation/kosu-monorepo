@@ -8,7 +8,7 @@ import { KosuAddresses, KosuDeploymentReceipts } from "@kosu/types";
  * @returns The deployment receipts for the Kosu contracts.
  */
 const getReceiptsForNetwork = (networkId: number | string): KosuDeploymentReceipts => {
-    return DeployedAddresses[id.toString()];
+    return DeployedAddresses[networkId.toString()];
 };
 
 /**
@@ -18,7 +18,7 @@ const getReceiptsForNetwork = (networkId: number | string): KosuDeploymentReceip
  * @returns The addresses for the Kosu contracts.
  */
 const getAddressesForNetwork = (networkId: number | string): KosuAddresses => {
-    const receipts = DeployedAddresses[id.toString()];
+    const receipts = DeployedAddresses[networkId.toString()];
     return {
         OrderGateway: receipts.OrderGateway.contractAddress,
         AuthorizedAddresses: receipts.AuthorizedAddresses.contractAddress,
