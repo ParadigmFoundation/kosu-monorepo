@@ -1,4 +1,4 @@
-> **[kosu.js](../README.md)**
+> **[contract-helpers](../README.md)**
 
 [Globals](../globals.md) / [PosterRegistry](posterregistry.md) /
 
@@ -34,7 +34,7 @@ and to view their balance, as well as the cumulative lockup.
 
 \+ **new PosterRegistry**(`options`: `KosuOptions`, `treasury`: [Treasury](treasury.md)): _[PosterRegistry](posterregistry.md)_
 
-_Defined in [PosterRegistry.ts:43](https://github.com/ParadigmFoundation/kosu-monorepo/blob/a7ce3d5b/packages/kosu-contract-helpers/src/PosterRegistry.ts#L43)_
+_Defined in [PosterRegistry.ts:43](https://github.com/ParadigmFoundation/kosu-monorepo/blob/515d6d59/packages/kosu-contract-helpers/src/PosterRegistry.ts#L43)_
 
 Create a new PosterRegistry instance.
 
@@ -53,7 +53,7 @@ Create a new PosterRegistry instance.
 
 ▸ **pay**(`value`: `BigNumber`): _`Promise<TransactionReceiptWithDecodedLogs>`_
 
-_Defined in [PosterRegistry.ts:151](https://github.com/ParadigmFoundation/kosu-monorepo/blob/a7ce3d5b/packages/kosu-contract-helpers/src/PosterRegistry.ts#L151)_
+_Defined in [PosterRegistry.ts:151](https://github.com/ParadigmFoundation/kosu-monorepo/blob/515d6d59/packages/kosu-contract-helpers/src/PosterRegistry.ts#L151)_
 
 Sends ether to the contract to bond and register tokens for posting.
 
@@ -73,7 +73,7 @@ Logs from the transaction block.
 
 ▸ **registerTokens**(`amount`: `BigNumber`): _`Promise<TransactionReceiptWithDecodedLogs>`_
 
-_Defined in [PosterRegistry.ts:109](https://github.com/ParadigmFoundation/kosu-monorepo/blob/a7ce3d5b/packages/kosu-contract-helpers/src/PosterRegistry.ts#L109)_
+_Defined in [PosterRegistry.ts:109](https://github.com/ParadigmFoundation/kosu-monorepo/blob/515d6d59/packages/kosu-contract-helpers/src/PosterRegistry.ts#L109)_
 
 Register tokens into the PosterRegistry contract by bonding KOSU tokens.
 
@@ -93,7 +93,7 @@ A transaction receipt from the mined `register` transaction.
 
 ▸ **releaseTokens**(`amount`: `BigNumber`): _`Promise<TransactionReceiptWithDecodedLogs>`_
 
-_Defined in [PosterRegistry.ts:140](https://github.com/ParadigmFoundation/kosu-monorepo/blob/a7ce3d5b/packages/kosu-contract-helpers/src/PosterRegistry.ts#L140)_
+_Defined in [PosterRegistry.ts:140](https://github.com/ParadigmFoundation/kosu-monorepo/blob/515d6d59/packages/kosu-contract-helpers/src/PosterRegistry.ts#L140)_
 
 Release tokens from the PosterRegistry for the `coinbase` address (un-bond).
 
@@ -113,7 +113,7 @@ A transaction receipt from the mined `register` transaction.
 
 ▸ **tokensContributed**(): _`Promise<BigNumber>`_
 
-_Defined in [PosterRegistry.ts:87](https://github.com/ParadigmFoundation/kosu-monorepo/blob/a7ce3d5b/packages/kosu-contract-helpers/src/PosterRegistry.ts#L87)_
+_Defined in [PosterRegistry.ts:87](https://github.com/ParadigmFoundation/kosu-monorepo/blob/515d6d59/packages/kosu-contract-helpers/src/PosterRegistry.ts#L87)_
 
 Reads total KOSU tokens contributed to registry.
 
@@ -127,7 +127,7 @@ The total pool of locked KOSU tokens in units of wei.
 
 ▸ **tokensRegisteredFor**(`address`: string): _`Promise<BigNumber>`_
 
-_Defined in [PosterRegistry.ts:98](https://github.com/ParadigmFoundation/kosu-monorepo/blob/a7ce3d5b/packages/kosu-contract-helpers/src/PosterRegistry.ts#L98)_
+_Defined in [PosterRegistry.ts:98](https://github.com/ParadigmFoundation/kosu-monorepo/blob/515d6d59/packages/kosu-contract-helpers/src/PosterRegistry.ts#L98)_
 
 Reads number of tokens registered for a given address.
 
