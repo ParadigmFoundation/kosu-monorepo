@@ -26,7 +26,8 @@
         "@kosu/tsc-config": "^0.1.0",
         "@kosu/tslint-config": "^0.0.4",
         "@kosu/contract-helpers": "0.3.0",
-        "@kosu/contract-utils": "0.3.0"
+        "@kosu/contract-utils": "0.3.0",
+        "@kosu/node-client": "0.3.0"
     },
     "devDependencies": {
         "@istanbuljs/nyc-config-typescript": "^0.1.3",
