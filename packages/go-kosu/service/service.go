@@ -116,17 +116,24 @@ func (s *Service) Start() error {
 		return err
 	}
 
+	var rpcRemoteAddr string
 	errCh := make(chan error)
 	{
 		var err error
 		switch s.Mode {
 		case FullNode:
+			// When starting as a full node, the RPC target is to our local address
+			rpcRemoteAddr = s.LAddr
+
 			ctx, cancel := context.WithCancel(context.Background())
 			defer cancel()
 
 			err = s.startFull(ctx, errCh)
 
 		case Lite:
+			// In lite mode, the RPC target should be the same as the fullnode
+			rpcRemoteAddr = s.FullNode
+
 			err = s.startLite(errCh)
 		}
 
@@ -136,7 +143,7 @@ func (s *Service) Start() error {
 	}
 
 	if s.RPC != nil {
-		if err := s.startRPC(errCh); err != nil {
+		if err := s.startRPC(rpcRemoteAddr, errCh); err != nil {
 			return err
 		}
 	}
@@ -227,14 +234,14 @@ func (s *Service) startLite(errCh chan error) error {
 	return nil
 }
 
-func (s *Service) startRPC(errCh chan error) error {
+func (s *Service) startRPC(addr string, errCh chan error) error {
 	key, err := abci.LoadPrivateKey(s.HomeDir)
 	if err != nil {
 		return err
 	}
 
 	newClient := func() (*abci.Client, error) {
-		return abci.NewHTTPClient(s.LAddr, key)
+		return abci.NewHTTPClient(addr, key)
 	}
 
 	srv, err := rpc.NewServer(newClient)

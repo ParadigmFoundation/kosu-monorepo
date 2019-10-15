@@ -3,6 +3,7 @@
 ## master
 
 -   Add GetBlocks RPC endpoint
+-   Fix wrong RPC remote address in lite mode
 
 ## v0.4.0
 
