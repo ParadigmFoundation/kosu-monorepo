@@ -13,6 +13,8 @@ import (
 	"github.com/ParadigmFoundation/kosu-monorepo/packages/go-kosu/abci/types"
 	"github.com/ParadigmFoundation/kosu-monorepo/packages/go-kosu/tests"
 
+	rpctypes "github.com/tendermint/tendermint/rpc/core/types"
+	tmtypes "github.com/tendermint/tendermint/types"
 	db "github.com/tendermint/tm-db"
 )
 
@@ -41,6 +43,7 @@ func TestRPC(t *testing.T) {
 		{"RebalancePeriod", RebalancePeriod},
 		{"NewRebalances", NewRebalances},
 		{"NumberPosters", NumberPosters},
+		{"GetBlocks", GetBlocks},
 	}
 
 	for _, test := range cases {
@@ -190,4 +193,24 @@ func NumberPosters(t *testing.T, app *abci.App, _ *abci.Client, rpcClient *rpc.C
 	require.NoError(t, err)
 
 	assert.EqualValues(t, len(addresses), num)
+}
+
+func GetBlocks(t *testing.T, app *abci.App, _ *abci.Client, rpcClient *rpc.Client) {
+	t.Run("First block", func(t *testing.T) {
+		waitForNewBlock(t, rpcClient)
+
+		var blocks []*tmtypes.Block
+		err := rpcClient.Call(&blocks, "kosu_getBlocks", []int64{1})
+		require.NoError(t, err)
+		require.Len(t, blocks, 1)
+		block := blocks[0]
+		assert.EqualValues(t, 1, block.Height)
+	})
+	t.Run("non-existent block number", func(t *testing.T) {
+		var blocks []*rpctypes.ResultBlock
+		err := rpcClient.Call(&blocks, "kosu_getBlocks", []int64{1, 2, 3, 4, 9999})
+		require.Error(t, err)
+		assert.Contains(t, err.Error(), "Height must be less than or equal to the current blockchain height")
+		assert.Empty(t, blocks)
+	})
 }
