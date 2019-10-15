@@ -1,5 +1,5 @@
 import { DeployedAddresses } from "@kosu/migrations";
-import {KosuAddresses, KosuDeploymentReceipts} from "@kosu/types";
+import { KosuAddresses, KosuDeploymentReceipts } from "@kosu/types";
 
 /**
  * Get the deployment receipts for a desired network by id.
@@ -28,7 +28,7 @@ const getAddressesForNetwork = (networkId: number | string): KosuAddresses => {
         Voting: receipts.Voting.contractAddress,
         PosterRegistry: receipts.PosterRegistry.contractAddress,
         ValidatorRegistry: receipts.ValidatorRegistry.contractAddress,
-        ZeroExV2SubContract: receipts.ZeroExV2SubContract.contractAddress
+        ZeroExV2SubContract: receipts.ZeroExV2SubContract.contractAddress,
     };
 };
 
