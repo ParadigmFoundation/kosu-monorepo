@@ -1,6 +1,6 @@
 module github.com/ParadigmFoundation/kosu-monorepo/packages/go-kosu
 
-go 1.12
+go 1.13
 
 require (
 	bou.ke/monkey v1.0.1 // indirect
