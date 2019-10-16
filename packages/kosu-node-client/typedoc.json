@@ -1,5 +1,5 @@
 {
-    "name": "contract-helpers",
+    "name": "node-client",
     "mode": "file",
     "readme": "./README.md",
     "theme": "markdown",
