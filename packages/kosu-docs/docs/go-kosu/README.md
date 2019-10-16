@@ -22,7 +22,7 @@ In order to build the full monorepo, the following is required:
 -   [Node.js](https://nodejs.org/en/download/) (`^10`)
 -   [Yarn](https://yarnpkg.com/lang/en/docs/install/#mac-stable) (`^1.15`)
 -   [jq](https://stedolan.github.io/jq/download/) (`^1.6`)
--   [golang](https://golang.org/dl/) (`^1.12`)
+-   [golang](https://golang.org/dl/) (`^1.13`)
 -   [go-ethereum](https://github.com/ethereum/go-ethereum/wiki/Building-Ethereum) (`^1.8`)
 -   [go-bindata](https://github.com/go-bindata/go-bindata) (`^3.1`)
 
