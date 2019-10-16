@@ -1,5 +1,5 @@
 # the image drone-ci should use to build go-kosu
-FROM golang:1.12-stretch
+FROM golang:1.13-stretch
 
 WORKDIR $HOME/go-kosu
 

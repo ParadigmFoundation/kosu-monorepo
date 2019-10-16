@@ -72,7 +72,7 @@ In order to build the full monorepo, the following is required:
 -   [Node.js](https://nodejs.org/en/download/) (`^10`)
 -   [Yarn](https://yarnpkg.com/lang/en/docs/install/#mac-stable) (`^1.15`)
 -   [jq](https://stedolan.github.io/jq/download/) (`^1.6`)
--   [golang](https://golang.org/dl/) (`^1.12`)
+-   [golang](https://golang.org/dl/) (`^1.13`)
 -   [go-bindata](https://github.com/go-bindata/go-bindata) (`^3.1`)
 -   [go-ethereum](https://github.com/ethereum/go-ethereum/wiki/Building-Ethereum) (`^1.8`)
     -   Only the `abigen` binary is required to build the monorepo.
@@ -158,7 +158,7 @@ A custom Node.js (`lts`) image with additional binaries used to assist in buildi
 
 ### `kosu-io/go-kosu-ci`
 
-A custom golang (`1.12`) image with Tendermint and other binaries pre-installed, used as the CI image for `go-kosu` (Tendermint is compiled into `kosud` and not needed for production builds, but used in testing).
+A custom golang (`1.13-stretch`) image with Tendermint and other binaries pre-installed, used as the CI image for `go-kosu` (Tendermint is compiled into `kosud` and not needed for production builds, but used in testing).
 
 -   **GCR URI:** `gcr.io/kosu-io/go-kosu-ci:latest`
 
