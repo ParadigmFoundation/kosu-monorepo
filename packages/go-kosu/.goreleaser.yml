@@ -1,19 +1,19 @@
 project_name: kosu
 
 builds:
-  - binary: kosud
+  - id: kosud
+    binary: kosud
     main: ./cmd/kosud/main.go
     goos:
       - linux
-      - darwin
     goarch:
       - amd64
 
-  - binary: kosu-cli
+  - id: kosu-cli
+    binary: kosu-cli
     main: ./cmd/kosu-cli/main.go
     goos:
       - linux
-      - darwin
     goarch:
       - amd64
 

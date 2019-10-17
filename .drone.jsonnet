@@ -99,7 +99,17 @@ local KosuGeth(name) = Image(name, "kosu-test-geth:latest") {
                 "NPM_PASS": { "from_secret": "npm_password" },
 
             },
-        }
+        },
+		Image("gorelease", "go-kosu") {
+			"commands": [
+				"git fetch --tags",
+				"cd ./packages/go-kosu",
+				"curl -sL https://git.io/goreleaser | bash"
+			],
+			"environment": {
+				"GITHUB_TOKEN": { "from_secret": "github_token"  },
+			}
+		}
     ],
     "depends_on": [
         "tests"
