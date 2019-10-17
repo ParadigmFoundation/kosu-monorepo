@@ -4,6 +4,10 @@ builds:
   - id: kosud
     binary: kosud
     main: ./cmd/kosud/main.go
+    ldflags: &ldflags
+      - -s -w -X github.com/ParadigmFoundation/kosu-monorepo/packages/go-kosu/version.Version={{.Version}}
+      - -X github.com/ParadigmFoundation/kosu-monorepo/packages/go-kosu/version.GitCommit={{.ShortCommit}}
+
     goos:
       - linux
     goarch:
@@ -12,6 +16,7 @@ builds:
   - id: kosu-cli
     binary: kosu-cli
     main: ./cmd/kosu-cli/main.go
+    ldflags: *ldflags
     goos:
       - linux
     goarch:
