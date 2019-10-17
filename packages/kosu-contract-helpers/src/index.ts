@@ -10,4 +10,3 @@ export { Treasury } from "./Treasury";
 export { ValidatorRegistry } from "./ValidatorRegistry";
 export { Voting } from "./Voting";
 export { OrderSerializer } from "./OrderSerializer";
-export { NodeClient } from "./NodeClient";

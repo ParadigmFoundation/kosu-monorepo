@@ -1,4 +1,4 @@
-> **[kosu.js](README.md)**
+> **[contract-helpers](README.md)**
 
 [Globals](globals.md) /
 

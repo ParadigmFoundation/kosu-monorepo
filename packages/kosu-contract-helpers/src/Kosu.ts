@@ -6,7 +6,6 @@ import Web3 from "web3";
 
 import { EventEmitter } from "./EventEmitter";
 import { KosuToken } from "./KosuToken";
-import { NodeClient } from "./NodeClient";
 import { OrderGateway } from "./OrderGateway";
 import { OrderHelper } from "./OrderHelper";
 import { PosterRegistry } from "./PosterRegistry";
@@ -47,16 +46,6 @@ export class Kosu {
      * manage the various deployed contracts ABI's.
      */
     public readonly web3Wrapper: Web3Wrapper;
-
-    // KOSU NODE CLIENT
-
-    /**
-     * A JSONRPC client for a Kosu node, enabled if a `kosuNodeUrl` is provided
-     * to the Kosu constructor (as part of the options object).
-     *
-     * Enables access to the `go-kosu` JSONRPC-API, including subscriptions.
-     */
-    public readonly node: NodeClient;
 
     // KOSU CONTRACTS
 
@@ -163,11 +152,6 @@ export class Kosu {
         this.validatorRegistry = new ValidatorRegistry(options, this.treasury);
         this.orderHelper = new OrderHelper(this.web3, this.orderGateway);
         this.eventEmitter = new EventEmitter(options);
-
-        // Setup Kosu node JSONRPC client if url is provided
-        if (options.kosuNodeUrl) {
-            this.node = new NodeClient(options.kosuNodeUrl);
-        }
 
         // Utilities
         this.utils = { toBytes32, NULL_ADDRESS };
