@@ -7310,7 +7310,7 @@ ethereum-protocol@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/ethereum-protocol/-/ethereum-protocol-1.0.1.tgz#b7d68142f4105e0ae7b5e178cf42f8d4dc4b93cf"
 
-ethereum-types@^2.1.2, ethereum-types@^2.1.4:
+ethereum-types@^2.1.4:
   version "2.1.4"
   resolved "https://registry.yarnpkg.com/ethereum-types/-/ethereum-types-2.1.4.tgz#5e3f5fd562f354d6334500af7a10bea10da0c7c4"
   dependencies:
