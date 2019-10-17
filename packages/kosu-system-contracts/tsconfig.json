@@ -1,11 +1,6 @@
 {
     "extends": "@kosu/tsc-config",
-    "compilerOptions": {
-        "outDir": "dist",
-        "rootDir": ".",
-        "resolveJsonModule": true,
-        "moduleResolution": "node"
-    },
+    "compilerOptions": { "outDir": "dist", "rootDir": ".", "resolveJsonModule": true, "moduleResolution": "node" },
     "include": ["./generated-wrappers/*", "./src/**/*"],
     "files": [
         "generated-artifacts/AuthorizedAddresses.json",
@@ -14,6 +9,8 @@
         "generated-artifacts/KosuToken.json",
         "generated-artifacts/OrderGateway.json",
         "generated-artifacts/PosterRegistry.json",
+        "generated-artifacts/SignatureValidatorSubContract.json",
+        "generated-artifacts/TestToken.json",
         "generated-artifacts/Treasury.json",
         "generated-artifacts/ValidatorRegistry.json",
         "generated-artifacts/Voting.json",
