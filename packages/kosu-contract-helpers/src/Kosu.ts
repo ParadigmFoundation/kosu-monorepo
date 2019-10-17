@@ -4,6 +4,8 @@ import { artifacts } from "@kosu/system-contracts";
 import { KosuOptions, KosuUtils } from "@kosu/types";
 import Web3 from "web3";
 
+import * as packageJson from "../package.json";
+
 import { EventEmitter } from "./EventEmitter";
 import { KosuToken } from "./KosuToken";
 import { OrderGateway } from "./OrderGateway";
@@ -15,7 +17,7 @@ import { ValidatorRegistry } from "./ValidatorRegistry";
 import { Voting } from "./Voting";
 
 // tslint:disable-next-line: no-var-requires
-const version = process.env.npm_package_version || require("../package.json").version;
+const version = process.env.npm_package_version || packageJson.version;
 
 /**
  * The `Kosu` class assists in interacting with the Kosu contract system and
