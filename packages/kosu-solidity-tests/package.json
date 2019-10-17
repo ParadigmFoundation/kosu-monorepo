@@ -34,7 +34,7 @@
         "@kosu/subcontract-sdk": "0.1.1",
         "@kosu/tsc-config": "^0.1.0",
         "@kosu/tslint-config": "^0.0.4",
-        "ethereum-types": "^2.1.2",
+        "ethereum-types": "^2.1.6",
         "ethers": "~4.0.4",
         "openzeppelin-solidity": "2.1.2",
         "safe-node-require": "^1.0.0",
@@ -61,8 +61,9 @@
         "json2md": "^1.6.3",
         "yargs": "^13.2.2"
     },
+    "private": true,
     "publishConfig": {
-        "access": "public"
+        "access": "private"
     },
     "files": [
         "dist/",
