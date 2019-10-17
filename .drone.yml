@@ -46,6 +46,7 @@ steps:
     WEB3_URI_WS: ws://kosu-geth:8546
   depends_on:
   - build-project
+  - npm-tests
 
 - name: kosu-node-0
   pull: always
