@@ -29,9 +29,9 @@ func RegisterCommand(cmd *cobra.Command, homeFlag string) {
 	cmd.Flags().StringVarP(&cfg.LiteFullnode, "lite.fullnode", "", "http://localhost:26657",
 		"Fullnode's endpoint (required when running with --lite)")
 	cmd.Flags().BoolVarP(&cfg.Validator, "validator", "", false,
-		"Running as a validator node will start the Witness process. This flag is ignored if `--lite` is enabled")
+		"Running as a validator node will start the Witness process. This flag is ignored if --lite is enabled")
 	cmd.Flags().StringVarP(&cfg.Web3, "validator.web3", "E", "ws://localhost:8546",
-		"URL of an Ethereum JSONRPC provider. Only useful if `--validator` is enabled")
+		"URL of an Ethereum JSONRPC provider")
 
 	// TODO: re-enable this when TM support Tx signing via remote-signer
 	// We can't enable the option without it, because we need to sign Witness's Txs
