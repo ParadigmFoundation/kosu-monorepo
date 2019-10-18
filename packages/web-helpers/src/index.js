@@ -1,5 +1,5 @@
 const Kosu = require("@kosu/kosu.js").Kosu;
-const eventDecoder = require("@kosu/system-contracts").eventDecoder;
+const eventDecoder = require("@kosu/contract-utils").eventDecoder;
 const Web3 = require("web3");
 const uuid = require("uuid/v4");
 
