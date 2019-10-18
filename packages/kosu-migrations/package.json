@@ -8,6 +8,9 @@
         "url": "https://github.com/ParadigmFoundation/kosu-monorepo/blob/master/packages/kosu-migrations"
     },
     "main": "dist/index.js",
+    "bin": {
+        "kosu-migrate": "bin/kosu-migrate.js"
+    },
     "types": "src",
     "bugs": {
         "url": "https://github.com/ParadigmFoundation/kosu-monorepo/issues"
