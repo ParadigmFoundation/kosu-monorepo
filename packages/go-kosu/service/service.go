@@ -72,6 +72,9 @@ type Service struct {
 
 	// RemoteSignerListener
 	RemoteSignerListener string
+
+	// Validator indicates that we should run as a validator, therefor start the witness process
+	Validator bool
 }
 
 func (s *Service) setDefaults() error {
@@ -179,8 +182,10 @@ func (s *Service) startFull(ctx context.Context, errCh chan error) error {
 		return err
 	}
 
-	if err := s.startWitness(ctx, app); err != nil {
-		return err
+	if s.Validator {
+		if err := s.startWitness(ctx, app); err != nil {
+			return err
+		}
 	}
 
 	go func() {
