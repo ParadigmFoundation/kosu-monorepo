@@ -10,7 +10,6 @@ Documentation for Kosu packages is available in this repository, and hosted at [
 
 ## Contents
 
--   [Stats and badges](#stats-and-badges)
 -   [Packages](#packages)
     -   [Contract packages](#contract-packages)
     -   [Library packages](#library-packages)
@@ -29,15 +28,6 @@ Documentation for Kosu packages is available in this repository, and hosted at [
 -   [Issues](#issues)
 -   [License](#license)
 
-## Stats and badges
-
-![GitHub](https://img.shields.io/github/license/ParadigmFoundation/kosu-monorepo)
-[![Build Status](https://ci.kosu.io/api/badges/ParadigmFoundation/kosu-monorepo/status.svg)](https://ci.kosu.io/ParadigmFoundation/kosu-monorepo)
-![GitHub issues](https://img.shields.io/github/issues-raw/ParadigmFoundation/kosu-monorepo)
-![GitHub closed issues](https://img.shields.io/github/issues-closed-raw/ParadigmFoundation/kosu-monorepo)
-![GitHub pull requests](https://img.shields.io/github/issues-pr/ParadigmFoundation/kosu-monorepo)
-![GitHub closed pull requests](https://img.shields.io/github/issues-pr-closed/ParadigmFoundation/kosu-monorepo)
-
 ## Packages
 
 ### Contract packages
@@ -47,7 +37,7 @@ Smart-contract packages (Solidity) including the core Kosu system contracts and 
 | Package &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;            | Version                                                         | Description                                                              |
 | :----------------------------------------------------------- | :-------------------------------------------------------------- | :----------------------------------------------------------------------- |
 | [`@kosu/system-contracts`](./packages/kosu-system-contracts) | ![npm](https://img.shields.io/npm/v/@kosu/system-contracts.svg) | The core Kosu contract system in Solidity (with low-level wrappers).     |
-| [`@kosu/solidity-tests`](./packages/kosu-system-contracts)   | ![version](https://img.shields.io/badge/version-0.3.0-blue)     | TypeScript test suite for the Kosu contract system.                      |
+| [`@kosu/solidity-tests`](./packages/kosu-system-contracts)   | ![npm](https://img.shields.io/npm/v/@kosu/solidity-tests.svg)    | TypeScript test suite for the Kosu contract system.                      |
 | [`@kosu/subcontract-sdk`](./packages/kosu-sdk-contracts)     | ![npm](https://img.shields.io/npm/v/@kosu/subcontract-sdk.svg)  | The Kosu `SubContract` interface and example implementations.            |
 | [`@kosu/migrations`](./packages/kosu-migrations)             | ![npm](https://img.shields.io/npm/v/@kosu/migrations.svg)       | Scripts and utilities for deploying Kosu contracts to Ethereum networks. |
 
@@ -69,7 +59,7 @@ Client/server libraries for interacting with the Kosu network and contract syste
 | [`@kosu/node-client`](./packages/kosu-node-client-kosu)    | ![npm](https://img.shields.io/npm/v/@kosu/node-client.svg)    | TypeScript client for interacting with a Kosu node over JSONRPC.           |
 | [`@kosu/genesis-cli`](./packages/kosu-genesis-cli)         | ![npm](https://img.shields.io/npm/v/@kosu/genesis-cli.svg)    | Library and CLI for generating network genesis files from contract sate.   |
 | [`@kosu/contract-utils`](./packages/kosu-contract-utils)   | ![npm](https://img.shields.io/npm/v/@kosu/contract-utils.svg) | Utilities for interacting with Kosu (decoding event logs, etc.).           |
-| [`@kosu/contract-helpers`](./packages/kosu-contract-utils) | ![npm](https://img.shields.io/npm/v/@kosu/contract-utils.svg) | High-level convenience wrappers for interacting with Kosu contracts.       |
+| [`@kosu/contract-helpers`](./packages/kosu-contract-utils) | ![npm](https://img.shields.io/npm/v/@kosu/contract-helpers.svg) | High-level convenience wrappers for interacting with Kosu contracts.       |
 
 ### Utility/development packages
 
@@ -112,7 +102,7 @@ This will also install Node.js if it is not already installed.
 brew install yarn
 ```
 
-#### Geth tools
+#### Ethereum tools
 
 To install the `go-ethereum` suite with `brew`:
 
@@ -121,7 +111,7 @@ brew tap ethereum/ethereum
 brew install ethereum
 ```
 
-#### Jq
+#### Jq (JSON query)
 
 To install `jq` (JSON parsing binary):
 
