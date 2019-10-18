@@ -1,4 +1,5 @@
 const json2md = require("json2md");
+const exec = require("child_process").exec;
 const fs = require("fs");
 const path = require("path");
 const deployedAddresses = JSON.parse(
@@ -50,7 +51,19 @@ const printTableCorrectly = (jsonOutput, table) => {
     jsonOutput.push(parts.join("\n"));
 };
 
-(() => {
+const getReadme = async () => {
+    return new Promise((resolve, reject) => {
+        exec('./bin/kosu-migrate.js --help', (err, stdout) => {
+            if (err) {
+                reject(err);
+            } else {
+                resolve(stdout);
+            }
+        })
+    });
+};
+
+(async () => {
     const jsonOutput = [];
 
     jsonOutput.push({ h1: "Kosu Migrations" });
@@ -58,6 +71,15 @@ const printTableCorrectly = (jsonOutput, table) => {
         p: "This repository contains the migrations necessary to initialize the Kosu contract system.",
     });
     jsonOutput.push({ p: "These contracts are **under active development and may change extensively at any time**." });
+    jsonOutput.push({ h2: "kosu-migrate cli utility" });
+    jsonOutput.push({ p: "The `kosu-migrate` utility is included as a binary to the packages." });
+    jsonOutput.push({
+        code: {
+            content: [
+                await getReadme()
+            ]
+        }
+    });
     jsonOutput.push({ h2: "Deployed addresses" });
     jsonOutput.push({
         p:
