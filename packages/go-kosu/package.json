@@ -1,7 +1,7 @@
 {
     "name": "@kosu/go-kosu",
     "private": true,
-    "version": "v0.4.0",
+    "version": "0.4.0",
     "description": "Package file used to configure go-kosu builds with up-to-date contract addresses",
     "repository": "https://github.com/ParadigmFoundation/kosu-monorepo/blob/master/packages/go-kosu",
     "license": "MIT",
