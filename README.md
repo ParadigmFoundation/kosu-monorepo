@@ -32,13 +32,11 @@ Documentation for Kosu packages is available in this repository, and hosted at [
 ## Stats and badges
 
 ![GitHub](https://img.shields.io/github/license/ParadigmFoundation/kosu-monorepo)
-
-[![Build Status](https://ci.kosu.io/api/badges/ParadigmFoundation/kosu-monorepo/status.svg)](https://ci.kosu.io/ParadigmFoundation/kosu-monorepo)
+![![Build Status](https://ci.kosu.io/api/badges/ParadigmFoundation/kosu-monorepo/status.svg)](https://ci.kosu.io/ParadigmFoundation/kosu-monorepo)
 ![GitHub issues](https://img.shields.io/github/issues-raw/ParadigmFoundation/kosu-monorepo)
 ![GitHub closed issues](https://img.shields.io/github/issues-closed-raw/ParadigmFoundation/kosu-monorepo)
 ![GitHub pull requests](https://img.shields.io/github/issues-pr/ParadigmFoundation/kosu-monorepo)
 ![GitHub closed pull requests](https://img.shields.io/github/issues-pr-closed/ParadigmFoundation/kosu-monorepo)
-
 
 ## Packages
 
