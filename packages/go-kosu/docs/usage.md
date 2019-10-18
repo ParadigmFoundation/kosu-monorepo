@@ -536,8 +536,14 @@ The simplest configuration is to run a single node development "network" on a lo
         kosud start -E [URL]
 
         # full
-        kosud start --web3 [URL] --home [HOMEDIR]
+        kosud start --home [HOMEDIR]
         ```
+
+1. By default the node starts as a fullnode, if you want to run a validator you should use the `--validator` flag:
+
+    ```bash
+    kosud start --validator --validator.web3 <ethereum endpoint>
+    ```
 
 1. Optionally, start the RPC server with the `--rpc` flag (i.e `kosu start --rpc`).
 

@@ -203,7 +203,7 @@ func (s *KosudSuite) TestStart() {
 		err := s.Start(1*time.Second,
 			"--home", dir,
 			"--laddr", fmt.Sprintf("tcp://127.0.0.1:%d", laddr),
-			"--web3", fmt.Sprintf("ws://127.0.0.1:%d", eth),
+			"--validator.web3", fmt.Sprintf("ws://127.0.0.1:%d", eth),
 		)
 		s.Require().NoError(err)
 
