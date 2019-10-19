@@ -37,7 +37,7 @@ Smart-contract packages (Solidity) including the core Kosu system contracts and 
 | Package &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;            | Version                                                         | Description                                                              |
 | :----------------------------------------------------------- | :-------------------------------------------------------------- | :----------------------------------------------------------------------- |
 | [`@kosu/system-contracts`](./packages/kosu-system-contracts) | ![npm](https://img.shields.io/npm/v/@kosu/system-contracts.svg) | The core Kosu contract system in Solidity (with low-level wrappers).     |
-| [`@kosu/solidity-tests`](./packages/kosu-system-contracts)   | ![npm](https://img.shields.io/npm/v/@kosu/solidity-tests.svg)    | TypeScript test suite for the Kosu contract system.                      |
+| [`@kosu/solidity-tests`](./packages/kosu-system-contracts)   | ![npm](https://img.shields.io/npm/v/@kosu/solidity-tests.svg)   | TypeScript test suite for the Kosu contract system.                      |
 | [`@kosu/subcontract-sdk`](./packages/kosu-sdk-contracts)     | ![npm](https://img.shields.io/npm/v/@kosu/subcontract-sdk.svg)  | The Kosu `SubContract` interface and example implementations.            |
 | [`@kosu/migrations`](./packages/kosu-migrations)             | ![npm](https://img.shields.io/npm/v/@kosu/migrations.svg)       | Scripts and utilities for deploying Kosu contracts to Ethereum networks. |
 
@@ -53,12 +53,12 @@ Kosu network clients (currently, only [`go-kosu`](./packages/go-kosu)). Includes
 
 Client/server libraries for interacting with the Kosu network and contract system.
 
-| Package &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;          | Version                                                       | Description                                                                |
-| :--------------------------------------------------------- | :------------------------------------------------------------ | :------------------------------------------------------------------------- |
-| [`@kosu/kosu.js`](./packages/kosu.js)                      | ![npm](https://img.shields.io/npm/v/@kosu/kosu.js.svg)        | Exports all Kosu helper classes, utility functions, and contract wrappers. |
-| [`@kosu/node-client`](./packages/kosu-node-client-kosu)    | ![npm](https://img.shields.io/npm/v/@kosu/node-client.svg)    | TypeScript client for interacting with a Kosu node over JSONRPC.           |
-| [`@kosu/genesis-cli`](./packages/kosu-genesis-cli)         | ![npm](https://img.shields.io/npm/v/@kosu/genesis-cli.svg)    | Library and CLI for generating network genesis files from contract sate.   |
-| [`@kosu/contract-utils`](./packages/kosu-contract-utils)   | ![npm](https://img.shields.io/npm/v/@kosu/contract-utils.svg) | Utilities for interacting with Kosu (decoding event logs, etc.).           |
+| Package &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;          | Version                                                         | Description                                                                |
+| :--------------------------------------------------------- | :-------------------------------------------------------------- | :------------------------------------------------------------------------- |
+| [`@kosu/kosu.js`](./packages/kosu.js)                      | ![npm](https://img.shields.io/npm/v/@kosu/kosu.js.svg)          | Exports all Kosu helper classes, utility functions, and contract wrappers. |
+| [`@kosu/node-client`](./packages/kosu-node-client-kosu)    | ![npm](https://img.shields.io/npm/v/@kosu/node-client.svg)      | TypeScript client for interacting with a Kosu node over JSONRPC.           |
+| [`@kosu/genesis-cli`](./packages/kosu-genesis-cli)         | ![npm](https://img.shields.io/npm/v/@kosu/genesis-cli.svg)      | Library and CLI for generating network genesis files from contract sate.   |
+| [`@kosu/contract-utils`](./packages/kosu-contract-utils)   | ![npm](https://img.shields.io/npm/v/@kosu/contract-utils.svg)   | Utilities for interacting with Kosu (decoding event logs, etc.).           |
 | [`@kosu/contract-helpers`](./packages/kosu-contract-utils) | ![npm](https://img.shields.io/npm/v/@kosu/contract-helpers.svg) | High-level convenience wrappers for interacting with Kosu contracts.       |
 
 ### Utility/development packages
