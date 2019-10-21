@@ -53,13 +53,13 @@ const printTableCorrectly = (jsonOutput, table) => {
 
 const getReadme = async () => {
     return new Promise((resolve, reject) => {
-        exec('./bin/kosu-migrate.js --help', (err, stdout) => {
+        exec("./bin/kosu-migrate.js --help", (err, stdout) => {
             if (err) {
                 reject(err);
             } else {
                 resolve(stdout);
             }
-        })
+        });
     });
 };
 
@@ -75,10 +75,8 @@ const getReadme = async () => {
     jsonOutput.push({ p: "The `kosu-migrate` utility is included as a binary to the packages." });
     jsonOutput.push({
         code: {
-            content: [
-                await getReadme()
-            ]
-        }
+            content: [await getReadme()],
+        },
     });
     jsonOutput.push({ h2: "Deployed addresses" });
     jsonOutput.push({

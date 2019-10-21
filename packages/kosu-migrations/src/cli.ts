@@ -35,7 +35,8 @@ const args = yargs
     .option("ether-to-bond", {
         alias: "e",
         type: "number",
-        description: "Value in ether to bond for all available addresses (addresses with insufficient balance are skipped)",
+        description:
+            "Value in ether to bond for all available addresses (addresses with insufficient balance are skipped)",
         default: 60,
     })
     .alias("h", "help")
@@ -47,7 +48,7 @@ if (args.testMnemonic || !mnemonic) {
 }
 
 (async () => {
-    const mnemonicSubprovider = mnemonic ? new MnemonicWalletSubprovider({mnemonic}) : null;
+    const mnemonicSubprovider = mnemonic ? new MnemonicWalletSubprovider({ mnemonic }) : null;
     const rpcSubprovider = new RPCSubprovider(args.rpcUrl);
     const providerEngine = new Web3ProviderEngine();
     if (mnemonicSubprovider) {
@@ -104,7 +105,10 @@ if (args.testMnemonic || !mnemonic) {
 
     if (args.bondTokens || args.bondOnly) {
         console.log(deployedAddresses[networkId.toString()].KosuToken.contractAddress);
-        const kosuToken = new KosuTokenContract(deployedAddresses[networkId.toString()].KosuToken.contractAddress, providerEngine);
+        const kosuToken = new KosuTokenContract(
+            deployedAddresses[networkId.toString()].KosuToken.contractAddress,
+            providerEngine,
+        );
         const addresses = await web3Wrapper.getAvailableAddressesAsync();
 
         for (const account of addresses) {
@@ -117,7 +121,9 @@ if (args.testMnemonic || !mnemonic) {
                 console.log(`Skipping ${account}, insufficient balance`);
                 continue;
             }
-            console.log(`${account} should bond ${args.etherToBond} ether (${valueInWei} wei) has balance of ${accountBalance}`);
+            console.log(
+                `${account} should bond ${args.etherToBond} ether (${valueInWei} wei) has balance of ${accountBalance}`,
+            );
             /* tslint:disable */
             await kosuToken.bondTokens
                 .awaitTransactionSuccessAsync(new BigNumber("0"), {
