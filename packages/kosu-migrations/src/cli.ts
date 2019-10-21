@@ -27,6 +27,10 @@ const args = yargs
         description: "Bond tokens for available addresses",
         type: "boolean",
     })
+    .option("rpc-bond", {
+        description: "Bond tokens for all available unlocked addresses in the provided rpc-url",
+        type: "boolean",
+    })
     .option("bond-only", {
         description: "Skip migrations and bond tokens",
         type: "boolean",
@@ -45,6 +49,43 @@ let mnemonic = safeRequire("./mnemonic.json");
 if (args.testMnemonic || !mnemonic) {
     mnemonic = process.env.npm_package_config_test_mnemonic;
 }
+
+const bondTokens = async provider => {
+    const web3Wrapper = new Web3Wrapper(provider);
+    const networkId = await web3Wrapper.getNetworkIdAsync();
+    const addresses = await web3Wrapper.getAvailableAddressesAsync();
+
+    const kosuToken = new KosuTokenContract(
+        deployedAddresses[networkId.toString()].KosuToken.contractAddress,
+        provider,
+    );
+
+    for (const account of addresses) {
+        const valueInWei = new BigNumber(Web3.utils.toWei(args.etherToBond.toString()));
+        const expectedAmount = await kosuToken.estimateEtherToToken.callAsync(valueInWei);
+        const accountBalance = await web3Wrapper.getBalanceInWeiAsync(account);
+        if (accountBalance.lt(valueInWei)) {
+            console.log(`Skipping ${account}, insufficient balance`);
+            continue;
+        }
+
+        /* tslint:disable */
+        await kosuToken.bondTokens
+            .awaitTransactionSuccessAsync(new BigNumber("0"), {
+                from: account.toLowerCase(),
+                gas: 4500000,
+                value: valueInWei,
+            })
+            .then(
+                () => console.log(`Minted ${expectedAmount.toString()} tokens for ${account}.`),
+                async reason => {
+                    console.log(`Failed to mint tokens with ${account} due to:`);
+                    console.log(reason);
+                    return Promise.reject();
+                },
+            );
+    }
+};
 
 (async () => {
     const mnemonicSubprovider = mnemonic ? new MnemonicWalletSubprovider({ mnemonic }) : null;
@@ -103,40 +144,9 @@ if (args.testMnemonic || !mnemonic) {
     }
 
     if (args.bondTokens || args.bondOnly) {
-        console.log(deployedAddresses[networkId.toString()].KosuToken.contractAddress);
-        const kosuToken = new KosuTokenContract(
-            deployedAddresses[networkId.toString()].KosuToken.contractAddress,
-            providerEngine,
-        );
-
-        for (const account of addresses) {
-            const valueInWei = new BigNumber(web3.utils.toWei(args.etherToBond.toString()));
-            console.log(valueInWei);
-            const expectedAmount = await kosuToken.estimateEtherToToken.callAsync(valueInWei);
-            console.log(expectedAmount);
-            const accountBalance = await web3Wrapper.getBalanceInWeiAsync(account);
-            if (accountBalance.lt(valueInWei)) {
-                console.log(`Skipping ${account}, insufficient balance`);
-                continue;
-            }
-            console.log(
-                `${account} should bond ${args.etherToBond} ether (${valueInWei} wei) has balance of ${accountBalance}`,
-            );
-            /* tslint:disable */
-            await kosuToken.bondTokens
-                .awaitTransactionSuccessAsync(new BigNumber("0"), {
-                    from: account.toLowerCase(),
-                    gas: 4500000,
-                    value: valueInWei,
-                })
-                .then(
-                    () => console.log(`Minted ${expectedAmount.toString()} tokens for ${account}.`),
-                    async reason => {
-                        console.log(`Failed to mint tokens with ${account} due to:`);
-                        console.log(reason);
-                        return Promise.reject();
-                    },
-                );
+        bondTokens(providerEngine);
+        if (args.rpcBond) {
+            bondTokens(new Web3.providers.HttpProvider(args.rpcUrl));
         }
     }
 })().catch(err => {
