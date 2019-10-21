@@ -1,4 +1,3 @@
-import { BlockchainLifecycle } from "@0x/dev-utils";
 import { MnemonicWalletSubprovider, RPCSubprovider } from "@0x/subproviders";
 import { BigNumber, providerUtils } from "@0x/utils";
 import { Web3Wrapper } from "@0x/web3-wrapper";
