@@ -52,6 +52,7 @@ if (args.testMnemonic || !mnemonic) {
 
 const bondTokens = async provider => {
     const web3Wrapper = new Web3Wrapper(provider);
+    const web3 = new Web3(provider);
     const networkId = await web3Wrapper.getNetworkIdAsync();
     const addresses = await web3Wrapper.getAvailableAddressesAsync();
 
@@ -61,6 +62,9 @@ const bondTokens = async provider => {
     );
 
     for (const account of addresses) {
+        if (account.toLowerCase() === "0x5409ed021d9299bf6814279a6a1411a7e866a631".toLowerCase() && await web3.eth.getTransactionCount(account) === 0) {
+            continue;
+        }
         const valueInWei = new BigNumber(Web3.utils.toWei(args.etherToBond.toString()));
         const expectedAmount = await kosuToken.estimateEtherToToken.callAsync(valueInWei);
         const accountBalance = await web3Wrapper.getBalanceInWeiAsync(account);
