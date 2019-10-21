@@ -15,6 +15,8 @@ Options:
   --force-fresh        Ensure the deploying address has no previous network
                        transactions                                    [boolean]
   --bond-tokens, -b    Bond tokens for available addresses             [boolean]
+  --rpc-bond           Bond tokens for all available unlocked addresses in the
+                       provided rpc-url                                [boolean]
   --bond-only          Skip migrations and bond tokens                 [boolean]
   --ether-to-bond, -e  Value in ether to bond for all available addresses
                        (addresses with insufficient balance are skipped)
