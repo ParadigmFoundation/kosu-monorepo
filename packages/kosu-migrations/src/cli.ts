@@ -62,7 +62,10 @@ const bondTokens = async provider => {
     );
 
     for (const account of addresses) {
-        if (account.toLowerCase() === "0x5409ed021d9299bf6814279a6a1411a7e866a631".toLowerCase() && await web3.eth.getTransactionCount(account) === 0) {
+        if (
+            account.toLowerCase() === "0x5409ed021d9299bf6814279a6a1411a7e866a631".toLowerCase() &&
+            (await web3.eth.getTransactionCount(account)) === 0
+        ) {
             continue;
         }
         const valueInWei = new BigNumber(Web3.utils.toWei(args.etherToBond.toString()));
