@@ -108,7 +108,6 @@ if (args.testMnemonic || !mnemonic) {
             deployedAddresses[networkId.toString()].KosuToken.contractAddress,
             providerEngine,
         );
-        const addresses = await web3Wrapper.getAvailableAddressesAsync();
 
         for (const account of addresses) {
             const valueInWei = new BigNumber(web3.utils.toWei(args.etherToBond.toString()));
