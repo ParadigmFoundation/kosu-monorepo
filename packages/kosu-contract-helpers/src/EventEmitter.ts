@@ -1,5 +1,5 @@
 import { Web3Wrapper } from "@0x/web3-wrapper";
-import { eventDecoder } from "@kosu/contract-utils";
+import { eventDecoder } from "@kosu/utils";
 import { DeployedAddresses } from "@kosu/migrations";
 import Timeout = NodeJS.Timeout;
 import { DecodedKosuLogArgs, KosuOptions, LogWithDecodedKosuArgs } from "@kosu/types";
