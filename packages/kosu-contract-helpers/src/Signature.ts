@@ -1,4 +1,4 @@
-import { NULL_ADDRESS } from "@kosu/contract-utils";
+import { NULL_ADDRESS } from "@kosu/utils";
 import { bufferToHex, ecrecover, fromRpcSig, hashPersonalMessage, pubToAddress, toBuffer } from "ethereumjs-util";
 import Web3 from "web3";
 

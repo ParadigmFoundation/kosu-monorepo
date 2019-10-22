@@ -31,7 +31,7 @@
         "@0x/web3-wrapper": "^6.0.5",
         "@babel/core": "^7.4.4",
         "@kosu/system-contracts": "^0.3.0",
-        "@kosu/contract-utils": "^0.3.0",
+        "@kosu/utils": "^0.3.0",
         "@kosu/types": "^0.3.0",
         "@kosu/migrations": "^0.3.0",
         "@kosu/tsc-config": "^0.1.0",
