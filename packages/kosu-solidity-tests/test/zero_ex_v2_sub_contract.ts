@@ -1,6 +1,6 @@
 import { assetDataUtils, BigNumber, ContractWrappers, generatePseudoRandomSalt, signatureUtils } from "0x.js";
 import { numberToHex, toTwosComplement } from "web3-utils";
-import { NULL_ADDRESS } from "@kosu/contract-utils";
+import { NULL_ADDRESS } from "@kosu/utils";
 
 describe("ZeroExV2SubContract", () => {
     it("facilitate a 0x transfer", async () => {
