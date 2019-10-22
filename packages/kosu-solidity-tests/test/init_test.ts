@@ -25,7 +25,7 @@ chai.use(chaiAsPromised);
 chai.use(chaiSubset);
 chai.should();
 
-let coverageSubprovider;
+// let coverageSubprovider;
 
 before(async () => {
     const provider = new Web3ProviderEngine();
@@ -100,6 +100,7 @@ before(async () => {
     });
     if (!useGeth) {
         web3.eth.personal.importRawKey(
+            // @ts-ignore
             "0xf2f48ee19680706196e2e339e5da3491186e0c4c5030670656b0e0164837257d",
             "password",
         );
@@ -126,11 +127,11 @@ before(async () => {
     });
 });
 
-after(async () => {
-    if (coverageSubprovider) {
-        await coverageSubprovider.writeCoverageAsync();
-    }
-});
+// after(async () => {
+//     if (coverageSubprovider) {
+//         await coverageSubprovider.writeCoverageAsync();
+//     }
+// });
 
 const argumentsJson = {
     maker: [
