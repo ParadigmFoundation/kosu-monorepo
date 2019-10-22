@@ -5,6 +5,10 @@ import { RevertTraceSubprovider, SolCompilerArtifactAdapter } from "@0x/sol-trac
 import { GanacheSubprovider, RPCSubprovider } from "@0x/subproviders";
 import { providerUtils } from "@0x/utils";
 import { Web3Wrapper } from "@0x/web3-wrapper";
+import { migrations } from "@kosu/migrations";
+import { artifacts, BasicTradeSubContractContract } from "@kosu/system-contracts";
+import { TestHelpers, TestValues } from "@kosu/test-helpers";
+import { MigratedTestContracts } from "@kosu/types";
 import chai from "chai";
 import chaiAsPromised from "chai-as-promised";
 import chaiSubset from "chai-subset";
@@ -12,10 +16,6 @@ import { ContractArtifact } from "ethereum-types";
 import Web3 from "web3";
 import Web3ProviderEngine from "web3-provider-engine";
 import { toWei } from "web3-utils";
-import { artifacts, BasicTradeSubContractContract } from "@kosu/system-contracts";
-import { migrations } from "@kosu/migrations";
-import { TestHelpers, TestValues } from "@kosu/test-helpers";
-import { MigratedTestContracts } from "@kosu/types";
 
 const useGeth = process.argv.includes("geth");
 const runCoverage = process.argv.includes("runCoverage");
