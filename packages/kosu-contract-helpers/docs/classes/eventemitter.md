@@ -30,7 +30,7 @@ to subscribe to future events.
 
 \+ **new EventEmitter**(`options`: `KosuOptions`): _[EventEmitter](eventemitter.md)_
 
-_Defined in [EventEmitter.ts:49](https://github.com/ParadigmFoundation/kosu-monorepo/blob/515d6d59/packages/kosu-contract-helpers/src/EventEmitter.ts#L49)_
+_Defined in [EventEmitter.ts:49](https://github.com/ParadigmFoundation/kosu-monorepo/blob/924d628e/packages/kosu-contract-helpers/src/EventEmitter.ts#L49)_
 
 Create a new `EventEmitter` instance.
 
@@ -48,7 +48,7 @@ Create a new `EventEmitter` instance.
 
 ▸ **getAddress**(): _`Promise<string>`_
 
-_Defined in [EventEmitter.ts:65](https://github.com/ParadigmFoundation/kosu-monorepo/blob/515d6d59/packages/kosu-contract-helpers/src/EventEmitter.ts#L65)_
+_Defined in [EventEmitter.ts:65](https://github.com/ParadigmFoundation/kosu-monorepo/blob/924d628e/packages/kosu-contract-helpers/src/EventEmitter.ts#L65)_
 
 Return the address of the configured deployed contract. If not already cached,
 will return the deployed address for the detected network ID (if available).
@@ -61,7 +61,7 @@ will return the deployed address for the detected network ID (if available).
 
 ▸ **getFutureDecodedLogs**(`start`: number, `callback`: function): _`Timeout`_
 
-_Defined in [EventEmitter.ts:111](https://github.com/ParadigmFoundation/kosu-monorepo/blob/515d6d59/packages/kosu-contract-helpers/src/EventEmitter.ts#L111)_
+_Defined in [EventEmitter.ts:111](https://github.com/ParadigmFoundation/kosu-monorepo/blob/924d628e/packages/kosu-contract-helpers/src/EventEmitter.ts#L111)_
 
 **`todo`** document better (and confirm)
 
@@ -91,7 +91,7 @@ A callback function to be called on an array of each new event log.
 
 ▸ **getPastDecodedLogs**(`config`: `FilterObject`): _`Promise<Array<LogWithDecodedKosuArgs<DecodedLogArgs, DecodedKosuLogArgs>>>`_
 
-_Defined in [EventEmitter.ts:84](https://github.com/ParadigmFoundation/kosu-monorepo/blob/515d6d59/packages/kosu-contract-helpers/src/EventEmitter.ts#L84)_
+_Defined in [EventEmitter.ts:84](https://github.com/ParadigmFoundation/kosu-monorepo/blob/924d628e/packages/kosu-contract-helpers/src/EventEmitter.ts#L84)_
 
 Get all past decoded logs from the Kosu `EventEmitter` contract, with the
 oldest event at position 0.
