@@ -164,6 +164,9 @@ steps:
   environment:
     GITHUB_TOKEN:
       from_secret: github_token
+  when:
+    ref:
+    - refs/tags/@kosu/go-kosu*
 
 trigger:
   event:

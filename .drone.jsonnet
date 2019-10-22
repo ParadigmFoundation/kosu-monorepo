@@ -108,6 +108,11 @@ local KosuGeth(name) = Image(name, "kosu-test-geth:latest") {
 			],
 			"environment": {
 				"GITHUB_TOKEN": { "from_secret": "github_token"  },
+			},
+			"when": {
+				"ref": {
+					"include": ["refs/tags/@kosu/go-kosu*"]
+				}
 			}
 		}
     ],
