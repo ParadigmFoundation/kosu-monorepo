@@ -38,7 +38,7 @@ specified SubContract during serialization and signature generation.
 
 \+ **new OrderGateway**(`options`: `KosuOptions`): _[OrderGateway](ordergateway.md)_
 
-_Defined in [OrderGateway.ts:48](https://github.com/ParadigmFoundation/kosu-monorepo/blob/515d6d59/packages/kosu-contract-helpers/src/OrderGateway.ts#L48)_
+_Defined in [OrderGateway.ts:48](https://github.com/ParadigmFoundation/kosu-monorepo/blob/924d628e/packages/kosu-contract-helpers/src/OrderGateway.ts#L48)_
 
 Create a new OrderGateway instance.
 
@@ -56,7 +56,7 @@ Create a new OrderGateway instance.
 
 ▸ **amountRemaining**(`order`: `Order`): _`Promise<BigNumber>`_
 
-_Defined in [OrderGateway.ts:152](https://github.com/ParadigmFoundation/kosu-monorepo/blob/515d6d59/packages/kosu-contract-helpers/src/OrderGateway.ts#L152)_
+_Defined in [OrderGateway.ts:152](https://github.com/ParadigmFoundation/kosu-monorepo/blob/924d628e/packages/kosu-contract-helpers/src/OrderGateway.ts#L152)_
 
 Checks amount of partial exchange tokens remaining, depending on the
 implementation of the SubContract specified in the supplied order.
@@ -78,7 +78,7 @@ implementation of the `amountRemaining` method.
 
 ▸ **arguments**(`subContract`: string): _`Promise<any>`_
 
-_Defined in [OrderGateway.ts:119](https://github.com/ParadigmFoundation/kosu-monorepo/blob/515d6d59/packages/kosu-contract-helpers/src/OrderGateway.ts#L119)_
+_Defined in [OrderGateway.ts:119](https://github.com/ParadigmFoundation/kosu-monorepo/blob/924d628e/packages/kosu-contract-helpers/src/OrderGateway.ts#L119)_
 
 Read the required arguments from a deployed SubContract.
 
@@ -98,7 +98,7 @@ The JSON array that defines the arguments for the SubContract.
 
 ▸ **isValid**(`order`: `Order`): _`Promise<boolean>`_
 
-_Defined in [OrderGateway.ts:136](https://github.com/ParadigmFoundation/kosu-monorepo/blob/515d6d59/packages/kosu-contract-helpers/src/OrderGateway.ts#L136)_
+_Defined in [OrderGateway.ts:136](https://github.com/ParadigmFoundation/kosu-monorepo/blob/924d628e/packages/kosu-contract-helpers/src/OrderGateway.ts#L136)_
 
 Checks validity of order data according the order's SubContract implementation.
 
@@ -116,7 +116,7 @@ Checks validity of order data according the order's SubContract implementation.
 
 ▸ **participate**(`order`: `Order`, `taker`: string): _`Promise<any>`_
 
-_Defined in [OrderGateway.ts:98](https://github.com/ParadigmFoundation/kosu-monorepo/blob/515d6d59/packages/kosu-contract-helpers/src/OrderGateway.ts#L98)_
+_Defined in [OrderGateway.ts:98](https://github.com/ParadigmFoundation/kosu-monorepo/blob/924d628e/packages/kosu-contract-helpers/src/OrderGateway.ts#L98)_
 
 Participate in a trade as a taker (or on behalf of one), by submitting the
 maker order, and the Ethereum address of the taker. The fill transaction
