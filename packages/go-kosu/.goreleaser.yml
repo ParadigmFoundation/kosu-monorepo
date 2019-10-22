@@ -22,5 +22,9 @@ builds:
     goarch:
       - amd64
 
+archives:
+  - id: kosu
+    name_template: "{{ .ProjectName }}-{{ .Os }}"
+
 checksum:
   name_template: 'checksums.txt'
