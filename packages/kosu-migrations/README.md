@@ -4,6 +4,27 @@ This repository contains the migrations necessary to initialize the Kosu contrac
 
 These contracts are **under active development and may change extensively at any time**.
 
+## kosu-migrate cli utility
+
+The `kosu-migrate` utility is included as a binary to the packages.
+
+```
+Options:
+  --version            Show version number                             [boolean]
+  --rpc-url            Full RPC url  [string] [default: "http://localhost:8545"]
+  --force-fresh        Ensure the deploying address has no previous network
+                       transactions                                    [boolean]
+  --bond-tokens, -b    Bond tokens for available addresses             [boolean]
+  --rpc-bond           Bond tokens for all available unlocked addresses in the
+                       provided rpc-url                                [boolean]
+  --bond-only          Skip migrations and bond tokens                 [boolean]
+  --ether-to-bond, -e  Value in ether to bond for all available addresses
+                       (addresses with insufficient balance are skipped)
+                                                          [number] [default: 60]
+  -h, --help           Show help                                       [boolean]
+
+```
+
 ## Deployed addresses
 
 Below are the deployed addresses for the core Kosu protocol contract system on the Ropsten test network, as well as an internal test network.
