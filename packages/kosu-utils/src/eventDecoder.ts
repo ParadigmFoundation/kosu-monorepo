@@ -1,7 +1,6 @@
+import { artifacts } from "@kosu/system-contracts";
 import Decoder from "web3-eth-abi";
 import { hexToNumberString, soliditySha3 } from "web3-utils";
-
-import { artifacts } from "@kosu/system-contracts";
 
 const event: {
     name: string;

@@ -1,7 +1,7 @@
 {
-    "name": "@kosu/contract-utils",
+    "name": "@kosu/utils",
     "version": "0.3.0",
-    "description": "Kosu contract utils",
+    "description": "Kosu utils",
     "license": "MIT",
     "repository": {
         "type": "git",
@@ -14,6 +14,7 @@
     },
     "scripts": {
         "clean": "shx rm -rf dist/",
+        "lint": "tslint -p .",
         "build": "tsc"
     },
     "publishConfig": {
