@@ -48,7 +48,7 @@ local KosuGeth(name) = Image(name, "kosu-test-geth:latest") {
 
         Image("solidity", "node-ci:latest") + GethConfig() {
             "commands": [ "yarn contracts:test:ci" ],
-            "depends_on": [ "build-project" ],
+            "depends_on": [ "build-project", "npm-tests" ],
         },
 
         KosuNode(0), KosuNode(1), KosuNode(2), KosuNode(3),
