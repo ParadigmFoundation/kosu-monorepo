@@ -93,7 +93,7 @@ steps:
   image: gcr.io/kosu-io/go-kosu-ci:latest
   commands:
   - cd packages/go-kosu
-  - "export KOSU_TEST_NODES=$(pwd)/testnet/node0@kosu-node-1:26657,$(pwd)/testnet/node1@kosu-node-1:26657,$(pwd)/testnet/node2@kosu-node-1:26657,$(pwd)/testnet/node3@kosu-node-1:26657"
+  - export KOSU_TEST_NODES=$(pwd)/testnet/node0@kosu-node-1:26657,$(pwd)/testnet/node1@kosu-node-1:26657,$(pwd)/testnet/node2@kosu-node-1:26657,$(pwd)/testnet/node3@kosu-node-1:26657
   - make ci
   depends_on:
   - build-project
@@ -153,6 +153,20 @@ steps:
     - tag
     status:
     - success
+
+- name: gorelease
+  pull: always
+  image: gcr.io/kosu-io/go-kosu
+  commands:
+  - git fetch --tags
+  - cd ./packages/go-kosu
+  - curl -sL https://git.io/goreleaser | bash -s -- --skip-validate
+  environment:
+    GITHUB_TOKEN:
+      from_secret: github_token
+  when:
+    ref:
+    - refs/tags/@kosu/go-kosu*
 
 trigger:
   event:
