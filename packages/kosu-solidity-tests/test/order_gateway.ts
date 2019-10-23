@@ -38,7 +38,11 @@ describe("OrderGateway", () => {
             raw = await web3.eth.sign(orderHex, signer);
         }
 
-        const hex = `${order.signer}${order.signerToken.substr(2)}${toTwosComplement(order.signerTokenCount).substr(2)}${order.buyerToken.substr(2)}${toTwosComplement(order.buyerTokenCount).substr(2)}${raw.substr(2)}${toTwosComplement(order.signerTokenCount).substr(2)}`;
+        const hex = `${order.signer}${order.signerToken.substr(2)}${toTwosComplement(order.signerTokenCount).substr(
+            2,
+        )}${order.buyerToken.substr(2)}${toTwosComplement(order.buyerTokenCount).substr(2)}${raw.substr(
+            2,
+        )}${toTwosComplement(order.signerTokenCount).substr(2)}`;
 
         await contracts.orderGateway.isValid
             .callAsync(contracts.basicTradeSubContract.address, hex)

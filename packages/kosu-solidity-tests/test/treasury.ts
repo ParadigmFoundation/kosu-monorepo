@@ -565,10 +565,14 @@ describe("Treasury", async () => {
             await kosuToken.transfer.awaitTransactionSuccessAsync(accounts[1], TestValues.fiveEther);
             await testHelpers.prepareTokens(accounts[0], TestValues.fiveEther);
             await testHelpers.prepareTokens(accounts[1], TestValues.fiveEther);
-            const { pollId, blockNumber }: { blockNumber: number; pollId: BigNumber } = await testHelpers.variablePoll(2, 2, {
-                win: new BigNumber(10),
-                lose: new BigNumber(5),
-            });
+            const { pollId, blockNumber }: { blockNumber: number; pollId: BigNumber } = await testHelpers.variablePoll(
+                2,
+                2,
+                {
+                    win: new BigNumber(10),
+                    lose: new BigNumber(5),
+                },
+            );
             await contracts.voting.commitVote.awaitTransactionSuccessAsync(pollId, secret1, TestValues.oneEther).should
                 .eventually.be.fulfilled;
             await contracts.voting.commitVote.awaitTransactionSuccessAsync(pollId, secret2, TestValues.fiveEther, {
