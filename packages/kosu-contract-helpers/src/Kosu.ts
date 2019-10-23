@@ -1,7 +1,7 @@
 import { Web3Wrapper } from "@0x/web3-wrapper";
-import { NULL_ADDRESS, toBytes32 } from "@kosu/utils";
 import { artifacts } from "@kosu/system-contracts";
 import { KosuOptions, KosuUtils } from "@kosu/types";
+import { NULL_ADDRESS, toBytes32 } from "@kosu/utils";
 import Web3 from "web3";
 
 import * as packageJson from "../package.json";

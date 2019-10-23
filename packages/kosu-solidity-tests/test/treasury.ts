@@ -1,12 +1,11 @@
 import { BigNumber } from "@0x/utils";
-import { soliditySha3 } from "web3-utils";
-
 import {
     AuthorizedAddressesContract,
     KosuTokenContract,
     PosterRegistryContract,
     TreasuryContract,
 } from "@kosu/system-contracts";
+import { soliditySha3 } from "web3-utils";
 
 describe("Treasury", async () => {
     let treasury: TreasuryContract;
@@ -533,10 +532,14 @@ describe("Treasury", async () => {
             await kosuToken.transfer.awaitTransactionSuccessAsync(accounts[1], TestValues.fiveEther);
             await testHelpers.prepareTokens(accounts[0], TestValues.fiveEther);
             await testHelpers.prepareTokens(accounts[1], TestValues.fiveEther);
-            const { pollId, blockNumber } = await testHelpers.variablePoll(2, 2, {
-                win: new BigNumber(10),
-                lose: new BigNumber(5),
-            });
+            const { pollId, blockNumber }: { pollId: BigNumber; blockNumber: number } = await testHelpers.variablePoll(
+                2,
+                2,
+                {
+                    win: new BigNumber(10),
+                    lose: new BigNumber(5),
+                },
+            );
             await contracts.voting.commitVote.awaitTransactionSuccessAsync(pollId, secret1, TestValues.oneEther).should
                 .eventually.be.fulfilled;
             await contracts.voting.commitVote.awaitTransactionSuccessAsync(pollId, secret2, TestValues.fiveEther, {
@@ -562,7 +565,7 @@ describe("Treasury", async () => {
             await kosuToken.transfer.awaitTransactionSuccessAsync(accounts[1], TestValues.fiveEther);
             await testHelpers.prepareTokens(accounts[0], TestValues.fiveEther);
             await testHelpers.prepareTokens(accounts[1], TestValues.fiveEther);
-            const { pollId, blockNumber } = await testHelpers.variablePoll(2, 2, {
+            const { pollId, blockNumber }: { blockNumber: number; pollId: BigNumber } = await testHelpers.variablePoll(2, 2, {
                 win: new BigNumber(10),
                 lose: new BigNumber(5),
             });

@@ -31,7 +31,7 @@
         "@0x/contracts-exchange": "^2.1.5",
         "@kosu/subcontract-sdk": "0.1.1",
         "@kosu/tsc-config": "^0.1.0",
-        "@kosu/tslint-config": "^0.0.4",
+        "@kosu/tslint-config": "^0.0.5",
         "ethereum-types": "^2.1.6",
         "openzeppelin-solidity": "2.1.2"
     },

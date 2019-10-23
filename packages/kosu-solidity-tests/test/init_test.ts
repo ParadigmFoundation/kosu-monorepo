@@ -90,7 +90,7 @@ before(async () => {
 
     const contracts = (await migrations(provider, txDefaults, { noLogs: true })) as MigratedTestContracts;
     contracts.basicTradeSubContract = await BasicTradeSubContractContract.deployFrom0xArtifactAsync(
-        artifacts.BasicTradeSubContract as ContractArtifact,
+        artifacts.BasicTradeSubContract,
         provider,
         txDefaults,
         JSON.stringify(argumentsJson),
@@ -99,13 +99,13 @@ before(async () => {
         value: TestValues.oneEther.times(200),
     });
     if (!useGeth) {
-        web3.eth.personal.importRawKey(
+        await web3.eth.personal.importRawKey(
             // @ts-ignore
             "0xf2f48ee19680706196e2e339e5da3491186e0c4c5030670656b0e0164837257d",
             "password",
         );
         web3.eth.personal.unlockAccount("0x5409ed021d9299bf6814279a6a1411a7e866a631", "password", 60000000);
-        web3Wrapper.sendTransactionAsync({
+        await web3Wrapper.sendTransactionAsync({
             from: accounts[9],
             to: "0x5409ed021d9299bf6814279a6a1411a7e866a631",
             value: TestValues.oneHundredEther.minus(TestValues.oneEther),

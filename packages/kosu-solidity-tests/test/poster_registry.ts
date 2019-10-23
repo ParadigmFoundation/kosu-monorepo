@@ -1,12 +1,12 @@
 import { BigNumber } from "@0x/utils";
-import { toWei } from "web3-utils";
-import { decodeKosuEvents } from "@kosu/utils";
 import {
     AuthorizedAddressesContract,
     KosuTokenContract,
     PosterRegistryContract,
     TreasuryContract,
 } from "@kosu/system-contracts";
+import { decodeKosuEvents } from "@kosu/utils";
+import { toWei } from "web3-utils";
 
 describe("PosterRegistry", () => {
     let posterRegistry: PosterRegistryContract;
