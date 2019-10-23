@@ -116,16 +116,19 @@ const bondTokens = async provider => {
     };
 
     if (!args.bondOnly) {
+        let from = addresses[0];
         if (args.forceFresh) {
-            for (let i = 0; i < 3; i++) {
-                await web3Wrapper.sendTransactionAsync({
-                    from: addresses[1],
-                    to: addresses[0],
-                    value: "0",
-                    gas: "4500000",
-                    gasPrice: "0",
-                });
-            }
+            from = addresses[1];
+        }
+
+        for (let i = 0; i < 3; i++) {
+            await web3Wrapper.sendTransactionAsync({
+                from: addresses[1],
+                to: addresses[0],
+                value: "0",
+                gas: "4500000",
+                gasPrice: "0",
+            });
         }
 
         if ((await web3.eth.getTransactionCount(normalizedFromAddress)) > 0 && args.forceFresh) {
