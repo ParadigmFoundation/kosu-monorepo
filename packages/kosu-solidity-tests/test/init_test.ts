@@ -88,7 +88,7 @@ before(async () => {
         gasPrice: toWei("5", "gwei"),
     };
 
-    const contracts: MigratedTestContracts = (await migrations(provider, txDefaults, { noLogs: true }));
+    const contracts: MigratedTestContracts = await migrations(provider, txDefaults, { noLogs: true });
     contracts.basicTradeSubContract = await BasicTradeSubContractContract.deployFrom0xArtifactAsync(
         artifacts.BasicTradeSubContract,
         provider,
