@@ -1,38 +1,30 @@
 project_name: kosu
 
 builds:
-  - binary: kosud
+  - id: kosud
+    binary: kosud
     main: ./cmd/kosud/main.go
+    ldflags: &ldflags
+      - -s -w -X github.com/ParadigmFoundation/kosu-monorepo/packages/go-kosu/version.Version={{.Version}}
+      - -X github.com/ParadigmFoundation/kosu-monorepo/packages/go-kosu/version.GitCommit={{.ShortCommit}}
+
     goos:
       - linux
-      - darwin
     goarch:
       - amd64
 
-  - binary: kosu-cli
+  - id: kosu-cli
+    binary: kosu-cli
     main: ./cmd/kosu-cli/main.go
+    ldflags: *ldflags
     goos:
       - linux
-      - darwin
     goarch:
       - amd64
 
 archives:
-  - id: kosud
-    replacements:
-      amd64: x86_64
-    format: binary
-
-  - id: kosu-cli
-    replacements:
-      amd64: x86_64
-    format: binary
+  - id: kosu
+    name_template: "{{ .ProjectName }}-{{ .Os }}"
 
 checksum:
   name_template: 'checksums.txt'
-changelog:
-  sort: asc
-  filters:
-    exclude:
-    - '^docs:'
-    - '^test:'
