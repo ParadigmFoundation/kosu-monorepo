@@ -2,6 +2,7 @@
 
 ## master
 
+-   Fix wrong initial validators power calculations
 -   Add --validator family flags to optionally start as a validator node
 -   Add GetBlocks RPC endpoint
 -   Fix wrong RPC remote address in lite mode

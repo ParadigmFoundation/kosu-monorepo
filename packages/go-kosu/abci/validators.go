@@ -72,7 +72,7 @@ func UnifyValidators(updates abci.ValidatorUpdates, state GenesisValidatorSet) (
 	}
 
 	for i := range newSet {
-		v := newSet[i]
+		v := &newSet[i]
 		s := state[i]
 
 		// key verification
@@ -91,6 +91,7 @@ func UnifyValidators(updates abci.ValidatorUpdates, state GenesisValidatorSet) (
 			// nolint
 			return nil, errors.New("The genesis file cannot contain validators with voting power other than '1' when the initial_validator_info is set")
 		}
+		update.Power = ScaleBalance(bn)
 		v.Power = update.Power
 		v.Balance = types.NewBigInt(bn.Bytes())
 		v.EthAccount = s.EthereumAddress
