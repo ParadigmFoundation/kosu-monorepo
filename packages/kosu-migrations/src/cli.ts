@@ -154,9 +154,9 @@ const bondTokens = async provider => {
     }
 
     if (args.bondTokens || args.bondOnly) {
-        bondTokens(providerEngine);
+        await bondTokens(providerEngine);
         if (args.rpcBond) {
-            bondTokens(new Web3.providers.HttpProvider(args.rpcUrl));
+            await bondTokens(new Web3.providers.HttpProvider(args.rpcUrl));
         }
     }
 })().catch(err => {
