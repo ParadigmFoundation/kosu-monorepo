@@ -6,7 +6,6 @@ ENV DOCKER true
 
 ENV GOCACHE=/home/.go-build
 ENV GO111MODULE=on
-ENV GOLINTCI_RELEASE=1.16.0
 ENV GOROOT=/usr/local/go
 ENV GOPATH=/home/go
 

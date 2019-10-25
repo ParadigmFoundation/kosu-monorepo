@@ -5,6 +5,8 @@ WORKDIR /home/go-kosu
 
 ENV GOCACHE=/home/.go-build
 ENV GO111MODULE=on
+ENV GOROOT=/usr/local/go
+ENV GOPATH=/home/go
 
 ENV GOLINTCI_RELEASE=1.18.0
 
