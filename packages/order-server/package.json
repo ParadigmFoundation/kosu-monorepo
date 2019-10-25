@@ -12,7 +12,8 @@
         "lint": "tslint -p .",
         "lint:fix": "tslint -p . --fix",
         "start": "node dist/index.js",
-        "start:production": "sleep 10 && NODE_ENV=production node dist/index.js"
+        "start:production": "sleep 10 && NODE_ENV=production node dist/index.js",
+        "docs": "mkdir -p ./docs && cp ./README.md ./docs/README.md"
     },
     "devDependencies": {
         "@0x/types": "^2.4.2",
