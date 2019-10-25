@@ -1,10 +1,12 @@
 # the image drone-ci should use to build go-kosu
 FROM golang:1.13-stretch
 
-WORKDIR $HOME/go-kosu
+WORKDIR /home/go-kosu
 
-ENV GOCACHE=$HOME/.go-build
+ENV GOCACHE=/home/.go-build
 ENV GO111MODULE=on
+ENV GOROOT=/usr/local/go
+ENV GOPATH=/home/go
 
 ENV GOLINTCI_RELEASE=1.18.0
 
@@ -12,9 +14,9 @@ ENV GOLINTCI_RELEASE=1.18.0
 RUN apt-get update
 RUN apt-get install -y unzip build-essential jq
 
-RUN git clone https://github.com/ethereum/go-ethereum
-RUN cd go-ethereum && make devtools
-RUN rm -rf go-ethereum
+RUN git clone -b release/1.8 https://github.com/ethereum/go-ethereum /home/go/src/github.com/ethereum/go-ethereum
+RUN cd /home/go/src/github.com/ethereum/go-ethereum && GO111MODULE=off make devtools
+RUN rm -rf /home/go/src/github.com/ethereum/go-ethereum
 
 # test configuration
 ENV ETHEREUM_TEST_ADDRESS=wss://ropsten.infura.io/ws
