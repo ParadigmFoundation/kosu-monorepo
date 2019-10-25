@@ -53,6 +53,60 @@ steps:
     "gs://kosu-docs/go-kosu"
   ]
 
+- name: "gcr.io/cloud-builders/gsutil"
+  args: [
+    "-m", 
+    "rsync", 
+    "-r", "-c", "-d", 
+    "./packages/dev-images/docs",
+    "gs://kosu-docs/dev-images"
+  ]
+
+- name: "gcr.io/cloud-builders/gsutil"
+  args: [
+    "-m", 
+    "rsync", 
+    "-r", "-c", "-d", 
+    "./packages/kosu-node-client/docs",
+    "gs://kosu-docs/kosu-node-client"
+  ]
+
+- name: "gcr.io/cloud-builders/gsutil"
+  args: [
+    "-m", 
+    "rsync", 
+    "-r", "-c", "-d", 
+    "./packages/kosu-deployed-addresses/docs",
+    "gs://kosu-docs/kosu-deployed-addresses"
+  ]
+
+- name: "gcr.io/cloud-builders/gsutil"
+  args: [
+    "-m", 
+    "rsync", 
+    "-r", "-c", "-d", 
+    "./packages/kosu.js/docs",
+    "gs://kosu-docs/kosu.js"
+  ]
+
+- name: "gcr.io/cloud-builders/gsutil"
+  args: [
+    "-m", 
+    "rsync", 
+    "-r", "-c", "-d", 
+    "./packages/kosu-migrations/docs",
+    "gs://kosu-docs/kosu-migrations"
+  ]
+
+- name: "gcr.io/cloud-builders/gsutil"
+  args: [
+    "-m", 
+    "rsync", 
+    "-r", "-c", "-d", 
+    "./packages/order-server/docs",
+    "gs://kosu-docs/order-server"
+  ]
+
 # ================
 # PUBLISH BINARIES
 # ================
@@ -111,6 +165,60 @@ steps:
     "-r", "-c", "-d", 
     "./packages/go-kosu/docs",
     "./packages/kosu-docs/docs/go-kosu"
+  ]
+
+- name: "gcr.io/cloud-builders/gsutil"
+  args: [
+    "-m", 
+    "rsync", 
+    "-r", "-c", "-d", 
+    "./packages/kosu-node-client/docs",
+    "./packages/kosu-docs/docs/kosu-node-client"
+  ]
+
+- name: "gcr.io/cloud-builders/gsutil"
+  args: [
+    "-m", 
+    "rsync", 
+    "-r", "-c", "-d", 
+    "./packages/kosu-migrations/docs",
+    "./packages/kosu-docs/docs/kosu-migrations"
+  ]
+
+- name: "gcr.io/cloud-builders/gsutil"
+  args: [
+    "-m", 
+    "rsync", 
+    "-r", "-c", "-d", 
+    "./packages/kosu-deployed-addresses/docs",
+    "./packages/kosu-docs/docs/kosu-deployed-addresses"
+  ]
+
+- name: "gcr.io/cloud-builders/gsutil"
+  args: [
+    "-m", 
+    "rsync", 
+    "-r", "-c", "-d", 
+    "./packages/kosu.js/docs",
+    "./packages/kosu-docs/docs/kosu.js"
+  ]
+
+- name: "gcr.io/cloud-builders/gsutil"
+  args: [
+    "-m", 
+    "rsync", 
+    "-r", "-c", "-d", 
+    "./packages/order-server/docs",
+    "./packages/kosu-docs/docs/order-server"
+  ]
+
+- name: "gcr.io/cloud-builders/gsutil"
+  args: [
+    "-m", 
+    "rsync", 
+    "-r", "-c", "-d", 
+    "./packages/dev-images/docs",
+    "./packages/kosu-docs/docs/dev-images"
   ]
 
 - name: "gcr.io/kosu-io/node-ci:latest"
