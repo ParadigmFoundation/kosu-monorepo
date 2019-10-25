@@ -1,4 +1,4 @@
-# `@kosu/dev-images`
+# Kosu development images
 
 Development and CI docker images and supporting scripts for the Kosu project.
 
