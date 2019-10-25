@@ -10,6 +10,7 @@ KosuToken (KOSU) is an implementation of the ERC-20 interface and supporting bon
     -   [balanceOf](#balanceof)
     -   [bondTokens](#bondtokens)
     -   [burn](#burn)
+    -   [constructor](#constructor)
     -   [decreaseAllowance](#decreaseallowance)
     -   [estimateEtherToToken](#estimateethertotoken)
     -   [estimateTokenToEther](#estimatetokentoether)
@@ -110,6 +111,22 @@ function burn(amount uint256) public
 | Parameter | Type      | Description               |
 | --------- | --------- | ------------------------- |
 | `amount`  | `uint256` | Number of tokens to burn. |
+
+### constructor
+
+Initializes KosuToken with the authorizedAddresses shared permission contract to protect functions.
+
+#### Signature
+
+```solidity
+constructor(_auth address) public
+```
+
+#### Parameters:
+
+| Parameter | Type      | Description                            |
+| --------- | --------- | -------------------------------------- |
+| `_auth`   | `address` | Deployed AuthorizedAddresses contract. |
 
 ### decreaseAllowance
 
