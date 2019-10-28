@@ -46,7 +46,7 @@
         "web3": "1.2.0",
         "web3-eth-abi": "1.2.0",
         "web3-provider-engine": "^15.0.0",
-        "web3-utils": "1.2.0"
+        "web3-utils": "1.2.2"
     },
     "devDependencies": {
         "0x.js": "^6.0.9",
