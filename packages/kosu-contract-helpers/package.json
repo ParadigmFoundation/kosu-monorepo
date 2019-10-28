@@ -44,6 +44,7 @@
         "node-fetch": "^2.2.0",
         "uuid": "^3.3.3",
         "web3": "1.2.2",
+        "web3-core": "1.2.2",
         "web3-provider-engine": "15.0.0",
         "web3-utils": "1.2.2"
     },

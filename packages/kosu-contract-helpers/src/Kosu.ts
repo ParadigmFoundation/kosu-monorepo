@@ -12,6 +12,7 @@ import {
     Voting,
 } from "@kosu/wrapper-enhancements";
 import Web3 from "web3";
+import { provider } from "web3-core";
 
 import * as packageJson from "../package.json";
 
@@ -138,7 +139,7 @@ export class Kosu {
      */
     constructor(options: KosuOptions) {
         // Configuring web3
-        this.web3 = new Web3(options.provider);
+        this.web3 = new Web3((options.provider as unknown) as provider);
         this.web3Wrapper = new Web3Wrapper(options.provider);
         options.web3 = this.web3;
         options.web3Wrapper = this.web3Wrapper;
