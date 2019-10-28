@@ -104,7 +104,7 @@ before(async () => {
             "0xf2f48ee19680706196e2e339e5da3491186e0c4c5030670656b0e0164837257d",
             "password",
         );
-        web3.eth.personal.unlockAccount("0x5409ed021d9299bf6814279a6a1411a7e866a631", "password", 60000000);
+        await web3.eth.personal.unlockAccount("0x5409ed021d9299bf6814279a6a1411a7e866a631", "password", 60000000);
         await web3Wrapper.sendTransactionAsync({
             from: accounts[9],
             to: "0x5409ed021d9299bf6814279a6a1411a7e866a631",
