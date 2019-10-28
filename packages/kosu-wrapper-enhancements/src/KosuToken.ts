@@ -74,7 +74,9 @@ export class KosuToken {
                 throw new Error("Invalid network for KosuToken");
             }
 
-            this.contract = new KosuTokenContract(this.address, this.web3Wrapper.getProvider(), { from: this.coinbase });
+            this.contract = new KosuTokenContract(this.address, this.web3Wrapper.getProvider(), {
+                from: this.coinbase,
+            });
         }
         return this.contract;
     }
@@ -108,7 +110,7 @@ export class KosuToken {
      * @param value The `uint` value of tokens to transfer (in wei).
      * @returns The transaction's receipt after inclusion in a block.
      */
-    public async transfer(to: string, value: BigNumber | string| number): Promise<TransactionReceiptWithDecodedLogs> {
+    public async transfer(to: string, value: BigNumber | string | number): Promise<TransactionReceiptWithDecodedLogs> {
         const contract = await this.getContract();
         return contract.transfer.awaitTransactionSuccessAsync(to, new BigNumber(value.toString()));
     }
@@ -121,7 +123,11 @@ export class KosuToken {
      * @param value The `uint` value of tokens to transfer (in wei).
      * @returns The transaction receipt after it has been included in a block.
      */
-    public async transferFrom(from: string, to: string, value: BigNumber | string| number): Promise<TransactionReceiptWithDecodedLogs> {
+    public async transferFrom(
+        from: string,
+        to: string,
+        value: BigNumber | string | number,
+    ): Promise<TransactionReceiptWithDecodedLogs> {
         const contract = await this.getContract();
         return contract.transferFrom.awaitTransactionSuccessAsync(from, to, new BigNumber(value.toString()));
     }
@@ -133,7 +139,10 @@ export class KosuToken {
      * @param value The uint value (in wei) to approve `spender` for.
      * @returns The transaction receipt after it has been included in a block.
      */
-    public async approve(spender: string, value: BigNumber | string| number): Promise<TransactionReceiptWithDecodedLogs> {
+    public async approve(
+        spender: string,
+        value: BigNumber | string | number,
+    ): Promise<TransactionReceiptWithDecodedLogs> {
         const contract = await this.getContract();
         return contract.approve.awaitTransactionSuccessAsync(spender, new BigNumber(value.toString()));
     }
@@ -156,7 +165,7 @@ export class KosuToken {
      * @param etherInput Amount of ether to be submitted to generate tokens.
      * @returns Estimation of tokens to be minted.
      */
-    public async estimateEtherToToken(etherInput: BigNumber | string| number): Promise<BigNumber> {
+    public async estimateEtherToToken(etherInput: BigNumber | string | number): Promise<BigNumber> {
         const contract = await this.getContract();
         return contract.estimateEtherToToken.callAsync(new BigNumber(etherInput.toString()));
     }
@@ -167,7 +176,7 @@ export class KosuToken {
      * @param tokensToBurn Amount of tokens to burn for returned ether.
      * @returns Estimation of ether to be returned.
      */
-    public async estimateTokenToEther(tokensToBurn: BigNumber | string| number): Promise<BigNumber> {
+    public async estimateTokenToEther(tokensToBurn: BigNumber | string | number): Promise<BigNumber> {
         const contract = await this.getContract();
         return contract.estimateTokenToEther.callAsync(new BigNumber(tokensToBurn.toString()));
     }
@@ -179,7 +188,10 @@ export class KosuToken {
      * @param minPayout Minimum amount of tokens required to be minted to prevent transaction from reverting.
      * @returns Logs from the transaction block.
      */
-    public async bondTokens(value: BigNumber, minPayout: BigNumber | string| number): Promise<TransactionReceiptWithDecodedLogs> {
+    public async bondTokens(
+        value: BigNumber,
+        minPayout: BigNumber | string | number,
+    ): Promise<TransactionReceiptWithDecodedLogs> {
         const contract = await this.getContract();
         return contract.bondTokens.awaitTransactionSuccessAsync(new BigNumber(minPayout.toString()), {
             value: new BigNumber(value.toString()),
@@ -192,7 +204,7 @@ export class KosuToken {
      * @param tokensToBurn Amount of tokens to burn for returned ether.
      * @returns Logs from the transaction block.
      */
-    public async releaseTokens(tokensToBurn: BigNumber | string| number): Promise<TransactionReceiptWithDecodedLogs> {
+    public async releaseTokens(tokensToBurn: BigNumber | string | number): Promise<TransactionReceiptWithDecodedLogs> {
         const contract = await this.getContract();
         return contract.releaseTokens.awaitTransactionSuccessAsync(new BigNumber(tokensToBurn.toString()));
     }
@@ -203,7 +215,7 @@ export class KosuToken {
      * @param value Amount of wei to deposit
      * @returns Logs from the transaction block.
      */
-    public async pay(value: BigNumber | string| number): Promise<TransactionReceiptWithDecodedLogs> {
+    public async pay(value: BigNumber | string | number): Promise<TransactionReceiptWithDecodedLogs> {
         const contract = await this.getContract();
         const txData = {
             from: this.coinbase,

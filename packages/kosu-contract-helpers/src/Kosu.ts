@@ -2,7 +2,15 @@ import { Web3Wrapper } from "@0x/web3-wrapper";
 import { artifacts } from "@kosu/system-contracts";
 import { KosuOptions, KosuUtils } from "@kosu/types";
 import { NULL_ADDRESS, toBytes32 } from "@kosu/utils";
-import { EventEmitter, KosuToken, OrderGateway, PosterRegistry, Treasury, ValidatorRegistry, Voting } from "@kosu/wrapper-enhancements";
+import {
+    EventEmitter,
+    KosuToken,
+    OrderGateway,
+    PosterRegistry,
+    Treasury,
+    ValidatorRegistry,
+    Voting,
+} from "@kosu/wrapper-enhancements";
 import Web3 from "web3";
 
 import * as packageJson from "../package.json";

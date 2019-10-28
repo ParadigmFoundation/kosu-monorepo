@@ -18,7 +18,6 @@ import { KosuToken } from "./KosuToken";
  * constructor must include the Treasury's ABI (from the compiled Solidity source).
  */
 export class Treasury {
-
     /**
      * The `web3Wrapper` instance with the contract's ABI loaded.
      */
@@ -92,7 +91,7 @@ export class Treasury {
      * const receipt = await treasury.deposit(value);
      * ```
      */
-    public async deposit(value: BigNumber | string| number): Promise<TransactionReceiptWithDecodedLogs> {
+    public async deposit(value: BigNumber | string | number): Promise<TransactionReceiptWithDecodedLogs> {
         const contract = await this.getContract();
         const hasBalance = await this.kosuToken.balanceOf(this.coinbase).then(bal => bal.gte(value));
         const hasApproval = await this.kosuToken.allowance(this.coinbase, this.address).then(all => all.gte(value));
@@ -122,7 +121,7 @@ export class Treasury {
      * const receipt = await treasury.withdraw(value);
      * ```
      */
-    public async withdraw(value: BigNumber | string| number): Promise<TransactionReceiptWithDecodedLogs> {
+    public async withdraw(value: BigNumber | string | number): Promise<TransactionReceiptWithDecodedLogs> {
         const contract = await this.getContract();
         return contract.withdraw.awaitTransactionSuccessAsync(new BigNumber(value.toString()));
     }
@@ -202,7 +201,7 @@ export class Treasury {
      * const receipt = await treasury.approveTreasury(value);
      * ```
      */
-    public async approveTreasury(value: BigNumber | string| number): Promise<TransactionReceiptWithDecodedLogs> {
+    public async approveTreasury(value: BigNumber | string | number): Promise<TransactionReceiptWithDecodedLogs> {
         const contract = await this.getContract();
         return this.kosuToken.approve(contract.address, new BigNumber(value.toString()));
     }
@@ -213,7 +212,7 @@ export class Treasury {
      * @param value Amount of wei to deposit
      * @returns Logs from the transaction block.
      */
-    public async pay(value: BigNumber | string| number): Promise<TransactionReceiptWithDecodedLogs> {
+    public async pay(value: BigNumber | string | number): Promise<TransactionReceiptWithDecodedLogs> {
         const contract = await this.getContract();
         const txData = {
             from: this.coinbase,
