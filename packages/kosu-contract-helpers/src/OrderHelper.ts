@@ -63,7 +63,9 @@ export class OrderHelper {
      * for successfully filled orders, and `false` for failed fills.
      */
     public async takeOrder(order: TakeableOrder, taker: string): Promise<any> {
-        return this.orderGateway.participate(order, taker);
+        const args = await this.orderGateway.arguments(order.subContract);
+        const participateBytes = OrderSerializer.serialize(args, order);
+        return this.orderGateway.participate(order.subContract, participateBytes, taker);
     }
 
     /**
