@@ -2,10 +2,7 @@ import { BigNumber } from "@0x/utils";
 import { Web3Wrapper } from "@0x/web3-wrapper";
 import { DeployedAddresses } from "@kosu/migrations";
 import { OrderGatewayContract } from "@kosu/system-contracts";
-import { KosuOptions, Order } from "@kosu/types";
-import Web3 from "web3";
-
-import { OrderSerializer } from "./OrderSerializer";
+import { KosuOptions } from "@kosu/types";
 
 /**
  * Integration with OrderGateway contract on an Ethereum blockchain.\
@@ -20,11 +17,6 @@ import { OrderSerializer } from "./OrderSerializer";
  * specified SubContract during serialization and signature generation.
  */
 export class OrderGateway {
-    /**
-     * An instance of `web3` used to interact with the Ethereum blockchain.
-     */
-    private readonly web3: Web3;
-
     /**
      * An instance of a 0x `Web3Wrapper` used for some RPC calls and for certain
      * methods.
@@ -53,9 +45,7 @@ export class OrderGateway {
      * @param options Instantiation options (see `KosuOptions`).
      */
     constructor(options: KosuOptions) {
-        this.web3 = options.web3;
         this.web3Wrapper = options.web3Wrapper;
-        this.address = options.orderGatewayAddress;
         this.initializing = this.init(options);
     }
 
@@ -66,8 +56,9 @@ export class OrderGateway {
      * @returns A promise to await complete instantiation for further calls
      */
     private async init(options: KosuOptions): Promise<void> {
-        const networkId = options.networkId || (await options.web3.eth.net.getId());
+        const networkId = options.networkId || (await options.web3Wrapper.getNetworkIdAsync());
 
+        this.address = options.orderGatewayAddress;
         if (!this.address) {
             this.address = DeployedAddresses[networkId].OrderGateway.contractAddress;
         }
@@ -77,10 +68,7 @@ export class OrderGateway {
         }
 
         this.contract = new OrderGatewayContract(this.address, this.web3Wrapper.getProvider(), {
-            from: await this.web3.eth.getCoinbase().catch(
-                /* istanbul ignore next */
-                () => undefined,
-            ),
+            from: await this.web3Wrapper.getAvailableAddressesAsync().then(addresses => addresses[0]),
         });
     }
 
@@ -90,24 +78,19 @@ export class OrderGateway {
      * is passed to the deployed OrderGateway contract and to the underlying
      * SubContract settlement logic.
      *
-     * @param order A signed Kosu maker order object with a valid `subContract`.
-     * @param takerValues Taker values to fulfill the maker order.
+     * @param subContract The subContract address;
+     * @param bytes The Kosu order serialized into subContract specific bytes.
      * @param taker The Ethereum address of the taker (should be available through provider).
      * @returns The boolean value indicating the status of the trade; `true` if the interaction was successful.
      */
-    public async participate(order: Order, taker: string): Promise<any> {
+    public async participate(subContract: string, bytes: string, taker: string): Promise<any> {
         await this.initializing;
 
-        // get arguments and serialize
-        const args = await this.arguments(order.subContract);
-        const participateBytes = OrderSerializer.serialize(args, order);
-
         // execute tx
-        const txId = await this.contract.participate.sendTransactionAsync(order.subContract, participateBytes, {
+        const txId = await this.contract.participate.sendTransactionAsync(subContract, bytes, {
             from: taker,
         });
-        const receipt = await this.web3Wrapper.awaitTransactionSuccessAsync(txId);
-        return receipt;
+        return this.web3Wrapper.awaitTransactionSuccessAsync(txId);
     }
 
     /**
@@ -131,29 +114,26 @@ export class OrderGateway {
     /**
      * Checks validity of order data according the order's SubContract implementation.
      *
-     * @param order Kosu order to validate against `isValid` implementation.
+     * @param subContract The subContract address;
+     * @param bytes The Kosu order serialized into subContract specific bytes.
      */
-    public async isValid(order: Order): Promise<boolean> {
+    public async isValid(subContract: string, bytes: string): Promise<boolean> {
         await this.initializing;
-        const args = await this.arguments(order.subContract);
-        const makerValuesBytes = OrderSerializer.serialize(args, order);
 
-        return this.contract.isValid.callAsync(order.subContract, makerValuesBytes);
+        return this.contract.isValid.callAsync(subContract, bytes);
     }
 
     /**
      * Checks amount of partial exchange tokens remaining, depending on the
      * implementation of the SubContract specified in the supplied order.
      *
-     * @param order The Kosu order to check amount remaining for.
+     * @param subContract The subContract address;
+     * @param bytes The Kosu order serialized into subContract specific bytes.
      * @returns A `BigNumber` representing the number returned by the SubContract's
      * implementation of the `amountRemaining` method.
      */
-    public async amountRemaining(order: Order): Promise<BigNumber> {
+    public async amountRemaining(subContract: string, bytes: string): Promise<BigNumber> {
         await this.initializing;
-        const args = await this.arguments(order.subContract);
-        const makerValuesBytes = OrderSerializer.serialize(args, order);
-
-        return this.contract.amountRemaining.callAsync(order.subContract, makerValuesBytes);
+        return this.contract.amountRemaining.callAsync(subContract, bytes);
     }
 }

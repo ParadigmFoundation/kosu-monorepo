@@ -4,7 +4,6 @@ import { DeployedAddresses } from "@kosu/migrations";
 import { TreasuryContract } from "@kosu/system-contracts";
 import { KosuOptions } from "@kosu/types";
 import { TransactionReceiptWithDecodedLogs } from "ethereum-protocol";
-import Web3 from "web3";
 
 import { KosuToken } from "./KosuToken";
 
@@ -19,10 +18,6 @@ import { KosuToken } from "./KosuToken";
  * constructor must include the Treasury's ABI (from the compiled Solidity source).
  */
 export class Treasury {
-    /**
-     * An instance of `web3` used to interact with the Ethereum blockchain.
-     */
-    private readonly web3: Web3;
 
     /**
      * The `web3Wrapper` instance with the contract's ABI loaded.
@@ -56,10 +51,9 @@ export class Treasury {
      * @param options Initialization options (see `KosuOptions`).
      * @param kosuToken Configured/instantiated `KosuToken` instance.
      */
-    constructor(options: KosuOptions, kosuToken: KosuToken) {
-        this.web3 = options.web3;
+    constructor(options: KosuOptions, kosuToken?: KosuToken) {
         this.web3Wrapper = options.web3Wrapper;
-        this.kosuToken = kosuToken;
+        this.kosuToken = kosuToken || new KosuToken(options);
         this.address = options.treasuryAddress;
     }
 
@@ -71,7 +65,7 @@ export class Treasury {
     private async getContract(): Promise<TreasuryContract> {
         if (!this.contract) {
             const networkId = await this.web3Wrapper.getNetworkIdAsync();
-            this.coinbase = await this.web3.eth.getCoinbase().catch(() => undefined);
+            this.coinbase = await this.web3Wrapper.getAvailableAddressesAsync().then(as => as[0]);
 
             if (!this.address) {
                 this.address = DeployedAddresses[networkId].Treasury.contractAddress;
@@ -94,22 +88,21 @@ export class Treasury {
      * ```typescript
      * // deposit 10 KOSU
      *
-     * const value = new BigNumber(web3.utils.toWei("10"));
+     * const value = new BigNumber(web3-utils.toWei("10"));
      * const receipt = await treasury.deposit(value);
      * ```
      */
-    public async deposit(value: BigNumber): Promise<TransactionReceiptWithDecodedLogs> {
+    public async deposit(value: BigNumber | string| number): Promise<TransactionReceiptWithDecodedLogs> {
         const contract = await this.getContract();
-        const coinbase = await this.web3.eth.getCoinbase();
-        const hasBalance = await this.kosuToken.balanceOf(coinbase).then(bal => bal.gte(value));
-        const hasApproval = await this.kosuToken.allowance(coinbase, this.address).then(all => all.gte(value));
+        const hasBalance = await this.kosuToken.balanceOf(this.coinbase).then(bal => bal.gte(value));
+        const hasApproval = await this.kosuToken.allowance(this.coinbase, this.address).then(all => all.gte(value));
 
         if (!hasBalance) {
-            throw new Error(`${coinbase} has insufficient balance to deposit`);
+            throw new Error(`${this.coinbase} has insufficient balance to deposit`);
         }
 
         if (!hasApproval) {
-            console.log(`${coinbase} has insufficient approval; Setting approval`);
+            console.log(`${this.coinbase} has insufficient approval; Setting approval`);
             await this.kosuToken.approve(this.address, value);
         }
 
@@ -125,11 +118,11 @@ export class Treasury {
      * ```typescript
      * // withdraw 10 KOSU
      *
-     * const value = new BigNumber(web3.utils.toWei("10"));
+     * const value = new BigNumber(web3-utils.toWei("10"));
      * const receipt = await treasury.withdraw(value);
      * ```
      */
-    public async withdraw(value: BigNumber): Promise<TransactionReceiptWithDecodedLogs> {
+    public async withdraw(value: BigNumber | string| number): Promise<TransactionReceiptWithDecodedLogs> {
         const contract = await this.getContract();
         return contract.withdraw.awaitTransactionSuccessAsync(new BigNumber(value.toString()));
     }
@@ -147,7 +140,7 @@ export class Treasury {
      * const balanceWei = await treasury.systemBalance(address);
      *
      * // convert to ether from wei
-     * const balance = web3.utils.fromWei(balanceWei);
+     * const balance = web3-utils.fromWei(balanceWei);
      * ```
      */
     public async systemBalance(address: string): Promise<BigNumber> {
@@ -168,7 +161,7 @@ export class Treasury {
      * const balanceWei = await treasury.currentBalance(address);
      *
      * // convert to ether from wei
-     * const balance = web3.utils.fromWei(balanceWei);
+     * const balance = web3-utils.fromWei(balanceWei);
      * ```
      */
     public async currentBalance(address: string): Promise<BigNumber> {
@@ -187,7 +180,7 @@ export class Treasury {
      * const allowanceWei = await treasury.treasuryAllowance();
      *
      * // convert to ether from wei
-     * const allowance = web3.utils.fromWei(allowanceWei);
+     * const allowance = web3-utils.fromWei(allowanceWei);
      * ```
      */
     public async treasuryAllowance(): Promise<BigNumber> {
@@ -205,11 +198,11 @@ export class Treasury {
      * ```typescript
      * // approve the treasury for 1,000,000 KOSU
      *
-     * const value = new BigNumber(web3.utils.toWei("1000000"));
+     * const value = new BigNumber(web3-utils.toWei("1000000"));
      * const receipt = await treasury.approveTreasury(value);
      * ```
      */
-    public async approveTreasury(value: BigNumber): Promise<TransactionReceiptWithDecodedLogs> {
+    public async approveTreasury(value: BigNumber | string| number): Promise<TransactionReceiptWithDecodedLogs> {
         const contract = await this.getContract();
         return this.kosuToken.approve(contract.address, new BigNumber(value.toString()));
     }
@@ -220,10 +213,10 @@ export class Treasury {
      * @param value Amount of wei to deposit
      * @returns Logs from the transaction block.
      */
-    public async pay(value: BigNumber): Promise<TransactionReceiptWithDecodedLogs> {
+    public async pay(value: BigNumber | string| number): Promise<TransactionReceiptWithDecodedLogs> {
         const contract = await this.getContract();
         const txData = {
-            from: await this.web3.eth.getCoinbase(),
+            from: this.coinbase,
             to: contract.address,
             value: new BigNumber(value.toString()),
         };

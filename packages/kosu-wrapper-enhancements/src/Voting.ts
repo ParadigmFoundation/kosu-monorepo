@@ -4,7 +4,6 @@ import { DeployedAddresses } from "@kosu/migrations";
 import { VotingContract } from "@kosu/system-contracts";
 import { KosuOptions } from "@kosu/types";
 import { TransactionReceiptWithDecodedLogs } from "ethereum-protocol";
-import Web3 from "web3";
 
 import { Treasury } from "./Treasury";
 
@@ -12,7 +11,6 @@ import { Treasury } from "./Treasury";
  * Integration with Voting contract on an Ethereum blockchain.
  */
 export class Voting {
-    private readonly web3: Web3;
     private readonly treasury: Treasury;
     private readonly web3Wrapper: Web3Wrapper;
     private address: string;
@@ -25,11 +23,10 @@ export class Voting {
      * @param options instantiation options
      * @param treasury treasury integration instance
      */
-    constructor(options: KosuOptions, treasury: Treasury) {
-        this.web3 = options.web3;
+    constructor(options: KosuOptions, treasury?: Treasury) {
         this.web3Wrapper = options.web3Wrapper;
         this.address = options.votingAddress;
-        this.treasury = treasury;
+        this.treasury = treasury || new Treasury(options);
     }
 
     /**
@@ -40,10 +37,7 @@ export class Voting {
     private async getContract(): Promise<VotingContract> {
         if (!this.contract) {
             const networkId = await this.web3Wrapper.getNetworkIdAsync();
-            this.coinbase = await this.web3.eth.getCoinbase().catch(
-                /* istanbul ignore next */
-                () => undefined,
-            );
+            this.coinbase = await this.web3Wrapper.getAvailableAddressesAsync().then(as => as[0]);
 
             if (!this.address) {
                 /* istanbul ignore next */
@@ -154,17 +148,5 @@ export class Voting {
             throw new Error("Poll hasn't ended"); // This should be fine since previously the transaction would have reverted.
         }
         return value;
-    }
-
-    /**
-     * Encodes a vote by hashing the option and salt
-     *
-     * @param _voteOption .
-     * @param _voteSalt .
-     *
-     * @returns Encoded vote
-     */
-    public encodeVote(_voteOption: string, _voteSalt: string): string {
-        return this.web3.utils.soliditySha3({ t: "uint", v: _voteOption }, { t: "uint", v: _voteSalt });
     }
 }

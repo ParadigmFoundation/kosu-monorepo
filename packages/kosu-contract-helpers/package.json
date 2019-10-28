@@ -34,6 +34,7 @@
         "@kosu/utils": "^0.3.0",
         "@kosu/types": "^0.3.0",
         "@kosu/migrations": "^0.3.0",
+        "@kosu/wrapper-enhancements": "^0.3.0",
         "@kosu/tsc-config": "^0.1.0",
         "@kosu/tslint-config": "^0.0.5",
         "ethereum-protocol": "^1.0.1",

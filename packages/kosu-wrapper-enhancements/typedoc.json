@@ -1,0 +1,11 @@
+{
+    "name": "wrapper-enhancements",
+    "mode": "file",
+    "readme": "./README.md",
+    "theme": "markdown",
+    "out": "./docs",
+    "excludePrivate": true,
+    "excludeExternals": true,
+    "ignoreCompilerErrors": true,
+    "includeDeclarations": true
+}

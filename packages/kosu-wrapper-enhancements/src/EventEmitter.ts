@@ -4,7 +4,7 @@ import Timeout = NodeJS.Timeout;
 import { DecodedKosuLogArgs, KosuOptions, LogWithDecodedKosuArgs } from "@kosu/types";
 import { eventDecoder } from "@kosu/utils";
 import { DecodedLogArgs, FilterObject, LogEntry } from "ethereum-protocol";
-import Web3 from "web3";
+import { HttpProvider } from "web3-providers";
 
 const KosuEndpoints = {
     1: {
@@ -135,8 +135,8 @@ export class EventEmitter {
     private async getPastLogsFromKosuEndpoint(config: FilterObject): Promise<any[]> {
         const chainId = await this.web3Wrapper.getNetworkIdAsync();
         if (!this.kosuWeb3Wrapper) {
-            const kosuWeb3 = new Web3(KosuEndpoints[chainId].http);
-            this.kosuWeb3Wrapper = new Web3Wrapper(kosuWeb3.currentProvider);
+            const provider = new HttpProvider(KosuEndpoints[chainId].http);
+            this.kosuWeb3Wrapper = new Web3Wrapper(provider);
         }
 
         return this.kosuWeb3Wrapper.getLogsAsync(config);

@@ -1,7 +1,7 @@
 import { Order, PostableOrder, TakeableOrder } from "@kosu/types";
+import { OrderGateway } from "@kosu/wrapper-enhancements";
 import Web3 from "web3";
 
-import { OrderGateway } from "./OrderGateway";
 import { OrderSerializer } from "./OrderSerializer";
 import { Signature } from "./Signature";
 

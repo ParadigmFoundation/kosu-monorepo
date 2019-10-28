@@ -1,0 +1,46 @@
+{
+    "name": "@kosu/wrapper-enhancements",
+    "version": "0.3.0",
+    "description": "JavaScript module enhancing and adding automation for the kosu contract wrappers.",
+    "main": "dist/src/index.js",
+    "license": "MIT",
+    "scripts": {
+        "test": "mocha",
+        "coverage": "nyc mocha && istanbul report html && open coverage/lcov-report/index.html",
+        "test:ci": "ts-mocha -p tsconfig.json test/ --timeout 20000 -- geth",
+        "build": "tsc",
+        "clean": "shx rm -rf dist/",
+        "lint": "tslint -p .",
+        "lint:fix": "tslint -p . --fix",
+        "docs": "typedoc ./src"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/ParadigmFoundation/kosu-monorepo.git"
+    },
+    "bugs": {
+        "url": "https://github.com/ParadigmFoundation/kosu-monorepo/issues"
+    },
+    "config": {
+        "test_mnemonic": "plate tag lend tissue capable ketchup evidence deliver aspect salt used always"
+    },
+    "dependencies": {
+        "@0x/utils": "^4.3.1",
+        "@0x/web3-wrapper": "^6.0.5",
+        "@kosu/migrations": "^0.3.0",
+        "@kosu/system-contracts": "^0.3.0",
+        "@kosu/tsc-config": "^0.1.0",
+        "@kosu/tslint-config": "^0.0.5",
+        "@kosu/types": "^0.3.0",
+        "@kosu/utils": "^0.3.0",
+        "ethereum-protocol": "^1.0.1",
+        "web3-providers": "^1.0.0-beta.55"
+    },
+    "publishConfig": {
+        "access": "public"
+    },
+    "files": [
+        "dist/",
+        "README.md"
+    ]
+}

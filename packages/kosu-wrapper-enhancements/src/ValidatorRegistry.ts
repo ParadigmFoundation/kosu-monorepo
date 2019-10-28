@@ -3,8 +3,8 @@ import { Web3Wrapper } from "@0x/web3-wrapper";
 import { DeployedAddresses } from "@kosu/migrations";
 import { ValidatorRegistryContract } from "@kosu/system-contracts";
 import { Challenge, KosuOptions, Listing } from "@kosu/types";
+import { convertPubKey } from "@kosu/utils";
 import { TransactionReceiptWithDecodedLogs } from "ethereum-protocol";
-import Web3 from "web3";
 
 import { Treasury } from "./Treasury";
 
@@ -12,12 +12,15 @@ import { Treasury } from "./Treasury";
  * Integration with ValidatorRegistry contract on an Ethereum blockchain.
  */
 export class ValidatorRegistry {
-    private readonly web3: Web3;
     private readonly treasury: Treasury;
     private contract: ValidatorRegistryContract;
-    private coinbase: string;
     private readonly web3Wrapper: Web3Wrapper;
     private address: string;
+
+    /**
+     * The user's coinbase address (if available via supplied provider).
+     */
+    private coinbase: string;
 
     /**
      * Create a new ValidatorRegistry instance.
@@ -25,11 +28,10 @@ export class ValidatorRegistry {
      * @param options instantiation options
      * @param treasury treasury integration instance
      */
-    constructor(options: KosuOptions, treasury: Treasury) {
-        this.web3 = options.web3;
+    constructor(options: KosuOptions, treasury?: Treasury) {
         this.web3Wrapper = options.web3Wrapper;
         this.address = options.validatorRegistryAddress;
-        this.treasury = treasury;
+        this.treasury = treasury || new Treasury(options);
     }
 
     /**
@@ -40,10 +42,7 @@ export class ValidatorRegistry {
     private async getContract(): Promise<ValidatorRegistryContract> {
         if (!this.contract) {
             const networkId = await this.web3Wrapper.getNetworkIdAsync();
-            this.coinbase = await this.web3.eth.getCoinbase().catch(
-                /* istanbul ignore next */
-                () => undefined,
-            );
+            this.coinbase = await this.web3Wrapper.getAvailableAddressesAsync().then(as => as[0]);
 
             if (!this.address) {
                 this.address = DeployedAddresses[networkId].ValidatorRegistry.contractAddress;
@@ -147,7 +146,7 @@ export class ValidatorRegistry {
      */
     public async getListing(_pubKey: string): Promise<Listing> {
         const contract = await this.getContract();
-        return contract.getListing.callAsync(this.convertPubKey(_pubKey));
+        return contract.getListing.callAsync(convertPubKey(_pubKey));
     }
 
     /**
@@ -317,29 +316,6 @@ export class ValidatorRegistry {
     public async claimWinnings(challengeId: BigNumber): Promise<TransactionReceiptWithDecodedLogs> {
         const contract = await this.getContract();
         return contract.claimWinnings.awaitTransactionSuccessAsync(new BigNumber(challengeId.toString()));
-    }
-
-    /**
-     * Converts public key to hex if input is not currently in hex
-     *
-     * @param _pubKey .
-     * @returns hex encoded tendermint public key
-     */
-    public convertPubKey(_pubKey: string): string {
-        let out;
-        if (_pubKey.length === 66 && _pubKey.startsWith("0x")) {
-            return _pubKey;
-        } else if (_pubKey.startsWith("0x") && _pubKey.length < 66) {
-            out = _pubKey;
-        } else {
-            out = `0x${Buffer.from(_pubKey, "base64").toString("hex")}`;
-        }
-
-        if (out.length > 66) {
-            out = out.substr(0, 66);
-        }
-
-        return this.web3.utils.padRight(out, 64, "0");
     }
 
     /**

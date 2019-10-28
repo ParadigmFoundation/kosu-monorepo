@@ -4,7 +4,6 @@ import { DeployedAddresses } from "@kosu/migrations";
 import { PosterRegistryContract } from "@kosu/system-contracts";
 import { KosuOptions } from "@kosu/types";
 import { TransactionReceiptWithDecodedLogs } from "ethereum-protocol";
-import Web3 from "web3";
 
 import { Treasury } from "./Treasury";
 
@@ -16,11 +15,6 @@ import { Treasury } from "./Treasury";
  * and to view their balance, as well as the cumulative lockup.
  */
 export class PosterRegistry {
-    /**
-     * An instance of `web3` used to interact with the Ethereum blockchain.
-     */
-    private readonly web3: Web3;
-
     /**
      * The `web3Wrapper` instance with the contract's ABI loaded.
      */
@@ -43,15 +37,19 @@ export class PosterRegistry {
     private address: string;
 
     /**
+     * The user's coinbase address (if available via supplied provider).
+     */
+    private coinbase: string;
+
+    /**
      * Create a new PosterRegistry instance.
      *
      * @param options Instantiation options (see `KosuOptions`).
      * @param treasury Treasury integration instance.
      */
-    constructor(options: KosuOptions, treasury: Treasury) {
-        this.web3 = options.web3;
+    constructor(options: KosuOptions, treasury?: Treasury) {
         this.web3Wrapper = options.web3Wrapper;
-        this.treasury = treasury;
+        this.treasury = treasury || new Treasury(options);
         this.address = options.posterRegistryAddress;
     }
 
@@ -63,7 +61,7 @@ export class PosterRegistry {
     private async getContract(): Promise<PosterRegistryContract> {
         if (!this.contract) {
             const networkId = await this.web3Wrapper.getNetworkIdAsync();
-            const coinbase = await this.web3.eth.getCoinbase().catch(() => undefined);
+            this.coinbase = await this.web3Wrapper.getAvailableAddressesAsync().then(as => as[0]);
 
             if (!this.address) {
                 this.address = DeployedAddresses[networkId].PosterRegistry.contractAddress;
@@ -73,7 +71,7 @@ export class PosterRegistry {
             }
 
             this.contract = new PosterRegistryContract(this.address, this.web3Wrapper.getProvider(), {
-                from: coinbase,
+                from: this.coinbase,
             });
         }
         return this.contract;
@@ -106,25 +104,24 @@ export class PosterRegistry {
      * @param amount The uint value of tokens to register (in wei).
      * @returns A transaction receipt from the mined `register` transaction.
      */
-    public async registerTokens(amount: BigNumber): Promise<TransactionReceiptWithDecodedLogs> {
+    public async registerTokens(amount: BigNumber | number | string): Promise<TransactionReceiptWithDecodedLogs> {
         const contract = await this.getContract();
-        const parsed = new BigNumber(amount);
+        const parsed = new BigNumber(amount.toString());
 
-        const coinbase = await this.web3.eth.getCoinbase();
-        const treasuryTokens = await this.treasury.currentBalance(coinbase);
+        const treasuryTokens = await this.treasury.currentBalance(this.coinbase);
         const hasTreasuryBalance = treasuryTokens.gte(parsed);
 
         if (!hasTreasuryBalance) {
-            const tokenBalance = await this.treasury.kosuToken.balanceOf(coinbase);
+            const tokenBalance = await this.treasury.kosuToken.balanceOf(this.coinbase);
             const tokensNeeded = parsed.minus(treasuryTokens);
             const hasEnoughTokens = tokenBalance.gte(tokensNeeded as any);
 
             if (hasEnoughTokens) {
                 // tslint:disable-next-line: no-console
-                console.log(`${coinbase} has insufficient available Treasury balance; Depositing Tokens`);
+                console.log(`${this.coinbase} has insufficient available Treasury balance; Depositing Tokens`);
                 await this.treasury.deposit(tokensNeeded);
             } else {
-                throw new Error(`${coinbase} has insufficient available tokens`);
+                throw new Error(`${this.coinbase} has insufficient available tokens`);
             }
         }
 
@@ -137,7 +134,7 @@ export class PosterRegistry {
      * @param amount The uint value of tokens to release from the registry (in wei).
      * @returns A transaction receipt from the mined `register` transaction.
      */
-    public async releaseTokens(amount: BigNumber): Promise<TransactionReceiptWithDecodedLogs> {
+    public async releaseTokens(amount: BigNumber | number | string): Promise<TransactionReceiptWithDecodedLogs> {
         const contract = await this.getContract();
         return contract.releaseTokens.awaitTransactionSuccessAsync(new BigNumber(amount.toString()));
     }
@@ -148,10 +145,10 @@ export class PosterRegistry {
      * @param value Amount of wei to deposit
      * @returns Logs from the transaction block.
      */
-    public async pay(value: BigNumber): Promise<TransactionReceiptWithDecodedLogs> {
+    public async pay(value: BigNumber | number | string): Promise<TransactionReceiptWithDecodedLogs> {
         const contract = await this.getContract();
         const txData = {
-            from: await this.web3.eth.getCoinbase(),
+            from: this.coinbase,
             to: contract.address,
             value: new BigNumber(value.toString()),
         };
