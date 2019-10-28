@@ -252,7 +252,7 @@ func TestGenesisStateCorrectness(t *testing.T) {
 
 		require.Len(t, res.Validators, 4)
 		for _, u := range res.Validators {
-			assert.True(t, u.Power > 0)
+			assert.True(t, u.Power >= 2000)
 		}
 	})
 }

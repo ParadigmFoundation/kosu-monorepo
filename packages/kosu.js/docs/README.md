@@ -1,12 +1,6 @@
-> **[contract-helpers](README.md)**
+# Kosu.js
 
-[Globals](globals.md) /
-
-# Contract Helpers
-
-A TypeScript/JavaScript library for assistance with interactions with the Kosu contract system.
-
-**View [the documentation here.](https://github.com/ParadigmFoundation/kosu-monorepo/blob/master/packages/kosu-contract-helpers/docs/)**
+A TypeScript/JavaScript library congregating and exporting kosu packages.
 
 ## Installation
 
@@ -17,24 +11,24 @@ Kosu.js can be installed into your project through `yarn` or `npm`, and can be p
 **Yarn:**
 
 ```
-yarn add @kosu/contract-helpers
+yarn add @kosu/kosu.js
 ```
 
 **NPM:**
 
 ```
-npm install --save @kosu/contract-helpers
+npm install --save @kosu/kosu.js
 ```
 
 ### Import
 
-Kosu and its exported classes can be imported directly into TypeScript or JavaScript projects.
+Exported classes can be imported directly into TypeScript or JavaScript projects.
 
 **TypeScript (and ES6+):**
 
 ```typescript
 // top-level Kosu class
-import { Kosu } from "@kosu/contract-helpers";
+import { Kosu } from "@kosu/kosu.js";
 
 // directly access exported classes/utilities
 import {
@@ -50,13 +44,15 @@ import {
     OrderSerializer,
     OrderHelper,
     Signature,
-} from "@kosu/contract-helpers";
+    toBytes32,
+    NULL_ADDRESS,
+} from "@kosu/kosu.js";
 ```
 
 **JavaScript (CommonJS):**
 
 ```javascript
-const { Kosu } = require("@kosu/contract-helpers");
+const { Kosu } = require("@kosu/kosu.js");
 
 const {
     KosuToken,
@@ -69,7 +65,9 @@ const {
     OrderSerializer,
     OrderHelper,
     Signature,
-} = require("@kosu/contract-helpers");
+    toBytes32,
+    NULL_ADDRESS,
+} = require("@kosu/kosu.js");
 ```
 
 ## Development

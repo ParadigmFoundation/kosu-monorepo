@@ -44,7 +44,7 @@ module.exports = {
                 ],
             },
             {
-                title: "Kosu.js",
+                title: "Kosu Contract Helpers",
                 collapsable: true,
                 food: "2.svg",
                 children: [
@@ -52,7 +52,6 @@ module.exports = {
                     "./kosu-contract-helpers/classes/kosu",
                     "./kosu-contract-helpers/classes/kosutoken",
                     "./kosu-contract-helpers/classes/eventemitter",
-                    "./kosu-contract-helpers/classes/nodeclient",
                     "./kosu-contract-helpers/classes/ordergateway",
                     "./kosu-contract-helpers/classes/orderhelper",
                     "./kosu-contract-helpers/classes/posterregistry",
@@ -62,7 +61,7 @@ module.exports = {
                 ],
             },
             {
-                title: "Kosu system contracts",
+                title: "Kosu System Contracts",
                 collapsable: true,
                 food: "3.svg",
                 children: [
@@ -88,6 +87,42 @@ module.exports = {
                 collapsable: true,
                 food: "5.svg",
                 children: ["./kosu-genesis-cli/", "./kosu-genesis-cli/globals"],
+            },
+            {
+                title: "Kosu Node Client",
+                collapsable: true,
+                food: "6.svg",
+                children: ["./kosu-node-client/", "./kosu-node-client/classes/nodeclient"],
+            },
+            {
+                title: "Kosu Migrations",
+                collapsable: true,
+                food: "7.svg",
+                children: ["./kosu-migrations/"],
+            },
+            {
+                title: "Kosu Deployed Addresses",
+                collapsable: true,
+                food: "8.svg",
+                children: ["./kosu-deployed-addresses/", "./kosu-deployed-addresses/globals"],
+            },
+            {
+                title: "Kosu.js",
+                collapsable: true,
+                food: "9.svg",
+                children: ["./kosu.js/"],
+            },
+            {
+                title: "Order Server",
+                collapsable: true,
+                food: "10.svg",
+                children: ["./order-server/"],
+            },
+            {
+                title: "Development Images",
+                collapsable: true,
+                food: "11.svg",
+                children: ["./dev-images/"],
             },
         ],
     },
