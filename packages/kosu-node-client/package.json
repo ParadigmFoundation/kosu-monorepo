@@ -29,9 +29,9 @@
         "@0x/utils": "^4.3.1",
         "@0x/web3-providers-fork": "^0.0.7",
         "@babel/core": "^7.4.4",
-        "@kosu/types": "^0.3.0",
         "@kosu/tsc-config": "^0.1.0",
         "@kosu/tslint-config": "^0.0.5",
+        "@kosu/types": "^0.3.0",
         "lodash": "^4.17.15",
         "uuid": "^3.3.3"
     },
