@@ -15,7 +15,8 @@
         "build": "tsc",
         "clean": "shx rm -rf dist/",
         "generate:readme": "node scripts/generateReadme.js && prettier --write README.md --config ../../.prettierrc",
-        "lint": "tslint -p ."
+        "lint": "tslint -p .",
+        "docs": "typedoc ./src"
     },
     "dependencies": {
         "@kosu/migrations": "0.3.0",

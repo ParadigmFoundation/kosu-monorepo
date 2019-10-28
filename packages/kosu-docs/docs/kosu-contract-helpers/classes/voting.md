@@ -1,4 +1,4 @@
-> **[kosu.js](../README.md)**
+> **[contract-helpers](../README.md)**
 
 [Globals](../globals.md) / [Voting](voting.md) /
 
@@ -32,7 +32,7 @@ Integration with Voting contract on an Ethereum blockchain.
 
 \+ **new Voting**(`options`: `KosuOptions`, `treasury`: [Treasury](treasury.md)): _[Voting](voting.md)_
 
-_Defined in [Voting.ts:20](https://github.com/ParadigmFoundation/kosu-monorepo/blob/a7ce3d5b/packages/kosu-contract-helpers/src/Voting.ts#L20)_
+_Defined in [Voting.ts:20](https://github.com/ParadigmFoundation/kosu-monorepo/blob/924d628e/packages/kosu-contract-helpers/src/Voting.ts#L20)_
 
 Create a new Voting instance.
 
@@ -51,7 +51,7 @@ Create a new Voting instance.
 
 ▸ **commitVote**(`_pollId`: `BigNumber`, `_vote`: string, `_tokensToCommit`: `BigNumber`): _`Promise<TransactionReceiptWithDecodedLogs>`_
 
-_Defined in [Voting.ts:69](https://github.com/ParadigmFoundation/kosu-monorepo/blob/a7ce3d5b/packages/kosu-contract-helpers/src/Voting.ts#L69)_
+_Defined in [Voting.ts:69](https://github.com/ParadigmFoundation/kosu-monorepo/blob/924d628e/packages/kosu-contract-helpers/src/Voting.ts#L69)_
 
 Commits vote to voting contract
 
@@ -71,7 +71,7 @@ Commits vote to voting contract
 
 ▸ **encodeVote**(`_voteOption`: string, `_voteSalt`: string): _string_
 
-_Defined in [Voting.ts:167](https://github.com/ParadigmFoundation/kosu-monorepo/blob/a7ce3d5b/packages/kosu-contract-helpers/src/Voting.ts#L167)_
+_Defined in [Voting.ts:167](https://github.com/ParadigmFoundation/kosu-monorepo/blob/924d628e/packages/kosu-contract-helpers/src/Voting.ts#L167)_
 
 Encodes a vote by hashing the option and salt
 
@@ -92,7 +92,7 @@ Encoded vote
 
 ▸ **revealVote**(`_pollId`: `BigNumber`, `_voteOption`: `BigNumber`, `_voteSalt`: `BigNumber`): _`Promise<TransactionReceiptWithDecodedLogs>`_
 
-_Defined in [Voting.ts:98](https://github.com/ParadigmFoundation/kosu-monorepo/blob/a7ce3d5b/packages/kosu-contract-helpers/src/Voting.ts#L98)_
+_Defined in [Voting.ts:98](https://github.com/ParadigmFoundation/kosu-monorepo/blob/924d628e/packages/kosu-contract-helpers/src/Voting.ts#L98)_
 
 Reveals vote on voting contract
 
@@ -112,7 +112,7 @@ Reveals vote on voting contract
 
 ▸ **totalRevealedTokens**(`_pollId`: `BigNumber`): _`Promise<BigNumber>`_
 
-_Defined in [Voting.ts:136](https://github.com/ParadigmFoundation/kosu-monorepo/blob/a7ce3d5b/packages/kosu-contract-helpers/src/Voting.ts#L136)_
+_Defined in [Voting.ts:136](https://github.com/ParadigmFoundation/kosu-monorepo/blob/924d628e/packages/kosu-contract-helpers/src/Voting.ts#L136)_
 
 Reads the total winning tokens for poll
 
@@ -130,7 +130,7 @@ Reads the total winning tokens for poll
 
 ▸ **totalWinningTokens**(`_pollId`: `BigNumber`): _`Promise<BigNumber>`_
 
-_Defined in [Voting.ts:126](https://github.com/ParadigmFoundation/kosu-monorepo/blob/a7ce3d5b/packages/kosu-contract-helpers/src/Voting.ts#L126)_
+_Defined in [Voting.ts:126](https://github.com/ParadigmFoundation/kosu-monorepo/blob/924d628e/packages/kosu-contract-helpers/src/Voting.ts#L126)_
 
 Reads the total winning tokens for poll
 
@@ -148,7 +148,7 @@ Reads the total winning tokens for poll
 
 ▸ **userWinningTokens**(`_pollId`: `BigNumber`, `_userAddress`: string): _`Promise<BigNumber>`_
 
-_Defined in [Voting.ts:147](https://github.com/ParadigmFoundation/kosu-monorepo/blob/a7ce3d5b/packages/kosu-contract-helpers/src/Voting.ts#L147)_
+_Defined in [Voting.ts:147](https://github.com/ParadigmFoundation/kosu-monorepo/blob/924d628e/packages/kosu-contract-helpers/src/Voting.ts#L147)_
 
 Reads users winning tokens committed for poll
 
@@ -167,7 +167,7 @@ Reads users winning tokens committed for poll
 
 ▸ **winningOption**(`_pollId`: `BigNumber`): _`Promise<BigNumber>`_
 
-_Defined in [Voting.ts:116](https://github.com/ParadigmFoundation/kosu-monorepo/blob/a7ce3d5b/packages/kosu-contract-helpers/src/Voting.ts#L116)_
+_Defined in [Voting.ts:116](https://github.com/ParadigmFoundation/kosu-monorepo/blob/924d628e/packages/kosu-contract-helpers/src/Voting.ts#L116)_
 
 Reads the winning option for poll
 
