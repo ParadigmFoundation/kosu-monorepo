@@ -27,7 +27,7 @@
         "@kosu/tslint-config": "^0.0.5",
         "bn.js": "2.0.3",
         "ethereum-types": "^2.1.6",
-        "web3": "^1.2.1"
+        "web3": "1.2.2"
     },
     "publishConfig": {
         "access": "public"

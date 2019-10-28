@@ -44,7 +44,7 @@
         "lodash": "^4.17.15",
         "node-fetch": "^2.2.0",
         "uuid": "^3.3.3",
-        "web3": "1.2.0",
+        "web3": "1.2.2",
         "web3-provider-engine": "15.0.0",
         "web3-utils": "1.2.2",
         "ws": "^7.1.2"
