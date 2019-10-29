@@ -2,6 +2,9 @@ import { artifacts } from "@kosu/system-contracts";
 import { AbiCoder } from "web3-eth-abi";
 import { hexToNumberString, soliditySha3 } from "web3-utils";
 
+// tslint:disable-next-line:no-var-requires
+const coder: AbiCoder = require("web3-eth-abi");
+
 const event: {
     name: string;
     type: string;
@@ -12,7 +15,6 @@ const event: {
     inputs: Array<{ name: string; type: string }>;
 };
 const signature: string = soliditySha3(`${event.name}(${event.inputs.map(input => input.type).join(",")})`);
-const abiCoder: AbiCoder = new AbiCoder();
 
 export const bytes32ToAddressString = (val: string): string => {
     return `0x${val.substr(26)}`;
@@ -50,7 +52,7 @@ export const eventDecoder = (eventReturnValues: any): any => {
                 tendermintPublicKeyHex: data[0],
                 applicationBlockNumber: hexToNumberString(data[1]),
                 owner: bytes32ToAddressString(data[2]),
-                rewardRate: abiCoder.decodeParameter("int", data[3]).toString(),
+                rewardRate: coder.decodeParameter("int", data[3]).toString(),
                 details: stringData,
             });
             break;
@@ -115,5 +117,5 @@ export const eventDecoder = (eventReturnValues: any): any => {
 export const decodeKosuEvents = (logs: any): any => {
     return logs
         .filter(log => log.topics[0] === signature)
-        .map(log => eventDecoder(abiCoder.decodeLog(event.inputs, log.data, log.topics)));
+        .map(log => eventDecoder(coder.decodeLog(event.inputs, log.data, log.topics)));
 };
