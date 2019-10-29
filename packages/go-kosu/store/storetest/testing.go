@@ -25,7 +25,6 @@ func TestSuite(t *testing.T, f Factory) {
 		{"RoundInfo", TestRoundInfo},
 		{"ConsensusParams", TestConsensusParams},
 		{"LastEvent", TestLastEvent},
-		{"TotalOrders", TestTotalOrders},
 		{"Witness", TestWitness},
 		{"Poster", TestPoster},
 		{"Validator", TestValidator},
@@ -66,16 +65,6 @@ func TestLastEvent(t *testing.T, s store.Store) {
 	s.SetLastEvent(lastEvent)
 
 	assert.Equal(t, lastEvent, s.LastEvent())
-}
-
-// TestTotalOrders verifies the LastTotalOrders storage behavior
-func TestTotalOrders(t *testing.T, s store.Store) {
-	s.SetTotalOrders(1)
-	s.SetTotalOrders(2)
-	s.SetTotalOrders(3)
-	s.SetTotalOrders(4)
-
-	assert.Equal(t, uint64(4), s.TotalOrders())
 }
 
 // TestWitness verifies the Witness storage behavior
