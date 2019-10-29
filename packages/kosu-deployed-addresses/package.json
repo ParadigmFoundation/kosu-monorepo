@@ -19,7 +19,9 @@
         "docs": "typedoc ./src"
     },
     "dependencies": {
+        "@0x/web3-wrapper": "^6.0.5",
         "@kosu/migrations": "0.3.0",
+        "@kosu/system-contracts": "0.3.0",
         "@kosu/types": "^0.3.0"
     },
     "devDependencies": {
