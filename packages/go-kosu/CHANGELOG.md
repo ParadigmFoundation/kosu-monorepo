@@ -2,6 +2,8 @@
 
 ## master
 
+## v0.5.0
+
 -   Fix Order store I/O overhead
 -   Fix wrong initial validators power calculations
 -   Add --validator family flags to optionally start as a validator node
