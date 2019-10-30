@@ -186,7 +186,7 @@ func (c *Client) QueryTotalOrders() (uint64, error) {
 
 // QueryLatestOrders queries a collection (subspace) of orders in the `orders` store.
 func (c *Client) QueryLatestOrders() ([]types.TransactionOrder, error) {
-	KVs, err := c.querySubSpace("orders", cosmos.ElemKey(0))
+	KVs, err := c.querySubSpace("orders", []byte{0x01})
 	if err != nil {
 		return nil, err
 	}
