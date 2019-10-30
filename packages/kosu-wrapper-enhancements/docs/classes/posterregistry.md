@@ -10,205 +10,205 @@ and to view their balance, as well as the cumulative lockup.
 
 ## Hierarchy
 
-* **PosterRegistry**
+-   **PosterRegistry**
 
 ## Index
 
 ### Constructors
 
-* [constructor](posterregistry.md#constructor)
+-   [constructor](posterregistry.md#constructor)
 
 ### Properties
 
-* [address](posterregistry.md#address)
-* [coinbase](posterregistry.md#coinbase)
-* [contract](posterregistry.md#contract)
-* [treasury](posterregistry.md#treasury)
-* [web3Wrapper](posterregistry.md#web3wrapper)
+-   [address](posterregistry.md#address)
+-   [coinbase](posterregistry.md#coinbase)
+-   [contract](posterregistry.md#contract)
+-   [treasury](posterregistry.md#treasury)
+-   [web3Wrapper](posterregistry.md#web3wrapper)
 
 ### Methods
 
-* [getContract](posterregistry.md#getcontract)
-* [pay](posterregistry.md#pay)
-* [registerTokens](posterregistry.md#registertokens)
-* [releaseTokens](posterregistry.md#releasetokens)
-* [tokensContributed](posterregistry.md#tokenscontributed)
-* [tokensRegisteredFor](posterregistry.md#tokensregisteredfor)
+-   [getContract](posterregistry.md#getcontract)
+-   [pay](posterregistry.md#pay)
+-   [registerTokens](posterregistry.md#registertokens)
+-   [releaseTokens](posterregistry.md#releasetokens)
+-   [tokensContributed](posterregistry.md#tokenscontributed)
+-   [tokensRegisteredFor](posterregistry.md#tokensregisteredfor)
 
 ## Constructors
 
-###  constructor
+### constructor
 
-\+ **new PosterRegistry**(`options`: KosuOptions, `treasury?`: [Treasury](treasury.md)): *[PosterRegistry](posterregistry.md)*
+\+ **new PosterRegistry**(`options`: KosuOptions, `treasury?`: [Treasury](treasury.md)): _[PosterRegistry](posterregistry.md)_
 
-*Defined in [PosterRegistry.ts:42](https://github.com/ParadigmFoundation/kosu-monorepo/blob/821f0d85/packages/kosu-wrapper-enhancements/src/PosterRegistry.ts#L42)*
+_Defined in [PosterRegistry.ts:42](https://github.com/ParadigmFoundation/kosu-monorepo/blob/821f0d85/packages/kosu-wrapper-enhancements/src/PosterRegistry.ts#L42)_
 
 Create a new PosterRegistry instance.
 
 **Parameters:**
 
-Name | Type | Description |
------- | ------ | ------ |
-`options` | KosuOptions | Instantiation options (see `KosuOptions`). |
-`treasury?` | [Treasury](treasury.md) | Treasury integration instance.  |
+| Name        | Type                    | Description                                |
+| ----------- | ----------------------- | ------------------------------------------ |
+| `options`   | KosuOptions             | Instantiation options (see `KosuOptions`). |
+| `treasury?` | [Treasury](treasury.md) | Treasury integration instance.             |
 
-**Returns:** *[PosterRegistry](posterregistry.md)*
+**Returns:** _[PosterRegistry](posterregistry.md)_
 
 ## Properties
 
-###  address
+### address
 
-• **address**: *string*
+• **address**: _string_
 
-*Defined in [PosterRegistry.ts:37](https://github.com/ParadigmFoundation/kosu-monorepo/blob/821f0d85/packages/kosu-wrapper-enhancements/src/PosterRegistry.ts#L37)*
+_Defined in [PosterRegistry.ts:37](https://github.com/ParadigmFoundation/kosu-monorepo/blob/821f0d85/packages/kosu-wrapper-enhancements/src/PosterRegistry.ts#L37)_
 
 The address of the deployed PosterRegistry proxy contract.
 
-___
+---
 
-###  coinbase
+### coinbase
 
-• **coinbase**: *string*
+• **coinbase**: _string_
 
-*Defined in [PosterRegistry.ts:42](https://github.com/ParadigmFoundation/kosu-monorepo/blob/821f0d85/packages/kosu-wrapper-enhancements/src/PosterRegistry.ts#L42)*
+_Defined in [PosterRegistry.ts:42](https://github.com/ParadigmFoundation/kosu-monorepo/blob/821f0d85/packages/kosu-wrapper-enhancements/src/PosterRegistry.ts#L42)_
 
 The user's coinbase address (if available via supplied provider).
 
-___
+---
 
-###  contract
+### contract
 
-• **contract**: *PosterRegistryContract*
+• **contract**: _PosterRegistryContract_
 
-*Defined in [PosterRegistry.ts:32](https://github.com/ParadigmFoundation/kosu-monorepo/blob/821f0d85/packages/kosu-wrapper-enhancements/src/PosterRegistry.ts#L32)*
+_Defined in [PosterRegistry.ts:32](https://github.com/ParadigmFoundation/kosu-monorepo/blob/821f0d85/packages/kosu-wrapper-enhancements/src/PosterRegistry.ts#L32)_
 
 A lower-level, auto-generated contract wrapper for the PosterRegistry
 proxy contract. Generated from solidity source code.
 
-___
+---
 
-###  treasury
+### treasury
 
-• **treasury**: *[Treasury](treasury.md)*
+• **treasury**: _[Treasury](treasury.md)_
 
-*Defined in [PosterRegistry.ts:26](https://github.com/ParadigmFoundation/kosu-monorepo/blob/821f0d85/packages/kosu-wrapper-enhancements/src/PosterRegistry.ts#L26)*
+_Defined in [PosterRegistry.ts:26](https://github.com/ParadigmFoundation/kosu-monorepo/blob/821f0d85/packages/kosu-wrapper-enhancements/src/PosterRegistry.ts#L26)_
 
 An instantiated Treasury contract wrapper.
 
-___
+---
 
-###  web3Wrapper
+### web3Wrapper
 
-• **web3Wrapper**: *Web3Wrapper*
+• **web3Wrapper**: _Web3Wrapper_
 
-*Defined in [PosterRegistry.ts:21](https://github.com/ParadigmFoundation/kosu-monorepo/blob/821f0d85/packages/kosu-wrapper-enhancements/src/PosterRegistry.ts#L21)*
+_Defined in [PosterRegistry.ts:21](https://github.com/ParadigmFoundation/kosu-monorepo/blob/821f0d85/packages/kosu-wrapper-enhancements/src/PosterRegistry.ts#L21)_
 
 The `web3Wrapper` instance with the contract's ABI loaded.
 
 ## Methods
 
-###  getContract
+### getContract
 
-▸ **getContract**(): *Promise‹PosterRegistryContract›*
+▸ **getContract**(): _Promise‹PosterRegistryContract›_
 
-*Defined in [PosterRegistry.ts:61](https://github.com/ParadigmFoundation/kosu-monorepo/blob/821f0d85/packages/kosu-wrapper-enhancements/src/PosterRegistry.ts#L61)*
+_Defined in [PosterRegistry.ts:61](https://github.com/ParadigmFoundation/kosu-monorepo/blob/821f0d85/packages/kosu-wrapper-enhancements/src/PosterRegistry.ts#L61)_
 
 Asynchronously initializes the contract instance or returns it from cache.
 
-**Returns:** *Promise‹PosterRegistryContract›*
+**Returns:** _Promise‹PosterRegistryContract›_
 
 The contract wrapper instance.
 
-___
+---
 
-###  pay
+### pay
 
-▸ **pay**(`value`: BigNumber | number | string): *Promise‹TransactionReceiptWithDecodedLogs›*
+▸ **pay**(`value`: BigNumber | number | string): _Promise‹TransactionReceiptWithDecodedLogs›_
 
-*Defined in [PosterRegistry.ts:148](https://github.com/ParadigmFoundation/kosu-monorepo/blob/821f0d85/packages/kosu-wrapper-enhancements/src/PosterRegistry.ts#L148)*
+_Defined in [PosterRegistry.ts:148](https://github.com/ParadigmFoundation/kosu-monorepo/blob/821f0d85/packages/kosu-wrapper-enhancements/src/PosterRegistry.ts#L148)_
 
 Sends ether to the contract to bond and register tokens for posting.
 
 **Parameters:**
 
-Name | Type | Description |
------- | ------ | ------ |
-`value` | BigNumber &#124; number &#124; string | Amount of wei to deposit |
+| Name    | Type                                  | Description              |
+| ------- | ------------------------------------- | ------------------------ |
+| `value` | BigNumber &#124; number &#124; string | Amount of wei to deposit |
 
-**Returns:** *Promise‹TransactionReceiptWithDecodedLogs›*
+**Returns:** _Promise‹TransactionReceiptWithDecodedLogs›_
 
 Logs from the transaction block.
 
-___
+---
 
-###  registerTokens
+### registerTokens
 
-▸ **registerTokens**(`amount`: BigNumber | number | string): *Promise‹TransactionReceiptWithDecodedLogs›*
+▸ **registerTokens**(`amount`: BigNumber | number | string): _Promise‹TransactionReceiptWithDecodedLogs›_
 
-*Defined in [PosterRegistry.ts:107](https://github.com/ParadigmFoundation/kosu-monorepo/blob/821f0d85/packages/kosu-wrapper-enhancements/src/PosterRegistry.ts#L107)*
+_Defined in [PosterRegistry.ts:107](https://github.com/ParadigmFoundation/kosu-monorepo/blob/821f0d85/packages/kosu-wrapper-enhancements/src/PosterRegistry.ts#L107)_
 
 Register tokens into the PosterRegistry contract by bonding KOSU tokens.
 
 **Parameters:**
 
-Name | Type | Description |
------- | ------ | ------ |
-`amount` | BigNumber &#124; number &#124; string | The uint value of tokens to register (in wei). |
+| Name     | Type                                  | Description                                    |
+| -------- | ------------------------------------- | ---------------------------------------------- |
+| `amount` | BigNumber &#124; number &#124; string | The uint value of tokens to register (in wei). |
 
-**Returns:** *Promise‹TransactionReceiptWithDecodedLogs›*
+**Returns:** _Promise‹TransactionReceiptWithDecodedLogs›_
 
 A transaction receipt from the mined `register` transaction.
 
-___
+---
 
-###  releaseTokens
+### releaseTokens
 
-▸ **releaseTokens**(`amount`: BigNumber | number | string): *Promise‹TransactionReceiptWithDecodedLogs›*
+▸ **releaseTokens**(`amount`: BigNumber | number | string): _Promise‹TransactionReceiptWithDecodedLogs›_
 
-*Defined in [PosterRegistry.ts:137](https://github.com/ParadigmFoundation/kosu-monorepo/blob/821f0d85/packages/kosu-wrapper-enhancements/src/PosterRegistry.ts#L137)*
+_Defined in [PosterRegistry.ts:137](https://github.com/ParadigmFoundation/kosu-monorepo/blob/821f0d85/packages/kosu-wrapper-enhancements/src/PosterRegistry.ts#L137)_
 
 Release tokens from the PosterRegistry for the `coinbase` address (un-bond).
 
 **Parameters:**
 
-Name | Type | Description |
------- | ------ | ------ |
-`amount` | BigNumber &#124; number &#124; string | The uint value of tokens to release from the registry (in wei). |
+| Name     | Type                                  | Description                                                     |
+| -------- | ------------------------------------- | --------------------------------------------------------------- |
+| `amount` | BigNumber &#124; number &#124; string | The uint value of tokens to release from the registry (in wei). |
 
-**Returns:** *Promise‹TransactionReceiptWithDecodedLogs›*
+**Returns:** _Promise‹TransactionReceiptWithDecodedLogs›_
 
 A transaction receipt from the mined `register` transaction.
 
-___
+---
 
-###  tokensContributed
+### tokensContributed
 
-▸ **tokensContributed**(): *Promise‹BigNumber›*
+▸ **tokensContributed**(): _Promise‹BigNumber›_
 
-*Defined in [PosterRegistry.ts:85](https://github.com/ParadigmFoundation/kosu-monorepo/blob/821f0d85/packages/kosu-wrapper-enhancements/src/PosterRegistry.ts#L85)*
+_Defined in [PosterRegistry.ts:85](https://github.com/ParadigmFoundation/kosu-monorepo/blob/821f0d85/packages/kosu-wrapper-enhancements/src/PosterRegistry.ts#L85)_
 
 Reads total KOSU tokens contributed to registry.
 
-**Returns:** *Promise‹BigNumber›*
+**Returns:** _Promise‹BigNumber›_
 
 The total pool of locked KOSU tokens in units of wei.
 
-___
+---
 
-###  tokensRegisteredFor
+### tokensRegisteredFor
 
-▸ **tokensRegisteredFor**(`address`: string): *Promise‹BigNumber›*
+▸ **tokensRegisteredFor**(`address`: string): _Promise‹BigNumber›_
 
-*Defined in [PosterRegistry.ts:96](https://github.com/ParadigmFoundation/kosu-monorepo/blob/821f0d85/packages/kosu-wrapper-enhancements/src/PosterRegistry.ts#L96)*
+_Defined in [PosterRegistry.ts:96](https://github.com/ParadigmFoundation/kosu-monorepo/blob/821f0d85/packages/kosu-wrapper-enhancements/src/PosterRegistry.ts#L96)_
 
 Reads number of tokens registered for a given address.
 
 **Parameters:**
 
-Name | Type | Description |
------- | ------ | ------ |
-`address` | string | Address of user to query the bonded balance of. |
+| Name      | Type   | Description                                     |
+| --------- | ------ | ----------------------------------------------- |
+| `address` | string | Address of user to query the bonded balance of. |
 
-**Returns:** *Promise‹BigNumber›*
+**Returns:** _Promise‹BigNumber›_
 
 The number of tokens bonded by the supplied user's address in wei.

@@ -6,54 +6,54 @@
 
 ### Classes
 
-* [EventEmitter](classes/eventemitter.md)
-* [KosuToken](classes/kosutoken.md)
-* [OrderGateway](classes/ordergateway.md)
-* [PosterRegistry](classes/posterregistry.md)
-* [Treasury](classes/treasury.md)
-* [ValidatorRegistry](classes/validatorregistry.md)
-* [Voting](classes/voting.md)
+-   [EventEmitter](classes/eventemitter.md)
+-   [KosuToken](classes/kosutoken.md)
+-   [OrderGateway](classes/ordergateway.md)
+-   [PosterRegistry](classes/posterregistry.md)
+-   [Treasury](classes/treasury.md)
+-   [ValidatorRegistry](classes/validatorregistry.md)
+-   [Voting](classes/voting.md)
 
 ### Object literals
 
-* [KosuEndpoints](globals.md#const-kosuendpoints)
+-   [KosuEndpoints](globals.md#const-kosuendpoints)
 
 ## Object literals
 
 ### `Const` KosuEndpoints
 
-### ▪ **KosuEndpoints**: *object*
+### ▪ **KosuEndpoints**: _object_
 
-*Defined in [EventEmitter.ts:10](https://github.com/ParadigmFoundation/kosu-monorepo/blob/821f0d85/packages/kosu-wrapper-enhancements/src/EventEmitter.ts#L10)*
+_Defined in [EventEmitter.ts:10](https://github.com/ParadigmFoundation/kosu-monorepo/blob/821f0d85/packages/kosu-wrapper-enhancements/src/EventEmitter.ts#L10)_
 
-▪ **1**: *object*
+▪ **1**: _object_
 
-*Defined in [EventEmitter.ts:11](https://github.com/ParadigmFoundation/kosu-monorepo/blob/821f0d85/packages/kosu-wrapper-enhancements/src/EventEmitter.ts#L11)*
+_Defined in [EventEmitter.ts:11](https://github.com/ParadigmFoundation/kosu-monorepo/blob/821f0d85/packages/kosu-wrapper-enhancements/src/EventEmitter.ts#L11)_
 
-* **http**: *string* =  `https://ethnet.zaidan.io/mainnet`
+-   **http**: _string_ = `https://ethnet.zaidan.io/mainnet`
 
-* **ws**: *string* =  `wss://ethnet.zaidan.io/ws/mainnet`
+-   **ws**: _string_ = `wss://ethnet.zaidan.io/ws/mainnet`
 
-▪ **3**: *object*
+▪ **3**: _object_
 
-*Defined in [EventEmitter.ts:15](https://github.com/ParadigmFoundation/kosu-monorepo/blob/821f0d85/packages/kosu-wrapper-enhancements/src/EventEmitter.ts#L15)*
+_Defined in [EventEmitter.ts:15](https://github.com/ParadigmFoundation/kosu-monorepo/blob/821f0d85/packages/kosu-wrapper-enhancements/src/EventEmitter.ts#L15)_
 
-* **http**: *string* =  `https://ethnet.zaidan.io/ropsten`
+-   **http**: _string_ = `https://ethnet.zaidan.io/ropsten`
 
-* **ws**: *string* =  `wss://ethnet.zaidan.io/ws/ropsten`
+-   **ws**: _string_ = `wss://ethnet.zaidan.io/ws/ropsten`
 
-▪ **42**: *object*
+▪ **42**: _object_
 
-*Defined in [EventEmitter.ts:19](https://github.com/ParadigmFoundation/kosu-monorepo/blob/821f0d85/packages/kosu-wrapper-enhancements/src/EventEmitter.ts#L19)*
+_Defined in [EventEmitter.ts:19](https://github.com/ParadigmFoundation/kosu-monorepo/blob/821f0d85/packages/kosu-wrapper-enhancements/src/EventEmitter.ts#L19)_
 
-* **http**: *string* =  `https://ethnet.zaidan.io/kovan`
+-   **http**: _string_ = `https://ethnet.zaidan.io/kovan`
 
-* **ws**: *string* =  `wss://ethnet.zaidan.io/ws/kovan`
+-   **ws**: _string_ = `wss://ethnet.zaidan.io/ws/kovan`
 
-▪ **6174**: *object*
+▪ **6174**: _object_
 
-*Defined in [EventEmitter.ts:23](https://github.com/ParadigmFoundation/kosu-monorepo/blob/821f0d85/packages/kosu-wrapper-enhancements/src/EventEmitter.ts#L23)*
+_Defined in [EventEmitter.ts:23](https://github.com/ParadigmFoundation/kosu-monorepo/blob/821f0d85/packages/kosu-wrapper-enhancements/src/EventEmitter.ts#L23)_
 
-* **http**: *string* =  `https://ethnet.zaidan.io/kosu`
+-   **http**: _string_ = `https://ethnet.zaidan.io/kosu`
 
-* **ws**: *string* =  `wss://ethnet.zaidan.io/ws/kosu`
+-   **ws**: _string_ = `wss://ethnet.zaidan.io/ws/kosu`

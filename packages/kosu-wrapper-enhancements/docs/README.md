@@ -4,7 +4,7 @@
 
 # Wrapper Enhancemnts
 
-A TypeScript/JavaScript library for assistance with interactions with the Kosu contract system wrappers.  This library simplifies the 
+A TypeScript/JavaScript library for assistance with interactions with the Kosu contract system wrappers. This library simplifies the
 
 **View [the documentation here.](https://github.com/ParadigmFoundation/kosu-monorepo/blob/master/packages/kosu-wrapper-enhancements/docs/)**
 
