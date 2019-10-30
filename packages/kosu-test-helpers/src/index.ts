@@ -352,3 +352,4 @@ export class TestHelpers {
 }
 
 export { TestValues };
+export * from "./test_bootstrapping";
