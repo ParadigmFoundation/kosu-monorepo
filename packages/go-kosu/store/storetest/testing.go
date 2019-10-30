@@ -38,9 +38,7 @@ func TestSuite(t *testing.T, f Factory) {
 
 			test.test(t, s)
 		})
-
 	}
-
 }
 
 // TestRoundInfo verifies the RoundInfo storage behavior
