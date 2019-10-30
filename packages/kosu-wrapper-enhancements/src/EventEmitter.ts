@@ -1,5 +1,6 @@
 import { Web3Wrapper } from "@0x/web3-wrapper";
 import { DeployedAddresses } from "@kosu/migrations";
+import { artifacts } from "@kosu/system-contracts";
 import Timeout = NodeJS.Timeout;
 import { DecodedKosuLogArgs, KosuOptions, LogWithDecodedKosuArgs } from "@kosu/types";
 import { eventDecoder } from "@kosu/utils";
@@ -55,6 +56,9 @@ export class EventEmitter {
      */
     constructor(options: KosuOptions) {
         this.web3Wrapper = options.web3Wrapper;
+        for (const artifact of Object.keys(artifacts)) {
+            this.web3Wrapper.abiDecoder.addABI(artifacts[artifact].compilerOutput.abi, artifact);
+        }
         this.address = options.eventEmitterAddress;
     }
 
