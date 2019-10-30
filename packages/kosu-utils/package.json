@@ -26,6 +26,7 @@
         "tslint.json"
     ],
     "dependencies": {
+        "@0x/utils": "^4.5.2",
         "@kosu/system-contracts": "^0.3.0",
         "@kosu/types": "^0.3.0",
         "web3-eth-abi": "1.2.2",
