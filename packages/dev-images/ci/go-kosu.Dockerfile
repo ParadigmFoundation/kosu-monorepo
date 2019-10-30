@@ -8,7 +8,7 @@ ENV GO111MODULE=on
 ENV GOROOT=/usr/local/go
 ENV GOPATH=/home/go
 
-ENV GOLINTCI_RELEASE=1.18.0
+ENV GOLINTCI_RELEASE=1.21.0
 
 # setup
 RUN apt-get update
@@ -24,5 +24,5 @@ ENV ETHEREUM_TEST_ADDRESS=wss://ropsten.infura.io/ws
 # install go-bindata
 RUN GO111MODULE=off go get -u github.com/go-bindata/go-bindata/...
 
-# install golintci
-RUN curl -sfL https://install.goreleaser.com/github.com/golangci/golangci-lint.sh | sh -s -- -b $(go env GOPATH)/bin v${GOLINTCI_RELEASE}
+# install golintcis
+RUN curl -sfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh| sh -s -- -b /usr/bin v$GOLINTCI_RELEASE
