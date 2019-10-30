@@ -7,7 +7,7 @@
         "type": "git",
         "url": "https://github.com/ParadigmFoundation/kosu-monorepo/blob/master/packages/kosu-migrations"
     },
-    "main": "dist/src/index.js",
+    "main": "dist/index.js",
     "bugs": {
         "url": "https://github.com/ParadigmFoundation/kosu-monorepo/issues"
     },

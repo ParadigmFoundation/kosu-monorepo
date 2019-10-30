@@ -19,7 +19,7 @@ import { KosuAddresses, KosuDeploymentReceipts, MigratedContracts } from "@kosu/
  * @param networkId Ethereum network id.
  * @returns The deployment receipts for the Kosu contracts.
  */
-const getReceiptsForNetwork = (networkId: number | string): KosuDeploymentReceipts => {
+export const getReceiptsForNetwork = (networkId: number | string): KosuDeploymentReceipts => {
     return DeployedAddresses[networkId.toString()];
 };
 
@@ -29,7 +29,7 @@ const getReceiptsForNetwork = (networkId: number | string): KosuDeploymentReceip
  * @param networkId Ethereum network id.
  * @returns The addresses for the Kosu contracts.
  */
-const getAddressesForNetwork = (networkId: number | string): KosuAddresses => {
+export const getAddressesForNetwork = (networkId: number | string): KosuAddresses => {
     const receipts = DeployedAddresses[networkId.toString()];
     return {
         OrderGateway: receipts.OrderGateway.contractAddress,
@@ -50,7 +50,7 @@ const getAddressesForNetwork = (networkId: number | string): KosuAddresses => {
  * @param web3Wrapper A `Web3Wrapper` instance to get contract info.
  * @returns The contract instances.
  */
-const getMigratedContractsForNetwork = async (web3Wrapper: Web3Wrapper): Promise<MigratedContracts> => {
+export const getMigratedContractsForNetwork = async (web3Wrapper: Web3Wrapper): Promise<MigratedContracts> => {
     const networkId = await web3Wrapper.getNetworkIdAsync();
     const provider = web3Wrapper.getProvider();
     const addresses = getAddressesForNetwork(networkId);
@@ -72,4 +72,4 @@ const getMigratedContractsForNetwork = async (web3Wrapper: Web3Wrapper): Promise
     };
 };
 
-export { DeployedAddresses, getReceiptsForNetwork, getAddressesForNetwork };
+export { DeployedAddresses };
