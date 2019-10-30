@@ -39,7 +39,6 @@ func (suite *IntegrationTestSuite) TestWitness() {
 		poster, err := suite.Client().QueryPoster(tx.Address)
 		suite.Require().Equal(abci.ErrNotFound, err, "got: %+v (%s)", poster, tx.Address)
 		suite.Nil(poster)
-
 	})
 
 	suite.Run("WithSmallerBlock", func() {

@@ -13,6 +13,9 @@ GOLINT = golangci-lint run --enable-all \
 		--disable=scopelint \
 		--disable=interfacer \
 		--disable=funlen \
+		--disable=wsl \
+		--disable=stylecheck \
+		--disable=godox \
 		--exclude-use-default=false \
 		--deadline=10m
 

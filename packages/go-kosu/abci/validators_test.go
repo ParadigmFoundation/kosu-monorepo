@@ -58,7 +58,6 @@ func TestValidatorsVerification(t *testing.T) {
 
 		_, err := UnifyValidators(updates, gen)
 		require.Error(t, err)
-
 	})
 }
 
@@ -84,5 +83,4 @@ func TestValidatorsVerificationOnInitChain(t *testing.T) {
 			AppStateBytes: gen.JSON(),
 		})
 	})
-
 }

@@ -60,7 +60,6 @@ func NewAppWithConfig(db db.DB, cfg *config.Config) *App {
 	}
 
 	return app
-
 }
 
 // NewClient returns a new Cclient configured for this abci.App instance
@@ -101,7 +100,6 @@ func (app *App) Store() store.Store { return app.store }
 
 // Info loads the state from the db.
 func (app *App) Info(req abci.RequestInfo) abci.ResponseInfo {
-
 	cID := app.store.LastCommitID()
 
 	res := abci.ResponseInfo{

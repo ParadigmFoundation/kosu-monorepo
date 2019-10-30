@@ -212,7 +212,6 @@ func (s *KosudSuite) TestStart() {
 		s.Assert().Equal(200, res.StatusCode)
 		_ = res.Body.Close()
 	})
-
 }
 
 func TestKosudSuite(t *testing.T) {
