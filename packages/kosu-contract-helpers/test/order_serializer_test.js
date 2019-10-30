@@ -49,6 +49,8 @@ describe("OrderSerializer", () => {
         };
         await kosu.orderHelper.makeOrder(order);
 
-        await kosu.orderGateway.isValid(order).should.eventually.eq(true);
+        await kosu.orderGateway
+            .isValid(order.subContract, await kosu.orderHelper.serialize(order))
+            .should.eventually.eq(true);
     });
 });
