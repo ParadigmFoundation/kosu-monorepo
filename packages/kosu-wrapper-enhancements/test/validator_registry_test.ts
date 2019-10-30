@@ -1,6 +1,6 @@
-import {decodeKosuEvents} from "@kosu/utils";
+import { decodeKosuEvents } from "@kosu/utils";
 
-import {KosuToken, Treasury, ValidatorRegistry} from "../src";
+import { KosuToken, Treasury, ValidatorRegistry } from "../src";
 
 describe("ValidatorRegistry", () => {
     let kosuToken: KosuToken;

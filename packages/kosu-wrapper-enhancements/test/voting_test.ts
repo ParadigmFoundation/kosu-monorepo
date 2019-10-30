@@ -1,6 +1,6 @@
-import {encodeVote} from "@kosu/utils";
+import { encodeVote } from "@kosu/utils";
 
-import {KosuToken, Treasury, Voting} from "../src";
+import { KosuToken, Treasury, Voting } from "../src";
 
 describe("Voting", () => {
     let kosuToken: KosuToken;
