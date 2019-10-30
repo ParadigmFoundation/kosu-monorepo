@@ -2,10 +2,6 @@ package cosmos
 
 import (
 	"encoding/hex"
-	"fmt"
-	"sort"
-	"strconv"
-	"strings"
 
 	abci "github.com/tendermint/tendermint/abci/types"
 	db "github.com/tendermint/tm-db"
@@ -30,6 +26,8 @@ type Store struct {
 	posterKey    *sdk.KVStoreKey
 	validatorKey *sdk.KVStoreKey
 	orderKey     *sdk.KVStoreKey
+
+	ordersList *List
 }
 
 // NewStore returns a new store
@@ -53,6 +51,9 @@ func NewStore(db db.DB, cdc store.Codec) *Store {
 	if err := s.cms.LoadLatestVersion(); err != nil {
 		panic(err)
 	}
+
+	kv := s.cms.GetCommitKVStore(s.orderKey)
+	s.ordersList = NewList(cdc, kv)
 
 	return s
 }
@@ -207,75 +208,33 @@ func (s *Store) LastEvent() uint64 {
 	return v
 }
 
-// SetTotalOrders sets the TotalOrders
-func (s *Store) SetTotalOrders(v uint64) {
-	s.Set("totalorders", s.chainKey, v)
-}
-
-// TotalOrders gets the TotalOrders
+// TotalOrders gets the TotalOrders, this is all the received orders.
+// This number is only increased by SetOrders and never decreased
 func (s *Store) TotalOrders() uint64 {
-	var v uint64
-	s.Get("totalorders", s.chainKey, &v)
-	return v
-}
-
-// OrderKeyPrefix is the prefix to be used in the orders
-// We need a prefix to be able to use the `/subspace` query path.
-const OrderKeyPrefix = "orders"
-
-func orderKey(id int) string {
-	return fmt.Sprintf("%s%d", OrderKeyPrefix, id)
-}
-
-func parseOrderKey(key string) (int, error) {
-	key = strings.TrimPrefix(key, OrderKeyPrefix)
-	return strconv.Atoi(key)
+	return s.ordersList.Len()
 }
 
 // SetOrder creates an order in the store and remove the oldest
 // if the number of stored orders exceeds the limit value.
 // SetOrder will also update the TotalOrders counter
 func (s *Store) SetOrder(tx *types.TransactionOrder, limit int) {
-	// we generate auto-incremental IDs so that we can track the oldest order
-	var keys []int
-	s.All(s.orderKey, func(key string, _ []byte) {
-		n, err := parseOrderKey(key)
-		if err != nil {
-			panic(err)
-		}
-
-		keys = append(keys, n)
-	})
-	sort.Ints(keys)
-	// at this point we have all the IDs in order
-
-	// Delete all the orders that exceeds the limit
-	for len(keys) >= limit && limit > 0 {
-		key := keys[0]
-		s.Delete(orderKey(key), s.orderKey)
-		keys = keys[1:]
+	s.ordersList.Push(tx)
+	l := s.ordersList.Len()
+	if l > uint64(limit) {
+		s.ordersList.Delete(l - uint64(limit) - 1)
 	}
-
-	var newKey = 0
-	if len(keys) > 0 {
-		newKey = keys[len(keys)-1] + 1
-	}
-	s.Set(orderKey(newKey), s.orderKey, tx)
-
-	total := s.TotalOrders()
-	s.SetTotalOrders(total + 1)
 }
 
 // GetOrders retrieves all the available orders in the store
 func (s *Store) GetOrders() (orders []types.TransactionOrder) {
-	s.All(s.orderKey, func(_ string, bytes []byte) {
+	s.ordersList.Iterate(func(id uint64) bool {
 		var tx types.TransactionOrder
-		if err := s.Codec().Decode(bytes, &tx); err != nil {
+		if err := s.ordersList.Get(id, &tx); err != nil {
 			panic(err)
 		}
 		orders = append(orders, tx)
+		return false
 	})
-
 	return
 }
 

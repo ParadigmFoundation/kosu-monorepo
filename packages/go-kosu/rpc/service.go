@@ -1012,7 +1012,6 @@ func (s *Service) GetBlocks(heights []int64) ([]*tmtypes.Block, error) {
 		result, err := s.abci.Block(&height)
 		if err != nil {
 			return nil, err
-
 		}
 		blocks[i] = result.Block
 	}
