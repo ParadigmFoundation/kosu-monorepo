@@ -32,11 +32,6 @@ before(async () => {
         validatorRegistryAddress: migratedContracts.validatorRegistry.address,
     };
 
-    const { signatureValidatorSubContract, basicTradeSubContract } = await kosuSubContractHelper(web3Wrapper);
-
-    const tokenA = await deployTestToken(web3Wrapper, "Token A", "TKA", { from: accounts[7] });
-    const tokenB = await deployTestToken(web3Wrapper, "Token B", "TKB", { from: accounts[8] });
-
     const nullProvider = new Web3ProviderEngine();
     const nullGanacheSubprovider = new GanacheSubprovider({});
     nullProvider.addProvider(nullGanacheSubprovider);
