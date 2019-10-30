@@ -74,20 +74,17 @@ func (sig *Signature) RecoverSigner(hash []byte) (Address, error) {
 	recoveredKey, err := crypto.Ecrecover(messageHash, cp[:])
 	if err != nil {
 		return Address{}, err
-
 	}
 
 	uncompressedKey, err := crypto.UnmarshalPubkey(recoveredKey)
 	if err != nil {
 		return Address{}, err
-
 	}
 
 	signerBytes := crypto.PubkeyToAddress(*uncompressedKey).Bytes()
 	signer, err := NewAddress(signerBytes)
 	if err != nil {
 		return Address{}, err
-
 	}
 
 	return signer, nil

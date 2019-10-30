@@ -25,7 +25,6 @@ type Store interface {
 	SetLastEvent(uint64)
 
 	TotalOrders() uint64
-	SetTotalOrders(uint64)
 	SetOrder(tx *types.TransactionOrder, limit int)
 	GetOrders() []types.TransactionOrder
 

@@ -35,7 +35,6 @@ func NewLite(endpoint string) (*proxy.Wrapper, error) {
 		fc, err := source.LatestFullCommit(chainID, 1, 1)
 		if err != nil {
 			return nil, err
-
 		}
 		err = trust.SaveFullCommit(fc)
 		if err != nil {
