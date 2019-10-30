@@ -49,23 +49,24 @@ export const bootstrapTests = async (
 
 export const kosuSubContractHelper = async (
     web3Wrapper: Web3Wrapper,
-    options,
+    options?: Partial<TxData>,
 ): Promise<{
     basicTradeSubContract: BasicTradeSubContractContract;
     signatureValidatorSubContract: SignatureValidatorSubContractContract;
 }> => {
     const provider = web3Wrapper.getProvider();
+    const from = await web3Wrapper.getAvailableAddressesAsync().then(x => x[0]);
 
     const basicTradeSubContract = await BasicTradeSubContractContract.deployFrom0xArtifactAsync(
         BasicTradeSubContract,
         provider,
-        options,
+        options || { from },
         JSON.stringify(BasicTradeSubContractConfig),
     );
     const signatureValidatorSubContract = await SignatureValidatorSubContractContract.deployFrom0xArtifactAsync(
         SignatureValidatorSubContract,
         provider,
-        options,
+        options || { from },
     );
 
     return { basicTradeSubContract, signatureValidatorSubContract };
@@ -134,9 +135,17 @@ export const deployTestToken = async (
     symbol: string,
     config?: Partial<TxData>,
 ): Promise<{ easyToken: EasyToken; testToken: TestTokenContract }> => {
+    const from = await web3Wrapper.getAvailableAddressesAsync().then(x => x[0]);
+
     const provider = web3Wrapper.getProvider();
     const coinbase = await web3Wrapper.getAvailableAddressesAsync().then(as => as[0]);
-    const testToken = await TestTokenContract.deployFrom0xArtifactAsync(TestToken, provider, config, name, symbol);
+    const testToken = await TestTokenContract.deployFrom0xArtifactAsync(
+        TestToken,
+        provider,
+        config || { from },
+        name,
+        symbol,
+    );
     const easyToken = wrap(testToken, coinbase);
     return {
         testToken,
