@@ -24,5 +24,5 @@ ENV ETHEREUM_TEST_ADDRESS=wss://ropsten.infura.io/ws
 # install go-bindata
 RUN GO111MODULE=off go get -u github.com/go-bindata/go-bindata/...
 
-# install golintcis
+# install golintci
 RUN curl -sfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh| sh -s -- -b /usr/bin v$GOLINTCI_RELEASE
