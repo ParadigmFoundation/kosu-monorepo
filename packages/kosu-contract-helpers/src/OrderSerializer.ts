@@ -1,5 +1,5 @@
-import { toBytes32 } from "@kosu/contract-utils";
 import { Order, PostableOrder } from "@kosu/types";
+import { toBytes32 } from "@kosu/utils";
 import { soliditySHA3 as solSHA3 } from "ethereumjs-abi";
 import { bufferToHex, toBuffer } from "ethereumjs-util";
 import { isAddress } from "web3-utils";

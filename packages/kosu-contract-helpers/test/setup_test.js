@@ -12,9 +12,6 @@ const BlockchainLifecycle = require("@0x/dev-utils").BlockchainLifecycle;
 const { Kosu } = require("../src");
 const BigNumber = require("@0x/utils").BigNumber;
 
-const tokenHelper = require("./helpers/tokenHelper.js");
-const kosuSubContractHelper = require("./helpers/kosuSubContractHelper");
-
 chai.use(CAP);
 
 const useGeth = process.argv.includes("geth");
@@ -65,10 +62,13 @@ before(async () => {
         config.posterRegistryAddress = config.migratedContracts.posterRegistry.address;
         config.validatorRegistryAddress = config.migratedContracts.validatorRegistry.address;
     }
-    await kosuSubContractHelper(provider, {
+
+    const { basicTradeSubContract, signatureValidatorSubContract } = await Helpers.kosuSubContractHelper(web3Wrapper, {
         from: accounts[0].toLowerCase(),
         gas: "4500000",
     });
+    global.basicTradeSubContract = basicTradeSubContract;
+    global.signatureValidatorSubContract = signatureValidatorSubContract;
     global.testHelpers = new Helpers.TestHelpers(web3Wrapper, config);
 
     global.kosu = new Kosu(config);
@@ -79,7 +79,13 @@ before(async () => {
     providerUtils.startProviderEngine(nullProvider);
     global.nullWeb3Wrapper = new Web3Wrapper(nullProvider);
 
-    await tokenHelper();
+    const tokenA = await Helpers.deployTestToken(web3Wrapper, "Token A", "TKA", { from: accounts[7] });
+    const tokenB = await Helpers.deployTestToken(web3Wrapper, "Token B", "TKB", { from: accounts[8] });
+
+    global.tka = tokenA.easyToken;
+    global.tkb = tokenB.easyToken;
+    global.TKA = tokenA.testToken.address;
+    global.TKB = tokenB.testToken.address;
 
     global.TestValues = Helpers.TestValues;
     // global.testHelpers = new Helpers.TestHelpers(web3Wrapper, )

@@ -91,50 +91,50 @@ export async function migrations(
         const config = validatorValues[netId] || validatorValues.default;
 
         const orderGateway = await OrderGatewayContract.deployFrom0xArtifactAsync(
-            artifacts.OrderGateway as ContractArtifact,
+            artifacts.OrderGateway,
             provider,
             txDefaults,
         );
         const authorizedAddresses = await AuthorizedAddressesContract.deployFrom0xArtifactAsync(
-            artifacts.AuthorizedAddresses as ContractArtifact,
+            artifacts.AuthorizedAddresses,
             provider,
             txDefaults,
         );
         const eventEmitter = await EventEmitterContract.deployFrom0xArtifactAsync(
-            artifacts.EventEmitter as ContractArtifact,
+            artifacts.EventEmitter,
             provider,
             txDefaults,
             authorizedAddresses.address,
         );
         const kosuToken = await KosuTokenContract.deployFrom0xArtifactAsync(
-            artifacts.KosuToken as ContractArtifact,
+            artifacts.KosuToken,
             provider,
             txDefaults,
             authorizedAddresses.address,
         );
         const treasury = await TreasuryContract.deployFrom0xArtifactAsync(
-            artifacts.Treasury as ContractArtifact,
+            artifacts.Treasury,
             provider,
             txDefaults,
             kosuToken.address,
             authorizedAddresses.address,
         );
         const voting = await VotingContract.deployFrom0xArtifactAsync(
-            artifacts.Voting as ContractArtifact,
+            artifacts.Voting,
             provider,
             txDefaults,
             treasury.address,
             eventEmitter.address,
         );
         const posterRegistry = await PosterRegistryContract.deployFrom0xArtifactAsync(
-            artifacts.PosterRegistry as ContractArtifact,
+            artifacts.PosterRegistry,
             provider,
             txDefaults,
             treasury.address,
             eventEmitter.address,
         );
         const validatorRegistry = await ValidatorRegistryContract.deployFrom0xArtifactAsync(
-            artifacts.ValidatorRegistry as ContractArtifact,
+            artifacts.ValidatorRegistry,
             provider,
             txDefaults,
             treasury.address,
@@ -150,7 +150,7 @@ export async function migrations(
             config._losingVoteLockPeriod,
         );
         const zeroExV2SubContract = await ZeroExV2SubContractContract.deployFrom0xArtifactAsync(
-            artifacts.ZeroExV2SubContract as ContractArtifact,
+            artifacts.ZeroExV2SubContract,
             provider,
             txDefaults,
             JSON.stringify(zeroExArguments),

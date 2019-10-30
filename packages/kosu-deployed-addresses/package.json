@@ -7,7 +7,7 @@
         "type": "git",
         "url": "https://github.com/ParadigmFoundation/kosu-monorepo/blob/master/packages/kosu-migrations"
     },
-    "main": "dist/src/index.js",
+    "main": "dist/index.js",
     "bugs": {
         "url": "https://github.com/ParadigmFoundation/kosu-monorepo/issues"
     },
@@ -19,7 +19,9 @@
         "docs": "typedoc ./src"
     },
     "dependencies": {
+        "@0x/web3-wrapper": "^6.0.5",
         "@kosu/migrations": "0.3.0",
+        "@kosu/system-contracts": "0.3.0",
         "@kosu/types": "^0.3.0"
     },
     "devDependencies": {

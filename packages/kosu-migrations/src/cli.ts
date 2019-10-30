@@ -5,6 +5,7 @@ import { KosuTokenContract } from "@kosu/system-contracts";
 import fs from "fs";
 import safeRequire from "safe-node-require";
 import Web3 from "web3";
+import { provider } from "web3-core";
 import Web3ProviderEngine from "web3-provider-engine";
 import { toWei } from "web3-utils";
 import yargs from "yargs";
@@ -50,15 +51,15 @@ if (args.testMnemonic || !mnemonic) {
     mnemonic = process.env.npm_package_config_test_mnemonic;
 }
 
-const bondTokens = async provider => {
-    const web3Wrapper = new Web3Wrapper(provider);
-    const web3 = new Web3(provider);
+const bondTokens = async _provider => {
+    const web3Wrapper = new Web3Wrapper(_provider);
+    const web3 = new Web3(_provider);
     const networkId = await web3Wrapper.getNetworkIdAsync();
     const addresses = await web3Wrapper.getAvailableAddressesAsync();
 
     const kosuToken = new KosuTokenContract(
         deployedAddresses[networkId.toString()].KosuToken.contractAddress,
-        provider,
+        _provider,
     );
 
     for (const account of addresses) {
@@ -68,7 +69,7 @@ const bondTokens = async provider => {
         ) {
             continue;
         }
-        const valueInWei = new BigNumber(Web3.utils.toWei(args.etherToBond.toString()));
+        const valueInWei = new BigNumber(toWei(args.etherToBond.toString() as string));
         const expectedAmount = await kosuToken.estimateEtherToToken.callAsync(valueInWei);
         const accountBalance = await web3Wrapper.getBalanceInWeiAsync(account);
         if (accountBalance.lt(valueInWei)) {
@@ -104,7 +105,7 @@ const bondTokens = async provider => {
     providerEngine.addProvider(rpcSubprovider);
     providerUtils.startProviderEngine(providerEngine);
 
-    const web3 = new Web3(providerEngine);
+    const web3 = new Web3((providerEngine as unknown) as provider);
     const web3Wrapper = new Web3Wrapper(providerEngine);
     const networkId = await web3Wrapper.getNetworkIdAsync();
     const addresses = await web3Wrapper.getAvailableAddressesAsync();
@@ -116,16 +117,19 @@ const bondTokens = async provider => {
     };
 
     if (!args.bondOnly) {
+        let from = addresses[0];
         if (args.forceFresh) {
-            for (let i = 0; i < 3; i++) {
-                await web3Wrapper.sendTransactionAsync({
-                    from: addresses[1],
-                    to: addresses[0],
-                    value: "0",
-                    gas: "4500000",
-                    gasPrice: "0",
-                });
-            }
+            from = addresses[1];
+        }
+
+        for (let i = 0; i < 3; i++) {
+            await web3Wrapper.sendTransactionAsync({
+                from: addresses[1],
+                to: addresses[0],
+                value: "0",
+                gas: "4500000",
+                gasPrice: "0",
+            });
         }
 
         if ((await web3.eth.getTransactionCount(normalizedFromAddress)) > 0 && args.forceFresh) {
@@ -151,9 +155,9 @@ const bondTokens = async provider => {
     }
 
     if (args.bondTokens || args.bondOnly) {
-        bondTokens(providerEngine);
+        await bondTokens(providerEngine);
         if (args.rpcBond) {
-            bondTokens(new Web3.providers.HttpProvider(args.rpcUrl));
+            await bondTokens(new Web3.providers.HttpProvider(args.rpcUrl));
         }
     }
 })().catch(err => {

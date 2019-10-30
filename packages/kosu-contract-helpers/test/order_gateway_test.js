@@ -1,4 +1,4 @@
-const { OrderGateway } = require("../src/OrderGateway");
+const { OrderGateway } = require("@kosu/wrapper-enhancements");
 const DeployedAddresses = require("@kosu/migrations").DeployedAddresses;
 
 describe("OrderGateway", () => {
@@ -30,14 +30,16 @@ describe("OrderGateway", () => {
 
     describe("isValid", () => {
         it("should return true for a valid order", async () => {
-            await orderGateway.isValid(order).should.eventually.equal(true);
+            await orderGateway
+                .isValid(order.subContract, await kosu.orderHelper.serialize(order))
+                .should.eventually.equal(true);
         });
     });
 
     describe("participate()", () => {
         it("should participate in a fully constructed Order.", async () => {
             order.takerValues = { tokensToBuy: 500 };
-            await orderGateway.participate(order, taker);
+            await orderGateway.participate(order.subContract, await kosu.orderHelper.serialize(order), taker);
 
             await tka
                 .balanceOf(taker)
@@ -52,7 +54,7 @@ describe("OrderGateway", () => {
 
     describe("amountRemaining", () => {
         it("should return true for a valid order", async () => {
-            await orderGateway.amountRemaining(order).then(val => {
+            await orderGateway.amountRemaining(order.subContract, await kosu.orderHelper.serialize(order)).then(val => {
                 val.eq(500).should.be.true;
             });
         });

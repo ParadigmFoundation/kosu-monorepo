@@ -1,10 +1,9 @@
 import { BigNumber } from "@0x/utils";
 import { Web3Wrapper } from "@0x/web3-wrapper";
-
-import { decodeKosuEvents } from "@kosu/contract-utils";
 import { DeployedAddresses } from "@kosu/migrations";
+import * as Wrappers from "@kosu/system-contracts";
 import { MigratedTestContracts } from "@kosu/types";
-import * as Wrappers from "@kosu/system-contracts/dist/src/wrappers";
+import { decodeKosuEvents } from "@kosu/utils";
 
 import { TestValues } from "./test_values";
 
@@ -353,3 +352,4 @@ export class TestHelpers {
 }
 
 export { TestValues };
+export * from "./test_bootstrapping";

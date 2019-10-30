@@ -1,0 +1,35 @@
+{
+    "name": "@kosu/utils",
+    "version": "0.3.0",
+    "description": "Kosu utils",
+    "license": "MIT",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/ParadigmFoundation/kosu-monorepo"
+    },
+    "main": "dist/src/index.js",
+    "types": "src/",
+    "bugs": {
+        "url": "https://github.com/ParadigmFoundation/kosu-monorepo/issues"
+    },
+    "scripts": {
+        "clean": "shx rm -rf dist/",
+        "lint": "tslint -p .",
+        "build": "tsc"
+    },
+    "publishConfig": {
+        "access": "public"
+    },
+    "files": [
+        "dist/",
+        "tsconfig.json",
+        "tslint.json"
+    ],
+    "dependencies": {
+        "@0x/utils": "^4.5.2",
+        "@kosu/system-contracts": "^0.3.0",
+        "@kosu/types": "^0.3.0",
+        "web3-eth-abi": "1.2.2",
+        "web3-utils": "1.2.2"
+    }
+}

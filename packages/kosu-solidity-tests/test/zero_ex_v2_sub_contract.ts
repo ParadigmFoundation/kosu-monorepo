@@ -1,6 +1,6 @@
 import { assetDataUtils, BigNumber, ContractWrappers, generatePseudoRandomSalt, signatureUtils } from "0x.js";
+import { NULL_ADDRESS } from "@kosu/utils";
 import { numberToHex, toTwosComplement } from "web3-utils";
-import { NULL_ADDRESS } from "@kosu/contract-utils";
 
 describe("ZeroExV2SubContract", () => {
     it("facilitate a 0x transfer", async () => {
@@ -40,17 +40,17 @@ describe("ZeroExV2SubContract", () => {
             from: accounts[1],
         });
 
-        let makerBytes = "0x";
+        let makerBytes: string = "0x";
         _arguments.maker.forEach(arg => {
             switch (arg.datatype) {
                 case "address":
-                    makerBytes = makerBytes + signedZeroExOrder[arg.name].slice(2);
+                    makerBytes = `${makerBytes}${signedZeroExOrder[arg.name].slice(2)}`;
                     break;
                 case "uint":
-                    makerBytes = makerBytes + toTwosComplement(numberToHex(signedZeroExOrder[arg.name])).slice(2);
+                    makerBytes = `${makerBytes}${toTwosComplement(numberToHex(signedZeroExOrder[arg.name])).slice(2)}`;
                     break;
                 case "bytes":
-                    makerBytes = makerBytes + signedZeroExOrder[arg.name].slice(2);
+                    makerBytes = `${makerBytes}${signedZeroExOrder[arg.name].slice(2)}`;
                     break;
                 default:
                     break;
@@ -59,7 +59,7 @@ describe("ZeroExV2SubContract", () => {
 
         let fullBytes = makerBytes;
         fullBytes = fullBytes + accounts[1].slice(2);
-        fullBytes = fullBytes + toTwosComplement(numberToHex(signedZeroExOrder.takerAssetAmount)).slice(2);
+        fullBytes = `${fullBytes}${toTwosComplement(numberToHex(signedZeroExOrder.takerAssetAmount)).slice(2)}`;
 
         await contracts.zeroExV2SubContract.isValid
             .callAsync(makerBytes)

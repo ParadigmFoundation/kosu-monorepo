@@ -1,20 +1,23 @@
 import { Web3Wrapper } from "@0x/web3-wrapper";
-import { NULL_ADDRESS, toBytes32 } from "@kosu/contract-utils";
 import { artifacts } from "@kosu/system-contracts";
 import { KosuOptions, KosuUtils } from "@kosu/types";
+import { NULL_ADDRESS, toBytes32 } from "@kosu/utils";
+import {
+    EventEmitter,
+    KosuToken,
+    OrderGateway,
+    PosterRegistry,
+    Treasury,
+    ValidatorRegistry,
+    Voting,
+} from "@kosu/wrapper-enhancements";
 import Web3 from "web3";
+import { provider } from "web3-core";
 
 import * as packageJson from "../package.json";
 
-import { EventEmitter } from "./EventEmitter";
-import { KosuToken } from "./KosuToken";
-import { OrderGateway } from "./OrderGateway";
 import { OrderHelper } from "./OrderHelper";
-import { PosterRegistry } from "./PosterRegistry";
 import { Signature } from "./Signature";
-import { Treasury } from "./Treasury";
-import { ValidatorRegistry } from "./ValidatorRegistry";
-import { Voting } from "./Voting";
 
 // tslint:disable-next-line: no-var-requires
 const version = process.env.npm_package_version || packageJson.version;
@@ -136,7 +139,7 @@ export class Kosu {
      */
     constructor(options: KosuOptions) {
         // Configuring web3
-        this.web3 = new Web3(options.provider);
+        this.web3 = new Web3((options.provider as unknown) as provider);
         this.web3Wrapper = new Web3Wrapper(options.provider);
         options.web3 = this.web3;
         options.web3Wrapper = this.web3Wrapper;

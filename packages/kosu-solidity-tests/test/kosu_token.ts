@@ -1,12 +1,14 @@
-import { ContractArtifact } from "ethereum-types";
 import { artifacts, KosuTokenContract } from "@kosu/system-contracts";
+import { ContractArtifact } from "ethereum-types";
 
 describe("KosuToken", () => {
-    let token, from, kosuToken;
+    let token;
+    let from;
+    let kosuToken;
 
     before(async () => {
         token = await KosuTokenContract.deployFrom0xArtifactAsync(
-            artifacts.KosuToken as ContractArtifact,
+            artifacts.KosuToken,
             provider,
             txDefaults,
             "0x0000000000000000000000000000000000000000",

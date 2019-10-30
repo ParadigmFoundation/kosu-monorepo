@@ -1,4 +1,4 @@
-const NULL_ADDRESS = require("@kosu/contract-utils").NULL_ADDRESS;
+const NULL_ADDRESS = require("@kosu/utils").NULL_ADDRESS;
 const Signature = require("../dist/src").Signature;
 
 describe("OrderHelper", () => {

@@ -1,0 +1,11 @@
+declare const testHelpers: TestHelpers;
+declare const TestValues;
+declare const accounts: string[];
+declare const migratedContracts: MigratedTestContracts;
+declare const web3Wrapper: Web3Wrapper;
+declare const nullWeb3Wrapper: Web3Wrapper;
+declare const web3: Web3;
+declare const txDefaults: any;
+declare const provider: any;
+declare const assert: any;
+declare const enhancementOptions: KosuOptions;

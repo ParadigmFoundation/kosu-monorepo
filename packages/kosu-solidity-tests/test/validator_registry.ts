@@ -1,9 +1,5 @@
 /* tslint:disable:max-file-line-count */
 import { BigNumber } from "@0x/utils";
-import { ContractArtifact } from "ethereum-types";
-import { padRight, soliditySha3, stringToHex, toTwosComplement, toWei } from "web3-utils";
-import { decodeKosuEvents } from "@kosu/contract-utils";
-
 import {
     artifacts,
     AuthorizedAddressesContract,
@@ -12,6 +8,9 @@ import {
     ValidatorRegistryContract,
     VotingContract,
 } from "@kosu/system-contracts";
+import { decodeKosuEvents } from "@kosu/utils";
+import { ContractArtifact } from "ethereum-types";
+import { padRight, soliditySha3, stringToHex, toTwosComplement, toWei } from "web3-utils";
 
 describe("ValidatorRegistry", async () => {
     const base64Key: string = "x6899Z4PYjavGaaEBt8jk0Y/3HF5GiR1duDld66IlxM=";
@@ -65,7 +64,7 @@ describe("ValidatorRegistry", async () => {
     describe("constructor", () => {
         it("should have a reasonable gas cost", async () => {
             const { txReceipt } = await ValidatorRegistryContract.deployFrom0xArtifactAsync(
-                artifacts.ValidatorRegistry as ContractArtifact,
+                artifacts.ValidatorRegistry,
                 provider,
                 txDefaults,
                 treasury.address,
@@ -139,7 +138,7 @@ describe("ValidatorRegistry", async () => {
                     paradigmMarket,
                 )
                 .should.eventually.be.rejected.and.have.property("message")
-                .that.includes("reward rate exceeds max");
+                .that.include("reward rate exceeds max");
 
             const listingRegister0 = await validatorRegistry.registerListing.awaitTransactionSuccessAsync(
                 publicKeys[0],
@@ -277,13 +276,13 @@ describe("ValidatorRegistry", async () => {
             await validatorRegistry.registerListing
                 .callAsync(publicKeys[0], minimumBalance, TestValues.zero, paradigmMarket)
                 .should.eventually.be.rejected.and.have.property("message")
-                .that.includes("listing with public key exists", "should fail when you try to overwrite a listing");
+                .that.include("listing with public key exists", "should fail when you try to overwrite a listing");
 
             // should require sufficient blocks to pass before confirmation
             await validatorRegistry.confirmListing
                 .callAsync(publicKeys[0])
                 .should.eventually.be.rejected.and.have.property("message")
-                .that.includes("application period active");
+                .that.include("application period active");
 
             // should increase the maxRewardRate -- confirm generator
             const oldMaxRewardRate = await validatorRegistry.maxRewardRate.callAsync();
@@ -322,19 +321,19 @@ describe("ValidatorRegistry", async () => {
             await validatorRegistry.challengeListing
                 .callAsync(publicKeys[0], paradigmMarket, { from: accounts[9] })
                 .should.eventually.be.rejected.and.have.property("message")
-                .that.includes("listing is not pending, accepted or exiting");
+                .that.include("listing is not pending, accepted or exiting");
 
             // should require challenge to be ended
             await validatorRegistry.resolveChallenge
                 .callAsync(publicKeys[0])
                 .should.eventually.be.rejected.and.have.property("message")
-                .that.includes("challenge has not ended");
+                .that.include("challenge has not ended");
 
             // should not initExit on listing with pending challenge
             await validatorRegistry.initExit
                 .callAsync(publicKeys[0])
                 .should.eventually.be.rejected.and.have.property("message")
-                .that.includes("listing not accepted");
+                .that.include("listing not accepted");
 
             listingChallenge0DecodedLogs.eventType.should.eq("ValidatorChallenged");
             listingChallenge0DecodedLogs.challenger.should.eq(accounts[9].toLowerCase());
@@ -402,7 +401,7 @@ describe("ValidatorRegistry", async () => {
             await validatorRegistry.confirmListing
                 .callAsync(publicKeys[0])
                 .should.eventually.be.rejected.and.have.property("message")
-                .that.includes("listing not pending");
+                .that.include("listing not pending");
 
             const initialListingHolderSystemBalance = await treasury.systemBalance.callAsync(accounts[0]);
             const initialChallengerSystemBalance = await treasury.systemBalance.callAsync(accounts[9]);
@@ -431,7 +430,7 @@ describe("ValidatorRegistry", async () => {
             await validatorRegistry.resolveChallenge
                 .callAsync(publicKeys[0])
                 .should.eventually.be.rejected.and.have.property("message")
-                .that.includes("listing is not challenged");
+                .that.include("listing is not challenged");
 
             // should only let owner confirm listing
             await validatorRegistry.confirmListing
@@ -439,7 +438,7 @@ describe("ValidatorRegistry", async () => {
                     from: accounts[1],
                 })
                 .should.eventually.be.rejected.and.have.property("message")
-                .that.includes("not listing owner");
+                .that.include("not listing owner");
 
             // should confirm a valid listing
             await validatorRegistry.confirmListing.awaitTransactionSuccessAsync(publicKeys[0]).should.eventually.be
@@ -459,7 +458,7 @@ describe("ValidatorRegistry", async () => {
             await validatorRegistry.initExit
                 .callAsync(publicKeys[2])
                 .should.eventually.be.rejected.and.have.property("message")
-                .that.includes("not listing owner");
+                .that.include("not listing owner");
 
             // pending listing should exit immediately
             await validatorRegistry.initExit.awaitTransactionSuccessAsync(publicKeys[2], { from: accounts[2] }).should
@@ -482,7 +481,7 @@ describe("ValidatorRegistry", async () => {
             await validatorRegistry.finalizeExit
                 .callAsync(publicKeys[4], { from: accounts[4] })
                 .should.eventually.be.rejected.and.have.property("message")
-                .that.includes("exiting cool off period active");
+                .that.include("exiting cool off period active");
 
             // skip exit
             await testHelpers.skipExitPeriod(listing4InitExit.blockNumber);
@@ -493,7 +492,7 @@ describe("ValidatorRegistry", async () => {
             await validatorRegistry.finalizeExit
                 .callAsync(publicKeys[4])
                 .should.eventually.be.rejected.and.have.property("message")
-                .that.includes("not listing owner");
+                .that.include("not listing owner");
 
             await validatorRegistry.finalizeExit.awaitTransactionSuccessAsync(publicKeys[4], { from: accounts[4] })
                 .should.eventually.be.fulfilled;
@@ -1029,7 +1028,7 @@ describe("ValidatorRegistry", async () => {
                     from: accounts[5],
                 })
                 .should.eventually.be.rejected.and.have.property("message")
-                .that.includes("challenge hasn't ended");
+                .that.include("challenge hasn't ended");
 
             await testHelpers.skipChallengePeriod(blockNumber);
             await validatorRegistry.claimWinnings.awaitTransactionSuccessAsync(new BigNumber(challengeId), {
@@ -1296,7 +1295,7 @@ describe("ValidatorRegistry", async () => {
             await validatorRegistry.reduceReward
                 .callAsync("0xffaabb", TestValues.zero)
                 .should.eventually.be.rejected.and.have.property("message")
-                .that.includes("listing is not generating tokens");
+                .that.include("listing is not generating tokens");
             await testHelpers.exitListing("0xffaabb");
         });
 
@@ -1305,7 +1304,7 @@ describe("ValidatorRegistry", async () => {
             await validatorRegistry.reduceReward
                 .callAsync("0xffaabb", TestValues.oneWei)
                 .should.eventually.be.rejected.and.have.property("message")
-                .that.includes("listing is not generating tokens");
+                .that.include("listing is not generating tokens");
             await testHelpers.exitListing("0xffaabb");
         });
 
@@ -1314,7 +1313,7 @@ describe("ValidatorRegistry", async () => {
             await validatorRegistry.reduceReward
                 .callAsync("0xffaabb", TestValues.oneWei.plus(TestValues.oneWei))
                 .should.eventually.be.rejected.and.have.property("message")
-                .that.includes("not reducing reward rate");
+                .that.include("not reducing reward rate");
             await testHelpers.exitListing("0xffaabb");
         });
     });
