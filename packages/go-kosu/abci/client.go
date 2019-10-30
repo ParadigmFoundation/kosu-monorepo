@@ -177,7 +177,7 @@ func (c *Client) QueryValidator(addr string) (*types.Validator, error) {
 // QueryTotalOrders performs a ABCI Query to "/chain/totalorders"
 func (c *Client) QueryTotalOrders() (uint64, error) {
 	var num uint64
-	if err := c.Query("/store/chain/key", []byte("totalorders"), &num); err != nil {
+	if err := c.Query("/store/orders/key", cosmos.LengthKey(), &num); err != nil {
 		return 0, err
 	}
 
