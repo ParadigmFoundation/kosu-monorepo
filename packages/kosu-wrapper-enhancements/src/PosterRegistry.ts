@@ -18,28 +18,28 @@ export class PosterRegistry {
     /**
      * The `web3Wrapper` instance with the contract's ABI loaded.
      */
-    private readonly web3Wrapper: Web3Wrapper;
+    public readonly web3Wrapper: Web3Wrapper;
 
     /**
      * An instantiated Treasury contract wrapper.
      */
-    private readonly treasury: Treasury;
+    public readonly treasury: Treasury;
 
     /**
      * A lower-level, auto-generated contract wrapper for the PosterRegistry
      * proxy contract. Generated from solidity source code.
      */
-    private contract: PosterRegistryContract;
+    public contract: PosterRegistryContract;
 
     /**
      * The address of the deployed PosterRegistry proxy contract.
      */
-    private address: string;
+    public address: string;
 
     /**
      * The user's coinbase address (if available via supplied provider).
      */
-    private coinbase: string;
+    public coinbase: string;
 
     /**
      * Create a new PosterRegistry instance.
@@ -58,7 +58,7 @@ export class PosterRegistry {
      *
      * @returns The contract wrapper instance.
      */
-    private async getContract(): Promise<PosterRegistryContract> {
+    public async getContract(): Promise<PosterRegistryContract> {
         if (!this.contract) {
             const networkId = await this.web3Wrapper.getNetworkIdAsync();
             this.coinbase = await this.web3Wrapper.getAvailableAddressesAsync().then(as => as[0]);

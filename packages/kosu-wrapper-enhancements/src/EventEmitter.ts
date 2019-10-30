@@ -35,13 +35,13 @@ export class EventEmitter {
     /**
      * The `web3Wrapper` instance with the contract's ABI loaded.
      */
-    private readonly web3Wrapper: Web3Wrapper;
+    public readonly web3Wrapper: Web3Wrapper;
 
     /**
      * The address of the deployed `EventEmitter` contract for the current Ethereum
      * network.
      */
-    private address: string;
+    public address: string;
 
     /**
      * A separate `web3Wrapper` instance that can be configured with the Kosu

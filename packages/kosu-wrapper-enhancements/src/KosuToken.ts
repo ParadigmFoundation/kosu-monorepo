@@ -18,24 +18,24 @@ export class KosuToken {
      * An instance of a 0x `Web3Wrapper` used for some RPC calls and for certain
      * methods.
      */
-    private readonly web3Wrapper: Web3Wrapper;
+    public readonly web3Wrapper: Web3Wrapper;
 
     /**
      * An instance of the lower-level contract wrapper for the Kosu token, auto-
      * generated from the Solidity source code.
      */
-    private contract: KosuTokenContract;
+    public contract: KosuTokenContract;
 
     /**
      * The current KosuToken deployed address, loaded based on the detected
      * `networkId` from a mapping of known deployed addresses.
      */
-    private address: string;
+    public address: string;
 
     /**
      * The user's coinbase address (if available via supplied provider).
      */
-    private coinbase: string;
+    public coinbase: string;
 
     /**
      * Creates a new KosuToken instance, supplied with an options object.
@@ -60,7 +60,7 @@ export class KosuToken {
      *
      * @returns The low-level KosuToken contract wrapper instance.
      */
-    private async getContract(): Promise<KosuTokenContract> {
+    public async getContract(): Promise<KosuTokenContract> {
         if (!this.contract) {
             const networkId = await this.web3Wrapper.getNetworkIdAsync();
             this.coinbase = await this.web3Wrapper.getAvailableAddressesAsync().then(as => as[0]);

@@ -12,15 +12,15 @@ import { Treasury } from "./Treasury";
  * Integration with ValidatorRegistry contract on an Ethereum blockchain.
  */
 export class ValidatorRegistry {
-    private readonly treasury: Treasury;
-    private contract: ValidatorRegistryContract;
-    private readonly web3Wrapper: Web3Wrapper;
-    private address: string;
+    public readonly treasury: Treasury;
+    public contract: ValidatorRegistryContract;
+    public readonly web3Wrapper: Web3Wrapper;
+    public address: string;
 
     /**
      * The user's coinbase address (if available via supplied provider).
      */
-    private coinbase: string;
+    public coinbase: string;
 
     /**
      * Create a new ValidatorRegistry instance.
@@ -39,7 +39,7 @@ export class ValidatorRegistry {
      *
      * @returns The contract
      */
-    private async getContract(): Promise<ValidatorRegistryContract> {
+    public async getContract(): Promise<ValidatorRegistryContract> {
         if (!this.contract) {
             const networkId = await this.web3Wrapper.getNetworkIdAsync();
             this.coinbase = await this.web3Wrapper.getAvailableAddressesAsync().then(as => as[0]);

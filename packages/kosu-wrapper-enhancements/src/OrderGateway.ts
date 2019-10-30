@@ -21,23 +21,23 @@ export class OrderGateway {
      * An instance of a 0x `Web3Wrapper` used for some RPC calls and for certain
      * methods.
      */
-    private readonly web3Wrapper: Web3Wrapper;
+    public readonly web3Wrapper: Web3Wrapper;
 
     /**
      * A promise that resolves when initialization has completed successfully.
      */
-    private readonly initializing: Promise<void>;
+    public readonly initializing: Promise<void>;
 
     /**
      * The address of the deployed OrderGateway contract for the detected network.
      */
-    private address: string;
+    public address: string;
 
     /**
      * An instance of the lower-level contract wrapper for the Kosu OrderGateway,
      * auto-generated from the Solidity source code.
      */
-    private contract: OrderGatewayContract;
+    public contract: OrderGatewayContract;
 
     /**
      * Create a new OrderGateway instance.

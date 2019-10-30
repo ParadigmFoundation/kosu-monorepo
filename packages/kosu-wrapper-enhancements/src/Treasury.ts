@@ -21,7 +21,7 @@ export class Treasury {
     /**
      * The `web3Wrapper` instance with the contract's ABI loaded.
      */
-    private readonly web3Wrapper: Web3Wrapper;
+    public readonly web3Wrapper: Web3Wrapper;
 
     /**
      * An instance of the `KosuToken` class to communicate with the KOSU ERC-20 token.
@@ -32,17 +32,17 @@ export class Treasury {
      * A lower-level, auto-generated contract wrapper for the Treasury contract,
      * generated from solidity source code.
      */
-    private contract: TreasuryContract;
+    public contract: TreasuryContract;
 
     /**
      * They deployed Treasury's address for the detected networkID.
      */
-    private address: string;
+    public address: string;
 
     /**
      * The user's coinbase address (if available via supplied provider).
      */
-    private coinbase: string;
+    public coinbase: string;
 
     /**
      * Creates a new Treasury instance.
@@ -61,7 +61,7 @@ export class Treasury {
      *
      * @returns The lower-level contract wrapper instance.
      */
-    private async getContract(): Promise<TreasuryContract> {
+    public async getContract(): Promise<TreasuryContract> {
         if (!this.contract) {
             const networkId = await this.web3Wrapper.getNetworkIdAsync();
             this.coinbase = await this.web3Wrapper.getAvailableAddressesAsync().then(as => as[0]);

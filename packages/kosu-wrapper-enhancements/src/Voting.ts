@@ -11,9 +11,9 @@ import { Treasury } from "./Treasury";
  * Integration with Voting contract on an Ethereum blockchain.
  */
 export class Voting {
-    private readonly treasury: Treasury;
-    private readonly web3Wrapper: Web3Wrapper;
-    private address: string;
+    public readonly treasury: Treasury;
+    public readonly web3Wrapper: Web3Wrapper;
+    public address: string;
     private contract: any;
     private coinbase: string;
 
@@ -34,7 +34,7 @@ export class Voting {
      *
      * @returns The contract
      */
-    private async getContract(): Promise<VotingContract> {
+    public async getContract(): Promise<VotingContract> {
         if (!this.contract) {
             const networkId = await this.web3Wrapper.getNetworkIdAsync();
             this.coinbase = await this.web3Wrapper.getAvailableAddressesAsync().then(as => as[0]);
