@@ -2268,6 +2268,27 @@
   resolved "https://registry.yarnpkg.com/@istanbuljs/nyc-config-typescript/-/nyc-config-typescript-0.1.3.tgz#944d15b3ebdb71f963a628daffaa25ade981bb86"
   integrity sha512-EzRFg92bRSD1W/zeuNkeGwph0nkWf+pP2l/lYW4/5hav7RjKKBN5kV1Ix7Tvi0CMu3pC4Wi/U7rNisiJMR3ORg==
 
+"@kosu/tslint-config@^0.0.4":
+  version "0.0.4"
+  resolved "https://registry.yarnpkg.com/@kosu/tslint-config/-/tslint-config-0.0.4.tgz#665fe1865e76c765e0637862ee43f7803451b1d5"
+  integrity sha512-y7Ek+a5O4Vua4rjAKJuLRW+wMAfmiurGLmYqkPPvEefeppCcaB9vtwZpBfJ8HavX9vMgharHQwj0sZugtQNDkQ==
+
+"@kosu/types@0.3.0":
+  version "0.3.0"
+  resolved "https://registry.yarnpkg.com/@kosu/types/-/types-0.3.0.tgz#040d77e4bdd5e306157f91d6c422033922483aa7"
+  integrity sha512-0ZxTtxKb+DKEE6rIZkcl286OQMmegwu0W4wlozfzJaFPGK8vII8BV/t+R20HSMbusWdFLtKFeat/fglPNX1yuA==
+  dependencies:
+    "@0x/types" "^2.4.3"
+    "@0x/typescript-typings" "^4.3.0"
+    "@0x/utils" "^4.5.2"
+    "@0x/web3-wrapper" "^6.0.5"
+    "@kosu/system-contracts" "^0.3.0"
+    "@kosu/tsc-config" "^0.1.0"
+    "@kosu/tslint-config" "^0.0.4"
+    bn.js "2.0.3"
+    ethereum-types "^2.1.6"
+    web3 "^1.2.1"
+
 "@ledgerhq/devices@^4.73.4":
   version "4.73.4"
   resolved "https://registry.yarnpkg.com/@ledgerhq/devices/-/devices-4.73.4.tgz#0a1866fd1f10e2afc57c5f002f60d52ad5e6bb99"
@@ -17939,7 +17960,7 @@ web3@1.2.1:
     web3-shh "1.2.1"
     web3-utils "1.2.1"
 
-web3@1.2.2, web3@^1.0.0-beta.55, web3@^1.2.2:
+web3@1.2.2, web3@^1.0.0-beta.55, web3@^1.2.1, web3@^1.2.2:
   version "1.2.2"
   resolved "https://registry.yarnpkg.com/web3/-/web3-1.2.2.tgz#b1b8b69aafdf94cbaeadbb68a8aa1df2ef266aec"
   integrity sha512-/ChbmB6qZpfGx6eNpczt5YSUBHEA5V2+iUCbn85EVb3Zv6FVxrOo5Tv7Lw0gE2tW7EEjASbCyp3mZeiZaCCngg==
