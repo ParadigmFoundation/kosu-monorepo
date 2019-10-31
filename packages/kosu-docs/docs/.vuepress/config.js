@@ -49,16 +49,26 @@ module.exports = {
                 food: "2.svg",
                 children: [
                     "./kosu-contract-helpers/",
+                    "./kosu-contract-helpers/globals",
                     "./kosu-contract-helpers/classes/kosu",
-                    "./kosu-contract-helpers/classes/kosutoken",
-                    "./kosu-contract-helpers/classes/eventemitter",
-                    "./kosu-contract-helpers/classes/ordergateway",
                     "./kosu-contract-helpers/classes/orderhelper",
-                    "./kosu-contract-helpers/classes/posterregistry",
-                    "./kosu-contract-helpers/classes/treasury",
-                    "./kosu-contract-helpers/classes/validatorregistry",
-                    "./kosu-contract-helpers/classes/voting",
                 ],
+            },
+            {
+              title: "Kosu Wrapper Enhancements",
+                collapsable: true,
+                food: "2.svg",
+                children: [
+                    "./kosu-wrapper-enhancements/",
+                    "./kosu-wrapper-enhancements/globals",
+                    "./kosu-wrapper-enhancements/classes/kosutoken",
+                    "./kosu-wrapper-enhancements/classes/eventemitter",
+                    "./kosu-wrapper-enhancements/classes/ordergateway",
+                    "./kosu-wrapper-enhancements/classes/posterregistry",
+                    "./kosu-wrapper-enhancements/classes/treasury",
+                    "./kosu-wrapper-enhancements/classes/validatorregistry",
+                    "./kosu-wrapper-enhancements/classes/voting",
+                ]
             },
             {
                 title: "Kosu System Contracts",
