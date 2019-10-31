@@ -1,8 +1,6 @@
-> **[node-client](README.md)**
+[Kosu Node Client](README.md) › [Globals](globals.md)
 
-[Globals](globals.md) /
-
-# node-client
+# Kosu Node Client
 
 ## Index
 
