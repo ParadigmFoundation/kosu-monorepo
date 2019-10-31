@@ -12,8 +12,7 @@
     "scripts": {
         "clean": "wsrun --exclude-missing clean && lerna clean -y && rm -rf node_modules",
         "clean:install": "yarn clean && yarn",
-        "build:docs": "run-s docs prettier copy:docs",
-        "copy:docs": "./scripts/congregateDocs.js",
+        "build:docs": "run-s docs prettier",
         "docs": "wsrun --exclude-missing docs",
         "lint": "wsrun --exclude-missing lint",
         "build": "wsrun --exclude-missing --fast-exit --stages build",
