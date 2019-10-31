@@ -337,7 +337,7 @@ export class TestHelpers {
         end: number,
         options: { win?: BigNumber; lose?: BigNumber } = {},
     ): Promise<{ blockNumber: number; pollId: BigNumber }> {
-        const base = (await this.web3Wrapper.getBlockNumberAsync()) as number;
+        const base = await this.web3Wrapper.getBlockNumberAsync();
         const creationBlock = base + 1;
         const commitEnd = creationBlock + start;
         const revealEnd = commitEnd + end;
