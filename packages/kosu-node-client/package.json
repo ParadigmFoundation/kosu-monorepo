@@ -32,6 +32,7 @@
         "@kosu/tsc-config": "^0.1.0",
         "@kosu/tslint-config": "^0.0.5",
         "@kosu/types": "^0.3.0",
+        "camelcase-keys": "^6.1.0",
         "lodash": "^4.17.15",
         "uuid": "^3.3.3"
     },
