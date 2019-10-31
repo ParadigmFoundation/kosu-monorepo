@@ -1,22 +1,13 @@
-> **[contract-helpers](README.md)**
+[Kosu Contract Helpers](README.md) › [Globals](globals.md)
 
-[Globals](globals.md) /
-
-# contract-helpers
+# Kosu Contract Helpers
 
 ## Index
 
 ### Classes
 
--   [EventEmitter](classes/eventemitter.md)
 -   [Kosu](classes/kosu.md)
--   [KosuToken](classes/kosutoken.md)
--   [OrderGateway](classes/ordergateway.md)
 -   [OrderHelper](classes/orderhelper.md)
--   [PosterRegistry](classes/posterregistry.md)
--   [Treasury](classes/treasury.md)
--   [ValidatorRegistry](classes/validatorregistry.md)
--   [Voting](classes/voting.md)
 
 ### Variables
 
@@ -28,7 +19,6 @@
 
 ### Object literals
 
--   [KosuEndpoints](globals.md#const-kosuendpoints)
 -   [OrderSerializer](globals.md#const-orderserializer)
 -   [Signature](globals.md#const-signature)
 
@@ -38,7 +28,7 @@
 
 • **version**: _string_ = process.env.npm_package_version || packageJson.version
 
-_Defined in [Kosu.ts:20](https://github.com/ParadigmFoundation/kosu-monorepo/blob/924d628e/packages/kosu-contract-helpers/src/Kosu.ts#L20)_
+_Defined in [Kosu.ts:23](https://github.com/ParadigmFoundation/kosu-monorepo/blob/55c0be50/packages/kosu-contract-helpers/src/Kosu.ts#L23)_
 
 ## Functions
 
@@ -46,7 +36,7 @@ _Defined in [Kosu.ts:20](https://github.com/ParadigmFoundation/kosu-monorepo/blo
 
 ▸ **\_serialize**(`_arguments`: any, `values`: any): _string_
 
-_Defined in [OrderSerializer.ts:9](https://github.com/ParadigmFoundation/kosu-monorepo/blob/924d628e/packages/kosu-contract-helpers/src/OrderSerializer.ts#L9)_
+_Defined in [OrderSerializer.ts:9](https://github.com/ParadigmFoundation/kosu-monorepo/blob/55c0be50/packages/kosu-contract-helpers/src/OrderSerializer.ts#L9)_
 
 **Parameters:**
 
@@ -59,136 +49,96 @@ _Defined in [OrderSerializer.ts:9](https://github.com/ParadigmFoundation/kosu-mo
 
 ## Object literals
 
-### `Const` KosuEndpoints
-
-### ▪ **KosuEndpoints**: _object_
-
-_Defined in [EventEmitter.ts:9](https://github.com/ParadigmFoundation/kosu-monorepo/blob/924d628e/packages/kosu-contract-helpers/src/EventEmitter.ts#L9)_
-
-▪ **1**: _object_
-
-_Defined in [EventEmitter.ts:10](https://github.com/ParadigmFoundation/kosu-monorepo/blob/924d628e/packages/kosu-contract-helpers/src/EventEmitter.ts#L10)_
-
--   **http**: _string_ = `https://ethnet.zaidan.io/mainnet`
-
--   **ws**: _string_ = `wss://ethnet.zaidan.io/ws/mainnet`
-
-▪ **3**: _object_
-
-_Defined in [EventEmitter.ts:14](https://github.com/ParadigmFoundation/kosu-monorepo/blob/924d628e/packages/kosu-contract-helpers/src/EventEmitter.ts#L14)_
-
--   **http**: _string_ = `https://ethnet.zaidan.io/ropsten`
-
--   **ws**: _string_ = `wss://ethnet.zaidan.io/ws/ropsten`
-
-▪ **42**: _object_
-
-_Defined in [EventEmitter.ts:18](https://github.com/ParadigmFoundation/kosu-monorepo/blob/924d628e/packages/kosu-contract-helpers/src/EventEmitter.ts#L18)_
-
--   **http**: _string_ = `https://ethnet.zaidan.io/kovan`
-
--   **ws**: _string_ = `wss://ethnet.zaidan.io/ws/kovan`
-
-▪ **6174**: _object_
-
-_Defined in [EventEmitter.ts:22](https://github.com/ParadigmFoundation/kosu-monorepo/blob/924d628e/packages/kosu-contract-helpers/src/EventEmitter.ts#L22)_
-
--   **http**: _string_ = `https://ethnet.zaidan.io/kosu`
-
--   **ws**: _string_ = `wss://ethnet.zaidan.io/ws/kosu`
-
----
-
 ### `Const` OrderSerializer
 
 ### ▪ **OrderSerializer**: _object_
 
-_Defined in [OrderSerializer.ts:52](https://github.com/ParadigmFoundation/kosu-monorepo/blob/924d628e/packages/kosu-contract-helpers/src/OrderSerializer.ts#L52)_
+_Defined in [OrderSerializer.ts:52](https://github.com/ParadigmFoundation/kosu-monorepo/blob/55c0be50/packages/kosu-contract-helpers/src/OrderSerializer.ts#L52)_
 
 could add to utils (or create order-utils pacakge)
 
 ### makerHex
 
-▸ **makerHex**(`order`: `Order`, `_arguments`: any): _string_
+▸ **makerHex**(`order`: Order, `_arguments`: any): _string_
 
-_Defined in [OrderSerializer.ts:98](https://github.com/ParadigmFoundation/kosu-monorepo/blob/924d628e/packages/kosu-contract-helpers/src/OrderSerializer.ts#L98)_
+_Defined in [OrderSerializer.ts:98](https://github.com/ParadigmFoundation/kosu-monorepo/blob/55c0be50/packages/kosu-contract-helpers/src/OrderSerializer.ts#L98)_
 
 Generate the maker hex from order
 
 **Parameters:**
 
-| Name         | Type    | Description                              |
-| ------------ | ------- | ---------------------------------------- |
-| `order`      | `Order` | to generate hex from                     |
-| `_arguments` | any     | Argument json defined in the subContract |
+| Name         | Type  | Description                              |
+| ------------ | ----- | ---------------------------------------- |
+| `order`      | Order | to generate hex from                     |
+| `_arguments` | any   | Argument json defined in the subContract |
 
 **Returns:** _string_
 
 ### posterSignatureHex
 
-▸ **posterSignatureHex**(`order`: `Order`, `_arguments`: any): _string_
+▸ **posterSignatureHex**(`order`: Order, `_arguments`: any): _string_
 
-_Defined in [OrderSerializer.ts:74](https://github.com/ParadigmFoundation/kosu-monorepo/blob/924d628e/packages/kosu-contract-helpers/src/OrderSerializer.ts#L74)_
+_Defined in [OrderSerializer.ts:74](https://github.com/ParadigmFoundation/kosu-monorepo/blob/55c0be50/packages/kosu-contract-helpers/src/OrderSerializer.ts#L74)_
 
 Generates hex to be used for the poster signing process
 
 **Parameters:**
 
-| Name         | Type    | Description                              |
-| ------------ | ------- | ---------------------------------------- |
-| `order`      | `Order` | Order to get data for                    |
-| `_arguments` | any     | Argument json defined in the subContract |
+| Name         | Type  | Description                              |
+| ------------ | ----- | ---------------------------------------- |
+| `order`      | Order | Order to get data for                    |
+| `_arguments` | any   | Argument json defined in the subContract |
 
 **Returns:** _string_
 
 ### recoverMaker
 
-▸ **recoverMaker**(`order`: `Order`, `_arguments`: any[]): _string_
+▸ **recoverMaker**(`order`: Order, `_arguments`: any[]): _string_
 
-_Defined in [OrderSerializer.ts:126](https://github.com/ParadigmFoundation/kosu-monorepo/blob/924d628e/packages/kosu-contract-helpers/src/OrderSerializer.ts#L126)_
+_Defined in [OrderSerializer.ts:126](https://github.com/ParadigmFoundation/kosu-monorepo/blob/55c0be50/packages/kosu-contract-helpers/src/OrderSerializer.ts#L126)_
 
 Recovers the maker from the signed information
 
 **Parameters:**
 
-| Name         | Type    | Description                              |
-| ------------ | ------- | ---------------------------------------- |
-| `order`      | `Order` | to recover address from                  |
-| `_arguments` | any[]   | Argument json defined in the subContract |
+| Name         | Type  | Description                              |
+| ------------ | ----- | ---------------------------------------- |
+| `order`      | Order | to recover address from                  |
+| `_arguments` | any[] | Argument json defined in the subContract |
 
 **Returns:** _string_
 
 ### recoverPoster
 
-▸ **recoverPoster**(`order`: `PostableOrder`, `_arguments`: any[]): _string_
+▸ **recoverPoster**(`order`: PostableOrder, `_arguments`: any[]): _string_
 
-_Defined in [OrderSerializer.ts:88](https://github.com/ParadigmFoundation/kosu-monorepo/blob/924d628e/packages/kosu-contract-helpers/src/OrderSerializer.ts#L88)_
+_Defined in [OrderSerializer.ts:88](https://github.com/ParadigmFoundation/kosu-monorepo/blob/55c0be50/packages/kosu-contract-helpers/src/OrderSerializer.ts#L88)_
 
 Recovers the poster from the poster signature
 
 **Parameters:**
 
-| Name         | Type            | Description                              |
-| ------------ | --------------- | ---------------------------------------- |
-| `order`      | `PostableOrder` | Order to recover address that signed     |
-| `_arguments` | any[]           | Argument json defined in the subContract |
+| Name         | Type          | Description                              |
+| ------------ | ------------- | ---------------------------------------- |
+| `order`      | PostableOrder | Order to recover address that signed     |
+| `_arguments` | any[]         | Argument json defined in the subContract |
 
 **Returns:** _string_
 
 ### serialize
 
-▸ **serialize**(`_arguments`: any, `order`: `Order`): _string_
+▸ **serialize**(`_arguments`: any, `order`: Order): _string_
 
-_Defined in [OrderSerializer.ts:59](https://github.com/ParadigmFoundation/kosu-monorepo/blob/924d628e/packages/kosu-contract-helpers/src/OrderSerializer.ts#L59)_
+_Defined in [OrderSerializer.ts:59](https://github.com/ParadigmFoundation/kosu-monorepo/blob/55c0be50/packages/kosu-contract-helpers/src/OrderSerializer.ts#L59)_
 
 Serializes the data into bytes
 
 **Parameters:**
 
-| Name         | Type    | Description                              |
-| ------------ | ------- | ---------------------------------------- |
-| `_arguments` | any     | Argument json defined in the subContract |
-| `order`      | `Order` | Order to serialize                       |
+| Name         | Type  | Description                              |
+| ------------ | ----- | ---------------------------------------- |
+| `_arguments` | any   | Argument json defined in the subContract |
+| `order`      | Order | Order to serialize                       |
 
 **Returns:** _string_
 
@@ -198,13 +148,13 @@ Serializes the data into bytes
 
 ### ▪ **Signature**: _object_
 
-_Defined in [Signature.ts:6](https://github.com/ParadigmFoundation/kosu-monorepo/blob/924d628e/packages/kosu-contract-helpers/src/Signature.ts#L6)_
+_Defined in [Signature.ts:6](https://github.com/ParadigmFoundation/kosu-monorepo/blob/55c0be50/packages/kosu-contract-helpers/src/Signature.ts#L6)_
 
 ### generate
 
-▸ **generate**(`web3`: `Web3`, `messageHex`: string, `signer`: string): _`Promise<string>`_
+▸ **generate**(`web3`: Web3, `messageHex`: string, `signer`: string): _Promise‹string›_
 
-_Defined in [Signature.ts:15](https://github.com/ParadigmFoundation/kosu-monorepo/blob/924d628e/packages/kosu-contract-helpers/src/Signature.ts#L15)_
+_Defined in [Signature.ts:15](https://github.com/ParadigmFoundation/kosu-monorepo/blob/55c0be50/packages/kosu-contract-helpers/src/Signature.ts#L15)_
 
 Generates a signature for a message hex using calls to a provider though web3
 
@@ -212,11 +162,11 @@ Generates a signature for a message hex using calls to a provider though web3
 
 | Name         | Type   | Description                         |
 | ------------ | ------ | ----------------------------------- |
-| `web3`       | `Web3` | Web3 configured to desired provider |
+| `web3`       | Web3   | Web3 configured to desired provider |
 | `messageHex` | string | Hex representation of the message   |
 | `signer`     | string | Address to sign the message         |
 
-**Returns:** _`Promise<string>`_
+**Returns:** _Promise‹string›_
 
 A vrs signature
 
@@ -224,7 +174,7 @@ A vrs signature
 
 ▸ **recoverAddress**(`messageHex`: any, `signature`: string): _string_
 
-_Defined in [Signature.ts:37](https://github.com/ParadigmFoundation/kosu-monorepo/blob/924d628e/packages/kosu-contract-helpers/src/Signature.ts#L37)_
+_Defined in [Signature.ts:37](https://github.com/ParadigmFoundation/kosu-monorepo/blob/55c0be50/packages/kosu-contract-helpers/src/Signature.ts#L37)_
 
 Recovers address from a message hex and signature
 
@@ -239,9 +189,9 @@ Recovers address from a message hex and signature
 
 ### sign
 
-▸ **sign**(`web3`: `Web3`, `messageHex`: string, `signer`: string): _`Promise<string>`_
+▸ **sign**(`web3`: Web3, `messageHex`: string, `signer`: string): _Promise‹string›_
 
-_Defined in [Signature.ts:55](https://github.com/ParadigmFoundation/kosu-monorepo/blob/924d628e/packages/kosu-contract-helpers/src/Signature.ts#L55)_
+_Defined in [Signature.ts:55](https://github.com/ParadigmFoundation/kosu-monorepo/blob/55c0be50/packages/kosu-contract-helpers/src/Signature.ts#L55)_
 
 Sign hex with provided address
 
@@ -249,17 +199,17 @@ Sign hex with provided address
 
 | Name         | Type   | Description                            |
 | ------------ | ------ | -------------------------------------- |
-| `web3`       | `Web3` | Provider which executes the signature. |
+| `web3`       | Web3   | Provider which executes the signature. |
 | `messageHex` | string | Hex to be singed                       |
 | `signer`     | string | Address to sign with.                  |
 
-**Returns:** _`Promise<string>`_
+**Returns:** _Promise‹string›_
 
 ### validate
 
 ▸ **validate**(`messageHex`: string, `signature`: string, `signer`: string): _boolean_
 
-_Defined in [Signature.ts:27](https://github.com/ParadigmFoundation/kosu-monorepo/blob/924d628e/packages/kosu-contract-helpers/src/Signature.ts#L27)_
+_Defined in [Signature.ts:27](https://github.com/ParadigmFoundation/kosu-monorepo/blob/55c0be50/packages/kosu-contract-helpers/src/Signature.ts#L27)_
 
 Validates the signature of a messageHex is from the provided signer
 

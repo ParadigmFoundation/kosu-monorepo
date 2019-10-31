@@ -1,6 +1,4 @@
-> **[Kosu genesis CLI](../README.md)**
-
-[Globals](../globals.md) / [SnapshotListing](snapshotlisting.md) /
+[Kosu genesis CLI](../README.md) › [Globals](../globals.md) › [SnapshotListing](snapshotlisting.md)
 
 # Interface: SnapshotListing
 
@@ -8,7 +6,7 @@
 
 -   **SnapshotListing**
 
-    -   [SnapshotValidator](snapshotvalidator.md)
+    ↳ [SnapshotValidator](snapshotvalidator.md)
 
 ## Index
 
@@ -26,7 +24,7 @@
 
 • **details**: _string_
 
-_Defined in [types.d.ts:44](https://github.com/ParadigmFoundation/kosu-monorepo/blob/a7ce3d5b/packages/kosu-genesis-cli/src/types.d.ts#L44)_
+_Defined in [types.d.ts:44](https://github.com/ParadigmFoundation/kosu-monorepo/blob/55c0be50/packages/kosu-genesis-cli/src/types.d.ts#L44)_
 
 ---
 
@@ -34,15 +32,15 @@ _Defined in [types.d.ts:44](https://github.com/ParadigmFoundation/kosu-monorepo/
 
 • **ethAddress**: _string_
 
-_Defined in [types.d.ts:43](https://github.com/ParadigmFoundation/kosu-monorepo/blob/a7ce3d5b/packages/kosu-genesis-cli/src/types.d.ts#L43)_
+_Defined in [types.d.ts:43](https://github.com/ParadigmFoundation/kosu-monorepo/blob/55c0be50/packages/kosu-genesis-cli/src/types.d.ts#L43)_
 
 ---
 
 ### publicKey
 
-• **publicKey**: _`Buffer`_
+• **publicKey**: _Buffer_
 
-_Defined in [types.d.ts:42](https://github.com/ParadigmFoundation/kosu-monorepo/blob/a7ce3d5b/packages/kosu-genesis-cli/src/types.d.ts#L42)_
+_Defined in [types.d.ts:42](https://github.com/ParadigmFoundation/kosu-monorepo/blob/55c0be50/packages/kosu-genesis-cli/src/types.d.ts#L42)_
 
 ---
 
@@ -50,7 +48,7 @@ _Defined in [types.d.ts:42](https://github.com/ParadigmFoundation/kosu-monorepo/
 
 • **stakeAmount**? : _string_
 
-_Defined in [types.d.ts:45](https://github.com/ParadigmFoundation/kosu-monorepo/blob/a7ce3d5b/packages/kosu-genesis-cli/src/types.d.ts#L45)_
+_Defined in [types.d.ts:45](https://github.com/ParadigmFoundation/kosu-monorepo/blob/55c0be50/packages/kosu-genesis-cli/src/types.d.ts#L45)_
 
 ---
 
@@ -58,4 +56,4 @@ _Defined in [types.d.ts:45](https://github.com/ParadigmFoundation/kosu-monorepo/
 
 • **status**: _"proposal" | "validator"_
 
-_Defined in [types.d.ts:46](https://github.com/ParadigmFoundation/kosu-monorepo/blob/a7ce3d5b/packages/kosu-genesis-cli/src/types.d.ts#L46)_
+_Defined in [types.d.ts:46](https://github.com/ParadigmFoundation/kosu-monorepo/blob/55c0be50/packages/kosu-genesis-cli/src/types.d.ts#L46)_

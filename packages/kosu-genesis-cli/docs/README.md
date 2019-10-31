@@ -1,6 +1,6 @@
-> **[Kosu genesis CLI](README.md)**
+[Kosu genesis CLI](README.md) › [Globals](globals.md)
 
-[Globals](globals.md) /
+# Kosu genesis CLI
 
 # Tool: `gen-kosu`
 
