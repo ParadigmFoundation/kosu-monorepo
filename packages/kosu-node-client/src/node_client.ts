@@ -62,8 +62,7 @@ export class NodeClient {
     private static _convertValidatorData(...rawValidators: any[]): Validator[] {
         const validators = [];
         for (const validator of rawValidators) {
-            // HACK: protobuf nests the balance as `balance: "value: N"`
-            const balance = new BigNumber(validator.balance.split(": ")[1]);
+            const balance = new BigNumber(validator.balance);
             validators.push({ ...validator, balance });
         }
         return validators;
@@ -136,9 +135,7 @@ export class NodeClient {
     public async queryPoster(address: string): Promise<Poster> {
         assert(/^0x[a-fA-F0-9]{40}$/.test(address), "invalid Ethereum address string");
         const raw = await this._call("kosu_queryPoster", address.toLowerCase());
-
-        // HACK: dealing with protobuf `balance: 'value: N'` encoding
-        const balance = new BigNumber(raw.balance.split(": ")[1]);
+        const balance = new BigNumber(raw.balance);
         return { ...raw, balance };
     }
 
@@ -157,7 +154,6 @@ export class NodeClient {
     public async queryValidator(nodeId: string): Promise<Validator> {
         assert(/^[a-fA-F0-9]{40}$/.test(nodeId), "invalid nodeId string");
 
-        // hack: dealing with protobuf decoding issues
         const raw = await this._call("kosu_queryValidator", nodeId);
         return NodeClient._convertValidatorData(raw)[0];
     }
