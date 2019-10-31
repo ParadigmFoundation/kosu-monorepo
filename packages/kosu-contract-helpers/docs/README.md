@@ -1,6 +1,6 @@
-> **[contract-helpers](README.md)**
+[Kosu Contract Helpers](README.md) › [Globals](globals.md)
 
-[Globals](globals.md) /
+# Kosu Contract Helpers
 
 # Contract Helpers
 

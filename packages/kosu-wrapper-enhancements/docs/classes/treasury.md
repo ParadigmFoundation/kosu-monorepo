@@ -46,7 +46,7 @@ constructor must include the Treasury's ABI (from the compiled Solidity source).
 
 \+ **new Treasury**(`options`: KosuOptions, `kosuToken?`: [KosuToken](kosutoken.md)): _[Treasury](treasury.md)_
 
-_Defined in [Treasury.ts:45](https://github.com/ParadigmFoundation/kosu-monorepo/blob/bc352f90/packages/kosu-wrapper-enhancements/src/Treasury.ts#L45)_
+_Defined in [Treasury.ts:45](https://github.com/ParadigmFoundation/kosu-monorepo/blob/67119cd9/packages/kosu-wrapper-enhancements/src/Treasury.ts#L45)_
 
 Creates a new Treasury instance.
 
@@ -65,7 +65,7 @@ Creates a new Treasury instance.
 
 • **address**: _string_
 
-_Defined in [Treasury.ts:40](https://github.com/ParadigmFoundation/kosu-monorepo/blob/bc352f90/packages/kosu-wrapper-enhancements/src/Treasury.ts#L40)_
+_Defined in [Treasury.ts:40](https://github.com/ParadigmFoundation/kosu-monorepo/blob/67119cd9/packages/kosu-wrapper-enhancements/src/Treasury.ts#L40)_
 
 They deployed Treasury's address for the detected networkID.
 
@@ -75,7 +75,7 @@ They deployed Treasury's address for the detected networkID.
 
 • **coinbase**: _string_
 
-_Defined in [Treasury.ts:45](https://github.com/ParadigmFoundation/kosu-monorepo/blob/bc352f90/packages/kosu-wrapper-enhancements/src/Treasury.ts#L45)_
+_Defined in [Treasury.ts:45](https://github.com/ParadigmFoundation/kosu-monorepo/blob/67119cd9/packages/kosu-wrapper-enhancements/src/Treasury.ts#L45)_
 
 The user's coinbase address (if available via supplied provider).
 
@@ -85,7 +85,7 @@ The user's coinbase address (if available via supplied provider).
 
 • **contract**: _TreasuryContract_
 
-_Defined in [Treasury.ts:35](https://github.com/ParadigmFoundation/kosu-monorepo/blob/bc352f90/packages/kosu-wrapper-enhancements/src/Treasury.ts#L35)_
+_Defined in [Treasury.ts:35](https://github.com/ParadigmFoundation/kosu-monorepo/blob/67119cd9/packages/kosu-wrapper-enhancements/src/Treasury.ts#L35)_
 
 A lower-level, auto-generated contract wrapper for the Treasury contract,
 generated from solidity source code.
@@ -96,7 +96,7 @@ generated from solidity source code.
 
 • **kosuToken**: _[KosuToken](kosutoken.md)_
 
-_Defined in [Treasury.ts:29](https://github.com/ParadigmFoundation/kosu-monorepo/blob/bc352f90/packages/kosu-wrapper-enhancements/src/Treasury.ts#L29)_
+_Defined in [Treasury.ts:29](https://github.com/ParadigmFoundation/kosu-monorepo/blob/67119cd9/packages/kosu-wrapper-enhancements/src/Treasury.ts#L29)_
 
 An instance of the `KosuToken` class to communicate with the KOSU ERC-20 token.
 
@@ -106,7 +106,7 @@ An instance of the `KosuToken` class to communicate with the KOSU ERC-20 token.
 
 • **web3Wrapper**: _Web3Wrapper_
 
-_Defined in [Treasury.ts:24](https://github.com/ParadigmFoundation/kosu-monorepo/blob/bc352f90/packages/kosu-wrapper-enhancements/src/Treasury.ts#L24)_
+_Defined in [Treasury.ts:24](https://github.com/ParadigmFoundation/kosu-monorepo/blob/67119cd9/packages/kosu-wrapper-enhancements/src/Treasury.ts#L24)_
 
 The `web3Wrapper` instance with the contract's ABI loaded.
 
@@ -116,7 +116,7 @@ The `web3Wrapper` instance with the contract's ABI loaded.
 
 ▸ **approveTreasury**(`value`: BigNumber | string | number): _Promise‹TransactionReceiptWithDecodedLogs›_
 
-_Defined in [Treasury.ts:204](https://github.com/ParadigmFoundation/kosu-monorepo/blob/bc352f90/packages/kosu-wrapper-enhancements/src/Treasury.ts#L204)_
+_Defined in [Treasury.ts:204](https://github.com/ParadigmFoundation/kosu-monorepo/blob/67119cd9/packages/kosu-wrapper-enhancements/src/Treasury.ts#L204)_
 
 Approve the treasury to transfer KOSU on behalf of the user's `coinbase`
 account.
@@ -146,7 +146,7 @@ The decoded transaction receipt, after the TX has been mined.
 
 ▸ **currentBalance**(`address`: string): _Promise‹BigNumber›_
 
-_Defined in [Treasury.ts:166](https://github.com/ParadigmFoundation/kosu-monorepo/blob/bc352f90/packages/kosu-wrapper-enhancements/src/Treasury.ts#L166)_
+_Defined in [Treasury.ts:166](https://github.com/ParadigmFoundation/kosu-monorepo/blob/67119cd9/packages/kosu-wrapper-enhancements/src/Treasury.ts#L166)_
 
 Read the available (current) treasury balance for a provided `address`.
 
@@ -178,7 +178,7 @@ The user's current treasury balance (in wei).
 
 ▸ **deposit**(`value`: BigNumber | string | number): _Promise‹TransactionReceiptWithDecodedLogs›_
 
-_Defined in [Treasury.ts:94](https://github.com/ParadigmFoundation/kosu-monorepo/blob/bc352f90/packages/kosu-wrapper-enhancements/src/Treasury.ts#L94)_
+_Defined in [Treasury.ts:94](https://github.com/ParadigmFoundation/kosu-monorepo/blob/67119cd9/packages/kosu-wrapper-enhancements/src/Treasury.ts#L94)_
 
 Deposit tokens in the treasury, from the detected `coinbase` account.
 
@@ -207,7 +207,7 @@ The decoded transaction receipt, after the TX has been included in a block.
 
 ▸ **getContract**(): _Promise‹TreasuryContract›_
 
-_Defined in [Treasury.ts:64](https://github.com/ParadigmFoundation/kosu-monorepo/blob/bc352f90/packages/kosu-wrapper-enhancements/src/Treasury.ts#L64)_
+_Defined in [Treasury.ts:64](https://github.com/ParadigmFoundation/kosu-monorepo/blob/67119cd9/packages/kosu-wrapper-enhancements/src/Treasury.ts#L64)_
 
 Asynchronously initializes the contract instance, or returns it from cache.
 
@@ -221,7 +221,7 @@ The lower-level contract wrapper instance.
 
 ▸ **pay**(`value`: BigNumber | string | number): _Promise‹TransactionReceiptWithDecodedLogs›_
 
-_Defined in [Treasury.ts:215](https://github.com/ParadigmFoundation/kosu-monorepo/blob/bc352f90/packages/kosu-wrapper-enhancements/src/Treasury.ts#L215)_
+_Defined in [Treasury.ts:215](https://github.com/ParadigmFoundation/kosu-monorepo/blob/67119cd9/packages/kosu-wrapper-enhancements/src/Treasury.ts#L215)_
 
 Sends ether to the contract to bond and deposit tokens.
 
@@ -241,7 +241,7 @@ Logs from the transaction block.
 
 ▸ **systemBalance**(`address`: string): _Promise‹BigNumber›_
 
-_Defined in [Treasury.ts:145](https://github.com/ParadigmFoundation/kosu-monorepo/blob/bc352f90/packages/kosu-wrapper-enhancements/src/Treasury.ts#L145)_
+_Defined in [Treasury.ts:145](https://github.com/ParadigmFoundation/kosu-monorepo/blob/67119cd9/packages/kosu-wrapper-enhancements/src/Treasury.ts#L145)_
 
 Read the total system balance of KOSU for a provided `address` string.
 
@@ -273,7 +273,7 @@ The user's total KOSU system balance, in wei.
 
 ▸ **treasuryAllowance**(): _Promise‹BigNumber›_
 
-_Defined in [Treasury.ts:185](https://github.com/ParadigmFoundation/kosu-monorepo/blob/bc352f90/packages/kosu-wrapper-enhancements/src/Treasury.ts#L185)_
+_Defined in [Treasury.ts:185](https://github.com/ParadigmFoundation/kosu-monorepo/blob/67119cd9/packages/kosu-wrapper-enhancements/src/Treasury.ts#L185)_
 
 View the current treasury allowance for the detected `coinbase` account.
 
@@ -298,7 +298,7 @@ The current KOSU approval for the Treasury for the current user, in wei.
 
 ▸ **withdraw**(`value`: BigNumber | string | number): _Promise‹TransactionReceiptWithDecodedLogs›_
 
-_Defined in [Treasury.ts:124](https://github.com/ParadigmFoundation/kosu-monorepo/blob/bc352f90/packages/kosu-wrapper-enhancements/src/Treasury.ts#L124)_
+_Defined in [Treasury.ts:124](https://github.com/ParadigmFoundation/kosu-monorepo/blob/67119cd9/packages/kosu-wrapper-enhancements/src/Treasury.ts#L124)_
 
 Withdraw tokens from treasury to the detected `coinbase` account.
 

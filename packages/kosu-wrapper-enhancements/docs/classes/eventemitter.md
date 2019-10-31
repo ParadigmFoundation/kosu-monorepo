@@ -33,7 +33,7 @@ to subscribe to future events.
 
 \+ **new EventEmitter**(`options`: KosuOptions): _[EventEmitter](eventemitter.md)_
 
-_Defined in [EventEmitter.ts:50](https://github.com/ParadigmFoundation/kosu-monorepo/blob/bc352f90/packages/kosu-wrapper-enhancements/src/EventEmitter.ts#L50)_
+_Defined in [EventEmitter.ts:50](https://github.com/ParadigmFoundation/kosu-monorepo/blob/67119cd9/packages/kosu-wrapper-enhancements/src/EventEmitter.ts#L50)_
 
 Create a new `EventEmitter` instance.
 
@@ -51,7 +51,7 @@ Create a new `EventEmitter` instance.
 
 • **address**: _string_
 
-_Defined in [EventEmitter.ts:44](https://github.com/ParadigmFoundation/kosu-monorepo/blob/bc352f90/packages/kosu-wrapper-enhancements/src/EventEmitter.ts#L44)_
+_Defined in [EventEmitter.ts:44](https://github.com/ParadigmFoundation/kosu-monorepo/blob/67119cd9/packages/kosu-wrapper-enhancements/src/EventEmitter.ts#L44)_
 
 The address of the deployed `EventEmitter` contract for the current Ethereum
 network.
@@ -62,7 +62,7 @@ network.
 
 • **web3Wrapper**: _Web3Wrapper_
 
-_Defined in [EventEmitter.ts:38](https://github.com/ParadigmFoundation/kosu-monorepo/blob/bc352f90/packages/kosu-wrapper-enhancements/src/EventEmitter.ts#L38)_
+_Defined in [EventEmitter.ts:38](https://github.com/ParadigmFoundation/kosu-monorepo/blob/67119cd9/packages/kosu-wrapper-enhancements/src/EventEmitter.ts#L38)_
 
 The `web3Wrapper` instance with the contract's ABI loaded.
 
@@ -72,7 +72,7 @@ The `web3Wrapper` instance with the contract's ABI loaded.
 
 ▸ **getAddress**(): _Promise‹string›_
 
-_Defined in [EventEmitter.ts:69](https://github.com/ParadigmFoundation/kosu-monorepo/blob/bc352f90/packages/kosu-wrapper-enhancements/src/EventEmitter.ts#L69)_
+_Defined in [EventEmitter.ts:69](https://github.com/ParadigmFoundation/kosu-monorepo/blob/67119cd9/packages/kosu-wrapper-enhancements/src/EventEmitter.ts#L69)_
 
 Return the address of the configured deployed contract. If not already cached,
 will return the deployed address for the detected network ID (if available).
@@ -85,7 +85,7 @@ will return the deployed address for the detected network ID (if available).
 
 ▸ **getFutureDecodedLogs**(`start`: number, `callback`: function): _Timeout_
 
-_Defined in [EventEmitter.ts:115](https://github.com/ParadigmFoundation/kosu-monorepo/blob/bc352f90/packages/kosu-wrapper-enhancements/src/EventEmitter.ts#L115)_
+_Defined in [EventEmitter.ts:115](https://github.com/ParadigmFoundation/kosu-monorepo/blob/67119cd9/packages/kosu-wrapper-enhancements/src/EventEmitter.ts#L115)_
 
 **`todo`** document better (and confirm)
 
@@ -115,7 +115,7 @@ A callback function to be called on an array of each new event log.
 
 ▸ **getPastDecodedLogs**(`config`: FilterObject): _Promise‹Array‹LogWithDecodedKosuArgs‹DecodedLogArgs, DecodedKosuLogArgs›››_
 
-_Defined in [EventEmitter.ts:88](https://github.com/ParadigmFoundation/kosu-monorepo/blob/bc352f90/packages/kosu-wrapper-enhancements/src/EventEmitter.ts#L88)_
+_Defined in [EventEmitter.ts:88](https://github.com/ParadigmFoundation/kosu-monorepo/blob/67119cd9/packages/kosu-wrapper-enhancements/src/EventEmitter.ts#L88)_
 
 Get all past decoded logs from the Kosu `EventEmitter` contract, with the
 oldest event at position 0.
