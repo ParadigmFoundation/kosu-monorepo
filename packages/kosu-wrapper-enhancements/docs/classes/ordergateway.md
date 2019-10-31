@@ -43,7 +43,7 @@ specified SubContract during serialization and signature generation.
 
 \+ **new OrderGateway**(`options`: KosuOptions): _[OrderGateway](ordergateway.md)_
 
-_Defined in [OrderGateway.ts:40](https://github.com/ParadigmFoundation/kosu-monorepo/blob/821f0d85/packages/kosu-wrapper-enhancements/src/OrderGateway.ts#L40)_
+_Defined in [OrderGateway.ts:40](https://github.com/ParadigmFoundation/kosu-monorepo/blob/bc352f90/packages/kosu-wrapper-enhancements/src/OrderGateway.ts#L40)_
 
 Create a new OrderGateway instance.
 
@@ -61,7 +61,7 @@ Create a new OrderGateway instance.
 
 • **address**: _string_
 
-_Defined in [OrderGateway.ts:34](https://github.com/ParadigmFoundation/kosu-monorepo/blob/821f0d85/packages/kosu-wrapper-enhancements/src/OrderGateway.ts#L34)_
+_Defined in [OrderGateway.ts:34](https://github.com/ParadigmFoundation/kosu-monorepo/blob/bc352f90/packages/kosu-wrapper-enhancements/src/OrderGateway.ts#L34)_
 
 The address of the deployed OrderGateway contract for the detected network.
 
@@ -71,7 +71,7 @@ The address of the deployed OrderGateway contract for the detected network.
 
 • **contract**: _OrderGatewayContract_
 
-_Defined in [OrderGateway.ts:40](https://github.com/ParadigmFoundation/kosu-monorepo/blob/821f0d85/packages/kosu-wrapper-enhancements/src/OrderGateway.ts#L40)_
+_Defined in [OrderGateway.ts:40](https://github.com/ParadigmFoundation/kosu-monorepo/blob/bc352f90/packages/kosu-wrapper-enhancements/src/OrderGateway.ts#L40)_
 
 An instance of the lower-level contract wrapper for the Kosu OrderGateway,
 auto-generated from the Solidity source code.
@@ -82,7 +82,7 @@ auto-generated from the Solidity source code.
 
 • **initializing**: _Promise‹void›_
 
-_Defined in [OrderGateway.ts:29](https://github.com/ParadigmFoundation/kosu-monorepo/blob/821f0d85/packages/kosu-wrapper-enhancements/src/OrderGateway.ts#L29)_
+_Defined in [OrderGateway.ts:29](https://github.com/ParadigmFoundation/kosu-monorepo/blob/bc352f90/packages/kosu-wrapper-enhancements/src/OrderGateway.ts#L29)_
 
 A promise that resolves when initialization has completed successfully.
 
@@ -92,7 +92,7 @@ A promise that resolves when initialization has completed successfully.
 
 • **web3Wrapper**: _Web3Wrapper_
 
-_Defined in [OrderGateway.ts:24](https://github.com/ParadigmFoundation/kosu-monorepo/blob/821f0d85/packages/kosu-wrapper-enhancements/src/OrderGateway.ts#L24)_
+_Defined in [OrderGateway.ts:24](https://github.com/ParadigmFoundation/kosu-monorepo/blob/bc352f90/packages/kosu-wrapper-enhancements/src/OrderGateway.ts#L24)_
 
 An instance of a 0x `Web3Wrapper` used for some RPC calls and for certain
 methods.
@@ -103,7 +103,7 @@ methods.
 
 ▸ **amountRemaining**(`subContract`: string, `bytes`: string): _Promise‹BigNumber›_
 
-_Defined in [OrderGateway.ts:135](https://github.com/ParadigmFoundation/kosu-monorepo/blob/821f0d85/packages/kosu-wrapper-enhancements/src/OrderGateway.ts#L135)_
+_Defined in [OrderGateway.ts:135](https://github.com/ParadigmFoundation/kosu-monorepo/blob/bc352f90/packages/kosu-wrapper-enhancements/src/OrderGateway.ts#L135)_
 
 Checks amount of partial exchange tokens remaining, depending on the
 implementation of the SubContract specified in the supplied order.
@@ -126,7 +126,7 @@ implementation of the `amountRemaining` method.
 
 ▸ **arguments**(`subContract`: string): _Promise‹any›_
 
-_Defined in [OrderGateway.ts:102](https://github.com/ParadigmFoundation/kosu-monorepo/blob/821f0d85/packages/kosu-wrapper-enhancements/src/OrderGateway.ts#L102)_
+_Defined in [OrderGateway.ts:102](https://github.com/ParadigmFoundation/kosu-monorepo/blob/bc352f90/packages/kosu-wrapper-enhancements/src/OrderGateway.ts#L102)_
 
 Read the required arguments from a deployed SubContract.
 
@@ -146,7 +146,7 @@ The JSON array that defines the arguments for the SubContract.
 
 ▸ **isValid**(`subContract`: string, `bytes`: string): _Promise‹boolean›_
 
-_Defined in [OrderGateway.ts:120](https://github.com/ParadigmFoundation/kosu-monorepo/blob/821f0d85/packages/kosu-wrapper-enhancements/src/OrderGateway.ts#L120)_
+_Defined in [OrderGateway.ts:120](https://github.com/ParadigmFoundation/kosu-monorepo/blob/bc352f90/packages/kosu-wrapper-enhancements/src/OrderGateway.ts#L120)_
 
 Checks validity of order data according the order's SubContract implementation.
 
@@ -165,7 +165,7 @@ Checks validity of order data according the order's SubContract implementation.
 
 ▸ **participate**(`subContract`: string, `bytes`: string, `taker`: string): _Promise‹any›_
 
-_Defined in [OrderGateway.ts:86](https://github.com/ParadigmFoundation/kosu-monorepo/blob/821f0d85/packages/kosu-wrapper-enhancements/src/OrderGateway.ts#L86)_
+_Defined in [OrderGateway.ts:86](https://github.com/ParadigmFoundation/kosu-monorepo/blob/bc352f90/packages/kosu-wrapper-enhancements/src/OrderGateway.ts#L86)_
 
 Participate in a trade as a taker (or on behalf of one), by submitting the
 maker order, and the Ethereum address of the taker. The fill transaction

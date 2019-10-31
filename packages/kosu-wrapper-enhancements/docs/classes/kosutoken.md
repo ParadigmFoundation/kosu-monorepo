@@ -47,7 +47,7 @@ If instantiated outside the `Kosu` class, an instance of `web3` and of the
 
 \+ **new KosuToken**(`options`: KosuOptions): _[KosuToken](kosutoken.md)_
 
-_Defined in [KosuToken.ts:38](https://github.com/ParadigmFoundation/kosu-monorepo/blob/821f0d85/packages/kosu-wrapper-enhancements/src/KosuToken.ts#L38)_
+_Defined in [KosuToken.ts:38](https://github.com/ParadigmFoundation/kosu-monorepo/blob/bc352f90/packages/kosu-wrapper-enhancements/src/KosuToken.ts#L38)_
 
 Creates a new KosuToken instance, supplied with an options object.
 
@@ -75,7 +75,7 @@ const kosuToken = new KosuToken(options);
 
 • **address**: _string_
 
-_Defined in [KosuToken.ts:33](https://github.com/ParadigmFoundation/kosu-monorepo/blob/821f0d85/packages/kosu-wrapper-enhancements/src/KosuToken.ts#L33)_
+_Defined in [KosuToken.ts:33](https://github.com/ParadigmFoundation/kosu-monorepo/blob/bc352f90/packages/kosu-wrapper-enhancements/src/KosuToken.ts#L33)_
 
 The current KosuToken deployed address, loaded based on the detected
 `networkId` from a mapping of known deployed addresses.
@@ -86,7 +86,7 @@ The current KosuToken deployed address, loaded based on the detected
 
 • **coinbase**: _string_
 
-_Defined in [KosuToken.ts:38](https://github.com/ParadigmFoundation/kosu-monorepo/blob/821f0d85/packages/kosu-wrapper-enhancements/src/KosuToken.ts#L38)_
+_Defined in [KosuToken.ts:38](https://github.com/ParadigmFoundation/kosu-monorepo/blob/bc352f90/packages/kosu-wrapper-enhancements/src/KosuToken.ts#L38)_
 
 The user's coinbase address (if available via supplied provider).
 
@@ -96,7 +96,7 @@ The user's coinbase address (if available via supplied provider).
 
 • **contract**: _KosuTokenContract_
 
-_Defined in [KosuToken.ts:27](https://github.com/ParadigmFoundation/kosu-monorepo/blob/821f0d85/packages/kosu-wrapper-enhancements/src/KosuToken.ts#L27)_
+_Defined in [KosuToken.ts:27](https://github.com/ParadigmFoundation/kosu-monorepo/blob/bc352f90/packages/kosu-wrapper-enhancements/src/KosuToken.ts#L27)_
 
 An instance of the lower-level contract wrapper for the Kosu token, auto-
 generated from the Solidity source code.
@@ -107,7 +107,7 @@ generated from the Solidity source code.
 
 • **web3Wrapper**: _Web3Wrapper_
 
-_Defined in [KosuToken.ts:21](https://github.com/ParadigmFoundation/kosu-monorepo/blob/821f0d85/packages/kosu-wrapper-enhancements/src/KosuToken.ts#L21)_
+_Defined in [KosuToken.ts:21](https://github.com/ParadigmFoundation/kosu-monorepo/blob/bc352f90/packages/kosu-wrapper-enhancements/src/KosuToken.ts#L21)_
 
 An instance of a 0x `Web3Wrapper` used for some RPC calls and for certain
 methods.
@@ -118,7 +118,7 @@ methods.
 
 ▸ **allowance**(`owner`: string, `spender`: string): _Promise‹BigNumber›_
 
-_Defined in [KosuToken.ts:157](https://github.com/ParadigmFoundation/kosu-monorepo/blob/821f0d85/packages/kosu-wrapper-enhancements/src/KosuToken.ts#L157)_
+_Defined in [KosuToken.ts:157](https://github.com/ParadigmFoundation/kosu-monorepo/blob/bc352f90/packages/kosu-wrapper-enhancements/src/KosuToken.ts#L157)_
 
 Reads approved allowance for a given `owner` and `spender` account.
 
@@ -139,7 +139,7 @@ The allowance granted to the `spender` in units of wei.
 
 ▸ **approve**(`spender`: string, `value`: BigNumber | string | number): _Promise‹TransactionReceiptWithDecodedLogs›_
 
-_Defined in [KosuToken.ts:142](https://github.com/ParadigmFoundation/kosu-monorepo/blob/821f0d85/packages/kosu-wrapper-enhancements/src/KosuToken.ts#L142)_
+_Defined in [KosuToken.ts:142](https://github.com/ParadigmFoundation/kosu-monorepo/blob/bc352f90/packages/kosu-wrapper-enhancements/src/KosuToken.ts#L142)_
 
 Sets approval for user to transfer tokens on `coinbase`'s behalf.
 
@@ -160,7 +160,7 @@ The transaction receipt after it has been included in a block.
 
 ▸ **balanceOf**(`owner`: string): _Promise‹BigNumber›_
 
-_Defined in [KosuToken.ts:101](https://github.com/ParadigmFoundation/kosu-monorepo/blob/821f0d85/packages/kosu-wrapper-enhancements/src/KosuToken.ts#L101)_
+_Defined in [KosuToken.ts:101](https://github.com/ParadigmFoundation/kosu-monorepo/blob/bc352f90/packages/kosu-wrapper-enhancements/src/KosuToken.ts#L101)_
 
 Reads the balance for a user address, returned in wei.
 
@@ -180,7 +180,7 @@ The `owner`'s KOSU balance in wei.
 
 ▸ **bondTokens**(`value`: BigNumber, `minPayout`: BigNumber | string | number): _Promise‹TransactionReceiptWithDecodedLogs›_
 
-_Defined in [KosuToken.ts:191](https://github.com/ParadigmFoundation/kosu-monorepo/blob/821f0d85/packages/kosu-wrapper-enhancements/src/KosuToken.ts#L191)_
+_Defined in [KosuToken.ts:191](https://github.com/ParadigmFoundation/kosu-monorepo/blob/bc352f90/packages/kosu-wrapper-enhancements/src/KosuToken.ts#L191)_
 
 Sends ether to the contract to bond tokens.
 
@@ -201,7 +201,7 @@ Logs from the transaction block.
 
 ▸ **estimateEtherToToken**(`etherInput`: BigNumber | string | number): _Promise‹BigNumber›_
 
-_Defined in [KosuToken.ts:168](https://github.com/ParadigmFoundation/kosu-monorepo/blob/821f0d85/packages/kosu-wrapper-enhancements/src/KosuToken.ts#L168)_
+_Defined in [KosuToken.ts:168](https://github.com/ParadigmFoundation/kosu-monorepo/blob/bc352f90/packages/kosu-wrapper-enhancements/src/KosuToken.ts#L168)_
 
 Calculated tokens to be minted from deposited ether.
 
@@ -221,7 +221,7 @@ Estimation of tokens to be minted.
 
 ▸ **estimateTokenToEther**(`tokensToBurn`: BigNumber | string | number): _Promise‹BigNumber›_
 
-_Defined in [KosuToken.ts:179](https://github.com/ParadigmFoundation/kosu-monorepo/blob/821f0d85/packages/kosu-wrapper-enhancements/src/KosuToken.ts#L179)_
+_Defined in [KosuToken.ts:179](https://github.com/ParadigmFoundation/kosu-monorepo/blob/bc352f90/packages/kosu-wrapper-enhancements/src/KosuToken.ts#L179)_
 
 Calculates ether to be returned for burning tokens.
 
@@ -241,7 +241,7 @@ Estimation of ether to be returned.
 
 ▸ **getContract**(): _Promise‹KosuTokenContract›_
 
-_Defined in [KosuToken.ts:63](https://github.com/ParadigmFoundation/kosu-monorepo/blob/821f0d85/packages/kosu-wrapper-enhancements/src/KosuToken.ts#L63)_
+_Defined in [KosuToken.ts:63](https://github.com/ParadigmFoundation/kosu-monorepo/blob/bc352f90/packages/kosu-wrapper-enhancements/src/KosuToken.ts#L63)_
 
 Asynchronously initializes the contract instance or returns it from cache.
 
@@ -255,7 +255,7 @@ The low-level KosuToken contract wrapper instance.
 
 ▸ **pay**(`value`: BigNumber | string | number): _Promise‹TransactionReceiptWithDecodedLogs›_
 
-_Defined in [KosuToken.ts:218](https://github.com/ParadigmFoundation/kosu-monorepo/blob/821f0d85/packages/kosu-wrapper-enhancements/src/KosuToken.ts#L218)_
+_Defined in [KosuToken.ts:218](https://github.com/ParadigmFoundation/kosu-monorepo/blob/bc352f90/packages/kosu-wrapper-enhancements/src/KosuToken.ts#L218)_
 
 Sends ether to the contract to bond tokens.
 
@@ -275,7 +275,7 @@ Logs from the transaction block.
 
 ▸ **releaseTokens**(`tokensToBurn`: BigNumber | string | number): _Promise‹TransactionReceiptWithDecodedLogs›_
 
-_Defined in [KosuToken.ts:207](https://github.com/ParadigmFoundation/kosu-monorepo/blob/821f0d85/packages/kosu-wrapper-enhancements/src/KosuToken.ts#L207)_
+_Defined in [KosuToken.ts:207](https://github.com/ParadigmFoundation/kosu-monorepo/blob/bc352f90/packages/kosu-wrapper-enhancements/src/KosuToken.ts#L207)_
 
 Releases tokens to be burned and return bonded ether.
 
@@ -295,7 +295,7 @@ Logs from the transaction block.
 
 ▸ **totalSupply**(): _Promise‹BigNumber›_
 
-_Defined in [KosuToken.ts:90](https://github.com/ParadigmFoundation/kosu-monorepo/blob/821f0d85/packages/kosu-wrapper-enhancements/src/KosuToken.ts#L90)_
+_Defined in [KosuToken.ts:90](https://github.com/ParadigmFoundation/kosu-monorepo/blob/bc352f90/packages/kosu-wrapper-enhancements/src/KosuToken.ts#L90)_
 
 Reads the total supply of KOSU, resolves to a `BigNumber` of the amount of
 tokens in units of wei.
@@ -310,7 +310,7 @@ The total KOSU supply in wei.
 
 ▸ **transfer**(`to`: string, `value`: BigNumber | string | number): _Promise‹TransactionReceiptWithDecodedLogs›_
 
-_Defined in [KosuToken.ts:113](https://github.com/ParadigmFoundation/kosu-monorepo/blob/821f0d85/packages/kosu-wrapper-enhancements/src/KosuToken.ts#L113)_
+_Defined in [KosuToken.ts:113](https://github.com/ParadigmFoundation/kosu-monorepo/blob/bc352f90/packages/kosu-wrapper-enhancements/src/KosuToken.ts#L113)_
 
 Transfers tokens to an address, from the current `coinbase` account.
 
@@ -331,7 +331,7 @@ The transaction's receipt after inclusion in a block.
 
 ▸ **transferFrom**(`from`: string, `to`: string, `value`: BigNumber | string | number): _Promise‹TransactionReceiptWithDecodedLogs›_
 
-_Defined in [KosuToken.ts:126](https://github.com/ParadigmFoundation/kosu-monorepo/blob/821f0d85/packages/kosu-wrapper-enhancements/src/KosuToken.ts#L126)_
+_Defined in [KosuToken.ts:126](https://github.com/ParadigmFoundation/kosu-monorepo/blob/bc352f90/packages/kosu-wrapper-enhancements/src/KosuToken.ts#L126)_
 
 Transfers token from an address to a destination address.
 

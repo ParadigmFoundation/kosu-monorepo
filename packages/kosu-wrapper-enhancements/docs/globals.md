@@ -24,11 +24,11 @@
 
 ### ▪ **KosuEndpoints**: _object_
 
-_Defined in [EventEmitter.ts:10](https://github.com/ParadigmFoundation/kosu-monorepo/blob/821f0d85/packages/kosu-wrapper-enhancements/src/EventEmitter.ts#L10)_
+_Defined in [EventEmitter.ts:10](https://github.com/ParadigmFoundation/kosu-monorepo/blob/bc352f90/packages/kosu-wrapper-enhancements/src/EventEmitter.ts#L10)_
 
 ▪ **1**: _object_
 
-_Defined in [EventEmitter.ts:11](https://github.com/ParadigmFoundation/kosu-monorepo/blob/821f0d85/packages/kosu-wrapper-enhancements/src/EventEmitter.ts#L11)_
+_Defined in [EventEmitter.ts:11](https://github.com/ParadigmFoundation/kosu-monorepo/blob/bc352f90/packages/kosu-wrapper-enhancements/src/EventEmitter.ts#L11)_
 
 -   **http**: _string_ = `https://ethnet.zaidan.io/mainnet`
 
@@ -36,7 +36,7 @@ _Defined in [EventEmitter.ts:11](https://github.com/ParadigmFoundation/kosu-mono
 
 ▪ **3**: _object_
 
-_Defined in [EventEmitter.ts:15](https://github.com/ParadigmFoundation/kosu-monorepo/blob/821f0d85/packages/kosu-wrapper-enhancements/src/EventEmitter.ts#L15)_
+_Defined in [EventEmitter.ts:15](https://github.com/ParadigmFoundation/kosu-monorepo/blob/bc352f90/packages/kosu-wrapper-enhancements/src/EventEmitter.ts#L15)_
 
 -   **http**: _string_ = `https://ethnet.zaidan.io/ropsten`
 
@@ -44,7 +44,7 @@ _Defined in [EventEmitter.ts:15](https://github.com/ParadigmFoundation/kosu-mono
 
 ▪ **42**: _object_
 
-_Defined in [EventEmitter.ts:19](https://github.com/ParadigmFoundation/kosu-monorepo/blob/821f0d85/packages/kosu-wrapper-enhancements/src/EventEmitter.ts#L19)_
+_Defined in [EventEmitter.ts:19](https://github.com/ParadigmFoundation/kosu-monorepo/blob/bc352f90/packages/kosu-wrapper-enhancements/src/EventEmitter.ts#L19)_
 
 -   **http**: _string_ = `https://ethnet.zaidan.io/kovan`
 
@@ -52,7 +52,7 @@ _Defined in [EventEmitter.ts:19](https://github.com/ParadigmFoundation/kosu-mono
 
 ▪ **6174**: _object_
 
-_Defined in [EventEmitter.ts:23](https://github.com/ParadigmFoundation/kosu-monorepo/blob/821f0d85/packages/kosu-wrapper-enhancements/src/EventEmitter.ts#L23)_
+_Defined in [EventEmitter.ts:23](https://github.com/ParadigmFoundation/kosu-monorepo/blob/bc352f90/packages/kosu-wrapper-enhancements/src/EventEmitter.ts#L23)_
 
 -   **http**: _string_ = `https://ethnet.zaidan.io/kosu`
 
