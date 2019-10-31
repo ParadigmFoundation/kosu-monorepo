@@ -1,8 +1,8 @@
-[wrapper-enhancements](README.md) › [Globals](globals.md)
+[Wrapper Enhancements](README.md) › [Globals](globals.md)
 
-# wrapper-enhancements
+# Wrapper Enhancements
 
-# Wrapper Enhancemnts
+# Wrapper Enhancements
 
 A TypeScript/JavaScript library for assistance with interactions with the Kosu contract system wrappers. This library simplifies and chains complex multi-step contract interactions.
 

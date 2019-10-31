@@ -38,7 +38,7 @@
 
 • **cli**: _Command_ = new commander.Command()
 
-_Defined in [cli/cli.ts:3](https://github.com/ParadigmFoundation/kosu-monorepo/blob/67119cd9/packages/kosu-genesis-cli/src/cli/cli.ts#L3)_
+_Defined in [cli/cli.ts:3](https://github.com/ParadigmFoundation/kosu-monorepo/blob/55c0be50/packages/kosu-genesis-cli/src/cli/cli.ts#L3)_
 
 ## Functions
 
@@ -46,7 +46,7 @@ _Defined in [cli/cli.ts:3](https://github.com/ParadigmFoundation/kosu-monorepo/b
 
 ▸ **dateFromTimestamp**(`timestamp`: number): _Date_
 
-_Defined in [functions.ts:335](https://github.com/ParadigmFoundation/kosu-monorepo/blob/67119cd9/packages/kosu-genesis-cli/src/functions.ts#L335)_
+_Defined in [functions.ts:335](https://github.com/ParadigmFoundation/kosu-monorepo/blob/55c0be50/packages/kosu-genesis-cli/src/functions.ts#L335)_
 
 Return a `Date` object generated from a Unix timestamp in seconds.
 
@@ -66,7 +66,7 @@ The JavaScript Date object corresponding to that Unix time.
 
 ▸ **generateGenesisFromBlock**(`kosu`: Kosu, `chainId`: string, `snapshotBlock`: number, `startTime`: number, `consensusParams`: [ConsensusParams](interfaces/consensusparams.md)): _Promise‹[GenesisBlock](interfaces/genesisblock.md)›_
 
-_Defined in [functions.ts:27](https://github.com/ParadigmFoundation/kosu-monorepo/blob/67119cd9/packages/kosu-genesis-cli/src/functions.ts#L27)_
+_Defined in [functions.ts:27](https://github.com/ParadigmFoundation/kosu-monorepo/blob/55c0be50/packages/kosu-genesis-cli/src/functions.ts#L27)_
 
 Generate a Tendermint genesis file for a Kosu network, where the initial validators
 are set based on the current state of a deployed Kosu contract system's
@@ -92,7 +92,7 @@ Promise resolving to object that can be JSON-serialized to a Kosu/Tendermint gen
 
 ▸ **getAppState**(`validators`: [SnapshotValidator](interfaces/snapshotvalidator.md)[], `posters`: [SnapshotPoster](interfaces/snapshotposter.md)[], `snapshotBlock`: number, `consensusParameters`: [ConsensusParams](interfaces/consensusparams.md)): _[AppState](interfaces/appstate.md)_
 
-_Defined in [functions.ts:90](https://github.com/ParadigmFoundation/kosu-monorepo/blob/67119cd9/packages/kosu-genesis-cli/src/functions.ts#L90)_
+_Defined in [functions.ts:90](https://github.com/ParadigmFoundation/kosu-monorepo/blob/55c0be50/packages/kosu-genesis-cli/src/functions.ts#L90)_
 
 Constructs the `app_state` genesis field, where the following initial states
 are gathered or set, from re-processed Ethereum blockchain event logs, or from
@@ -125,7 +125,7 @@ CLI input.
 
 ▸ **getInitialValidatorInfo**(`validators`: [SnapshotValidator](interfaces/snapshotvalidator.md)[]): _[InitialValidatorInfo](interfaces/initialvalidatorinfo.md)[]_
 
-_Defined in [functions.ts:307](https://github.com/ParadigmFoundation/kosu-monorepo/blob/67119cd9/packages/kosu-genesis-cli/src/functions.ts#L307)_
+_Defined in [functions.ts:307](https://github.com/ParadigmFoundation/kosu-monorepo/blob/55c0be50/packages/kosu-genesis-cli/src/functions.ts#L307)_
 
 Convert the validator snapshot data to the JSON format expected by the Kosu
 client.
@@ -146,7 +146,7 @@ The array of initial validators as expected by `initial_validator_info`.
 
 ▸ **getTendermintValidators**(`validators`: [SnapshotValidator](interfaces/snapshotvalidator.md)[]): _[GenesisValidator](interfaces/genesisvalidator.md)[]_
 
-_Defined in [functions.ts:241](https://github.com/ParadigmFoundation/kosu-monorepo/blob/67119cd9/packages/kosu-genesis-cli/src/functions.ts#L241)_
+_Defined in [functions.ts:241](https://github.com/ParadigmFoundation/kosu-monorepo/blob/55c0be50/packages/kosu-genesis-cli/src/functions.ts#L241)_
 
 Convert the validator snapshot data to the JSON format expected by Tendermint.
 
@@ -166,7 +166,7 @@ Tendermint-style genesis validator JSON.
 
 ▸ **hexKeyToBase64**(`publicKey`: string): _string_
 
-_Defined in [functions.ts:325](https://github.com/ParadigmFoundation/kosu-monorepo/blob/67119cd9/packages/kosu-genesis-cli/src/functions.ts#L325)_
+_Defined in [functions.ts:325](https://github.com/ParadigmFoundation/kosu-monorepo/blob/55c0be50/packages/kosu-genesis-cli/src/functions.ts#L325)_
 
 Convert a 0x-prefixed hex-encoded public key string to a base64-encoded string.
 
@@ -186,7 +186,7 @@ The base64-encoded string representation of the public key.
 
 ▸ **parseMonikerFromDetails**(`details`: string, `itemSeparator`: string, `valueSeparator`: string): _string_
 
-_Defined in [functions.ts:277](https://github.com/ParadigmFoundation/kosu-monorepo/blob/67119cd9/packages/kosu-genesis-cli/src/functions.ts#L277)_
+_Defined in [functions.ts:277](https://github.com/ParadigmFoundation/kosu-monorepo/blob/55c0be50/packages/kosu-genesis-cli/src/functions.ts#L277)_
 
 Allows parsing a moniker from a string that uses two types of separators to
 store key-value pairs in a plain string.
@@ -222,7 +222,7 @@ The value corresponding to the `moniker` key if found, otherwise the input strin
 
 ▸ **publicKeyToAddress**(`publicKey`: Buffer): _string_
 
-_Defined in [functions.ts:225](https://github.com/ParadigmFoundation/kosu-monorepo/blob/67119cd9/packages/kosu-genesis-cli/src/functions.ts#L225)_
+_Defined in [functions.ts:225](https://github.com/ParadigmFoundation/kosu-monorepo/blob/55c0be50/packages/kosu-genesis-cli/src/functions.ts#L225)_
 
 Convert a Tendermint public key to a Tendermint address (also called node ID).
 
@@ -242,7 +242,7 @@ The corresponding Tendermint address string.
 
 ▸ **snapshotPostersAtBlock**(`kosu`: Kosu, `snapshotBlock`: number): _Promise‹[SnapshotPoster](interfaces/snapshotposter.md)[]›_
 
-_Defined in [functions.ts:179](https://github.com/ParadigmFoundation/kosu-monorepo/blob/67119cd9/packages/kosu-genesis-cli/src/functions.ts#L179)_
+_Defined in [functions.ts:179](https://github.com/ParadigmFoundation/kosu-monorepo/blob/55c0be50/packages/kosu-genesis-cli/src/functions.ts#L179)_
 
 Generate a "snapshot" of the PosterRegistry contract state (all posters) by
 re-playing `PosterRegistryUpdate` events from the Kosu EventEmitter contract.
@@ -267,7 +267,7 @@ Promise resolving to snapshot poster info (see type definition).
 
 ▸ **snapshotValidatorsAtBlock**(`kosu`: Kosu, `snapshotBlock`: number): _Promise‹[SnapshotValidator](interfaces/snapshotvalidator.md)[]›_
 
-_Defined in [functions.ts:117](https://github.com/ParadigmFoundation/kosu-monorepo/blob/67119cd9/packages/kosu-genesis-cli/src/functions.ts#L117)_
+_Defined in [functions.ts:117](https://github.com/ParadigmFoundation/kosu-monorepo/blob/55c0be50/packages/kosu-genesis-cli/src/functions.ts#L117)_
 
 Generate a "snapshot" of the ValidatorRegistry TCR contract state (specifically,
 only the listings designated validators at the snapshot block) by re-playing

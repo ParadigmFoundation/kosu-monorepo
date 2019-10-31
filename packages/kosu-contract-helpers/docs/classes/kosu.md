@@ -45,7 +45,7 @@ contracts.
 
 \+ **new Kosu**(`options`: KosuOptions): _[Kosu](kosu.md)_
 
-_Defined in [Kosu.ts:126](https://github.com/ParadigmFoundation/kosu-monorepo/blob/67119cd9/packages/kosu-contract-helpers/src/Kosu.ts#L126)_
+_Defined in [Kosu.ts:126](https://github.com/ParadigmFoundation/kosu-monorepo/blob/55c0be50/packages/kosu-contract-helpers/src/Kosu.ts#L126)_
 
 Create a new `kosu` instance and instantiate wrappers for each Kosu system
 contract.
@@ -69,7 +69,7 @@ of transactions and generation of signatures will not be possible.
 
 • **eventEmitter**: _EventEmitter_
 
-_Defined in [Kosu.ts:113](https://github.com/ParadigmFoundation/kosu-monorepo/blob/67119cd9/packages/kosu-contract-helpers/src/Kosu.ts#L113)_
+_Defined in [Kosu.ts:113](https://github.com/ParadigmFoundation/kosu-monorepo/blob/55c0be50/packages/kosu-contract-helpers/src/Kosu.ts#L113)_
 
 The `eventEmitter` enables the query of and subscription to decoded event
 logs from the Kosu `EventEmitter` contract.
@@ -80,7 +80,7 @@ logs from the Kosu `EventEmitter` contract.
 
 • **kosuToken**: _KosuToken_
 
-_Defined in [Kosu.ts:78](https://github.com/ParadigmFoundation/kosu-monorepo/blob/67119cd9/packages/kosu-contract-helpers/src/Kosu.ts#L78)_
+_Defined in [Kosu.ts:78](https://github.com/ParadigmFoundation/kosu-monorepo/blob/55c0be50/packages/kosu-contract-helpers/src/Kosu.ts#L78)_
 
 The `kosuToken` provides methods for interacting with the KOSU ERC-20 token.
 
@@ -90,7 +90,7 @@ The `kosuToken` provides methods for interacting with the KOSU ERC-20 token.
 
 • **orderGateway**: _OrderGateway_
 
-_Defined in [Kosu.ts:65](https://github.com/ParadigmFoundation/kosu-monorepo/blob/67119cd9/packages/kosu-contract-helpers/src/Kosu.ts#L65)_
+_Defined in [Kosu.ts:65](https://github.com/ParadigmFoundation/kosu-monorepo/blob/55c0be50/packages/kosu-contract-helpers/src/Kosu.ts#L65)_
 
 The `orderGateway` instance provides access to the `OrderGateway` contract
 which is used to direct settlement of orders to their corresponding
@@ -105,7 +105,7 @@ type, based on a `SubContract` address.
 
 • **orderHelper**: _[OrderHelper](orderhelper.md)_
 
-_Defined in [Kosu.ts:73](https://github.com/ParadigmFoundation/kosu-monorepo/blob/67119cd9/packages/kosu-contract-helpers/src/Kosu.ts#L73)_
+_Defined in [Kosu.ts:73](https://github.com/ParadigmFoundation/kosu-monorepo/blob/55c0be50/packages/kosu-contract-helpers/src/Kosu.ts#L73)_
 
 The `orderHelper` instance provides methods for generating and signing
 maker orders, signing orders for submission to the Kosu network, and
@@ -118,7 +118,7 @@ submitting orders for settlement on the Ethereum blockchain via the
 
 • **posterRegistry**: _PosterRegistry_
 
-_Defined in [Kosu.ts:98](https://github.com/ParadigmFoundation/kosu-monorepo/blob/67119cd9/packages/kosu-contract-helpers/src/Kosu.ts#L98)_
+_Defined in [Kosu.ts:98](https://github.com/ParadigmFoundation/kosu-monorepo/blob/55c0be50/packages/kosu-contract-helpers/src/Kosu.ts#L98)_
 
 The `posterRegistry` instance enables users to interact with the Kosu
 `PosterRegistry` contract to bond and un-bond KOSU tokens to access the
@@ -130,7 +130,7 @@ order relay feature of the Kosu network.
 
 • **treasury**: _Treasury_
 
-_Defined in [Kosu.ts:84](https://github.com/ParadigmFoundation/kosu-monorepo/blob/67119cd9/packages/kosu-contract-helpers/src/Kosu.ts#L84)_
+_Defined in [Kosu.ts:84](https://github.com/ParadigmFoundation/kosu-monorepo/blob/55c0be50/packages/kosu-contract-helpers/src/Kosu.ts#L84)_
 
 The `treasury` instance provides access to functionality of the Kosu
 `Treasury` contract, such as deposits/withdrawals and allowance management.
@@ -141,7 +141,7 @@ The `treasury` instance provides access to functionality of the Kosu
 
 • **utils**: _KosuUtils_
 
-_Defined in [Kosu.ts:121](https://github.com/ParadigmFoundation/kosu-monorepo/blob/67119cd9/packages/kosu-contract-helpers/src/Kosu.ts#L121)_
+_Defined in [Kosu.ts:121](https://github.com/ParadigmFoundation/kosu-monorepo/blob/55c0be50/packages/kosu-contract-helpers/src/Kosu.ts#L121)_
 
 Common and helpful utility methods and constants for interacting with the
 Kosu contract system and Ethereum blockchain.
@@ -152,7 +152,7 @@ Kosu contract system and Ethereum blockchain.
 
 • **validatorRegistry**: _ValidatorRegistry_
 
-_Defined in [Kosu.ts:107](https://github.com/ParadigmFoundation/kosu-monorepo/blob/67119cd9/packages/kosu-contract-helpers/src/Kosu.ts#L107)_
+_Defined in [Kosu.ts:107](https://github.com/ParadigmFoundation/kosu-monorepo/blob/55c0be50/packages/kosu-contract-helpers/src/Kosu.ts#L107)_
 
 The `validatorRegistry` instance enables interaction with the `ValidatorRegistry`
 token-curated registry system. The system enables users to submit proposals
@@ -166,7 +166,7 @@ It also provides query access to past challenges and the current listings.
 
 • **version**: _string_
 
-_Defined in [Kosu.ts:126](https://github.com/ParadigmFoundation/kosu-monorepo/blob/67119cd9/packages/kosu-contract-helpers/src/Kosu.ts#L126)_
+_Defined in [Kosu.ts:126](https://github.com/ParadigmFoundation/kosu-monorepo/blob/55c0be50/packages/kosu-contract-helpers/src/Kosu.ts#L126)_
 
 The current `@kosu/kosu.js` package version.
 
@@ -176,7 +176,7 @@ The current `@kosu/kosu.js` package version.
 
 • **voting**: _Voting_
 
-_Defined in [Kosu.ts:91](https://github.com/ParadigmFoundation/kosu-monorepo/blob/67119cd9/packages/kosu-contract-helpers/src/Kosu.ts#L91)_
+_Defined in [Kosu.ts:91](https://github.com/ParadigmFoundation/kosu-monorepo/blob/55c0be50/packages/kosu-contract-helpers/src/Kosu.ts#L91)_
 
 The `voting` instance provides access to the Kosu `voting` contract and
 allows users to participate in voting on governance measures, and claiming
@@ -188,7 +188,7 @@ rewards for correctly participating in winning polls.
 
 • **web3**: _Web3_
 
-_Defined in [Kosu.ts:46](https://github.com/ParadigmFoundation/kosu-monorepo/blob/67119cd9/packages/kosu-contract-helpers/src/Kosu.ts#L46)_
+_Defined in [Kosu.ts:46](https://github.com/ParadigmFoundation/kosu-monorepo/blob/55c0be50/packages/kosu-contract-helpers/src/Kosu.ts#L46)_
 
 The primary `web3` instance provides access to an Ethereum node's JSONRPC
 API and utilities. This instance is used to interact with each Kosu contract
@@ -200,7 +200,7 @@ wrapper and can be used to directly access the `web3` API.
 
 • **web3Wrapper**: _Web3Wrapper_
 
-_Defined in [Kosu.ts:53](https://github.com/ParadigmFoundation/kosu-monorepo/blob/67119cd9/packages/kosu-contract-helpers/src/Kosu.ts#L53)_
+_Defined in [Kosu.ts:53](https://github.com/ParadigmFoundation/kosu-monorepo/blob/55c0be50/packages/kosu-contract-helpers/src/Kosu.ts#L53)_
 
 The `web3Wrapper` is used for some extended features, and provides
 a higher-level API to the same underlying `web3` provider. It it used to

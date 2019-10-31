@@ -16,7 +16,7 @@
 
 ▸ **getAddressesForNetwork**(`networkId`: number | string): _KosuAddresses_
 
-_Defined in [index.ts:32](https://github.com/ParadigmFoundation/kosu-monorepo/blob/67119cd9/packages/kosu-deployed-addresses/src/index.ts#L32)_
+_Defined in [index.ts:32](https://github.com/ParadigmFoundation/kosu-monorepo/blob/55c0be50/packages/kosu-deployed-addresses/src/index.ts#L32)_
 
 Get the deployment addresses for a desired network by id.
 
@@ -36,7 +36,7 @@ The addresses for the Kosu contracts.
 
 ▸ **getMigratedContractsForNetwork**(`web3Wrapper`: Web3Wrapper): _Promise‹MigratedContracts›_
 
-_Defined in [index.ts:53](https://github.com/ParadigmFoundation/kosu-monorepo/blob/67119cd9/packages/kosu-deployed-addresses/src/index.ts#L53)_
+_Defined in [index.ts:53](https://github.com/ParadigmFoundation/kosu-monorepo/blob/55c0be50/packages/kosu-deployed-addresses/src/index.ts#L53)_
 
 Get the deployment addresses for a desired network by id.
 
@@ -56,7 +56,7 @@ The contract instances.
 
 ▸ **getReceiptsForNetwork**(`networkId`: number | string): _KosuDeploymentReceipts_
 
-_Defined in [index.ts:22](https://github.com/ParadigmFoundation/kosu-monorepo/blob/67119cd9/packages/kosu-deployed-addresses/src/index.ts#L22)_
+_Defined in [index.ts:22](https://github.com/ParadigmFoundation/kosu-monorepo/blob/55c0be50/packages/kosu-deployed-addresses/src/index.ts#L22)_
 
 Get the deployment receipts for a desired network by id.
 

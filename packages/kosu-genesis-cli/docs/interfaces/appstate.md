@@ -21,7 +21,7 @@
 
 • **consensus_params**: _[ConsensusParams](consensusparams.md)_
 
-_Defined in [types.d.ts:19](https://github.com/ParadigmFoundation/kosu-monorepo/blob/67119cd9/packages/kosu-genesis-cli/src/types.d.ts#L19)_
+_Defined in [types.d.ts:19](https://github.com/ParadigmFoundation/kosu-monorepo/blob/55c0be50/packages/kosu-genesis-cli/src/types.d.ts#L19)_
 
 ---
 
@@ -29,7 +29,7 @@ _Defined in [types.d.ts:19](https://github.com/ParadigmFoundation/kosu-monorepo/
 
 • **initial_poster_info**: _[SnapshotPoster](snapshotposter.md)[]_
 
-_Defined in [types.d.ts:21](https://github.com/ParadigmFoundation/kosu-monorepo/blob/67119cd9/packages/kosu-genesis-cli/src/types.d.ts#L21)_
+_Defined in [types.d.ts:21](https://github.com/ParadigmFoundation/kosu-monorepo/blob/55c0be50/packages/kosu-genesis-cli/src/types.d.ts#L21)_
 
 ---
 
@@ -37,7 +37,7 @@ _Defined in [types.d.ts:21](https://github.com/ParadigmFoundation/kosu-monorepo/
 
 • **initial_validator_info**: _[InitialValidatorInfo](initialvalidatorinfo.md)[]_
 
-_Defined in [types.d.ts:20](https://github.com/ParadigmFoundation/kosu-monorepo/blob/67119cd9/packages/kosu-genesis-cli/src/types.d.ts#L20)_
+_Defined in [types.d.ts:20](https://github.com/ParadigmFoundation/kosu-monorepo/blob/55c0be50/packages/kosu-genesis-cli/src/types.d.ts#L20)_
 
 ---
 
@@ -45,4 +45,4 @@ _Defined in [types.d.ts:20](https://github.com/ParadigmFoundation/kosu-monorepo/
 
 • **snapshot_block**: _number_
 
-_Defined in [types.d.ts:22](https://github.com/ParadigmFoundation/kosu-monorepo/blob/67119cd9/packages/kosu-genesis-cli/src/types.d.ts#L22)_
+_Defined in [types.d.ts:22](https://github.com/ParadigmFoundation/kosu-monorepo/blob/55c0be50/packages/kosu-genesis-cli/src/types.d.ts#L22)_
