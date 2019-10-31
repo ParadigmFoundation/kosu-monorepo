@@ -17,52 +17,53 @@ View the Kosu RPC documentation [here.](https://docs.kosu.io/go-kosu/kosu_rpc.ht
 
 ## Hierarchy
 
-* **NodeClient**
+-   **NodeClient**
 
 ## Index
 
 ### Constructors
 
-* [constructor](nodeclient.md#constructor)
+-   [constructor](nodeclient.md#constructor)
 
 ### Properties
 
-* [NODE_ID_HASH_OFFSET](nodeclient.md#static-node_id_hash_offset)
-* [PUBLIC_KEY_LENGTH](nodeclient.md#static-public_key_length)
+-   [NODE_ID_HASH_OFFSET](nodeclient.md#static-node_id_hash_offset)
+-   [PUBLIC_KEY_LENGTH](nodeclient.md#static-public_key_length)
 
 ### Methods
 
-* [addOrders](nodeclient.md#addorders)
-* [latestHeight](nodeclient.md#latestheight)
-* [numberPosters](nodeclient.md#numberposters)
-* [queryPoster](nodeclient.md#queryposter)
-* [queryValidator](nodeclient.md#queryvalidator)
-* [remainingLimit](nodeclient.md#remaininglimit)
-* [roundInfo](nodeclient.md#roundinfo)
-* [subscribeToBlocks](nodeclient.md#subscribetoblocks)
-* [subscribeToOrders](nodeclient.md#subscribetoorders)
-* [subscribeToRebalances](nodeclient.md#subscribetorebalances)
-* [totalOrders](nodeclient.md#totalorders)
-* [unsubscribe](nodeclient.md#unsubscribe)
-* [validators](nodeclient.md#validators)
-* [publicKeyToNodeId](nodeclient.md#static-publickeytonodeid)
+-   [addOrders](nodeclient.md#addorders)
+-   [latestHeight](nodeclient.md#latestheight)
+-   [numberPosters](nodeclient.md#numberposters)
+-   [queryPoster](nodeclient.md#queryposter)
+-   [queryValidator](nodeclient.md#queryvalidator)
+-   [remainingLimit](nodeclient.md#remaininglimit)
+-   [roundInfo](nodeclient.md#roundinfo)
+-   [subscribeToBlocks](nodeclient.md#subscribetoblocks)
+-   [subscribeToOrders](nodeclient.md#subscribetoorders)
+-   [subscribeToRebalances](nodeclient.md#subscribetorebalances)
+-   [totalOrders](nodeclient.md#totalorders)
+-   [unsubscribe](nodeclient.md#unsubscribe)
+-   [validators](nodeclient.md#validators)
+-   [publicKeyToNodeId](nodeclient.md#static-publickeytonodeid)
 
 ### Object literals
 
-* [DEFAULT_OPTIONS](nodeclient.md#static-default_options)
+-   [DEFAULT_OPTIONS](nodeclient.md#static-default_options)
 
 ## Constructors
 
-###  constructor
+### constructor
 
-\+ **new NodeClient**(`url`: string, `options?`: WebsocketProviderOptions): *[NodeClient](nodeclient.md)*
+\+ **new NodeClient**(`url`: string, `options?`: WebsocketProviderOptions): _[NodeClient](nodeclient.md)_
 
-*Defined in [node_client.ts:69](https://github.com/ParadigmFoundation/kosu-monorepo/blob/75a4fa15/packages/kosu-node-client/src/node_client.ts#L69)*
+_Defined in [node_client.ts:69](https://github.com/ParadigmFoundation/kosu-monorepo/blob/75a4fa15/packages/kosu-node-client/src/node_client.ts#L69)_
 
 Create a new NodeClient (`node`) via a connection to a Kosu node serving
 the Kosu JSONRPC/WebSocket.
 
-**`example`** 
+**`example`**
+
 ```typescript
 // create a node client (with a request/connection timeout of 1s)
 const node = new NodeClient("wss://localhost:14342", { timeout: 1000 });
@@ -70,41 +71,41 @@ const node = new NodeClient("wss://localhost:14342", { timeout: 1000 });
 
 **Parameters:**
 
-Name | Type | Description |
------- | ------ | ------ |
-`url` | string | Full URL to the Kosu node's WebSocket JSONRPC endpoint. |
-`options?` | WebsocketProviderOptions | Options to provide the underlying `WebSocketProvider`. |
+| Name       | Type                     | Description                                             |
+| ---------- | ------------------------ | ------------------------------------------------------- |
+| `url`      | string                   | Full URL to the Kosu node's WebSocket JSONRPC endpoint. |
+| `options?` | WebsocketProviderOptions | Options to provide the underlying `WebSocketProvider`.  |
 
-**Returns:** *[NodeClient](nodeclient.md)*
+**Returns:** _[NodeClient](nodeclient.md)_
 
 ## Properties
 
 ### `Static` NODE_ID_HASH_OFFSET
 
-▪ **NODE_ID_HASH_OFFSET**: *number* = 20
+▪ **NODE_ID_HASH_OFFSET**: _number_ = 20
 
-*Defined in [node_client.ts:39](https://github.com/ParadigmFoundation/kosu-monorepo/blob/75a4fa15/packages/kosu-node-client/src/node_client.ts#L39)*
+_Defined in [node_client.ts:39](https://github.com/ParadigmFoundation/kosu-monorepo/blob/75a4fa15/packages/kosu-node-client/src/node_client.ts#L39)_
 
 Kosu validator node IDs are the first 20 bytes of the SHA-256 hash of the
 public key.
 
-___
+---
 
 ### `Static` PUBLIC_KEY_LENGTH
 
-▪ **PUBLIC_KEY_LENGTH**: *number* = 32
+▪ **PUBLIC_KEY_LENGTH**: _number_ = 32
 
-*Defined in [node_client.ts:33](https://github.com/ParadigmFoundation/kosu-monorepo/blob/75a4fa15/packages/kosu-node-client/src/node_client.ts#L33)*
+_Defined in [node_client.ts:33](https://github.com/ParadigmFoundation/kosu-monorepo/blob/75a4fa15/packages/kosu-node-client/src/node_client.ts#L33)_
 
 Kosu validator public key's are 32 bytes long.
 
 ## Methods
 
-###  addOrders
+### addOrders
 
-▸ **addOrders**(...`orders`: PostableOrder[]): *Promise‹OrderValidationResult[]›*
+▸ **addOrders**(...`orders`: PostableOrder[]): _Promise‹OrderValidationResult[]›_
 
-*Defined in [node_client.ts:101](https://github.com/ParadigmFoundation/kosu-monorepo/blob/75a4fa15/packages/kosu-node-client/src/node_client.ts#L101)*
+_Defined in [node_client.ts:101](https://github.com/ParadigmFoundation/kosu-monorepo/blob/75a4fa15/packages/kosu-node-client/src/node_client.ts#L101)_
 
 See [`kosu_addOrders`.](https://docs.kosu.io/go-kosu/kosu_rpc.html#addorders)
 
@@ -116,54 +117,54 @@ See the `posterRegistry.registerTokens()` method to bond KOSU.
 
 **Parameters:**
 
-Name | Type | Description |
------- | ------ | ------ |
-`...orders` | PostableOrder[] | Orders to submit to the node as subsequent arguments. |
+| Name        | Type            | Description                                           |
+| ----------- | --------------- | ----------------------------------------------------- |
+| `...orders` | PostableOrder[] | Orders to submit to the node as subsequent arguments. |
 
-**Returns:** *Promise‹OrderValidationResult[]›*
+**Returns:** _Promise‹OrderValidationResult[]›_
 
 Validation results from the Kosu node, and/or the transaction
 ID's of the accepted orders.
 
-___
+---
 
-###  latestHeight
+### latestHeight
 
-▸ **latestHeight**(): *Promise‹number›*
+▸ **latestHeight**(): _Promise‹number›_
 
-*Defined in [node_client.ts:112](https://github.com/ParadigmFoundation/kosu-monorepo/blob/75a4fa15/packages/kosu-node-client/src/node_client.ts#L112)*
+_Defined in [node_client.ts:112](https://github.com/ParadigmFoundation/kosu-monorepo/blob/75a4fa15/packages/kosu-node-client/src/node_client.ts#L112)_
 
 See [`kosu_latestHeight`.](https://docs.kosu.io/go-kosu/kosu_rpc.html#latestheight)
 
 Get the height of the most recently committed and finalized Kosu block.
 
-**Returns:** *Promise‹number›*
+**Returns:** _Promise‹number›_
 
 The most recent Kosu block number.
 
-___
+---
 
-###  numberPosters
+### numberPosters
 
-▸ **numberPosters**(): *Promise‹number›*
+▸ **numberPosters**(): _Promise‹number›_
 
-*Defined in [node_client.ts:123](https://github.com/ParadigmFoundation/kosu-monorepo/blob/75a4fa15/packages/kosu-node-client/src/node_client.ts#L123)*
+_Defined in [node_client.ts:123](https://github.com/ParadigmFoundation/kosu-monorepo/blob/75a4fa15/packages/kosu-node-client/src/node_client.ts#L123)_
 
 See [`kosu_numberPosters`.](https://docs.kosu.io/go-kosu/kosu_rpc.html#numberposters)
 
 Get the total number registered posters from the Kosu node.
 
-**Returns:** *Promise‹number›*
+**Returns:** _Promise‹number›_
 
 The total number of poster accounts the node is tracking.
 
-___
+---
 
-###  queryPoster
+### queryPoster
 
-▸ **queryPoster**(`address`: string): *Promise‹Poster›*
+▸ **queryPoster**(`address`: string): _Promise‹Poster›_
 
-*Defined in [node_client.ts:135](https://github.com/ParadigmFoundation/kosu-monorepo/blob/75a4fa15/packages/kosu-node-client/src/node_client.ts#L135)*
+_Defined in [node_client.ts:135](https://github.com/ParadigmFoundation/kosu-monorepo/blob/75a4fa15/packages/kosu-node-client/src/node_client.ts#L135)_
 
 See [`kosu_queryPoster`.](https://docs.kosu.io/go-kosu/kosu_rpc.html#queryposter)
 
@@ -172,21 +173,21 @@ about a specified poster account.
 
 **Parameters:**
 
-Name | Type |
------- | ------ |
-`address` | string |
+| Name      | Type   |
+| --------- | ------ |
+| `address` | string |
 
-**Returns:** *Promise‹Poster›*
+**Returns:** _Promise‹Poster›_
 
 Balance and order limit data for the specified poster account.
 
-___
+---
 
-###  queryValidator
+### queryValidator
 
-▸ **queryValidator**(`nodeId`: string): *Promise‹Validator›*
+▸ **queryValidator**(`nodeId`: string): _Promise‹Validator›_
 
-*Defined in [node_client.ts:154](https://github.com/ParadigmFoundation/kosu-monorepo/blob/75a4fa15/packages/kosu-node-client/src/node_client.ts#L154)*
+_Defined in [node_client.ts:154](https://github.com/ParadigmFoundation/kosu-monorepo/blob/75a4fa15/packages/kosu-node-client/src/node_client.ts#L154)_
 
 See [`kosu_queryValidator`.](https://docs.kosu.io/go-kosu/kosu_rpc.html#queryvalidator)
 
@@ -199,21 +200,21 @@ public key to it's node ID.
 
 **Parameters:**
 
-Name | Type |
------- | ------ |
-`nodeId` | string |
+| Name     | Type   |
+| -------- | ------ |
+| `nodeId` | string |
 
-**Returns:** *Promise‹Validator›*
+**Returns:** _Promise‹Validator›_
 
 Information about the requested validator (see `Validator`).
 
-___
+---
 
-###  remainingLimit
+### remainingLimit
 
-▸ **remainingLimit**(): *Promise‹number›*
+▸ **remainingLimit**(): _Promise‹number›_
 
-*Defined in [node_client.ts:170](https://github.com/ParadigmFoundation/kosu-monorepo/blob/75a4fa15/packages/kosu-node-client/src/node_client.ts#L170)*
+_Defined in [node_client.ts:170](https://github.com/ParadigmFoundation/kosu-monorepo/blob/75a4fa15/packages/kosu-node-client/src/node_client.ts#L170)_
 
 See [`kosu_remainingLimit`.](https://docs.kosu.io/go-kosu/kosu_rpc.html#remaininglimit)
 
@@ -221,34 +222,34 @@ Get the total number of orders that _may_ be posted this period. It is
 equal to the sum of the unutilized bandwidth allocation for each poster
 account for the current rebalance period.
 
-**Returns:** *Promise‹number›*
+**Returns:** _Promise‹number›_
 
 The unutilized order bandwidth for the current period.
 
-___
+---
 
-###  roundInfo
+### roundInfo
 
-▸ **roundInfo**(): *Promise‹RoundInfo›*
+▸ **roundInfo**(): _Promise‹RoundInfo›_
 
-*Defined in [node_client.ts:182](https://github.com/ParadigmFoundation/kosu-monorepo/blob/75a4fa15/packages/kosu-node-client/src/node_client.ts#L182)*
+_Defined in [node_client.ts:182](https://github.com/ParadigmFoundation/kosu-monorepo/blob/75a4fa15/packages/kosu-node-client/src/node_client.ts#L182)_
 
 See [`kosu_roundInfo`.](https://docs.kosu.io/go-kosu/kosu_rpc.html#roundinfo)
 
 Get the current rebalance period number, starting Ethereum block, ending
 Ethereum block, and the maximum number of orders for the period.
 
-**Returns:** *Promise‹RoundInfo›*
+**Returns:** _Promise‹RoundInfo›_
 
 Information about the current rebalance period.
 
-___
+---
 
-###  subscribeToBlocks
+### subscribeToBlocks
 
-▸ **subscribeToBlocks**(`cb`: function): *Promise‹string›*
+▸ **subscribeToBlocks**(`cb`: function): _Promise‹string›_
 
-*Defined in [node_client.ts:238](https://github.com/ParadigmFoundation/kosu-monorepo/blob/75a4fa15/packages/kosu-node-client/src/node_client.ts#L238)*
+_Defined in [node_client.ts:238](https://github.com/ParadigmFoundation/kosu-monorepo/blob/75a4fa15/packages/kosu-node-client/src/node_client.ts#L238)_
 
 Read about Kosu subscriptions [here](https://docs.kosu.io/go-kosu/kosu_rpc.html#subscriptions).
 
@@ -259,29 +260,29 @@ after each successful commit.
 
 **Parameters:**
 
-▪ **cb**: *function*
+▪ **cb**: _function_
 
 A callback function to handle new rebalance information.
 
-▸ (`block`: any): *void*
+▸ (`block`: any): _void_
 
 **Parameters:**
 
-Name | Type |
------- | ------ |
-`block` | any |
+| Name    | Type |
+| ------- | ---- |
+| `block` | any  |
 
-**Returns:** *Promise‹string›*
+**Returns:** _Promise‹string›_
 
 A UUID that can be used to cancel the new subscription (see `node.unsubscribe()`).
 
-___
+---
 
-###  subscribeToOrders
+### subscribeToOrders
 
-▸ **subscribeToOrders**(`cb`: function): *Promise‹string›*
+▸ **subscribeToOrders**(`cb`: function): _Promise‹string›_
 
-*Defined in [node_client.ts:223](https://github.com/ParadigmFoundation/kosu-monorepo/blob/75a4fa15/packages/kosu-node-client/src/node_client.ts#L223)*
+_Defined in [node_client.ts:223](https://github.com/ParadigmFoundation/kosu-monorepo/blob/75a4fa15/packages/kosu-node-client/src/node_client.ts#L223)_
 
 Read about Kosu subscriptions [here](https://docs.kosu.io/go-kosu/kosu_rpc.html#subscriptions).
 
@@ -292,29 +293,29 @@ orders each time they are included in a Kosu block.
 
 **Parameters:**
 
-▪ **cb**: *function*
+▪ **cb**: _function_
 
 A callback function to handle each array of new orders.
 
-▸ (`order`: PostableOrder): *void*
+▸ (`order`: PostableOrder): _void_
 
 **Parameters:**
 
-Name | Type |
------- | ------ |
-`order` | PostableOrder |
+| Name    | Type          |
+| ------- | ------------- |
+| `order` | PostableOrder |
 
-**Returns:** *Promise‹string›*
+**Returns:** _Promise‹string›_
 
 A UUID that can be used to cancel the new subscription (see `node.unsubscribe()`).
 
-___
+---
 
-###  subscribeToRebalances
+### subscribeToRebalances
 
-▸ **subscribeToRebalances**(`cb`: function): *Promise‹string›*
+▸ **subscribeToRebalances**(`cb`: function): _Promise‹string›_
 
-*Defined in [node_client.ts:253](https://github.com/ParadigmFoundation/kosu-monorepo/blob/75a4fa15/packages/kosu-node-client/src/node_client.ts#L253)*
+_Defined in [node_client.ts:253](https://github.com/ParadigmFoundation/kosu-monorepo/blob/75a4fa15/packages/kosu-node-client/src/node_client.ts#L253)_
 
 Read about Kosu subscriptions [here](https://docs.kosu.io/go-kosu/kosu_rpc.html#subscriptions).
 
@@ -325,81 +326,81 @@ information (starting block, ending block, etc.).
 
 **Parameters:**
 
-▪ **cb**: *function*
+▪ **cb**: _function_
 
 A callback function to handle new rebalance information.
 
-▸ (`roundInfo`: RoundInfo): *void*
+▸ (`roundInfo`: RoundInfo): _void_
 
 **Parameters:**
 
-Name | Type |
------- | ------ |
-`roundInfo` | RoundInfo |
+| Name        | Type      |
+| ----------- | --------- |
+| `roundInfo` | RoundInfo |
 
-**Returns:** *Promise‹string›*
+**Returns:** _Promise‹string›_
 
 A UUID that can be used to cancel the new subscription (see `node.unsubscribe()`).
 
-___
+---
 
-###  totalOrders
+### totalOrders
 
-▸ **totalOrders**(): *Promise‹number›*
+▸ **totalOrders**(): _Promise‹number›_
 
-*Defined in [node_client.ts:195](https://github.com/ParadigmFoundation/kosu-monorepo/blob/75a4fa15/packages/kosu-node-client/src/node_client.ts#L195)*
+_Defined in [node_client.ts:195](https://github.com/ParadigmFoundation/kosu-monorepo/blob/75a4fa15/packages/kosu-node-client/src/node_client.ts#L195)_
 
 See [`kosu_totalOrders`.](https://docs.kosu.io/go-kosu/kosu_rpc.html#totalorders)
 
 Get the total number of orders that have been processed by the network
 since genesis.
 
-**Returns:** *Promise‹number›*
+**Returns:** _Promise‹number›_
 
 The total number of orders posted since network genesis.
 
-___
+---
 
-###  unsubscribe
+### unsubscribe
 
-▸ **unsubscribe**(`subscriptionId`: string): *Promise‹void›*
+▸ **unsubscribe**(`subscriptionId`: string): _Promise‹void›_
 
-*Defined in [node_client.ts:262](https://github.com/ParadigmFoundation/kosu-monorepo/blob/75a4fa15/packages/kosu-node-client/src/node_client.ts#L262)*
+_Defined in [node_client.ts:262](https://github.com/ParadigmFoundation/kosu-monorepo/blob/75a4fa15/packages/kosu-node-client/src/node_client.ts#L262)_
 
 Cancel an active subscription.
 
 **Parameters:**
 
-Name | Type | Description |
------- | ------ | ------ |
-`subscriptionId` | string | The UUID of the subscription to cancel.  |
+| Name             | Type   | Description                             |
+| ---------------- | ------ | --------------------------------------- |
+| `subscriptionId` | string | The UUID of the subscription to cancel. |
 
-**Returns:** *Promise‹void›*
+**Returns:** _Promise‹void›_
 
-___
+---
 
-###  validators
+### validators
 
-▸ **validators**(): *Promise‹Validator[]›*
+▸ **validators**(): _Promise‹Validator[]›_
 
-*Defined in [node_client.ts:207](https://github.com/ParadigmFoundation/kosu-monorepo/blob/75a4fa15/packages/kosu-node-client/src/node_client.ts#L207)*
+_Defined in [node_client.ts:207](https://github.com/ParadigmFoundation/kosu-monorepo/blob/75a4fa15/packages/kosu-node-client/src/node_client.ts#L207)_
 
 See [`kosu_validators`.](https://docs.kosu.io/go-kosu/kosu_rpc.html#validators)
 
 Get finalized (committed into current state) information about the current
 full validator set. Returns the full set (not paginated).
 
-**Returns:** *Promise‹Validator[]›*
+**Returns:** _Promise‹Validator[]›_
 
 Information about all active Kosu validators (see `Validator`).
 
-___
+---
 
 ### `Static` publicKeyToNodeId
 
-▸ **publicKeyToNodeId**(`publicKey`: string): *string*
+▸ **publicKeyToNodeId**(`publicKey`: string): _string_
 
-*Defined in [node_client.ts:52](https://github.com/ParadigmFoundation/kosu-monorepo/blob/75a4fa15/packages/kosu-node-client/src/node_client.ts#L52)*
+_Defined in [node_client.ts:52](https://github.com/ParadigmFoundation/kosu-monorepo/blob/75a4fa15/packages/kosu-node-client/src/node_client.ts#L52)_
 
 Convert a Kosu/Tendermint public key to the corresponding node ID.
 
@@ -407,11 +408,11 @@ The node ID is the first 20 bytes of the SHA-256 hash of the public key.
 
 **Parameters:**
 
-Name | Type | Description |
------- | ------ | ------ |
-`publicKey` | string | Base64-encoded validator public key. |
+| Name        | Type   | Description                          |
+| ----------- | ------ | ------------------------------------ |
+| `publicKey` | string | Base64-encoded validator public key. |
 
-**Returns:** *string*
+**Returns:** _string_
 
 The node ID (tendermint "address") for that public key.
 
@@ -419,15 +420,15 @@ The node ID (tendermint "address") for that public key.
 
 ### `Static` DEFAULT_OPTIONS
 
-### ▪ **DEFAULT_OPTIONS**: *object*
+### ▪ **DEFAULT_OPTIONS**: _object_
 
-*Defined in [node_client.ts:28](https://github.com/ParadigmFoundation/kosu-monorepo/blob/75a4fa15/packages/kosu-node-client/src/node_client.ts#L28)*
+_Defined in [node_client.ts:28](https://github.com/ParadigmFoundation/kosu-monorepo/blob/75a4fa15/packages/kosu-node-client/src/node_client.ts#L28)_
 
 The default options specify a connection timeout of 3s, all other defaults
 are inherited from `WebsocketProviderOptions`.
 
-###  timeout
+### timeout
 
-• **timeout**: *number* = 3000
+• **timeout**: _number_ = 3000
 
-*Defined in [node_client.ts:28](https://github.com/ParadigmFoundation/kosu-monorepo/blob/75a4fa15/packages/kosu-node-client/src/node_client.ts#L28)*
+_Defined in [node_client.ts:28](https://github.com/ParadigmFoundation/kosu-monorepo/blob/75a4fa15/packages/kosu-node-client/src/node_client.ts#L28)_

@@ -55,7 +55,7 @@ module.exports = {
                 ],
             },
             {
-              title: "Kosu Wrapper Enhancements",
+                title: "Kosu Wrapper Enhancements",
                 collapsable: true,
                 food: "2.svg",
                 children: [
@@ -68,7 +68,7 @@ module.exports = {
                     "./kosu-wrapper-enhancements/classes/treasury",
                     "./kosu-wrapper-enhancements/classes/validatorregistry",
                     "./kosu-wrapper-enhancements/classes/voting",
-                ]
+                ],
             },
             {
                 title: "Kosu System Contracts",
