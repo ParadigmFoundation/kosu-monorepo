@@ -5,8 +5,9 @@
     "description": "Kosu reference and documentation website.",
     "license": "MIT",
     "scripts": {
-        "dev": "vuepress dev docs",
-        "compile": "vuepress build docs"
+        "get:docs": "./congregateDocs.js",
+        "dev": "get:docs && vuepress dev docs",
+        "compile": "get:docs && vuepress build docs"
     },
     "devDependencies": {
         "@vuepress/plugin-google-analytics": "^1.0.0-alpha.0",
