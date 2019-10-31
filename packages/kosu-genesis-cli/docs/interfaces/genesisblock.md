@@ -1,6 +1,4 @@
-> **[Kosu genesis CLI](../README.md)**
-
-[Globals](../globals.md) / [GenesisBlock](genesisblock.md) /
+[Kosu genesis CLI](../README.md) › [Globals](../globals.md) › [GenesisBlock](genesisblock.md)
 
 # Interface: GenesisBlock
 
@@ -24,7 +22,7 @@
 
 • **app_hash**: _string_
 
-_Defined in [types.d.ts:5](https://github.com/ParadigmFoundation/kosu-monorepo/blob/a7ce3d5b/packages/kosu-genesis-cli/src/types.d.ts#L5)_
+_Defined in [types.d.ts:5](https://github.com/ParadigmFoundation/kosu-monorepo/blob/55c0be50/packages/kosu-genesis-cli/src/types.d.ts#L5)_
 
 ---
 
@@ -32,7 +30,7 @@ _Defined in [types.d.ts:5](https://github.com/ParadigmFoundation/kosu-monorepo/b
 
 • **app_state**: _[AppState](appstate.md)_
 
-_Defined in [types.d.ts:6](https://github.com/ParadigmFoundation/kosu-monorepo/blob/a7ce3d5b/packages/kosu-genesis-cli/src/types.d.ts#L6)_
+_Defined in [types.d.ts:6](https://github.com/ParadigmFoundation/kosu-monorepo/blob/55c0be50/packages/kosu-genesis-cli/src/types.d.ts#L6)_
 
 ---
 
@@ -40,7 +38,7 @@ _Defined in [types.d.ts:6](https://github.com/ParadigmFoundation/kosu-monorepo/b
 
 • **chain_id**: _string_
 
-_Defined in [types.d.ts:3](https://github.com/ParadigmFoundation/kosu-monorepo/blob/a7ce3d5b/packages/kosu-genesis-cli/src/types.d.ts#L3)_
+_Defined in [types.d.ts:3](https://github.com/ParadigmFoundation/kosu-monorepo/blob/55c0be50/packages/kosu-genesis-cli/src/types.d.ts#L3)_
 
 ---
 
@@ -48,7 +46,7 @@ _Defined in [types.d.ts:3](https://github.com/ParadigmFoundation/kosu-monorepo/b
 
 • **genesis_time**: _string_
 
-_Defined in [types.d.ts:2](https://github.com/ParadigmFoundation/kosu-monorepo/blob/a7ce3d5b/packages/kosu-genesis-cli/src/types.d.ts#L2)_
+_Defined in [types.d.ts:2](https://github.com/ParadigmFoundation/kosu-monorepo/blob/55c0be50/packages/kosu-genesis-cli/src/types.d.ts#L2)_
 
 ---
 
@@ -56,4 +54,4 @@ _Defined in [types.d.ts:2](https://github.com/ParadigmFoundation/kosu-monorepo/b
 
 • **validators**: _[GenesisValidator](genesisvalidator.md)[]_
 
-_Defined in [types.d.ts:4](https://github.com/ParadigmFoundation/kosu-monorepo/blob/a7ce3d5b/packages/kosu-genesis-cli/src/types.d.ts#L4)_
+_Defined in [types.d.ts:4](https://github.com/ParadigmFoundation/kosu-monorepo/blob/55c0be50/packages/kosu-genesis-cli/src/types.d.ts#L4)_

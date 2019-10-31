@@ -1,4 +1,8 @@
 node_modules
 .vscode
 .env
+docs/
+!docs/.vuepress/
 docs/.vuepress/dist
+!docs/overview
+!docs/README.md
