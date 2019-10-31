@@ -1,6 +1,6 @@
 import { BigNumber } from "@0x/utils";
 import { WebsocketProvider, WebsocketProviderOptions } from "@0x/web3-providers-fork";
-import { OrderValidationResult, Poster, RoundInfo, Validator } from "@kosu/types";
+import { OrderValidationResult, PostableOrder, Poster, RoundInfo, Validator } from "@kosu/types";
 import assert from "assert";
 import { createHash } from "crypto";
 import { isFunction, isString } from "lodash";
@@ -62,8 +62,7 @@ export class NodeClient {
     private static _convertValidatorData(...rawValidators: any[]): Validator[] {
         const validators = [];
         for (const validator of rawValidators) {
-            // HACK: protobuf nests the balance as `balance: "value: N"`
-            const balance = new BigNumber(validator.balance.split(": ")[1]);
+            const balance = new BigNumber(validator.balance);
             validators.push({ ...validator, balance });
         }
         return validators;
@@ -99,7 +98,7 @@ export class NodeClient {
      * @returns Validation results from the Kosu node, and/or the transaction
      * ID's of the accepted orders.
      */
-    public async addOrders(...orders: any[]): Promise<OrderValidationResult[]> {
+    public async addOrders(...orders: PostableOrder[]): Promise<OrderValidationResult[]> {
         return this._call("kosu_addOrders", ...orders);
     }
 
@@ -136,9 +135,7 @@ export class NodeClient {
     public async queryPoster(address: string): Promise<Poster> {
         assert(/^0x[a-fA-F0-9]{40}$/.test(address), "invalid Ethereum address string");
         const raw = await this._call("kosu_queryPoster", address.toLowerCase());
-
-        // HACK: dealing with protobuf `balance: 'value: N'` encoding
-        const balance = new BigNumber(raw.balance.split(": ")[1]);
+        const balance = new BigNumber(raw.balance);
         return { ...raw, balance };
     }
 
@@ -157,7 +154,6 @@ export class NodeClient {
     public async queryValidator(nodeId: string): Promise<Validator> {
         assert(/^[a-fA-F0-9]{40}$/.test(nodeId), "invalid nodeId string");
 
-        // hack: dealing with protobuf decoding issues
         const raw = await this._call("kosu_queryValidator", nodeId);
         return NodeClient._convertValidatorData(raw)[0];
     }
@@ -224,7 +220,7 @@ export class NodeClient {
      * @param cb A callback function to handle each array of new orders.
      * @returns A UUID that can be used to cancel the new subscription (see `node.unsubscribe()`).
      */
-    public async subscribeToOrders(cb: (order: any) => void): Promise<string> {
+    public async subscribeToOrders(cb: (order: PostableOrder) => void): Promise<string> {
         return this._subscribe("newOrders", (res: any) => cb(res.result));
     }
 
