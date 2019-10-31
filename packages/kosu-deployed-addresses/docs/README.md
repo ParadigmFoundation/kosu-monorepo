@@ -1,6 +1,6 @@
-> **[Kosu Deployed Addresses](README.md)**
+[Kosu Deployed Addresses](README.md) › [Globals](globals.md)
 
-[Globals](globals.md) /
+# Kosu Deployed Addresses
 
 # Kosu Deployed Addresses
 
