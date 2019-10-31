@@ -1,6 +1,6 @@
 import { BigNumber } from "@0x/utils";
 import { WebsocketProvider, WebsocketProviderOptions } from "@0x/web3-providers-fork";
-import { OrderValidationResult, Poster, RoundInfo, Validator } from "@kosu/types";
+import { OrderValidationResult, PostableOrder, Poster, RoundInfo, Validator } from "@kosu/types";
 import assert from "assert";
 import { createHash } from "crypto";
 import { isFunction, isString } from "lodash";
@@ -98,7 +98,7 @@ export class NodeClient {
      * @returns Validation results from the Kosu node, and/or the transaction
      * ID's of the accepted orders.
      */
-    public async addOrders(...orders: any[]): Promise<OrderValidationResult[]> {
+    public async addOrders(...orders: PostableOrder[]): Promise<OrderValidationResult[]> {
         return this._call("kosu_addOrders", ...orders);
     }
 
@@ -220,7 +220,7 @@ export class NodeClient {
      * @param cb A callback function to handle each array of new orders.
      * @returns A UUID that can be used to cancel the new subscription (see `node.unsubscribe()`).
      */
-    public async subscribeToOrders(cb: (order: any) => void): Promise<string> {
+    public async subscribeToOrders(cb: (order: PostableOrder) => void): Promise<string> {
         return this._subscribe("newOrders", (res: any) => cb(res.result));
     }
 
