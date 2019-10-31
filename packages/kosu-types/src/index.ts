@@ -197,3 +197,71 @@ export interface KosuAddresses {
 export interface KosuDeployments {
     [key: string]: KosuDeploymentReceipts;
 }
+
+/**
+ * Type definition for a Tendermint-produced Kosu block.
+ */
+export interface KosuBlock {
+    header: KosuBlockHeader;
+    data: KosuBlockData;
+    evidence: KosuBlockEvidence;
+    last_commit: KosuLastCommitData;
+}
+
+export interface KosuBlockHeader {
+    version: KosuHeaderVersion;
+    chainId: string;
+    height: number;
+    time: string;
+    numTxs: number;
+    totalTxs: number;
+    lastBlockId: BlockId;
+    lastCommitHash: string;
+    dataHash: string;
+    validatorsHash: string;
+    nextValidatorsHash: string;
+    consensusHash: string;
+    appHash: string;
+    lastResultsHash: string;
+    evidenceHash: string;
+    proposerAddress: string;
+}
+
+export interface KosuHeaderVersion {
+    block: number;
+    app: number;
+}
+
+export interface BlockId {
+    hash: string;
+    parts: BlockIdParts;
+}
+
+export interface BlockIdParts {
+    total: number;
+    hash: string;
+}
+
+export interface KosuBlockData {
+    txs: string[] | null;
+}
+
+export interface KosuBlockEvidence {
+    evidence: any[] | null;
+}
+
+export interface KosuLastCommitData {
+    precommits: PreCommit[] | null;
+    blockId: BlockId;
+}
+
+export interface PreCommit {
+    type: number;
+    height: number;
+    round: number;
+    blockId: BlockId;
+    timestamp: string;
+    validatorAddress: string;
+    validatorIndex: number;
+    signature: string;
+}
