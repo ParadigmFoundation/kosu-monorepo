@@ -202,6 +202,7 @@ export class TestHelpers {
 
     public async exitListing(publicKey: string, from: string = this.accounts[0]): Promise<void> {
         await this.initializing;
+        // tslint:disable-next-line
         const { exitBlock, currentChallenge } = await this.migratedContracts.validatorRegistry.getListing.callAsync(
             publicKey,
         );
