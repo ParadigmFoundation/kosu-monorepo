@@ -24,7 +24,7 @@
     },
     "dependencies": {
         "@kosu/contract-helpers": "0.3.0",
-        "@kosu/node-client": "0.3.0",
+        "@kosu/node-client": "0.5.0",
         "@kosu/system-contracts": "^0.3.0",
         "@kosu/tsc-config": "^0.1.0",
         "@kosu/tslint-config": "^0.0.5",
