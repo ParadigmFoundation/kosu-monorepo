@@ -6,6 +6,8 @@ import (
 	"time"
 
 	"golang.org/x/crypto/ed25519"
+
+	"github.com/tendermint/tendermint/crypto/tmhash"
 )
 
 var randReader = rand.New(
@@ -68,4 +70,9 @@ func (tx *SignedTransaction) Verify() (bool, error) {
 	}
 
 	return ed25519.Verify(tx.Proof.PublicKey, buf, tx.Proof.Signature), nil
+}
+
+// NodeID of the Transaction signer
+func (tx *SignedTransaction) NodeID() NodeID {
+	return tmhash.SumTruncated(tx.Proof.PublicKey)
 }

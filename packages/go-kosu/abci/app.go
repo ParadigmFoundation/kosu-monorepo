@@ -260,58 +260,67 @@ func (app *App) EndBlock(req abci.RequestEndBlock) abci.ResponseEndBlock {
 	}
 }
 
-// CheckTx .
-func (app *App) CheckTx(req abci.RequestCheckTx) abci.ResponseCheckTx {
-	stx, err := types.NewSignedTransactionFromBytes(req.Tx)
+// NewCheckTxResponse returns a abci.ResponseCheckTx.
+// If provided error is not nil, the response will IsErr() and Log the error message.
+func NewCheckTxResponse(err error) abci.ResponseCheckTx {
 	if err != nil {
 		return abci.ResponseCheckTx{Code: 1, Log: err.Error()}
 	}
-
-	nodeID := tmhash.SumTruncated(stx.Proof.PublicKey)
-	tx := stx.Tx
-	// TODO(gchaincl) refactor the validator verification
-	switch tx.GetData().(type) {
-	case *types.Transaction_Rebalance:
-		if !app.store.ValidatorExists(nodeID) {
-			msg := fmt.Sprintf("NodeID %s does not belong to a validator", hex.EncodeToString(nodeID))
-			return abci.ResponseCheckTx{Code: 1, Log: msg}
-		}
-
-		if err := app.checkRebalanceTx(tx.GetRebalance()); err != nil {
-			return abci.ResponseCheckTx{Code: 1, Log: err.Error()}
-		}
-		return abci.ResponseCheckTx{}
-	case *types.Transaction_Witness:
-		if !app.store.ValidatorExists(nodeID) {
-			msg := fmt.Sprintf("NodeID %s does not belong to a validator", hex.EncodeToString(nodeID))
-			return abci.ResponseCheckTx{Code: 1, Log: msg}
-		}
-
-		w := tx.GetWitness()
-		// .Confirmations should not be defined in the request
-		w.Confirmations = 0
-		if err := app.checkWitnessTx(w); err != nil {
-			return abci.ResponseCheckTx{Code: 1, Log: err.Error()}
-		}
-		return abci.ResponseCheckTx{}
-	case *types.Transaction_Order:
-		if max := app.store.ConsensusParams().MaxOrderBytes; max > 0 {
-			if uint32(len(req.Tx)) > max {
-				return abci.ResponseCheckTx{Code: 1, Log: fmt.Sprintf("Tx size exceeds %d", max)}
-			}
-		}
-		if err := app.checkOrderTx(tx.GetOrder()); err != nil {
-			return abci.ResponseCheckTx{Code: 1, Log: err.Error()}
-		}
-		return abci.ResponseCheckTx{}
-	default:
-		fmt.Printf("Unknown Tx: %t", tx.GetData())
-	}
-
-	return abci.ResponseCheckTx{Code: 1, Info: "Unknown Transaction type"}
+	return abci.ResponseCheckTx{}
 }
 
-// DeliverTx .
+// NodeIsValidator returns an error if the provided node id is not in the validator set
+func NodeIsValidator(s store.Store, id types.NodeID) error {
+	if !s.ValidatorExists(id) {
+		return fmt.Errorf("NodeID %s does not belong to a validator", hex.EncodeToString(id))
+	}
+	return nil
+}
+
+// CheckTx implements ABCI CheckTx
+func (app *App) CheckTx(req abci.RequestCheckTx) abci.ResponseCheckTx {
+	stx, err := types.NewSignedTransactionFromBytes(req.Tx)
+	if err != nil {
+		return NewCheckTxResponse(err)
+	}
+
+	nodeID := stx.NodeID()
+	switch stx.Route() {
+	case "rebalance":
+		if err := NodeIsValidator(app.store, nodeID); err != nil {
+			return NewCheckTxResponse(err)
+		}
+		return NewCheckTxResponse(app.checkRebalanceTx(stx.Tx.GetRebalance()))
+	case "witness":
+		if err := NodeIsValidator(app.store, nodeID); err != nil {
+			return NewCheckTxResponse(err)
+		}
+
+		tx := stx.Tx.GetWitness()
+
+		// .Confirmations should not be defined in the request
+		if tx.Confirmations != 0 {
+			return NewCheckTxResponse(fmt.Errorf("WitnessTx can't define Confirmations"))
+		}
+
+		return NewCheckTxResponse(app.checkWitnessTx(tx))
+	case "order":
+		if max := app.store.ConsensusParams().MaxOrderBytes; max > 0 {
+			if uint32(len(req.Tx)) > max {
+				return NewCheckTxResponse(fmt.Errorf("Tx size exceeds %d", max))
+			}
+		}
+
+		tx := stx.Tx.GetOrder()
+		return NewCheckTxResponse(app.checkOrderTx(tx))
+	}
+
+	err = fmt.Errorf("check_tx: unknown Transaction type: %T (route=%s)", stx.Tx.GetData(), stx.Route())
+	app.log.Error("Can't process Tx", "err", err)
+	return NewCheckTxResponse(err)
+}
+
+// DeliverTx implements ABCI DeliverTx
 func (app *App) DeliverTx(req abci.RequestDeliverTx) abci.ResponseDeliverTx {
 	stx, err := types.NewSignedTransactionFromBytes(req.Tx)
 	if err != nil {
@@ -320,17 +329,18 @@ func (app *App) DeliverTx(req abci.RequestDeliverTx) abci.ResponseDeliverTx {
 	}
 
 	tx := stx.Tx
-	switch tx.GetData().(type) {
-	case *types.Transaction_Rebalance:
+	switch stx.Route() {
+	case "rebalance":
 		return app.deliverRebalance(tx.GetRebalance())
-	case *types.Transaction_Witness:
-		nodeID := tmhash.SumTruncated(stx.Proof.PublicKey)
-		return app.deliverWitnessTx(tx.GetWitness(), nodeID)
-	case *types.Transaction_Order:
+	case "witness":
+		return app.deliverWitnessTx(tx.GetWitness(), stx.NodeID())
+	case "order":
 		return app.deliverOrderTx(tx.GetOrder())
 	default:
-		fmt.Printf("Unknown Tx: %t", tx.GetData())
+		app.log.Error("Unknown Tx", "%t", tx.GetData())
 	}
 
-	return abci.ResponseDeliverTx{Code: 1, Log: "Unknown Transaction type"}
+	err = fmt.Errorf("deliver_tx: unknown Transaction type: %T (route=%s)", stx.Tx.GetData(), stx.Route())
+	app.log.Error("Can't process Tx", "err", err)
+	return abci.ResponseDeliverTx{Code: 1, Log: err.Error()}
 }
