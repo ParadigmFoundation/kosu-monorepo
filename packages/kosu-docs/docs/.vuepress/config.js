@@ -17,7 +17,14 @@ const sidebar = [
 
 const rootDir = `${__dirname}/..`;
 
-const orderedBasePackages = ["kosu-system-contracts", "go-kosu", "kosu-wrapper-enhancements", "kosu-node-client", "kosu-migrations", "kosu-genesis-cli"];
+const orderedBasePackages = [
+    "kosu-system-contracts",
+    "go-kosu",
+    "kosu-wrapper-enhancements",
+    "kosu-node-client",
+    "kosu-migrations",
+    "kosu-genesis-cli",
+];
 const directoryPackages = fs.readdirSync(rootDir);
 const packages = new Set([...orderedBasePackages, ...directoryPackages]);
 
@@ -30,7 +37,8 @@ for (const pckage of packages) {
         .toLowerCase()
         .split("-")
         .map(e => e[0].toUpperCase() + e.slice(1))
-        .join(" ").replace(/(cli\b)/gi, x => x.toUpperCase());
+        .join(" ")
+        .replace(/(cli\b)/gi, x => x.toUpperCase());
 
     const base = {
         title,
