@@ -17,7 +17,9 @@ const sidebar = [
 
 const rootDir = `${__dirname}/..`;
 
-const packages = fs.readdirSync(rootDir);
+const orderedBasePackages = ["kosu-system-contracts", "go-kosu", "kosu-wrapper-enhancements", "kosu-node-client", "kosu-migrations", "kosu-genesis-cli"];
+const directoryPackages = fs.readdirSync(rootDir);
+const packages = new Set([...orderedBasePackages, ...directoryPackages]);
 
 for (const pckage of packages) {
     if ([".vuepress", "README.md", "overview"].includes(pckage)) {
