@@ -1,4 +1,4 @@
-const fs = require('fs');
+const fs = require("fs");
 
 const sidebar = [
     {
@@ -20,10 +20,14 @@ const rootDir = `${__dirname}/..`;
 const packages = fs.readdirSync(rootDir);
 
 for (const pckage of packages) {
-    if (([".vuepress", "README.md", "overview"]).includes(pckage)) {
+    if ([".vuepress", "README.md", "overview"].includes(pckage)) {
         continue;
     }
-    const title = pckage.toLowerCase().split('-').map(e => e[0].toUpperCase() + e.slice(1)).join(' ');
+    const title = pckage
+        .toLowerCase()
+        .split("-")
+        .map(e => e[0].toUpperCase() + e.slice(1))
+        .join(" ");
     const base = {
         title,
         collapsable: true,
@@ -43,12 +47,12 @@ for (const pckage of packages) {
             case "classes":
                 const classes = fs.readdirSync(`${rootDir}/${pckage}/classes`);
                 for (const clas of classes) {
-                    console.log(clas)
-                    base.children.push(`./${pckage}/classes/${clas.split('.')[0]}`);
+                    console.log(clas);
+                    base.children.push(`./${pckage}/classes/${clas.split(".")[0]}`);
                 }
                 continue;
             default:
-                base.children.push(`./${pckage}/${file.split('.')[0]}`);
+                base.children.push(`./${pckage}/${file.split(".")[0]}`);
                 break;
         }
     }
