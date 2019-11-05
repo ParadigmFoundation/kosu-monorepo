@@ -261,7 +261,7 @@ func (app *App) EndBlock(req abci.RequestEndBlock) abci.ResponseEndBlock {
 }
 
 // NewCheckTxResponse returns a abci.ResponseCheckTx.
-// If provided error is not nil, the reponse will IsErr() and Log the error message.
+// If provided error is not nil, the response will IsErr() and Log the error message.
 func NewCheckTxResponse(err error) abci.ResponseCheckTx {
 	if err != nil {
 		return abci.ResponseCheckTx{Code: 1, Log: err.Error()}
