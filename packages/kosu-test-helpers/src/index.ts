@@ -202,6 +202,7 @@ export class TestHelpers {
 
     public async exitListing(publicKey: string, from: string = this.accounts[0]): Promise<void> {
         await this.initializing;
+        // tslint:disable-next-line
         const { exitBlock, currentChallenge } = await this.migratedContracts.validatorRegistry.getListing.callAsync(
             publicKey,
         );
@@ -336,6 +337,8 @@ export class TestHelpers {
         end: number,
         options: { win?: BigNumber; lose?: BigNumber } = {},
     ): Promise<{ blockNumber: number; pollId: BigNumber }> {
+        // hack: linter fails likely due to some conflicting type definitions
+        // tslint:disable
         const base = await this.web3Wrapper.getBlockNumberAsync();
         const creationBlock = base + 1;
         const commitEnd = creationBlock + start;

@@ -1,7 +1,8 @@
 import { BigNumber } from "@0x/utils";
 import { WebsocketProvider, WebsocketProviderOptions } from "@0x/web3-providers-fork";
-import { OrderValidationResult, Poster, RoundInfo, Validator } from "@kosu/types";
+import { KosuBlock, OrderValidationResult, PostableOrder, Poster, RoundInfo, Validator } from "@kosu/types";
 import assert from "assert";
+import camelcaseKeys from "camelcase-keys";
 import { createHash } from "crypto";
 import { isFunction, isString } from "lodash";
 import uuid from "uuid/v4";
@@ -62,8 +63,7 @@ export class NodeClient {
     private static _convertValidatorData(...rawValidators: any[]): Validator[] {
         const validators = [];
         for (const validator of rawValidators) {
-            // HACK: protobuf nests the balance as `balance: "value: N"`
-            const balance = new BigNumber(validator.balance.split(": ")[1]);
+            const balance = new BigNumber(validator.balance);
             validators.push({ ...validator, balance });
         }
         return validators;
@@ -99,8 +99,21 @@ export class NodeClient {
      * @returns Validation results from the Kosu node, and/or the transaction
      * ID's of the accepted orders.
      */
-    public async addOrders(...orders: any[]): Promise<OrderValidationResult[]> {
-        return this._call("kosu_addOrders", ...orders);
+    public async addOrders(...orders: PostableOrder[]): Promise<OrderValidationResult[]> {
+        return this._call("addOrders", ...orders);
+    }
+
+    /**
+     * See [`kosu_getBlocks`.](https://docs.kosu.io/go-kosu/kosu_rpc.html#getBlocks)
+     *
+     * Fetch an array of raw Kosu (Tendermint-produced) blocks for a given set of heights.
+     *
+     * @param heights The array of heights to fetch (rest parameter).
+     * @returns An array of the raw blocks for the requested heights.
+     */
+    public async getBlocks(...heights: number[]): Promise<KosuBlock[]> {
+        const rawBlocks = await this._call("getBlocks", [...heights]);
+        return (camelcaseKeys(rawBlocks, { deep: true }) as unknown) as KosuBlock[];
     }
 
     /**
@@ -111,7 +124,22 @@ export class NodeClient {
      * @returns The most recent Kosu block number.
      */
     public async latestHeight(): Promise<number> {
-        return this._call("kosu_latestHeight");
+        return this._call("latestHeight");
+    }
+
+    /**
+     * See [`kosu_latestOrders`.](https://docs.kosu.io/go-kosu/kosu_rpc.html#latestOrders)
+     *
+     * Fetch a paginated portion of the current in-state order book snapshot (recent orders).
+     *
+     * If perPage and page aren't set, the default is to fetch the full order book (may be large).
+     *
+     * @param page The page number (where each page has perPage items).
+     * @param perPage The number of orders to include on each page.
+     * @returns An array of recent order based on the page and perPage parameter.
+     */
+    public async latestOrders(page: number = 0, perPage: number = 0): Promise<PostableOrder[]> {
+        return this._call("latestOrders", page, perPage);
     }
 
     /**
@@ -122,7 +150,7 @@ export class NodeClient {
      * @returns The total number of poster accounts the node is tracking.
      */
     public async numberPosters(): Promise<number> {
-        return this._call("kosu_numberPosters");
+        return this._call("numberPosters");
     }
 
     /**
@@ -135,10 +163,8 @@ export class NodeClient {
      */
     public async queryPoster(address: string): Promise<Poster> {
         assert(/^0x[a-fA-F0-9]{40}$/.test(address), "invalid Ethereum address string");
-        const raw = await this._call("kosu_queryPoster", address.toLowerCase());
-
-        // HACK: dealing with protobuf `balance: 'value: N'` encoding
-        const balance = new BigNumber(raw.balance.split(": ")[1]);
+        const raw = await this._call("queryPoster", address.toLowerCase());
+        const balance = new BigNumber(raw.balance);
         return { ...raw, balance };
     }
 
@@ -156,9 +182,7 @@ export class NodeClient {
      */
     public async queryValidator(nodeId: string): Promise<Validator> {
         assert(/^[a-fA-F0-9]{40}$/.test(nodeId), "invalid nodeId string");
-
-        // hack: dealing with protobuf decoding issues
-        const raw = await this._call("kosu_queryValidator", nodeId);
+        const raw = await this._call("queryValidator", nodeId);
         return NodeClient._convertValidatorData(raw)[0];
     }
 
@@ -172,7 +196,7 @@ export class NodeClient {
      * @returns The unutilized order bandwidth for the current period.
      */
     public async remainingLimit(): Promise<number> {
-        return this._call("kosu_remainingLimit");
+        return this._call("remainingLimit");
     }
 
     /**
@@ -184,7 +208,7 @@ export class NodeClient {
      * @returns Information about the current rebalance period.
      */
     public async roundInfo(): Promise<RoundInfo> {
-        const { number: num, limit: lim, starts_at: startsAt, ends_at: endsAt } = await this._call("kosu_roundInfo");
+        const { number: num, limit: lim, starts_at: startsAt, ends_at: endsAt } = await this._call("roundInfo");
         return { number: num, limit: lim, startsAt, endsAt };
     }
 
@@ -197,7 +221,7 @@ export class NodeClient {
      * @returns The total number of orders posted since network genesis.
      */
     public async totalOrders(): Promise<number> {
-        return this._call("kosu_totalOrders");
+        return this._call("totalOrders");
     }
 
     /**
@@ -209,7 +233,7 @@ export class NodeClient {
      * @returns Information about all active Kosu validators (see `Validator`).
      */
     public async validators(): Promise<Validator[]> {
-        const rawValidators = await this._call("kosu_validators");
+        const rawValidators = await this._call("validators");
         return NodeClient._convertValidatorData(...rawValidators);
     }
 
@@ -224,7 +248,7 @@ export class NodeClient {
      * @param cb A callback function to handle each array of new orders.
      * @returns A UUID that can be used to cancel the new subscription (see `node.unsubscribe()`).
      */
-    public async subscribeToOrders(cb: (order: any) => void): Promise<string> {
+    public async subscribeToOrders(cb: (order: PostableOrder) => void): Promise<string> {
         return this._subscribe("newOrders", (res: any) => cb(res.result));
     }
 
@@ -265,12 +289,12 @@ export class NodeClient {
      */
     public async unsubscribe(subscriptionId: string): Promise<void> {
         assert(isString(subscriptionId), "subscriptionId must be a string");
-        await this._call("kosu_unsubscribe", this._subscriptionIdMap[subscriptionId]);
+        await this._call("unsubscribe", this._subscriptionIdMap[subscriptionId]);
     }
 
     private async _call(method: string, ...params: any[]): Promise<any> {
         assert(isString(method), "method must be a string");
-        return this._provider.send(method, params || []);
+        return this._provider.send(`kosu_${method}`, params || []);
     }
 
     private async _subscribe(topic: string, cb: (...args: any) => any): Promise<string> {

@@ -1,6 +1,4 @@
-> **[Kosu genesis CLI](../README.md)**
-
-[Globals](../globals.md) / [InitialValidatorInfo](initialvalidatorinfo.md) /
+[Kosu genesis CLI](../README.md) › [Globals](../globals.md) › [InitialValidatorInfo](initialvalidatorinfo.md)
 
 # Interface: InitialValidatorInfo
 
@@ -22,7 +20,7 @@
 
 • **ethereum_address**: _string_
 
-_Defined in [types.d.ts:27](https://github.com/ParadigmFoundation/kosu-monorepo/blob/a7ce3d5b/packages/kosu-genesis-cli/src/types.d.ts#L27)_
+_Defined in [types.d.ts:27](https://github.com/ParadigmFoundation/kosu-monorepo/blob/55c0be50/packages/kosu-genesis-cli/src/types.d.ts#L27)_
 
 ---
 
@@ -30,7 +28,7 @@ _Defined in [types.d.ts:27](https://github.com/ParadigmFoundation/kosu-monorepo/
 
 • **initial_stake**: _string_
 
-_Defined in [types.d.ts:28](https://github.com/ParadigmFoundation/kosu-monorepo/blob/a7ce3d5b/packages/kosu-genesis-cli/src/types.d.ts#L28)_
+_Defined in [types.d.ts:28](https://github.com/ParadigmFoundation/kosu-monorepo/blob/55c0be50/packages/kosu-genesis-cli/src/types.d.ts#L28)_
 
 ---
 
@@ -38,4 +36,4 @@ _Defined in [types.d.ts:28](https://github.com/ParadigmFoundation/kosu-monorepo/
 
 • **tendermint_address**: _string_
 
-_Defined in [types.d.ts:26](https://github.com/ParadigmFoundation/kosu-monorepo/blob/a7ce3d5b/packages/kosu-genesis-cli/src/types.d.ts#L26)_
+_Defined in [types.d.ts:26](https://github.com/ParadigmFoundation/kosu-monorepo/blob/55c0be50/packages/kosu-genesis-cli/src/types.d.ts#L26)_
