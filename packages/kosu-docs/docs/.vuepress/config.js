@@ -25,11 +25,13 @@ for (const pckage of packages) {
     if ([".vuepress", "README.md", "overview"].includes(pckage)) {
         continue;
     }
+
     const title = pckage
         .toLowerCase()
         .split("-")
         .map(e => e[0].toUpperCase() + e.slice(1))
-        .join(" ");
+        .join(" ").replace(/(cli\b)/gi, x => x.toUpperCase());
+
     const base = {
         title,
         collapsable: true,
