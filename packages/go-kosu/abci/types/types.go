@@ -3,6 +3,7 @@ package types
 import (
 	"bytes"
 	"crypto/sha256"
+	"encoding/hex"
 	"encoding/json"
 	"errors"
 	"fmt"
@@ -136,3 +137,9 @@ func (tx *Transaction) GetOneOf() interface{} {
 
 	return nil
 }
+
+// NodeID is the id of a node submitting transactions
+type NodeID []byte
+
+// String is the string representation
+func (id NodeID) String() string { return hex.EncodeToString(id) }
