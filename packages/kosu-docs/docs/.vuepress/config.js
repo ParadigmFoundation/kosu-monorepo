@@ -49,7 +49,6 @@ for (const pckage of packages) {
             case "classes":
                 const classes = fs.readdirSync(`${rootDir}/${pckage}/classes`);
                 for (const clas of classes) {
-                    console.log(clas);
                     base.children.push(`./${pckage}/classes/${clas.split(".")[0]}`);
                 }
                 continue;
