@@ -62,6 +62,12 @@ for (const pckage of packages) {
                     base.children.push(`./${pckage}/classes/${clas.split(".")[0]}`);
                 }
                 continue;
+            case "interfaces":
+                const interfaces = fs.readdirSync(`${rootDir}/${pckage}/interfaces`);
+                for (const interfce of interfaces) {
+                    base.children.push(`./${pckage}/interfaces/${interfce.split(".")[0]}`);
+                }
+                continue;
             default:
                 base.children.push(`./${pckage}/${file.split(".")[0]}`);
                 break;
