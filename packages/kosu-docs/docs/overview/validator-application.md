@@ -89,7 +89,7 @@ yarn add truffle-privatekey-provider
 
 ## Setup Kosu.js
 
-View the `@kosu/kosu.js` documentation [here.](https://docs.kosu.io/kosu.js/)
+View the `@kosu/kosu.js` and `@kosu/wrapper-enhancements` documentation [here](https://docs.kosu.io/kosu.js/) and [here.](https://docs.kosu.io/kosu-wrapper-enhancements/#installation)
 
 In order to submit the necessary transactions (bonding to acquire tokens, setting treasury allowance, and staking), you must configure `kosu.js` with a signing provider. Several options are demonstrated below.
 
@@ -148,7 +148,7 @@ const kosu = new Kosu({ provider });
 
 ## Acquire KOSU
 
-View the `kosu.kosuToken` docs [here.](https://docs.kosu.io/kosu.js/classes/kosutoken.html)
+View the `kosuToken` docs [here.](https://docs.kosu.io/kosu-wrapper-enhancements/classes/kosutoken.html)
 
 KOSU is the native token of the Kosu system. It implements the ERC-20 interface, and includes a bonding curve within the token contract.
 
@@ -194,7 +194,7 @@ kosu.kosuToken.balanceOf(myAddress).then(balanceWei => {
 
 ## Set treasury allowance
 
-View the `kosu.treasury` docs [here.](https://docs.kosu.io/kosu.js/classes/treasury.html)
+View the `kosu.treasury` docs [here.](https://docs.kosu.io/kosu-wrapper-enhancements/classes/treasury.html)
 
 To interact with the Kosu contract system, including the ValidatorRegistry contract (where listing applications are submitted), you must set an ERC-20 approval for the Kosu treasury contract so it may move tokens on your behalf.
 
@@ -223,7 +223,7 @@ kosu.treasury.deposit(depositAmountWei).then(receipt => console.log(`Transaction
 
 ## Submit listing application
 
-View the `kosu.validatorRegistry` docs [here.](https://docs.kosu.io/kosu.js/classes/validatorregistry.html)
+View the `kosu.validatorRegistry` docs [here.](https://docs.kosu.io/kosu-wrapper-enhancements/classes/validatorregistry.html)
 
 **Warning:** If applying to a main-network (where the Kosu contract system is on the Ethereum mainnet), completing this step puts your staked tokens at risk of being confiscated if your listing is successfully challenged. It is crucial to [understand this curation process.](./validator-curation.md)
 
@@ -235,7 +235,7 @@ Tendermint public keys are used to identify listing applicants and validators wi
 
 The public key is 32-bytes, and represented in Tendermint data files as a base64-encoded string, but also sometimes represented as a hex-encoded string (as in the output of `kosud show_node_info`).
 
-[This method (`convertPubKey`)](https://docs.kosu.io/kosu.js/classes/validatorregistry.html#convertpubkey) is exposed by the `ValidatorRegistry` class in Kosu.js, and should be used to ensure your key is in the correct format before submitting the listing application transaction.
+Ensure your public key is a hex-encoded (and 0x-prefixed) string or a `Buffer` when passing to `registerListing` (see below for example).
 
 ### Code sample
 
