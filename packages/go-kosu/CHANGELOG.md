@@ -2,6 +2,10 @@
 
 ## master
 
+## v0.6.0
+
+-   Add `abci` subcommand
+
 ## v0.5.0
 
 -   Fix Order store I/O overhead

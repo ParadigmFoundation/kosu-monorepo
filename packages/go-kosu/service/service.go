@@ -197,6 +197,11 @@ func (s *Service) startFull(ctx context.Context, errCh chan error) error {
 }
 
 func (s *Service) startWitness(ctx context.Context, app *abci.App) error {
+	return StartWitness(ctx, s.WEB3, app, s.Logger)
+}
+
+// StartWitness starts a witness process
+func StartWitness(ctx context.Context, web3 string, app *abci.App, logger tmlog.Logger) error {
 	client, err := app.NewClient()
 	if err != nil {
 		return err
@@ -209,7 +214,7 @@ func (s *Service) startWitness(ctx context.Context, app *abci.App) error {
 
 	ethOpts := witness.DefaultEthereumProviderOpts
 	ethOpts.SnapshotBlock = gen.SnapshotBlock
-	p, err := witness.NewEthereumProviderWithOpts(s.WEB3, ethOpts)
+	p, err := witness.NewEthereumProviderWithOpts(web3, ethOpts)
 	if err != nil {
 		return err
 	}
@@ -218,7 +223,7 @@ func (s *Service) startWitness(ctx context.Context, app *abci.App) error {
 	opts.PeriodLimit = int(gen.ConsensusParams.PeriodLimit)
 	opts.PeriodLength = int(gen.ConsensusParams.PeriodLength)
 	w := witness.New(client, p, opts)
-	return w.WithLogger(s.Logger).Start(ctx)
+	return w.WithLogger(logger).Start(ctx)
 }
 
 func (s *Service) startLite(errCh chan error) error {
