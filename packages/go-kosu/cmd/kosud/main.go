@@ -38,6 +38,7 @@ func New() *cobra.Command {
 		cli.NewInitCommand(homeFlag),
 		cli.NewStartCommand(homeFlag),
 		cli.NewNodeCommand(homeFlag),
+		cli.NewABCICommand(homeFlag),
 		version.NewCommand(),
 	)
 

@@ -4,13 +4,16 @@ import (
 	"context"
 	"encoding/base64"
 	"fmt"
+	"log"
 	"os"
 	"path"
 	"strconv"
 
 	"github.com/spf13/cobra"
 
+	"github.com/tendermint/tendermint/abci/server"
 	"github.com/tendermint/tendermint/config"
+	dbm "github.com/tendermint/tm-db"
 
 	"github.com/ParadigmFoundation/kosu-monorepo/packages/go-kosu/abci"
 	"github.com/ParadigmFoundation/kosu-monorepo/packages/go-kosu/abci/types"
@@ -295,5 +298,55 @@ func NewStartCommand(homeFlag string) *cobra.Command {
 		Long:  "Main entrypoint for Kosu validators and full nodes.\nPrior to use, 'kosud init' must be run.",
 	}
 	service.RegisterCommand(cmd, homeFlag)
+	return cmd
+}
+
+func newApp(home string) (*abci.App, error) {
+	db, err := dbm.NewGoLevelDB("kosu", home)
+	if err != nil {
+		return nil, err
+	}
+
+	return abci.NewApp(db, home), nil
+}
+
+// NewABCICommand returns the ABCI command
+func NewABCICommand(homeFlag string) *cobra.Command {
+	cmd := &cobra.Command{
+		Use:   "abci",
+		Short: "Starts kosu as a ABCI app",
+		Long: "Starts kosu as a ABCI app.\nNote the `abci` command can only run in fullnode mode. " +
+			"If you want you run in validator or lite more use `kosud start`",
+		RunE: func(cmd *cobra.Command, _ []string) error {
+			home, err := cmd.Flags().GetString(homeFlag)
+			if err != nil {
+				return err
+			}
+
+			app, err := newApp(home)
+			if err != nil {
+				log.Fatal(err)
+			}
+
+			logger, err := abci.NewLogger(app.Config)
+			if err != nil {
+				log.Fatal(err)
+			}
+			logger = logger.With("module", "app")
+
+			srv, err := server.NewServer("tcp://127.0.0.1:26658", "socket", app)
+			if err != nil {
+				log.Fatal(err)
+			}
+			logger.Info("ABCI app started")
+
+			if err := srv.Start(); err != nil {
+				log.Fatal(err)
+			}
+
+			select {}
+		},
+	}
+
 	return cmd
 }
