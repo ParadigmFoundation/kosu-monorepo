@@ -1,3 +1,75 @@
+const fs = require("fs");
+
+const sidebar = [
+    {
+        title: "Kosu Overview",
+        collapsable: true,
+        children: [
+            "./",
+            "./overview/",
+            "./overview/token-mechanics",
+            "./overview/validator-curation",
+            "./overview/validator-application",
+            "./overview/contributing",
+        ],
+    },
+];
+
+const rootDir = `${__dirname}/..`;
+
+const orderedBasePackages = [
+    "kosu-system-contracts",
+    "go-kosu",
+    "kosu-wrapper-enhancements",
+    "kosu-node-client",
+    "kosu-migrations",
+    "kosu-genesis-cli",
+];
+const directoryPackages = fs.readdirSync(rootDir);
+const packages = new Set([...orderedBasePackages, ...directoryPackages]);
+
+for (const pckage of packages) {
+    if ([".vuepress", "README.md", "overview"].includes(pckage)) {
+        continue;
+    }
+
+    const title = pckage
+        .toLowerCase()
+        .split("-")
+        .map(e => e[0].toUpperCase() + e.slice(1))
+        .join(" ")
+        .replace(/(cli\b)/gi, x => x.toUpperCase());
+
+    const base = {
+        title,
+        collapsable: true,
+        children: [],
+    };
+
+    const packageDocs = fs.readdirSync(`${rootDir}/${pckage}`);
+
+    for (const file of packageDocs) {
+        switch (file) {
+            case "README.md":
+                base.children.push(`./${pckage}/`);
+                continue;
+            case "globals.md":
+                base.children.push(`./${pckage}/globals`);
+                continue;
+            case "classes":
+                const classes = fs.readdirSync(`${rootDir}/${pckage}/classes`);
+                for (const clas of classes) {
+                    base.children.push(`./${pckage}/classes/${clas.split(".")[0]}`);
+                }
+                continue;
+            default:
+                base.children.push(`./${pckage}/${file.split(".")[0]}`);
+                break;
+        }
+    }
+    sidebar.push(base);
+}
+
 module.exports = {
     plugins: [
         [
@@ -29,111 +101,6 @@ module.exports = {
         docsRepo: "ParadigmFoundation/kosu-monorepo",
         docsDir: "docs",
         nav: [{ text: "Home", link: "https://paradigm.market/" }],
-        sidebar: [
-            {
-                title: "Kosu Overview",
-                collapsable: true,
-                food: "1.svg",
-                children: [
-                    "./",
-                    "./overview/",
-                    "./overview/token-mechanics",
-                    "./overview/validator-curation",
-                    "./overview/validator-application",
-                    "./overview/contributing",
-                ],
-            },
-            {
-                title: "Kosu Contract Helpers",
-                collapsable: true,
-                food: "2.svg",
-                children: [
-                    "./kosu-contract-helpers/",
-                    "./kosu-contract-helpers/globals",
-                    "./kosu-contract-helpers/classes/kosu",
-                    "./kosu-contract-helpers/classes/orderhelper",
-                ],
-            },
-            {
-                title: "Kosu Wrapper Enhancements",
-                collapsable: true,
-                food: "2.svg",
-                children: [
-                    "./kosu-wrapper-enhancements/",
-                    "./kosu-wrapper-enhancements/globals",
-                    "./kosu-wrapper-enhancements/classes/kosutoken",
-                    "./kosu-wrapper-enhancements/classes/eventemitter",
-                    "./kosu-wrapper-enhancements/classes/ordergateway",
-                    "./kosu-wrapper-enhancements/classes/posterregistry",
-                    "./kosu-wrapper-enhancements/classes/treasury",
-                    "./kosu-wrapper-enhancements/classes/validatorregistry",
-                    "./kosu-wrapper-enhancements/classes/voting",
-                ],
-            },
-            {
-                title: "Kosu System Contracts",
-                collapsable: true,
-                food: "3.svg",
-                children: [
-                    "./kosu-system-contracts/",
-                    "./kosu-system-contracts/AuthorizedAddresses",
-                    "./kosu-system-contracts/EventEmitter",
-                    "./kosu-system-contracts/KosuToken",
-                    "./kosu-system-contracts/OrderGateway",
-                    "./kosu-system-contracts/PosterRegistry",
-                    "./kosu-system-contracts/Treasury",
-                    "./kosu-system-contracts/ValidatorRegistry",
-                    "./kosu-system-contracts/Voting",
-                ],
-            },
-            {
-                title: "Go Kosu",
-                collapsable: true,
-                food: "4.svg",
-                children: ["./go-kosu/", "./go-kosu/kosu_rpc", "./go-kosu/usage"],
-            },
-            {
-                title: "Kosu Genesis CLI",
-                collapsable: true,
-                food: "5.svg",
-                children: ["./kosu-genesis-cli/", "./kosu-genesis-cli/globals"],
-            },
-            {
-                title: "Kosu Node Client",
-                collapsable: true,
-                food: "6.svg",
-                children: ["./kosu-node-client/", "./kosu-node-client/classes/nodeclient"],
-            },
-            {
-                title: "Kosu Migrations",
-                collapsable: true,
-                food: "7.svg",
-                children: ["./kosu-migrations/"],
-            },
-            {
-                title: "Kosu Deployed Addresses",
-                collapsable: true,
-                food: "8.svg",
-                children: ["./kosu-deployed-addresses/", "./kosu-deployed-addresses/globals"],
-            },
-            {
-                title: "Kosu.js",
-                collapsable: true,
-                food: "9.svg",
-                children: ["./kosu.js/"],
-            },
-            {
-                title: "Order Server",
-                collapsable: true,
-                food: "10.svg",
-                children: ["./order-server/"],
-            },
-            {
-                title: "Development Images",
-                collapsable: true,
-                food: "11.svg",
-                children: ["./dev-images/"],
-            },
-        ],
+        sidebar,
     },
 };
