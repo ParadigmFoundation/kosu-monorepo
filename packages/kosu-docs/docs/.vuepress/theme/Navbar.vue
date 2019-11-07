@@ -126,7 +126,7 @@ $narrowSearchBoxPaddingLeft = $mobileSidebarWidth + 2rem;
     
     width : $sidebarWidth;
     padding: $navbar-vertical-padding 0;
-    background-color #f5f6f7;
+    background-color #ffffff;
     
   }
 

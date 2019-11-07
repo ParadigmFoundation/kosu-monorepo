@@ -45,10 +45,10 @@ export default {
 }
 
 .sidebar-heading {
-  color: #4a4a4a;
+  color: #000000;
   transition: color 0.15s ease;
   cursor: pointer;
-  font-size: 1em;
+  font-size: .95em;
   font-weight: 400;
   // text-transform uppercase
   padding: 0 0.5rem;
