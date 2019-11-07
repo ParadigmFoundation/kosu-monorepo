@@ -29,6 +29,6 @@ describe("Treasury", () => {
             await treasury.isProxyFor(accounts[0], accounts[1]).should.eventually.eq(true);
             await treasury.deauthorizeProxy(accounts[1]);
             await treasury.isProxyFor(accounts[0], accounts[1]).should.eventually.eq(false);
-        })
+        });
     });
 });

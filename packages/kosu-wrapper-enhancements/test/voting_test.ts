@@ -1,7 +1,7 @@
 import { encodeVote } from "@kosu/utils";
 
 import { KosuToken, Treasury, Voting } from "../src";
-import {BigNumber} from "bignumber.js";
+import { BigNumber } from "bignumber.js";
 
 describe("Voting", () => {
     let kosuToken: KosuToken;
