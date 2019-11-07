@@ -35,6 +35,7 @@ dockers:
       - kosu-cli
     image_templates:
       - gcr.io/kosu-test-network/go-kosu:{{ .ShortCommit }}
+      - gcr.io/kosu-test-network/go-kosu:latest
 
 checksum:
   name_template: 'checksums.txt'
