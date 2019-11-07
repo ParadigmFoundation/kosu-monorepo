@@ -112,6 +112,23 @@ describe("Voting", () => {
         });
     });
 
+    describe("commitProxyVote", () => {
+        let pollId;
+        beforeEach(async () => {
+            await treasury.authorizeProxy.awaitTransactionSuccessAsync(accounts[1]);
+            pollId = await shortPoll();
+        });
+
+        afterEach(async () => {
+            await treasury.deauthorizeProxy.awaitTransactionSuccessAsync(accounts[1]);
+        });
+
+        it("should allow a user to commit a proxy vote", async () => {
+            await voting.commitProxyVote.awaitTransactionSuccessAsync(pollId, accounts[0], secret1, TestValues.fiveEther, { from: accounts[1] }).should
+                .eventually.be.fulfilled;
+        });
+    });
+
     describe("revealVote", () => {
         let pollId;
         beforeEach(async () => {
@@ -164,6 +181,24 @@ describe("Voting", () => {
         });
     });
 
+    describe("revealProxyVote", () => {
+        let pollId;
+        beforeEach(async () => {
+            await treasury.authorizeProxy.awaitTransactionSuccessAsync(accounts[1]);
+            pollId = await shortPoll();
+        });
+
+        afterEach(async () => {
+            await treasury.deauthorizeProxy.awaitTransactionSuccessAsync(accounts[1]);
+        });
+
+        it("should allow a user to reveal a proxy vote", async () => {
+            await voting.commitProxyVote.awaitTransactionSuccessAsync(pollId, accounts[0], secret1, TestValues.fiveEther, { from: accounts[1] }).should
+                .eventually.be.fulfilled;
+            await voting.revealProxyVote.awaitTransactionSuccessAsync(pollId, accounts[0], vote1, salt, { from: accounts[1] }).should.eventually.be.fulfilled;
+        });
+    });
+
     describe("winningOption", () => {
         it("should report the correct winningOption", async () => {
             await kosuToken.transfer.awaitTransactionSuccessAsync(accounts[1], TestValues.fiveEther);
@@ -184,6 +219,30 @@ describe("Voting", () => {
                 .callAsync(pollId)
                 .then(x => x.toString())
                 .should.eventually.eq("2");
+        });
+
+        it("should report the correct winningOption for proxy votes", async () => {
+            await treasury.authorizeProxy.awaitTransactionSuccessAsync(accounts[1]);
+            await kosuToken.transfer.awaitTransactionSuccessAsync(accounts[1], TestValues.fiveEther);
+            await testHelpers.prepareTokens(accounts[0], TestValues.fiveEther);
+            await testHelpers.prepareTokens(accounts[1], TestValues.fiveEther);
+            const { pollId } = await testHelpers.variablePoll(2, 2);
+            await voting.commitProxyVote.awaitTransactionSuccessAsync(pollId, accounts[0], secret1, TestValues.oneEther, { from: accounts[1] }).should.eventually
+                .be.fulfilled;
+            await voting.commitVote.awaitTransactionSuccessAsync(pollId, secret2, TestValues.fiveEther, {
+                from: accounts[1],
+            }).should.eventually.be.fulfilled;
+            await voting.revealProxyVote.awaitTransactionSuccessAsync(pollId, accounts[0], vote1, salt, { from: accounts[1] }).should.eventually.be.fulfilled;
+            await voting.revealVote.awaitTransactionSuccessAsync(pollId, vote2, salt, { from: accounts[1] }).should
+                .eventually.be.fulfilled;
+
+            await testHelpers.skipBlocks(new BigNumber(1));
+            await voting.winningOption
+                .callAsync(pollId)
+                .then(x => x.toString())
+                .should.eventually.eq("2");
+            await treasury.deauthorizeProxy.awaitTransactionSuccessAsync(accounts[1]);
+
         });
 
         it("should report the first winning option in a tie", async () => {

@@ -595,4 +595,14 @@ describe("Treasury", async () => {
                 .should.eventually.eq((blockNumber + 4 + 10).toString());
         });
     });
+
+    describe("authorization", () => {
+        it("should authorize a proxy", async () => {
+            await treasury.isProxyFor.callAsync(accounts[0], accounts[1]).should.eventually.be.false;
+            await treasury.authorizeProxy.awaitTransactionSuccessAsync(accounts[1]);
+            await treasury.isProxyFor.callAsync(accounts[0], accounts[1]).should.eventually.be.true;
+            await treasury.deauthorizeProxy.awaitTransactionSuccessAsync(accounts[1]);
+            await treasury.isProxyFor.callAsync(accounts[0], accounts[1]).should.eventually.be.false;
+        });
+    });
 });
