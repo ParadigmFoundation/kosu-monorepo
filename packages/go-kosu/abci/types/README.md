@@ -47,14 +47,15 @@ BigInt
 
 ConsensusParams
 
-| Field                 | Type              | Label | Description |
-| --------------------- | ----------------- | ----- | ----------- |
-| finality_threshold    | [uint32](#uint32) |       |             |
-| period_limit          | [uint64](#uint64) |       |             |
-| period_length         | [uint32](#uint32) |       |             |
-| max_order_bytes       | [uint32](#uint32) |       |             |
-| blocks_before_pruning | [uint64](#uint64) |       |             |
-| orders_limit          | [uint32](#uint32) |       |             |
+| Field                 | Type              | Label | Description                                                                      |
+| --------------------- | ----------------- | ----- | -------------------------------------------------------------------------------- |
+| finality_threshold    | [uint32](#uint32) |       |                                                                                  |
+| period_limit          | [uint64](#uint64) |       |                                                                                  |
+| period_length         | [uint32](#uint32) |       |                                                                                  |
+| max_order_bytes       | [uint32](#uint32) |       |                                                                                  |
+| blocks_before_pruning | [uint64](#uint64) |       |                                                                                  |
+| orders_limit          | [uint32](#uint32) |       |                                                                                  |
+| snapshot_block        | [uint64](#uint64) |       | SnapshotBlock indicates the first Ethereum block the Witness should subscribe to |
 
 <a name="kosu.OrderArgument"></a>
 
