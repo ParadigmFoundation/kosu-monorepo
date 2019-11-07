@@ -160,26 +160,32 @@ func TestGenesisStateCorrectness(t *testing.T) {
 	}{
 		{
 			"InitialValidatorInfo_And_Snapshot_Zero", []byte(`{
+				"consensus_params": {
+					"snapshot_block": 0
+				},
 				"initial_validator_info": [
 					{"tendermint_address": "9339CD2572AB19E2A2E431EEF2E9FD2B1A91C472", "ethereum_address": "0xethereum", "initial_stake": "10000000000000000000"}
-				],
-				"snapshot_block": 0
+				]
 			}`), true, nil,
 		},
 		{
 			"PublicKeys_Doesnt_Match", []byte(`{
+				"consensus_params": {
+					"snapshot_block": 999
+				},
 				"initial_validator_info": [
 					{"tendermint_address": "0000000000000000000000000000000000000000", "ethereum_address": "0xethereum", "initial_stake": "10000000000000000000"}
-				],
-				"snapshot_block": 999
+				]
 			}`), true, nil,
 		},
 		{
 			"InitialPosters_Are_Stored", []byte(`{
+				"consensus_params": {
+					"snapshot_block": 999
+				},
 				"initial_validator_info": [
 					{"tendermint_address": "9339CD2572AB19E2A2E431EEF2E9FD2B1A91C472", "ethereum_address": "0xethereum", "initial_stake": "1000000000000000000"}
 				],
-				"snapshot_block": 999,
 				"initial_poster_info": [
 					{"ethereum_address": "some_address", "balance": "1234"}
 				]
@@ -219,13 +225,15 @@ func TestGenesisStateCorrectness(t *testing.T) {
 				abci.Ed25519ValidatorUpdate([]byte("w"), 1),
 			},
 			AppStateBytes: []byte(`{
+				"consensus_params": {
+					"snapshot_block": 999
+				},
 				"initial_validator_info": [
 					  {"tendermint_address": "50E721E49C013F00C62CF59F2163542A9D8DF024", "ethereum_address": "0xethereum1", "initial_stake": "2003000000000000000000"}
 					, {"tendermint_address": "2D711642B726B04401627CA9FBAC32F5C8530FB1", "ethereum_address": "0xethereum1", "initial_stake": "2002000000000000000000"}
 					, {"tendermint_address": "A1FCE4363854FF888CFF4B8E7875D600C2682390", "ethereum_address": "0xethereum1", "initial_stake": "2001000000000000000000"}
 					, {"tendermint_address": "594E519AE499312B29433B7DD8A97FF068DEFCBA", "ethereum_address": "0xethereum1", "initial_stake": "2000000000000000000000"}
-				],
-				"snapshot_block": 999
+				]
 			}`),
 		})
 	})
@@ -240,13 +248,15 @@ func TestGenesisStateCorrectness(t *testing.T) {
 		res := app.InitChain(abci.RequestInitChain{
 			Validators: updates,
 			AppStateBytes: []byte(`{
+				"consensus_params": {
+					"snapshot_block": 999
+				},
 				"initial_validator_info": [
 					  {"tendermint_address": "50E721E49C013F00C62CF59F2163542A9D8DF024", "ethereum_address": "0xethereum1", "initial_stake": "2003000000000000000000"}
 					, {"tendermint_address": "2D711642B726B04401627CA9FBAC32F5C8530FB1", "ethereum_address": "0xethereum1", "initial_stake": "2002000000000000000000"}
 					, {"tendermint_address": "A1FCE4363854FF888CFF4B8E7875D600C2682390", "ethereum_address": "0xethereum1", "initial_stake": "2001000000000000000000"}
 					, {"tendermint_address": "594E519AE499312B29433B7DD8A97FF068DEFCBA", "ethereum_address": "0xethereum1", "initial_stake": "2000000000000000000000"}
-				],
-				"snapshot_block": 999
+				]
 			}`),
 		})
 
