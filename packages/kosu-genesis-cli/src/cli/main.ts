@@ -23,12 +23,7 @@ async function main(): Promise<void> {
     }
 
     try {
-        const genesis = await generateGenesisFromBlock(
-            kosu,
-            chainId,
-            parseInt(startTime),
-            consensusParameters,
-        );
+        const genesis = await generateGenesisFromBlock(kosu, chainId, parseInt(startTime), consensusParameters);
 
         // output formatted genesis file to stdout
         console.log(JSON.stringify(genesis, null, 2));

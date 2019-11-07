@@ -12,7 +12,7 @@ import Web3ProviderEngine from "web3-provider-engine";
 
 import { snapshotPostersAtBlock, snapshotValidatorsAtBlock } from "..";
 
-describe("Snapshot tests with contract system (integration tests)", function (): void {
+describe("Snapshot tests with contract system (integration tests)", function(): void {
     let kosu: Kosu;
     let assert: Chai.AssertStatic;
     let provider: Web3ProviderEngine;
