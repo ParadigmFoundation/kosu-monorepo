@@ -4,7 +4,7 @@ import { Command } from "commander";
 import { ConsensusParams } from "../types";
 
 export function loadConsensusParameters(program: Command): ConsensusParams {
-    const { finalityThreshold, periodLimit, periodLength, maxOrderBytes, blocksBeforePruning, ordersLimit } = program;
+    const { finalityThreshold, periodLimit, periodLength, maxOrderBytes, blocksBeforePruning, ordersLimit, snapshotBlock } = program;
     return {
         finality_threshold: parseInt(finalityThreshold, 10),
         period_limit: parseInt(periodLimit, 10),
@@ -12,6 +12,7 @@ export function loadConsensusParameters(program: Command): ConsensusParams {
         max_order_bytes: parseInt(maxOrderBytes, 10),
         blocks_before_pruning: parseInt(blocksBeforePruning, 10),
         orders_limit: parseInt(ordersLimit, 10),
+        snapshot_block: parseInt(snapshotBlock, 10),
     };
 }
 

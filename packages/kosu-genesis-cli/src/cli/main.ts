@@ -10,7 +10,7 @@ import { cli, loadConsensusParameters, validateOptions } from ".";
 async function main(): Promise<void> {
     validateOptions(cli.parse(process.argv));
 
-    const { chainId, providerUrl, snapshotBlock, startTime } = cli;
+    const { chainId, providerUrl, startTime } = cli;
 
     const consensusParameters = loadConsensusParameters(cli);
 
@@ -26,7 +26,6 @@ async function main(): Promise<void> {
         const genesis = await generateGenesisFromBlock(
             kosu,
             chainId,
-            parseInt(snapshotBlock),
             parseInt(startTime),
             consensusParameters,
         );
