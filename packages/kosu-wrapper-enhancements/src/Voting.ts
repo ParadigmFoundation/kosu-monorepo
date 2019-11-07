@@ -83,6 +83,37 @@ export class Voting {
     }
 
     /**
+     * Commits proxy vote to voting contract
+     *
+     * @param _pollId uint poll index
+     * @param _account ethereum address vote will be commited for
+     * @param _vote encoded vote option
+     * @param _tokensToCommit uint number of tokens to be commited to vote
+     */
+    public async commitProxyVote(
+        _pollId: BigNumber,
+        _account: string,
+        _vote: string,
+        _tokensToCommit: BigNumber,
+    ): Promise<TransactionReceiptWithDecodedLogs> {
+        const contract = await this.getContract();
+
+        const systemBalance = await this.treasury.systemBalance(_account);
+        if (systemBalance.lt(_tokensToCommit)) {
+            throw new Error(`${_account} doesn't have sufficient tokens for a proxy vote.`);
+        }
+
+        // tslint:disable-next-line: no-console
+        console.log(`Committing proxy vote for ${_account} of ${_vote} with ${_tokensToCommit} DIGM tokens`);
+        return contract.commitProxyVote.awaitTransactionSuccessAsync(
+            new BigNumber(_pollId.toString()),
+            _account,
+            _vote,
+            new BigNumber(_tokensToCommit.toString()),
+        );
+    }
+
+    /**
      * Reveals vote on voting contract
      *
      * @param _pollId uint poll index
@@ -97,6 +128,29 @@ export class Voting {
         const contract = await this.getContract();
         return contract.revealVote.awaitTransactionSuccessAsync(
             new BigNumber(_pollId.toString()),
+            new BigNumber(_voteOption.toString()),
+            new BigNumber(_voteSalt.toString()),
+        );
+    }
+
+    /**
+     * Reveals vote on voting contract
+     *
+     * @param _pollId uint poll index
+     * @param _account ethereum address vote will be revealed for
+     * @param _voteOption uint representation of vote position
+     * @param _voteSalt uint salt used to encode vote option
+     */
+    public async revealProxyVote(
+        _pollId: BigNumber,
+        _account: string,
+        _voteOption: BigNumber,
+        _voteSalt: BigNumber,
+    ): Promise<TransactionReceiptWithDecodedLogs> {
+        const contract = await this.getContract();
+        return contract.revealProxyVote.awaitTransactionSuccessAsync(
+            new BigNumber(_pollId.toString()),
+            _account,
             new BigNumber(_voteOption.toString()),
             new BigNumber(_voteSalt.toString()),
         );

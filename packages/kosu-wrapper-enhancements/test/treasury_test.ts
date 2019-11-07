@@ -21,4 +21,14 @@ describe("Treasury", () => {
             await kosuToken.releaseTokens(difference);
         });
     });
+
+    describe("proxy authorization", () => {
+        it("should authorize and deauthorize", async () => {
+            await treasury.isProxyFor(accounts[0], accounts[1]).should.eventually.eq(false);
+            await treasury.authorizeProxy(accounts[1]);
+            await treasury.isProxyFor(accounts[0], accounts[1]).should.eventually.eq(true);
+            await treasury.deauthorizeProxy(accounts[1]);
+            await treasury.isProxyFor(accounts[0], accounts[1]).should.eventually.eq(false);
+        })
+    });
 });

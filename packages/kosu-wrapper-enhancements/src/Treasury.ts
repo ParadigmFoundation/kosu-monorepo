@@ -127,6 +127,40 @@ export class Treasury {
     }
 
     /**
+     * Authorize an address to vote in proxy
+     *
+     * @param _proxy The address to be added as a proxy
+     * @returns The decoded transaction receipt, after the TX is mined in a block.
+     */
+    public async authorizeProxy(_proxy: string): Promise<TransactionReceiptWithDecodedLogs> {
+        const contract = await this.getContract();
+        return contract.authorizeProxy.awaitTransactionSuccessAsync(_proxy);
+    }
+
+    /**
+     * Remove an address's authorization to vote in proxy
+     *
+     * @param _proxy The address to be removed as a proxy
+     * @returns The decoded transaction receipt, after the TX is mined in a block.
+     */
+    public async deauthorizeProxy(_proxy: string): Promise<TransactionReceiptWithDecodedLogs> {
+        const contract = await this.getContract();
+        return contract.deauthorizeProxy.awaitTransactionSuccessAsync(_proxy);
+    }
+
+    /**
+     * Checks if an address is a valid proxy for another address
+     *
+     * @param _account The balance holder
+     * @param _proxy The possible voting proxy
+     * @returns The boolean status of proxy voting permission
+     */
+    public async isProxyFor(_account: string, _proxy: string): Promise<boolean> {
+        const contract = await this.getContract();
+        return contract.isProxyFor.callAsync(_account, _proxy);
+    }
+
+    /**
      * Read the total system balance of KOSU for a provided `address` string.
      *
      * @param address The Ethereum address to check system balance for.
