@@ -124,8 +124,13 @@ describe("Voting", () => {
         });
 
         it("should allow a user to commit a proxy vote", async () => {
-            await voting.commitProxyVote.awaitTransactionSuccessAsync(pollId, accounts[0], secret1, TestValues.fiveEther, { from: accounts[1] }).should
-                .eventually.be.fulfilled;
+            await voting.commitProxyVote.awaitTransactionSuccessAsync(
+                pollId,
+                accounts[0],
+                secret1,
+                TestValues.fiveEther,
+                { from: accounts[1] },
+            ).should.eventually.be.fulfilled;
         });
     });
 
@@ -193,9 +198,16 @@ describe("Voting", () => {
         });
 
         it("should allow a user to reveal a proxy vote", async () => {
-            await voting.commitProxyVote.awaitTransactionSuccessAsync(pollId, accounts[0], secret1, TestValues.fiveEther, { from: accounts[1] }).should
-                .eventually.be.fulfilled;
-            await voting.revealProxyVote.awaitTransactionSuccessAsync(pollId, accounts[0], vote1, salt, { from: accounts[1] }).should.eventually.be.fulfilled;
+            await voting.commitProxyVote.awaitTransactionSuccessAsync(
+                pollId,
+                accounts[0],
+                secret1,
+                TestValues.fiveEther,
+                { from: accounts[1] },
+            ).should.eventually.be.fulfilled;
+            await voting.revealProxyVote.awaitTransactionSuccessAsync(pollId, accounts[0], vote1, salt, {
+                from: accounts[1],
+            }).should.eventually.be.fulfilled;
         });
     });
 
@@ -227,12 +239,19 @@ describe("Voting", () => {
             await testHelpers.prepareTokens(accounts[0], TestValues.fiveEther);
             await testHelpers.prepareTokens(accounts[1], TestValues.fiveEther);
             const { pollId } = await testHelpers.variablePoll(2, 2);
-            await voting.commitProxyVote.awaitTransactionSuccessAsync(pollId, accounts[0], secret1, TestValues.oneEther, { from: accounts[1] }).should.eventually
-                .be.fulfilled;
+            await voting.commitProxyVote.awaitTransactionSuccessAsync(
+                pollId,
+                accounts[0],
+                secret1,
+                TestValues.oneEther,
+                { from: accounts[1] },
+            ).should.eventually.be.fulfilled;
             await voting.commitVote.awaitTransactionSuccessAsync(pollId, secret2, TestValues.fiveEther, {
                 from: accounts[1],
             }).should.eventually.be.fulfilled;
-            await voting.revealProxyVote.awaitTransactionSuccessAsync(pollId, accounts[0], vote1, salt, { from: accounts[1] }).should.eventually.be.fulfilled;
+            await voting.revealProxyVote.awaitTransactionSuccessAsync(pollId, accounts[0], vote1, salt, {
+                from: accounts[1],
+            }).should.eventually.be.fulfilled;
             await voting.revealVote.awaitTransactionSuccessAsync(pollId, vote2, salt, { from: accounts[1] }).should
                 .eventually.be.fulfilled;
 
@@ -242,7 +261,6 @@ describe("Voting", () => {
                 .then(x => x.toString())
                 .should.eventually.eq("2");
             await treasury.deauthorizeProxy.awaitTransactionSuccessAsync(accounts[1]);
-
         });
 
         it("should report the first winning option in a tie", async () => {
