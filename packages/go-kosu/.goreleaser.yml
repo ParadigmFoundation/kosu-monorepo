@@ -26,5 +26,15 @@ archives:
   - id: kosu
     name_template: "{{ .ProjectName }}-{{ .Os }}"
 
+dockers:
+  - dockerfile: Dockerfile.binaries
+    goos: linux
+    goarch: amd64
+    binaries:
+      - kosud
+      - kosu-cli
+    image_templates:
+      - gcr.io/kosu-test-network/go-kosu:{{ .ShortCommit }}
+
 checksum:
   name_template: 'checksums.txt'
