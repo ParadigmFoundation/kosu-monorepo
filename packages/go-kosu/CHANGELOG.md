@@ -2,6 +2,10 @@
 
 ## master
 
+## v0.5.1
+
+-   Add Docker releases
+
 ## v0.5.0
 
 -   Fix Order store I/O overhead
