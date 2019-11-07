@@ -38,11 +38,9 @@ type GenesisPosterSet []GenesisPoster
 
 // Genesis is the initial chain state
 type Genesis struct {
-	ConsensusParams types.ConsensusParams `json:"consensus_params"`
-	// SnapshotBlock indicates the first Ethereum block we will subscribe to
-	SnapshotBlock        uint64              `json:"snapshot_block"`
-	InitialValidatorInfo GenesisValidatorSet `json:"initial_validator_info"`
-	InitialPosterInfo    GenesisPosterSet    `json:"initial_poster_info"`
+	ConsensusParams      types.ConsensusParams `json:"consensus_params"`
+	InitialValidatorInfo GenesisValidatorSet   `json:"initial_validator_info"`
+	InitialPosterInfo    GenesisPosterSet      `json:"initial_poster_info"`
 }
 
 // NewGenesisFromRequest returnsa a new Genesis object given a RequestInitChain
@@ -55,7 +53,7 @@ func NewGenesisFromRequest(req abci.RequestInitChain) (*Genesis, error) {
 		return nil, err
 	}
 
-	if len(gen.InitialValidatorInfo) != 0 && gen.SnapshotBlock == 0 {
+	if len(gen.InitialValidatorInfo) != 0 && gen.ConsensusParams.SnapshotBlock == 0 {
 		return nil, errors.New(".SnapshotBlock can't be zero when .InitialValidatorInfo are defined")
 	}
 	return gen, nil
@@ -94,8 +92,8 @@ var GenesisAppState = &Genesis{
 		PeriodLimit:         100000,
 		BlocksBeforePruning: 10,
 		OrdersLimit:         100,
+		SnapshotBlock:       0,
 	},
-	SnapshotBlock:        0,
 	InitialValidatorInfo: nil,
 	InitialPosterInfo:    nil,
 }
