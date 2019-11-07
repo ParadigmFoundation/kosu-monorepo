@@ -31,8 +31,8 @@ describe("Voting", () => {
     const vote2 = new BigNumber("2");
     const block1 = vote1;
     const block2 = vote2;
-    const secret1 = soliditySha3({ t: "uint", v: new BigNumber("1") }, { t: "uint", v: salt });
-    const secret2 = soliditySha3({ t: "uint", v: new BigNumber("2") }, { t: "uint", v: salt });
+    const secret1 = soliditySha3({ t: "uint", v: "1" }, { t: "uint", v: salt.toString() });
+    const secret2 = soliditySha3({ t: "uint", v: "2" }, { t: "uint", v: salt.toString() });
 
     before(async () => {
         voting = contracts.voting;

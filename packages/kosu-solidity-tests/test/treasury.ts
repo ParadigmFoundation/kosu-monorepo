@@ -502,8 +502,8 @@ describe("Treasury", async () => {
         const salt = new BigNumber("42");
         const vote1 = new BigNumber("1");
         const vote2 = new BigNumber("2");
-        const secret1 = soliditySha3({ t: "uint", v: new BigNumber("1") }, { t: "uint", v: salt });
-        const secret2 = soliditySha3({ t: "uint", v: new BigNumber("2") }, { t: "uint", v: salt });
+        const secret1 = soliditySha3({ t: "uint", v: "1" }, { t: "uint", v: salt.toString() });
+        const secret2 = soliditySha3({ t: "uint", v: "2" }, { t: "uint", v: salt.toString() });
 
         it("should lock a validator after exit", async () => {
             await testHelpers.prepareListing("0x010203", {
