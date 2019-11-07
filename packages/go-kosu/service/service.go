@@ -207,21 +207,21 @@ func StartWitness(ctx context.Context, web3 string, app *abci.App, logger tmlog.
 		return err
 	}
 
-	gen, err := abci.NewGenesisFromFile(app.Config.GenesisFile())
+	params, err := client.QueryConsensusParams()
 	if err != nil {
 		return err
 	}
 
 	ethOpts := witness.DefaultEthereumProviderOpts
-	ethOpts.SnapshotBlock = gen.SnapshotBlock
+	ethOpts.SnapshotBlock = params.SnapshotBlock
 	p, err := witness.NewEthereumProviderWithOpts(web3, ethOpts)
 	if err != nil {
 		return err
 	}
 
 	opts := witness.DefaultOptions
-	opts.PeriodLimit = int(gen.ConsensusParams.PeriodLimit)
-	opts.PeriodLength = int(gen.ConsensusParams.PeriodLength)
+	opts.PeriodLimit = int(params.PeriodLimit)
+	opts.PeriodLength = int(params.PeriodLength)
 	w := witness.New(client, p, opts)
 	return w.WithLogger(logger).Start(ctx)
 }

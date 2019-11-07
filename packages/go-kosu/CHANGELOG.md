@@ -4,6 +4,8 @@
 
 ## v0.6.0
 
+-   Add Docker releases
+-   Promote snapshot_block as a consensus parameter
 -   Add `abci` subcommand
 
 ## v0.5.0

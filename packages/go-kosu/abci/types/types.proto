@@ -36,6 +36,9 @@ message ConsensusParams {
   uint32 max_order_bytes = 4;
   uint64 blocks_before_pruning = 5;
   uint32 orders_limit = 6;
+
+  // SnapshotBlock indicates the first Ethereum block the Witness should subscribe to
+  uint64 snapshot_block = 7;
 }
 
 /**
