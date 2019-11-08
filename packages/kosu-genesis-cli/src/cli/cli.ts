@@ -16,7 +16,7 @@ The following options are required:
     -t, --start-time <number>\
 `;
 
-cli.version("0.0.0")
+cli.version(process.env.npm_package_version)
     .description(description)
     .option("-n, --chain-id <name>", "Specify the resulting Kosu chain ID")
     .option("-p, --provider-url <url>", "HTTP Ethereum JSONRPC provider")
