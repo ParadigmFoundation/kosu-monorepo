@@ -153,6 +153,8 @@ describe("Snapshot function blockchain-less tests (unit tests)", function(): voi
             period_length: 13,
             max_order_bytes: 14,
             blocks_before_pruning: 15,
+            orders_limit: 16,
+            snapshot_block: testSnapshotBlock,
         };
         const testValidatorSnapshots = [
             {
@@ -184,16 +186,10 @@ describe("Snapshot function blockchain-less tests (unit tests)", function(): voi
                     balance: testPosterBalance,
                 },
             ],
-            snapshot_block: testSnapshotBlock,
             consensus_params: testConsensusParams,
         };
 
-        const actualAppState = getAppState(
-            testValidatorSnapshots,
-            testPosterSnapshots,
-            testSnapshotBlock,
-            testConsensusParams,
-        );
+        const actualAppState = getAppState(testValidatorSnapshots, testPosterSnapshots, testConsensusParams);
         assert.deepStrictEqual(actualAppState, expectedAppState, "generated app state should match expected");
     });
 });

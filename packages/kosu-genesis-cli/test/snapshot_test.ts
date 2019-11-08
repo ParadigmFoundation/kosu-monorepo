@@ -39,7 +39,7 @@ describe("Snapshot tests with contract system (integration tests)", function(): 
         provider.addProvider(ganacheSubprovider);
         providerUtils.startProviderEngine(provider);
 
-        web3 = new Web3(provider);
+        web3 = new Web3(provider as any);
         accounts = await web3.eth.getAccounts();
         web3Wrapper = new Web3Wrapper(provider);
         blockchainLifecycle = new BlockchainLifecycle(web3Wrapper);
@@ -93,7 +93,7 @@ describe("Snapshot tests with contract system (integration tests)", function(): 
             });
             validatorBlockNumbers.push(await web3.eth.getBlockNumber());
             const listing = await kosu.validatorRegistry.getListing(publicKey);
-            (listing.status as string).should.be.equals(2);
+            listing.status.should.be.equals(2);
         }
     });
 

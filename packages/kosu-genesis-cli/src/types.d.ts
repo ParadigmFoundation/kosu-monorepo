@@ -13,13 +13,13 @@ export interface ConsensusParams {
     max_order_bytes: number;
     blocks_before_pruning: number;
     orders_limit: number;
+    snapshot_block: number;
 }
 
 export interface AppState {
     consensus_params: ConsensusParams;
     initial_validator_info: InitialValidatorInfo[];
     initial_poster_info: SnapshotPoster[];
-    snapshot_block: number;
 }
 
 export interface InitialValidatorInfo {

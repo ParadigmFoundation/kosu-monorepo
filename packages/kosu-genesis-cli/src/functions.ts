@@ -15,11 +15,11 @@ import {
 /**
  * Generate a Tendermint genesis file for a Kosu network, where the initial validators
  * are set based on the current state of a deployed Kosu contract system's
- * ValidatorRegistry contract, at a specified block height.
+ * ValidatorRegistry contract, at a specified block height (specified in the
+ * consensus parameters).
  *
  * @param kosu An initialized kosu.js instance.
  * @param chainId The desired Kosu chain ID for the Tendermint blockchain.
- * @param snapshotBlock The block at which to export contract system state.
  * @param startTime The desired genesis time and network start time (Unix timestamp).
  * @param consensusParams Network-specific consensus parameters agreed upon prior to genesis.
  * @returns Promise resolving to object that can be JSON-serialized to a Kosu/Tendermint genesis file.
@@ -27,11 +27,16 @@ import {
 export async function generateGenesisFromBlock(
     kosu: Kosu,
     chainId: string,
-    snapshotBlock: number,
     startTime: number,
     consensusParams: ConsensusParams,
 ): Promise<GenesisBlock> {
     const genesis: Partial<GenesisBlock> = {};
+
+    // load snapshot block, and assert it is present
+    const { snapshot_block: snapshotBlock } = consensusParams;
+    if (typeof snapshotBlock !== "number" || snapshotBlock < 0) {
+        throw new Error("invalid snapshot block: must be present and equal to or greater than 0");
+    }
 
     // generate a snapshot of the ValidatorRegistry contract at a specific block
     // - resulting array contains validators elected at the snapshot block
@@ -62,7 +67,7 @@ export async function generateGenesisFromBlock(
     // - initial validator info generated from contract system state
     // - initial poster info generated from contract system state
     // - snapshot block: the Ethereum block at which contract system state "snap-shotted"
-    genesis.app_state = getAppState(validators, posters, snapshotBlock, consensusParams);
+    genesis.app_state = getAppState(validators, posters, consensusParams);
 
     return genesis as GenesisBlock;
 }
@@ -81,23 +86,22 @@ export async function generateGenesisFromBlock(
  *      - `period_length`: The length of each rebalance period (in Ethereum blocks)
  *      - `max_order_bytes`: Maximum size of an order message (protobuf-encoded transaction length)
  *      - `blocks_before_pruning`: Maximum age of attestations before accepted and pending attestations are cleared
+ *      - `orders_limit`: The maximum size of the in-state order list.
+ *      - `snapshot_block`: The height of the Ethereum blockchain at which a snapshot was taken.
  *
  * @param validators Validators from ValidatorRegistry TCR snapshot.
  * @param posters Posters from PosterRegistry snapshot.
- * @param snapshotBlock The Ethereum block used to generate validator and poster snapshot.
- * @param consensusParameters Consensus parameters to set in genesis.
+ * @param consensusParameters Consensus parameters to set in genesis (incl. snapshot block).
  */
 export function getAppState(
     validators: SnapshotValidator[],
     posters: SnapshotPoster[],
-    snapshotBlock: number,
     consensusParameters: ConsensusParams,
 ): AppState {
     return {
         initial_validator_info: getInitialValidatorInfo(validators),
         initial_poster_info: posters,
         consensus_params: consensusParameters,
-        snapshot_block: snapshotBlock,
     };
 }
 

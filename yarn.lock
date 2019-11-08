@@ -2268,6 +2268,20 @@
   resolved "https://registry.yarnpkg.com/@istanbuljs/nyc-config-typescript/-/nyc-config-typescript-0.1.3.tgz#944d15b3ebdb71f963a628daffaa25ade981bb86"
   integrity sha512-EzRFg92bRSD1W/zeuNkeGwph0nkWf+pP2l/lYW4/5hav7RjKKBN5kV1Ix7Tvi0CMu3pC4Wi/U7rNisiJMR3ORg==
 
+"@kosu/node-client@0.3.0":
+  version "0.3.0"
+  resolved "https://registry.yarnpkg.com/@kosu/node-client/-/node-client-0.3.0.tgz#fc9dc734e5d884b5dac0bea5c518183d1a572f16"
+  integrity sha512-HLlM4KfxAR0Cs2HUvyPq8vFdSfi3++ByrVuquYxLQBZxY+JCFuR92ra7/ZXyWwNKvnEuXqL8DY5GzyKR0yzdOg==
+  dependencies:
+    "@0x/utils" "^4.3.1"
+    "@0x/web3-providers-fork" "^0.0.7"
+    "@babel/core" "^7.4.4"
+    "@kosu/tsc-config" "^0.1.0"
+    "@kosu/tslint-config" "^0.0.4"
+    "@kosu/types" "^0.3.0"
+    lodash "^4.17.15"
+    uuid "^3.3.3"
+
 "@kosu/tslint-config@^0.0.4":
   version "0.0.4"
   resolved "https://registry.yarnpkg.com/@kosu/tslint-config/-/tslint-config-0.0.4.tgz#665fe1865e76c765e0637862ee43f7803451b1d5"
