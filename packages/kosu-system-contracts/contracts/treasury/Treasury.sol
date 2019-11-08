@@ -12,6 +12,7 @@ contract Treasury is Authorizable {
     using SafeMath for uint;
 
     IVoting voting;
+    KosuToken public kosuToken;
 
     struct TokenLock {
         uint value;
@@ -19,11 +20,15 @@ contract Treasury is Authorizable {
         uint tokenLockEnd;
         uint pollEarlyUnlock;
     }
+    struct Account {
+        uint currentBalance;
+        uint systemBalance;
+        TokenLock[] tokenLocks;
+        mapping(address => bool) proxies;
+    }
 
-    KosuToken public kosuToken;
-    mapping(address => uint) private currentBalances;
-    mapping(address => uint) private systemBalances;
-    mapping(address => TokenLock[]) private addressTokenLocks;
+    mapping(address => Account) private accounts;
+
 
     /** @dev Initializes the treasury with the kosuToken and authorizedAddresses contracts.
         @notice Initializes the treasury with the kosuToken and authorizedAddresses contracts.
@@ -160,8 +165,8 @@ contract Treasury is Authorizable {
         setSystemBalance(account, getSystemBalance(account).sub(amount));
     }
 
-    /** @dev Allows voting contract to register a poll to ensure tokens aren't removed.
-        @notice Allows voting contract to register a poll to ensure tokens aren't removed.
+    /** @dev Allows voting contract to register a vote in a poll to ensure tokens aren't removed.
+        @notice Allows voting contract to register a vote in a poll to ensure tokens aren't removed.
         @param account The account voting.
         @param pollId The poll the account is voting on.
         @param amount Number of tokens contributed.
@@ -169,11 +174,31 @@ contract Treasury is Authorizable {
         @param losingEndBlock Block number vote token lock should expire if vote was in support of a losing option.
     */
     function registerVote(address account, uint pollId, uint amount, uint endBlock, uint losingEndBlock) isAuthorized public returns (bool) {
-        if(systemBalances[account] < amount) {
+        if(getSystemBalance(account) < amount) {
             return false;
         }
 
-        addressTokenLocks[account].push(TokenLock(amount, pollId, endBlock, losingEndBlock));
+        accounts[account].tokenLocks.push(TokenLock(amount, pollId, endBlock, losingEndBlock));
+
+        return true;
+    }
+
+    /** @dev Allows voting contract to register a vote in a poll from a proxy to ensure tokens aren't removed.
+        @notice Allows voting contract to register a vote in a poll from a proxy to ensure tokens aren't removed.
+        @param account The account voting.
+        @param pollId The poll the account is voting on.
+        @param amount Number of tokens contributed.
+        @param endBlock Block number vote token lock should expire.
+        @param losingEndBlock Block number vote token lock should expire if vote was in support of a losing option.
+    */
+    function registerProxyVote(address proxy, address account, uint pollId, uint amount, uint endBlock, uint losingEndBlock) isAuthorized public returns (bool) {
+        if(getSystemBalance(account) < amount) {
+            return false;
+        }
+
+        require(isProxyFor(account, proxy), "not valid proxy");
+
+        accounts[account].tokenLocks.push(TokenLock(amount, pollId, endBlock, losingEndBlock));
 
         return true;
     }
@@ -185,7 +210,7 @@ contract Treasury is Authorizable {
         @param endBlock The end of the lock.
     */
     function validatorLock(address account, uint amount, uint endBlock) isAuthorized public {
-        addressTokenLocks[account].push(TokenLock(
+        accounts[account].tokenLocks.push(TokenLock(
             amount,
             0,
             endBlock,
@@ -200,9 +225,9 @@ contract Treasury is Authorizable {
     */
     function tokenLocksExpire(address account) public returns (uint lastBlock) {
         _removeInactiveTokenLocks(msg.sender);
-        for(uint i = addressTokenLocks[account].length; i > 0; i--) {
-            if(addressTokenLocks[account][i - 1].tokenLockEnd > lastBlock) {
-                lastBlock = addressTokenLocks[account][i - 1].tokenLockEnd;
+        for(uint i = accounts[account].tokenLocks.length; i > 0; i--) {
+            if(accounts[account].tokenLocks[i - 1].tokenLockEnd > lastBlock) {
+                lastBlock = accounts[account].tokenLocks[i - 1].tokenLockEnd;
             }
         }
         return lastBlock;
@@ -224,6 +249,34 @@ contract Treasury is Authorizable {
     */
     function currentBalance(address account) public view returns (uint)  {
         return getCurrentBalance(account);
+    }
+
+    /** @dev Authorize voting proxy for treasury balances.
+        @notice Authorize voting proxy for treasury balances.
+        @param proxy Address to allow to vote in proxy.
+
+    */
+    function authorizeProxy(address proxy) public {
+        accounts[msg.sender].proxies[proxy] = true;
+    }
+
+    /** @dev Remove authorization of voting proxy for treasury balance.
+        @notice Remove authorization of voting proxy for treasury balance.
+        @param proxy Address to remove permission to vote in proxy.
+
+    */
+    function deauthorizeProxy(address proxy) public {
+        accounts[msg.sender].proxies[proxy] = false;
+    }
+
+    /** @dev Check proxy authorization for account and proxy addresses.
+        @notice Check proxy authorization for account and proxy addresses.
+        @param account User account with tokens.
+        @param proxy Address to check proxy status.
+
+    */
+    function isProxyFor(address account, address proxy) public view returns (bool) {
+        return accounts[account].proxies[proxy];
     }
 
     // INTERNAL
@@ -262,20 +315,20 @@ contract Treasury is Authorizable {
     /** @dev Removes expired locks.
     */
     function _removeInactiveTokenLocks(address account) internal {
-        for(uint i = addressTokenLocks[account].length; i > 0; i--) {
-            TokenLock storage v = addressTokenLocks[account][i - 1];
+        for(uint i = accounts[account].tokenLocks.length; i > 0; i--) {
+            TokenLock storage v = accounts[account].tokenLocks[i - 1];
             (bool finished, uint winningTokens) = voting.userWinningTokens(v.pollId, msg.sender);
             if(v.pollId > 0 && finished && winningTokens == 0) {
                 v.tokenLockEnd = v.pollEarlyUnlock;
             }
             if(v.tokenLockEnd < block.number) {
-                if(i == addressTokenLocks[account].length) {
-                    delete addressTokenLocks[account][i - 1];
-                    addressTokenLocks[account].length = addressTokenLocks[account].length - 1;
+                if(i == accounts[account].tokenLocks.length) {
+                    delete accounts[account].tokenLocks[i - 1];
+                    accounts[account].tokenLocks.length = accounts[account].tokenLocks.length - 1;
                 } else {
-                    addressTokenLocks[account][i - 1] = addressTokenLocks[account][addressTokenLocks[account].length - 1];
-                    delete addressTokenLocks[account][addressTokenLocks[account].length - 1];
-                    addressTokenLocks[account].length = addressTokenLocks[account].length - 1;
+                    accounts[account].tokenLocks[i - 1] = accounts[account].tokenLocks[accounts[account].tokenLocks.length - 1];
+                    delete accounts[account].tokenLocks[accounts[account].tokenLocks.length - 1];
+                    accounts[account].tokenLocks.length = accounts[account].tokenLocks.length - 1;
                 }
             }
         }
@@ -289,10 +342,10 @@ contract Treasury is Authorizable {
         //Updates the systemBalance for the account
         uint totalLocked;
         uint maxVoteLock;
-        for(uint i = 0; i < addressTokenLocks[account].length; i++) {
-            TokenLock storage lock = addressTokenLocks[account][i];
+        for(uint i = 0; i < accounts[account].tokenLocks.length; i++) {
+            TokenLock storage lock = accounts[account].tokenLocks[i];
             if(lock.pollId == 0) {
-                totalLocked = totalLocked.add(addressTokenLocks[account][i].value);
+                totalLocked = totalLocked.add(accounts[account].tokenLocks[i].value);
             } else {
                 if (lock.value > maxVoteLock) {
                     maxVoteLock = lock.value;
@@ -305,26 +358,26 @@ contract Treasury is Authorizable {
     */
     function getSystemBalance(address account) internal view returns (uint) {
         //Reports the systemBalance for the account
-        return systemBalances[account];
+        return accounts[account].systemBalance;
     }
 
     /** @dev Sets the accounts system balance.
     */
     function setSystemBalance(address account, uint amount) internal {
-        systemBalances[account] = amount;
+        accounts[account].systemBalance = amount;
     }
 
     /** @dev Reads the accounts current balance.
     */
     function getCurrentBalance(address account) internal view returns (uint) {
         //Reports the held balance for the account
-        return currentBalances[account];
+        return accounts[account].currentBalance;
     }
 
     /** @dev Sets the accounts current balance.
     */
     function setCurrentBalance(address account, uint amount) internal {
         //Updates the held balance for the account
-        currentBalances[account] = amount;
+        accounts[account].currentBalance = amount;
     }
 }

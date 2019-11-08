@@ -93,22 +93,23 @@ contract Voting is IVoting {
         @param _tokensToCommit Number of tokens to commit to vote.
     */
     function commitVote(uint _pollId, bytes32 _vote, uint _tokensToCommit) public {
-        //load Poll and Vote
         Poll storage p = polls[_pollId];
-        Vote storage v = p.votes[msg.sender];
-
-        //Ensure commit phase hasn't ended, the user has not committed and has adequate balance in the treasury
-        require(block.number <= p.commitEndBlock, "commit has ended");
-        require(!p.didCommit[msg.sender], "address committed");
         require(treasury.registerVote(msg.sender, _pollId, _tokensToCommit, p.winnerLockEnd, p.loserLockEnd), "insufficient tokens");
-        require(_tokensToCommit > 0, "must commit tokens to lock");
+        _commitVote(_pollId, msg.sender, _vote, _tokensToCommit);
+    }
 
-        //Set the tokens committed hidden vote data
-        v.tokensCommitted = _tokensToCommit;
-        v.hiddenVote = _vote;
 
-        //Track voter address and set did commit.
-        p.didCommit[msg.sender] = true;
+    /** @dev Commit a vote in a poll for another address to be later revealed. The salt and option must be retained for a successful reveal.
+        @notice Commit a vote in a poll for another address to be later revealed. The salt and option must be retained for a successful reveal.
+        @param _pollId Poll id to commit vote to.
+        @param _tokenHolder Address to submit commit in proxy of.
+        @param _vote Hash encoded vote option with salt.
+        @param _tokensToCommit Number of tokens to commit to vote.
+    */
+    function commitProxyVote(uint _pollId, address _tokenHolder, bytes32 _vote, uint _tokensToCommit) public {
+        Poll storage p = polls[_pollId];
+        require(treasury.registerProxyVote(msg.sender, _tokenHolder, _pollId, _tokensToCommit, p.winnerLockEnd, p.loserLockEnd), "insufficient tokens");
+        _commitVote(_pollId, _tokenHolder, _vote, _tokensToCommit);
     }
 
     /** @dev Reveal a previously committed vote by providing the vote option and salt used to generate the vote hash.
@@ -118,32 +119,20 @@ contract Voting is IVoting {
         @param _voteSalt Salt used to generate vote hash.
     */
     function revealVote(uint _pollId, uint _voteOption, uint _voteSalt) public {
-        Poll storage p = polls[_pollId];
-        Vote storage v = p.votes[msg.sender];
+        _revealVote(_pollId, msg.sender, _voteOption, _voteSalt);
+    }
 
-        // Ensure commit phase has passed,  reveal phase has not.  User has commited but not revealed.  User has adequate balance in the treasury.
-        require(block.number > p.commitEndBlock, "commit hasn't ended");
-        require(block.number <= p.revealEndBlock, "reveal has ended");
-        require(p.didCommit[msg.sender], "address hasn't committed");
-        require(!p.didReveal[msg.sender], "address has revealed");
+    /** @dev Reveal a previously committed vote for another address by providing the vote option and salt used to generate the vote hash.
+        @notice Reveal a previously committed vote for another address by providing the vote option and salt used to generate the vote hash.
+        @param _pollId Poll id to commit vote to.
+        @param _tokenHolder Address to submit reveal in proxy of.
+        @param _voteOption Vote option used to generate vote hash.
+        @param _voteSalt Salt used to generate vote hash.
+    */
+    function revealProxyVote(uint _pollId, address _tokenHolder, uint _voteOption, uint _voteSalt) public {
+        require(treasury.isProxyFor(_tokenHolder, msg.sender), "not valid proxy");
 
-        // Calculate and compare the commited vote
-        bytes32 exposedVote = keccak256(abi.encodePacked(_voteOption, _voteSalt));
-        require(v.hiddenVote == exposedVote, "vote doesn't match");
-
-        // Store info from a valid revealed vote. Remove the pending vote.
-        v.salt = _voteSalt;
-        v.voteOption = _voteOption;
-        p.didReveal[msg.sender] = true;
-        p.voteValues[_voteOption] = p.voteValues[_voteOption].add(v.tokensCommitted);
-        p.totalRevealedTokens = p.totalRevealedTokens.add(v.tokensCommitted);
-
-        // Update winner and tracking
-        if(p.currentLeadingOption != _voteOption && p.voteValues[_voteOption] > p.leadingTokens) {
-            p.currentLeadingOption = _voteOption;
-        }
-
-        p.leadingTokens = p.voteValues[p.currentLeadingOption];
+        _revealVote(_pollId, _tokenHolder, _voteOption, _voteSalt);
     }
 
     /** @dev Retrieve the winning option for a finalized poll.
@@ -194,5 +183,58 @@ contract Voting is IVoting {
         }
 
         return (true, tokens);
+    }
+
+    // INTERNAL
+
+    /** @dev Commit votes
+    */
+    function _commitVote(uint _pollId, address _tokenHolder, bytes32 _vote, uint _tokensToCommit) internal {
+        //load Poll and Vote
+        Poll storage p = polls[_pollId];
+        Vote storage v = p.votes[_tokenHolder];
+
+        //Ensure commit phase hasn't ended, the user has not committed and has adequate balance in the treasury
+        require(block.number <= p.commitEndBlock, "commit has ended");
+        require(!p.didCommit[_tokenHolder], "address committed");
+        require(_tokensToCommit > 0, "must commit tokens to lock");
+
+        //Set the tokens committed hidden vote data
+        v.tokensCommitted = _tokensToCommit;
+        v.hiddenVote = _vote;
+
+        //Track voter address and set did commit.
+        p.didCommit[_tokenHolder] = true;
+    }
+
+    /** @dev Reveal vote
+    */
+    function _revealVote(uint _pollId, address _tokenHolder, uint _voteOption, uint _voteSalt) internal {
+        Poll storage p = polls[_pollId];
+        Vote storage v = p.votes[_tokenHolder];
+
+        // Ensure commit phase has passed,  reveal phase has not.  User has commited but not revealed.  User has adequate balance in the treasury.
+        require(block.number > p.commitEndBlock, "commit hasn't ended");
+        require(block.number <= p.revealEndBlock, "reveal has ended");
+        require(p.didCommit[_tokenHolder], "address hasn't committed");
+        require(!p.didReveal[_tokenHolder], "address has revealed");
+
+        // Calculate and compare the commited vote
+        bytes32 exposedVote = keccak256(abi.encodePacked(_voteOption, _voteSalt));
+        require(v.hiddenVote == exposedVote, "vote doesn't match");
+
+        // Store info from a valid revealed vote. Remove the pending vote.
+        v.salt = _voteSalt;
+        v.voteOption = _voteOption;
+        p.didReveal[_tokenHolder] = true;
+        p.voteValues[_voteOption] = p.voteValues[_voteOption].add(v.tokensCommitted);
+        p.totalRevealedTokens = p.totalRevealedTokens.add(v.tokensCommitted);
+
+        // Update winner and tracking
+        if(p.currentLeadingOption != _voteOption && p.voteValues[_voteOption] > p.leadingTokens) {
+            p.currentLeadingOption = _voteOption;
+        }
+
+        p.leadingTokens = p.voteValues[p.currentLeadingOption];
     }
 }
