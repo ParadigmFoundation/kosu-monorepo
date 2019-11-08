@@ -21,14 +21,12 @@
     "dependencies": {
         "@kosu/kosu.js": "^0.3.0",
         "@kosu/migrations": "^0.3.0",
-        "@kosu/system-contracts": "^0.3.0",
         "@kosu/test-helpers": "^0.3.0",
         "@kosu/tsc-config": "^0.1.0",
         "@kosu/tslint-config": "^0.0.5",
         "chalk": "^2.4.2",
         "commander": "^3.0.1",
-        "web3": "1.2.2",
-        "web3-provider": "^1.0.0"
+        "web3": "1.2.2"
     },
     "devDependencies": {
         "@0x/dev-utils": "^2.3.3",
