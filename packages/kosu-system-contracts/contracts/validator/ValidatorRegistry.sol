@@ -699,7 +699,7 @@ contract ValidatorRegistry is Ownable {
         eventEmitter.emitEvent("ValidatorChallengeResolved", data, "");
     }
 
-    function _findGeneratorPlaceInList(int value) internal view returns (bytes32 previous, bytes32 next) {
+    function _findGeneratorPlaceInList(int value) internal view returns (bytes32, bytes32) {
         if (_maxGenerator == 0x0) {
             return (0x0, 0x0);
         }
@@ -719,6 +719,8 @@ contract ValidatorRegistry is Ownable {
                 return (gen.previous, gen.self);
             }
         }
+        return (0x0, 0x0);
+        // This case should be unreachable
     }
 
     function _addGeneratorToList(int rewardRate, bytes32 tendermintPublicKey) internal {
