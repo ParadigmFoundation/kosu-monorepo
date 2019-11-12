@@ -79,7 +79,7 @@ contract ValidatorRegistry is Ownable {
     bytes32[] public _listingKeys;
     EventEmitter private eventEmitter;
     bytes32 _maxGenerator;
-    mapping(bytes32 => MaxList)_generators;
+    mapping(bytes32 => MaxList) _generators;
 
     uint private MILLION = 1000000;
 
