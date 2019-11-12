@@ -8,7 +8,7 @@ import {
     ValidatorRegistryContract,
     VotingContract,
 } from "@kosu/system-contracts";
-import {Challenge, Listing} from "@kosu/types";
+import { Challenge, Listing } from "@kosu/types";
 import { decodeKosuEvents } from "@kosu/utils";
 import { padRight, soliditySha3, stringToHex, toTwosComplement } from "web3-utils";
 
@@ -106,11 +106,9 @@ describe("ValidatorRegistry", async () => {
         before(async () => {
             for (const account of accounts) {
                 await kosuToken.transfer.awaitTransactionSuccessAsync(account, minimumStake.multipliedBy(10));
-                await kosuToken.approve.awaitTransactionSuccessAsync(
-                    treasury.address,
-                    minimumStake.multipliedBy(10),
-                    { from: account },
-                );
+                await kosuToken.approve.awaitTransactionSuccessAsync(treasury.address, minimumStake.multipliedBy(10), {
+                    from: account,
+                });
                 await treasury.deposit.awaitTransactionSuccessAsync(minimumStake.multipliedBy(10), { from: account });
             }
         });
@@ -337,9 +335,18 @@ describe("ValidatorRegistry", async () => {
                 .that.include("listing not accepted");
 
             listingChallenge0DecodedLogs.eventType.should.eq("ValidatorChallenged", "should be a challenged event");
-            listingChallenge0DecodedLogs.challenger.should.eq(accounts[9].toLowerCase(), "ChallengedEvent should be from accounts[9");
-            listingChallenge0DecodedLogs.owner.should.eq(accounts[0].toLowerCase(), "ChallengedEvent should be against accounts[0]");
-            listingChallenge0DecodedLogs.pollId.should.eq(challenge0PollId.toString(), "ChallengedEvent should expose pollId");
+            listingChallenge0DecodedLogs.challenger.should.eq(
+                accounts[9].toLowerCase(),
+                "ChallengedEvent should be from accounts[9",
+            );
+            listingChallenge0DecodedLogs.owner.should.eq(
+                accounts[0].toLowerCase(),
+                "ChallengedEvent should be against accounts[0]",
+            );
+            listingChallenge0DecodedLogs.pollId.should.eq(
+                challenge0PollId.toString(),
+                "ChallengedEvent should expose pollId",
+            );
             listingChallenge0DecodedLogs.details.should.eq(paradigmMarket, "ChallengedEvent should have details");
 
             // 0 failed challenge
