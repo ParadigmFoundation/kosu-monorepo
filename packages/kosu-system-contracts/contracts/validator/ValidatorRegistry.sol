@@ -67,6 +67,7 @@ contract ValidatorRegistry is Ownable {
     uint public losingVoteLockPeriod;
     uint public minimumStake = 500 ether;
     uint public stakeholderProportionPPM = 300000;
+    uint public slashableProportionPPM = 100000;
     uint public minMaxGenerator = 1 ether / 10;
     uint public maxGeneratorGrowth = 5 ether / 1000;
     uint public maxMaxGenerator = 2 ether / 10;
@@ -268,11 +269,12 @@ contract ValidatorRegistry is Ownable {
         //Create challenge
         Challenge storage challenge = _challenges[nextChallenge];
 
+        uint slashableBalance = listing.stakedBalance.mul(slashableProportionPPM).div(MILLION);
         //Pull tokens out of the treasury
-        treasury.claimTokens(msg.sender, listing.stakedBalance);
+        treasury.claimTokens(msg.sender, slashableBalance);
 
         //Initialize challenge.
-        challenge.balance = listing.stakedBalance;
+        challenge.balance = slashableBalance;
         challenge.challenger = msg.sender;
         challenge.listingKey = listing.tendermintPublicKey;
         challenge.challengeEnd = block.number + challengePeriod;
@@ -314,8 +316,12 @@ contract ValidatorRegistry is Ownable {
             challenge.passed = true;
             challenge.finalized = true;
 
-            //Challenger won listing owner looses the tokens
-            treasury.confiscate(listing.owner, listing.stakedBalance);
+            //Challenger won listing owner looses the slashable tokens
+            uint safeTokens = listing.stakedBalance.sub(challenge.balance);
+            treasury.confiscate(listing.owner, challenge.balance);
+            // Approve and release safe tokens
+            kosuToken.approve(address(treasury), safeTokens);
+            treasury.releaseTokens(listing.owner, safeTokens);
 
             //Approve and release tokens to treasury for successful challenger
             //Challenger receives his tokens back and cut of the listing balance.  Tokens available for distribution will be tracked in the challenge.balance
@@ -557,6 +563,8 @@ contract ValidatorRegistry is Ownable {
             winningVoteLockPeriod = value;
         } else if (index == 12) {
             losingVoteLockPeriod = value;
+        } else if (index == 13) {
+            slashableProportionPPM = value;
         } else {
             revert("Index does not match a value");
         }
