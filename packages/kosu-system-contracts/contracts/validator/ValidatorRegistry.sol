@@ -310,7 +310,7 @@ contract ValidatorRegistry is Ownable {
 
         //calculate the holders cut
         uint holderCut = challenge.balance.mul(stakeholderProportionPPM).div(MILLION);
-        challenge.voterTotal = listing.stakedBalance.sub(holderCut);
+        challenge.voterTotal = challenge.balance.sub(holderCut);
 
         if (winningOption == 1) {
             challenge.passed = true;
@@ -343,7 +343,7 @@ contract ValidatorRegistry is Ownable {
             }
 
             //Challenger lost and has lost the tokens.
-            treasury.confiscate(challenge.challenger, listing.stakedBalance);
+            treasury.confiscate(challenge.challenger, challenge.balance);
 
             //Approve and release tokens to treasury for the listing holder Remaning tokens
             challenge.balance = challenge.balance.sub(holderCut);
