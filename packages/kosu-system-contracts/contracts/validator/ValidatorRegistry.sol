@@ -81,6 +81,8 @@ contract ValidatorRegistry is Ownable {
     bytes32 _maxGenerator;
     mapping(bytes32 => MaxList)_generators;
 
+    uint private MILLION = 1000000;
+
     /** @dev Initializes the ValidatorRegistry with chain based configuration for pacing and deployed addresses.
         @notice Initializes the ValidatorRegistry with chain based configuration for pacing and deployed addresses.
         @param _treasuryAddress Deployed Treasury address.
