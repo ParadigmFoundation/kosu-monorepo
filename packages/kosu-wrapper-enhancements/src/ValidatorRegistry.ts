@@ -100,19 +100,19 @@ export class ValidatorRegistry {
     }
 
     /**
-     * Reads the minimum balance
+     * Reads the minimum stake
      */
-    public async minimumBalance(): Promise<BigNumber> {
+    public async minimumStake(): Promise<BigNumber> {
         const contract = await this.getContract();
-        return contract.minimumBalance.callAsync();
+        return contract.minimumStake.callAsync();
     }
 
     /**
-     * Reads the stakeholder cut
+     * Reads the stakeholder proportion
      */
-    public async stakeholderCut(): Promise<BigNumber> {
+    public async stakeholderProportionPPM(): Promise<BigNumber> {
         const contract = await this.getContract();
-        return contract.stakeholderCut.callAsync();
+        return contract.stakeholderProportionPPM.callAsync();
     }
 
     /**

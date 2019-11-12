@@ -18,7 +18,7 @@ describe("ValidatorRegistry", () => {
 
         const resp = await validatorRegistry.registerListing(
             pubKey,
-            await validatorRegistry.minimumBalance(),
+            await validatorRegistry.minimumStake(),
             TestValues.zero,
             "string",
         );

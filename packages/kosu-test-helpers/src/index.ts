@@ -12,10 +12,11 @@ export class TestHelpers {
     public migratedContracts: MigratedTestContracts;
     private accounts: string[];
 
-    private minimumBalance: BigNumber;
+    private minimumStake: BigNumber;
     private exitPeriod: BigNumber;
     private challengePeriod: BigNumber;
-    private stakeholderCut: BigNumber;
+    private stakeholderProportionPPM: BigNumber;
+    private slashableProportionPPM: BigNumber;
     private commitPeriod: BigNumber;
     private applicationPeriod: BigNumber;
     private rewardPeriod: BigNumber;
@@ -52,10 +53,11 @@ export class TestHelpers {
 
     private async init(): Promise<void> {
         this.accounts = await this.web3Wrapper.getAvailableAddressesAsync();
-        this.minimumBalance = await this.migratedContracts.validatorRegistry.minimumBalance.callAsync();
+        this.minimumStake = await this.migratedContracts.validatorRegistry.minimumStake.callAsync();
         this.exitPeriod = await this.migratedContracts.validatorRegistry.exitPeriod.callAsync();
         this.challengePeriod = await this.migratedContracts.validatorRegistry.challengePeriod.callAsync();
-        this.stakeholderCut = await this.migratedContracts.validatorRegistry.stakeholderCut.callAsync();
+        this.stakeholderProportionPPM = await this.migratedContracts.validatorRegistry.stakeholderProportionPPM.callAsync();
+        this.slashableProportionPPM = await this.migratedContracts.validatorRegistry.slashableProportionPPM.callAsync();
         this.commitPeriod = await this.migratedContracts.validatorRegistry.commitPeriod.callAsync();
         this.rewardPeriod = await this.migratedContracts.validatorRegistry.rewardPeriod.callAsync();
         this.applicationPeriod = await this.migratedContracts.validatorRegistry.applicationPeriod.callAsync();
@@ -166,12 +168,12 @@ export class TestHelpers {
         const { stake, reward, details } = options;
         await this.migratedContracts.kosuToken.approve.awaitTransactionSuccessAsync(
             this.migratedContracts.treasury.address,
-            stake || this.minimumBalance,
+            stake || this.minimumStake,
             options,
         );
         const result = await this.migratedContracts.validatorRegistry.registerListing.awaitTransactionSuccessAsync(
             tendermintPublicKey,
-            stake || this.minimumBalance,
+            stake || this.minimumStake,
             reward || new BigNumber("0"),
             details || "details",
             options,
@@ -288,8 +290,16 @@ export class TestHelpers {
     public async toStakeholderCut(value: string | number | BigNumber): Promise<string> {
         await this.initializing;
         return new BigNumber(value)
-            .times(new BigNumber(this.stakeholderCut))
-            .div(new BigNumber("100"))
+            .times(new BigNumber(this.stakeholderProportionPPM))
+            .div(new BigNumber("1000000"))
+            .toString();
+    }
+
+    public async toAtStakeBalance(value: string | number | BigNumber): Promise<string> {
+        await this.initializing;
+        return new BigNumber(value)
+            .times(this.slashableProportionPPM)
+            .div(new BigNumber("1000000"))
             .toString();
     }
 
