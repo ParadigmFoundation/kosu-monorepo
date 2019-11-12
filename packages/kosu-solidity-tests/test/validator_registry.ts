@@ -8,9 +8,9 @@ import {
     ValidatorRegistryContract,
     VotingContract,
 } from "@kosu/system-contracts";
+import {Challenge, Listing} from "@kosu/types";
 import { decodeKosuEvents } from "@kosu/utils";
-import { ContractArtifact } from "ethereum-types";
-import { padRight, soliditySha3, stringToHex, toTwosComplement, toWei } from "web3-utils";
+import { padRight, soliditySha3, stringToHex, toTwosComplement } from "web3-utils";
 
 describe("ValidatorRegistry", async () => {
     const base64Key: string = "x6899Z4PYjavGaaEBt8jk0Y/3HF5GiR1duDld66IlxM=";
@@ -21,8 +21,8 @@ describe("ValidatorRegistry", async () => {
     const salt = new BigNumber("42");
     const vote0 = new BigNumber("0");
     const vote1 = new BigNumber("1");
-    const secret0 = soliditySha3({ t: "uint", v: "0" }, { t: "uint", v: salt });
-    const secret1 = soliditySha3({ t: "uint", v: "1" }, { t: "uint", v: salt });
+    const secret0 = soliditySha3({ t: "uint", v: "0" }, { t: "uint", v: salt.toString() });
+    const secret1 = soliditySha3({ t: "uint", v: "1" }, { t: "uint", v: salt.toString() });
 
     let validatorRegistry: ValidatorRegistryContract;
     let kosuToken: KosuTokenContract;
@@ -34,8 +34,8 @@ describe("ValidatorRegistry", async () => {
     let rewardPeriod: BigNumber;
     let challengePeriod: BigNumber;
     let commitPeriod: BigNumber;
-    let minimumBalance: BigNumber;
-    let stakeholderCut: BigNumber;
+    let minimumStake: BigNumber;
+    let stakeholderProportionPPM: BigNumber;
     let publicKeys: string[];
     let publicKeysBase64: string[];
 
@@ -51,8 +51,8 @@ describe("ValidatorRegistry", async () => {
         applicationPeriod = await validatorRegistry.applicationPeriod.callAsync();
         exitPeriod = await validatorRegistry.exitPeriod.callAsync();
         rewardPeriod = await validatorRegistry.rewardPeriod.callAsync();
-        minimumBalance = await validatorRegistry.minimumBalance.callAsync();
-        stakeholderCut = await validatorRegistry.stakeholderCut.callAsync();
+        minimumStake = await validatorRegistry.minimumStake.callAsync();
+        stakeholderProportionPPM = await validatorRegistry.stakeholderProportionPPM.callAsync();
         challengePeriod = await validatorRegistry.challengePeriod.callAsync();
         commitPeriod = await validatorRegistry.commitPeriod.callAsync();
     });
@@ -80,7 +80,7 @@ describe("ValidatorRegistry", async () => {
                 TestValues.oneWei,
             );
 
-            txReceipt.gasUsed.should.be.lt(5600000);
+            txReceipt.gasUsed.should.be.lt(5700000);
         });
     });
 
@@ -105,13 +105,13 @@ describe("ValidatorRegistry", async () => {
     describe("monolithic test", () => {
         before(async () => {
             for (const account of accounts) {
-                await kosuToken.transfer.awaitTransactionSuccessAsync(account, minimumBalance.multipliedBy(10));
+                await kosuToken.transfer.awaitTransactionSuccessAsync(account, minimumStake.multipliedBy(10));
                 await kosuToken.approve.awaitTransactionSuccessAsync(
                     treasury.address,
-                    minimumBalance.multipliedBy(10),
+                    minimumStake.multipliedBy(10),
                     { from: account },
                 );
-                await treasury.deposit.awaitTransactionSuccessAsync(minimumBalance.multipliedBy(10), { from: account });
+                await treasury.deposit.awaitTransactionSuccessAsync(minimumStake.multipliedBy(10), { from: account });
             }
         });
 
@@ -125,15 +125,15 @@ describe("ValidatorRegistry", async () => {
         it("should optimize coverage and runtime", async () => {
             // should fail with less tokens than minimum
             await validatorRegistry.registerListing
-                .callAsync(publicKeys[0], minimumBalance.minus(new BigNumber("1")), TestValues.zero, paradigmMarket)
+                .callAsync(publicKeys[0], minimumStake.minus(new BigNumber("1")), TestValues.zero, paradigmMarket)
                 .should.eventually.be.rejected.and.have.property("message")
-                .that.includes("must register with at least minimum balance");
+                .that.include("must register with at least minimum balance");
 
             // should fail when you try to generate too many tokens
             await validatorRegistry.registerListing
                 .callAsync(
                     publicKeys[0],
-                    minimumBalance,
+                    minimumStake,
                     (await validatorRegistry.maxRewardRate.callAsync()).plus(new BigNumber("1")),
                     paradigmMarket,
                 )
@@ -142,7 +142,7 @@ describe("ValidatorRegistry", async () => {
 
             const listingRegister0 = await validatorRegistry.registerListing.awaitTransactionSuccessAsync(
                 publicKeys[0],
-                minimumBalance,
+                minimumStake,
                 TestValues.zero,
                 paradigmMarket,
                 { from: accounts[0] },
@@ -150,7 +150,7 @@ describe("ValidatorRegistry", async () => {
 
             const listingRegister1 = await validatorRegistry.registerListing.awaitTransactionSuccessAsync(
                 publicKeys[1],
-                minimumBalance,
+                minimumStake,
                 await validatorRegistry.maxRewardRate.callAsync(),
                 paradigmMarket,
                 { from: accounts[1] },
@@ -158,7 +158,7 @@ describe("ValidatorRegistry", async () => {
 
             const listingRegister2 = await validatorRegistry.registerListing.awaitTransactionSuccessAsync(
                 publicKeys[2],
-                minimumBalance,
+                minimumStake,
                 new BigNumber("-1"),
                 paradigmMarket,
                 { from: accounts[2] },
@@ -166,7 +166,7 @@ describe("ValidatorRegistry", async () => {
 
             const listingRegister3 = await validatorRegistry.registerListing.awaitTransactionSuccessAsync(
                 publicKeys[3],
-                minimumBalance,
+                minimumStake,
                 TestValues.oneEther.multipliedBy("-1"),
                 paradigmMarket,
                 { from: accounts[3] },
@@ -174,7 +174,7 @@ describe("ValidatorRegistry", async () => {
 
             const listingRegister4 = await validatorRegistry.registerListing.awaitTransactionSuccessAsync(
                 publicKeys[4],
-                minimumBalance,
+                minimumStake,
                 TestValues.zero,
                 paradigmMarket,
                 { from: accounts[4] },
@@ -182,7 +182,7 @@ describe("ValidatorRegistry", async () => {
 
             const listingRegister5 = await validatorRegistry.registerListing.awaitTransactionSuccessAsync(
                 publicKeys[5],
-                minimumBalance,
+                minimumStake,
                 await validatorRegistry.maxRewardRate.callAsync(),
                 paradigmMarket,
                 { from: accounts[5] },
@@ -194,13 +194,14 @@ describe("ValidatorRegistry", async () => {
             allListings.forEach(listing => {
                 publicKeys.should.contain(listing.tendermintPublicKey);
                 accounts.should.contain(listing.owner);
-                minimumBalance.lte(listing.stakedBalance).should.eq(true);
-                listing.status.should.eq(1);
+                minimumStake.lte(listing.stakedBalance).should.eq(true, "have enough stake");
+                listing.status.should.eq(1, "are pending listings");
             });
 
             // listingKeys should return a list of listing keys
             const validators = await validatorRegistry.listingKeys.callAsync();
             // Keys are hex bytes32 padding these addresses to match the bytes32 output
+            // @ts-ignore
             validators.should.containSubset(publicKeys.slice(0, 5));
 
             // should emit a ValidatorRegistered event
@@ -268,13 +269,13 @@ describe("ValidatorRegistry", async () => {
             listing0Pending.rewardRate.toString().should.eq("0", "should be initialized correctly - rewardRate");
             listing0Pending.stakedBalance
                 .toString()
-                .should.eq(minimumBalance.toString(), "should be initialized correctly - stakedBalance");
+                .should.eq(minimumStake.toString(), "should be initialized correctly - stakedBalance");
             listing0Pending.status.should.eq(1, "should be initialized correctly - status");
             listing0Pending.details.should.eq(paradigmMarket, "should be initialized correctly - details");
 
             // should fail when you try to overwrite a listing.
             await validatorRegistry.registerListing
-                .callAsync(publicKeys[0], minimumBalance, TestValues.zero, paradigmMarket)
+                .callAsync(publicKeys[0], minimumStake, TestValues.zero, paradigmMarket)
                 .should.eventually.be.rejected.and.have.property("message")
                 .that.include("listing with public key exists", "should fail when you try to overwrite a listing");
 
@@ -290,7 +291,7 @@ describe("ValidatorRegistry", async () => {
             await validatorRegistry.confirmListing.awaitTransactionSuccessAsync(publicKeys[1], { from: accounts[1] })
                 .should.eventually.be.fulfilled;
             const newMaxRewardRate = await validatorRegistry.maxRewardRate.callAsync();
-            newMaxRewardRate.gt(oldMaxRewardRate).should.eq(true);
+            newMaxRewardRate.gt(oldMaxRewardRate).should.eq(true, "should increase maxRewardRate");
 
             // confirm listing 4
             await testHelpers.skipApplicationPeriod(listingRegister4.blockNumber);
@@ -335,11 +336,11 @@ describe("ValidatorRegistry", async () => {
                 .should.eventually.be.rejected.and.have.property("message")
                 .that.include("listing not accepted");
 
-            listingChallenge0DecodedLogs.eventType.should.eq("ValidatorChallenged");
-            listingChallenge0DecodedLogs.challenger.should.eq(accounts[9].toLowerCase());
-            listingChallenge0DecodedLogs.owner.should.eq(accounts[0].toLowerCase());
-            listingChallenge0DecodedLogs.pollId.should.eq(challenge0PollId.toString());
-            listingChallenge0DecodedLogs.details.should.eq(paradigmMarket);
+            listingChallenge0DecodedLogs.eventType.should.eq("ValidatorChallenged", "should be a challenged event");
+            listingChallenge0DecodedLogs.challenger.should.eq(accounts[9].toLowerCase(), "ChallengedEvent should be from accounts[9");
+            listingChallenge0DecodedLogs.owner.should.eq(accounts[0].toLowerCase(), "ChallengedEvent should be against accounts[0]");
+            listingChallenge0DecodedLogs.pollId.should.eq(challenge0PollId.toString(), "ChallengedEvent should expose pollId");
+            listingChallenge0DecodedLogs.details.should.eq(paradigmMarket, "ChallengedEvent should have details");
 
             // 0 failed challenge
             await voting.commitVote.awaitTransactionSuccessAsync(
@@ -416,11 +417,11 @@ describe("ValidatorRegistry", async () => {
             initialChallengerSystemBalance
                 .minus(finalChallengerSystemBalance)
                 .toString()
-                .should.eq(minimumBalance.toString());
+                .should.eq(await testHelpers.toAtStakeBalance(minimumStake));
             finalListingHolderSystemBalance
                 .minus(initialListingHolderSystemBalance)
                 .toString()
-                .should.eq(await testHelpers.toStakeholderCut(minimumBalance));
+                .should.eq(await testHelpers.toStakeholderCut(await testHelpers.toAtStakeBalance(minimumStake)));
 
             // resolve challenge 1
             await validatorRegistry.resolveChallenge.awaitTransactionSuccessAsync(publicKeys[1]).should.eventually.be
@@ -502,7 +503,7 @@ describe("ValidatorRegistry", async () => {
             listing4PostExitBalance
                 .minus(listing4PreExitBalance)
                 .toString()
-                .should.eq(minimumBalance.toString());
+                .should.eq(minimumStake.toString());
 
             const listing4PostExit = await validatorRegistry.getListing.callAsync(publicKeys[4]);
 
@@ -516,7 +517,7 @@ describe("ValidatorRegistry", async () => {
     });
 
     describe("challengeListing", () => {
-        it("should touch and remove a listing when the stakedBalance is below minimumBalance");
+        it("should touch and remove a listing when the stakedBalance is below minimumStake");
     });
 
     describe("resolveChallenge", () => {
@@ -525,7 +526,7 @@ describe("ValidatorRegistry", async () => {
         });
 
         it("should correctly finalize a failed challenge", async () => {
-            await testHelpers.prepareTokens(accounts[1], minimumBalance);
+            await testHelpers.prepareTokens(accounts[1], minimumStake);
             await testHelpers.prepareTokens(accounts[2], TestValues.fiveEther);
             const { blockNumber, logs } = await validatorRegistry.challengeListing.awaitTransactionSuccessAsync(
                 tendermintPublicKey,
@@ -566,15 +567,15 @@ describe("ValidatorRegistry", async () => {
             initialChallengerSystemBalance
                 .minus(finalChallengerSystemBalance)
                 .toString()
-                .should.eq(minimumBalance.toString());
+                .should.eq(await testHelpers.toAtStakeBalance(minimumStake));
             finalListingHolderSystemBalance
                 .minus(initialListingHolderSystemBalance)
                 .toString()
-                .should.eq(await testHelpers.toStakeholderCut(minimumBalance));
+                .should.eq(await testHelpers.toStakeholderCut(await testHelpers.toAtStakeBalance(minimumStake)));
             finalListingHolderCurrentBalance
                 .minus(initialListingHolderCurrentBalance)
                 .toString()
-                .should.eq(await testHelpers.toStakeholderCut(minimumBalance));
+                .should.eq(await testHelpers.toStakeholderCut(await testHelpers.toAtStakeBalance(minimumStake)));
 
             await validatorRegistry.claimWinnings.awaitTransactionSuccessAsync(new BigNumber(challengeId), {
                 from: accounts[1],
@@ -589,7 +590,7 @@ describe("ValidatorRegistry", async () => {
         });
 
         it("should correctly finalize a failed challenge on an exiting listing", async () => {
-            await testHelpers.prepareTokens(accounts[1], minimumBalance);
+            await testHelpers.prepareTokens(accounts[1], minimumStake);
             await testHelpers.prepareTokens(accounts[2], TestValues.fiveEther);
             await validatorRegistry.confirmListing.awaitTransactionSuccessAsync(tendermintPublicKey);
             await validatorRegistry.initExit.awaitTransactionSuccessAsync(tendermintPublicKey);
@@ -628,17 +629,17 @@ describe("ValidatorRegistry", async () => {
             initialChallengerSystemBalance
                 .minus(finalChallengerSystemBalance)
                 .toString()
-                .should.eq(minimumBalance.toString());
+                .should.eq(await testHelpers.toAtStakeBalance(minimumStake));
             finalListingHolderSystemBalance
                 .minus(initialListingHolderSystemBalance)
                 .toString()
-                .should.eq(await testHelpers.toStakeholderCut(minimumBalance));
+                .should.eq(await testHelpers.toStakeholderCut(await testHelpers.toAtStakeBalance(minimumStake)));
             finalListingHolderCurrentBalance
                 .minus(initialListingHolderCurrentBalance)
                 .toString()
                 .should.eq(
-                    new BigNumber(await testHelpers.toStakeholderCut(minimumBalance))
-                        .plus(new BigNumber(minimumBalance))
+                    new BigNumber(await testHelpers.toStakeholderCut(await testHelpers.toAtStakeBalance(minimumStake)))
+                        .plus(new BigNumber(minimumStake))
                         .toString(),
                 );
 
@@ -655,7 +656,7 @@ describe("ValidatorRegistry", async () => {
         });
 
         it("should correctly finalize a failed challenge on a pending listing", async () => {
-            await testHelpers.prepareTokens(accounts[1], minimumBalance);
+            await testHelpers.prepareTokens(accounts[1], minimumStake);
             await testHelpers.prepareTokens(accounts[2], TestValues.fiveEther);
             const { blockNumber, logs } = await validatorRegistry.challengeListing.awaitTransactionSuccessAsync(
                 tendermintPublicKey,
@@ -696,15 +697,15 @@ describe("ValidatorRegistry", async () => {
             initialChallengerSystemBalance
                 .minus(finalChallengerSystemBalance)
                 .toString()
-                .should.eq(minimumBalance.toString());
+                .should.eq(await testHelpers.toAtStakeBalance(minimumStake));
             finalListingHolderSystemBalance
                 .minus(initialListingHolderSystemBalance)
                 .toString()
-                .should.eq(await testHelpers.toStakeholderCut(minimumBalance));
+                .should.eq(await testHelpers.toStakeholderCut(await testHelpers.toAtStakeBalance(minimumStake)));
             finalListingHolderCurrentBalance
                 .minus(initialListingHolderCurrentBalance)
                 .toString()
-                .should.eq(await testHelpers.toStakeholderCut(minimumBalance));
+                .should.eq(await testHelpers.toStakeholderCut(await testHelpers.toAtStakeBalance(minimumStake)));
 
             await validatorRegistry.claimWinnings.awaitTransactionSuccessAsync(new BigNumber(challengeId), {
                 from: accounts[1],
@@ -728,7 +729,7 @@ describe("ValidatorRegistry", async () => {
         });
 
         it("should succeed but deliver zero tokens if the user did not vote", async () => {
-            await testHelpers.prepareTokens(accounts[1], minimumBalance);
+            await testHelpers.prepareTokens(accounts[1], minimumStake);
             await testHelpers.prepareTokens(accounts[2], TestValues.fiveEther);
             await validatorRegistry.confirmListing.awaitTransactionSuccessAsync(tendermintPublicKey);
             await validatorRegistry.initExit.awaitTransactionSuccessAsync(tendermintPublicKey);
@@ -787,7 +788,7 @@ describe("ValidatorRegistry", async () => {
         });
 
         it("should succeed but deliver zero tokens if the user voted for the looser", async () => {
-            await testHelpers.prepareTokens(accounts[1], minimumBalance);
+            await testHelpers.prepareTokens(accounts[1], minimumStake);
             await testHelpers.prepareTokens(accounts[2], TestValues.fiveEther);
             await testHelpers.prepareTokens(accounts[5], TestValues.fiveEther);
             await validatorRegistry.confirmListing.awaitTransactionSuccessAsync(tendermintPublicKey);
@@ -853,7 +854,7 @@ describe("ValidatorRegistry", async () => {
         });
 
         it("should correctly distribute the winnings", async () => {
-            await testHelpers.prepareTokens(accounts[1], minimumBalance);
+            await testHelpers.prepareTokens(accounts[1], minimumStake);
             await testHelpers.prepareTokens(accounts[2], TestValues.oneEther);
             await testHelpers.prepareTokens(accounts[5], TestValues.fiveEther);
             await validatorRegistry.confirmListing.awaitTransactionSuccessAsync(tendermintPublicKey);
@@ -897,14 +898,15 @@ describe("ValidatorRegistry", async () => {
             const finalVoterSystemBalance = await treasury.systemBalance.callAsync(accounts[5]);
             const finalVoterCurrentBalance = await treasury.currentBalance.callAsync(accounts[5]);
 
+            const atStake = new BigNumber(await testHelpers.toAtStakeBalance(minimumStake));
             finalVoterSystemBalance
                 .minus(initialVoterSystemBalance)
                 .toString()
-                .should.eq(minimumBalance.minus(await testHelpers.toStakeholderCut(minimumBalance)).toString());
+                .should.eq(atStake.minus(await testHelpers.toStakeholderCut(atStake)).toString(), "a");
             finalVoterCurrentBalance
                 .minus(initialVoterCurrentBalance)
                 .toString()
-                .should.eq(minimumBalance.minus(await testHelpers.toStakeholderCut(minimumBalance)).toString());
+                .should.eq(atStake.minus(await testHelpers.toStakeholderCut(atStake)).toString(), "ab");
 
             await validatorRegistry.claimWinnings.awaitTransactionSuccessAsync(new BigNumber(challengeId), {
                 from: accounts[1],
@@ -918,7 +920,7 @@ describe("ValidatorRegistry", async () => {
         });
 
         it("should finalize a un-final challenge", async () => {
-            await testHelpers.prepareTokens(accounts[1], minimumBalance);
+            await testHelpers.prepareTokens(accounts[1], minimumStake);
             await testHelpers.prepareTokens(accounts[2], TestValues.fiveEther);
             await testHelpers.prepareTokens(accounts[5], TestValues.fiveEther);
             await validatorRegistry.confirmListing.awaitTransactionSuccessAsync(tendermintPublicKey);
@@ -965,17 +967,17 @@ describe("ValidatorRegistry", async () => {
             initialChallengerSystemBalance
                 .minus(finalChallengerSystemBalance)
                 .toString()
-                .should.eq(minimumBalance.toString());
+                .should.eq(await testHelpers.toAtStakeBalance(minimumStake));
             finalListingHolderSystemBalance
                 .minus(initialListingHolderSystemBalance)
                 .toString()
-                .should.eq(await testHelpers.toStakeholderCut(minimumBalance));
+                .should.eq(await testHelpers.toStakeholderCut(await testHelpers.toAtStakeBalance(minimumStake)));
             finalListingHolderCurrentBalance
                 .minus(initialListingHolderCurrentBalance)
                 .toString()
                 .should.eq(
-                    new BigNumber(await testHelpers.toStakeholderCut(minimumBalance))
-                        .plus(new BigNumber(minimumBalance))
+                    new BigNumber(await testHelpers.toStakeholderCut(await testHelpers.toAtStakeBalance(minimumStake)))
+                        .plus(new BigNumber(minimumStake))
                         .toString(),
                 );
 
@@ -992,7 +994,7 @@ describe("ValidatorRegistry", async () => {
         });
 
         it("should fail if the challenge has not ended", async () => {
-            await testHelpers.prepareTokens(accounts[1], minimumBalance);
+            await testHelpers.prepareTokens(accounts[1], minimumStake);
             await testHelpers.prepareTokens(accounts[2], TestValues.fiveEther);
             await testHelpers.prepareTokens(accounts[5], TestValues.fiveEther);
             await validatorRegistry.confirmListing.awaitTransactionSuccessAsync(tendermintPublicKey);
@@ -1051,12 +1053,12 @@ describe("ValidatorRegistry", async () => {
         describe("generate", () => {
             const reward = new BigNumber("1000000");
             beforeEach(async () => {
-                await kosuToken.approve.awaitTransactionSuccessAsync(treasury.address, minimumBalance, {
+                await kosuToken.approve.awaitTransactionSuccessAsync(treasury.address, minimumStake, {
                     from: accounts[1],
                 });
                 const { blockNumber } = await validatorRegistry.registerListing.awaitTransactionSuccessAsync(
                     tendermintPublicKey,
-                    minimumBalance,
+                    minimumStake,
                     reward,
                     paradigmMarket,
                     {
@@ -1098,12 +1100,12 @@ describe("ValidatorRegistry", async () => {
             const reward = new BigNumber("-1000000000000000000");
 
             it("should burn up to all the staked balance", async () => {
-                await testHelpers.ensureTokenBalance(accounts[1], minimumBalance.times(2));
+                await testHelpers.ensureTokenBalance(accounts[1], minimumStake.times(2));
                 const tokenBurnAmount = await kosuToken.estimateEtherToToken.callAsync(reward.multipliedBy("-1"));
-                await kosuToken.approve.awaitTransactionSuccessAsync(treasury.address, minimumBalance.times(2), {
+                await kosuToken.approve.awaitTransactionSuccessAsync(treasury.address, minimumStake.times(2), {
                     from: accounts[1],
                 });
-                await treasury.deposit.awaitTransactionSuccessAsync(minimumBalance.plus(tokenBurnAmount), {
+                await treasury.deposit.awaitTransactionSuccessAsync(minimumStake.plus(tokenBurnAmount), {
                     from: accounts[1],
                 });
 
@@ -1112,7 +1114,7 @@ describe("ValidatorRegistry", async () => {
 
                 const { blockNumber } = await validatorRegistry.registerListing.awaitTransactionSuccessAsync(
                     tendermintPublicKey,
-                    minimumBalance,
+                    minimumStake,
                     reward,
                     paradigmMarket,
                     {
@@ -1125,7 +1127,7 @@ describe("ValidatorRegistry", async () => {
 
                 preRegisterCurrentBalance
                     .minus(postRegisterCurrentBalance)
-                    .eq(minimumBalance)
+                    .eq(minimumStake)
                     .should.eq(true, "Stake correctly claimed");
                 preRegisterSystemBalance
                     .eq(postRegisterSystemBalance)
@@ -1144,7 +1146,7 @@ describe("ValidatorRegistry", async () => {
 
                 preRegisterCurrentBalance
                     .minus(postConfirmCurrentBalance)
-                    .eq(minimumBalance.plus(tokenBurnAmount))
+                    .eq(minimumStake.plus(tokenBurnAmount))
                     .should.eq(true, "Confirmation burn failure");
                 preRegisterSystemBalance
                     .minus(postConfirmSystemBalance)
@@ -1171,7 +1173,7 @@ describe("ValidatorRegistry", async () => {
                     .should.eq(true, "Burn multiple reward periods - System");
 
                 const tokenBurnEstimate3 = await kosuToken.estimateEtherToToken.callAsync(reward.multipliedBy("-1"));
-                const periodsNeeded = minimumBalance
+                const periodsNeeded = minimumStake
                     .dividedBy(tokenBurnEstimate3)
                     .times(1.3)
                     .dividedToIntegerBy(1);
@@ -1184,11 +1186,11 @@ describe("ValidatorRegistry", async () => {
 
                 preRegisterCurrentBalance
                     .minus(postClaimCurrentBalance)
-                    .eq(tokenBurnAmount.plus(minimumBalance))
+                    .eq(tokenBurnAmount.plus(minimumStake))
                     .should.eq(true, "Burned all the test tokens - Current");
                 preRegisterSystemBalance
                     .minus(postClaimSystemBalance)
-                    .eq(tokenBurnAmount.plus(minimumBalance))
+                    .eq(tokenBurnAmount.plus(minimumStake))
                     .should.eq(true, "Burned all the test tokens - System");
 
                 // should touch and remove listing
@@ -1249,14 +1251,15 @@ describe("ValidatorRegistry", async () => {
             "challengePeriod",
             "exitPeriod",
             "rewardPeriod",
-            "minimumBalance",
-            "stakeholderCut",
+            "minimumStake",
+            "stakeholderProportionPPM",
             "minMaxGenerator",
             "maxGeneratorGrowth",
             "maxMaxGenerator",
             "exitLockPeriod",
             "winningVoteLockPeriod",
             "losingVoteLockPeriod",
+            "slashableProportionPPM",
         ].forEach((method, index) => {
             it(`should correctly set a new ${method}`, async () => {
                 const originalValue = await validatorRegistry[method].callAsync();
@@ -1334,7 +1337,7 @@ describe("ValidatorRegistry", async () => {
             decodedLogs[1].eventType.should.eq("ValidatorRegistryUpdate");
             decodedLogs[1].tendermintPublicKey.should.eq(base64Key);
             decodedLogs[1].owner.should.eq(accounts[0].toLowerCase());
-            decodedLogs[1].stake.should.eq(minimumBalance.toString());
+            decodedLogs[1].stake.should.eq(minimumStake.toString());
 
             await testHelpers.exitListing(tendermintPublicKey);
         });
