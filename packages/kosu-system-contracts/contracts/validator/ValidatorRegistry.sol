@@ -66,7 +66,7 @@ contract ValidatorRegistry is Ownable {
     uint public winningVoteLockPeriod;
     uint public losingVoteLockPeriod;
     uint public minimumBalance = 500 ether;
-    uint public stakeholderCut = 30; // Will be used as a percent so must be sub 100
+    uint public stakeholderProportionPPM = 300000;
     uint public minMaxGenerator = 1 ether / 10;
     uint public maxGeneratorGrowth = 5 ether / 1000;
     uint public maxMaxGenerator = 2 ether / 10;
@@ -309,7 +309,7 @@ contract ValidatorRegistry is Ownable {
         uint winningOption = voting.winningOption(challenge.pollId);
 
         //calculate the holders cut
-        uint holderCut = listing.stakedBalance.mul(stakeholderCut).div(100);
+        uint holderCut = challenge.balance.mul(stakeholderProportionPPM).div(MILLION);
         challenge.voterTotal = listing.stakedBalance.sub(holderCut);
 
         if (winningOption == 1) {
@@ -546,7 +546,7 @@ contract ValidatorRegistry is Ownable {
         } else if (index == 5) {
             minimumBalance = value;
         } else if (index == 6) {
-            stakeholderCut = value;
+            stakeholderProportionPPM = value;
         } else if (index == 7) {
             minMaxGenerator = value;
         } else if (index == 8) {
