@@ -107,7 +107,7 @@ contract ValidatorRegistry is Ownable {
         challengePeriod = _challengePeriod;
         exitPeriod = _exitPeriod;
         rewardPeriod = _rewardPeriod;
-        exitLockPeriod = _exitLockPeriod; //TODO initialize with this
+        exitLockPeriod = _exitLockPeriod;
         winningVoteLockPeriod = _winningVoteLockPeriod;
         losingVoteLockPeriod = _losingVoteLockPeriod;
     }
