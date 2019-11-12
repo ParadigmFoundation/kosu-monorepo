@@ -65,7 +65,7 @@ contract ValidatorRegistry is Ownable {
     uint public exitLockPeriod;
     uint public winningVoteLockPeriod;
     uint public losingVoteLockPeriod;
-    uint public minimumBalance = 500 ether;
+    uint public minimumStake = 500 ether;
     uint public stakeholderProportionPPM = 300000;
     uint public minMaxGenerator = 1 ether / 10;
     uint public maxGeneratorGrowth = 5 ether / 1000;
@@ -217,8 +217,8 @@ contract ValidatorRegistry is Ownable {
         @param details A string value to represent support for claim (commonly an external link).
     */
     function registerListing(bytes32 tendermintPublicKey, uint tokensToStake, int rewardRate, string calldata details) external {
-        //tokensToStake must be greater than or equal to _minimumBalance
-        require(tokensToStake >= minimumBalance, "must register with at least minimum balance");
+        //tokensToStake must be greater than or equal to minimumStake
+        require(tokensToStake >= minimumStake, "must register with at least minimum balance");
 
         //Claim tokens from the treasury
         treasury.claimTokens(msg.sender, tokensToStake);
@@ -542,7 +542,7 @@ contract ValidatorRegistry is Ownable {
         } else if (index == 4) {
             rewardPeriod = value;
         } else if (index == 5) {
-            minimumBalance = value;
+            minimumStake = value;
         } else if (index == 6) {
             stakeholderProportionPPM = value;
         } else if (index == 7) {
