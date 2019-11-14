@@ -1,0 +1,100 @@
+{
+  "genesis_time": "2019-10-31T21:00:00.000Z",
+  "chain_id": "kosu-wormhole-14",
+  "validators": [
+    {
+      "address": "2A7141DE6B90A0DBDD481D658CBB6AC622312E9F",
+      "pub_key": {
+        "type": "tendermint/PubKeyEd25519",
+        "value": "VV6/iQmquEoMniedGnqmGXEdrn4fGc1nktXSHV+KloY="
+      },
+      "name": "worm-1 fixed",
+      "power": "1"
+    },
+    {
+      "address": "B4EB2E1E9F28CF8795F067C91C2CD8C3F6319015",
+      "pub_key": {
+        "type": "tendermint/PubKeyEd25519",
+        "value": "Nnn6fVLFx1j68Gbzj37hWXj6RT1cIQViJUO2GdClVW0="
+      },
+      "name": "worm-2 fixed",
+      "power": "1"
+    },
+    {
+      "address": "6440674988F5BDE4423D4D7DDB3E8B1C9680DF1B",
+      "pub_key": {
+        "type": "tendermint/PubKeyEd25519",
+        "value": "sdopKz51LWnPVRbAv27aBVzqrB2MpMBQvH/ZEYxJDyg="
+      },
+      "name": "worm-4 fixed",
+      "power": "1"
+    },
+    {
+      "address": "A67307DF212B47B8327579FAB8CE76EB29447A8C",
+      "pub_key": {
+        "type": "tendermint/PubKeyEd25519",
+        "value": "aJKKvyoDVde9dbylb+QipQF0JIEmiTqPzdCeVbvDuzI="
+      },
+      "name": "worm-3 fixed",
+      "power": "1"
+    },
+    {
+      "address": "F92976DF6F6EBD646D2B1C510BB9ECBE94827588",
+      "pub_key": {
+        "type": "tendermint/PubKeyEd25519",
+        "value": "N0GhJ/6/Ebdt0ibQS8JvjoI8Ww7o7BOGn48DG50uMAI="
+      },
+      "name": "worm-5 fixed",
+      "power": "1"
+    }
+  ],
+  "app_hash": "",
+  "app_state": {
+    "initial_validator_info": [
+      {
+        "ethereum_address": "0x986fc23dba4ad032d55a7a37fbce2863ec274443",
+        "initial_stake": "2000000000000000000000",
+        "tendermint_address": "2A7141DE6B90A0DBDD481D658CBB6AC622312E9F"
+      },
+      {
+        "ethereum_address": "0x986fc23dba4ad032d55a7a37fbce2863ec274443",
+        "initial_stake": "2000000000000000000000",
+        "tendermint_address": "B4EB2E1E9F28CF8795F067C91C2CD8C3F6319015"
+      },
+      {
+        "ethereum_address": "0x986fc23dba4ad032d55a7a37fbce2863ec274443",
+        "initial_stake": "804000000000000000000",
+        "tendermint_address": "6440674988F5BDE4423D4D7DDB3E8B1C9680DF1B"
+      },
+      {
+        "ethereum_address": "0x986fc23dba4ad032d55a7a37fbce2863ec274443",
+        "initial_stake": "1205000000000000000000",
+        "tendermint_address": "A67307DF212B47B8327579FAB8CE76EB29447A8C"
+      },
+      {
+        "ethereum_address": "0x986fc23dba4ad032d55a7a37fbce2863ec274443",
+        "initial_stake": "2005000000000000000000",
+        "tendermint_address": "F92976DF6F6EBD646D2B1C510BB9ECBE94827588"
+      }
+    ],
+    "initial_poster_info": [
+      {
+        "ethereum_address": "0x986fc23dba4ad032d55a7a37fbce2863ec274443",
+        "balance": "299000000000000000000"
+      },
+      {
+        "ethereum_address": "0xb5000b48a787ab76727dc3bab85f7f4866f71ba9",
+        "balance": "25000000000000000000"
+      }
+    ],
+    "consensus_params": {
+      "finality_threshold": 5,
+      "period_limit": 150000,
+      "period_length": 10,
+      "max_order_bytes": 16384,
+      "blocks_before_pruning": 10,
+      "orders_limit": 1000,
+      "snapshot_block": 6684000
+    }
+  }
+}

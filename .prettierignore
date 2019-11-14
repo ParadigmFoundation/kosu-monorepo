@@ -1,4 +1,5 @@
 packages/go-kosu/vendor/
+packages/go-kosu/share/
 packages/kosu-system-contracts/test/dist/
 packages/kosu-system-contracts/generated-artifacts/
 packages/kosu-system-contracts/generated-wrappers/

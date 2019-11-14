@@ -131,7 +131,7 @@ platform:
   arch: amd64
 
 steps:
-- name: release
+- name: yarn
   pull: always
   image: gcr.io/kosu-io/node-ci:latest
   commands:
@@ -148,11 +148,6 @@ steps:
       from_secret: npm_password
     NPM_USER:
       from_secret: npm_user
-  when:
-    event:
-    - tag
-    status:
-    - success
 
 - name: gorelease
   pull: always
@@ -167,6 +162,40 @@ steps:
   when:
     ref:
     - refs/tags/@kosu/go-kosu*
+  depends_on:
+  - yarn
+
+- name: docker
+  image: plugins/gcr
+  settings:
+    context: ./packages/go-kosu
+    dockerfile: ./packages/go-kosu/Dockerfile.binaries
+    json_key:
+      from_secret: google_credentials
+    registry: gcr.io
+    repo: kosu-test-network/go-kosu
+    tags:
+    - latest
+  when:
+    ref:
+    - refs/tags/@kosu/go-kosu*
+  depends_on:
+  - gorelease
+
+- name: deploy
+  image: appleboy/drone-ssh
+  settings:
+    host: 34.68.74.152
+    key:
+      from_secret: ssh_ci_key
+    script:
+    - docker run --rm -d gcr.io/kosu-test-network/go-kosu kosud start
+    username: ci
+  when:
+    ref:
+    - refs/tags/@kosu/go-kosu*
+  depends_on:
+  - docker
 
 trigger:
   event:

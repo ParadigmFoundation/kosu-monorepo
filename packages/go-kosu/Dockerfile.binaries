@@ -1,0 +1,9 @@
+FROM golang:1.13
+
+COPY ./share .
+COPY kosud    /usr/bin
+COPY kosu-cli /usr/bin
+
+RUN kosud init
+RUN cp ./config.testnet.toml  /root/.kosu/config/config.toml
+RUN cp ./genesis.testnet.json /root/.kosu/config/genesis.json

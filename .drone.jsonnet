@@ -76,10 +76,11 @@ local KosuGeth(name) = Image(name, "kosu-test-geth:latest") {
     "kind": "pipeline",
     "name": "release",
     "trigger": {
-        "event": ["tag"]
+        "event": [ "tag" ],
     },
+	"depends_on": [ "tests" ],
     "steps": [
-        Image("release", "node-ci:latest") {
+        Image("yarn", "node-ci:latest") {
             "pull": "always",
             "commands": [
                 "yarn",
@@ -88,11 +89,7 @@ local KosuGeth(name) = Image(name, "kosu-test-geth:latest") {
                 "npm-cli-login",
                 "git checkout .",
                 "yarn lerna publish from-package --yes" 
-            ],
-            "when": {
-                "status": [ "success" ],
-                "event": [ "tag" ]
-            },
+			],
             "environment": {
                 "NPM_USER": { "from_secret": "npm_user" },
                 "NPM_EMAIL": { "from_secret": "npm_email" },
@@ -101,22 +98,51 @@ local KosuGeth(name) = Image(name, "kosu-test-geth:latest") {
             },
         },
 		Image("gorelease", "go-kosu") {
-			"commands": [
+			commands: [
 				"git fetch --tags",
 				"cd ./packages/go-kosu",
 				"curl -sL https://git.io/goreleaser | bash -s -- --skip-validate"
 			],
-			"environment": {
+			environment: {
 				"GITHUB_TOKEN": { "from_secret": "github_token"  },
 			},
-			"when": {
-				"ref": {
-					"include": ["refs/tags/@kosu/go-kosu*"]
-				}
-			}
+			depends_on: [ "yarn" ],
+			when: { ref: { include: ["refs/tags/@kosu/go-kosu*"] } },
+		},
+		{
+			name: "docker",
+			image: "plugins/gcr",
+			depends_on: [ "gorelease" ],
+			settings: {
+				registry: "gcr.io",
+				repo: "kosu-test-network/go-kosu",
+				dockerfile: "./packages/go-kosu/Dockerfile.binaries",
+				context: "./packages/go-kosu",
+				json_key: {
+					from_secret: "google_credentials"
+				},
+				tags: [
+					"latest",
+				]
+			},
+			when: { ref: { include: ["refs/tags/@kosu/go-kosu*"] } },
+		},
+		{
+			name: "deploy",
+			image: "appleboy/drone-ssh",
+			depends_on: [ "docker" ],
+			settings: {
+				# Host is the IP address of CI machine @ kosu-test-network project from GCP
+				host: "34.68.74.152",
+				username: "ci",
+				key: {
+					from_secret: "ssh_ci_key"
+				},
+				script: [
+					"docker run --rm -d gcr.io/kosu-test-network/go-kosu kosud start"
+				]
+			},
+			when: { ref: { include: ["refs/tags/@kosu/go-kosu*"] } },
 		}
-    ],
-    "depends_on": [
-        "tests"
     ],
 }]
