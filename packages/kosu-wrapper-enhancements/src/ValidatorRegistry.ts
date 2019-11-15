@@ -100,19 +100,19 @@ export class ValidatorRegistry {
     }
 
     /**
-     * Reads the minimum balance
+     * Reads the minimum stake
      */
-    public async minimumBalance(): Promise<BigNumber> {
+    public async minimumStake(): Promise<BigNumber> {
         const contract = await this.getContract();
-        return contract.minimumBalance.callAsync();
+        return contract.minimumStake.callAsync();
     }
 
     /**
-     * Reads the stakeholder cut
+     * Reads the stakeholder proportion
      */
-    public async stakeholderCut(): Promise<BigNumber> {
+    public async stakeholderProportionPPM(): Promise<BigNumber> {
         const contract = await this.getContract();
-        return contract.stakeholderCut.callAsync();
+        return contract.stakeholderProportionPPM.callAsync();
     }
 
     /**
@@ -260,9 +260,12 @@ export class ValidatorRegistry {
         const listing: Listing = await this.getListing(_pubKey);
         const approval: BigNumber = await this.treasury.treasuryAllowance();
         const currentBalance: BigNumber = await this.treasury.currentBalance(this.coinbase);
+        const challengeableBalance: BigNumber = listing.stakedBalance
+            .multipliedBy(await this.contract.slashableProportionPPM.callAsync())
+            .dividedBy("1000000");
 
-        if (approval.plus(currentBalance).lt(listing.stakedBalance)) {
-            await this.treasury.approveTreasury(listing.stakedBalance.minus(currentBalance));
+        if (approval.plus(currentBalance).lt(challengeableBalance)) {
+            await this.treasury.approveTreasury(challengeableBalance.minus(currentBalance));
         }
 
         return contract.challengeListing.awaitTransactionSuccessAsync(_pubKey, _details);
