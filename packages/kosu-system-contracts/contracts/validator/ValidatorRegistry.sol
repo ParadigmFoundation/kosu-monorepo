@@ -65,8 +65,9 @@ contract ValidatorRegistry is Ownable {
     uint public exitLockPeriod;
     uint public winningVoteLockPeriod;
     uint public losingVoteLockPeriod;
-    uint public minimumBalance = 500 ether;
-    uint public stakeholderCut = 30; // Will be used as a percent so must be sub 100
+    uint public minimumStake = 500 ether;
+    uint public stakeholderProportionPPM = 300000;
+    uint public slashableProportionPPM = 100000;
     uint public minMaxGenerator = 1 ether / 10;
     uint public maxGeneratorGrowth = 5 ether / 1000;
     uint public maxMaxGenerator = 2 ether / 10;
@@ -79,7 +80,9 @@ contract ValidatorRegistry is Ownable {
     bytes32[] public _listingKeys;
     EventEmitter private eventEmitter;
     bytes32 _maxGenerator;
-    mapping(bytes32 => MaxList)_generators;
+    mapping(bytes32 => MaxList) _generators;
+
+    uint private MILLION = 1000000;
 
     /** @dev Initializes the ValidatorRegistry with chain based configuration for pacing and deployed addresses.
         @notice Initializes the ValidatorRegistry with chain based configuration for pacing and deployed addresses.
@@ -105,7 +108,7 @@ contract ValidatorRegistry is Ownable {
         challengePeriod = _challengePeriod;
         exitPeriod = _exitPeriod;
         rewardPeriod = _rewardPeriod;
-        exitLockPeriod = _exitLockPeriod; //TODO initialize with this
+        exitLockPeriod = _exitLockPeriod;
         winningVoteLockPeriod = _winningVoteLockPeriod;
         losingVoteLockPeriod = _losingVoteLockPeriod;
     }
@@ -215,8 +218,8 @@ contract ValidatorRegistry is Ownable {
         @param details A string value to represent support for claim (commonly an external link).
     */
     function registerListing(bytes32 tendermintPublicKey, uint tokensToStake, int rewardRate, string calldata details) external {
-        //tokensToStake must be greater than or equal to _minimumBalance
-        require(tokensToStake >= minimumBalance, "must register with at least minimum balance");
+        //tokensToStake must be greater than or equal to minimumStake
+        require(tokensToStake >= minimumStake, "must register with at least minimum balance");
 
         //Claim tokens from the treasury
         treasury.claimTokens(msg.sender, tokensToStake);
@@ -266,11 +269,12 @@ contract ValidatorRegistry is Ownable {
         //Create challenge
         Challenge storage challenge = _challenges[nextChallenge];
 
+        uint slashableBalance = listing.stakedBalance.mul(slashableProportionPPM).div(MILLION);
         //Pull tokens out of the treasury
-        treasury.claimTokens(msg.sender, listing.stakedBalance);
+        treasury.claimTokens(msg.sender, slashableBalance);
 
         //Initialize challenge.
-        challenge.balance = listing.stakedBalance;
+        challenge.balance = slashableBalance;
         challenge.challenger = msg.sender;
         challenge.listingKey = listing.tendermintPublicKey;
         challenge.challengeEnd = block.number + challengePeriod;
@@ -301,21 +305,23 @@ contract ValidatorRegistry is Ownable {
         //Must be currently challenged and after the end block but not finalized
         require(listing.status == Status.CHALLENGED, "listing is not challenged");
         require(block.number > challenge.challengeEnd, "challenge has not ended");
-        require(!challenge.finalized, "challenge has been finalized"); //TODO this would be a failure in the state machine and perhaps should be rmeoved
-        require(challenge.balance == listing.stakedBalance, "challenge balance has changed"); //TODO this would be a failure in the state machine and perhaps should be rmeoved
 
         uint winningOption = voting.winningOption(challenge.pollId);
 
         //calculate the holders cut
-        uint holderCut = listing.stakedBalance.mul(stakeholderCut).div(100);
-        challenge.voterTotal = listing.stakedBalance.sub(holderCut);
+        uint holderCut = challenge.balance.mul(stakeholderProportionPPM).div(MILLION);
+        challenge.voterTotal = challenge.balance.sub(holderCut);
 
         if (winningOption == 1) {
             challenge.passed = true;
             challenge.finalized = true;
 
-            //Challenger won listing owner looses the tokens
-            treasury.confiscate(listing.owner, listing.stakedBalance);
+            //Challenger won listing owner looses the slashable tokens
+            uint safeTokens = listing.stakedBalance.sub(challenge.balance);
+            treasury.confiscate(listing.owner, challenge.balance);
+            // Approve and release safe tokens
+            kosuToken.approve(address(treasury), safeTokens);
+            treasury.releaseTokens(listing.owner, safeTokens);
 
             //Approve and release tokens to treasury for successful challenger
             //Challenger receives his tokens back and cut of the listing balance.  Tokens available for distribution will be tracked in the challenge.balance
@@ -341,7 +347,7 @@ contract ValidatorRegistry is Ownable {
             }
 
             //Challenger lost and has lost the tokens.
-            treasury.confiscate(challenge.challenger, listing.stakedBalance);
+            treasury.confiscate(challenge.challenger, challenge.balance);
 
             //Approve and release tokens to treasury for the listing holder Remaning tokens
             challenge.balance = challenge.balance.sub(holderCut);
@@ -542,9 +548,9 @@ contract ValidatorRegistry is Ownable {
         } else if (index == 4) {
             rewardPeriod = value;
         } else if (index == 5) {
-            minimumBalance = value;
+            minimumStake = value;
         } else if (index == 6) {
-            stakeholderCut = value;
+            stakeholderProportionPPM = value;
         } else if (index == 7) {
             minMaxGenerator = value;
         } else if (index == 8) {
@@ -557,6 +563,8 @@ contract ValidatorRegistry is Ownable {
             winningVoteLockPeriod = value;
         } else if (index == 12) {
             losingVoteLockPeriod = value;
+        } else if (index == 13) {
+            slashableProportionPPM = value;
         } else {
             revert("Index does not match a value");
         }
@@ -697,7 +705,7 @@ contract ValidatorRegistry is Ownable {
         eventEmitter.emitEvent("ValidatorChallengeResolved", data, "");
     }
 
-    function _findGeneratorPlaceInList(int value) internal view returns (bytes32 previous, bytes32 next) {
+    function _findGeneratorPlaceInList(int value) internal view returns (bytes32, bytes32) {
         if (_maxGenerator == 0x0) {
             return (0x0, 0x0);
         }
@@ -717,6 +725,8 @@ contract ValidatorRegistry is Ownable {
                 return (gen.previous, gen.self);
             }
         }
+        return (0x0, 0x0);
+        // This case should be unreachable
     }
 
     function _addGeneratorToList(int rewardRate, bytes32 tendermintPublicKey) internal {
