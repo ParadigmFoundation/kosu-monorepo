@@ -17,7 +17,6 @@ import Web3 from "web3";
 import Web3ProviderEngine from "web3-provider-engine";
 import { toWei } from "web3-utils";
 
-const useGeth = process.argv.includes("geth");
 const runCoverage = process.argv.includes("runCoverage");
 const trace = process.argv.includes("trace");
 
@@ -28,44 +27,7 @@ chai.should();
 // let coverageSubprovider;
 
 before(async () => {
-    const provider = new Web3ProviderEngine();
-
-    if (useGeth) {
-        const rpcSubprovider = new RPCSubprovider(process.env.WEB3_URI);
-        provider.addProvider(rpcSubprovider);
-    } else {
-        // const artifactAdapter = new SolCompilerArtifactAdapter();
-        // if (runCoverage) {
-        //     coverageSubprovider = new CoverageSubprovider(
-        //         artifactAdapter,
-        //         "0xc521f483f607eb5ea4d6b2dfdbd540134753a865",
-        //         {
-        //             ignoreFilesGlobs: [
-        //                 "**/node_modules/openzeppelin-solidity/**",
-        //                 "**/node_modules/@kosu/subcontract-sdk/contracts/SubContract.sol",
-        //                 "**/IPosterRegistry.sol",
-        //             ],
-        //         },
-        //     );
-        //     provider.addProvider(coverageSubprovider);
-        // } else if (trace) {
-        //     const traceSubprovider = new RevertTraceSubprovider(
-        //         artifactAdapter,
-        //         "0xc521f483f607eb5ea4d6b2dfdbd540134753a865",
-        //     );
-        //     provider.addProvider(traceSubprovider);
-        // }
-
-        const ganacheSubprovider = new GanacheSubprovider({
-            mnemonic: process.env.npm_package_config_test_mnemonic,
-            network_id: 6175,
-            default_balance_ether: TestValues.fiveHundredEther.multipliedBy(10),
-        });
-        provider.addProvider(ganacheSubprovider);
-    }
-
-    providerUtils.startProviderEngine(provider);
-
+    // @ts-ignore
     const web3 = new Web3(provider);
     const web3Wrapper = new Web3Wrapper(provider);
 

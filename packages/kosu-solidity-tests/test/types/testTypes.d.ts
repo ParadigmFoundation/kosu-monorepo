@@ -6,3 +6,4 @@ declare const web3Wrapper: Web3Wrapper;
 declare const web3: Web3;
 declare const txDefaults: any;
 declare const provider: any;
+declare const useGeth: boolean;

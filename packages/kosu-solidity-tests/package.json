@@ -11,9 +11,10 @@
         "url": "https://github.com/ParadigmFoundation/kosu-monorepo/issues"
     },
     "scripts": {
-        "test": "ts-mocha -p tsconfig.json test/* --timeout 0 --slow 2000 -b",
+        "pretest": "tsc",
+        "test": "node ./dist/index.js",
         "clean": "shx rm -rf dist/",
-        "contracts:test:ci": "ts-mocha -p tsconfig.json test/* --slow 2000 --timeout 0 -b -- geth",
+        "contracts:test:ci": "yarn test -- geth",
         "coverage": "ts-mocha -p tsconfig.json test/* --slow 2000 --timeout 100000 -- runCoverage && istanbul report html && open coverage/index.html",
         "lint": "tslint -p ."
     },

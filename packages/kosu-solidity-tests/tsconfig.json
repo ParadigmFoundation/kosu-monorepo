@@ -8,5 +8,5 @@
         "typeRoots": ["node_modules/@types", "node_modules/@kosu/types"],
         "types": ["mocha"]
     },
-    "include": ["./test/**/*"]
+    "include": ["./test/**/*", "index.ts"]
 }
