@@ -24,7 +24,7 @@ func (suite *IntegrationTestSuite) TestValidators() {
 	}
 
 	suite.Run("AddValidator", func() {
-		tx.Amount = types.NewBigIntFromString("1000000000000000000", 10)
+		tx.Amount = types.NewBigIntFromString("2", 10)
 
 		suite.WithConfirmations(tx)
 

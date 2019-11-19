@@ -12,7 +12,6 @@ import (
 	abci "github.com/tendermint/tendermint/abci/types"
 	"github.com/tendermint/tendermint/config"
 	cfg "github.com/tendermint/tendermint/config"
-	"github.com/tendermint/tendermint/crypto/tmhash"
 	"github.com/tendermint/tendermint/libs/log"
 	db "github.com/tendermint/tm-db"
 
@@ -33,6 +32,7 @@ type App struct {
 	log    log.Logger
 	store  store.Store
 
+	conensusParams        types.ConsensusParams
 	confirmationThreshold uint64
 }
 
@@ -129,23 +129,58 @@ func (app *App) InitChain(req abci.RequestInitChain) abci.ResponseInitChain {
 		panic("Using a non-zero state when initializing the chain")
 	}
 
+	// Parse the Genesis from app_state or get the default
 	gen, err := NewGenesisFromRequest(req)
 	if err != nil {
 		panic(err)
 	}
 	if gen == nil {
-		gen = GenesisAppState
+		gen = DefaultGenesisAppState
 	}
 
-	set, err := UnifyValidators(req.Validators, gen.InitialValidatorInfo)
-	if err != nil {
-		panic(err)
+	/*
+		set, err := UnifyValidators(req.Validators, gen.InitialValidatorInfo)
+		if err != nil {
+			panic(err)
+		}
+	*/
+
+	// Store validators from request (TM Validators)
+	for _, v := range req.Validators {
+		pub := v.PubKey.Data
+		nodeID := types.NewNodeIDFromPublicKey(pub)
+		app.store.SetValidator(nodeID, &types.Validator{
+			PublicKey: pub,
+			Balance:   types.NewBigIntFromInt(v.GetPower()),
+		})
 	}
 
-	for _, v := range set {
-		nodeID := tmhash.SumTruncated(v.PublicKey)
-		app.store.SetValidator(nodeID, &v)
+	// Iterate over initial_validator_info to update the previously stored validators
+	// and calculate the total balance so that we can allocate the power
+	totalBalance := big.NewInt(0)
+	for _, info := range gen.InitialValidatorInfo {
+		id, err := hex.DecodeString(info.TendermintAddress)
+		if err != nil {
+			panic(err)
+		}
+
+		v := app.store.Validator(id)
+		if v == nil {
+			msg := fmt.Errorf("address from app_state.initial_validator_info[%s] was not found in []validators", info.TendermintAddress) // nolint
+			panic(msg)
+		}
+		v.Balance = types.NewBigIntFromString(info.InitialStake, 10)
+		v.EthAccount = info.EthereumAddress
+
+		totalBalance.Add(totalBalance, v.Balance.BigInt())
 	}
+
+	// Allocate power and rebuild the ValidatorUpdate with the new power allcation
+	updates := abci.ValidatorUpdates{}
+	app.store.IterateValidators(func(id []byte, v *types.Validator) {
+		v.Power = AllocatePower(totalBalance, v.GetBalance().BigInt())
+		updates = append(updates, abci.Ed25519ValidatorUpdate(v.PublicKey, v.Power))
+	})
 
 	for _, init := range gen.InitialPosterInfo {
 		poster := types.Poster{
@@ -158,7 +193,7 @@ func (app *App) InitChain(req abci.RequestInitChain) abci.ResponseInitChain {
 	app.log.Info("Loaded Genesis State", "gen", gen)
 
 	return abci.ResponseInitChain{
-		Validators: req.Validators,
+		Validators: updates,
 	}
 }
 
@@ -231,20 +266,29 @@ func (app *App) updateConfirmationThreshold(activePower *big.Int) {
 
 // EndBlock .
 func (app *App) EndBlock(req abci.RequestEndBlock) abci.ResponseEndBlock {
-	updates := []abci.ValidatorUpdate{}
+	updates_old := []abci.ValidatorUpdate{}
+	updates_new := []abci.ValidatorUpdate{}
+
+	totalBalance := big.NewInt(0)
+	app.store.IterateValidators(func(_ []byte, v *types.Validator) {
+		if balance := v.GetBalance(); balance != nil {
+			totalBalance.Add(totalBalance, balance.BigInt())
+		}
+	})
+	app.log.Error("EndBlock", "totalBalance", totalBalance.String())
 
 	app.store.IterateValidators(func(nodeID []byte, v *types.Validator) {
-		if v.Applied {
-			return
+		if balance := v.GetBalance(); balance != nil {
+			v.Power = AllocatePower(totalBalance, balance.BigInt())
 		}
 
-		//		balance := v.Balance.BigInt().Uint64()
-		//		power := math.Round(float64(balance) / math.Pow(10, 18))
-
-		// TODO(hharder): make sure this is correct
 		if v.PublicKey != nil {
 			update := abci.Ed25519ValidatorUpdate(v.PublicKey, v.Power)
-			updates = append(updates, update)
+			if v.Applied {
+				updates_old = append(updates_old, update)
+			} else {
+				updates_new = append(updates_new, update)
+			}
 		}
 
 		if v.Power == 0 {
@@ -255,8 +299,21 @@ func (app *App) EndBlock(req abci.RequestEndBlock) abci.ResponseEndBlock {
 		}
 	})
 
+	total := int64(0)
+	for i := 0; i < len(updates_old); i++ {
+		total += updates_old[i].Power
+		app.log.Error("Updates", "i", i, "update", updates_old[i])
+	}
+
+	for i := 0; i < len(updates_new); i++ {
+		total += updates_new[i].Power
+		app.log.Error("Updates", "i", i, "update", updates_new[i])
+	}
+
+	app.log.Error("TotalUpdate", "power", total)
+
 	return abci.ResponseEndBlock{
-		ValidatorUpdates: updates,
+		ValidatorUpdates: append(updates_old, updates_new...),
 	}
 }
 

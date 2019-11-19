@@ -61,7 +61,7 @@ func (suite *IntegrationTestSuite) TestWitness() {
 		suite.Require().NotEmpty(res.Response.Value)
 
 		tx2 := newTx()
-		tx2.Block = abci.GenesisAppState.ConsensusParams.BlocksBeforePruning + tx1.Block
+		tx2.Block = abci.DefaultGenesisAppState.ConsensusParams.BlocksBeforePruning + tx1.Block
 		suite.BroadcastTxCommit(tx2)
 
 		res, err = suite.Client().ABCIQuery("/store/witness/key", tx1.Hash())

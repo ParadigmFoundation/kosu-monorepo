@@ -88,7 +88,7 @@ func (app *App) pushTransactionWitness(tx *types.TransactionWitness, nodeID []by
 		id := tmhash.SumTruncated(tx.PublicKey)
 		app.store.SetValidator(id, &types.Validator{
 			Balance:    tx.Amount,
-			Power:      ScaleBalance(tx.Amount.BigInt()),
+			Power:      0, // power is updated in EndBlock()
 			PublicKey:  tx.PublicKey,
 			EthAccount: tx.Address,
 			Applied:    false,
