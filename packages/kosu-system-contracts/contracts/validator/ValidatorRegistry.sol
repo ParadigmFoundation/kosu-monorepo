@@ -324,10 +324,9 @@ contract ValidatorRegistry is Ownable {
             treasury.releaseTokens(listing.owner, safeTokens);
 
             //Approve and release tokens to treasury for successful challenger
-            //Challenger receives his tokens back and cut of the listing balance.  Tokens available for distribution will be tracked in the challenge.balance
-            uint challengerTotalWinnings = challenge.balance.add(holderCut);
-            kosuToken.approve(address(treasury), challengerTotalWinnings);
-
+            //Approves the total of challenge stake to be returned and challenger's winnings.
+            uint challengerWinningsAndStake = challenge.balance.add(holderCut);
+            kosuToken.approve(address(treasury), challengerWinningsAndStake);
             // Release challenge stake, award new tokens then remove the award from the remaining reward.
             treasury.releaseTokens(challenge.challenger, challenge.balance);
             treasury.award(challenge.challenger, holderCut);
