@@ -1,7 +1,7 @@
-import {GanacheSubprovider, RPCSubprovider} from "@0x/subproviders";
-import {providerUtils} from "@0x/utils";
-import {artifacts} from "@kosu/system-contracts";
-import {TestValues} from "@kosu/test-helpers/dist/src";
+import { GanacheSubprovider, RPCSubprovider } from "@0x/subproviders";
+import { providerUtils } from "@0x/utils";
+import { artifacts } from "@kosu/system-contracts";
+import { TestValues } from "@kosu/test-helpers/dist/src";
 import Gas from "eth-gas-reporter";
 import fs from "fs";
 import Mocha from "mocha";
@@ -77,17 +77,16 @@ Object.assign(global, {
 const testDir = "./dist/test/";
 
 // Add each .js file to the mocha instance
-fs.readdirSync(testDir).filter(file => {
-    // Only keep the .js files
-    return file.substr(-3) === ".js";
-
-}).forEach(file => {
-    mocha.addFile(
-        path.join(testDir, file),
-    );
-});
+fs.readdirSync(testDir)
+    .filter(file => {
+        // Only keep the .js files
+        return file.substr(-3) === ".js";
+    })
+    .forEach(file => {
+        mocha.addFile(path.join(testDir, file));
+    });
 
 // Run the tests.
 mocha.run(failures => {
-    process.exitCode = failures ? 1 : 0;  // exit with non-zero status if there were failures
+    process.exitCode = failures ? 1 : 0; // exit with non-zero status if there were failures
 });

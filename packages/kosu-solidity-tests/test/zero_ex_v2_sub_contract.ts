@@ -59,7 +59,9 @@ describe("ZeroExV2SubContract", () => {
 
         let fullBytes = makerBytes;
         fullBytes = fullBytes + accounts[1].slice(2);
-        fullBytes = `${fullBytes}${toTwosComplement(numberToHex(signedZeroExOrder.takerAssetAmount.toString())).slice(2)}`;
+        fullBytes = `${fullBytes}${toTwosComplement(numberToHex(signedZeroExOrder.takerAssetAmount.toString())).slice(
+            2,
+        )}`;
 
         await contracts.zeroExV2SubContract.isValid
             .callAsync(makerBytes)
