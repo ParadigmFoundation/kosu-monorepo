@@ -214,3 +214,4 @@ To report bugs within a specific Kosu package, please [create an issue](https://
 ## License
 
 Kosu is being developed as free open-source software under an [MIT license.](./LICENSE)
+
