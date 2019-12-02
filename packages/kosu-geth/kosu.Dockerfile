@@ -1,4 +1,4 @@
-FROM ethereum/client-go:v1.8.27
+FROM ethereum/client-go:v1.9.8
 
 COPY genesis-kosu.json accounts passwords ./
 RUN mkdir keystore/
@@ -13,4 +13,5 @@ ENTRYPOINT geth \
     --password=./passwords \
     --etherbase "0x54E60Bccc86A7Bad4BC68E36a8fde0F369aE849E" --mine \
     --rpc  --rpcaddr '0.0.0.0' --rpccorsdomain '*' --rpcvhosts '*' --rpcapi 'personal,db,eth,net,web3,txpool,miner,debug' \
-    --ws --wsaddr '0.0.0.0' --wsapi 'personal,db,eth,net,web3,txpool,miner,debug' --wsorigins '*'
+    --ws --wsaddr '0.0.0.0' --wsapi 'personal,db,eth,net,web3,txpool,miner,debug' --wsorigins '*' \
+    --allow-insecure-unlock
