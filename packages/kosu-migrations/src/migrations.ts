@@ -229,5 +229,8 @@ const zeroExArguments = {
         { datatype: "bytes", name: "takerAssetData" },
         { datatype: "bytes", name: "signature" },
     ],
-    taker: [{ datatype: "address", name: "taker" }, { datatype: "uint", name: "takerAssetAmount" }],
+    taker: [
+        { datatype: "address", name: "taker" },
+        { datatype: "uint", name: "takerAssetAmount" },
+    ],
 };
