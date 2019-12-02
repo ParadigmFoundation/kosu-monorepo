@@ -108,7 +108,12 @@ describe("OrderHelper", () => {
         it("should sign an order with a bogus subContract and provided makerArguments", async () => {
             const customOrder = {
                 subContract: NULL_ADDRESS,
-                arguments: { maker: [{ datatype: "address", name: "acc" }, { datatype: "uint", name: "num" }] },
+                arguments: {
+                    maker: [
+                        { datatype: "address", name: "acc" },
+                        { datatype: "uint", name: "num" },
+                    ],
+                },
                 makerValues: { acc: accounts[9], num: 4 },
             };
             const preparedOrder = await orderHelper.prepareForPost(customOrder, accounts[5]);
