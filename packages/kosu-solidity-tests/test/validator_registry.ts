@@ -535,7 +535,10 @@ describe("ValidatorRegistry", async () => {
         it("should correctly finalize a failed challenge", async () => {
             await testHelpers.prepareTokens(accounts[1], minimumStake);
             await testHelpers.prepareTokens(accounts[2], TestValues.fiveEther);
-            const { blockNumber, logs } = await validatorRegistry.challengeListing.awaitTransactionSuccessAsync(
+            const {
+                blockNumber,
+                logs,
+            } = await validatorRegistry.challengeListing.awaitTransactionSuccessAsync(
                 tendermintPublicKey,
                 paradigmMarket,
                 { from: accounts[1] },
@@ -601,7 +604,10 @@ describe("ValidatorRegistry", async () => {
             await testHelpers.prepareTokens(accounts[2], TestValues.fiveEther);
             await validatorRegistry.confirmListing.awaitTransactionSuccessAsync(tendermintPublicKey);
             await validatorRegistry.initExit.awaitTransactionSuccessAsync(tendermintPublicKey);
-            const { blockNumber, logs } = await validatorRegistry.challengeListing.awaitTransactionSuccessAsync(
+            const {
+                blockNumber,
+                logs,
+            } = await validatorRegistry.challengeListing.awaitTransactionSuccessAsync(
                 tendermintPublicKey,
                 paradigmMarket,
                 { from: accounts[1] },
@@ -665,7 +671,10 @@ describe("ValidatorRegistry", async () => {
         it("should correctly finalize a failed challenge on a pending listing", async () => {
             await testHelpers.prepareTokens(accounts[1], minimumStake);
             await testHelpers.prepareTokens(accounts[2], TestValues.fiveEther);
-            const { blockNumber, logs } = await validatorRegistry.challengeListing.awaitTransactionSuccessAsync(
+            const {
+                blockNumber,
+                logs,
+            } = await validatorRegistry.challengeListing.awaitTransactionSuccessAsync(
                 tendermintPublicKey,
                 paradigmMarket,
                 { from: accounts[1] },
@@ -740,7 +749,10 @@ describe("ValidatorRegistry", async () => {
             await testHelpers.prepareTokens(accounts[2], TestValues.fiveEther);
             await validatorRegistry.confirmListing.awaitTransactionSuccessAsync(tendermintPublicKey);
             await validatorRegistry.initExit.awaitTransactionSuccessAsync(tendermintPublicKey);
-            const { blockNumber, logs } = await validatorRegistry.challengeListing.awaitTransactionSuccessAsync(
+            const {
+                blockNumber,
+                logs,
+            } = await validatorRegistry.challengeListing.awaitTransactionSuccessAsync(
                 tendermintPublicKey,
                 paradigmMarket,
                 { from: accounts[1] },
@@ -800,7 +812,10 @@ describe("ValidatorRegistry", async () => {
             await testHelpers.prepareTokens(accounts[5], TestValues.fiveEther);
             await validatorRegistry.confirmListing.awaitTransactionSuccessAsync(tendermintPublicKey);
             await validatorRegistry.initExit.awaitTransactionSuccessAsync(tendermintPublicKey);
-            const { blockNumber, logs } = await validatorRegistry.challengeListing.awaitTransactionSuccessAsync(
+            const {
+                blockNumber,
+                logs,
+            } = await validatorRegistry.challengeListing.awaitTransactionSuccessAsync(
                 tendermintPublicKey,
                 paradigmMarket,
                 { from: accounts[1] },
@@ -866,7 +881,10 @@ describe("ValidatorRegistry", async () => {
             await testHelpers.prepareTokens(accounts[5], TestValues.fiveEther);
             await validatorRegistry.confirmListing.awaitTransactionSuccessAsync(tendermintPublicKey);
             await validatorRegistry.initExit.awaitTransactionSuccessAsync(tendermintPublicKey);
-            const { blockNumber, logs } = await validatorRegistry.challengeListing.awaitTransactionSuccessAsync(
+            const {
+                blockNumber,
+                logs,
+            } = await validatorRegistry.challengeListing.awaitTransactionSuccessAsync(
                 tendermintPublicKey,
                 paradigmMarket,
                 { from: accounts[1] },
@@ -932,7 +950,10 @@ describe("ValidatorRegistry", async () => {
             await testHelpers.prepareTokens(accounts[5], TestValues.fiveEther);
             await validatorRegistry.confirmListing.awaitTransactionSuccessAsync(tendermintPublicKey);
             await validatorRegistry.initExit.awaitTransactionSuccessAsync(tendermintPublicKey);
-            const { blockNumber, logs } = await validatorRegistry.challengeListing.awaitTransactionSuccessAsync(
+            const {
+                blockNumber,
+                logs,
+            } = await validatorRegistry.challengeListing.awaitTransactionSuccessAsync(
                 tendermintPublicKey,
                 paradigmMarket,
                 { from: accounts[1] },
@@ -1006,7 +1027,10 @@ describe("ValidatorRegistry", async () => {
             await testHelpers.prepareTokens(accounts[5], TestValues.fiveEther);
             await validatorRegistry.confirmListing.awaitTransactionSuccessAsync(tendermintPublicKey);
             await validatorRegistry.initExit.awaitTransactionSuccessAsync(tendermintPublicKey);
-            const { blockNumber, logs } = await validatorRegistry.challengeListing.awaitTransactionSuccessAsync(
+            const {
+                blockNumber,
+                logs,
+            } = await validatorRegistry.challengeListing.awaitTransactionSuccessAsync(
                 tendermintPublicKey,
                 paradigmMarket,
                 { from: accounts[1] },
