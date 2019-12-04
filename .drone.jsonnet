@@ -27,13 +27,23 @@ local KosuGeth(name) = Image(name, "kosu-test-geth:latest") {
 [{
 	"kind": "pipeline",
 	"name": "tests",
+	"volumes": [
+		{ name: "node_modules", host: {path: "/tmp/drone/kosu/cache/node_modules"} },
+		{ name: "gomod",        host: {path: "/tmp/drone/kosu/cache/gomod"} },
+		{ name: "gocache",      host: {path: "/tmp/drone/kosu/cache/gocache"} },
+	],
 	"steps": [
 		Image("prettier_project", "node-ci:latest") {
 			"commands": ["yarn prettier:ci"]
 		},
 
 	    Image("build-project", "node-ci:latest") + GethConfig() {
-			"commands": [
+			volumes: [
+				{ name: "node_modules", path: "/drone/src/node_modules" },
+				{ name: "gocache", path: "/root/.cache/go-build" },
+				{ name: "gomod", path: "/home/go/pkg/mod" },
+			],
+			commands: [
 				"yarn",
 				"yarn setup:ci",
 				"yarn migrate:ci",
@@ -42,24 +52,34 @@ local KosuGeth(name) = Image(name, "kosu-test-geth:latest") {
 		},
 
         Image("npm-tests", "node-ci:latest") + GethConfig() {
-            "commands": [ "yarn test:ci" ],
-            "depends_on": [ "build-project" ],
+			volumes: [
+				{ name: "node_modules", path: "/drone/src/node_modules" },
+			],
+            commands: [ "yarn test:ci" ],
+            depends_on: [ "build-project" ],
         },
 
         Image("solidity", "node-ci:latest") + GethConfig() {
-            "commands": [ "yarn contracts:test:ci" ],
-            "depends_on": [ "build-project", "npm-tests" ],
-        },
+			volumes: [
+				{ name: "node_modules", path: "/drone/src/node_modules" },
+			],
+			commands: [ "yarn contracts:test:ci" ],
+			depends_on: [ "build-project", "npm-tests" ],
+		},
 
         KosuNode(0), KosuNode(1), KosuNode(2), KosuNode(3),
 
         Image("go-kosu", "go-kosu-ci:latest") {
-                "commands": [
-                "cd packages/go-kosu",
-                "export KOSU_TEST_NODES=$(pwd)/testnet/node0@kosu-node-1:26657,$(pwd)/testnet/node1@kosu-node-1:26657,$(pwd)/testnet/node2@kosu-node-1:26657,$(pwd)/testnet/node3@kosu-node-1:26657",
-                "make ci"
+			volumes: [
+				{ name: "gomod",   path: "/go/pkg/mod" },
+				{ name: "gocache", path: "/root/.cache/go-build" },
+			],
+			commands: [
+				"cd packages/go-kosu",
+				"export KOSU_TEST_NODES=$(pwd)/testnet/node0@kosu-node-1:26657,$(pwd)/testnet/node1@kosu-node-1:26657,$(pwd)/testnet/node2@kosu-node-1:26657,$(pwd)/testnet/node3@kosu-node-1:26657",
+				"make ci"
             ],
-            "depends_on": ["build-project", "kosu-node-0", "kosu-node-1","kosu-node-2","kosu-node-3"]
+            depends_on: ["build-project", "kosu-node-0", "kosu-node-1","kosu-node-2","kosu-node-3"]
         },
     ],
 
