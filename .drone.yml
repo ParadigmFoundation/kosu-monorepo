@@ -27,8 +27,8 @@ steps:
   volumes:
   - name: node_modules
     path: /drone/src/node_modules
-  - name: gocache
-    path: /root/.cache/go-build
+  - name: cache
+    path: /root/.cache
   - name: gomod
     path: /home/go/pkg/mod
 
@@ -111,8 +111,8 @@ steps:
   volumes:
   - name: gomod
     path: /go/pkg/mod
-  - name: gocache
-    path: /root/.cache/go-build
+  - name: cache
+    path: /root/.cache
   depends_on:
   - build-project
   - kosu-node-0
@@ -138,13 +138,13 @@ services:
 volumes:
 - name: node_modules
   host:
-    path: /tmp/drone/kosu/cache/node_modules
+    path: /tmp/drone/kosu/node_modules
 - name: gomod
   host:
-    path: /tmp/drone/kosu/cache/gomod
-- name: gocache
+    path: /tmp/drone/kosu/gomod
+- name: cache
   host:
-    path: /tmp/drone/kosu/cache/gocache
+    path: /tmp/drone/kosu/cache
 
 trigger:
   event:

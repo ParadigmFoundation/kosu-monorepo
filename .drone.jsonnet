@@ -28,9 +28,9 @@ local KosuGeth(name) = Image(name, "kosu-test-geth:latest") {
 	"kind": "pipeline",
 	"name": "tests",
 	"volumes": [
-		{ name: "node_modules", host: {path: "/tmp/drone/kosu/cache/node_modules"} },
-		{ name: "gomod",        host: {path: "/tmp/drone/kosu/cache/gomod"} },
-		{ name: "gocache",      host: {path: "/tmp/drone/kosu/cache/gocache"} },
+		{ name: "node_modules", host: {path: "/tmp/drone/kosu/node_modules"} },
+		{ name: "gomod",        host: {path: "/tmp/drone/kosu/gomod"} },
+		{ name: "cache",        host: {path: "/tmp/drone/kosu/cache"} },
 	],
 	"steps": [
 		Image("prettier_project", "node-ci:latest") {
@@ -40,7 +40,7 @@ local KosuGeth(name) = Image(name, "kosu-test-geth:latest") {
 	    Image("build-project", "node-ci:latest") + GethConfig() {
 			volumes: [
 				{ name: "node_modules", path: "/drone/src/node_modules" },
-				{ name: "gocache", path: "/root/.cache/go-build" },
+				{ name: "cache", path: "/root/.cache" },
 				{ name: "gomod", path: "/home/go/pkg/mod" },
 			],
 			commands: [
@@ -72,7 +72,7 @@ local KosuGeth(name) = Image(name, "kosu-test-geth:latest") {
         Image("go-kosu", "go-kosu-ci:latest") {
 			volumes: [
 				{ name: "gomod",   path: "/go/pkg/mod" },
-				{ name: "gocache", path: "/root/.cache/go-build" },
+				{ name: "cache", path: "/root/.cache" },
 			],
 			commands: [
 				"cd packages/go-kosu",
