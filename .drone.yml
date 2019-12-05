@@ -24,6 +24,13 @@ steps:
   environment:
     WEB3_URI: http://kosu-geth:8545
     WEB3_URI_WS: ws://kosu-geth:8546
+  volumes:
+  - name: node_modules
+    path: /drone/src/node_modules
+  - name: cache
+    path: /root/.cache
+  - name: gomod
+    path: /home/go/pkg/mod
 
 - name: npm-tests
   pull: always
@@ -33,6 +40,9 @@ steps:
   environment:
     WEB3_URI: http://kosu-geth:8545
     WEB3_URI_WS: ws://kosu-geth:8546
+  volumes:
+  - name: node_modules
+    path: /drone/src/node_modules
   depends_on:
   - build-project
 
@@ -44,6 +54,9 @@ steps:
   environment:
     WEB3_URI: http://kosu-geth:8545
     WEB3_URI_WS: ws://kosu-geth:8546
+  volumes:
+  - name: node_modules
+    path: /drone/src/node_modules
   depends_on:
   - build-project
   - npm-tests
@@ -95,6 +108,11 @@ steps:
   - cd packages/go-kosu
   - export KOSU_TEST_NODES=$(pwd)/testnet/node0@kosu-node-1:26657,$(pwd)/testnet/node1@kosu-node-1:26657,$(pwd)/testnet/node2@kosu-node-1:26657,$(pwd)/testnet/node3@kosu-node-1:26657
   - make ci
+  volumes:
+  - name: gomod
+    path: /go/pkg/mod
+  - name: cache
+    path: /root/.cache
   depends_on:
   - build-project
   - kosu-node-0
@@ -116,6 +134,17 @@ services:
   ports:
   - 8545
   - 8546
+
+volumes:
+- name: node_modules
+  host:
+    path: /tmp/drone/kosu/node_modules
+- name: gomod
+  host:
+    path: /tmp/drone/kosu/gomod
+- name: cache
+  host:
+    path: /tmp/drone/kosu/cache
 
 trigger:
   event:
