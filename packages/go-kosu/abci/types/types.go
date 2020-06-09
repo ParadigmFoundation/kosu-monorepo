@@ -10,6 +10,8 @@ import (
 	"math/big"
 
 	"github.com/golang/protobuf/proto"
+
+	"github.com/tendermint/tendermint/crypto/tmhash"
 )
 
 // Bytes returns the underlying bytes
@@ -140,6 +142,10 @@ func (tx *Transaction) GetOneOf() interface{} {
 
 // NodeID is the id of a node submitting transactions
 type NodeID []byte
+
+// NewNodeIDFromPublicKey returns a new NodeID given a pubkey
+// The pubkey is hashed and truncated usimg tendermin't SumTruncated
+func NewNodeIDFromPublicKey(pub []byte) NodeID { return tmhash.SumTruncated(pub) }
 
 // String is the string representation
 func (id NodeID) String() string { return hex.EncodeToString(id) }

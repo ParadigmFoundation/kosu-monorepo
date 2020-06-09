@@ -97,7 +97,7 @@ func createConfig(homedir string, logger log.Logger) error {
 			ChainID:         fmt.Sprintf(chainIDPrefix, cmn.RandStr(6)),
 			GenesisTime:     tmtime.Now(),
 			ConsensusParams: tmtypes.DefaultConsensusParams(),
-			AppState:        GenesisAppState.JSON(),
+			AppState:        DefaultGenesisAppState.JSON(),
 		}
 		key := pv.GetPubKey()
 		genDoc.Validators = []tmtypes.GenesisValidator{{

@@ -86,7 +86,7 @@ func (g *Genesis) JSON() json.RawMessage {
 }
 
 // GenesisAppState is the initial (genesis) Application state
-var GenesisAppState = &Genesis{
+var DefaultGenesisAppState = &Genesis{
 	ConsensusParams: types.ConsensusParams{
 		PeriodLength:        10,
 		PeriodLimit:         100000,
